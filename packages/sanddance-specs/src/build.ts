@@ -18,7 +18,7 @@ export function build(specContext: SpecContext, currData: object[]): SpecResult 
         specColumns.sort,
         specColumns.x,
         specColumns.y,
-        specColumns.z
+        specColumns.z,
     ];
     inferAll(columns, currData);
 
@@ -33,7 +33,7 @@ export function build(specContext: SpecContext, currData: object[]): SpecResult 
                 specResult = {
                     errors,
                     specCapabilities: specBuilderProps.specCapabilities,
-                    vegaSpec: null
+                    vegaSpec: null,
                 };
             } else {
                 specResult = specBuilder.build();
@@ -43,7 +43,7 @@ export function build(specContext: SpecContext, currData: object[]): SpecResult 
             specResult = {
                 specCapabilities: null,
                 vegaSpec: null,
-                errors: [e.stack]
+                errors: [e.stack],
             };
         }
         if (!specResult.errors) {
@@ -54,7 +54,7 @@ export function build(specContext: SpecContext, currData: object[]): SpecResult 
         specResult = {
             specCapabilities: null,
             vegaSpec: null,
-            errors: [`could not build spec for ${specContext.insight.chart}`]
+            errors: [`could not build spec for ${specContext.insight.chart}`],
         };
     }
     return specResult;

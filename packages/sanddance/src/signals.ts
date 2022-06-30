@@ -5,9 +5,9 @@ import { SignalValues } from '@msrvida/sanddance-specs';
 
 export function applySignalValues(sv: SignalValues, b: Spec) {
     if (!sv || !b || !b.signals || !b.signals.length) return;
-    for (let key in sv) {
-        let value = sv[key];
-        let signalB = b.signals.filter(signal => signal.name === key)[0] as NewSignal;
+    for (const key in sv) {
+        const value = sv[key];
+        const signalB = b.signals.filter(signal => signal.name === key)[0] as NewSignal;
         if (signalB && signalB.bind) {
             signalB.value = value;
         }

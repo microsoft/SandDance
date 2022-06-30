@@ -13,7 +13,7 @@ import {
     StyledLine,
     VegaTextLayerDatum,
     Path,
-    Polygon
+    Polygon,
 } from './interfaces';
 import { Presenter } from './presenter';
 import { RGBAColor } from '@deck.gl/core/utils/color';
@@ -29,7 +29,7 @@ export function getLayers(
     lightSettings: any /*LightSettings*/,
     lightingMix: number,
     interpolator: LinearInterpolator_Class<CubeLayerInterpolatedProps>,
-    guideLines: StyledLine[]
+    guideLines: StyledLine[],
 ): Layer<any>[] {
     const cubeLayer = newCubeLayer(presenter, config, stage.cubeData, presenter.style.highlightColor, lightSettings, lightingMix, interpolator);
     const { x, y, z } = stage.axes;
@@ -91,8 +91,8 @@ function newCubeLayer(presenter: Presenter, config: PresenterConfig, cubeData: C
         transitions: {
             getPosition,
             getColor,
-            getSize
-        }
+            getSize,
+        },
     };
     return new CubeLayer(cubeLayerProps);
 }
@@ -104,7 +104,7 @@ function newLineLayer(id: string, data: StyledLine[]) {
         widthUnits: 'pixels',
         coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
         getColor: (o: StyledLine) => o.color,
-        getWidth: (o: StyledLine) => o.strokeWidth
+        getWidth: (o: StyledLine) => o.strokeWidth,
     });
 }
 
@@ -122,14 +122,14 @@ function newPathLayer(id: string, data: Path[]) {
         coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
         getPath: (o) => o.positions,
         getColor: (o) => o.strokeColor,
-        getWidth: (o) => o.strokeWidth
+        getWidth: (o) => o.strokeWidth,
     });
 }
 
 function newPolygonLayer(id: string, data: Polygon[]) {
     if (!data) return null;
 
-    let newlayer = new base.layers.PolygonLayer<Polygon>({
+    const newlayer = new base.layers.PolygonLayer<Polygon>({
         id,
         data,
         coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
@@ -142,7 +142,7 @@ function newPolygonLayer(id: string, data: Polygon[]) {
         pickable: true,
         extruded: true,
         getElevation: (o) => o.depth,
-        getLineWidth: (o) => o.strokeWidth
+        getLineWidth: (o) => o.strokeWidth,
     });
     return newlayer;
 }
@@ -168,7 +168,7 @@ function newTextLayer(presenter: Presenter, id: string, data: VegaTextLayerDatum
             }
         },
         onClick: (o, e) => {
-            let pe: Partial<PointerEvent> = e && e.srcEvent;
+            const pe: Partial<PointerEvent> = e && e.srcEvent;
             config.onTextClick && config.onTextClick(pe as PointerEvent, o.object as VegaTextLayerDatum);
         },
         onHover: (o, e) => {
@@ -185,9 +185,9 @@ function newTextLayer(presenter: Presenter, id: string, data: VegaTextLayerDatum
         fontSettings: {
             sdf: false,
             fontSize: 128,
-            buffer: 3
+            buffer: 3,
         },
-        _subLayerProps: { characters: { alphaCutoff } }
+        _subLayerProps: { characters: { alphaCutoff } },
     };
     if (fontFamily) {
         props.fontFamily = fontFamily;
@@ -201,7 +201,7 @@ function getTiming(duration: number, easing?: (t: number) => number) {
     if (duration) {
         timing = {
             duration,
-            type: 'interpolation'
+            type: 'interpolation',
         };
         if (easing) {
             timing.easing = easing;

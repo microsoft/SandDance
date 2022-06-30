@@ -19,14 +19,14 @@ export const defaultViewerOptions: ViewerOptions = {
             const c = desaturate(color, 0.05);
             c[3] = 171;
             return c;
-        }
+        },
     },
     language: {
         headers: {
             chart: 'Chart',
             details: 'Details',
             legend: 'Legend',
-            selection: 'Select & Filter'
+            selection: 'Select & Filter',
         },
         bing: 'bing',
         newColorMap: 'remap color to filtered items',
@@ -61,7 +61,7 @@ export const defaultViewerOptions: ViewerOptions = {
         yAxisTextAngleSignal: 'Y axis text angle',
         zGrounded: 'Z grounded',
         zScaleProportion: 'Z scale proportion to Y',
-        selectionCount: count => `${count} items selected`
+        selectionCount: count => `${count} items selected`,
     },
     maxLegends: 19, //20 would be "other"
     onError: (errors) => {
@@ -69,17 +69,17 @@ export const defaultViewerOptions: ViewerOptions = {
     },
     transitionDurations: {
         ...defaultPresenterConfig.transitionDurations,
-        scope: 600
+        scope: 600,
     },
     selectionPolygonZ: -1,
-    tickSize: 10
+    tickSize: 10,
 };
 
 export function getPresenterStyle(options: ViewerOptions) {
-    var style: VegaDeckGl.types.PresenterStyle = {
+    const style: VegaDeckGl.types.PresenterStyle = {
         cssPrefix,
         fontFamily: options.fontFamily,
-        defaultCubeColor: VegaDeckGl.util.colorFromString(options.colors.defaultCube)
+        defaultCubeColor: VegaDeckGl.util.colorFromString(options.colors.defaultCube),
     };
     if (options.colors.hoveredCube) {
         style.highlightColor = VegaDeckGl.util.colorFromString(options.colors.hoveredCube);
@@ -98,5 +98,5 @@ export const dualColorSchemeColors = {
     blue: '#0060F0',
     green: '#00C000',
     orange: '#FF9900',
-    red: '#E00000'
+    red: '#E00000',
 };

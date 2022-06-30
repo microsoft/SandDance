@@ -132,13 +132,13 @@ export class Exec {
                     const ex2: SearchExpressionLowercase = {
                         ...ex,
                         column,
-                        name: column.name
+                        name: column.name,
                     };
                     if (i) {
                         ex2.clause = '||';
                     }
                     return ex2;
-                })
+                }),
             };
             return this.runGroup(datum, group);
         } else {
@@ -149,7 +149,7 @@ export class Exec {
     private runGroup(datum: object, group: SearchExpressionGroup<SearchExpressionLowercase>): boolean {
         let accumulator: boolean = this.runExpression(datum, group.expressions[0]);
         for (let i = 1; i < group.expressions.length; i++) {
-            let ex = group.expressions[i];
+            const ex = group.expressions[i];
             switch (ex.clause) {
                 case '&&':
                     accumulator = accumulator && this.runExpression(datum, ex);
@@ -165,7 +165,7 @@ export class Exec {
     run(datum: object) {
         let accumulator = this.runGroup(datum, this.groups[0]);
         for (let i = 1; i < this.groups.length; i++) {
-            let group = this.groups[i];
+            const group = this.groups[i];
             switch (group.clause) {
                 case '&&':
                     accumulator = accumulator && this.runGroup(datum, group);

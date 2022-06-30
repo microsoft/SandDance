@@ -54,18 +54,18 @@ export function DataBrowser(props: Props) {
                     {
                         key: DataScopeId.AllData,
                         text: strings.selectDataSpanAll,
-                        isSelected: props.selectedDataScope === DataScopeId.AllData
+                        isSelected: props.selectedDataScope === DataScopeId.AllData,
                     },
                     {
                         key: DataScopeId.FilteredData,
                         text: strings.selectDataSpanFilter,
-                        isSelected: props.selectedDataScope === DataScopeId.FilteredData
+                        isSelected: props.selectedDataScope === DataScopeId.FilteredData,
                     },
                     {
                         key: DataScopeId.SelectedData,
                         text: strings.selectDataSpanSelection,
-                        isSelected: props.selectedDataScope === DataScopeId.SelectedData
-                    }
+                        isSelected: props.selectedDataScope === DataScopeId.SelectedData,
+                    },
                 ]}
                 onChange={(e, o) => {
                     props.onDataScopeClick(o.key as DataScopeId);
@@ -104,7 +104,7 @@ export function DataBrowser(props: Props) {
                 <DataExportPicker
                     theme={props.theme}
                     initializer={{
-                        fileName: `${removeExtensions(props.displayName)} (${props.data.length})`
+                        fileName: `${removeExtensions(props.displayName)} (${props.data.length})`,
                     }}
                     data={props.data}
                     dataExportHandler={props.dataExportHandler}

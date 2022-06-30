@@ -13,23 +13,23 @@ namespace transformTest {
             color: 'brand',
             x: 'Horsepower',
             y: 'Miles_per_Gallon',
-            z: 'Cylinders'
+            z: 'Cylinders',
         },
         transform: [
             {
                 type: 'formula',
                 expr: 'split(datum.Name, " ")',
-                as: 'name_split'
+                as: 'name_split',
             },
             {
                 type: 'formula',
                 expr: 'datum.name_split[0]',
-                as: 'brand'
-            }
+                as: 'brand',
+            },
         ],
         size: {
             height: 700,
-            width: 700
+            width: 700,
         },
         scheme: 'category20',
         view: '2d',
@@ -39,7 +39,7 @@ namespace transformTest {
             Text_AngleXSignal: 0,
             Text_AngleYSignal: -90,
 
-        }
+        },
     };
 
     SandDance.use(vega, deck, deck, luma);

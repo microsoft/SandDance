@@ -8,7 +8,7 @@ import { util } from '@msrvida/sanddance-react';
 import { format } from 'd3-format';
 
 export enum DataScopeId {
-    AllData, SelectedData, FilteredData
+    AllData, SelectedData, FilteredData,
 }
 
 export interface DataCount {
@@ -40,7 +40,7 @@ export function DataScope(props: Props) {
         all: -1,
         filtered: -1,
         selected: -1,
-        ...props.dataCount
+        ...props.dataCount,
     };
     return props.compact ?
         (

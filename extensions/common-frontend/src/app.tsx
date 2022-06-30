@@ -3,10 +3,10 @@
 import SandDance = SandDanceExplorer.SandDance;
 import VegaDeckGl = SandDance.VegaDeckGl;
 
-declare var vega: VegaDeckGl.types.VegaBase;
-declare var deck: VegaDeckGl.types.DeckBase & VegaDeckGl.types.DeckLayerBase;
-declare var luma: VegaDeckGl.types.LumaBase;
-declare var FluentUIReact: _FluentUI.FluentUIComponents;
+declare let vega: VegaDeckGl.types.VegaBase;
+declare let deck: VegaDeckGl.types.DeckBase & VegaDeckGl.types.DeckLayerBase;
+declare let luma: VegaDeckGl.types.LumaBase;
+declare let FluentUIReact: _FluentUI.FluentUIComponents;
 
 namespace SandDanceApp {
     SandDanceExplorer.use(FluentUIReact, React, ReactDOM, vega, deck, deck, luma);
@@ -27,8 +27,8 @@ namespace SandDanceApp {
                 ...SandDanceExplorer.getColorSettingsFromThemePalette(getThemePalette(darkTheme)),
                 axisLine: color,
                 axisText: color,
-                hoveredCube: color
-            }
+                hoveredCube: color,
+            },
         };
         return viewerOptions;
     }
@@ -68,7 +68,7 @@ namespace SandDanceApp {
 
             this.state = {
                 compactUI: false,
-                darkTheme: null
+                darkTheme: null,
             };
             this.viewerOptions = getViewerOptions(this.state.darkTheme);
 
@@ -100,12 +100,12 @@ namespace SandDanceApp {
                             this.explorer.undo();
                         }
                     }
-                }
+                },
             };
         }
 
         private wireEventHandlers(add: boolean) {
-            for (let key in this.handlers) {
+            for (const key in this.handlers) {
                 if (add) {
                     window.addEventListener(key, this.handlers[key]);
                 } else {
@@ -115,7 +115,7 @@ namespace SandDanceApp {
         }
 
         checkForDarkTheme() {
-            let vscodeThemeClassName = getVscodeThemeClassName();
+            const vscodeThemeClassName = getVscodeThemeClassName();
             const darkTheme = vscodeThemeClassName.indexOf('dark') >= 0;
             this.viewerOptions = getViewerOptions(darkTheme);
             if (this.state.darkTheme !== darkTheme && this.explorer) {
@@ -134,7 +134,7 @@ namespace SandDanceApp {
             this.wireEventHandlers(true);
 
             this.vscode.postMessage({
-                command: 'getFileContent'
+                command: 'getFileContent',
             });
 
             this.checkForDarkTheme();
@@ -164,13 +164,13 @@ namespace SandDanceApp {
                                     onChange={(e, checked?) => {
                                         this.vscode.postMessage({
                                             command: 'setCompactUI',
-                                            compactUI: checked
+                                            compactUI: checked,
                                         });
                                         this.setState({ compactUI: checked });
                                     }}
                                 />
-                            )
-                        }
+                            ),
+                        },
                     ]}
                 />
             );

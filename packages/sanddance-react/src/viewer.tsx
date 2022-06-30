@@ -42,7 +42,7 @@ function _SandDanceReact(props: Props) {
             this.viewer.render(
                 this.props.insight,
                 this.props.data,
-                this.props.renderOptions
+                this.props.renderOptions,
             ).then(renderResult => {
                 //TODO: show errors if any
                 //console.log('viewer render');

@@ -6,7 +6,7 @@ import { InnerScope, LayoutOffsets } from '../interfaces';
 import {
     addOffsets,
     addTransforms,
-    getGroupBy
+    getGroupBy,
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { Column } from '@msrvida/chart-types';
@@ -34,7 +34,7 @@ export class AggregateSquare extends Layout {
             barCount: `${p}_count`,
             aggregateField: `${p}_aggregate_value`,
             globalAggregateExtentSignal: `${p}_${a}_extent`,
-            extentData: `data_${p}_extent`
+            extentData: `data_${p}_extent`,
         };
     }
 
@@ -47,15 +47,15 @@ export class AggregateSquare extends Layout {
             {
                 ...this.getTransforms(
                     aggregation,
-                    getGroupBy(groupings)
+                    getGroupBy(groupings),
                 ),
-                as: [names.aggregateField]
+                as: [names.aggregateField],
             },
             {
                 type: 'extent',
                 field: safeFieldName(names.aggregateField),
-                signal: names.globalAggregateExtentSignal
-            }
+                signal: names.globalAggregateExtentSignal,
+            },
         );
 
         const localAggregateMaxExtent = `datum[${JSON.stringify(names.aggregateField)}]`;
@@ -72,25 +72,25 @@ export class AggregateSquare extends Layout {
             x: addOffsets(parentScope.offsets.x, `(${parentScope.offsets.w} - ${squareSide}) / 2`),
             y: addOffsets(parentScope.offsets.y, `(${parentScope.offsets.h} - ${squareSide}) / 2`),
             h: squareSide,
-            w: squareSide
+            w: squareSide,
         };
 
         return {
             offsets,
             sizeSignals: {
                 layoutHeight: null,
-                layoutWidth: null
+                layoutWidth: null,
             },
             encodingRuleMap: {
                 y: [{
                     test: testForCollapseSelection(),
-                    signal: offsets.y
+                    signal: offsets.y,
                 }],
                 height: [{
                     test: testForCollapseSelection(),
-                    value: 0
-                }]
-            }
+                    value: 0,
+                }],
+            },
         };
     }
 
@@ -98,7 +98,7 @@ export class AggregateSquare extends Layout {
         const trans: JoinAggregateTransform = {
             type: 'joinaggregate',
             groupby: groupby.map(safeFieldName),
-            ops: [aggregation]
+            ops: [aggregation],
         };
         if (aggregation === 'sum') {
             trans.fields = [this.props.sumBy.name].map(safeFieldName);

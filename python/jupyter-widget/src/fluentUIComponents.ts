@@ -4,7 +4,7 @@ import {
     ActionButton,
     DefaultButton,
     IconButton,
-    PrimaryButton
+    PrimaryButton,
 } from '@fluentui/react/lib/Button';
 import { ChoiceGroup } from '@fluentui/react/lib/ChoiceGroup';
 import { ComboBox } from '@fluentui/react/lib/ComboBox';
@@ -51,5 +51,5 @@ export const fluentUI: FluentUIComponents = {
     Spinner: Spinner as any,
     SpinnerSize,
     TextField: TextField as any,
-    Toggle: Toggle as any
+    Toggle: Toggle as any,
 };

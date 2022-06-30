@@ -7,7 +7,7 @@ import {
     applyColorMapToCubes,
     colorMapFromCubes,
     getSelectedColorMap,
-    populateColorContext
+    populateColorContext,
 } from './colorCubes';
 import { registerColorSchemes } from './colorSchemes';
 import { GL_ORDINAL } from './constants';
@@ -30,7 +30,7 @@ import {
     RenderOptions,
     RenderResult,
     SelectionState,
-    ViewerOptions
+    ViewerOptions,
 } from './types';
 import { Column } from '@msrvida/chart-types';
 import { View } from '@msrvida/chart-types';
@@ -41,7 +41,7 @@ import {
     SignalValues,
     SpecCapabilities,
     SpecColumns,
-    SpecContext
+    SpecContext,
 } from '@msrvida/sanddance-specs';
 import * as searchExpression from '@msrvida/search-expression';
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
@@ -132,7 +132,7 @@ export class Viewer {
             this._dataScope,
             {
                 onDataChanged: this.onDataChanged.bind(this),
-                onAnimateDataChange: this.onAnimateDataChange.bind(this)
+                onAnimateDataChange: this.onAnimateDataChange.bind(this),
             });
         this._details = new Details(
             this.presenter.getElement(VegaDeckGl.PresenterElement.panel),
@@ -143,7 +143,7 @@ export class Viewer {
                 this.currentColorContext = ~~remap;
                 this.renderSameLayout();
             },
-            () => this.insight && this.insight.columns && !!this.insight.columns.color && this.colorContexts && this.colorContexts.length > 1
+            () => this.insight && this.insight.columns && !!this.insight.columns.color && this.colorContexts && this.colorContexts.length > 1,
         );
         this.insight = {} as Insight;
     }
@@ -175,7 +175,7 @@ export class Viewer {
                             if (this.options.onStage) {
                                 this.options.onStage(stage, deckProps);
                             }
-                        }
+                        },
                     }).then(() => {
                         //apply old legend
                         this.applyLegendColorContext(oldColorContext);
@@ -190,7 +190,7 @@ export class Viewer {
                         if (this.options.onStage) {
                             this.options.onStage(stage, deckProps);
                         }
-                    }
+                    },
                 });
             }
             innerPromise.then(() => {
@@ -221,12 +221,12 @@ export class Viewer {
                         const newColorContext: ColorContext = {
                             colorMap,
                             legend: VegaDeckGl.util.clone(this.presenter.stage.legend),
-                            legendElement: this.presenter.getElement(VegaDeckGl.PresenterElement.legend).children[0] as HTMLElement
+                            legendElement: this.presenter.getElement(VegaDeckGl.PresenterElement.legend).children[0] as HTMLElement,
                         };
                         //apply old legend
                         this.applyLegendColorContext(oldColorContext);
                         this.changeColorContexts([oldColorContext, newColorContext]);
-                    }
+                    },
                 });
 
                 //narrow the filter only if it is different
@@ -242,13 +242,13 @@ export class Viewer {
                 const colorContext: ColorContext = {
                     colorMap: null,
                     legend: null,
-                    legendElement: null
+                    legendElement: null,
                 };
                 this.changeColorContexts([colorContext]);
                 await this.renderNewLayout({}, {
                     onPresent: () => {
                         populateColorContext(colorContext, this.presenter);
-                    }
+                    },
                 });
 
                 delete this.insight.filter;
@@ -289,9 +289,9 @@ export class Viewer {
                 ...this.options,
                 zAxisOptions: {
                     showZAxis: true,
-                    zIndex: zAxisZindex
-                }
-            }
+                    zIndex: zAxisZindex,
+                },
+            },
         };
         const specResult = build(context, currData);
         if (!specResult.errors) {
@@ -371,7 +371,7 @@ export class Viewer {
             this.options = VegaDeckGl.util.deepMerge(this.options, newViewerOptions as ViewerOptions);
         }
 
-        let colorMaps: ColorMap[] = [colorContext.colorMap];
+        const colorMaps: ColorMap[] = [colorContext.colorMap];
         let colorMethod: ColorMethod;
         const hasSelectedData = this._dataScope.hasSelectedData();
         const hasActive = !!this._dataScope.active;
@@ -406,8 +406,8 @@ export class Viewer {
                 data: [{
                     name: 'source',
                     values,
-                    transform
-                }]
+                    transform,
+                }],
             });
             new VegaDeckGl.ViewGl(runtime).run();
         }
@@ -462,7 +462,7 @@ export class Viewer {
         const colorContext = {
             colorMap: null,
             legend: null,
-            legendElement: null
+            legendElement: null,
         };
 
         //now be ready to capture color changing signals 
@@ -502,7 +502,7 @@ export class Viewer {
         const colorContext = options.initialColorContext || {
             colorMap: null,
             legend: null,
-            legendElement: null
+            legendElement: null,
         };
         const specResult = await this.renderNewLayout(
             insight.signalValues,
@@ -533,9 +533,9 @@ export class Viewer {
                         this.applyLegendColorContext(colorContext);
                     }
                 },
-                shouldViewstateTransition: () => this.shouldViewstateTransition(insight, this.insight)
+                shouldViewstateTransition: () => this.shouldViewstateTransition(insight, this.insight),
             },
-            this.getView(insight.view)
+            this.getView(insight.view),
         );
         //future signal changes should save the color context
         this._shouldSaveColorContext = () => !options.discardColorContextUpdates || !options.discardColorContextUpdates();
@@ -600,7 +600,7 @@ export class Viewer {
         const search: SearchExpression = {
             name: GL_ORDINAL,
             operator: '==',
-            value: cube.ordinal
+            value: cube.ordinal,
         };
         this.select(search);
     }
@@ -620,7 +620,7 @@ export class Viewer {
                 options: this.options.tooltipOptions,
                 item: currentData[index],
                 position: e as MouseEvent,
-                cssPrefix: this.presenter.style.cssPrefix
+                cssPrefix: this.presenter.style.cssPrefix,
             });
         }
     }
@@ -687,7 +687,7 @@ export class Viewer {
                 }
                 return { height, width, newViewStateTarget };
             },
-            preserveDrawingBuffer: this.options.preserveDrawingBuffer
+            preserveDrawingBuffer: this.options.preserveDrawingBuffer,
         };
         if (this.options.onBeforeCreateLayers) {
             defaultPresenterConfig.preLayer = stage => {
@@ -696,7 +696,7 @@ export class Viewer {
         }
         const config: VegaDeckGl.types.ViewGlConfig = {
             presenter: this.presenter,
-            presenterConfig: Object.assign(defaultPresenterConfig, c)
+            presenterConfig: Object.assign(defaultPresenterConfig, c),
         };
         if (this.options.transitionDurations) {
             config.presenterConfig.transitionDurations = this.options.transitionDurations;
@@ -767,7 +767,7 @@ export class Viewer {
         const selectionState: SelectionState = {
             search: (this._dataScope.selection && this._dataScope.selection.search) || null,
             selectedData: (this._dataScope.selection && this._dataScope.selection.included) || null,
-            active: this._dataScope.active
+            active: this._dataScope.active,
         };
         return selectionState;
     }

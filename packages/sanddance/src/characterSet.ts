@@ -57,9 +57,9 @@ function differentObjectValues(a: { [key: string]: any }, b: { [key: string]: an
     if (!a || !b) return true;
     const keys = Object.keys(b);
     for (let i = 0; i < keys.length; i++) {
-        let key = keys[i];
-        let ta = typeof a;
-        let tb = typeof b;
+        const key = keys[i];
+        const ta = typeof a;
+        const tb = typeof b;
         if (ta !== tb) return true;
         if (ta === 'object') {
             return differentObjectValues(a[key], b[key]);

@@ -19,17 +19,17 @@ export const CommandBarButtonStyles = (props: FluentUITypes.IButtonProps): Parti
         root: [
             { ...base.fluentUI.getFocusStyle(theme, { inset: 2 }) },
             {
-                backgroundColor: palette.white
-            }
+                backgroundColor: palette.white,
+            },
         ],
 
         rootHovered: {
             backgroundColor: palette.neutralLighter,
             selectors: {
                 [BUTTON_ICON_CLASSNAME]: {
-                    color: palette.themeDarkAlt
-                }
-            }
+                    color: palette.themeDarkAlt,
+                },
+            },
         },
 
         rootPressed: {
@@ -37,9 +37,9 @@ export const CommandBarButtonStyles = (props: FluentUITypes.IButtonProps): Parti
             color: palette.neutralDark,
             selectors: {
                 [BUTTON_ICON_CLASSNAME]: {
-                    color: palette.themeDark
-                }
-            }
+                    color: palette.themeDark,
+                },
+            },
         },
 
         rootChecked: {
@@ -47,14 +47,14 @@ export const CommandBarButtonStyles = (props: FluentUITypes.IButtonProps): Parti
             color: palette.neutralDark,
             selectors: {
                 [BUTTON_ICON_CLASSNAME]: {
-                    color: palette.themeDark
-                }
-            }
+                    color: palette.themeDark,
+                },
+            },
         },
 
         rootCheckedHovered: {
             backgroundColor: palette.neutralQuaternaryAlt,
-            color: palette.neutralDark
+            color: palette.neutralDark,
         },
 
         rootExpanded: {
@@ -62,22 +62,22 @@ export const CommandBarButtonStyles = (props: FluentUITypes.IButtonProps): Parti
             backgroundColor: palette.neutralLight,
             selectors: {
                 [BUTTON_ICON_CLASSNAME]: {
-                    color: palette.themeDark
-                }
-            }
+                    color: palette.themeDark,
+                },
+            },
         },
 
         rootExpandedHovered: {
-            background: palette.neutralQuaternaryAlt
+            background: palette.neutralQuaternaryAlt,
         },
 
         rootDisabled: {
             backgroundColor: palette.white,
             selectors: {
                 [BUTTON_ICON_CLASSNAME]: {
-                    color: semanticColors.disabledBodySubtext
-                }
-            }
+                    color: semanticColors.disabledBodySubtext,
+                },
+            },
         },
 
         splitButtonMenuButton: {
@@ -88,27 +88,27 @@ export const CommandBarButtonStyles = (props: FluentUITypes.IButtonProps): Parti
                     backgroundColor: palette.neutralLighter,
                     selectors: {
                         [BUTTON_ICON_CLASSNAME]: {
-                            color: palette.neutralPrimary
-                        }
-                    }
+                            color: palette.neutralPrimary,
+                        },
+                    },
                 },
                 ':active': {
                     backgroundColor: palette.neutralLight,
                     selectors: {
                         [BUTTON_ICON_CLASSNAME]: {
-                            color: palette.neutralPrimary
-                        }
-                    }
-                }
-            }
+                            color: palette.neutralPrimary,
+                        },
+                    },
+                },
+            },
         },
 
         splitButtonMenuButtonDisabled: {
-            backgroundColor: palette.white
+            backgroundColor: palette.white,
         },
 
         icon: {
-            color: palette.themePrimary
-        }
+            color: palette.themePrimary,
+        },
     };
 };

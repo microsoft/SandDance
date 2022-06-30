@@ -2,8 +2,8 @@
 // Licensed under the MIT license.
 
 export function convertToDelimited(data: object[], delimiter?: string) {
-    var fields = Object.keys(data[0]);
-    var file = data.map(row => {
+    const fields = Object.keys(data[0]);
+    const file = data.map(row => {
         return fields.map(fieldName => {
             const value: any = row[fieldName];
             if (typeof value === 'number') {

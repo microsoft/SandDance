@@ -21,7 +21,7 @@ export {
     use,
     util,
     VegaDeckGl,
-    Viewer
+    Viewer,
 };
 
 export { version } from './version';

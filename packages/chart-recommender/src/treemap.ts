@@ -5,7 +5,7 @@ import { isGeo } from './geo';
 
 export function preferredColumnForTreemapSize(columns: SandDance.types.Column[], strict: boolean) {
     for (let i = 0; i < columns.length; i++) {
-        let c = columns[i];
+        const c = columns[i];
         if (c.quantitative) {
             if (strict && c.stats.hasNegative) continue;
             if (strict && c.stats.isSequential) continue;

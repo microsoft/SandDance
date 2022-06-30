@@ -11,7 +11,7 @@ import {
     RangeBand,
     RangeScheme,
     ScaleData,
-    SignalRef
+    SignalRef,
 } from 'vega-typings';
 
 export function linearScale(scaleName: string, data: string, field: string, range: RangeScheme, reverse: boolean, zero: boolean) {
@@ -23,10 +23,10 @@ export function linearScale(scaleName: string, data: string, field: string, rang
         reverse,
         domain: {
             data,
-            field: safeFieldName(field)
+            field: safeFieldName(field),
         },
         zero,
-        nice: true
+        nice: true,
     };
     return scale;
 }
@@ -39,9 +39,9 @@ export function pointScale(scaleName: string, data: string, range: RangeBand, fi
         domain: {
             data,
             field: safeFieldName(field),
-            sort: true
+            sort: true,
         },
-        padding: 0.5
+        padding: 0.5,
     };
     if (reverse !== undefined) {
         scale.reverse = reverse;
@@ -53,10 +53,10 @@ export function binnableColorScale(scaleName: string, colorBin: ColorBin, data: 
     scheme = scheme || ColorScaleNone;
     const domain: ScaleData = {
         data,
-        field: safeFieldName(field)
+        field: safeFieldName(field),
     };
     const range: RangeScheme = {
-        scheme
+        scheme,
     };
     const reverse: SignalRef = { signal: SignalNames.ColorReverse };
     if (colorBin !== 'continuous') {
@@ -69,7 +69,7 @@ export function binnableColorScale(scaleName: string, colorBin: ColorBin, data: 
                 type: 'linear',
                 domain,
                 range,
-                reverse
+                reverse,
             };
             return sequentialScale;
         }
@@ -79,7 +79,7 @@ export function binnableColorScale(scaleName: string, colorBin: ColorBin, data: 
                 type: 'quantile',
                 domain,
                 range,
-                reverse
+                reverse,
             };
             return quantileScale;
         }
@@ -89,7 +89,7 @@ export function binnableColorScale(scaleName: string, colorBin: ColorBin, data: 
                 type: 'quantize',
                 domain,
                 range,
-                reverse
+                reverse,
             };
             return quantizeScale;
         }

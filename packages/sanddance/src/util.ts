@@ -9,7 +9,7 @@ export function isInternalFieldName(columnName: string, includeVegaDeckGLFields 
     if (includeVegaDeckGLFields) {
         if (columnName === GL_ORDINAL) return true;
     }
-    for (let f in FieldNames) {
+    for (const f in FieldNames) {
         if (columnName === FieldNames[f]) return true;
     }
     return false;

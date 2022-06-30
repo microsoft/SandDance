@@ -44,56 +44,56 @@ export function Topbar(props: Props) {
             key: 'undo',
             name: strings.buttonUndo,
             iconProps: {
-                iconName: 'Undo'
+                iconName: 'Undo',
             },
             disabled: disabled || props.historyItems.length === 0 || props.historyIndex === 0,
-            onClick: props.undo
+            onClick: props.undo,
         },
         {
             key: 'redo',
             name: strings.buttonRedo,
             iconProps: {
-                iconName: 'Redo'
+                iconName: 'Redo',
             },
             disabled: disabled || props.historyItems.length <= 1 || props.historyIndex >= props.historyItems.length - 1,
-            onClick: props.redo
+            onClick: props.redo,
         },
         {
             key: 'deselect',
             name: strings.buttonDeselect,
             iconProps: {
-                iconName: 'Cancel'
+                iconName: 'Cancel',
             },
             disabled: disabled || !props.selectionSearch,
-            onClick: props.doDeselect
+            onClick: props.doDeselect,
         },
         {
             key: 'isolate',
             name: strings.buttonIsolate,
             iconProps: {
-                iconName: 'Filter'
+                iconName: 'Filter',
             },
             disabled: disabled || !props.selectionSearch || zeroResults,
-            onClick: () => props.doFilter(props.selectionSearch, strings.labelHistoryFilterIsolate)
+            onClick: () => props.doFilter(props.selectionSearch, strings.labelHistoryFilterIsolate),
         },
         {
             key: 'exclude',
             name: strings.buttonExclude,
             iconProps: {
-                iconName: 'ClearFilter'
+                iconName: 'ClearFilter',
             },
             disabled: disabled || !props.selectionSearch || zeroResults,
-            onClick: () => props.doFilter(SandDance.searchExpression.invert(props.selectionSearch), strings.labelHistoryFilterIExclude)
+            onClick: () => props.doFilter(SandDance.searchExpression.invert(props.selectionSearch), strings.labelHistoryFilterIExclude),
         },
         {
             key: 'reset',
             name: strings.buttonReset,
             iconProps: {
-                iconName: 'RemoveFilter'
+                iconName: 'RemoveFilter',
             },
             disabled: disabled || !props.filter,
-            onClick: () => props.doUnfilter(strings.labelHistoryFilterClear)
-        }
+            onClick: () => props.doUnfilter(strings.labelHistoryFilterClear),
+        },
     ];
     if (props.buttons) {
         items.push.apply(items, props.buttons);
@@ -105,48 +105,48 @@ export function Topbar(props: Props) {
         {
             key: 'previous-snapshot',
             iconProps: {
-                iconName: 'Previous'
+                iconName: 'Previous',
             },
             title: strings.buttonPrevSnapshot,
             onClick: props.onSnapshotPreviousClick,
-            disabled: props.snapshots.length < 2
+            disabled: props.snapshots.length < 2,
         },
         {
             key: 'snapshot',
             iconProps: {
-                iconName: 'Camera'
+                iconName: 'Camera',
             },
             title: strings.buttonCreateSnapshot,
             onClick: props.onSnapshotClick,
-            disabled: !props.loaded
+            disabled: !props.loaded,
         },
         {
             key: 'next-snapshot',
             iconProps: {
-                iconName: 'Next'
+                iconName: 'Next',
             },
             title: strings.buttonNextSnapshot,
             onClick: props.onSnapshotNextClick,
-            disabled: props.snapshots.length < 2
+            disabled: props.snapshots.length < 2,
         },
         {
             key: 'view',
             iconProps: {
-                iconName: props.view === '2d' ? 'CubeShape' : 'Page'
+                iconName: props.view === '2d' ? 'CubeShape' : 'Page',
             },
             title: props.view === '2d' ? strings.labelViewType3d : strings.labelViewType2d,
             onClick: props.onViewClick,
-            disabled: !props.loaded
+            disabled: !props.loaded,
         },
         {
             key: 'home',
             iconProps: {
-                iconName: 'PicturePosition'
+                iconName: 'PicturePosition',
             },
             title: strings.buttonCameraHome,
             onClick: props.onHomeClick,
-            disabled: !props.loaded
-        }
+            disabled: !props.loaded,
+        },
     ];
 
     return (
@@ -162,8 +162,8 @@ export function Topbar(props: Props) {
                             styles: (buttonProps: FluentUITypes.IButtonProps) => {
                                 buttonProps.theme.palette = props.themePalette as FluentUITypes.IPalette;
                                 return CommandBarButtonStyles(buttonProps);
-                            }
-                        }
+                            },
+                        },
                     }}
                 >
                     <base.fluentUI.CommandBar
@@ -174,8 +174,8 @@ export function Topbar(props: Props) {
                                 backgroundColor: 'transparent',
                                 height: 'unset',
                                 paddingLeft: 0,
-                                paddingRight: 0
-                            }
+                                paddingRight: 0,
+                            },
                         }}
                     />
                 </base.fluentUI.Customizer>

@@ -6,13 +6,13 @@ import {
     SearchExpression,
     SearchExpressionClause,
     SearchExpressionGroup,
-    SearchExpressionOperators
+    SearchExpressionOperators,
 } from './types';
 
 function invertSearchExpressionGroup(input: SearchExpressionGroup) {
     //this only works if all expressions in this group have the same clause
     const output: SearchExpressionGroup = {
-        expressions: input.expressions.map(invertSearchExpression)
+        expressions: input.expressions.map(invertSearchExpression),
     };
     if (input.clause) {
         output.clause = invertedClauses[input.clause];
@@ -32,12 +32,12 @@ const invertedOperators: { [key in SearchExpressionOperators]: SearchExpressionO
     '!isnullorEmpty': 'isnullorEmpty',
     'isnullorEmpty': '!isnullorEmpty',
     '!starts': 'starts',
-    'starts': '!starts'
+    'starts': '!starts',
 };
 
 const invertedClauses: { [key in SearchExpressionClause]: SearchExpressionClause } = {
     '&&': '||',
-    '||': '&&'
+    '||': '&&',
 };
 
 function invertSearchExpression(input: SearchExpression) {

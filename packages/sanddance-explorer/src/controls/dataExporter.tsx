@@ -7,7 +7,7 @@ import { convertToDelimited } from '../exportDelimited';
 import {
     DataExportHandler,
     DataExportType,
-    DataFile
+    DataFile,
 } from '../interfaces';
 import { strings } from '../language';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
@@ -41,7 +41,7 @@ const exportTypes: ([DataExportType, string])[] = [
     ['json', strings.labelExportJSON],
     ['csv', strings.labelExportCSV],
     ['tsv', strings.labelExportTSV],
-    ['html', strings.labelExportHTML]
+    ['html', strings.labelExportHTML],
 ];
 
 function _DataExportPicker(props: Props) {
@@ -59,7 +59,7 @@ function _DataExportPicker(props: Props) {
                 exportType: exportTypes[0][0],
                 fileName: props.initializer.fileName,
                 fileNameError: '',
-                working: false
+                working: false,
             };
             return initialState;
         }
@@ -131,7 +131,7 @@ function _DataExportPicker(props: Props) {
                         dialogContentProps={{
                             className: `sanddance-dialog ${this.props.theme}`,
                             type: base.fluentUI.DialogType.normal,
-                            title: strings.labelExport
+                            title: strings.labelExport,
                         }}
                         buttons={[
                             (
@@ -140,14 +140,14 @@ function _DataExportPicker(props: Props) {
                                     disabled={disabled || !!this.state.fileNameError}
                                     onClick={e => this.setState({
                                         delayAction: () => this.createExport(this.state.exportType, this.state.fileName),
-                                        working: true
+                                        working: true,
                                     })}
                                     text={strings.buttonExport}
                                     iconProps={{
-                                        iconName: 'Download'
+                                        iconName: 'Download',
                                     }}
                                 />
-                            )
+                            ),
                         ]}
                     >
                         <base.fluentUI.TextField
@@ -168,7 +168,7 @@ function _DataExportPicker(props: Props) {
                                         key: exportType,
                                         text,
                                         disabled: false,
-                                        checked: exportType === this.state.exportType
+                                        checked: exportType === this.state.exportType,
                                     } as FluentUITypes.IChoiceGroupOption;
                                 })
                             }
@@ -230,7 +230,7 @@ export function getEmbedHTML(data: object[], displayName: string, snapshots?: Sn
     const csv = convertToDelimited(JSON.parse(json), ',');
     const html = embedHtml(
         `${strings.appName} - ${escape(displayName)}`,
-        embedScript(csv, displayName, snapshots)
+        embedScript(csv, displayName, snapshots),
     );
     return html;
 }

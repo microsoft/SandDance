@@ -16,7 +16,7 @@ import {
     SandDance,
     themePalettes,
     use,
-    util
+    util,
 } from '@msrvida/sanddance-explorer';
 import { Logo } from '@msrvida/sanddance-explorer/dist/es6/controls/logo';
 import { language } from './language';
@@ -68,7 +68,7 @@ export class App extends React.Component<Props, State> {
             chromeless: false,
             darkTheme: null,
             rowCount: null,
-            fetching: false
+            fetching: false,
         };
         this.viewerOptions = this.getViewerOptions();
     }
@@ -85,7 +85,7 @@ export class App extends React.Component<Props, State> {
             colors: {
                 axisLine: color,
                 axisText: color,
-                hoveredCube: color
+                hoveredCube: color,
             },
             onCubeClick: (e, cube) => {
                 const { button } = e as unknown as MSPointerEvent;
@@ -100,7 +100,7 @@ export class App extends React.Component<Props, State> {
             },
             onDataFilter: this.props.onDataFilter,
             onSelectionChanged: this.props.onSelectionChanged,
-            preserveDrawingBuffer: true
+            preserveDrawingBuffer: true,
         };
     }
 
@@ -116,7 +116,7 @@ export class App extends React.Component<Props, State> {
                 calculating: () => {
                     this.explorer.load(data, getPartialInsight, { tooltipExclusions });
                     this.explorer.setState({ snapshots });
-                }
+                },
             });
         } else {
             this.explorer.load(data, getPartialInsight, { tooltipExclusions });
@@ -155,7 +155,7 @@ export class App extends React.Component<Props, State> {
         const className = util.classList(
             'sanddance-app',
             this.state.chromeless && 'chromeless',
-            this.state.loaded && 'loaded'
+            this.state.loaded && 'loaded',
         );
         const explorerProps: ExplorerProps = {
             hideSidebarControls: true,
@@ -186,22 +186,22 @@ export class App extends React.Component<Props, State> {
             },
             onError: this.props.onError,
             systemInfoChildren: [
-                React.createElement('li', null, `${language.powerBiCustomVisual}: ${version}`)
-            ]
+                React.createElement('li', null, `${language.powerBiCustomVisual}: ${version}`),
+            ],
         };
         return React.createElement('div', { className },
             React.createElement(Explorer, explorerProps),
             React.createElement('div', { className: 'sanddance-init' },
                 React.createElement('div', null,
-                    React.createElement(Logo)
+                    React.createElement(Logo),
                 ),
                 !capabilities.webgl && React.createElement('div', { className: 'sanddance-webgl-required' },
-                    language.webglDisabled
-                )
+                    language.webglDisabled,
+                ),
             ),
             this.state.fetching && React.createElement('div', { className: 'sanddance-fetch' },
-                `${language.fetching} ${this.state.rowCount ? `(${this.state.rowCount} ${language.fetched})` : ''}`
-            )
+                `${language.fetching} ${this.state.rowCount ? `(${this.state.rowCount} ${language.fetched})` : ''}`,
+            ),
         );
     }
 }

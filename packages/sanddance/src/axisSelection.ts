@@ -7,7 +7,7 @@ import {
     AxisSelectionType,
     FieldNames,
     SpecCapabilities,
-    SpecColumns
+    SpecColumns,
 } from '@msrvida/sanddance-specs';
 import { SearchExpressionGroup } from '@msrvida/search-expression';
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
@@ -58,7 +58,7 @@ export function axisSelectionLayer(presenter: VegaDeckGl.Presenter, specCapabili
         getElevation: () => 0,
         getFillColor: () => [0, 0, 0, 0],
         pickable: true,
-        stroked: false
+        stroked: false,
     });
 
     return polygonLayer;
@@ -95,7 +95,7 @@ function axisSelectionPolygons(axis: VegaDeckGl.types.Axis, vertical: boolean, a
             const coords: VegaDeckGl.Position[] = [[p1, q1], [p2, q1], [p2, q2], [p1, q2]];
             polygons.push({
                 search: getSearch(axis, column, i),
-                polygon: vertical ? coords.map(xy => xy.reverse() as VegaDeckGl.Position) : coords
+                polygon: vertical ? coords.map(xy => xy.reverse() as VegaDeckGl.Position) : coords,
             });
             p1 = p2;
         };
@@ -113,10 +113,10 @@ function axisSelectionPolygons(axis: VegaDeckGl.types.Axis, vertical: boolean, a
 function facetSelectionPolygons(facetRects: VegaDeckGl.types.FacetRect[]) {
     const polygons: SelectPolygon[] = [];
     const linesAndSearches: { lines: VegaDeckGl.types.StyledLine[], search: SearchExpressionGroup }[] = facetRects.map(({ datum, lines }, i) => {
-        let group: SearchExpressionGroup = getSearchGroupFromVegaValue(datum[FieldNames.FacetSearch]);
+        const group: SearchExpressionGroup = getSearchGroupFromVegaValue(datum[FieldNames.FacetSearch]);
         return {
             lines,
-            search: group
+            search: group,
         };
     });
     linesAndSearches.forEach(({ lines, search }, i) => {
@@ -124,7 +124,7 @@ function facetSelectionPolygons(facetRects: VegaDeckGl.types.FacetRect[]) {
         const [x, y] = minMaxPoints(lines.slice(2));
         polygons.push({
             search,
-            polygon: [[x.min, y.min], [x.max, y.min], [x.max, y.max], [x.min, y.max]]
+            polygon: [[x.min, y.min], [x.max, y.min], [x.max, y.max], [x.min, y.max]],
         });
     });
     return polygons;
@@ -138,7 +138,7 @@ function minMaxPoints(lines: VegaDeckGl.types.StyledLine[]) {
         });
     });
     return [0, 1].map(dim => {
-        let minMax: { min: number, max: number } = { min: null, max: null };
+        const minMax: { min: number, max: number } = { min: null, max: null };
         points.forEach(point => {
             if (minMax.max == null) {
                 minMax.max = point[dim];

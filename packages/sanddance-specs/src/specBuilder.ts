@@ -11,7 +11,7 @@ import {
     axesTitlePaddingX,
     axesTitlePaddingY,
     facetPaddingBottom,
-    facetPaddingLeft
+    facetPaddingLeft,
 } from './defaults';
 import { minFacetHeight, minFacetWidth } from './defaults';
 import { FacetLayout } from './facetLayout';
@@ -24,19 +24,19 @@ import {
     GlobalScales,
     Grouping,
     InnerScope,
-    SpecResult
+    SpecResult,
 } from './interfaces';
 import { LayoutBuildProps, LayoutPair, LayoutProps } from './layouts/layout';
 import {
     addData,
-    addSignals
+    addSignals,
 } from './scope';
 import { textSignals } from './signals';
 import { SpecCapabilities, SpecContext } from './types';
 import {
     GroupMark,
     LinearScale,
-    Spec
+    Spec,
 } from 'vega-typings';
 import { layoutClasses } from './layouts/index';
 
@@ -59,7 +59,7 @@ export class SpecBuilder {
             facetAxesAdjustY: { name: SignalNames.FacetAxesAdjustY, update: props.facetLayout && props.collapseFacetAxes ? facetPaddingBottom.toString() : '0' },
             minCellWidth: {
                 name: SignalNames.MinCellWidth,
-                update: `${minFacetWidth}`
+                update: `${minFacetWidth}`,
             },
             minCellHeight: { name: SignalNames.MinCellHeight, update: `${minFacetHeight}` },
             plotOffsetLeft: { name: SignalNames.PlotOffsetLeft, update: '0' },
@@ -67,7 +67,7 @@ export class SpecBuilder {
             plotOffsetBottom: { name: SignalNames.PlotOffsetBottom, update: '0' },
             plotOffsetRight: { name: SignalNames.PlotOffsetRight, update: '0' },
             plotHeightOut: { name: SignalNames.PlotHeightOut, update: SignalNames.PlotHeightIn },
-            plotWidthOut: { name: SignalNames.PlotWidthOut, update: SignalNames.PlotWidthIn }
+            plotWidthOut: { name: SignalNames.PlotWidthOut, update: SignalNames.PlotWidthIn },
         };
     }
 
@@ -94,7 +94,7 @@ export class SpecBuilder {
                     } else {
                         return `Field ${r.role} is required.`;
                     }
-                }
+                },
             )
             .concat(
                 numeric.map(
@@ -104,8 +104,8 @@ export class SpecBuilder {
                         } else {
                             return null;
                         }
-                    }
-                )
+                    },
+                ),
             )
             .filter(Boolean);
         return errors;
@@ -124,28 +124,28 @@ export class SpecBuilder {
             scaleName: ScaleNames.Color,
             legendDataName: 'data_legend',
             topLookupName: 'data_topcolorlookup',
-            colorReverseSignalName: SignalNames.ColorReverse
+            colorReverseSignalName: SignalNames.ColorReverse,
         });
         const globalScope = new GlobalScope({
             dataName: colorDataName,
             markGroup: groupMark,
             scope: vegaSpec,
-            signals: globalSignals
+            signals: globalSignals,
         });
         if (facetLayout) {
             addSignals(vegaSpec,
                 {
                     name: SignalNames.FacetPaddingBottom,
-                    update: `${facetLayout.facetPadding.bottom}`
+                    update: `${facetLayout.facetPadding.bottom}`,
                 },
                 {
                     name: SignalNames.FacetPaddingLeft,
-                    update: `${facetLayout.facetPadding.left}`
+                    update: `${facetLayout.facetPadding.left}`,
                 },
                 {
                     name: SignalNames.FacetPaddingTop,
-                    update: `${facetLayout.facetPadding.top}`
-                }
+                    update: `${facetLayout.facetPadding.top}`,
+                },
             );
             globalSignals.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
             globalSignals.plotOffsetRight.update = `${facetLayout.plotPadding.x}`;
@@ -155,7 +155,7 @@ export class SpecBuilder {
             finalScope,
             specResult,
             allGlobalScales,
-            allEncodingRules
+            allEncodingRules,
         } = this.iterateLayouts(globalScope, (i, innerScope) => {
             if (facetLayout && i === 0) {
                 globalScope.zSize = innerScope.offsets.h;
@@ -173,17 +173,17 @@ export class SpecBuilder {
                 type: 'linear',
                 name: 'scale_facet_col_title',
                 domain: [0, 1],
-                range: [0, { signal: plotWidthOut }]
+                range: [0, { signal: plotWidthOut }],
             };
 
             const rowTitleScale: LinearScale = {
                 type: 'linear',
                 name: 'scale_facet_row_title',
                 domain: [0, 1],
-                range: [{ signal: plotHeightOut }, 0]
+                range: [{ signal: plotHeightOut }, 0],
             };
 
-            let axesScopes: AxesScopeMap = facetLayout ?
+            const axesScopes: AxesScopeMap = facetLayout ?
                 addFacetAxesGroupMarks({
                     globalScope: globalScope.scope,
                     plotScope: groupMark,
@@ -191,7 +191,7 @@ export class SpecBuilder {
                     colTitleScale,
                     rowTitleScale,
                     colSeqName: 'data_FacetCellColTitles',
-                    rowSeqName: 'data_FacetCellRowTitles'
+                    rowSeqName: 'data_FacetCellRowTitles',
                 })
                 :
                 {
@@ -199,8 +199,8 @@ export class SpecBuilder {
                         scope: groupMark,
                         lines: true,
                         labels: true,
-                        title: true
-                    }]
+                        title: true,
+                    }],
                 };
             addGlobalAxes({
                 globalScope,
@@ -214,7 +214,7 @@ export class SpecBuilder {
                 specViewOptions,
                 axesScopes,
                 hideZAxis: !!facetLayout,
-                view: insight.view
+                view: insight.view,
             });
         }
 
@@ -232,35 +232,35 @@ export class SpecBuilder {
                         {
                             type: 'formula',
                             expr: finalScope.offsets.x,
-                            as: FieldNames.OffsetX
+                            as: FieldNames.OffsetX,
                         },
                         {
                             type: 'formula',
                             expr: finalScope.offsets.y,
-                            as: FieldNames.OffsetY
-                        }
-                    ]
-                }
+                            as: FieldNames.OffsetY,
+                        },
+                    ],
+                },
             );
             update.x = {
-                field: FieldNames.OffsetX
+                field: FieldNames.OffsetX,
             };
             update.y = {
-                field: FieldNames.OffsetY
+                field: FieldNames.OffsetY,
             };
 
             allEncodingRules.forEach(map => {
-                for (let key in map) {
+                for (const key in map) {
                     if (update[key]) {
-                        let arrIn = map[key];
+                        const arrIn = map[key];
                         if (!Array.isArray(update[key])) {
-                            let value = update[key];
-                            let arrOut = [];
+                            const value = update[key];
+                            const arrOut = [];
                             update[key] = arrOut;
                             arrIn.forEach(rule => arrOut.push(rule));
                             arrOut.push(value);
                         } else {
-                            let arrOut = update[key] as {}[];
+                            const arrOut = update[key] as {}[];
                             arrIn.forEach(rule => arrOut.unshift(rule));
                         }
                     }
@@ -272,7 +272,7 @@ export class SpecBuilder {
         }
         return {
             specCapabilities,
-            vegaSpec
+            vegaSpec,
         };
     }
 
@@ -289,9 +289,9 @@ export class SpecBuilder {
                     x: { signal: `${SignalNames.PlotOffsetLeft} - ${SignalNames.FacetAxesAdjustX}` },
                     y: { signal: SignalNames.PlotOffsetTop },
                     height: { signal: `${SignalNames.PlotHeightOut} - ${SignalNames.FacetAxesAdjustY}` },
-                    width: { signal: `${SignalNames.PlotWidthOut} + ${SignalNames.FacetAxesAdjustX}` }
-                }
-            }
+                    width: { signal: `${SignalNames.PlotWidthOut} + ${SignalNames.FacetAxesAdjustX}` },
+                },
+            },
         };
         const inputDataname = 'input';
         const vegaSpec: Spec = {
@@ -304,11 +304,11 @@ export class SpecBuilder {
                 minCellHeight,
                 {
                     name: SignalNames.ViewportHeight,
-                    update: `max(${SignalNames.MinCellHeight}, ${insight.size.height})`
+                    update: `max(${SignalNames.MinCellHeight}, ${insight.size.height})`,
                 },
                 {
                     name: SignalNames.ViewportWidth,
-                    update: `max(${SignalNames.MinCellWidth}, ${insight.size.width})`
+                    update: `max(${SignalNames.MinCellWidth}, ${insight.size.width})`,
                 },
                 plotOffsetLeft,
                 plotOffsetTop,
@@ -318,23 +318,23 @@ export class SpecBuilder {
                 facetAxesAdjustY,
                 {
                     name: SignalNames.PlotHeightIn,
-                    update: `${SignalNames.ViewportHeight} - ${SignalNames.PlotOffsetBottom} + ${SignalNames.FacetAxesAdjustY}`
+                    update: `${SignalNames.ViewportHeight} - ${SignalNames.PlotOffsetBottom} + ${SignalNames.FacetAxesAdjustY}`,
                 },
                 {
                     name: SignalNames.PlotWidthIn,
-                    update: `${SignalNames.ViewportWidth} - ${SignalNames.PlotOffsetLeft} - ${SignalNames.PlotOffsetRight}`
+                    update: `${SignalNames.ViewportWidth} - ${SignalNames.PlotOffsetLeft} - ${SignalNames.PlotOffsetRight}`,
                 },
                 plotHeightOut,
                 plotWidthOut,
                 {
                     name: 'height',
-                    update: `${SignalNames.PlotOffsetTop} + ${SignalNames.PlotHeightOut} + ${SignalNames.PlotOffsetBottom} - ${SignalNames.FacetAxesAdjustY}`
+                    update: `${SignalNames.PlotOffsetTop} + ${SignalNames.PlotHeightOut} + ${SignalNames.PlotOffsetBottom} - ${SignalNames.FacetAxesAdjustY}`,
                 },
                 {
                     name: 'width',
-                    update: `${SignalNames.PlotWidthOut} + ${SignalNames.PlotOffsetLeft} + ${SignalNames.PlotOffsetRight}`
-                }
-            ])
+                    update: `${SignalNames.PlotWidthOut} + ${SignalNames.PlotOffsetLeft} + ${SignalNames.PlotOffsetRight}`,
+                },
+            ]),
         };
         return { vegaSpec, groupMark };
     }
@@ -343,38 +343,38 @@ export class SpecBuilder {
         let specResult: SpecResult;
         let parentScope: InnerScope = {
             sizeSignals: globalScope.sizeSignals,
-            offsets: globalScope.offsets
+            offsets: globalScope.offsets,
         };
         let firstScope: InnerScope;
         let childScope: InnerScope;
         const groupings: Grouping[] = [];
-        let { layouts, specCapabilities } = this.props;
+        const { layouts, specCapabilities } = this.props;
         const allGlobalScales: GlobalScales[] = [];
         const allEncodingRules: { [key: string]: EncodingRule[] }[] = [];
         for (let i = 0; i < layouts.length; i++) {
             if (!parentScope) continue;
-            let buildProps: LayoutBuildProps = {
+            const buildProps: LayoutBuildProps = {
                 globalScope,
                 parentScope,
                 axesScales: this.props.axisScales,
                 groupings,
-                id: i
+                id: i,
             };
-            let layout = this.createLayout(layouts[i], buildProps);
+            const layout = this.createLayout(layouts[i], buildProps);
             try {
                 childScope = layout.build();
                 childScope.id = i;
-                let groupby = layout.getGrouping();
+                const groupby = layout.getGrouping();
                 if (groupby) {
                     groupings.push({
                         id: i,
                         groupby,
                         fieldOps: [
-                            { field: null, op: 'count', as: FieldNames.Count }
-                        ]
+                            { field: null, op: 'count', as: FieldNames.Count },
+                        ],
                     });
                 }
-                let sumOp = layout.getAggregateSumOp();
+                const sumOp = layout.getAggregateSumOp();
                 if (sumOp) {
                     groupings[groupings.length - 1].fieldOps.push(sumOp);
                 }
@@ -384,7 +384,7 @@ export class SpecBuilder {
                 specResult = {
                     errors: [e.stack],
                     specCapabilities,
-                    vegaSpec: null
+                    vegaSpec: null,
                 };
                 break;
             }
@@ -406,7 +406,7 @@ export class SpecBuilder {
         const { layoutType, props } = layoutPair;
         const layoutBuildProps: LayoutProps & LayoutBuildProps = {
             ...props,
-            ...buildProps
+            ...buildProps,
         };
         const layoutClass = layoutClasses[layoutType];
         const layout = new layoutClass(layoutBuildProps);

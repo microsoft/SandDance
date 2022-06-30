@@ -16,7 +16,7 @@ const sandDancePlugin: IPlugin<Application<Widget>, void> = {
     id: EXTENSION_ID,
     requires: [IJupyterWidgetRegistry as unknown as Token<any>],
     activate: activateWidgetExtension,
-    autoStart: true
+    autoStart: true,
 };
 
 export default sandDancePlugin;

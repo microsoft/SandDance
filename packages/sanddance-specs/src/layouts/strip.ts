@@ -8,7 +8,7 @@ import {
     addMarks,
     addOffsets,
     addTransforms,
-    getGroupBy
+    getGroupBy,
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { addZScale } from '../zBase';
@@ -18,7 +18,7 @@ import {
     RectMark,
     SortOrder,
     StackTransform,
-    Transforms
+    Transforms,
 } from 'vega-typings';
 
 export interface StripProps extends LayoutProps {
@@ -37,7 +37,7 @@ export class Strip extends Layout {
         valueField: string,
         scale: string,
         zScale: string
-    }
+    };
 
     constructor(public props: StripProps & LayoutBuildProps) {
         super(props);
@@ -47,7 +47,7 @@ export class Strip extends Layout {
             lastField: `${p}${FieldNames.Last}`,
             valueField: `${p}${FieldNames.Value}`,
             scale: `scale_${p}`,
-            zScale: `scale_${p}_z`
+            zScale: `scale_${p}_z`,
         };
     }
 
@@ -66,8 +66,8 @@ export class Strip extends Layout {
                 type: 'collect',
                 sort: {
                     field: safeFieldName(sort.name),
-                    order: sortOrder
-                }
+                    order: sortOrder,
+                },
             });
         }
 
@@ -76,14 +76,14 @@ export class Strip extends Layout {
             stackField = size.name;
             transform.push({
                 type: 'filter',
-                expr: `datum[${JSON.stringify(size.name)}] > 0`
+                expr: `datum[${JSON.stringify(size.name)}] > 0`,
             });
         } else {
             stackField = names.valueField;
             transform.push({
                 type: 'formula',
                 expr: '1',
-                as: stackField
+                as: stackField,
             });
         }
 
@@ -91,7 +91,7 @@ export class Strip extends Layout {
             type: 'stack',
             field: safeFieldName(stackField),
             offset: 'normalize',
-            as: [names.firstField, names.lastField]
+            as: [names.firstField, names.lastField],
         };
         if (groupings.length) {
             stackTransform.groupby = getGroupBy(groupings).map(safeFieldName);
@@ -107,20 +107,20 @@ export class Strip extends Layout {
                 horizontal ?
                     `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.w})`
                     :
-                    ''
+                    '',
             ),
             y: addOffsets(parentScope.offsets.y,
                 horizontal ?
                     ''
                     :
-                    `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.h})`
+                    `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.h})`,
             ),
             h: horizontal
                 ? parentScope.offsets.h
                 : `(${span}) * (${parentScope.offsets.h})`,
             w: horizontal
                 ? `(${span}) * (${parentScope.offsets.w})`
-                : parentScope.offsets.w
+                : parentScope.offsets.w,
         };
 
         const mark: RectMark = {
@@ -130,26 +130,26 @@ export class Strip extends Layout {
             encode: {
                 update: {
                     height: {
-                        signal: offsets.h
+                        signal: offsets.h,
                     },
                     width: {
-                        signal: offsets.w
+                        signal: offsets.w,
                     },
                     ...z && {
                         z: { value: 0 },
                         depth: [
                             {
                                 test: testForCollapseSelection(),
-                                value: 0
+                                value: 0,
                             },
                             {
                                 scale: names.zScale,
-                                field: safeFieldName(z.name)
-                            }
-                        ]
-                    }
-                }
-            }
+                                field: safeFieldName(z.name),
+                            },
+                        ],
+                    },
+                },
+            },
         };
 
         addMarks(globalScope.markGroup, mark);
@@ -164,16 +164,16 @@ export class Strip extends Layout {
                     [
                         0,
                         {
-                            signal: parentScope.sizeSignals.layoutWidth
-                        }
+                            signal: parentScope.sizeSignals.layoutWidth,
+                        },
                     ]
                     :
                     [
                         {
-                            signal: parentScope.sizeSignals.layoutHeight
+                            signal: parentScope.sizeSignals.layoutHeight,
                         },
-                        0
-                    ]
+                        0,
+                    ],
             }];
         }
 
@@ -183,15 +183,15 @@ export class Strip extends Layout {
                 scales: {
                     x: horizontal ? percentageScale : undefined,
                     y: horizontal ? undefined : percentageScale,
-                    z: zScale && [zScale]
-                }
+                    z: zScale && [zScale],
+                },
             },
             offsets,
             sizeSignals: {
                 layoutHeight: null,
-                layoutWidth: null
+                layoutWidth: null,
             },
-            mark
+            mark,
         };
     }
 }

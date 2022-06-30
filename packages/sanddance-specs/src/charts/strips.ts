@@ -15,16 +15,16 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         orientation: 'vertical',
         size: specColumns.size,
         sort: specColumns.sort,
-        z: specColumns.z
+        z: specColumns.z,
     };
     const axisScales: AxisScales = {
-        z: { title: specColumns.z && specColumns.z.name }
+        z: { title: specColumns.z && specColumns.z.name },
     };
     const layouts: LayoutPair[] = [];
     if (specColumns.facet) {
         axisScales.y = {
             title: null,
-            aggregate: specColumns.size ? 'sum' : 'count'
+            aggregate: specColumns.size ? 'sum' : 'count',
         };
         const globalAggregateMaxExtentScaledSignal = 'globalAggregateMaxExtentScaledSignal';
         const globalAggregateMaxExtentSignal = 'globalAggregateMaxExtentSignal';
@@ -34,16 +34,16 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             globalAggregateMaxExtentScaledSignal,
             globalAggregateMaxExtentSignal,
             sumBy: specColumns.size,
-            showAxes: false
+            showAxes: false,
         };
         layouts.push({
             layoutType: 'AggregateContainer',
-            props
+            props,
         });
     }
     layouts.push({
         layoutType: 'Strip',
-        props: stripProps
+        props: stripProps,
     });
     return {
         axisScales,
@@ -54,32 +54,32 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 {
                     role: 'size',
                     allowNone: true,        //size by none is a count
-                    excludeCategoric: true
+                    excludeCategoric: true,
                 },
                 {
                     role: 'z',
                     axisSelection: specColumns.z && specColumns.z.quantitative ? 'range' : 'exact',
-                    allowNone: true
+                    allowNone: true,
                 },
                 {
                     role: 'color',
-                    allowNone: true
+                    allowNone: true,
                 },
                 {
                     role: 'sort',
-                    allowNone: true
+                    allowNone: true,
                 },
                 {
                     role: 'facet',
                     allowNone: true,
-                    signals: [SignalNames.FacetBins]
+                    signals: [SignalNames.FacetBins],
                 },
                 {
                     role: 'facetV',
                     allowNone: true,
-                    signals: [SignalNames.FacetVBins]
-                }
-            ]
-        }
+                    signals: [SignalNames.FacetVBins],
+                },
+            ],
+        },
     };
 }

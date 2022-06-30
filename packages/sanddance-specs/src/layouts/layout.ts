@@ -6,7 +6,7 @@ import {
     AxisScales,
     FieldOp,
     Grouping,
-    InnerScope
+    InnerScope,
 } from '../interfaces';
 
 export interface LayoutProps {

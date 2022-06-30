@@ -18,7 +18,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     const axisScales: AxisScales = {
         x: { title: specColumns.x && specColumns.x.name },
         y: { title: specColumns.y && specColumns.y.name },
-        z: { title: specColumns.z && specColumns.z.name }
+        z: { title: specColumns.z && specColumns.z.name },
     };
     const hBandProps: BandProps = {
         excludeEncodingRuleMap: true,
@@ -28,10 +28,10 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             defaultBins,
             maxbinsSignalName: SignalNames.YBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.YMaxBins,
-            maxbins
+            maxbins,
         },
         minBandWidth: minBarBandWidth,
-        showAxes: true
+        showAxes: true,
     };
     const vBandProps: BandProps = {
         excludeEncodingRuleMap: true,
@@ -41,29 +41,29 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             defaultBins,
             maxbinsSignalName: SignalNames.XBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.XMaxBins,
-            maxbins
+            maxbins,
         },
         minBandWidth: minBarBandWidth,
-        showAxes: true
+        showAxes: true,
     };
     const aggProps: AggregateSquareProps = {
         onBuild: null,
         aggregation: null,
-        sumBy: specColumns.size
+        sumBy: specColumns.size,
     };
     const layouts: LayoutPair[] = [
         {
             layoutType: 'Band',
-            props: vBandProps
+            props: vBandProps,
         },
         {
             layoutType: 'Band',
-            props: hBandProps
+            props: hBandProps,
         },
         {
             layoutType: 'AggregateSquare',
-            props: aggProps
-        }
+            props: aggProps,
+        },
     ];
     switch (insight.totalStyle) {
         case 'sum-treemap': {
@@ -72,11 +72,11 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 corner: 'bottom-left',
                 size: specColumns.size,
                 treeMapMethod: specViewOptions.language.treeMapMethod,
-                z: specColumns.z
+                z: specColumns.z,
             };
             layouts.push({
                 layoutType: 'Treemap',
-                props: treemapProps
+                props: treemapProps,
             });
             break;
         }
@@ -87,11 +87,11 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 orientation: 'vertical',
                 size: specColumns.size,
                 sort: specColumns.sort,
-                z: specColumns.z
+                z: specColumns.z,
             };
             layouts.push({
                 layoutType: 'Strip',
-                props: stripProps
+                props: stripProps,
             });
             break;
         }
@@ -101,11 +101,11 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 sortOrder: 'ascending',
                 orientation: 'vertical',
                 sort: specColumns.sort,
-                z: specColumns.z
+                z: specColumns.z,
             };
             layouts.push({
                 layoutType: 'Strip',
-                props: stripProps
+                props: stripProps,
             });
             break;
         }
@@ -116,7 +116,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 fillDirection: 'right-down',
                 z: specColumns.z,
                 maxGroupedUnits: null,
-                maxGroupedFillSize: null
+                maxGroupedFillSize: null,
             };
             aggProps.onBuild = (aggMaxExtent, aggMaxExtentScaled) => {
                 squareProps.maxGroupedUnits = aggMaxExtent;
@@ -124,7 +124,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             };
             layouts.push({
                 layoutType: 'Square',
-                props: squareProps
+                props: squareProps,
             });
             break;
         }
@@ -140,45 +140,45 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     binnable: true,
                     axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
                     axisSelectionBetweenTicks: true,
-                    signals: [SignalNames.XBins]
+                    signals: [SignalNames.XBins],
                 },
                 {
                     role: 'y',
                     binnable: true,
                     axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
                     axisSelectionBetweenTicks: true,
-                    signals: [SignalNames.YBins]
+                    signals: [SignalNames.YBins],
                 },
                 {
                     role: 'z',
                     axisSelection: specColumns.z && specColumns.z.quantitative ? 'range' : 'exact',
-                    allowNone: true
+                    allowNone: true,
                 },
                 {
                     role: 'color',
-                    allowNone: true
+                    allowNone: true,
                 },
                 {
                     role: 'sort',
-                    allowNone: true
+                    allowNone: true,
                 },
                 {
                     role: 'size',
                     allowNone: allowNoneForSize,
                     excludeCategoric: true,
-                    signals: [SignalNames.TreeMapMethod]
+                    signals: [SignalNames.TreeMapMethod],
                 },
                 {
                     role: 'facet',
                     allowNone: true,
-                    signals: [SignalNames.FacetBins]
+                    signals: [SignalNames.FacetBins],
                 },
                 {
                     role: 'facetV',
                     allowNone: true,
-                    signals: [SignalNames.FacetVBins]
-                }
-            ]
-        }
+                    signals: [SignalNames.FacetVBins],
+                },
+            ],
+        },
     };
 }

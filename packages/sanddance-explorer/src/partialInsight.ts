@@ -19,13 +19,13 @@ export function initPrefs(prefs: Prefs, partialInsight: Partial<SandDance.specs.
         const specTypePrefs = prefs[partialInsight.chart] || {};
         prefs[partialInsight.chart] = specTypePrefs;
 
-        for (let _role in partialInsight.columns) {
-            let role = _role as SandDance.specs.InsightColumnRoles;
+        for (const _role in partialInsight.columns) {
+            const role = _role as SandDance.specs.InsightColumnRoles;
             if (role === 'color' || role === 'x') {
-                let rolePrefs = specTypePrefs[role] || {};
+                const rolePrefs = specTypePrefs[role] || {};
                 specTypePrefs[role] = rolePrefs;
-                let column = partialInsight.columns[role];
-                let copySignalValue = (signalName: string) => {
+                const column = partialInsight.columns[role];
+                const copySignalValue = (signalName: string) => {
                     if (partialInsight.signalValues && partialInsight.signalValues[signalName] && rolePrefs[column]) {
                         const signalValues = rolePrefs[column].signalValues || {};
                         signalValues[signalName] = partialInsight.signalValues[signalName];
@@ -37,7 +37,7 @@ export function initPrefs(prefs: Prefs, partialInsight: Partial<SandDance.specs.
                     case 'color':
                         rolePrefs[column] = {
                             scheme: partialInsight.scheme,
-                            colorBin: partialInsight.colorBin
+                            colorBin: partialInsight.colorBin,
                         };
                         copySignalValue(SandDance.constants.SignalNames.ColorBinCount);
                         break;

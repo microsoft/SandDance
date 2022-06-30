@@ -29,13 +29,13 @@ export class SandDanceModel extends DOMWidgetModel {
             width: '100%',
             heigth: '640px',
             snapshots: [],
-            pyversion: 'dev'
+            pyversion: 'dev',
         };
     }
 
     static serializers: ISerializers = {
         ...DOMWidgetModel.serializers,
-    }
+    };
 
     static model_name = 'SandDanceModel';
     static model_module = MODULE_NAME;
@@ -47,8 +47,8 @@ export class SandDanceModel extends DOMWidgetModel {
 
 
 export class SandDanceView extends DOMWidgetView {
-    private explorer?: Explorer_Class
-    private wrapper?: React.DetailedReactHTMLElement<any, HTMLElement>
+    private explorer?: Explorer_Class;
+    private wrapper?: React.DetailedReactHTMLElement<any, HTMLElement>;
 
     render() {
         const explorerProps: ExplorerProps = {
@@ -81,12 +81,12 @@ export class SandDanceView extends DOMWidgetView {
                         },
                     ];
                     return items;
-                }
+                },
             },
             systemInfoChildren: [
                 React.createElement('li', null, 'SandDance (Python) version: ', this.model.get('pyversion')),
-                React.createElement('li', null, 'SandDance Jupyter Widget version: ', MODULE_VERSION)
-            ]
+                React.createElement('li', null, 'SandDance Jupyter Widget version: ', MODULE_VERSION),
+            ],
         };
 
         this.wrapper = React.createElement(
@@ -95,7 +95,7 @@ export class SandDanceView extends DOMWidgetView {
                 style: {
                     width: this.model.get('width'),
                     height: this.model.get('height'),
-                }
+                },
             },
             [React.createElement(Explorer, { ...explorerProps, key: 'explorer-key' })],
         );

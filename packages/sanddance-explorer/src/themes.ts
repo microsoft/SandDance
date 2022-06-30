@@ -55,7 +55,7 @@ themePalettes['dark-theme'] = {
     neutralPrimary: '#cccccc',
     neutralDark: '#d8d8d8',
     black: '#f5f5f5',
-    white: '#000000'
+    white: '#000000',
 };
 
 export function getColorSettingsFromThemePalette(themePalette: Partial<FluentUITypes.IPalette>): Partial<ColorSettings> {
@@ -69,6 +69,6 @@ export function getColorSettingsFromThemePalette(themePalette: Partial<FluentUIT
         clickableTextHighlight: util.colorToString(c),
         clickableTextHighlightAlphaCutoff: 0,
         searchText: themePalette.neutralPrimary,
-        searchTextHighlight: themePalette.neutralPrimaryAlt
+        searchTextHighlight: themePalette.neutralPrimaryAlt,
     };
 }

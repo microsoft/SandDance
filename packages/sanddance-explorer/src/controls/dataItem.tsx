@@ -104,16 +104,16 @@ export function DataItem(props: Props) {
         return null;
     }
     const nameValuePairs: NameValuePair[] = [];
-    for (let columnName in props.item) {
+    for (const columnName in props.item) {
         if (columnName === SandDance.constants.GL_ORDINAL && !props.showSystemFields) {
             continue;
         }
         if (SandDance.util.isInternalFieldName(columnName)) {
             continue;
         }
-        let nameValuePair: NameValuePair = {
+        const nameValuePair: NameValuePair = {
             columnName,
-            value: props.item[columnName]
+            value: props.item[columnName],
         };
         if (!props.bingSearchDisabled) {
             nameValuePair.bingSearch = bingSearchLink(props.columns.filter(c => c.name === columnName)[0], props.item[columnName]);
@@ -127,7 +127,7 @@ export function DataItem(props: Props) {
                     key: 0,
                     name: nameValuePair.columnName,
                     operator: '==',
-                    value: nameValuePair.value
+                    value: nameValuePair.value,
                 };
                 if (nameValuePair.value === null || nameValuePair.value === '') {
                     ex.operator = 'isnullorEmpty';
@@ -136,7 +136,7 @@ export function DataItem(props: Props) {
                 const searchClick = (e: React.MouseEvent<HTMLTableDataCellElement>) => {
                     const search: InputSearchExpressionGroup = {
                         key: 0,
-                        expressions: [ex]
+                        expressions: [ex],
                     };
                     props.onSearch(e, [search]);
                 };

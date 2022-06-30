@@ -13,11 +13,11 @@ function legend(column: Column, fill: string) {
             symbols: {
                 update: {
                     shape: {
-                        value: 'square'
-                    }
-                }
-            }
-        }
+                        value: 'square',
+                    },
+                },
+            },
+        },
     };
     if (column.quantitative) {
         legend.type = 'symbol';

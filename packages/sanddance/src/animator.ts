@@ -4,7 +4,7 @@ import { DataScope } from './dataScope';
 import { Search } from '@msrvida/search-expression';
 
 export enum DataLayoutChange {
-    same, reset, refine
+    same, reset, refine,
 }
 
 export interface Props {

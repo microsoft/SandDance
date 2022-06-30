@@ -8,7 +8,7 @@ import {
     Data,
     ExtentTransform,
     Signal,
-    Transforms
+    Transforms,
 } from 'vega-typings';
 
 export interface BaseBinnable {
@@ -43,7 +43,7 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
         const extentTransform: ExtentTransform = {
             type: 'extent',
             field: safeFieldName(column.name),
-            signal: extentSignal
+            signal: extentSignal,
         };
         const maxbinsSignal: Signal = {
             name: maxbinsSignalName,
@@ -54,8 +54,8 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
                 input: 'range',
                 min: 1,
                 max: maxbins,
-                step: 1
-            }
+                step: 1,
+            },
         };
         const binTransform: BinTransform = {
             type: 'bin',
@@ -69,8 +69,8 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
                 signal: `[${extentSignal}[0], ${extentSignal}[1] + 1e-11]`, //add a tiny bit to the upper extent to force the extra bin - https://github.com/vega/vega/issues/2899
             },
             maxbins: {
-                signal: maxbinsSignalName
-            }
+                signal: maxbinsSignalName,
+            },
         };
         const dataSequence: Data = {
             name: domainDataName,
@@ -78,41 +78,41 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
                 {
                     type: 'sequence',
                     start: {
-                        signal: `${binSignal}.start`
+                        signal: `${binSignal}.start`,
                     },
                     stop: {
-                        signal: `${binSignal}.stop`
+                        signal: `${binSignal}.stop`,
                     },
                     step: {
-                        signal: `${binSignal}.step`
-                    }
+                        signal: `${binSignal}.step`,
+                    },
                 },
                 {
                     type: 'formula',
                     expr: 'datum.data',
-                    as: field
+                    as: field,
                 },
                 {
                     type: 'formula',
                     expr: `datum.data + ${binSignal}.step`,
-                    as: fieldEnd
+                    as: fieldEnd,
                 },
                 {
                     type: 'window',
                     ops: ['row_number'],
-                    as: [FieldNames.Ordinal]
+                    as: [FieldNames.Ordinal],
                 },
                 {
                     type: 'formula',
                     expr: `datum.data === ${binSignal}.start`,
-                    as: FieldNames.First
+                    as: FieldNames.First,
                 },
                 {
                     type: 'formula',
                     expr: `datum.data === ${binSignal}.stop - ${binSignal}.step`,
-                    as: FieldNames.Last
-                }
-            ]
+                    as: FieldNames.Last,
+                },
+            ],
         };
         const augmentBinnable: AugmentBinnable = {
             discreteColumn,
@@ -123,7 +123,7 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
             dataSequence,
             domainDataName,
             signals: [maxbinsSignal],
-            fullScaleDataname: dataSequence.name
+            fullScaleDataname: dataSequence.name,
         };
         return augmentBinnable;
     } else {
@@ -132,7 +132,7 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
             native: true,
             fields: [column.name],
             domainDataName,
-            fullScaleDataname: domainDataName
+            fullScaleDataname: domainDataName,
         };
         return nativeBinnable;
     }

@@ -8,7 +8,7 @@ import {
     NumericValueRef,
     Scale,
     Scope,
-    Spec
+    Spec,
 } from 'vega-typings';
 
 /**

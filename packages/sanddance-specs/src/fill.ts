@@ -11,22 +11,22 @@ export function fill(context: SpecContext, colorFieldName: string, scale: string
     return colorColumn ?
         colorColumn.isColorData || insight.directColor ?
             {
-                field: safeFieldName(colorColumn.name)
+                field: safeFieldName(colorColumn.name),
             }
             :
             {
                 scale,
-                field: colorColumn.quantitative ? safeFieldName(colorColumn.name) : colorFieldName
+                field: colorColumn.quantitative ? safeFieldName(colorColumn.name) : colorFieldName,
             }
         :
         {
-            value: specViewOptions.colors.defaultCube
+            value: specViewOptions.colors.defaultCube,
         };
 }
 
 export function opacity(context: SpecContext): ProductionRule<NumericValueRef> {
     const result: ProductionRule<NumericValueRef> = {
-        signal: SignalNames.MarkOpacity
+        signal: SignalNames.MarkOpacity,
     };
     return result;
 }

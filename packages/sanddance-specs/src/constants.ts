@@ -25,14 +25,14 @@ export const FieldNames = {
     OffsetX: '__SandDance__X',
     OffsetY: '__SandDance__Y',
     OffsetHeight: '__SandDance__H',
-    OffsetWidth: '__SandDance__W'
+    OffsetWidth: '__SandDance__W',
 };
 
 export const ScaleNames = {
     Color: 'scale_color',
     X: 'scale_x',
     Y: 'scale_y',
-    Z: 'scale_z'
+    Z: 'scale_z',
 };
 
 //Signal names
@@ -70,7 +70,7 @@ export const SignalNames = {
     YBins: 'RoleY_BinsSignal',
     ZHeight: 'RoleZ_HeightSignal',
     ZGrounded: 'RoleZ_Grounded',
-    ZProportion: 'RoleZ_ProportionSignal'
+    ZProportion: 'RoleZ_ProportionSignal',
 };
 
 //These are special formulaic data values

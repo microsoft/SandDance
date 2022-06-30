@@ -15,16 +15,16 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         group: specColumns.group,
         size: specColumns.size,
         treeMapMethod: specViewOptions.language.treeMapMethod,
-        z: specColumns.z
+        z: specColumns.z,
     };
     const axisScales: AxisScales = {
-        z: { title: specColumns.z && specColumns.z.name }
+        z: { title: specColumns.z && specColumns.z.name },
     };
     const layouts: LayoutPair[] = [];
     if (specColumns.facet) {
         axisScales.y = {
             title: null,
-            aggregate: 'sum'
+            aggregate: 'sum',
         };
         const globalAggregateMaxExtentScaledSignal = 'globalAggregateMaxExtentScaledSignal';
         const globalAggregateMaxExtentSignal = 'globalAggregateMaxExtentSignal';
@@ -34,16 +34,16 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             globalAggregateMaxExtentScaledSignal,
             globalAggregateMaxExtentSignal,
             sumBy: specColumns.size,
-            showAxes: false
+            showAxes: false,
         };
         layouts.push({
             layoutType: 'AggregateContainer',
-            props
+            props,
         });
     }
     layouts.push({
         layoutType: 'Treemap',
-        props: treemapProps
+        props: treemapProps,
     });
     return {
         axisScales,
@@ -57,29 +57,29 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 },
                 {
                     role: 'group',
-                    allowNone: true
+                    allowNone: true,
                 },
                 {
                     role: 'z',
                     axisSelection: specColumns.z && specColumns.z.quantitative ? 'range' : 'exact',
-                    allowNone: true
+                    allowNone: true,
                 },
                 {
                     role: 'color',
-                    allowNone: true
+                    allowNone: true,
                 },
                 {
                     role: 'facet',
                     allowNone: true,
-                    signals: [SignalNames.FacetBins]
+                    signals: [SignalNames.FacetBins],
                 },
                 {
                     role: 'facetV',
                     allowNone: true,
-                    signals: [SignalNames.FacetVBins]
-                }
+                    signals: [SignalNames.FacetVBins],
+                },
             ],
-            signals: [SignalNames.TreeMapMethod]
-        }
+            signals: [SignalNames.TreeMapMethod],
+        },
     };
 }

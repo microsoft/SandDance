@@ -4,13 +4,13 @@ export { IChoiceGroupOption } from 'office-ui-fabric-react/lib/ChoiceGroup';
 
 export {
     IButtonProps,
-    IButtonStyles
+    IButtonStyles,
 } from 'office-ui-fabric-react/lib/components/Button';
 
 export {
     IContextualMenuItem,
     IContextualMenuProps,
-    IContextualMenuRenderItem
+    IContextualMenuRenderItem,
 } from 'office-ui-fabric-react/lib/components/ContextualMenu';
 
 export { IDropdown, IDropdownProps, IDropdownOption } from 'office-ui-fabric-react/lib/components/Dropdown';

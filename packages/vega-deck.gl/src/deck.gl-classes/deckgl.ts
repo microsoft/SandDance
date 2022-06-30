@@ -11,7 +11,7 @@ const CANVAS_STYLE = {
     left: 0,
     top: 0,
     width: '100%',
-    height: '100%'
+    height: '100%',
 };
 
 export interface InteractiveStateVegaDeckGL extends InteractiveState {
@@ -92,8 +92,8 @@ export function createDeckGLClassesForPresenter(factoryOptions: OrbitControllerC
                         height: '100%',
                         canvas: deckCanvas,
                         controller: OrbitControllerClass,
-                        initialViewState: viewState
-                    })
+                        initialViewState: viewState,
+                    }),
                 );
 
                 // Callback for the controller
@@ -124,7 +124,7 @@ export function createDeckGLClassesForPresenter(factoryOptions: OrbitControllerC
 
     return {
         OrbitControllerClass,
-        DeckGL_Class: wrapper as any
+        DeckGL_Class: wrapper as any,
     };
 }
 

@@ -6,7 +6,7 @@ import {
     maxCategoricalColors,
     Recommendation,
     Recommender,
-    Rule
+    Rule,
 } from './recommender';
 
 const maxDistinctVal = 20;
@@ -18,7 +18,7 @@ export class BarChartRecommenderSummary {
     constructor(columns: SandDance.types.Column[], data: object[]) {
         let score: number = -1;
         for (let i = 0; i < columns.length; i++) {
-            let recommendation = new BarChartRecommender(columns[i], data).recommend();
+            const recommendation = new BarChartRecommender(columns[i], data).recommend();
             if (recommendation.score > score) {
                 this.best = recommendation;
                 score = recommendation.score;
@@ -27,7 +27,7 @@ export class BarChartRecommenderSummary {
         }
 
         for (let k = 0; k < columns.length; k++) {
-            let column = columns[k];
+            const column = columns[k];
             if (column.name === this.best.columns.x || column.stats.isSequential) continue;
             if (column.quantitative || (column.stats.distinctValueCount < maxCategoricalColors && column.stats.distinctValueCount > 1)) {
                 this.best.columns.color = this.best.columns.sort = column.name;
@@ -65,7 +65,7 @@ export class BarChartRecommender implements Recommender {
                 } else {
                     return false;
                 }
-            }
+            },
         ];
         for (let i = 0; i < this.rules.length; i++) {
             if (this.rules[i](column)) this.score++;
@@ -74,14 +74,14 @@ export class BarChartRecommender implements Recommender {
     }
 
     recommend() {
-        let rec: Recommendation = {
+        const rec: Recommendation = {
             chart: 'barchart',
             columns: {
-                x: this.column.name
+                x: this.column.name,
             },
             score: this.score,
             scheme: undefined,
-            view: '2d'
+            view: '2d',
         };
         return rec;
     }

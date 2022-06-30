@@ -22,7 +22,7 @@ const roleLabels: { [role in SandDance.specs.InsightColumnRoles]: string } = {
     uid: null,
     x: strings.labelColumnX,
     y: strings.labelColumnY,
-    z: strings.labelColumnZ
+    z: strings.labelColumnZ,
 };
 
 const aliasLabels: { [role in SandDance.specs.InsightColumnRoles]: string } = {
@@ -35,7 +35,7 @@ const aliasLabels: { [role in SandDance.specs.InsightColumnRoles]: string } = {
     uid: null,
     x: strings.labelAliasX,
     y: strings.labelAliasY,
-    z: strings.labelAliasZ
+    z: strings.labelAliasZ,
 };
 
 export interface ColumnMapBaseProps {
@@ -75,7 +75,7 @@ function filterColumnList(context: SandDance.specs.InsightColumnRoles, columns: 
                 column =>
                     column.quantitative ||
                     (column.stats.distinctValueCount &&
-                        column.stats.distinctValueCount < maxFacets)
+                        column.stats.distinctValueCount < maxFacets),
             );
         default:
             return columns.slice();
@@ -90,7 +90,7 @@ function optionsForSpecColumn(sectionName: string, columns: SandDance.types.Colu
             text: column.name,
             data: column,
             selected: selectedColumnName === column.name,
-            disabled: disabledColumnName === column.name
+            disabled: disabledColumnName === column.name,
         };
         return option;
     });
@@ -98,7 +98,7 @@ function optionsForSpecColumn(sectionName: string, columns: SandDance.types.Colu
         const option: FluentUITypes.IDropdownOption = {
             key: sectionName,
             text: sectionName,
-            itemType: base.fluentUI.DropdownMenuItemType.Header
+            itemType: base.fluentUI.DropdownMenuItemType.Header,
         };
         options.unshift(option);
     }
@@ -110,7 +110,7 @@ function optionsForReference(sectionName: string, specRoles: SandDance.specs.Spe
         const option: FluentUITypes.IDropdownOption = {
             key: `role:${specRole.role}`,
             text: aliasLabels[specRole.role],
-            data: specRole.role
+            data: specRole.role,
         };
         return option;
     }).sort((a, b) => a.text.localeCompare(b.text));
@@ -118,7 +118,7 @@ function optionsForReference(sectionName: string, specRoles: SandDance.specs.Spe
         const option: FluentUITypes.IDropdownOption = {
             key: sectionName,
             text: sectionName,
-            itemType: base.fluentUI.DropdownMenuItemType.Header
+            itemType: base.fluentUI.DropdownMenuItemType.Header,
         };
         options.unshift(option);
     }
@@ -166,7 +166,7 @@ export function ColumnMap(props: Props) {
     if (props.specRole.allowNone) {
         options.unshift({
             key: -1,
-            text: strings.selectNone
+            text: strings.selectNone,
         });
     }
     const hasSelection = options.reduce((p, c) => {

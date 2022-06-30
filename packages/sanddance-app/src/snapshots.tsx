@@ -9,7 +9,7 @@ import {
     controls,
     Explorer_Class,
     getEmbedHTML,
-    SandDance
+    SandDance,
 } from '@msrvida/sanddance-explorer';
 import * as React from 'react';
 
@@ -80,7 +80,7 @@ export class SnapshotImportLocal extends React.Component<ImportProps, ImportStat
     constructor(props: ImportProps) {
         super(props);
         this.state = {
-            working: false
+            working: false,
         };
     }
 
@@ -121,7 +121,7 @@ export class SnapshotImportLocal extends React.Component<ImportProps, ImportStat
                         className: `sanddance-dialog ${this.props.theme}`,
                         type: base.fluentUI.DialogType.normal,
                         title: strings.dialogTitleSnapshotsLocal,
-                        subText: strings.dialogSubtextSnapshotsLocal
+                        subText: strings.dialogSubtextSnapshotsLocal,
                     }}
                 >
                     <section>
@@ -154,7 +154,7 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
     constructor(props: ImportRemoteProps) {
         super(props);
         this.state = {
-            working: false
+            working: false,
         };
     }
 
@@ -163,7 +163,7 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
         delete dataSource.snapshots;
         dataSource.snapshotsUrl = this.state.url;
         const dss: DataSourceSnapshot = {
-            dataSource
+            dataSource,
         };
         return '#' + JSON.stringify(dss);
     }
@@ -210,7 +210,7 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
                     dialogContentProps={{
                         className: `sanddance-dialog ${this.props.theme}`,
                         type: base.fluentUI.DialogType.normal,
-                        title: strings.dialogTitleSnapshotsUrl
+                        title: strings.dialogTitleSnapshotsUrl,
                     }}
                     buttons={[
                         (
@@ -221,7 +221,7 @@ export class SnapshotImportRemote extends React.Component<ImportRemoteProps, Imp
                                 iconProps={{ iconName: 'CloudDownload' }}
                                 text={strings.dialogLoadButton}
                             />
-                        )
+                        ),
                     ]}
                 >
                     <section>
@@ -272,7 +272,7 @@ export function SnapshotExport(props: ExportProps) {
             dialogContentProps={{
                 className: `sanddance-dialog ${props.theme} sanddance-export`,
                 type: base.fluentUI.DialogType.normal,
-                title: strings.dialogTitleSnapshotsExport
+                title: strings.dialogTitleSnapshotsExport,
             }}
         >
             <ul>

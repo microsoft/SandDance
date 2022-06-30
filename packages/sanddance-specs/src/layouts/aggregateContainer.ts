@@ -7,13 +7,13 @@ import {
     AxisScale,
     FieldOp,
     InnerScope,
-    LayoutOffsets
+    LayoutOffsets,
 } from '../interfaces';
 import {
     addOffsets,
     addSignals,
     addTransforms,
-    getGroupBy
+    getGroupBy,
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { Column } from '@msrvida/chart-types';
@@ -49,7 +49,7 @@ export class AggregateContainer extends Layout {
             globalAggregateExtentSignal: `${p}_${a}_extent`,
             scale: `scale_${p}`,
             extentData: `data_${p}_extent`,
-            offsets: `data_${p}_offsets`
+            offsets: `data_${p}_offsets`,
         };
     }
 
@@ -58,7 +58,7 @@ export class AggregateContainer extends Layout {
             const fieldOp: FieldOp = {
                 field: safeFieldName(this.props.sumBy.name),
                 op: 'sum',
-                as: FieldNames.Sum
+                as: FieldNames.Sum,
             };
             return fieldOp;
         }
@@ -72,21 +72,21 @@ export class AggregateContainer extends Layout {
             {
                 ...this.getTransforms(
                     aggregation,
-                    getGroupBy(groupings)
+                    getGroupBy(groupings),
                 ),
-                as: [names.aggregateField]
+                as: [names.aggregateField],
             },
             {
                 type: 'extent',
                 field: safeFieldName(names.aggregateField),
-                signal: names.globalAggregateExtentSignal
-            }
+                signal: names.globalAggregateExtentSignal,
+            },
         );
         addSignals(globalScope.scope,
             {
                 name: props.globalAggregateMaxExtentSignal,
-                update: `${names.globalAggregateExtentSignal}[1]`
-            }
+                update: `${names.globalAggregateExtentSignal}[1]`,
+            },
         );
         const horizontal = dock === 'left';
         const groupScaled = `scale(${JSON.stringify(names.scale)}, datum[${JSON.stringify(names.aggregateField)}])`;
@@ -96,7 +96,7 @@ export class AggregateContainer extends Layout {
                 dock === 'bottom' ?
                     groupScaled
                     :
-                    ''
+                    '',
             ),
             h: horizontal ?
                 parentScope.offsets.h
@@ -108,7 +108,7 @@ export class AggregateContainer extends Layout {
             w: horizontal ?
                 groupScaled
                 :
-                parentScope.offsets.w
+                parentScope.offsets.w,
         };
 
         const scale: LinearScale = {
@@ -117,26 +117,26 @@ export class AggregateContainer extends Layout {
             domain: [
                 0,
                 {
-                    signal: props.globalAggregateMaxExtentSignal
-                }
+                    signal: props.globalAggregateMaxExtentSignal,
+                },
             ],
             range: horizontal ?
                 [
                     0,
                     {
-                        signal: parentScope.sizeSignals.layoutWidth
-                    }
+                        signal: parentScope.sizeSignals.layoutWidth,
+                    },
                 ]
                 :
                 [
                     {
-                        signal: parentScope.sizeSignals.layoutHeight
+                        signal: parentScope.sizeSignals.layoutHeight,
                     },
-                    0
+                    0,
                 ],
             nice: niceScale,
             zero: true,
-            reverse: dock === 'top'
+            reverse: dock === 'top',
         };
 
         const globalAggregateMaxExtentScaledValue = `scale(${JSON.stringify(names.scale)}, ${props.globalAggregateMaxExtentSignal})`;
@@ -146,8 +146,8 @@ export class AggregateContainer extends Layout {
                 name: props.globalAggregateMaxExtentScaledSignal,
                 update: dock === 'bottom'
                     ? `${parentScope.sizeSignals.layoutHeight} - ${globalAggregateMaxExtentScaledValue}`
-                    : globalAggregateMaxExtentScaledValue
-            }
+                    : globalAggregateMaxExtentScaledValue,
+            },
         );
 
         return {
@@ -155,30 +155,30 @@ export class AggregateContainer extends Layout {
             sizeSignals: horizontal ?
                 {
                     layoutHeight: parentScope.sizeSignals.layoutHeight,
-                    layoutWidth: null
+                    layoutWidth: null,
                 }
                 :
                 {
                     layoutHeight: null,
-                    layoutWidth: parentScope.sizeSignals.layoutWidth
+                    layoutWidth: parentScope.sizeSignals.layoutWidth,
                 },
             globalScales: {
                 showAxes,
                 scales: {
                     x: horizontal ? [scale] : undefined,
-                    y: horizontal ? undefined : [scale]
-                }
+                    y: horizontal ? undefined : [scale],
+                },
             },
             encodingRuleMap: horizontal ?
                 {
                     x: [{
                         test: testForCollapseSelection(),
-                        signal: parentScope.offsets.x
+                        signal: parentScope.offsets.x,
                     }],
                     width: [{
                         test: testForCollapseSelection(),
-                        value: 0
-                    }]
+                        value: 0,
+                    }],
                 }
                 :
                 {
@@ -186,13 +186,13 @@ export class AggregateContainer extends Layout {
                         test: testForCollapseSelection(),
                         signal: dock === 'top'
                             ? parentScope.offsets.y
-                            : addOffsets(parentScope.offsets.y, parentScope.offsets.h)
+                            : addOffsets(parentScope.offsets.y, parentScope.offsets.h),
                     }],
                     height: [{
                         test: testForCollapseSelection(),
-                        value: 0
-                    }]
-                }
+                        value: 0,
+                    }],
+                },
         };
     }
 
@@ -200,7 +200,7 @@ export class AggregateContainer extends Layout {
         const trans: JoinAggregateTransform = {
             type: 'joinaggregate',
             groupby: groupby.map(safeFieldName),
-            ops: [aggregation]
+            ops: [aggregation],
         };
         if (aggregation === 'sum') {
             trans.fields = [this.props.sumBy.name].map(safeFieldName);

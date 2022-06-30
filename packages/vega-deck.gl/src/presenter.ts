@@ -8,7 +8,7 @@ import {
     createDeckGLClassesForPresenter,
     DeckGL_Class,
     DeckGLInternalProps,
-    InteractiveStateVegaDeckGL
+    InteractiveStateVegaDeckGL,
 } from './deck.gl-classes/deckgl';
 import { LinearInterpolator, LinearInterpolator_Class } from './deck.gl-classes/linearInterpolator';
 import { OrbitController_Class } from './deck.gl-classes/orbitController';
@@ -22,7 +22,7 @@ import {
     PresenterStyle,
     QueuedAnimationOptions,
     Scene3d,
-    Stage
+    Stage,
 } from './interfaces';
 import { getCubeLayer, getCubes, getLayers } from './layers';
 import { LegendView } from './legend';
@@ -154,14 +154,14 @@ export class Presenter {
      */
     present(sceneOrStage: Scene3d | Stage, height: number, width: number, config?: PresenterConfig) {
         this.animationCancel();
-        let scene = sceneOrStage as Scene3d;
+        const scene = sceneOrStage as Scene3d;
         let stage: Stage;
-        let options: MarkStagerOptions = {
+        const options: MarkStagerOptions = {
             maxOrdinal: 0,
             currAxis: null,
             defaultCubeColor: this.style.defaultCubeColor,
             assignCubeOrdinal: config?.onSceneRectAssignCubeOrdinal || (() => options.maxOrdinal++),
-            zAxisZindex: config?.zAxisZindex
+            zAxisZindex: config?.zAxisZindex,
         };
         //determine if this is a vega scene
         if (scene.marktype) {
@@ -174,7 +174,7 @@ export class Presenter {
             const classes = createDeckGLClassesForPresenter({
                 doubleClickHandler: () => {
                     this.homeCamera();
-                }
+                },
             });
             this.OrbitControllerClass = classes.OrbitControllerClass;
 
@@ -203,7 +203,7 @@ export class Presenter {
                     } else {
                         return 'grab';
                     }
-                }
+                },
             };
             if (stage.backgroundColor) {
                 deckProps.style = { 'background-color': colorToString(stage.backgroundColor) };
@@ -215,7 +215,7 @@ export class Presenter {
             cubeCount = Math.max(cubeCount, options.maxOrdinal);
             const empty: Partial<Cube> = {
                 isEmpty: true,
-                color: [0, 0, 0, 0] // possibly a bug in Deck.gl? set color to invisible.
+                color: [0, 0, 0, 0], // possibly a bug in Deck.gl? set color to invisible.
             };
             stage.cubeData = patchCubeArray(cubeCount, empty, stage.cubeData as Cube[]);
         }
@@ -243,11 +243,11 @@ export class Presenter {
 
     private isNewBounds(view: View, height: number, width: number, cubeCount: number) {
         const lastBounds: IBounds = this.lastBounds();
-        for (let prop in lastBounds) {
+        for (const prop in lastBounds) {
             if (lastBounds[prop] === null) return true;
         }
         const newBounds: IBounds = { cubeCount, height, view, width };
-        for (let prop in lastBounds) {
+        for (const prop in lastBounds) {
             if (lastBounds[prop] !== newBounds[prop]) return true;
         }
     }
@@ -261,7 +261,7 @@ export class Presenter {
         const config = deepMerge<PresenterConfig>(defaultPresenterConfig, modifyConfig);
         const newBounds = this.isNewBounds(stage.view, height, width, cubeCount);
         //let lightSettings = this.style.lightSettings[stage.view];
-        let lightingMix = stage.view === '3d' ? 1.0 : 0.0;
+        const lightingMix = stage.view === '3d' ? 1.0 : 0.0;
         let linearInterpolator: LinearInterpolator_Class<CubeLayerInterpolatedProps>;
         //choose the current OrbitView viewstate if possible
         let viewState = (this.deckgl.viewState && Object.keys(this.deckgl.viewState).length && this.deckgl.viewState.OrbitView)
@@ -301,7 +301,7 @@ export class Presenter {
             effects: lightingEffects(),
             views: [new base.deck.OrbitView({ controller: base.deck.OrbitController })],
             initialViewState: viewState,
-            layers
+            layers,
         };
         if (config && config.preStage) {
             config.preStage(stage, deckProps);
@@ -312,7 +312,7 @@ export class Presenter {
                 if (this._afterRenderHandler) {
                     this._afterRenderHandler();
                 }
-            }
+            },
         }));
         delete stage.cubeData;
         this._last = {
@@ -320,7 +320,7 @@ export class Presenter {
             height,
             width,
             stage: stage,
-            view: stage.view
+            view: stage.view,
         };
     }
 
@@ -346,7 +346,7 @@ export class Presenter {
             effects: lightingEffects(),
             views: this.deckgl.props.views,
             initialViewState: viewState,
-            layers: this.deckgl.props.layers
+            layers: this.deckgl.props.layers,
         };
         this.deckgl.setProps(deckProps);
     }

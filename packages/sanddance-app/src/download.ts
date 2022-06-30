@@ -4,7 +4,7 @@
 export function downloadData(data: any, fileName: string) {
 
     // Adapted from https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
-    var a = document.createElement('a');
+    const a = document.createElement('a');
     a.setAttribute('download', fileName);
     document.body.appendChild(a);
 
@@ -22,10 +22,10 @@ export function downloadData(data: any, fileName: string) {
 
 //from https://stackoverflow.com/a/37151835/620501
 function dataURIToBlob(binStr: string) {
-    var len = binStr.length,
+    const len = binStr.length,
         arr = new Uint8Array(len);
 
-    for (var i = 0; i < len; i++) {
+    for (let i = 0; i < len; i++) {
         arr[i] = binStr.charCodeAt(i);
     }
 

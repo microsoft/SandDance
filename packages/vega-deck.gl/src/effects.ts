@@ -7,12 +7,12 @@ export function lightingEffects(): Effect[] {
 
     const ambientLight = new base.deck.AmbientLight({
         color: [255, 255, 255],
-        intensity: 0.3
+        intensity: 0.3,
     });
 
     const cameraLight = new base.deck._CameraLight({
         color: [255, 255, 255],
-        intensity: 1
+        intensity: 1,
     });
 
     // const directionalLight = new base.deck.DirectionalLight({

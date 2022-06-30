@@ -36,5 +36,5 @@ export const layoutClasses: { [key in LayoutType]: typeof Layout } = {
     Stack,
     Strip,
     Treemap,
-    Wrap
+    Wrap,
 };

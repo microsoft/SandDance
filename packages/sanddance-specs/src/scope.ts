@@ -8,7 +8,7 @@ import {
     Scale,
     Scope,
     Signal,
-    Transforms
+    Transforms,
 } from 'vega-typings';
 
 export function addAxes(scope: Scope, ...axis: Axis[]) {

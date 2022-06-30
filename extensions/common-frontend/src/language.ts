@@ -5,6 +5,6 @@ namespace SandDanceApp {
     export const strings = {
         labelPreferences: 'Preferences',
         labelCompactUI: 'Compact UI',
-        labelCompactUIDescription: 'Compact UI hides collapses labels on dropdown menus.'
+        labelCompactUIDescription: 'Compact UI hides collapses labels on dropdown menus.',
     };
 }

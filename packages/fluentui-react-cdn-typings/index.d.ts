@@ -6,7 +6,7 @@ import {
     CommandBarButton,
     DefaultButton,
     IconButton,
-    PrimaryButton
+    PrimaryButton,
 } from '@fluentui/react/lib/Button';
 import { ChoiceGroup } from '@fluentui/react/lib/ChoiceGroup';
 import { ComboBox } from '@fluentui/react/lib/ComboBox';

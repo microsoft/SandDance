@@ -4,7 +4,7 @@ export {
     ColorScaleNone,
     FieldNames,
     ScaleNames,
-    SignalNames
+    SignalNames,
 } from '@msrvida/sanddance-specs';
 
 const GL_ORDINAL = 'GL_ORDINAL';

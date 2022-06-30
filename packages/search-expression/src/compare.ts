@@ -7,13 +7,13 @@ const expressionKeys = Object.keys(<Partial<SearchExpression>>{
     clause: null,
     name: null,
     operator: null,
-    value: null
+    value: null,
 });
 
 export function compareExpression(a: SearchExpression, b: SearchExpression): boolean {
     if (a && b) {
         for (let k = 0; k < expressionKeys.length; k++) {
-            let key = expressionKeys[k];
+            const key = expressionKeys[k];
             if (a[key] != b[key]) return false;
         }
     } else {
@@ -23,12 +23,12 @@ export function compareExpression(a: SearchExpression, b: SearchExpression): boo
 }
 
 const groupKeys = Object.keys(<Partial<SearchExpressionGroup>>{
-    clause: null
+    clause: null,
 });
 
 export function compareGroup(a: SearchExpressionGroup, b: SearchExpressionGroup): boolean {
     for (let k = 0; k < groupKeys.length; k++) {
-        let key = groupKeys[k];
+        const key = groupKeys[k];
         if (a[key] != b[key]) return false;
     }
     if (!a.expressions && !b.expressions) return true;
@@ -43,8 +43,8 @@ export function compareGroup(a: SearchExpressionGroup, b: SearchExpressionGroup)
 export function compare(a: Search, b: Search): boolean {
     if (a == b) return true;
     if (!a || !b) return false;
-    let arrs = [a, b].map(ensureSearchExpressionGroupArray);
-    let [arrA, arrB] = arrs;
+    const arrs = [a, b].map(ensureSearchExpressionGroupArray);
+    const [arrA, arrB] = arrs;
     if (arrA.length != arrB.length) return false;
     for (let i = 0; i < arrA.length; i++) {
         if (!compareGroup(arrA[i], arrB[i])) return false;
@@ -54,8 +54,8 @@ export function compare(a: Search, b: Search): boolean {
 
 export function startsWith(whole: Search, part: Search): boolean {
     if (!part) return true;
-    let arrs = [whole, part].map(ensureSearchExpressionGroupArray);
-    let [wholeArray, partArray] = arrs;
+    const arrs = [whole, part].map(ensureSearchExpressionGroupArray);
+    const [wholeArray, partArray] = arrs;
     if (partArray.length > wholeArray.length) return false;
     for (let i = 0; i < partArray.length; i++) {
         if (!compareGroup(wholeArray[i], partArray[i])) return false;

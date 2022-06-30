@@ -36,12 +36,12 @@ const insight: SandDance.specs.Insight = {
         uid: 'id',
         x: 'x',
         y: 'y',
-        z: 'z'
+        z: 'z',
     },
     scheme: 'blues',
     size: { height: 500, width: 500 },
     chart: 'scatterplot',
-    view: '3d'
+    view: '3d',
 };
 
 viewer.render(insight, data);

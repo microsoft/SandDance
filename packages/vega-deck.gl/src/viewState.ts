@@ -14,14 +14,14 @@ export function targetViewState(height: number, width: number, view: View): Orbi
             target,
             rotationOrbit: 0,
             rotationX: 90,
-            zoom: -0.2
+            zoom: -0.2,
         };
     } else {
         return {
             target,
             rotationOrbit: 25,
             rotationX: 30,
-            zoom: -0.4
+            zoom: -0.4,
         };
     }
 }

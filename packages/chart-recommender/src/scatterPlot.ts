@@ -8,12 +8,12 @@ export class ScatterPlotRecommenderSummary {
     public best: Recommendation;
 
     constructor(columns: SandDance.types.Column[], data: object[]) {
-        let rec: Recommendation = {
+        const rec: Recommendation = {
             chart: 'scatterplot',
             score: undefined,
             columns: {},
             scheme: undefined,
-            view: '2d'
+            view: '2d',
         };
         columns.forEach(column => {
             if (!rec.columns.x) {

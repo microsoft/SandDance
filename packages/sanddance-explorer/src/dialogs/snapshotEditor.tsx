@@ -44,15 +44,15 @@ function _SnapshotEditor(props: Props) {
                 image: null,
                 bgColor: null,
                 insight: null,
-                editIndex: -1
+                editIndex: -1,
             };
         }
 
         private resize(src: string, thumbWidth: number) {
             if (!src) return;
-            var img = new Image();
+            const img = new Image();
             img.onload = () => {
-                var canvas = document.createElement('canvas'), ctx = canvas.getContext('2d');
+                const canvas = document.createElement('canvas'), ctx = canvas.getContext('2d');
                 const ratio = img.width / thumbWidth;
                 canvas.height = img.height / ratio;
                 canvas.width = thumbWidth;
@@ -106,7 +106,7 @@ function _SnapshotEditor(props: Props) {
                                     description: this.state.description,
                                     insight: this.state.insight,
                                     image: this.state.image,
-                                    bgColor: this.state.bgColor
+                                    bgColor: this.state.bgColor,
                                 };
                                 this.props.modifySnapShot && this.props.modifySnapShot(snapshot);
                                 this.props.onWriteSnapshot(snapshot, this.state.editIndex);

@@ -13,7 +13,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     const axisScales: AxisScales = {
         x: { title: specColumns.x && specColumns.x.name },
         y: { title: specColumns.y && specColumns.y.name },
-        z: { title: specViewOptions.language.count }
+        z: { title: specViewOptions.language.count },
     };
     const hBandProps: BandProps = {
         excludeEncodingRuleMap: true,
@@ -23,10 +23,10 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             defaultBins,
             maxbinsSignalName: SignalNames.YBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.YMaxBins,
-            maxbins
+            maxbins,
         },
         minBandWidth: minBarBandWidth,
-        showAxes: true
+        showAxes: true,
     };
     const vBandProps: BandProps = {
         excludeEncodingRuleMap: true,
@@ -36,13 +36,13 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             defaultBins,
             maxbinsSignalName: SignalNames.XBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.XMaxBins,
-            maxbins
+            maxbins,
         },
         minBandWidth: minBarBandWidth,
-        showAxes: true
+        showAxes: true,
     };
     const stackProps: StackProps = {
-        sort: specColumns.sort
+        sort: specColumns.sort,
     };
     return {
         axisScales,
@@ -50,16 +50,16 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         layouts: [
             {
                 layoutType: 'Band',
-                props: vBandProps
+                props: vBandProps,
             },
             {
                 layoutType: 'Band',
-                props: hBandProps
+                props: hBandProps,
             },
             {
                 layoutType: 'Stack',
-                props: stackProps
-            }
+                props: stackProps,
+            },
         ],
         specCapabilities: {
             countsAndSums: false,
@@ -69,34 +69,34 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     binnable: true,
                     axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
                     axisSelectionBetweenTicks: true,
-                    signals: [SignalNames.XBins]
+                    signals: [SignalNames.XBins],
                 },
                 {
                     role: 'y',
                     binnable: true,
                     axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
                     axisSelectionBetweenTicks: true,
-                    signals: [SignalNames.YBins]
+                    signals: [SignalNames.YBins],
                 },
                 {
                     role: 'color',
-                    allowNone: true
+                    allowNone: true,
                 },
                 {
                     role: 'sort',
-                    allowNone: true
+                    allowNone: true,
                 },
                 {
                     role: 'facet',
                     allowNone: true,
-                    signals: [SignalNames.FacetBins]
+                    signals: [SignalNames.FacetBins],
                 },
                 {
                     role: 'facetV',
                     allowNone: true,
-                    signals: [SignalNames.FacetVBins]
-                }
-            ]
-        }
+                    signals: [SignalNames.FacetVBins],
+                },
+            ],
+        },
     };
 }

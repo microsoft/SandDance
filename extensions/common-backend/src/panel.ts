@@ -19,12 +19,12 @@ export function newPanel(context: vscode.ExtensionContext, uriFsPath: string, ur
                 enableScripts: true,
                 // Only allow the webview to access resources in our extension's media directory
                 localResourceRoots: [
-                    vscode.Uri.file(path.join(context.extensionPath, 'resources'))
+                    vscode.Uri.file(path.join(context.extensionPath, 'resources')),
                 ],
-                retainContextWhenHidden: true
-            }
+                retainContextWhenHidden: true,
+            },
         ),
-        uriFsPath
+        uriFsPath,
     };
     const webView = webViewWithUri.panel.webview;
     webViewWithUri.panel.webview.html = getWebviewContent(webView, context.extensionPath, uriFsPath);

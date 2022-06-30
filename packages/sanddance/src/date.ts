@@ -11,7 +11,7 @@ export function makeDateRange(tickTexts: VegaDeckGl.types.TickText[], columnStat
     } else {
         const d3TimeFormat = getD3TimeFormat(tickTexts[0].value as number, tickTexts[1].value as number);
         const pairs = tickTexts.map((t, i) => {
-            let min = t.value as number;
+            const min = t.value as number;
             let max: number;
             if (i === tickTexts.length - 1) {
                 max = columnStats.max;
@@ -53,9 +53,9 @@ function vegaTimeFormat(values: [number, number][], d3TimeFormat: string) {
             transform: [{
                 type: 'formula',
                 expr: `timeFormat(datum[0], '${d3TimeFormat}') + ' - ' + timeFormat(datum[1], '${d3TimeFormat}')`,
-                as
-            }]
-        }]
+                as,
+            }],
+        }],
     };
     const runtime = VegaDeckGl.base.vega.parse(spec);
     const view = new VegaDeckGl.ViewGl(runtime).run();

@@ -44,36 +44,36 @@ const singleFacetLayouts: FacetData[] = [
 export const chartLabelMap: { key: SandDance.specs.Chart, text: string }[] = [
     {
         key: 'grid',
-        text: strings.chartTypeGrid
+        text: strings.chartTypeGrid,
     },
     {
         key: 'scatterplot',
-        text: strings.chartTypeScatterPlot
+        text: strings.chartTypeScatterPlot,
     },
     {
         key: 'density',
-        text: strings.chartTypeDensity
+        text: strings.chartTypeDensity,
     },
     {
         key: 'barchartV',
-        text: strings.chartTypeBarChartV
+        text: strings.chartTypeBarChartV,
     },
     {
         key: 'barchartH',
-        text: strings.chartTypeBarChartH
+        text: strings.chartTypeBarChartH,
     },
     {
         key: 'treemap',
-        text: strings.chartTypeTreeMap
+        text: strings.chartTypeTreeMap,
     },
     {
         key: 'strips',
-        text: strings.chartTypeStrips
+        text: strings.chartTypeStrips,
     },
     {
         key: 'stacks',
-        text: strings.chartTypeStacks
-    }
+        text: strings.chartTypeStacks,
+    },
 ];
 
 export function chartLabel(key: SandDance.specs.Chart) {
@@ -90,7 +90,7 @@ function _Chart(_props: Props) {
         constructor(props: Props) {
             super(props);
             this.state = {
-                showTooltipDialog: false
+                showTooltipDialog: false,
             };
             this.choiceRef = base.react.createRef<FluentUITypes.IChoiceGroup>();
             props.explorer.dialogFocusHandler.focus = () => this.choiceRef.current?.focus();
@@ -116,7 +116,7 @@ function _Chart(_props: Props) {
                                         ...o,
                                         checked: props.chart === o.key,
                                         disabled: props.disabled
-                                            || (o.key === 'treemap' && props.quantitativeColumns.length === 0)
+                                            || (o.key === 'treemap' && props.quantitativeColumns.length === 0),
                                     };
                                 })}
                                 onChange={(e, o) => props.onChangeChartType(o.key as SandDance.specs.Chart)}
@@ -152,42 +152,42 @@ function _Chart(_props: Props) {
                                                     {
                                                         key: 'header1',
                                                         text: `${strings.labelFacetLayout}:`,
-                                                        itemType: base.fluentUI.DropdownMenuItemType.Header
+                                                        itemType: base.fluentUI.DropdownMenuItemType.Header,
                                                     },
                                                     ...singleFacetLayouts.map(f => {
                                                         const o: FluentUITypes.IDropdownOption = {
                                                             key: f.facetStyle,
                                                             text: f.text,
                                                             data: f,
-                                                            selected: facetStyle === f.facetStyle
+                                                            selected: facetStyle === f.facetStyle,
                                                         };
                                                         return o;
                                                     }),
                                                     {
                                                         key: 'divider',
                                                         text: '-',
-                                                        itemType: base.fluentUI.DropdownMenuItemType.Divider
+                                                        itemType: base.fluentUI.DropdownMenuItemType.Divider,
                                                     },
                                                     {
                                                         key: 'header2',
                                                         text: `${strings.labelColumnFacetV}:`,
-                                                        itemType: base.fluentUI.DropdownMenuItemType.Header
+                                                        itemType: base.fluentUI.DropdownMenuItemType.Header,
                                                     },
                                                     ...getColumnMapOptions({
                                                         ...props,
                                                         specRole,
-                                                        selectedColumnName: props.insightColumns.facetV
+                                                        selectedColumnName: props.insightColumns.facetV,
                                                     }).map(o => {
                                                         if (o.itemType !== base.fluentUI.DropdownMenuItemType.Header) {
                                                             const facetData: FacetData = {
                                                                 facetStyle: 'cross',
-                                                                column: o.data
+                                                                column: o.data,
                                                             };
                                                             o.data = facetData;
                                                             o.text = `${strings.labelFacetLayoutCross} ${o.text}`;
                                                         }
                                                         return o;
-                                                    })
+                                                    }),
                                                 ]}
                                                 onChange={(e, o) => {
                                                     const facetData = o.data as FacetData;
@@ -210,27 +210,27 @@ function _Chart(_props: Props) {
                                                 key: 'count-square',
                                                 text: strings.labelTotalByCountSquare,
                                                 data: 'count-square',
-                                                selected: !totalStyle || totalStyle === 'count-square'
+                                                selected: !totalStyle || totalStyle === 'count-square',
                                             },
                                             {
                                                 key: 'count-strip',
                                                 text: strings.labelTotalByCountStrip,
                                                 data: 'count-strip',
-                                                selected: totalStyle === 'count-strip'
+                                                selected: totalStyle === 'count-strip',
                                             },
                                             {
                                                 key: 'sum-strip',
                                                 text: strings.labelTotalBySumStrip,
                                                 data: 'sum-strip',
-                                                selected: totalStyle === 'sum-strip'
+                                                selected: totalStyle === 'sum-strip',
                                             },
                                             {
                                                 key: 'sum-treemap',
                                                 text: strings.labelTotalBySumTreemap,
                                                 data: 'sum-treemap',
                                                 selected: totalStyle === 'sum-treemap',
-                                                disabled: props.quantitativeColumns.length === 0
-                                            }
+                                                disabled: props.quantitativeColumns.length === 0,
+                                            },
                                         ];
                                         if (specCapabilities.percentage) {
                                             options.push(
@@ -239,7 +239,7 @@ function _Chart(_props: Props) {
                                                     text: strings.labelTotalBySumStripPercent,
                                                     data: 'sum-strip-percent',
                                                     selected: totalStyle === 'sum-strip-percent',
-                                                    disabled: props.quantitativeColumns.length === 0
+                                                    disabled: props.quantitativeColumns.length === 0,
                                                 });
                                         }
                                         prefix = !specCapabilities.countsAndSums ? null : (
@@ -264,7 +264,7 @@ function _Chart(_props: Props) {
                                         break;
                                     }
                                 }
-                                let disabled = props.disabled
+                                const disabled = props.disabled
                                     || (props.view === '2d' && specRole.role === 'z')
                                     || (specRole.role === 'size' && !(!specCapabilities.countsAndSums || totalStyle.indexOf('sum-') === 0))
                                     || (specRole.role === 'sort' && specCapabilities.countsAndSums && totalStyle === 'sum-treemap');

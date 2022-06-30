@@ -41,7 +41,7 @@ function styledLine(x1: number, y1: number, x2: number, y2: number, stroke: stri
         sourcePosition: [x1, -y1, lineZ], //-1 = change direction of y from SVG to GL
         targetPosition: [x2, -y2, lineZ],
         color: colorFromString(stroke),
-        strokeWidth: strokeWidth
+        strokeWidth: strokeWidth,
     };
     return line;
 }
@@ -51,7 +51,7 @@ export function box(gx: number, gy: number, height: number, width: number, strok
         styledLine(gx, gy, gx + width, gy, stroke, strokeWidth),
         styledLine(gx + width, gy, gx + width, gy + height, stroke, strokeWidth),
         styledLine(gx + width, gy + height, gx, gy + height, stroke, strokeWidth),
-        styledLine(gx, gy + height, gx, gy, stroke, strokeWidth)
+        styledLine(gx, gy + height, gx, gy, stroke, strokeWidth),
     ];
     if (diagonals) {
         lines.push(styledLine(gx, gy, gx + width, gy + height, stroke, strokeWidth));

@@ -5,7 +5,7 @@ import {
     color as d3color,
     hsl as d3hsl,
     rgb as d3rgb,
-    RGBColor
+    RGBColor,
 } from 'd3-color';
 
 function rgbToDeckglColor(c: RGBColor): RGBAColor {

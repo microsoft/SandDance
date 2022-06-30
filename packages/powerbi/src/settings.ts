@@ -40,8 +40,8 @@ export class SandDanceConfig {
 }
 
 export class SandDanceMainSettings {
-  showchrome: boolean = true;
-  darktheme: boolean = false;
+    showchrome: boolean = true;
+    darktheme: boolean = false;
 }
 
 export interface IVisualSettings {
@@ -50,6 +50,6 @@ export interface IVisualSettings {
 }
 
 export class VisualSettings extends DataViewObjectsParser implements IVisualSettings {
-  public sandDanceConfig = new SandDanceConfig();
-  public sandDanceMainSettings = new SandDanceMainSettings();
+    public sandDanceConfig = new SandDanceConfig();
+    public sandDanceMainSettings = new SandDanceMainSettings();
 }

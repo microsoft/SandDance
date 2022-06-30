@@ -10,7 +10,7 @@ import {
     addOffsets,
     addSignals,
     addTransforms,
-    getGroupBy
+    getGroupBy,
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { addZScale } from '../zBase';
@@ -19,7 +19,7 @@ import {
     Data,
     GroupMark,
     RectMark,
-    Scope
+    Scope,
 } from 'vega-typings';
 
 export interface TreemapProps extends LayoutProps {
@@ -69,7 +69,7 @@ export class Treemap extends Layout {
             fieldWidth: `${p}_w`,
             heightExtent: `${p}_heightExtent`,
             widthExtent: `${p}_widthExtent`,
-            zScale: `scale_${p}_z`
+            zScale: `scale_${p}_z`,
         };
     }
 
@@ -83,7 +83,7 @@ export class Treemap extends Layout {
             x: addOffsets(parentScope.offsets.x, fn(names.fieldX0)),
             y: addOffsets(parentScope.offsets.y, fn(names.fieldY0)),
             h: subtract(names.fieldY1, names.fieldY0),
-            w: subtract(names.fieldX1, names.fieldX0)
+            w: subtract(names.fieldX1, names.fieldX0),
         };
 
         const mark = this.transformedMark(offsets);
@@ -95,9 +95,9 @@ export class Treemap extends Layout {
                 name: treeMapMethod,
                 input: 'select',
                 options: [
-                    'squarify', 'binary'
-                ]
-            }
+                    'squarify', 'binary',
+                ],
+            },
         });
 
         return {
@@ -105,16 +105,16 @@ export class Treemap extends Layout {
                 globalScales: {
                     showAxes: true,
                     scales: {
-                        z: [zScale]
-                    }
-                }
+                        z: [zScale],
+                    },
+                },
             },
             mark,
             offsets,
             sizeSignals: {
                 layoutHeight: null,
-                layoutWidth: null
-            }
+                layoutWidth: null,
+            },
         };
     }
 
@@ -133,20 +133,20 @@ export class Treemap extends Layout {
                         {
                             type: 'formula',
                             expr: parentScope.offsets.h,
-                            as: names.fieldHeight
+                            as: names.fieldHeight,
                         },
                         {
                             type: 'formula',
                             expr: parentScope.offsets.w,
-                            as: names.fieldWidth
-                        }
-                    ]
-                }
+                            as: names.fieldWidth,
+                        },
+                    ],
+                },
             );
 
             const treemapData: Data = {
                 name: names.dataFacetMark,
-                source: names.dataFacet
+                source: names.dataFacet,
             };
 
             const facets: GroupMark = {
@@ -155,8 +155,8 @@ export class Treemap extends Layout {
                     facet: {
                         name: names.dataFacet,
                         data: names.dataHeightWidth,
-                        groupby: getGroupBy(groupings).map(safeFieldName)
-                    }
+                        groupby: getGroupBy(groupings).map(safeFieldName),
+                    },
                 },
                 data: [
                     {
@@ -166,17 +166,17 @@ export class Treemap extends Layout {
                             {
                                 type: 'extent',
                                 field: names.fieldHeight,
-                                signal: names.heightExtent
+                                signal: names.heightExtent,
                             },
                             {
                                 type: 'extent',
                                 field: names.fieldWidth,
-                                signal: names.widthExtent
-                            }
-                        ]
+                                signal: names.widthExtent,
+                            },
+                        ],
                     },
-                    treemapData
-                ]
+                    treemapData,
+                ],
             };
 
             globalScope.setMarkDataName(names.dataFacetMark);
@@ -204,26 +204,26 @@ export class Treemap extends Layout {
             encode: {
                 update: {
                     width: {
-                        signal: offsets.w
+                        signal: offsets.w,
                     },
                     height: {
-                        signal: offsets.h
+                        signal: offsets.h,
                     },
                     ...z && {
                         z: { value: 0 },
                         depth: [
                             {
                                 test: testForCollapseSelection(),
-                                value: 0
+                                value: 0,
                             },
                             {
                                 scale: names.zScale,
-                                field: safeFieldName(z.name)
-                            }
-                        ]
-                    }
-                }
-            }
+                                field: safeFieldName(z.name),
+                            },
+                        ],
+                    },
+                },
+            },
         };
         addMarks(markParent, mark);
         return mark;
@@ -235,11 +235,11 @@ export class Treemap extends Layout {
         addTransforms(treemapData,
             {
                 type: 'filter',
-                expr: `datum[${JSON.stringify(size.name)}] > 0`
+                expr: `datum[${JSON.stringify(size.name)}] > 0`,
             },
             {
                 type: 'nest',
-                keys: [(group && group.name) || '__NONE__']
+                keys: [(group && group.name) || '__NONE__'],
             },
             {
                 type: 'treemap',
@@ -251,7 +251,7 @@ export class Treemap extends Layout {
                 paddingOuter: 0,
                 size: [
                     { signal: widthSignal },
-                    { signal: heightSignal }
+                    { signal: heightSignal },
                 ],
                 as: [
                     names.fieldX0,
@@ -259,9 +259,9 @@ export class Treemap extends Layout {
                     names.fieldX1,
                     names.fieldY1,
                     names.fieldDepth,
-                    names.fieldChildren
-                ]
-            }
+                    names.fieldChildren,
+                ],
+            },
         );
     }
 }

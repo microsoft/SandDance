@@ -6,7 +6,7 @@ import {
     CommandBarButton,
     DefaultButton,
     IconButton,
-    PrimaryButton
+    PrimaryButton,
 } from 'office-ui-fabric-react/lib/components/Button';
 import { ChoiceGroup } from 'office-ui-fabric-react/lib/ChoiceGroup';
 import { ComboBox } from 'office-ui-fabric-react/lib/components/ComboBox';
