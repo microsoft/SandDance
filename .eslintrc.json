@@ -25,6 +25,11 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "comma-dangle": "off",
+        "@typescript-eslint/comma-dangle": [
+            "error",
+            "always-multiline"
+        ],
         "no-inner-declarations": [
             "off"
         ],
@@ -48,7 +53,7 @@
         "no-unused-vars": [
             "off"
         ],
-        "prefer-spread" :[
+        "prefer-spread": [
             "off"
         ],
         "quote-props": [
