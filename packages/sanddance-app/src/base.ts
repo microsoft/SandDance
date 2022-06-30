@@ -16,7 +16,7 @@ export interface Base {
 }
 
 export const base: Base = {
-    fluentUI: null
+    fluentUI: null,
 };
 
 /**
@@ -32,7 +32,7 @@ export function use(
     vega: types.VegaBase,
     deck: types.DeckBase,
     layers: types.DeckLayerBase,
-    luma: types.LumaBase
+    luma: types.LumaBase,
 ) {
     SandDanceExplorer.use(fluentUI, React, ReactDOM, vega, deck, layers, luma);
     base.fluentUI = fluentUI;

@@ -22,25 +22,25 @@ export function serializeAsVegaExpression(bin: Binnable, firstFieldName: string,
         const low = [
             `name:${JSON.stringify(bin.discreteColumn.column.name)}`,
             'operator:\'>=\'',
-            `value:datum[${JSON.stringify(bin.fields[0])}]`
+            `value:datum[${JSON.stringify(bin.fields[0])}]`,
         ];
         const high = [
             'clause:\'&&\'',
             `name:${JSON.stringify(bin.discreteColumn.column.name)}`,
             'operator:\'<\'',
-            `value:datum[${JSON.stringify(bin.fields[1])}]`
+            `value:datum[${JSON.stringify(bin.fields[1])}]`,
         ];
         return obj([
-            `expressions:[ datum[${JSON.stringify(firstFieldName)}] ? null : ${obj(low)}, datum[${JSON.stringify(lastFieldName)}] ? null : ${obj(high)}]`
+            `expressions:[ datum[${JSON.stringify(firstFieldName)}] ? null : ${obj(low)}, datum[${JSON.stringify(lastFieldName)}] ? null : ${obj(high)}]`,
         ], clause);
     } else {
         const exact = [
             `name:${JSON.stringify(bin.discreteColumn.column.name)}`,
             'operator:\'==\'',
-            `value:datum[${JSON.stringify(bin.fields[0])}]`
+            `value:datum[${JSON.stringify(bin.fields[0])}]`,
         ];
         return obj([
-            `expressions:[${obj(exact)}]`
+            `expressions:[${obj(exact)}]`,
         ], clause);
     }
 }

@@ -4,5 +4,5 @@ export const language = {
     fetching: 'fetching...',
     fetched: 'loaded',
     powerBiCustomVisual: 'Power BI custom visual version',
-    webglDisabled: 'SandDance requires a WebGL enabled browser.'
+    webglDisabled: 'SandDance requires a WebGL enabled browser.',
 };

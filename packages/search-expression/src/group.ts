@@ -3,7 +3,7 @@
 import {
     Search,
     SearchExpression,
-    SearchExpressionGroup
+    SearchExpressionGroup,
 } from './types';
 
 export function isSearchExpressionGroup(search: Search) {
@@ -15,7 +15,7 @@ export function isSearchExpressionGroup(search: Search) {
 
 export function createGroupFromExpression(input: SearchExpression) {
     const output: SearchExpressionGroup = {
-        expressions: [input]
+        expressions: [input],
     };
     return output;
 }

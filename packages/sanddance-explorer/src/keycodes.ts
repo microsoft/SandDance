@@ -2,5 +2,5 @@
 // Licensed under the MIT license.
 
 export const KeyCodes = {
-    ENTER: 13
+    ENTER: 13,
 };

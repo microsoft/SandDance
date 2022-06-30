@@ -5,7 +5,7 @@ import {
     Column,
     ColumnStats,
     ColumnTypeMap,
-    View
+    View,
 } from '@msrvida/chart-types';
 //import { LightSettings } from '@deck.gl/core/lib/layer';
 import { Search, SearchExpressionGroup } from '@msrvida/search-expression';
@@ -16,7 +16,7 @@ import {
     SpecColorSettings,
     SpecLanguage,
     SpecResult,
-    SpecViewOptions
+    SpecViewOptions,
 } from '@msrvida/sanddance-specs';
 
 export { Column, ColumnStats, ColumnTypeMap, View };

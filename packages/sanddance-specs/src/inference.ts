@@ -24,7 +24,7 @@ export function getColumnsFromData(inferTypesFn: typeof inferTypes, data: object
     const columns = fields.map(name => {
         const column: Column = {
             name,
-            type: inferences[name]
+            type: inferences[name],
         };
         return column;
     });
@@ -51,7 +51,7 @@ export function getSpecColumns(insight: Insight, columns: Column[]): SpecColumns
         uid: getColumnByName(insight.columns && insight.columns.uid),
         x: getColumnByName(insight.columns && insight.columns.x),
         y: getColumnByName(insight.columns && insight.columns.y),
-        z: getColumnByName(insight.columns && insight.columns.z)
+        z: getColumnByName(insight.columns && insight.columns.z),
     };
 }
 
@@ -96,12 +96,12 @@ export function getStats(data: object[], column: Column) {
         distinctValueCount: null,
         max: null,
         mean: null,
-        min: null
+        min: null,
     };
     let sum = 0;
     for (let i = 0; i < data.length; i++) {
-        let row = data[i];
-        let value = row[column.name];
+        const row = data[i];
+        const value = row[column.name];
         distinctMap[value] = true;
         if (stats.max === null || value > stats.max) {
             stats.max = value;
@@ -109,7 +109,7 @@ export function getStats(data: object[], column: Column) {
         if (stats.min === null || value < stats.min) {
             stats.min = value;
         }
-        let num = +value;
+        const num = +value;
         if (!isNaN(num)) {
             sum += num;
         }
@@ -137,7 +137,7 @@ function detectNegative(column: Column, data: object[]) {
 
 function detectSequentialColumn(column: Column, data: object[]): boolean {
     if (data.length < 2) return false;
-    let colname = column.name;
+    const colname = column.name;
     for (let i = 1; i < data.length; i++) {
         if (data[i][colname] !== data[i - 1][colname] + 1) return false;
     }

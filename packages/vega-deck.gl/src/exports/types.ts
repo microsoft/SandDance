@@ -23,14 +23,14 @@ import {
     TickText,
     TransitionDurations,
     Vec3,
-    VegaTextLayerDatum
+    VegaTextLayerDatum,
 } from '../interfaces';
 import {
     Base,
     DeckBase,
     DeckLayerBase,
     LumaBase,
-    VegaBase
+    VegaBase,
 } from '../base';
 import { CubeLayerDataProps, CubeLayerDefaultProps, CubeLayerProps } from '../cube-layer/cube-layer';
 import { ViewGlConfig } from '../vega-classes/viewGl';
@@ -61,7 +61,7 @@ export {
     TransitionDurations,
     VegaBase,
     VegaTextLayerDatum,
-    ViewGlConfig
+    ViewGlConfig,
 };
 
 //alphabetize types  for documentation

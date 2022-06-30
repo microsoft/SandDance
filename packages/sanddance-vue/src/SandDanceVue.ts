@@ -39,7 +39,7 @@ export default Vue.extend({
             const b = addNullable(this.insight, { ...a.signalValues, ...this.insight.signalValues });
             const compare = deepCompare(a, b);
             return compare && (this.data === this.lastData);
-        }
+        },
     },
     methods: {
         layout: function () {
@@ -47,7 +47,7 @@ export default Vue.extend({
             this.viewer.render(
                 this.insight,
                 this.data,
-                this.renderOptions
+                this.renderOptions,
             ).then(renderResult => {
                 this.$emit('view', renderResult);
             }).catch(e => {
@@ -58,7 +58,7 @@ export default Vue.extend({
             if (this.needsLayout) {
                 this.layout();
             }
-        }
+        },
     },
     mounted: function () {
         this.viewer = new Viewer(this.$refs.viewerDiv as HTMLElement, this.viewerOptions);
@@ -71,5 +71,5 @@ export default Vue.extend({
     },
     beforeDestroy: function () {
         this.viewer.finalize();
-    }
+    },
 });

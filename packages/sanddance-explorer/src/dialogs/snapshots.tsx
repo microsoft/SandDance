@@ -51,7 +51,7 @@ function _Snapshots(_props: Props) {
                 description: '',
                 image: null,
                 bgColor: null,
-                insight: null
+                insight: null,
             };
         }
 
@@ -63,11 +63,11 @@ function _Snapshots(_props: Props) {
                     onClick: () => this.setState({
                         confirmation: {
                             buttonText: strings.buttonClearSnapshots,
-                            handler: () => this.props.onClearSnapshots()
-                        }
+                            handler: () => this.props.onClearSnapshots(),
+                        },
                     }),
-                    disabled: this.props.snapshots.length === 0
-                }
+                    disabled: this.props.snapshots.length === 0,
+                },
             ];
             if (this.props.getTopActions) {
                 items.push.apply(items, this.props.getTopActions(this.props.snapshots));
@@ -85,7 +85,7 @@ function _Snapshots(_props: Props) {
                             onClick={e => this.props.editor.editSnapshot()}
                             split
                             menuProps={{
-                                items
+                                items,
                             }}
                         />
                         {this.props.getChildren && this.props.getChildren(this.props.snapshots)}
@@ -117,9 +117,9 @@ function _Snapshots(_props: Props) {
                                             themePalette: this.props.themePalette,
                                             title: strings.buttonEditSnapshot,
                                             onClick: e => this.props.editor.editSnapshot(snapshot, i),
-                                            iconName: 'Edit'
-                                        }
-                                    }
+                                            iconName: 'Edit',
+                                        },
+                                    },
                                 );
                                 if (this.props.snapshots.length > 1) {
                                     actions.push(
@@ -129,8 +129,8 @@ function _Snapshots(_props: Props) {
                                                 themePalette: this.props.themePalette,
                                                 title: strings.buttonMoveUp,
                                                 onClick: e => this.props.onMoveUp(i),
-                                                iconName: 'SortUp'
-                                            }
+                                                iconName: 'SortUp',
+                                            },
                                         },
                                         {
                                             iconButtonProps: {
@@ -138,9 +138,9 @@ function _Snapshots(_props: Props) {
                                                 themePalette: this.props.themePalette,
                                                 title: strings.buttonMoveDown,
                                                 onClick: e => this.props.onMoveDown(i),
-                                                iconName: 'SortDown'
-                                            }
-                                        }
+                                                iconName: 'SortDown',
+                                            },
+                                        },
                                     );
                                 }
                                 actions.push(
@@ -152,12 +152,12 @@ function _Snapshots(_props: Props) {
                                                 this.setState({
                                                     confirmation: {
                                                         buttonText: strings.buttonDeleteSnapshot,
-                                                        handler: () => this.props.onRemoveSnapshot(i)
-                                                    }
+                                                        handler: () => this.props.onRemoveSnapshot(i),
+                                                    },
                                                 }),
-                                            iconName: 'Delete'
-                                        }
-                                    }
+                                            iconName: 'Delete',
+                                        },
+                                    },
                                 );
                                 return (
                                     <div key={i} className={util.classList('snapshot', i === this.props.selectedSnapshotIndex && 'selected')}>

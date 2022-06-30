@@ -9,7 +9,7 @@ import {
     addOffsets,
     addSignals,
     addTransforms,
-    getGroupBy
+    getGroupBy,
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { Column } from '@msrvida/chart-types';
@@ -68,12 +68,12 @@ export class Stack extends Layout {
                 type: 'joinaggregate',
                 groupby: getGroupBy(groupings).map(safeFieldName),
                 ops: ['count'],
-                as: [names.count]
+                as: [names.count],
             },
             {
                 type: 'extent',
                 field: names.count,
-                signal: names.globalExtent
+                signal: names.globalExtent,
             },
             {
                 type: 'stack',
@@ -82,10 +82,10 @@ export class Stack extends Layout {
                 ...sort && {
                     sort: {
                         field: safeFieldName(sort.name),
-                        order: 'ascending'
-                    }
-                }
-            }
+                        order: 'ascending',
+                    },
+                },
+            },
         );
 
         addData(globalScope.scope,
@@ -96,78 +96,78 @@ export class Stack extends Layout {
                         type: 'sequence',
                         start: 1,
                         stop: {
-                            signal: `max(sqrt(${names.globalExtent}[1]),2)`
-                        }
+                            signal: `max(sqrt(${names.globalExtent}[1]),2)`,
+                        },
                     },
                     {
                         type: 'formula',
                         expr: 'datum.data * datum.data',
-                        as: 'squared'
+                        as: 'squared',
                     },
                     {
                         type: 'formula',
                         expr: `ceil(${names.globalExtent}[1] / datum.squared)`,
-                        as: 'maxlevels'
+                        as: 'maxlevels',
                     },
                     {
                         type: 'formula',
                         expr: `(${names.size} - (datum.data - 1) * datum.data) / datum.data`,
-                        as: 'side'
+                        as: 'side',
                     },
                     {
                         type: 'formula',
                         expr: 'datum.side * datum.maxlevels + datum.maxlevels - 1',
-                        as: 'sidecubeheight'
+                        as: 'sidecubeheight',
                     },
                     {
                         type: 'formula',
                         expr: `abs(${globalScope.zSize} - datum.sidecubeheight)`,
-                        as: 'heightmatch'
+                        as: 'heightmatch',
                     },
                     {
                         type: 'collect',
                         sort: {
                             field: 'heightmatch',
-                            order: 'ascending'
-                        }
+                            order: 'ascending',
+                        },
                     },
                     {
                         type: 'window',
-                        ops: ['row_number']
+                        ops: ['row_number'],
                     },
                     {
                         type: 'filter',
-                        expr: 'datum.row_number === 1'
-                    }
-                ]
-            }
+                        expr: 'datum.row_number === 1',
+                    },
+                ],
+            },
         );
 
         addSignals(globalScope.scope,
             {
                 name: names.size,
-                update: `min((${sizeSignals.layoutHeight}), (${sizeSignals.layoutWidth}))`
+                update: `min((${sizeSignals.layoutHeight}), (${sizeSignals.layoutWidth}))`,
             },
             {
                 name: names.squared,
-                update: `data('${names.sequence}')[0].squared`
+                update: `data('${names.sequence}')[0].squared`,
             },
             {
                 name: names.sides,
-                update: `sqrt(${names.squared})`
+                update: `sqrt(${names.squared})`,
             },
             {
                 name: names.cube,
-                update: `(${names.size} - (${names.sides} - 1)) / ${names.sides}`
+                update: `(${names.size} - (${names.sides} - 1)) / ${names.sides}`,
             },
             {
                 name: names.maxLevels,
-                update: `data('${names.sequence}')[0].maxlevels`
+                update: `data('${names.sequence}')[0].maxlevels`,
             },
             {
                 name: names.maxCount,
-                update: `${names.maxLevels} * ${names.squared}`
-            }
+                update: `${names.maxLevels} * ${names.squared}`,
+            },
         );
 
         const zLevel = `floor(datum[${JSON.stringify(names.stack0)}] / ${names.squared})`;
@@ -181,7 +181,7 @@ export class Stack extends Layout {
             x: addOffsets(parentScope.offsets.x, groupX, `${cubeX} * (${names.cube} + 1)`),
             y: addOffsets(parentScope.offsets.y, groupY, `${cubeY} * (${names.cube} + 1)`),
             h: names.size,
-            w: names.size
+            w: names.size,
         };
 
         const mark: RectMark = {
@@ -190,19 +190,19 @@ export class Stack extends Layout {
             encode: {
                 update: {
                     z: {
-                        signal: `${zLevel} * (${names.cube} + 1)`
+                        signal: `${zLevel} * (${names.cube} + 1)`,
                     },
                     height: {
-                        signal: names.cube
+                        signal: names.cube,
                     },
                     width: {
-                        signal: names.cube
+                        signal: names.cube,
                     },
                     depth: {
-                        signal: names.cube
-                    }
-                }
-            }
+                        signal: names.cube,
+                    },
+                },
+            },
         };
         addMarks(globalScope.markGroup, mark);
 
@@ -212,16 +212,16 @@ export class Stack extends Layout {
             domain: [
                 0,
                 {
-                    signal: names.maxCount
-                }
+                    signal: names.maxCount,
+                },
             ],
             range: [
                 0,
                 {
-                    signal: `${names.maxLevels} * (${names.cube} + 1) - 1`
-                }
+                    signal: `${names.maxLevels} * (${names.cube} + 1) - 1`,
+                },
             ],
-            nice: false
+            nice: false,
         };
 
         return {
@@ -229,32 +229,32 @@ export class Stack extends Layout {
             mark,
             sizeSignals: {
                 layoutHeight: names.size,
-                layoutWidth: names.size
+                layoutWidth: names.size,
             },
             globalScales: {
                 showAxes: true,
                 scales: {
-                    z: [zScale]
-                }
+                    z: [zScale],
+                },
             },
             encodingRuleMap: {
                 y: [{
                     test: testForCollapseSelection(),
-                    signal: parentScope.offsets.y
+                    signal: parentScope.offsets.y,
                 }],
                 z: [{
                     test: testForCollapseSelection(),
-                    value: 0
+                    value: 0,
                 }],
                 depth: [{
                     test: testForCollapseSelection(),
-                    value: 0
+                    value: 0,
                 }],
                 height: [{
                     test: testForCollapseSelection(),
-                    value: 0
-                }]
-            }
+                    value: 0,
+                }],
+            },
         };
     }
 }

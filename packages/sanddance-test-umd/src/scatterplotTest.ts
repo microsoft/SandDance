@@ -19,14 +19,14 @@ namespace scatterplotTest {
             uid: 'Id',
             x: 'Longitude',
             y: 'Latitude',
-            z: 'Income'
+            z: 'Income',
         },
         scheme: 'redblue',
         size: {
             height: glDiv.offsetHeight,
-            width: glDiv.offsetWidth
+            width: glDiv.offsetWidth,
         },
-        chart: 'scatterplot'
+        chart: 'scatterplot',
     };
 
     vega.loader().load('../../../sample-data/demovote.tsv').then(text => {

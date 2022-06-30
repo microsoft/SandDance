@@ -11,7 +11,7 @@ export function ensureHeaders(presenter: Presenter, headers: Headers) {
 }
 
 function conditionalHeader(condition: boolean, element: HTMLElement, header: string) {
-    var existing = existingHeader(element, header);
+    const existing = existingHeader(element, header);
     if (condition && !existing) {
         addHeader(element, header);
     }

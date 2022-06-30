@@ -27,38 +27,38 @@ export function Sidebar(props: Props) {
         {
             sideTabId: SideTabId.ChartType,
             iconName: 'BIDashboard',
-            title: strings.labelChart
+            title: strings.labelChart,
         },
         {
             sideTabId: SideTabId.Color,
             iconName: 'Color',
-            title: strings.labelColor
+            title: strings.labelColor,
         },
         {
             sideTabId: SideTabId.Data,
             iconName: 'Table',
-            title: strings.labelDataBrowser
+            title: strings.labelDataBrowser,
         },
         {
             sideTabId: SideTabId.Search,
             iconName: 'Search',
-            title: strings.labelSearch
+            title: strings.labelSearch,
         },
         {
             sideTabId: SideTabId.Snapshots,
             iconName: 'Camera',
-            title: strings.labelSnapshots
+            title: strings.labelSnapshots,
         },
         {
             sideTabId: SideTabId.History,
             iconName: 'History',
-            title: strings.labelHistory
+            title: strings.labelHistory,
         },
         {
             sideTabId: SideTabId.Settings,
             iconName: 'Settings',
-            title: strings.labelChartSettings
-        }
+            title: strings.labelChartSettings,
+        },
     ];
     return (
         <div className={util.classList('sanddance-sidebar', 'calculator', props.pinned && 'pinned', props.closed && 'closed')}>

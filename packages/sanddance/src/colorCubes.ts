@@ -6,7 +6,7 @@ import {
     ColorMap,
     ColorMappedItem,
     ColorMethod,
-    ViewerOptions
+    ViewerOptions,
 } from './types';
 import { FieldNames } from '@msrvida/sanddance-specs';
 import { GL_ORDINAL } from './constants';

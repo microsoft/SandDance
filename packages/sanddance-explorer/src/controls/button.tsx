@@ -20,18 +20,18 @@ export function Button(props: IButtonProps) {
                     backgroundColor: 'transparent',
                     height: '30px',
                     width: props.width,
-                    padding: 0
+                    padding: 0,
                 },
                 rootDisabled: {
-                    backgroundColor: 'transparent'
+                    backgroundColor: 'transparent',
                 },
                 icon: {
-                    color: props.themePalette.themePrimary
+                    color: props.themePalette.themePrimary,
                 },
                 label: {
                     fontWeight: '400',
-                    textAlign: props.textAlign || 'left'
-                }
+                    textAlign: props.textAlign || 'left',
+                },
             }}
             iconProps={{ iconName: props.iconName }}
         />

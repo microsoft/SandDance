@@ -7,7 +7,7 @@ export const fontFamily = 'Segoe UI, sans-serif';
 
 export const defaultViewerOptions: Partial<ViewerOptions> = {
     colors: getColorSettingsFromThemePalette(themePalettes['']),
-    fontFamily
+    fontFamily,
 };
 
 export const snapshotThumbWidth = 300;

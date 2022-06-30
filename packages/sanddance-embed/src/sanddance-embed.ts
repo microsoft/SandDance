@@ -3,10 +3,10 @@
 import SandDance = SandDanceExplorer.SandDance;
 import VegaDeckGl = SandDance.VegaDeckGl;
 
-declare var vega: VegaDeckGl.types.VegaBase;
-declare var deck: VegaDeckGl.types.DeckBase & VegaDeckGl.types.DeckLayerBase;
-declare var luma: VegaDeckGl.types.LumaBase;
-declare var FluentUIReact: _FluentUI.FluentUIComponents;
+declare let vega: VegaDeckGl.types.VegaBase;
+declare let deck: VegaDeckGl.types.DeckBase & VegaDeckGl.types.DeckLayerBase;
+declare let luma: VegaDeckGl.types.LumaBase;
+declare let FluentUIReact: _FluentUI.FluentUIComponents;
 
 namespace SandDanceEmbed {
 
@@ -37,7 +37,7 @@ namespace SandDanceEmbed {
                     mounted: explorer => {
                         sandDanceExplorer = explorer;
                         innerLoad();
-                    }
+                    },
                 };
                 ReactDOM.render(React.createElement(SandDanceExplorer.Explorer, explorerProps), document.getElementById('app'));
             };
@@ -59,7 +59,7 @@ namespace SandDanceEmbed {
         switch (request.action) {
             case 'init': {
                 response = {
-                    request
+                    request,
                 };
                 break;
             }
@@ -67,7 +67,7 @@ namespace SandDanceEmbed {
                 const request_load = request as MessageRequest_Load;
                 load(request_load.data, request_load.insight).then(() => {
                     response = {
-                        request
+                        request,
                     };
                     requestWithSource.source.postMessage(response, '*');
                 });
@@ -78,14 +78,14 @@ namespace SandDanceEmbed {
             case 'getData': {
                 response = <MessageResponse_GetData>{
                     request,
-                    data: sandDanceExplorer.state.dataContent.data
+                    data: sandDanceExplorer.state.dataContent.data,
                 };
                 break;
             }
             case 'getInsight': {
                 response = <MessageResponse_GetInsight>{
                     request,
-                    insight: sandDanceExplorer.viewer.getInsight()
+                    insight: sandDanceExplorer.viewer.getInsight(),
                 };
                 break;
             }
@@ -103,7 +103,7 @@ namespace SandDanceEmbed {
             const requestLoadFromArray: MessageRequest_Load = {
                 action: 'load',
                 data,
-                insight: null
+                insight: null,
             };
             payload = requestLoadFromArray;
         } else {
@@ -111,7 +111,7 @@ namespace SandDanceEmbed {
             if (Array.isArray(dataWithInsight.data)) {
                 const requestLoadFromDataWithInsight: MessageRequest_Load = {
                     action: 'load',
-                    ...dataWithInsight
+                    ...dataWithInsight,
                 };
                 payload = requestLoadFromDataWithInsight;
             }
@@ -125,7 +125,7 @@ namespace SandDanceEmbed {
     if (window.opener) {
         const request: MessageRequest_Init = {
             action: 'init',
-            ts: new Date()
+            ts: new Date(),
         };
         respondToRequest({ ...request, source: window.opener });
     }

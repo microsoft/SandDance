@@ -446,7 +446,7 @@ declare module 'azdata' {
 		number = 'number',
 		category = 'category',
 		boolean = 'boolean',
-		object = 'object'
+		object = 'object',
 	}
 
 	export enum ConnectionOptionSpecialType {
@@ -456,7 +456,7 @@ declare module 'azdata' {
 		authType = 'authType',
 		userName = 'userName',
 		password = 'password',
-		appName = 'appName'
+		appName = 'appName',
 	}
 
 	export interface CategoryValue {
@@ -577,7 +577,7 @@ declare module 'azdata' {
 		Table = 0,
 		View = 1,
 		SProc = 2,
-		Function = 3
+		Function = 3,
 	}
 
 	export interface ObjectMetadata {
@@ -667,7 +667,7 @@ declare module 'azdata' {
 		Update = 3,
 		Delete = 4,
 		Execute = 5,
-		Alter = 6
+		Alter = 6,
 	}
 
 	export interface ScriptingResult {
@@ -853,7 +853,7 @@ declare module 'azdata' {
 		clean = 0,
 		dirtyInsert = 1,
 		dirtyDelete = 2,
-		dirtyUpdate = 3
+		dirtyUpdate = 3,
 	}
 
 	export interface EditRow {
@@ -1069,31 +1069,31 @@ declare module 'azdata' {
 	}
 
 	export class Insight {
-		private _insight: IInsight;
+	    private _insight: IInsight;
 	
-		public get insight(): IInsight;
+	    public get insight(): IInsight;
 	
-		private _options: IInsightOptions;
-		private _data: IInsightData;
-		private dim: Dimension;
+	    private _options: IInsightOptions;
+	    private _data: IInsightData;
+	    private dim: Dimension;
 	
-		constructor(
+	    constructor(
 			private container: HTMLElement, options: IInsightOptions = defaultOptions,
 			@IInstantiationService private _instantiationService: IInstantiationService
 		);
 	
-		public layout(dim: Dimension);
+	    public layout(dim: Dimension);
 	
-		public set options(val: IInsightOptions);
+	    public set options(val: IInsightOptions);
 	
-		public get options(): IInsightOptions;
+	    public get options(): IInsightOptions;
 	
-		public set data(val: IInsightData);
+	    public set data(val: IInsightData);
 		
 	
-		private buildInsight();
+	    private buildInsight();
 	
-		private findctor(type: ChartType | InsightType): IInsightCtor;
+	    private findctor(type: ChartType | InsightType): IInsightCtor;
 	}
 	
 
@@ -1102,102 +1102,102 @@ declare module 'azdata' {
 	 * Using a theme icon is preferred over a custom icon as it gives theme authors the possibility to change the icons.
 	 */
 	export class SqlThemeIcon {
-		static readonly Folder: SqlThemeIcon;
-		static readonly Root: SqlThemeIcon;
-		static readonly Database: SqlThemeIcon;
-		static readonly Server: SqlThemeIcon;
-		static readonly ScalarValuedFunction: SqlThemeIcon;
-		static readonly TableValuedFunction: SqlThemeIcon;
-		static readonly AggregateFunction: SqlThemeIcon;
-		static readonly FileGroup: SqlThemeIcon;
-		static readonly StoredProcedure: SqlThemeIcon;
-		static readonly UserDefinedTableType: SqlThemeIcon;
-		static readonly View: SqlThemeIcon;
-		static readonly Table: SqlThemeIcon;
-		static readonly HistoryTable: SqlThemeIcon;
-		static readonly ServerLevelLinkedServerLogin: SqlThemeIcon;
-		static readonly ServerLevelServerAudit: SqlThemeIcon;
-		static readonly ServerLevelCryptographicProvider: SqlThemeIcon;
-		static readonly ServerLevelCredential: SqlThemeIcon;
-		static readonly ServerLevelServerRole: SqlThemeIcon;
-		static readonly ServerLevelLogin: SqlThemeIcon;
-		static readonly ServerLevelServerAuditSpecification: SqlThemeIcon;
-		static readonly ServerLevelServerTrigger: SqlThemeIcon;
-		static readonly ServerLevelLinkedServer: SqlThemeIcon;
-		static readonly ServerLevelEndpoint: SqlThemeIcon;
-		static readonly Synonym: SqlThemeIcon;
-		static readonly DatabaseTrigger: SqlThemeIcon;
-		static readonly Assembly: SqlThemeIcon;
-		static readonly MessageType: SqlThemeIcon;
-		static readonly Contract: SqlThemeIcon;
-		static readonly Queue: SqlThemeIcon;
-		static readonly Service: SqlThemeIcon;
-		static readonly Route: SqlThemeIcon;
-		static readonly DatabaseAndQueueEventNotification: SqlThemeIcon;
-		static readonly RemoteServiceBinding: SqlThemeIcon;
-		static readonly BrokerPriority: SqlThemeIcon;
-		static readonly FullTextCatalog: SqlThemeIcon;
-		static readonly FullTextStopList: SqlThemeIcon;
-		static readonly SqlLogFile: SqlThemeIcon;
-		static readonly PartitionFunction: SqlThemeIcon;
-		static readonly PartitionScheme: SqlThemeIcon;
-		static readonly SearchPropertyList: SqlThemeIcon;
-		static readonly User: SqlThemeIcon;
-		static readonly Schema: SqlThemeIcon;
-		static readonly AsymmetricKey: SqlThemeIcon;
-		static readonly Certificate: SqlThemeIcon;
-		static readonly SymmetricKey: SqlThemeIcon;
-		static readonly DatabaseEncryptionKey: SqlThemeIcon;
-		static readonly MasterKey: SqlThemeIcon;
-		static readonly DatabaseAuditSpecification: SqlThemeIcon;
-		static readonly Column: SqlThemeIcon;
-		static readonly Key: SqlThemeIcon;
-		static readonly Constraint: SqlThemeIcon;
-		static readonly Trigger: SqlThemeIcon;
-		static readonly Index: SqlThemeIcon;
-		static readonly Statistic: SqlThemeIcon;
-		static readonly UserDefinedDataType: SqlThemeIcon;
-		static readonly UserDefinedType: SqlThemeIcon;
-		static readonly XmlSchemaCollection: SqlThemeIcon;
-		static readonly SystemExactNumeric: SqlThemeIcon;
-		static readonly SystemApproximateNumeric: SqlThemeIcon;
-		static readonly SystemDateAndTime: SqlThemeIcon;
-		static readonly SystemCharacterString: SqlThemeIcon;
-		static readonly SystemUnicodeCharacterString: SqlThemeIcon;
-		static readonly SystemBinaryString: SqlThemeIcon;
-		static readonly SystemOtherDataType: SqlThemeIcon;
-		static readonly SystemClrDataType: SqlThemeIcon;
-		static readonly SystemSpatialDataType: SqlThemeIcon;
-		static readonly UserDefinedTableTypeColumn: SqlThemeIcon;
-		static readonly UserDefinedTableTypeKey: SqlThemeIcon;
-		static readonly UserDefinedTableTypeConstraint: SqlThemeIcon;
-		static readonly StoredProcedureParameter: SqlThemeIcon;
-		static readonly TableValuedFunctionParameter: SqlThemeIcon;
-		static readonly ScalarValuedFunctionParameter: SqlThemeIcon;
-		static readonly AggregateFunctionParameter: SqlThemeIcon;
-		static readonly DatabaseRole: SqlThemeIcon;
-		static readonly ApplicationRole: SqlThemeIcon;
-		static readonly FileGroupFile: SqlThemeIcon;
-		static readonly SystemMessageType: SqlThemeIcon;
-		static readonly SystemContract: SqlThemeIcon;
-		static readonly SystemService: SqlThemeIcon;
-		static readonly SystemQueue: SqlThemeIcon;
-		static readonly Sequence: SqlThemeIcon;
-		static readonly SecurityPolicy: SqlThemeIcon;
-		static readonly DatabaseScopedCredential: SqlThemeIcon;
-		static readonly ExternalResource: SqlThemeIcon;
-		static readonly ExternalDataSource: SqlThemeIcon;
-		static readonly ExternalFileFormat: SqlThemeIcon;
-		static readonly ExternalTable: SqlThemeIcon;
-		static readonly ColumnMasterKey: SqlThemeIcon;
-		static readonly ColumnEncryptionKey: SqlThemeIcon;
+	    static readonly Folder: SqlThemeIcon;
+	    static readonly Root: SqlThemeIcon;
+	    static readonly Database: SqlThemeIcon;
+	    static readonly Server: SqlThemeIcon;
+	    static readonly ScalarValuedFunction: SqlThemeIcon;
+	    static readonly TableValuedFunction: SqlThemeIcon;
+	    static readonly AggregateFunction: SqlThemeIcon;
+	    static readonly FileGroup: SqlThemeIcon;
+	    static readonly StoredProcedure: SqlThemeIcon;
+	    static readonly UserDefinedTableType: SqlThemeIcon;
+	    static readonly View: SqlThemeIcon;
+	    static readonly Table: SqlThemeIcon;
+	    static readonly HistoryTable: SqlThemeIcon;
+	    static readonly ServerLevelLinkedServerLogin: SqlThemeIcon;
+	    static readonly ServerLevelServerAudit: SqlThemeIcon;
+	    static readonly ServerLevelCryptographicProvider: SqlThemeIcon;
+	    static readonly ServerLevelCredential: SqlThemeIcon;
+	    static readonly ServerLevelServerRole: SqlThemeIcon;
+	    static readonly ServerLevelLogin: SqlThemeIcon;
+	    static readonly ServerLevelServerAuditSpecification: SqlThemeIcon;
+	    static readonly ServerLevelServerTrigger: SqlThemeIcon;
+	    static readonly ServerLevelLinkedServer: SqlThemeIcon;
+	    static readonly ServerLevelEndpoint: SqlThemeIcon;
+	    static readonly Synonym: SqlThemeIcon;
+	    static readonly DatabaseTrigger: SqlThemeIcon;
+	    static readonly Assembly: SqlThemeIcon;
+	    static readonly MessageType: SqlThemeIcon;
+	    static readonly Contract: SqlThemeIcon;
+	    static readonly Queue: SqlThemeIcon;
+	    static readonly Service: SqlThemeIcon;
+	    static readonly Route: SqlThemeIcon;
+	    static readonly DatabaseAndQueueEventNotification: SqlThemeIcon;
+	    static readonly RemoteServiceBinding: SqlThemeIcon;
+	    static readonly BrokerPriority: SqlThemeIcon;
+	    static readonly FullTextCatalog: SqlThemeIcon;
+	    static readonly FullTextStopList: SqlThemeIcon;
+	    static readonly SqlLogFile: SqlThemeIcon;
+	    static readonly PartitionFunction: SqlThemeIcon;
+	    static readonly PartitionScheme: SqlThemeIcon;
+	    static readonly SearchPropertyList: SqlThemeIcon;
+	    static readonly User: SqlThemeIcon;
+	    static readonly Schema: SqlThemeIcon;
+	    static readonly AsymmetricKey: SqlThemeIcon;
+	    static readonly Certificate: SqlThemeIcon;
+	    static readonly SymmetricKey: SqlThemeIcon;
+	    static readonly DatabaseEncryptionKey: SqlThemeIcon;
+	    static readonly MasterKey: SqlThemeIcon;
+	    static readonly DatabaseAuditSpecification: SqlThemeIcon;
+	    static readonly Column: SqlThemeIcon;
+	    static readonly Key: SqlThemeIcon;
+	    static readonly Constraint: SqlThemeIcon;
+	    static readonly Trigger: SqlThemeIcon;
+	    static readonly Index: SqlThemeIcon;
+	    static readonly Statistic: SqlThemeIcon;
+	    static readonly UserDefinedDataType: SqlThemeIcon;
+	    static readonly UserDefinedType: SqlThemeIcon;
+	    static readonly XmlSchemaCollection: SqlThemeIcon;
+	    static readonly SystemExactNumeric: SqlThemeIcon;
+	    static readonly SystemApproximateNumeric: SqlThemeIcon;
+	    static readonly SystemDateAndTime: SqlThemeIcon;
+	    static readonly SystemCharacterString: SqlThemeIcon;
+	    static readonly SystemUnicodeCharacterString: SqlThemeIcon;
+	    static readonly SystemBinaryString: SqlThemeIcon;
+	    static readonly SystemOtherDataType: SqlThemeIcon;
+	    static readonly SystemClrDataType: SqlThemeIcon;
+	    static readonly SystemSpatialDataType: SqlThemeIcon;
+	    static readonly UserDefinedTableTypeColumn: SqlThemeIcon;
+	    static readonly UserDefinedTableTypeKey: SqlThemeIcon;
+	    static readonly UserDefinedTableTypeConstraint: SqlThemeIcon;
+	    static readonly StoredProcedureParameter: SqlThemeIcon;
+	    static readonly TableValuedFunctionParameter: SqlThemeIcon;
+	    static readonly ScalarValuedFunctionParameter: SqlThemeIcon;
+	    static readonly AggregateFunctionParameter: SqlThemeIcon;
+	    static readonly DatabaseRole: SqlThemeIcon;
+	    static readonly ApplicationRole: SqlThemeIcon;
+	    static readonly FileGroupFile: SqlThemeIcon;
+	    static readonly SystemMessageType: SqlThemeIcon;
+	    static readonly SystemContract: SqlThemeIcon;
+	    static readonly SystemService: SqlThemeIcon;
+	    static readonly SystemQueue: SqlThemeIcon;
+	    static readonly Sequence: SqlThemeIcon;
+	    static readonly SecurityPolicy: SqlThemeIcon;
+	    static readonly DatabaseScopedCredential: SqlThemeIcon;
+	    static readonly ExternalResource: SqlThemeIcon;
+	    static readonly ExternalDataSource: SqlThemeIcon;
+	    static readonly ExternalFileFormat: SqlThemeIcon;
+	    static readonly ExternalTable: SqlThemeIcon;
+	    static readonly ColumnMasterKey: SqlThemeIcon;
+	    static readonly ColumnEncryptionKey: SqlThemeIcon;
 
-		private constructor(id: string);
+	    private constructor(id: string);
 
-		/**
+	    /**
 		 * Gets the ID for the theme icon for help in cases where string comparison is needed
 		 */
-		public readonly id: string;
+	    public readonly id: string;
 	}
 
 	export interface ObjectExplorerSessionResponse {
@@ -1319,7 +1319,7 @@ declare module 'azdata' {
 		weekDays = 62,
 		saturday = 64,
 		weekEnds = 65,
-		everyDay = 127
+		everyDay = 127,
 	}
 
 	export enum NotifyMethods {
@@ -1327,21 +1327,21 @@ declare module 'azdata' {
 		notifyEmail = 1,
 		pager = 2,
 		netSend = 4,
-		notifyAll = 7
+		notifyAll = 7,
 	}
 
 	export enum AlertType {
 		sqlServerEvent = 1,
 		sqlServerPerformanceCondition = 2,
 		nonSqlServerEvent = 3,
-		wmiEvent = 4
+		wmiEvent = 4,
 	}
 
 	export enum JobCompletionActionCondition {
 		Never = 0,
 		OnSuccess = 1,
 		OnFailure = 2,
-		Always = 3
+		Always = 3,
 	}
 
 	export enum FrequencyTypes {
@@ -1352,7 +1352,7 @@ declare module 'azdata' {
 		Monthly = 1 << 4,
 		MonthlyRelative = 1 << 5,
 		AutoStart = 1 << 6,
-		OnIdle = 1 << 7
+		OnIdle = 1 << 7,
 	}
 
 	export enum FrequencySubDayTypes {
@@ -1360,7 +1360,7 @@ declare module 'azdata' {
 		Once = 1,
 		Second = 2,
 		Minute = 4,
-		Hour = 8
+		Hour = 8,
 	}
 
 	export enum FrequencyRelativeIntervals {
@@ -1368,7 +1368,7 @@ declare module 'azdata' {
 		Second = 2,
 		Third = 4,
 		Fourth = 8,
-		Last = 16
+		Last = 16,
 	}
 
 	export enum JobExecutionStatus {
@@ -1378,7 +1378,7 @@ declare module 'azdata' {
 		Idle = 4,
 		Suspended = 5,
 		WaitingForStepToFinish = 6,
-		PerformingCompletionAction = 7
+		PerformingCompletionAction = 7,
 	}
 
 	export interface AgentJobInfo {
@@ -1773,16 +1773,16 @@ declare module 'azdata' {
 	export enum SchemaUpdateAction {
 		Delete = 0,
 		Change = 1,
-		Add = 2
+		Add = 2,
 	}
 
 	export enum SchemaDifferenceType {
 		Object = 0,
-		Property = 1
+		Property = 1,
 	}
 	export enum SchemaCompareEndpointType {
 		Database = 0,
-		Dacpac = 1
+		Dacpac = 1,
 	}
 	export interface SchemaCompareEndpointInfo {
 		endpointType: SchemaCompareEndpointType;
@@ -1943,7 +1943,7 @@ declare module 'azdata' {
 		ServerAuditSpecifications = 62,
 		ServerRoleMembership = 63,
 		ServerRoles = 64,
-		ServerTriggers = 65
+		ServerTriggers = 65,
 	}
 
 	export interface SchemaCompareServicesProvider extends DataProvider {
@@ -1976,7 +1976,7 @@ declare module 'azdata' {
 		SucceededWithWarning = 3,
 		Failed = 4,
 		Canceled = 5,
-		Canceling = 6
+		Canceling = 6,
 	}
 
 	export enum TaskExecutionMode {
@@ -2363,7 +2363,7 @@ declare module 'azdata' {
 
 	export enum AzureResource {
 		ResourceManagement = 0,
-		Sql = 1
+		Sql = 1,
 	}
 
 	export interface DidChangeAccountsParams {
@@ -2620,8 +2620,8 @@ declare module 'azdata' {
 	}
 
 	export class TreeItem extends vscode.TreeItem {
-		payload?: IConnectionProfile;
-		childProvider?: string;
+	    payload?: IConnectionProfile;
+	    childProvider?: string;
 	}
 
 	export namespace tasks {
@@ -2694,8 +2694,8 @@ declare module 'azdata' {
 	}
 
 	export class TreeComponentItem extends vscode.TreeItem {
-		checked?: boolean;
-		enabled?: boolean;
+	    checked?: boolean;
+	    enabled?: boolean;
 	}
 
 	export interface ComponentBuilder<T extends Component> {
@@ -3054,7 +3054,7 @@ declare module 'azdata' {
 
 	export enum Orientation {
 		Horizontal = 'horizontal',
-		Vertical = 'vertial'
+		Vertical = 'vertial',
 	}
 
 	export interface ToolbarLayout {
@@ -3090,13 +3090,13 @@ declare module 'azdata' {
 		None = 0,
 		Ok = 1,
 		Warning = 2,
-		Error = 3
+		Error = 3,
 	}
 
 	export enum CardType {
 		VerticalButton = 'VerticalButton',
 		Details = 'Details',
-		ListItem = 'ListItem'
+		ListItem = 'ListItem',
 	}
 
 	/**
@@ -3172,7 +3172,7 @@ declare module 'azdata' {
 	export enum ColumnType {
 		text = 0,
 		checkBox = 1,
-		button = 2
+		button = 2,
 	}
 
 	export interface CheckboxColumnOption {
@@ -3184,7 +3184,7 @@ declare module 'azdata' {
 
 	export enum ActionOnCellCheckboxCheck {
 		selectRow = 0,
-		customAction = 1
+		customAction = 1,
 	}
 
 	export interface TableComponentProperties extends ComponentProperties {
@@ -3211,7 +3211,7 @@ declare module 'azdata' {
 		string = 'string',
 		category = 'category',
 		boolean = 'boolean',
-		editableCategory = 'editableCategory'
+		editableCategory = 'editableCategory',
 	}
 
 	export interface RadioButtonProperties {
@@ -3655,7 +3655,7 @@ declare module 'azdata' {
 		export enum MessageLevel {
 			Error = 0,
 			Warning = 1,
-			Information = 2
+			Information = 2,
 		}
 
 		/**
@@ -4059,7 +4059,7 @@ declare module 'azdata' {
 		DacFxServicesProvider = 'DacFxServicesProvider',
 		SchemaCompareServicesProvider = 'SchemaCompareServicesProvider',
 		ObjectExplorerNodeProvider = 'ObjectExplorerNodeProvider',
-		IconProvider = 'IconProvider'
+		IconProvider = 'IconProvider',
 	}
 
 	export namespace dataprotocol {
@@ -4347,24 +4347,24 @@ declare module 'azdata' {
 		 */
 		export class CellRange {
 
-			/**
+		    /**
 			 * The start index. It is before or equal to [end](#CellRange.end).
 			 */
-			readonly start: number;
+		    readonly start: number;
 
-			/**
+		    /**
 			 * The end index. It is after or equal to [start](#CellRange.start).
 			 */
-			readonly end: number;
+		    readonly end: number;
 
-			/**
+		    /**
 			 * Create a new range from two positions. If `start` is not
 			 * before or equal to `end`, the values will be swapped.
 			 *
 			 * @param start A number.
 			 * @param end A number.
 			 */
-			constructor(start: number, end: number);
+		    constructor(start: number, end: number);
 		}
 
 		export interface NotebookEditor {
@@ -4487,7 +4487,7 @@ declare module 'azdata' {
 			ContentUpdated = 0,
 			MetadataUpdated = 1,
 			Save = 2,
-			CellExecuted = 3
+			CellExecuted = 3,
 		}
 
 		/**

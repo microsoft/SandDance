@@ -6,7 +6,7 @@ import {
     SearchExpression,
     SearchExpressionGroup,
     SearchExpressionOperators,
-    SearchExpressionValue
+    SearchExpressionValue,
 } from '@msrvida/search-expression';
 
 export function notNice(niceValue: string | number) {
@@ -26,7 +26,7 @@ function tickValue(axis: VegaDeckGl.types.Axis, i: number) {
 export function selectNullOrEmpty(column: Column) {
     const searchExpression: SearchExpression = {
         name: column.name,
-        operator: 'isnullorEmpty'
+        operator: 'isnullorEmpty',
     };
     return searchExpression;
 }
@@ -38,7 +38,7 @@ export function selectExact(column: Column, value: SearchExpressionValue) {
     const searchExpression: SearchExpression = {
         name: column.name,
         operator: '==',
-        value
+        value,
     };
     return searchExpression;
 }
@@ -48,7 +48,7 @@ export function selectNone(column: Column, values: string[]) {
         const searchExpression: SearchExpression = {
             name: column.name,
             operator: '!=',
-            value
+            value,
         };
         if (i) {
             searchExpression.clause = '&&';
@@ -56,7 +56,7 @@ export function selectNone(column: Column, values: string[]) {
         return searchExpression;
     });
     const searchExpressionGroup: SearchExpressionGroup = {
-        expressions
+        expressions,
     };
     return searchExpressionGroup;
 }
@@ -74,21 +74,21 @@ export function selectBetween(column: Column, lowValue: SearchExpressionValue, h
         expressions.push({
             name: column.name,
             operator: lowOperator,
-            value: lowValue
+            value: lowValue,
         });
     }
     if (highValue !== undefined) {
         expressions.push({
             name: column.name,
             operator: highOperator,
-            value: highValue
+            value: highValue,
         });
     }
     if (expressions.length > 1) {
         expressions[1].clause = '&&';
     }
     const searchExpressionGroup: SearchExpressionGroup = {
-        expressions
+        expressions,
     };
     return searchExpressionGroup;
 }

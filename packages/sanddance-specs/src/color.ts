@@ -44,19 +44,19 @@ export function addColor(props: Props) {
                 domain: {
                     data: colorDataName,
                     field: FieldNames.TopColor,
-                    sort: true
+                    sort: true,
                 },
                 range: {
-                    scheme: insight.scheme || ColorScaleNone
+                    scheme: insight.scheme || ColorScaleNone,
                 },
-                reverse: { signal: colorReverseSignalName }
+                reverse: { signal: colorReverseSignalName },
             });
         }
     }
 
     addSignals(scope,
         colorBinCountSignal(specContext),
-        colorReverseSignal(specContext)
+        colorReverseSignal(specContext),
     );
 
     return { topColorField: FieldNames.TopColor, colorDataName };

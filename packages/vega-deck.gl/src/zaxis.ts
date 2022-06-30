@@ -5,7 +5,7 @@ import { lineZ } from './defaults';
 import { Vec3 } from './interfaces';
 
 export function zSwap(v3: Vec3 | Position) {
-    let temp = -v3[1]; //negeative y to positive z
+    const temp = -v3[1]; //negeative y to positive z
     if(v3[0]===lineZ) {
         v3[0] = 0;
     }

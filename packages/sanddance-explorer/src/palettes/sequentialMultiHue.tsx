@@ -347,6 +347,6 @@ export function sequentialMultiHue(selected: string) {
         schemeOption(selected, 'yellowgreenblue'),
         schemeOption(selected, 'yellowgreen'),
         schemeOption(selected, 'yelloworangebrown'),
-        schemeOption(selected, 'yelloworangered')
+        schemeOption(selected, 'yelloworangered'),
     ];
 }

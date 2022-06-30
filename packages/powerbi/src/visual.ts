@@ -95,7 +95,7 @@ export class Visual implements IVisual {
                 onContextMenu: (e: MouseEvent | PointerEvent, selectionId?: powerbiVisualsApi.extensibility.ISelectionId) => {
                     const position: powerbiVisualsApi.extensibility.IPoint = {
                         x: e.clientX,
-                        y: e.clientY
+                        y: e.clientY,
                     };
                     this.selectionManager.showContextMenu(selectionId || {}, position);
                 },
@@ -144,7 +144,7 @@ export class Visual implements IVisual {
                             this.clearFilter();
                         }
                     }
-                }
+                },
             };
             render(createElement(App, props), this.viewElement);
         }
@@ -160,7 +160,7 @@ export class Visual implements IVisual {
             const config: SandDanceConfig = {
                 insightJSON: JSON.stringify(insight),
                 snapshotsJSON: JSON.stringify(snapshots || []),
-                tooltipExclusionsJSON: JSON.stringify(tooltipExclusions)
+                tooltipExclusionsJSON: JSON.stringify(tooltipExclusions),
             };
             // console.log(`persist ${options.reason}`, config, this.persistAction);
             this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties: config, selector: null }] });

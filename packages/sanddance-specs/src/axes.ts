@@ -12,7 +12,7 @@ import {
     NewSignal,
     Scale,
     Scope,
-    TextBaselineValue
+    TextBaselineValue,
 } from 'vega-typings';
 
 export interface AxesScope {
@@ -48,8 +48,8 @@ export function addGlobalAxes(props: Props) {
 
     allGlobalScales.forEach(globalScales => {
         const { scales } = globalScales;
-        for (let xyz in scales) {
-            let _scales: Scale[] = scales[xyz];
+        for (const xyz in scales) {
+            const _scales: Scale[] = scales[xyz];
             if (_scales) {
                 addScales(scope, ..._scales);
                 let { showAxes } = globalScales;
@@ -64,7 +64,7 @@ export function addGlobalAxes(props: Props) {
                     }
                 }
                 if (showAxes && axisScales) {
-                    let axisScale: AxisScale = axisScales[xyz];
+                    const axisScale: AxisScale = axisScales[xyz];
                     if (axisScale) {
                         const lineColor = specViewOptions.colors.axisLine;
                         const horizontal = xyz === 'x';
@@ -78,14 +78,14 @@ export function addGlobalAxes(props: Props) {
                             lineColor,
                             titlePadding: axesTitlePadding[xyz],
                             labelBaseline: labelBaseline[xyz],
-                            zindex
+                            zindex,
                         };
                         axesScopes['main'].forEach(a => addAxes(a.scope, createAxis({
                             ...props,
                             scale: a.scale || _scales[0],
                             showTitle: a.title,
                             showLabels: a.labels,
-                            showLines: a.lines
+                            showLines: a.lines,
                         })));
 
                         if (axesScopes[xyz]) {
@@ -94,7 +94,7 @@ export function addGlobalAxes(props: Props) {
                                 scale: a.scale || _scales[0],
                                 showTitle: a.title,
                                 showLabels: a.labels,
-                                showLines: a.lines
+                                showLines: a.lines,
                             })));
                         }
 
@@ -135,34 +135,34 @@ function createAxis(props: AxisProps) {
         ...showLines && {
             domainColor: lineColor,
             tickColor: lineColor,
-            tickSize: specViewOptions.tickSize
+            tickSize: specViewOptions.tickSize,
         },
         ...showTitle && {
             title,
             titleAlign: horizontal ? 'left' : 'right',
             titleAngle: {
-                signal: horizontal ? SignalNames.TextAngleX : SignalNames.TextAngleY
+                signal: horizontal ? SignalNames.TextAngleX : SignalNames.TextAngleY,
             },
             titleColor: specViewOptions.colors.axisText,
             titleFontSize: {
-                signal: SignalNames.TextTitleSize
+                signal: SignalNames.TextTitleSize,
             },
             titleLimit: axesTitleLimit,
-            titlePadding
+            titlePadding,
         },
         labels: showLabels,
         ...showLabels && {
             labelAlign: horizontal ? 'left' : 'right',
             labelBaseline,
             labelAngle: {
-                signal: horizontal ? SignalNames.TextAngleX : SignalNames.TextAngleY
+                signal: horizontal ? SignalNames.TextAngleX : SignalNames.TextAngleY,
             },
             labelColor: specViewOptions.colors.axisText,
             labelFontSize: {
-                signal: SignalNames.TextSize
+                signal: SignalNames.TextSize,
             },
-            labelLimit: axesLabelLimit
-        }
+            labelLimit: axesLabelLimit,
+        },
     };
     if (column.quantitative) {
         axis.format = '~r';

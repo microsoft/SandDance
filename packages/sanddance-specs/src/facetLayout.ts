@@ -6,7 +6,7 @@ import {
     facetPaddingBottom,
     facetPaddingLeft,
     facetPaddingRight,
-    facetPaddingTop
+    facetPaddingTop,
 } from './defaults';
 import { FacetStyle } from './types';
 import { LayoutPair } from './layouts/layout';
@@ -33,7 +33,7 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
     const groupby = facetColumn;
     const plotPadding: PlotPadding = {
         x: 0,
-        y: 0
+        y: 0,
     };
     let facetPadding: FacetPadding;
     switch (facetStyle) {
@@ -42,16 +42,16 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
                 axisTextColor,
                 colRowTitles: true,
                 groupbyX: groupby,
-                groupbyY: facetVColumn
+                groupbyY: facetVColumn,
             };
             layoutPair = {
                 layoutType: 'Cross',
-                props
+                props,
             };
             facetPadding = {
                 bottom: facetPaddingBottom,
                 left: facetPaddingLeft,
-                top: 0
+                top: 0,
             };
             plotPadding.y = facetPaddingTop;
             plotPadding.x = facetPaddingRight;
@@ -62,28 +62,28 @@ export function getFacetLayout(facetStyle: FacetStyle, facetColumn: DiscreteColu
             const props: WrapProps = {
                 axisTextColor,
                 cellTitles: true,
-                groupby
+                groupby,
             };
             layoutPair = {
                 layoutType: 'Wrap',
-                props
+                props,
             };
             facetPadding =
             {
                 bottom: facetPaddingBottom,
                 left: facetPaddingLeft,
-                top: facetPaddingTop
+                top: facetPaddingTop,
             };
             break;
         }
     }
     const facetLayout: FacetLayout = {
         facetPadding,
-        plotPadding
+        plotPadding,
     };
     return {
         layoutPair,
-        facetLayout
+        facetLayout,
     };
 }
 

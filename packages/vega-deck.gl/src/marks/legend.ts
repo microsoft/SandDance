@@ -5,7 +5,7 @@ import {
     GroupType,
     LabelDatum,
     MarkStager,
-    MarkStagerOptions
+    MarkStagerOptions,
 } from './interfaces';
 import { Legend, LegendRowSymbol, Stage } from '../interfaces';
 import {
@@ -13,7 +13,7 @@ import {
     SceneItem,
     SceneLegendItem,
     SceneSymbol,
-    SceneText
+    SceneText,
 } from 'vega-typings';
 
 const legendMap: { [role: string]: (legend: Legend, item: SceneItem) => void } = {
@@ -37,7 +37,7 @@ const legendMap: { [role: string]: (legend: Legend, item: SceneItem) => void } =
         const row = legend.rows[i];
         row.label = label.text;
         row.value = (label.datum as unknown as LabelDatum).value;
-    }
+    },
 
 };
 

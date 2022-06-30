@@ -6,7 +6,7 @@ import {
     onBeforeCreateLayers,
     PositionedColumnMap,
     PositionedColumnMapProps,
-    TextWithSpecRole
+    TextWithSpecRole,
 } from './clickableTextLayer';
 import { applyColorButtons } from './colorMap';
 import { bestColorScheme } from './colorScheme';
@@ -36,7 +36,7 @@ import {
     DataFile,
     SettingsGroup,
     SideTabId,
-    SnapshotProps
+    SnapshotProps,
 } from './interfaces';
 import { strings } from './language';
 import { getPosition } from './mouseEvent';
@@ -45,7 +45,7 @@ import {
     initPrefs,
     Prefs,
     savePref,
-    saveSignalValuePref
+    saveSignalValuePref,
 } from './partialInsight';
 import { themePalettes } from './themes';
 import { toggleSearch } from './toggleSearch';
@@ -145,10 +145,10 @@ function createInputSearch(search: SandDance.searchExpression.Search) {
             expressions: group.expressions.map((ex, i) => {
                 const ex2: InputSearchExpression = {
                     key: i,
-                    ...ex
+                    ...ex,
                 };
                 return ex2;
-            })
+            }),
         };
     });
     return dialogSearch;
@@ -192,7 +192,7 @@ function _Explorer(props: Props) {
                 specCapabilities: null,
                 size: {
                     height: null,
-                    width: null
+                    width: null,
                 },
                 scheme: null,
                 transform: null,
@@ -213,7 +213,7 @@ function _Explorer(props: Props) {
                 positionedColumnMapProps: null,
                 note: null,
                 historyIndex: -1,
-                historyItems: []
+                historyItems: [],
             };
 
             this.state.selectedItemIndex[DataScopeId.AllData] = 0;
@@ -234,10 +234,10 @@ function _Explorer(props: Props) {
                 ...SandDance.VegaDeckGl.util.deepMerge(
                     defaultViewerOptions,
                     this.viewerOptions,
-                    viewerOptions
+                    viewerOptions,
                 ),
                 tooltipOptions: {
-                    exclude: columnName => this.state.tooltipExclusions.indexOf(columnName) >= 0
+                    exclude: columnName => this.state.tooltipExclusions.indexOf(columnName) >= 0,
                 },
                 onColorContextChange: () => this.manageColorToolbar(),
                 onDataFilter: (filter, filteredData) => {
@@ -245,7 +245,7 @@ function _Explorer(props: Props) {
                     selectedItemIndex[DataScopeId.FilteredData] = 0;
                     this.changeInsight(
                         { filter },
-                        { label: this.historicFilterChange, omit: !this.historicFilterChange }
+                        { label: this.historicFilterChange, omit: !this.historicFilterChange },
                     );
                     this.historicFilterChange = null;
                     this.setState({ filteredData, selectedItemIndex });
@@ -284,7 +284,7 @@ function _Explorer(props: Props) {
                         onDismiss: () => { this.setState({ positionedColumnMapProps: null }); },
                         specRole,
                         left: pos.left - this.div.clientLeft,
-                        top: pos.top - this.div.clientTop
+                        top: pos.top - this.div.clientTop,
                     };
                     this.setState({ positionedColumnMapProps });
                 },
@@ -329,7 +329,7 @@ function _Explorer(props: Props) {
                                 onDismiss: () => { this.setState({ positionedColumnMapProps: null }); },
                                 specRole,
                                 left: pos.left - this.div.clientLeft,
-                                top: pos.top - this.div.clientTop
+                                top: pos.top - this.div.clientTop,
                             };
                             this.setState({ positionedColumnMapProps });
                         } else {
@@ -337,7 +337,7 @@ function _Explorer(props: Props) {
                         }
                     }
                 },
-                onNewViewStateTarget: () => this.newViewStateTarget
+                onNewViewStateTarget: () => this.newViewStateTarget,
             };
             if (this.viewer && this.viewer.presenter) {
                 const newPresenterStyle = SandDance.util.getPresenterStyle(this.viewerOptions as SandDance.types.ViewerOptions);
@@ -380,7 +380,7 @@ function _Explorer(props: Props) {
                     this.viewer.currentColorContext = ~~remap;
                     this.viewer.renderSameLayout();
                     this.manageColorToolbar();
-                }
+                },
             });
         }
 
@@ -399,13 +399,13 @@ function _Explorer(props: Props) {
                 columns: null,
                 filter: null,
                 rebaseFilter,
-                ...partialInsight
+                ...partialInsight,
             };
             const state: Partial<UIState> = {
                 filteredData: null,
                 selectedItemIndex,
                 search: createInputSearch(historicInsight.filter),
-                ...newState
+                ...newState,
             };
             const changeInsight = () => {
                 this.getColorContext = null;
@@ -461,13 +461,13 @@ function _Explorer(props: Props) {
             getPartialInsight?: (
                 columns: SandDance.types.Column[]
             ) => Partial<SandDance.specs.Insight>,
-            optionsOrPrefs?: Prefs | Options
+            optionsOrPrefs?: Prefs | Options,
         ) {
             this.setState({ historyIndex: -1, historyItems: [] });
             this.changeInsight(
                 { columns: null },
                 { label: null, omit: true },
-                { note: null }
+                { note: null },
             );
             return new Promise<void>((resolve, reject) => {
                 const loadFinal = (dataContent: DataContent) => {
@@ -479,7 +479,7 @@ function _Explorer(props: Props) {
                     }
                     if (!partialInsight) {
                         //load recommendation
-                        let r = new RecommenderSummary(dataContent.columns, dataContent.data);
+                        const r = new RecommenderSummary(dataContent.columns, dataContent.data);
                         partialInsight = r.recommend();
                     }
                     partialInsight = {
@@ -487,7 +487,7 @@ function _Explorer(props: Props) {
                         filter: null,
                         totalStyle: null,
                         transform: null,
-                        ...partialInsight
+                        ...partialInsight,
                     };
                     if (partialInsight.chart === 'barchart') {
                         partialInsight.chart = 'barchartV';
@@ -497,7 +497,7 @@ function _Explorer(props: Props) {
                     selectedItemIndex[DataScopeId.AllData] = 0;
                     selectedItemIndex[DataScopeId.FilteredData] = 0;
                     selectedItemIndex[DataScopeId.SelectedData] = 0;
-                    let newState: Partial<State> = {
+                    const newState: Partial<State> = {
                         dataFile,
                         dataContent,
                         snapshots: dataContent.snapshots || this.state.snapshots,
@@ -506,7 +506,7 @@ function _Explorer(props: Props) {
                         tooltipExclusions: (optionsOrPrefs && (optionsOrPrefs as Options).tooltipExclusions) || [],
                         selectedItemIndex,
                         sideTabId,
-                        ...partialInsight
+                        ...partialInsight,
                     };
                     this.getColorContext = null;
                     ensureColumnsExist(newState.columns, dataContent.columns, newState.transform);
@@ -516,7 +516,7 @@ function _Explorer(props: Props) {
                     this.changeInsight(
                         partialInsight,
                         { label: strings.labelHistoryInit, insert: true },
-                        newState as State
+                        newState as State,
                     );
                     //make sure item is active
                     this.activateDataBrowserItem(sideTabId, this.state.dataScopeId);
@@ -527,7 +527,7 @@ function _Explorer(props: Props) {
                     return loadDataArray(data, 'json')
                         .then(result => {
                             dataFile = {
-                                type: 'json'
+                                type: 'json',
                             };
                             loadFinal(result);
                         })
@@ -589,7 +589,7 @@ function _Explorer(props: Props) {
                 this.changeInsight(
                     insight,
                     { label: strings.labelHistoryChangeChartType(chartLabel(chart)) },
-                    errors ? { errors } : null
+                    errors ? { errors } : null,
                 );
             });
         }
@@ -601,7 +601,7 @@ function _Explorer(props: Props) {
         public changeView(view: SandDance.types.View) {
             this.changeInsight(
                 { view },
-                { label: view === '2d' ? strings.labelViewType2d : strings.labelViewType3d }
+                { label: view === '2d' ? strings.labelViewType2d : strings.labelViewType3d },
             );
         }
 
@@ -679,7 +679,7 @@ function _Explorer(props: Props) {
         }
 
         public changespecCapabilities(
-            specCapabilities: SandDance.specs.SpecCapabilities
+            specCapabilities: SandDance.specs.SpecCapabilities,
         ) {
             this.setState({ specCapabilities });
         }
@@ -695,14 +695,14 @@ function _Explorer(props: Props) {
                 this.changeInsight(
                     partialInsight,
                     { label },
-                    errors ? { errors } : null
+                    errors ? { errors } : null,
                 );
             };
             const _changeInsight = (newInsight: Partial<HistoricInsight>, columnUpdate: SandDance.specs.InsightColumns, historyAction: HistoryAction) => {
                 newInsight.columns = SandDance.VegaDeckGl.util.deepMerge(
                     {},
                     columns,
-                    columnUpdate
+                    columnUpdate,
                 );
                 savePref(this.prefs, this.state.chart, '*', '*', { columns: columnUpdate });
                 this.changeInsight(newInsight, historyAction);
@@ -719,7 +719,7 @@ function _Explorer(props: Props) {
                     }
                     case 'color': {
                         let calculating: () => void = null;
-                        let historicInsight: Partial<HistoricInsight> = { scheme: options && options.scheme, columns, colorBin: this.state.colorBin };
+                        const historicInsight: Partial<HistoricInsight> = { scheme: options && options.scheme, columns, colorBin: this.state.colorBin };
                         if (!historicInsight.scheme) {
                             copyPrefToNewState(this.prefs, this.state.chart, 'color', column.name);
                         }
@@ -777,7 +777,7 @@ function _Explorer(props: Props) {
                         columns.facetV = null;
                         this.changeInsight(
                             { columns, facetStyle: 'wrap' },
-                            { label }
+                            { label },
                         );
                         break;
                     }
@@ -865,14 +865,14 @@ function _Explorer(props: Props) {
         private _resize() {
             this.changeInsight(
                 { size: this.getLayoutDivSize(this.state.sidebarPinned, this.state.sidebarClosed) },
-                { label: 'resize', omit: true }
+                { label: 'resize', omit: true },
             );
         }
 
         private viewerMounted(glDiv: HTMLElement) {
             this.setState({
                 size: this.getLayoutDivSize(this.state.sidebarPinned, this.state.sidebarClosed),
-                signalValues: this.state.signalValues //keep initialized signalValues
+                signalValues: this.state.signalValues, //keep initialized signalValues
             });
         }
 
@@ -886,7 +886,7 @@ function _Explorer(props: Props) {
                 this.setState({ search: createInputSearch(search) });
                 this.setSideTabId(SideTabId.Search);
             } else {
-                var oldSelection = this.viewer.getSelection();
+                const oldSelection = this.viewer.getSelection();
                 if (oldSelection.search) {
                     //look for matching groups and toggle them
                     const result = toggleSearch(SandDance.searchExpression.ensureSearchExpressionGroupArray(oldSelection.search), search);
@@ -996,7 +996,7 @@ function _Explorer(props: Props) {
                 totalStyle,
                 transform,
                 chart,
-                view
+                view,
             };
 
             const loaded = !!(this.state.columns && this.state.dataContent);
@@ -1079,7 +1079,7 @@ function _Explorer(props: Props) {
                             const view = this.state.view === '2d' ? '3d' : '2d';
                             this.changeInsight(
                                 { view },
-                                { label: view === '2d' ? strings.labelViewType2d : strings.labelViewType3d }
+                                { label: view === '2d' ? strings.labelViewType2d : strings.labelViewType3d },
                             );
                         }}
                         onHomeClick={() => this.viewer.presenter.homeCamera()}
@@ -1108,26 +1108,26 @@ function _Explorer(props: Props) {
                                 onCompactClick: () => {
                                     this.changeInsight(
                                         {
-                                            size: this.getLayoutDivSize(this.state.sidebarPinned, false)
+                                            size: this.getLayoutDivSize(this.state.sidebarPinned, false),
                                         },
                                         {
-                                            label: null, omit: true
+                                            label: null, omit: true,
                                         },
                                         {
                                             sidebarClosed: false,
-                                        }
+                                        },
                                     );
                                 },
                                 dataSet: this.props.datasetElement,
                                 dataCount: loaded && {
                                     all: this.state.dataContent && this.state.dataContent.data.length,
                                     filtered: this.state.filteredData && this.state.filteredData.length,
-                                    selected: selectionState && selectionState.selectedData && selectionState.selectedData.length
+                                    selected: selectionState && selectionState.selectedData && selectionState.selectedData.length,
                                 },
                                 active: this.state.sideTabId === SideTabId.Data,
                                 onDataScopeClick: dataScopeId => this.setSideTabId(SideTabId.Data, dataScopeId),
                                 selectedDataScope: this.state.dataScopeId,
-                                disabled: !loaded
+                                disabled: !loaded,
                             }}
                             onSideTabClick={sideTabId => {
                                 //collapse or toggle
@@ -1139,27 +1139,27 @@ function _Explorer(props: Props) {
                                     sidebarClosed = !this.state.sidebarClosed;
                                     this.changeInsight(
                                         {
-                                            size: this.getLayoutDivSize(this.state.sidebarPinned, sidebarClosed)
+                                            size: this.getLayoutDivSize(this.state.sidebarPinned, sidebarClosed),
                                         },
                                         {
-                                            label: null, omit: true
+                                            label: null, omit: true,
                                         },
                                         {
                                             dataScopeId,
                                             sidebarClosed,
-                                        }
+                                        },
                                     );
                                 } else if (sideTabId === SideTabId.Pin) {
                                     this.changeInsight(
                                         {
-                                            size: this.getLayoutDivSize(!this.state.sidebarPinned, this.state.sidebarClosed)
+                                            size: this.getLayoutDivSize(!this.state.sidebarPinned, this.state.sidebarClosed),
                                         },
                                         {
-                                            label: null, omit: true
+                                            label: null, omit: true,
                                         },
                                         {
-                                            sidebarPinned: !this.state.sidebarPinned
-                                        }
+                                            sidebarPinned: !this.state.sidebarPinned,
+                                        },
                                     );
                                 } else {
                                     this.setSideTabId(sideTabId);
@@ -1217,7 +1217,7 @@ function _Explorer(props: Props) {
                                                             this.getColorContext = null;
                                                             this.changeInsight(
                                                                 { colorBin },
-                                                                { label: strings.labelHistoryColorBin }
+                                                                { label: strings.labelHistoryColorBin },
                                                             );
                                                             savePref(this.prefs, this.state.chart, 'color', this.state.columns.color, { colorBin });
                                                         });
@@ -1240,7 +1240,7 @@ function _Explorer(props: Props) {
                                                     this.changeInsight(
                                                         { directColor },
                                                         { label: strings.labelHistoryDirectColor },
-                                                        { calculating: () => this._resize() }
+                                                        { calculating: () => this._resize() },
                                                     );
                                                 }}
                                             />
@@ -1299,7 +1299,7 @@ function _Explorer(props: Props) {
                                                 disableExpressionOR={this.props.searchORDisabled}
                                                 initializer={{
                                                     columns: columnMapProps.allColumns,
-                                                    search: this.state.search
+                                                    search: this.state.search,
                                                 }}
                                                 autoCompleteDistinctValues={this.state.autoCompleteDistinctValues}
                                                 onSelect={expr => this.doSelect(expr)}
@@ -1418,7 +1418,7 @@ function _Explorer(props: Props) {
                                             return rebaseFilter;
                                         },
                                         initialColorContext: this.getColorContext && this.getColorContext(this.viewer.insight, insight),
-                                        discardColorContextUpdates: () => this.discardColorContextUpdates
+                                        discardColorContextUpdates: () => this.discardColorContextUpdates,
                                     }}
                                     viewerOptions={this.viewerOptions}
                                     ref={reactViewer => {
@@ -1522,7 +1522,7 @@ function _Explorer(props: Props) {
                 quantitativeColumns,
                 categoricalColumns,
                 specCapabilities: this.state.specCapabilities,
-                explorer: this as any as Explorer_Class
+                explorer: this as any as Explorer_Class,
             };
             return props;
         }
@@ -1542,7 +1542,7 @@ export declare class Explorer_Class extends base.react.Component<Props, State> {
     private snapshotEditor;
     private scrollSnapshotTimer;
     private newViewStateTarget;
-    dialogFocusHandler: { focus?: () => void; }
+    dialogFocusHandler: { focus?: () => void; };
     viewer: SandDance.Viewer;
     viewerOptions: Partial<SandDance.types.ViewerOptions>;
     discardColorContextUpdates: boolean;

@@ -25,7 +25,7 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
         //change direction of y from SVG to GL
         const ty = -1;
 
-        let ordinal = options.assignCubeOrdinal(item.datum);
+        const ordinal = options.assignCubeOrdinal(item.datum);
         if (ordinal > options.maxOrdinal) {
             options.maxOrdinal = ordinal;
         }
@@ -37,7 +37,7 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
                 ordinal,
                 size: [item.width, item.height, depth],
                 position: [x + (item.x || 0), ty * (y + (item.y || 0)) - item.height, z],
-                color: colorFromString(item.fill) || options.defaultCubeColor || [128, 128, 128, 128]
+                color: colorFromString(item.fill) || options.defaultCubeColor || [128, 128, 128, 128],
             };
 
             cube.color[3] = item.opacity === undefined ? 255 : 255 * item.opacity;

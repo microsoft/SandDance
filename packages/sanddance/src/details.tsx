@@ -17,7 +17,7 @@ interface State {
 }
 
 enum Action {
-    deselect, isolate, exclude, reset, next, previous
+    deselect, isolate, exclude, reset, next, previous,
 }
 
 export class Details {
@@ -30,7 +30,7 @@ export class Details {
         private animator: Animator,
         private dataScope: DataScope,
         private colorMapHandler: (remap: boolean) => void,
-        private hasColorMaps: () => boolean
+        private hasColorMaps: () => boolean,
     ) {
         this.element = util.addDiv(parentElement, `${cssPrefix}unitControls`);
         this.clear();
@@ -46,7 +46,7 @@ export class Details {
         this.state = {
             userSelection: null,
             index: -1,
-            remapColor: false
+            remapColor: false,
         };
         this.render();
     }
@@ -67,7 +67,7 @@ export class Details {
         const search: SearchExpression = {
             name: columnName,
             operator: '==',
-            value
+            value,
         };
         this.clearSelection();
         this.animator.select(search);
@@ -141,7 +141,7 @@ export class Details {
             item: this.state.userSelection && this.state.userSelection.included[this.state.index],
             remapColorHandler: remap => this.remapChanged(remap),
             hasColorMaps: this.hasColorMaps() && hasRefinedData,
-            remapColor: this.state.remapColor
+            remapColor: this.state.remapColor,
         };
         const a = VegaDeckGl.util.getActiveElementInfo();
         VegaDeckGl.util.mount(renderDetails(renderProps), this.element);
@@ -165,7 +165,7 @@ const renderDetails = (props: RenderProps) => {
     const controlButtons = [
         <button disabled={!props.item} onClick={e => props.actionHandler(Action.deselect)}>{props.language.deselect}</button>,
         <button disabled={!props.item} onClick={e => props.actionHandler(Action.isolate)}>{props.language.isolate}</button>,
-        <button disabled={!props.item} onClick={e => props.actionHandler(Action.exclude)}>{props.language.exclude}</button>
+        <button disabled={!props.item} onClick={e => props.actionHandler(Action.exclude)}>{props.language.exclude}</button>,
     ];
     const colorMapping = (
         <div>
@@ -178,10 +178,10 @@ const renderDetails = (props: RenderProps) => {
     const scrollButtons = [
         <button disabled={singleItem} onClick={e => props.actionHandler(Action.previous)}>{props.language.previousDetail}</button>,
         <button disabled={singleItem} onClick={e => props.actionHandler(Action.next)}>{props.language.nextDetail}</button>,
-        <span> {props.language.selectionCount(props.count)}</span>
+        <span> {props.language.selectionCount(props.count)}</span>,
     ];
     const rows: controls.TableRow[] = [];
-    for (let prop in props.item) {
+    for (const prop in props.item) {
         if (prop === GL_ORDINAL) {
             continue;
         }
@@ -190,8 +190,8 @@ const renderDetails = (props: RenderProps) => {
         }
         rows.push({
             cells: [
-                { content: prop }, { content: linkSelect(props.language, prop, props.item[prop], props.selectionHandler) }
-            ]
+                { content: prop }, { content: linkSelect(props.language, prop, props.item[prop], props.selectionHandler) },
+            ],
         });
     }
     return (

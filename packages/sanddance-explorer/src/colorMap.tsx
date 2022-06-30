@@ -41,15 +41,15 @@ function ColorMap(props: Props) {
                 key: 'new',
                 text: strings.buttonColorSchemeRemap,
                 disabled: !props.canRemap || props.isRemap,
-                onClick: () => props.colorMapHandler(true)
+                onClick: () => props.colorMapHandler(true),
             },
             {
                 key: 'old',
                 text: strings.buttonColorSchemeKeep,
                 disabled: !props.canRemap || !props.isRemap,
-                onClick: () => props.colorMapHandler(false)
-            }
-        ]
+                onClick: () => props.colorMapHandler(false),
+            },
+        ],
     };
     return (
         <div>

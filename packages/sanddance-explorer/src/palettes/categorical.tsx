@@ -261,6 +261,6 @@ export function categorical(selected: string) {
         schemeOption(selected, 'set2'),
         schemeOption(selected, 'set3'),
         schemeOption(selected, 'tableau10'),
-        schemeOption(selected, 'tableau20')
+        schemeOption(selected, 'tableau20'),
     ];
 }

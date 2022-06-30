@@ -7,13 +7,13 @@ import {
     GroupType,
     LabelDatum,
     MarkStager,
-    MarkStagerOptions
+    MarkStagerOptions,
 } from './interfaces';
 import {
     Scene,
     SceneText,
     SceneTextAlign,
-    SceneTextBaseline
+    SceneTextBaseline,
 } from 'vega-typings';
 import { Stage, TickText, VegaTextLayerDatum } from '../interfaces';
 import { zSwap } from '../zaxis';
@@ -45,7 +45,7 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
             angle: convertAngle(item.angle),
             textAnchor: convertAlignment(item.align),
             alignmentBaseline,
-            metaData: item.metaData
+            metaData: item.metaData,
         };
         if (item.mark.role === 'axis-label') {
             const tickText = textItem as TickText;

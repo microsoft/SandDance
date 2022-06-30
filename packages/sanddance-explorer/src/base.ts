@@ -25,7 +25,7 @@ export interface Base {
 export const base: Base = {
     fluentUI: null,
     react: null,
-    reactDOM: null
+    reactDOM: null,
 };
 
 /**
@@ -44,7 +44,7 @@ export function use(
     vega: SandDance.VegaDeckGl.types.VegaBase,
     deck: SandDance.VegaDeckGl.types.DeckBase,
     layers: SandDance.VegaDeckGl.types.DeckLayerBase,
-    luma: SandDance.VegaDeckGl.types.LumaBase
+    luma: SandDance.VegaDeckGl.types.LumaBase,
 ) {
     _use(react, reactDOM, vega, deck, layers, luma);
     base.fluentUI = fluentUI;

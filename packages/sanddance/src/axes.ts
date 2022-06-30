@@ -40,7 +40,7 @@ export function recolorAxes(stage: VegaDeckGl.types.Stage, oldColors: SpecColorS
         axes = {
             x: cloneAxis(stage.axes.x, lineColor, textColor),
             y: cloneAxis(stage.axes.y, lineColor, textColor),
-            z: cloneAxis(stage.axes.z, lineColor, textColor)
+            z: cloneAxis(stage.axes.z, lineColor, textColor),
         };
     }
 

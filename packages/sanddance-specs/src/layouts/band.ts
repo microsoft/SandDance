@@ -8,13 +8,13 @@ import {
     EncodingRule,
     InnerScope,
     LayoutOffsets,
-    Orientation
+    Orientation,
 } from '../interfaces';
 import {
     addData,
     addOffsets,
     addSignals,
-    addTransforms
+    addTransforms,
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { modifySignal } from '../signals';
@@ -45,7 +45,7 @@ export class Band extends Layout {
             xScale: `scale_${p}_x`,
             yScale: `scale_${p}_y`,
             bandWidth: `${p}_bandwidth`,
-            accumulative: `${p}_accumulative`
+            accumulative: `${p}_accumulative`,
         };
         this.bin = binnable(this.prefix, props.globalScope.data.name, props.groupby);
     }
@@ -72,9 +72,9 @@ export class Band extends Layout {
                 {
                     type: 'aggregate',
                     groupby: this.getGrouping().map(safeFieldName),
-                    ops: ['count']
-                }
-            ]
+                    ops: ['count'],
+                },
+            ],
         });
         const horizontal = orientation === 'horizontal';
         const minCellSignal = (horizontal) ? globalScope.signals.minCellHeight : globalScope.signals.minCellWidth;
@@ -82,8 +82,8 @@ export class Band extends Layout {
         addSignals(globalScope.scope,
             {
                 name: names.bandWidth,
-                update: `bandwidth(${JSON.stringify(horizontal ? names.yScale : names.xScale)})`
-            }
+                update: `bandwidth(${JSON.stringify(horizontal ? names.yScale : names.xScale)})`,
+            },
         );
 
         const scales = this.getScales(bin, horizontal);
@@ -95,30 +95,30 @@ export class Band extends Layout {
                     x: [
                         {
                             test: testForCollapseSelection(),
-                            signal: parentScope.offsets.x
-                        }
+                            signal: parentScope.offsets.x,
+                        },
                     ],
                     width: [
                         {
                             test: testForCollapseSelection(),
-                            value: 0
-                        }
-                    ]
+                            value: 0,
+                        },
+                    ],
                 }
                 :
                 {
                     y: [
                         {
                             test: testForCollapseSelection(),
-                            signal: addOffsets(parentScope.offsets.y, parentScope.offsets.h)
-                        }
+                            signal: addOffsets(parentScope.offsets.y, parentScope.offsets.h),
+                        },
                     ],
                     height: [
                         {
                             test: testForCollapseSelection(),
-                            value: 0
-                        }
-                    ]
+                            value: 0,
+                        },
+                    ],
                 };
         }
 
@@ -127,21 +127,21 @@ export class Band extends Layout {
             sizeSignals: horizontal ?
                 {
                     layoutHeight: names.bandWidth,
-                    layoutWidth: parentScope.sizeSignals.layoutWidth
+                    layoutWidth: parentScope.sizeSignals.layoutWidth,
                 }
                 :
                 {
                     layoutHeight: parentScope.sizeSignals.layoutHeight,
-                    layoutWidth: names.bandWidth
+                    layoutWidth: names.bandWidth,
                 },
             globalScales: {
                 showAxes,
                 scales: {
                     x: horizontal ? undefined : scales,
-                    y: horizontal ? scales : undefined
-                }
+                    y: horizontal ? scales : undefined,
+                },
             },
-            encodingRuleMap
+            encodingRuleMap,
         };
     }
 
@@ -153,13 +153,13 @@ export class Band extends Layout {
                 horizontal ?
                     ''
                     :
-                    `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(binField)}])`
+                    `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(binField)}])`,
             ),
             y: addOffsets(parentScope.offsets.y,
                 horizontal ?
                     `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(binField)}])`
                     :
-                    ''
+                    '',
             ),
             h: horizontal ?
                 names.bandWidth
@@ -168,7 +168,7 @@ export class Band extends Layout {
             w: horizontal ?
                 parentScope.offsets.w
                 :
-                names.bandWidth
+                names.bandWidth,
         };
     }
 
@@ -186,16 +186,16 @@ export class Band extends Layout {
                 range: [
                     0,
                     {
-                        signal: parentScope.sizeSignals.layoutHeight
-                    }
+                        signal: parentScope.sizeSignals.layoutHeight,
+                    },
                 ],
                 padding: 0.1,
                 domain: {
                     data: bin.domainDataName,
                     field: binField,
-                    sort: true
+                    sort: true,
                 },
-                reverse: true
+                reverse: true,
             };
         } else {
             bandScale = {
@@ -204,15 +204,15 @@ export class Band extends Layout {
                 range: [
                     0,
                     {
-                        signal: parentScope.sizeSignals.layoutWidth
-                    }
+                        signal: parentScope.sizeSignals.layoutWidth,
+                    },
                 ],
                 padding: 0.1,
                 domain: {
                     data: bin.domainDataName,
                     field: binField,
-                    sort: true
-                }
+                    sort: true,
+                },
             };
         }
         scales.push(bandScale);

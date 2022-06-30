@@ -19,7 +19,7 @@ import {
     gouraudLighting,
     picking,
     project32,
-    TextLayer
+    TextLayer,
 } from 'deck.gl';
 import {
     CanvasHandler,
@@ -33,7 +33,7 @@ import {
     sceneVisit,
     scheme,
     truncate,
-    View
+    View,
 } from 'vega-typings';
 import { CubeGeometry, Model, Texture2D } from '@luma.gl/core';
 
@@ -55,7 +55,7 @@ export interface VegaBase {
     View: typeof View,
 }
 
-let vega: VegaBase = {
+const vega: VegaBase = {
     CanvasHandler: null,
     inferType: null,
     inferTypes: null,
@@ -67,7 +67,7 @@ let vega: VegaBase = {
     sceneVisit: null,
     scheme: null,
     truncate: null,
-    View: null
+    View: null,
 };
 
 /**
@@ -101,7 +101,7 @@ export interface DeckLayerBase {
     TextLayer: typeof TextLayer;
 }
 
-let deck: DeckBase = {
+const deck: DeckBase = {
     _CameraLight: null,
     AmbientLight: null,
     CompositeLayer: null,
@@ -115,15 +115,15 @@ let deck: DeckBase = {
     OrbitController: null,
     gouraudLighting: null,
     picking: null,
-    project32:  null
+    project32:  null,
 };
 
-let layers: DeckLayerBase = {
+const layers: DeckLayerBase = {
     IconLayer: null,
     LineLayer: null,
     PathLayer: null,
     PolygonLayer: null,
-    TextLayer: null
+    TextLayer: null,
 };
 
 /**
@@ -135,10 +135,10 @@ export interface LumaBase {
     Texture2D: typeof Texture2D
 }
 
-let luma: LumaBase = {
+const luma: LumaBase = {
     CubeGeometry: null,
     Model: null,
-    Texture2D: null
+    Texture2D: null,
 };
 
 /**
@@ -158,7 +158,7 @@ export const base: Base = {
     deck,
     layers,
     luma,
-    vega
+    vega,
 };
 
 /**

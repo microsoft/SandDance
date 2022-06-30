@@ -60,7 +60,7 @@ export interface SettingsGroup {
 }
 
 export enum SideTabId {
-  ChartType, Data, Search, Color, Snapshots, History, Settings, Pin, Collapse
+  ChartType, Data, Search, Color, Snapshots, History, Settings, Pin, Collapse,
 }
 
 export interface ChangeColumnMappingOptions {

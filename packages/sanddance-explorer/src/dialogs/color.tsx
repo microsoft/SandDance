@@ -75,20 +75,20 @@ export function Color(props: Props) {
                             key: 'continuous',
                             text: strings.labelColorBinNone,
                             checked: colorBin === 'continuous',
-                            disabled: disabledColorBin
+                            disabled: disabledColorBin,
                         },
                         {
                             key: 'quantize',
                             text: strings.labelColorBinQuantize,
                             checked: colorBin === 'quantize',
-                            disabled: disabledColorBin
+                            disabled: disabledColorBin,
                         },
                         {
                             key: 'quantile',
                             text: strings.labelColorBinQuantile,
                             checked: colorBin === 'quantile',
-                            disabled: disabledColorBin
-                        }
+                            disabled: disabledColorBin,
+                        },
                     ]}
                     onChange={(e, o) => {
                         props.onColorBinChange(o.key as SandDance.specs.ColorBin);

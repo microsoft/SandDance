@@ -46,5 +46,5 @@ export const strings = {
     errorUrlHttp: 'Url must begin with "http"',
     errorDownloadFailure: 'Data could not be prepared for download.',
     errorDataSourceFromLocal: (ds: DataSource) => `Could not load ${ds.type} from local file.`,
-    errorDataSourceFromUrl: (ds: DataSource) => `Could not load ${ds.type} from ${ds.dataUrl}`
+    errorDataSourceFromUrl: (ds: DataSource) => `Could not load ${ds.type} from ${ds.dataUrl}`,
 };

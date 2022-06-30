@@ -24,7 +24,7 @@ const map: { [chart: string]: (specContext: SpecContext) => SpecBuilderProps } =
     scatterplot,
     stacks,
     strips,
-    treemap
+    treemap,
 };
 
 export function getSpecBuilderPropsForChart(specContext: SpecContext) {
@@ -38,14 +38,14 @@ export function getSpecBuilderPropsForChart(specContext: SpecContext) {
                 defaultBins,
                 maxbins,
                 maxbinsSignalDisplayName: specViewOptions.language.FacetMaxBins,
-                maxbinsSignalName: SignalNames.FacetBins
+                maxbinsSignalName: SignalNames.FacetBins,
             };
             const discreteFacetVColumn: DiscreteColumn = {
                 column: specColumns.facetV,
                 defaultBins,
                 maxbins,
                 maxbinsSignalDisplayName: specViewOptions.language.FacetVMaxBins,
-                maxbinsSignalName: SignalNames.FacetVBins
+                maxbinsSignalName: SignalNames.FacetVBins,
             };
             const { facetLayout, layoutPair } = getFacetLayout(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn, specViewOptions.colors.axisText);
             props.layouts.unshift(layoutPair);

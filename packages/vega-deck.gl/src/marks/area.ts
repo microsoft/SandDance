@@ -31,19 +31,19 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
         strokeOpacity: 1,
         strokeWidth: 0,
         depth: 0,
-        ...(<GroupItem>scene.items[0])
+        ...(<GroupItem>scene.items[0]),
     };
 
     const points = scene.items.map((item: GroupItem) => {
         item = {
             z: 0,
-            ...item
+            ...item,
         };
         item = {
             x2: item.x,
             y2: item.y,
             z2: item.z,
-            ...item
+            ...item,
         };
         return [
             item.x,
@@ -51,13 +51,13 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
             item.z,
             item.x2,
             ty * item.y2,
-            item.z2
+            item.z2,
         ];
     });
 
-    let positions: Position3D[] = [];
+    const positions: Position3D[] = [];
 
-    let startpoint: Position3D = [points[0][0], points[0][1], points[0][2]];
+    const startpoint: Position3D = [points[0][0], points[0][1], points[0][2]];
     points.forEach(p => {
         positions.push([p[0], p[1], p[2]]);
     });
@@ -71,7 +71,7 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
         positions,
         strokeColor: colorFromString(g.stroke) || [0, 0, 0, 0],
         strokeWidth: g.strokeWidth,
-        depth: g.depth
+        depth: g.depth,
     };
 
     polygon.fillColor[3] *= g.fillOpacity;

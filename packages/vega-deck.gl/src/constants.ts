@@ -5,5 +5,5 @@ export const layerNames = {
     lines: 'LAYER_LINES',
     text: 'LAYER_TEXT',
     paths: 'LAYER_PATHS',
-    polygons: 'LAYER_POLYGONS'
+    polygons: 'LAYER_POLYGONS',
 };

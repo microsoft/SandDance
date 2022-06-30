@@ -24,12 +24,12 @@ export const LegendView: StatelessComponent<LegendViewProps> = (props: Stateless
         rows.push({
             cells: [
                 { className: 'symbol', content: jsx },
-                { className: 'label', content: row.label, title: row.label }
-            ]
+                { className: 'label', content: row.label, title: row.label },
+            ],
         });
     };
 
-    var sorted = Object.keys(props.legend.rows).sort((a, b) => +a - +b);
+    const sorted = Object.keys(props.legend.rows).sort((a, b) => +a - +b);
     sorted.forEach(i => addRow(props.legend.rows[i], +i));
 
     if (sorted.length) {
@@ -65,9 +65,9 @@ const symbolMap: { [shape: string]: (symbol: LegendRowSymbol) => JSX.Element } =
                 height: `${symbol.bounds.y2 - symbol.bounds.y1}px`,
                 width: `${symbol.bounds.x2 - symbol.bounds.x1}px`,
                 backgroundColor: symbol.fill,
-                borderColor: symbol.fill
+                borderColor: symbol.fill,
             }} />
         );
-    }
+    },
 
 };

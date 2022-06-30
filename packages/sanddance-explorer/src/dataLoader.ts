@@ -4,7 +4,7 @@ import {
     DataContent,
     DataFile,
     DataFileType,
-    DateWithSource
+    DateWithSource,
 } from './interfaces';
 import { SandDance } from '@msrvida/sanddance-react';
 
@@ -54,7 +54,7 @@ export const loadDataArray = (data: object[], type: DataFileType) => new Promise
     if (parse) {
         //convert empty strings to null so that vega.inferType will get dates
         data.forEach(row => {
-            for (let column in row) {
+            for (const column in row) {
                 if (row[column] === '') {
                     row[column] = null;
                 }

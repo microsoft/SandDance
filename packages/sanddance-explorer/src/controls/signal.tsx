@@ -6,7 +6,7 @@ import {
     Binding,
     BindRadioSelect,
     BindRange,
-    NewSignal
+    NewSignal,
 } from 'vega-typings';
 import { Explorer_Class } from '../explorer';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
@@ -82,7 +82,7 @@ map['select'] = (prefix: string, bind: BindRadioSelect, initialValue: any, onCha
     const options = bind.options.map((o, i) => {
         const option: FluentUITypes.IDropdownOption = {
             key: o,
-            text: o
+            text: o,
         };
         return option;
     });

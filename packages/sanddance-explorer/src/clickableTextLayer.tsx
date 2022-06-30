@@ -12,12 +12,12 @@ export interface TextWithSpecRole extends SandDance.VegaDeckGl.types.VegaTextLay
 
 export function onBeforeCreateLayers(
     stage: SandDance.VegaDeckGl.types.Stage,
-    specCapabilities: SandDance.specs.SpecCapabilities
+    specCapabilities: SandDance.specs.SpecCapabilities,
 ) {
-    for (let axisName in stage.axes) {
+    for (const axisName in stage.axes) {
         specCapabilities.roles.forEach(specRole => {
             if (specRole.role === axisName) {
-                let axes = stage.axes[axisName] as SandDance.VegaDeckGl.types.Axis[];
+                const axes = stage.axes[axisName] as SandDance.VegaDeckGl.types.Axis[];
                 axes.forEach(axis => {
                     if (axis.title) {
                         const textItem = axis.title as TextWithSpecRole;
@@ -63,7 +63,7 @@ function _PositionedColumnMap(props: PositionedColumnMapProps) {
             const size = SandDance.VegaDeckGl.util.outerSize(this.div);
             const over: MousePosition = {
                 left: Math.max(0, this.state.left + size.width - this.props.container.offsetWidth),
-                top: Math.max(0, this.state.top + size.height - this.props.container.offsetHeight)
+                top: Math.max(0, this.state.top + size.height - this.props.container.offsetHeight),
             };
             if (over.left || over.top) {
                 let { left, top } = this.state;

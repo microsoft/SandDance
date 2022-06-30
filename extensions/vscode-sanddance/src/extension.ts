@@ -44,7 +44,7 @@ export function activate(context: vscode.ExtensionContext) {
                                         //TODO string type of dataFile
                                         const dataFile = {
                                             type: path.extname(uriFsPath).substring(1),
-                                            rawText: new TextDecoder().decode(uint8array)
+                                            rawText: new TextDecoder().decode(uint8array),
                                         };
                                         const compactUI = context.globalState.get('compactUI');
                                         current.panel.webview.postMessage({ command: 'gotFileContent', dataFile, compactUI });
@@ -59,8 +59,8 @@ export function activate(context: vscode.ExtensionContext) {
                         }
                     }, undefined, context.subscriptions);
                 }
-            }
-        )
+            },
+        ),
     );
 }
 

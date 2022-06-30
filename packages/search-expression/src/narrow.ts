@@ -7,8 +7,8 @@ export function narrow(a: Search, b: Search) {
     if (!a) {
         return b;
     }
-    let arrs = [a, b].map(ensureSearchExpressionGroupArray);
-    let [arrA, arrB] = arrs;
+    const arrs = [a, b].map(ensureSearchExpressionGroupArray);
+    const [arrA, arrB] = arrs;
     arrB[0].clause = '&&';
     return arrA.concat(arrB);
 }

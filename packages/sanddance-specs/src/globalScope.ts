@@ -8,7 +8,7 @@ import {
     Data,
     GroupMark,
     NewSignal,
-    Spec
+    Spec,
 } from 'vega-typings';
 
 export interface GlobalSignals {
@@ -52,11 +52,11 @@ export class GlobalScope implements InnerScope {
             x: '0',
             y: '0',
             h: SignalNames.PlotHeightIn,
-            w: SignalNames.PlotWidthIn
+            w: SignalNames.PlotWidthIn,
         };
         this.sizeSignals = {
             layoutHeight: SignalNames.PlotHeightIn,
-            layoutWidth: SignalNames.PlotWidthIn
+            layoutWidth: SignalNames.PlotWidthIn,
         };
         this.zSize = SignalNames.PlotHeightIn;
     }

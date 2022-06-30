@@ -5,7 +5,7 @@ import {
     getValidOperators,
     InputSearchExpression,
     SearchTerm,
-    getText
+    getText,
 } from '../controls/searchTerm';
 import { base } from '../base';
 import { Button } from '../controls/button';
@@ -49,7 +49,7 @@ export interface State {
 }
 
 function getColumnWithName(columnName: string, columns: SandDance.types.Column[]) {
-    for (var i = 0; i < columns.length; i++) {
+    for (let i = 0; i < columns.length; i++) {
         if (columns[i].name === columnName) return columns[i];
     }
 }
@@ -82,11 +82,11 @@ function getGroupClauses(currClause: SearchExpressionClause, index: number, disa
     let keys: [SearchExpressionClause, string][];
     if (index === 0) {
         keys = [
-            [null, strings.searchWHERE]
+            [null, strings.searchWHERE],
         ];
     } else {
         keys = [
-            ['&&', strings.searchAND]
+            ['&&', strings.searchAND],
         ];
         if (!disableGroupOR) {
             keys.push(['||', strings.searchOR]);
@@ -99,7 +99,7 @@ function getGroupClauses(currClause: SearchExpressionClause, index: number, disa
             key: i,
             text,
             data: clause,
-            selected
+            selected,
         };
         return option;
     });
@@ -120,7 +120,7 @@ function _Search(_props: Props) {
             const initialState: State = {
                 groups: props.initializer.search || [this.newGroup(0, null)],
                 sortedColumns: [...props.initializer.columns].sort((a, b) => a.name.localeCompare(b.name)),
-                initializer: props.initializer
+                initializer: props.initializer,
             };
             initialState.groups.forEach(group => {
                 group.expressions.forEach(ex => ex.unlocked = group.expressions.length <= 2);
@@ -151,7 +151,7 @@ function _Search(_props: Props) {
             const group: InputSearchExpressionGroup = {
                 key,
                 clause,
-                expressions: [this.newExpression(0, null)]
+                expressions: [this.newExpression(0, null)],
             };
             return group;
         }
@@ -160,7 +160,7 @@ function _Search(_props: Props) {
             const groups: InputSearchExpressionGroup[] = [...this.state.groups];
             const group = {
                 ...groups[groupIndex],
-                ...partialGroup
+                ...partialGroup,
             };
             groups[groupIndex] = group;
             this.setState({ groups });

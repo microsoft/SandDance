@@ -18,12 +18,12 @@ export function textSignals(context: SpecContext, heightSignal: string) {
                 input: 'range',
                 min: 0.2,
                 max: 2,
-                step: 0.1
-            }
+                step: 0.1,
+            },
         },
         {
             name: SignalNames.ZHeight,
-            update: `${heightSignal} * ${SignalNames.ZProportion}`
+            update: `${heightSignal} * ${SignalNames.ZProportion}`,
         },
         {
             name: SignalNames.TextScale,
@@ -34,16 +34,16 @@ export function textSignals(context: SpecContext, heightSignal: string) {
                 input: 'range',
                 min: 0.5,
                 max: 2,
-                step: 0.1
-            }
+                step: 0.1,
+            },
         },
         {
             name: SignalNames.TextSize,
-            update: `${SignalNames.TextScale} * 10`
+            update: `${SignalNames.TextScale} * 10`,
         },
         {
             name: SignalNames.TextTitleSize,
-            update: `${SignalNames.TextScale} * 15`
+            update: `${SignalNames.TextScale} * 15`,
         },
         {
             name: SignalNames.TextAngleX,
@@ -54,8 +54,8 @@ export function textSignals(context: SpecContext, heightSignal: string) {
                 input: 'range',
                 min: 0,
                 max: 90,
-                step: 1
-            }
+                step: 1,
+            },
         },
         {
             name: SignalNames.TextAngleY,
@@ -66,8 +66,8 @@ export function textSignals(context: SpecContext, heightSignal: string) {
                 input: 'range',
                 min: -90,
                 max: 0,
-                step: 1
-            }
+                step: 1,
+            },
         },
         {
             name: SignalNames.MarkOpacity,
@@ -78,9 +78,9 @@ export function textSignals(context: SpecContext, heightSignal: string) {
                 input: 'range',
                 min: 0.1,
                 max: 1,
-                step: 0.05
-            }
-        }
+                step: 0.05,
+            },
+        },
     ];
     return signals;
 }
@@ -95,8 +95,8 @@ export function colorBinCountSignal(context: SpecContext) {
             input: 'range',
             min: 1,
             max: specViewOptions.maxLegends + 1,
-            step: 1
-        }
+            step: 1,
+        },
     };
     return signal;
 }
@@ -108,8 +108,8 @@ export function colorReverseSignal(context: SpecContext) {
         value: false,
         bind: {
             name: specViewOptions.language.colorReverse,
-            input: 'checkbox'
-        }
+            input: 'checkbox',
+        },
     };
     return signal;
 }

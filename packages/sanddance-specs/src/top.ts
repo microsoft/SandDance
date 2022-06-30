@@ -13,18 +13,18 @@ export function topLookup(column: Column, count: number, source: string, legend:
             transform: [
                 {
                     type: 'aggregate',
-                    groupby: [safeFieldName(column.name)]
+                    groupby: [safeFieldName(column.name)],
                 },
                 {
                     type: 'window',
                     ops: ['count'],
-                    as: [indexName]
+                    as: [indexName],
                 },
                 {
                     type: 'filter',
-                    expr: `datum[${JSON.stringify(indexName)}] <= ${count}`
-                }
-            ]
+                    expr: `datum[${JSON.stringify(indexName)}] <= ${count}`,
+                },
+            ],
         },
         {
             name: legend,
@@ -36,15 +36,15 @@ export function topLookup(column: Column, count: number, source: string, legend:
                     key: safeFieldName(column.name),
                     fields: [column.name].map(safeFieldName),
                     values: [column.name].map(safeFieldName),
-                    as: [fieldName]
+                    as: [fieldName],
                 },
                 {
                     type: 'formula',
                     expr: `datum[${JSON.stringify(fieldName)}] == null ? '${Other}' : datum[${JSON.stringify(fieldName)}]`,
-                    as: fieldName
-                }
-            ]
-        }
+                    as: fieldName,
+                },
+            ],
+        },
     ];
     return data;
 }

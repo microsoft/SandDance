@@ -24,8 +24,8 @@ export function activate(context: vscode.ExtensionContext) {
                 // This is a call from the object explorer right-click.
                 downloadAndViewInSandDance(commandContext, context);
             }
-        }
-        )
+        },
+        ),
     );
 
     //make the visualizer icon visible
@@ -38,27 +38,27 @@ export function activate(context: vscode.ExtensionContext) {
             if (type === 'visualize') {
                 const providerid = document.providerId;
                 const provider: azdata.QueryProvider = azdata.dataprotocol.getProvider(providerid, azdata.DataProviderType.QueryProvider);
-                let data = await provider.getQueryRows({
+                const data = await provider.getQueryRows({
                     ownerUri: document.uri,
                     batchIndex: args.batchId,
                     resultSetIndex: args.id,
                     rowsStartIndex: 0,
-                    rowsCount: args.rowCount
+                    rowsCount: args.rowCount,
                 });
 
-                let rows = data.resultSubset.rows;
-                let columns = args.columnInfo;
-                let rowsCount = args.rowCount;
+                const rows = data.resultSubset.rows;
+                const columns = args.columnInfo;
+                const rowsCount = args.rowCount;
 
                 // Create Json
-                let jsonArray: jsonType[] = [];
+                const jsonArray: jsonType[] = [];
 
                 interface jsonType {
                     [key: string]: any
                 }
 
                 for (let row = 0; row < rowsCount; row++) {
-                    let jsonObject: jsonType = {};
+                    const jsonObject: jsonType = {};
                     for (let col = 0; col < columns.length; col++) {
                         if (!rows[row][col].isNull) {
                             jsonObject[columns[col].columnName] = rows[row][col].displayValue;
@@ -72,13 +72,13 @@ export function activate(context: vscode.ExtensionContext) {
                     return new Promise<string>(resolve => resolve(JSON.stringify(jsonArray)));
                 }, document.uri, 'json', context);
             }
-        }
+        },
     });
 }
 
 async function downloadAndViewInSandDance(commandContext: azdata.ObjectExplorerContext, context: vscode.ExtensionContext): Promise<void> {
     try {
-        let file = await getHdfsFileAsString(commandContext);
+        const file = await getHdfsFileAsString(commandContext);
         if (file) {
             const { contents } = file;
             viewInSandDance(() => new Promise<string>(resolve => resolve(contents)), file.fsUriPath, path.extname(file.fsUriPath).substring(1), context);
@@ -115,7 +115,7 @@ function viewInSandDance(rawTextPromise: () => Thenable<string>, uriFsPath: stri
                         if (current && current.panel.visible) {
                             const dataFile = {
                                 type,
-                                rawText
+                                rawText,
                             };
                             const compactUI = context.globalState.get('compactUI');
                             current.panel.webview.postMessage({ command: 'gotFileContent', dataFile, compactUI });
@@ -142,16 +142,16 @@ function viewFileUriInSandDance(fileUri: vscode.Uri, context: vscode.ExtensionCo
 }
 
 export async function getHdfsFileAsString(commandContext: azdata.ObjectExplorerContext): Promise<{ contents: string, fsUriPath: string } | undefined> {
-    let extension = vscode.extensions.getExtension('Microsoft.mssql');
+    const extension = vscode.extensions.getExtension('Microsoft.mssql');
     if (extension) {
-        let extensionApi: MssqlExtensionApi = extension.exports;
-        let browser = extensionApi.getMssqlObjectExplorerBrowser();
-        let node: IFileNode = await browser.getNode<IFileNode>(commandContext);
-        let contents = await node.getFileContentsAsString();
+        const extensionApi: MssqlExtensionApi = extension.exports;
+        const browser = extensionApi.getMssqlObjectExplorerBrowser();
+        const node: IFileNode = await browser.getNode<IFileNode>(commandContext);
+        const contents = await node.getFileContentsAsString();
         if (contents !== undefined) {
             return {
                 contents,
-                fsUriPath: node.getNodeInfo().label
+                fsUriPath: node.getNodeInfo().label,
             };
         }
     }

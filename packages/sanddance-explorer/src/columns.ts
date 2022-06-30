@@ -9,10 +9,10 @@ import TotalStyle = SandDance.specs.TotalStyle;
 
 export function ensureColumnsExist(insightColumns: SandDance.specs.InsightColumns, actualColumns: SandDance.types.Column[], transform: Transforms[]) {
     //ensure columns exist
-    for (let role in insightColumns) {
-        let columnName = insightColumns[role];
-        let column = actualColumns.filter(c => c.name === columnName)[0];
-        let transformColumn = transform ? transform.filter(t => {
+    for (const role in insightColumns) {
+        const columnName = insightColumns[role];
+        const column = actualColumns.filter(c => c.name === columnName)[0];
+        const transformColumn = transform ? transform.filter(t => {
             switch (t.type) {
                 case 'formula': {
                     return t.as === columnName;

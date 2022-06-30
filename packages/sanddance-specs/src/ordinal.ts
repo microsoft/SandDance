@@ -18,25 +18,25 @@ export function createOrdinals(source: string, prefix: string, binFields: string
         transform: [
             {
                 type: 'aggregate',
-                groupby: _binFields
+                groupby: _binFields,
             },
             {
                 type: 'collect',
                 sort: {
                     field: _binFields,
-                    order: _binFields.map(f => sortOrder)
-                }
+                    order: _binFields.map(f => sortOrder),
+                },
             },
             {
                 type: 'window',
                 ops: ['row_number'],
-                as: [FieldNames.Ordinal]
-            }
-        ]
+                as: [FieldNames.Ordinal],
+            },
+        ],
     };
     return {
         data,
-        scale: ordinalScale(dataName, `scale_${prefix}_order`, binFields)
+        scale: ordinalScale(dataName, `scale_${prefix}_order`, binFields),
     };
 }
 
@@ -46,12 +46,12 @@ export function ordinalScale(dataName: string, scaleName: string, binFields: str
         name: scaleName,
         domain: {
             data: dataName,
-            field: safeFieldName(binFields[0])
+            field: safeFieldName(binFields[0]),
         },
         range: {
             data: dataName,
-            field: FieldNames.Ordinal
-        }
+            field: FieldNames.Ordinal,
+        },
     };
 }
 

@@ -27,7 +27,7 @@ export class Tooltip {
     constructor(props: Props) {
         const renderProps: RenderProps = {
             cssPrefix: props.cssPrefix,
-            rows: getRows(props.item, props.options)
+            rows: getRows(props.item, props.options),
         };
         this.element = renderTooltip(renderProps) as any as HTMLElement;
         if (this.element) {
@@ -37,7 +37,7 @@ export class Tooltip {
             //measure and move as necessary
             let m = outerSize(this.child);
             while (m.height > document.documentElement.clientHeight) {
-                let tr = this.child.querySelector('tr:last-child') as HTMLTableRowElement;
+                const tr = this.child.querySelector('tr:last-child') as HTMLTableRowElement;
                 if (tr) {
                     tr.parentElement.removeChild(tr);
                 } else {
@@ -73,7 +73,7 @@ export class Tooltip {
 
 function getRows(item: object, options: TooltipOptions) {
     const rows: VegaDeckGl.controls.TableRow[] = [];
-    for (let columnName in item) {
+    for (const columnName in item) {
         if (columnName === GL_ORDINAL) {
             continue;
         }
@@ -85,7 +85,7 @@ function getRows(item: object, options: TooltipOptions) {
                 continue;
             }
         }
-        let value: any = item[columnName];
+        const value: any = item[columnName];
         let content: string | JSX.Element;
         if (options && options.displayValue) {
             content = options.displayValue(value);
@@ -104,8 +104,8 @@ function getRows(item: object, options: TooltipOptions) {
         rows.push({
             cells: [
                 { content: columnName + ':' },
-                { content }
-            ]
+                { content },
+            ],
         });
     }
     return rows;

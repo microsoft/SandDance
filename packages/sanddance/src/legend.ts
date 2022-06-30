@@ -9,7 +9,7 @@ import {
     selectBetween,
     selectExact,
     selectNone,
-    selectNullOrEmpty
+    selectNullOrEmpty,
 } from './expression';
 import { SearchExpressionGroup, SearchExpressionOperators } from '@msrvida/search-expression';
 
@@ -25,7 +25,7 @@ function selectCategorical(column: Column, legend: VegaDeckGl.types.Legend, clic
     const value = legend.rows[clickedIndex].value;
     if (value === Other) {
         const values: string[] = [];
-        for (let i in legend.rows) {
+        for (const i in legend.rows) {
             if (+i !== clickedIndex) {
                 values.push(legend.rows[i].value);
             }
@@ -55,7 +55,7 @@ function selectQuantitative(colorBinType: ColorBin, column: Column, legend: Vega
         default: {
             if (rowText.indexOf('null') > 0) {
                 const ex: SearchExpressionGroup = {
-                    expressions: [selectNullOrEmpty(column)]
+                    expressions: [selectNullOrEmpty(column)],
                 };
                 return ex;
             }
@@ -88,8 +88,8 @@ function selectQuantitative(colorBinType: ColorBin, column: Column, legend: Vega
 
 export function finalizeLegend(colorBinType: ColorBin, colorColumn: Column, legend: VegaDeckGl.types.Legend, language: Language) {
     const rowTexts: string[] = [];
-    for (let i in legend.rows) {
-        let row = legend.rows[i] as LegendRowWithSearch;
+    for (const i in legend.rows) {
+        const row = legend.rows[i] as LegendRowWithSearch;
         row.search = legendRange(colorBinType, colorColumn, legend, +i);
         if (row.value === Other) {
             row.label = language.legendOther;

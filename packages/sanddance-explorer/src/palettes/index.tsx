@@ -24,7 +24,7 @@ export interface Props {
 
 export function Palette(props: Props) {
     const { distinctValueCount } = props.colorColumn.stats;
-    let isDual = distinctValueCount === 2;
+    const isDual = distinctValueCount === 2;
     const categoricalNumeric = distinctValueCount > 0 && distinctValueCount < maxDistinctColors;
     let isQualitative = false;
     let isQuantitative = false;
@@ -53,7 +53,7 @@ export function Palette(props: Props) {
         options.push({
             key: name,
             text: name,
-            itemType: base.fluentUI.DropdownMenuItemType.Header
+            itemType: base.fluentUI.DropdownMenuItemType.Header,
         });
         options.push.apply(options, opts);
     }
@@ -73,8 +73,8 @@ export function Palette(props: Props) {
                         props.colorColumn.name,
                         props.colorColumn.type,
                         categoricalNumeric,
-                        distinctValueCount
-                    )
+                        distinctValueCount,
+                    ),
                 }}
             />
             <Dropdown

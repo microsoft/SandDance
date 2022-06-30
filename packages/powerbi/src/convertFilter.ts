@@ -30,7 +30,7 @@ export function convertFilter(searchFilter: SandDance.searchExpression.Search, c
                     }
                 }
             }
-        })
+        }),
     );
     return { filters, selectedIds };
 }
@@ -64,9 +64,9 @@ function createAdvancedFilter(column: powerbiVisualsApi.DataViewMetadataColumn, 
     if (condition.operator === 'None') {
         return null;
     } else {
-        let target: powerbiModels.IFilterColumnTarget = {
+        const target: powerbiModels.IFilterColumnTarget = {
             table: getTable(column.queryName),
-            column: column.displayName
+            column: column.displayName,
         };
         return new powerbiModels.AdvancedFilter(target, 'And', condition);
     }
@@ -97,7 +97,7 @@ function convertExpressionToAdvancedFilter(ex: SandDance.searchExpression.Search
     if (!condition) {
         condition = {
             operator: convertExpressionOperator(ex.operator),
-            value: ex.value
+            value: ex.value,
         };
     }
     return createAdvancedFilter(column, condition);

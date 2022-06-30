@@ -12,7 +12,7 @@ import {
     ColorSettings,
     DataFileType,
     Explorer_Class,
-    Prefs
+    Prefs,
 } from '@msrvida/sanddance-explorer';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -21,7 +21,7 @@ import * as vega from 'vega';
 use(fluentUI, vega, deck, layers, luma);
 
 const staticContent = Array.from(
-    document.querySelectorAll<HTMLAnchorElement>('a.sanddance-app-static-content')
+    document.querySelectorAll<HTMLAnchorElement>('a.sanddance-app-static-content'),
 );
 
 const dataSets = staticContent.filter(f => f.id).map<DataSource>(n => {
@@ -32,17 +32,17 @@ const dataSets = staticContent.filter(f => f.id).map<DataSource>(n => {
         displayName: n.dataset['displayName'],
         dataUrl: n.href,
         type: n.dataset['type'] as DataFileType,
-        snapshotsUrl: forData ? forData.href : null
+        snapshotsUrl: forData ? forData.href : null,
     };
 });
 
 let explorer: Explorer_Class;
 
-declare var insights: InsightMap;
-declare var darkTheme: boolean;
+declare let insights: InsightMap;
+declare let darkTheme: boolean;
 declare function setTheme(darkTheme: boolean): void;
-declare var options: { [datasetId: string]: Prefs };
-declare var themeColors: { [theme: string]: ColorSettings };
+declare let options: { [datasetId: string]: Prefs };
+declare let themeColors: { [theme: string]: ColorSettings };
 
 const undef = typeof undefined;
 
@@ -58,7 +58,7 @@ ReactDOM.render(
             explorer = app.explorer;
         }}
     />,
-    document.getElementById('app')
+    document.getElementById('app'),
 );
 
 const z = 'z'.charCodeAt(0);

@@ -221,6 +221,6 @@ export function diverging(selected: string) {
         schemeOption(selected, 'redgrey'),
         schemeOption(selected, 'redyellowblue'),
         schemeOption(selected, 'redyellowgreen'),
-        schemeOption(selected, 'spectral')
+        schemeOption(selected, 'spectral'),
     ];
 }

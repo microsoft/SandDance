@@ -6,7 +6,7 @@ import {
     Data,
     GroupMark,
     Scale,
-    Scope
+    Scope,
 } from 'vega-typings';
 import { FieldNames, SignalNames } from './constants';
 import { InnerScope, SizeSignals, TitleSource } from './interfaces';
@@ -23,34 +23,34 @@ export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSo
             encode: {
                 enter: {
                     align: {
-                        value: 'center'
+                        value: 'center',
                     },
                     baseline: {
-                        value: 'middle'
+                        value: 'middle',
                     },
                     fill: {
-                        value: axisTextColor
-                    }
+                        value: axisTextColor,
+                    },
                 },
                 update: {
                     metaData: {
-                        signal: `{search: parent[${JSON.stringify(FieldNames.FacetSearch)}]}`
+                        signal: `{search: parent[${JSON.stringify(FieldNames.FacetSearch)}]}`,
                     },
                     x: {
-                        signal: `${sizeSignals.layoutWidth} / 2`
+                        signal: `${sizeSignals.layoutWidth} / 2`,
                     },
                     limit: {
-                        signal: sizeSignals.layoutWidth
+                        signal: sizeSignals.layoutWidth,
                     },
                     fontSize: {
-                        signal: SignalNames.TextSize
+                        signal: SignalNames.TextSize,
                     },
                     text: {
-                        signal: titleSignal
-                    }
-                }
-            }
-        }
+                        signal: titleSignal,
+                    },
+                },
+            },
+        },
     );
     addMarks(row.footer,
         {
@@ -58,34 +58,34 @@ export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSo
             encode: {
                 enter: {
                     align: {
-                        value: 'left'
+                        value: 'left',
                     },
                     baseline: {
-                        value: 'middle'
+                        value: 'middle',
                     },
                     fill: {
-                        value: axisTextColor
-                    }
+                        value: axisTextColor,
+                    },
                 },
                 update: {
                     metaData: {
-                        signal: `{search: parent[${JSON.stringify(FieldNames.FacetSearch)}]}`
+                        signal: `{search: parent[${JSON.stringify(FieldNames.FacetSearch)}]}`,
                     },
                     y: {
-                        signal: `${sizeSignals.layoutHeight} / 2`
+                        signal: `${sizeSignals.layoutHeight} / 2`,
                     },
                     limit: {
-                        signal: SignalNames.PlotOffsetRight
+                        signal: SignalNames.PlotOffsetRight,
                     },
                     fontSize: {
-                        signal: SignalNames.TextSize
+                        signal: SignalNames.TextSize,
                     },
                     text: {
-                        signal: titleSignal
-                    }
-                }
-            }
-        }
+                        signal: titleSignal,
+                    },
+                },
+            },
+        },
     );
 }
 
@@ -95,36 +95,36 @@ export function addFacetCellTitles(scope: Scope, sizeSignals: SizeSignals, axisT
         encode: {
             enter: {
                 align: {
-                    value: 'center'
+                    value: 'center',
                 },
                 baseline: {
-                    value: 'bottom'
+                    value: 'bottom',
                 },
                 fill: {
-                    value: axisTextColor
-                }
+                    value: axisTextColor,
+                },
             },
             update: {
                 metaData: {
-                    signal: `{search: parent[${JSON.stringify(FieldNames.FacetSearch)}]}`
+                    signal: `{search: parent[${JSON.stringify(FieldNames.FacetSearch)}]}`,
                 },
                 x: {
-                    signal: `(${sizeSignals.layoutWidth}) / 2`
+                    signal: `(${sizeSignals.layoutWidth}) / 2`,
                 },
                 text: {
-                    signal: `parent[${JSON.stringify(FieldNames.FacetTitle)}]`
+                    signal: `parent[${JSON.stringify(FieldNames.FacetTitle)}]`,
                 },
                 fontSize: {
-                    signal: SignalNames.TextSize
+                    signal: SignalNames.TextSize,
                 },
                 limit: {
-                    signal: sizeSignals.layoutWidth
+                    signal: sizeSignals.layoutWidth,
                 },
                 y: {
-                    signal: `-${SignalNames.FacetPaddingTop} / 2`
-                }
-            }
-        }
+                    signal: `-${SignalNames.FacetPaddingTop} / 2`,
+                },
+            },
+        },
     });
 }
 
@@ -160,39 +160,39 @@ export function addFacetAxesGroupMarks(props: Props) {
                 scope: facetScope.facetScope,
                 lines: true,
                 labels: false,
-                title: false
-            }
+                title: false,
+            },
         ],
         x: [
             {
                 scope: col.footer,
                 lines: true,
                 labels: true,
-                title: false
+                title: false,
             },
             {
                 scope: plotScope,
                 scale: colTitleScale,
                 lines: false,
                 labels: false,
-                title: true
-            }
+                title: true,
+            },
         ],
         y: [
             {
                 scope: row.header,
                 lines: true,
                 labels: true,
-                title: false
+                title: false,
             },
             {
                 scope: plotScope,
                 scale: rowTitleScale,
                 lines: false,
                 labels: false,
-                title: true
-            }
-        ]
+                title: true,
+            },
+        ],
     };
     return map;
 }
@@ -206,11 +206,11 @@ export function facetRowHeaderFooter(data: string, sizeSignals: SizeSignals, ind
                 update: {
                     x: { signal: xSignal },
                     y: {
-                        signal: `${SignalNames.PlotOffsetTop} + ${SignalNames.FacetPaddingTop} + (${index}) * (${sizeSignals.layoutHeight} + ${SignalNames.FacetPaddingTop} + ${SignalNames.FacetPaddingBottom})`
+                        signal: `${SignalNames.PlotOffsetTop} + ${SignalNames.FacetPaddingTop} + (${index}) * (${sizeSignals.layoutHeight} + ${SignalNames.FacetPaddingTop} + ${SignalNames.FacetPaddingBottom})`,
                     },
-                    height: { signal: sizeSignals.layoutHeight }
-                }
-            }
+                    height: { signal: sizeSignals.layoutHeight },
+                },
+            },
         };
     };
     const header = rowFn(SignalNames.PlotOffsetLeft);
@@ -226,12 +226,12 @@ export function facetColumnHeaderFooter(data: string, sizeSignals: SizeSignals, 
             encode: {
                 update: {
                     x: {
-                        signal: `(${index}) * (${sizeSignals.layoutWidth} + ${SignalNames.FacetPaddingLeft}) + ${SignalNames.FacetPaddingLeft} + ${SignalNames.PlotOffsetLeft} - ${SignalNames.FacetAxesAdjustX}`
+                        signal: `(${index}) * (${sizeSignals.layoutWidth} + ${SignalNames.FacetPaddingLeft}) + ${SignalNames.FacetPaddingLeft} + ${SignalNames.PlotOffsetLeft} - ${SignalNames.FacetAxesAdjustX}`,
                     },
                     y: { signal: `${ySignal} - ${SignalNames.FacetAxesAdjustY}` },
-                    width: { signal: sizeSignals.layoutWidth }
-                }
-            }
+                    width: { signal: sizeSignals.layoutWidth },
+                },
+            },
         };
     };
     //create group marks based on data sequences
@@ -248,9 +248,9 @@ function createSequence(dataName: string, countSignal: string): Data {
                 type: 'sequence',
                 start: 0,
                 stop: {
-                    signal: countSignal
-                }
-            }
-        ]
+                    signal: countSignal,
+                },
+            },
+        ],
     };
 }

@@ -30,7 +30,7 @@ export function getValidOperators(column: SandDance.types.Column): [SearchExpres
             return [
                 ['==', strings.searchEQ],
                 ['!=', strings.searchNEQ],
-                ['isnullorEmpty', strings.searchNULL]
+                ['isnullorEmpty', strings.searchNULL],
             ];
         case 'date':
         case 'integer':
@@ -42,7 +42,7 @@ export function getValidOperators(column: SandDance.types.Column): [SearchExpres
                 ['>=', strings.searchGTE],
                 ['<', strings.searchLT],
                 ['<=', strings.searchLTE],
-                ['isnullorEmpty', strings.searchNULL]
+                ['isnullorEmpty', strings.searchNULL],
             ];
         case 'string':
         default:
@@ -55,7 +55,7 @@ export function getValidOperators(column: SandDance.types.Column): [SearchExpres
                 ['<=', strings.searchLTE],
                 ['contains', strings.searchIN],
                 ['starts', strings.searchSW],
-                ['isnullorEmpty', strings.searchNULL]
+                ['isnullorEmpty', strings.searchNULL],
             ];
     }
 }
@@ -75,7 +75,7 @@ export interface Props {
 
 function getExpressionClauses(currClause: SearchExpressionClause, disableOR: boolean) {
     const keys: [SearchExpressionClause, string][] = [
-        ['&&', strings.searchAND]
+        ['&&', strings.searchAND],
     ];
     if (!disableOR) {
         keys.push(['||', strings.searchOR]);
@@ -87,7 +87,7 @@ function getExpressionClauses(currClause: SearchExpressionClause, disableOR: boo
             key: i,
             text,
             data: clause,
-            selected
+            selected,
         };
         return option;
     });
@@ -104,7 +104,7 @@ function getOperators(ex: InputSearchExpression, column: SandDance.types.Column)
             key: op,
             text,
             data: op,
-            selected
+            selected,
         };
         return option;
     });
@@ -117,8 +117,8 @@ function getOperators(ex: InputSearchExpression, column: SandDance.types.Column)
 function getDistinctValues(data: object[], columnName: string) {
     const distinctMap = {};
     for (let i = 0; i < data.length; i++) {
-        let row = data[i];
-        let value = row[columnName];
+        const row = data[i];
+        const value = row[columnName];
         distinctMap[value] = true;
     }
     return Object.keys(distinctMap).sort();
@@ -132,7 +132,7 @@ function getValues(ex: InputSearchExpression, column: SandDance.types.Column, da
         }
         return autoCompleteDistinctValues[column.name].map((v, i) => ({
             key: i,
-            text: v
+            text: v,
         } as FluentUITypes.IComboBoxOption));
     }
     return [];
@@ -172,13 +172,13 @@ export function SearchTerm(props: Props) {
                         key: '',
                         text: strings.selectAny,
                         data: null,
-                        selected: ex.name === null
-                    }
+                        selected: ex.name === null,
+                    },
                 ].concat(props.columns.map((c, i) => ({
                     key: c.name,
                     text: c.name,
                     data: c,
-                    selected: c.name === ex.name
+                    selected: c.name === ex.name,
                 })))}
                 onChange={(e, o) => props.onUpdateExpression({ name: (o.data && (o.data as SandDance.types.Column).name) || null }, props.index)}
             />
@@ -207,7 +207,7 @@ export function SearchTerm(props: Props) {
                             e: React.FormEvent<FluentUITypes.IComboBox>,
                             o?: FluentUITypes.IComboBoxOption,
                             i?: number,
-                            value?: string
+                            value?: string,
                         ) => {
                             if (o) {
                                 value = o.text;

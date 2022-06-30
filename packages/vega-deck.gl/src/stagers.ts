@@ -12,7 +12,7 @@ import {
     AxisRole,
     FacetRect,
     Stage,
-    StyledLine
+    StyledLine,
 } from './interfaces';
 import { base } from './base';
 import { colorFromString } from './color';
@@ -21,7 +21,7 @@ import {
     GroupType,
     MarkStager,
     MarkStagerOptions,
-    AxisSceneGroup
+    AxisSceneGroup,
 } from './marks/interfaces';
 import { Orient, Scene, SceneGroup } from 'vega-typings';
 
@@ -72,7 +72,7 @@ const group: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scen
         if (g.stroke) {
             const facetRect: FacetRect = {
                 datum: g.datum,
-                lines: box(gx + x, gy + y, g.height, g.width, g.stroke, groupStrokeWidth)
+                lines: box(gx + x, gy + y, g.height, g.width, g.stroke, groupStrokeWidth),
             };
             stage.facets.push(facetRect);
         }
@@ -111,7 +111,7 @@ function setCurrentAxis(options: MarkStagerOptions, stage: Stage, groupType: Gro
         domain: null,
         tickText: [],
         ticks: [],
-        role
+        role,
     };
     axes.push(options.currAxis);
 }
@@ -123,7 +123,7 @@ const markStagers: { [id: string]: MarkStager } = {
     rule,
     line,
     area,
-    text
+    text,
 };
 
 const mainStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene: Scene, x: number, y: number, groupType: GroupType) => {

@@ -48,7 +48,7 @@ export function History(props: Props) {
                                 onClick={() => props.redo(i)}
                             />
                         </li>
-                    )
+                    );
                 })}
             </ol>
         </Group>

@@ -19,7 +19,7 @@ export function Dialog(props: IDialogProps) {
                     type: base.fluentUI.DialogType.normal,
                     title: props.title,
                 },
-                ...props.dialogContentProps
+                ...props.dialogContentProps,
             }}
         >
             <div

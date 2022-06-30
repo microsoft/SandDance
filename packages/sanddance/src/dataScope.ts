@@ -82,7 +82,7 @@ export class DataScope {
         const s: UserSelection = {
             search,
             included: [],
-            excluded: []
+            excluded: [],
         };
         const data = rebase ? this.data : this.currentData();
         data.forEach(datum => {
@@ -137,7 +137,7 @@ export class DataScope {
     public ordinalIndexWithinSelection(ordinal: number) {
         if (this.selection) {
             for (let i = 0; i < this.selection.included.length; i++) {
-                let datum = this.selection.included[i];
+                const datum = this.selection.included[i];
                 if (datum[GL_ORDINAL] === ordinal) {
                     return { datum, index: i };
                 }

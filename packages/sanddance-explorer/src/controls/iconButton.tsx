@@ -21,18 +21,18 @@ export function IconButton(props: IIconButtonProps) {
             {...props}
             styles={{
                 root: {
-                    color: props.themePalette.black
+                    color: props.themePalette.black,
                 },
                 rootHovered: {
                     background: 'transparent',
-                    color: props.themePalette.themePrimary
+                    color: props.themePalette.themePrimary,
                 },
                 rootPressed: {
-                    background: 'transparent'
+                    background: 'transparent',
                 },
                 menuIcon: {
-                    display: 'none'
-                }
+                    display: 'none',
+                },
             }}
             iconProps={{ iconName: props.iconName }}
             menuProps={props.menuProps}

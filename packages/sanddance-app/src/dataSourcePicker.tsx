@@ -34,11 +34,11 @@ export function DataSourceButton(props: ButtonProps) {
                             text: ds.displayName,
                             onClick: e => {
                                 picker.changeDataSource(ds);
-                            }
+                            },
                         };
                         return item;
-                    })
-                }
+                    }),
+                },
             },
             {
                 key: 'user-section',
@@ -50,17 +50,17 @@ export function DataSourceButton(props: ButtonProps) {
                         {
                             key: 'local',
                             text: strings.menuLocal,
-                            onClick: e => picker.setState({ dialogMode: 'local' })
+                            onClick: e => picker.setState({ dialogMode: 'local' }),
                         },
                         {
                             key: 'url',
                             text: strings.menuUrl,
-                            onClick: e => picker.setState({ dialogMode: 'url' })
-                        }
-                    ]
-                }
-            }
-        ]
+                            onClick: e => picker.setState({ dialogMode: 'url' }),
+                        },
+                    ],
+                },
+            },
+        ],
     };
     return (
         <base.fluentUI.PrimaryButton
@@ -90,7 +90,7 @@ export class DataSourcePicker extends React.Component<DialogProps, State> {
         this.state = {
             url: '',
             urlType: DataSourcePicker.urlTypes[0],
-            working: false
+            working: false,
         };
     }
 
@@ -109,7 +109,7 @@ export class DataSourcePicker extends React.Component<DialogProps, State> {
                         working: false,
                         uploadFormatError: '',
                         urlError: '',
-                        dialogMode: null
+                        dialogMode: null,
                     });
                     resolve();
                 })
@@ -136,7 +136,7 @@ export class DataSourcePicker extends React.Component<DialogProps, State> {
                         displayName,
                         id,
                         rawText,
-                        type
+                        type,
                     };
                     this.changeDataSource(ds);
                 };
@@ -162,7 +162,7 @@ export class DataSourcePicker extends React.Component<DialogProps, State> {
             displayName: url,
             id: url,
             dataUrl: url,
-            type: this.state.urlType
+            type: this.state.urlType,
         };
         this.changeDataSource(ds).catch((e: Error) => {
             this.setState({ urlError: e.message });
@@ -177,7 +177,7 @@ export class DataSourcePicker extends React.Component<DialogProps, State> {
                 displayName: dataUrl.substring(dataUrl.lastIndexOf('/') + 1, dataUrl.lastIndexOf('.')),
                 id: '',
                 type,
-            }
+            },
         };
         return '#' + JSON.stringify(dss);
     }
@@ -199,7 +199,7 @@ export class DataSourcePicker extends React.Component<DialogProps, State> {
                     className: `sanddance-dialog ${this.props.theme}`,
                     type: base.fluentUI.DialogType.normal,
                     title: strings.dialogTitleLocal,
-                    subText: strings.dialogSubtextLocal
+                    subText: strings.dialogSubtextLocal,
                 }}
             >
                 <input
@@ -219,7 +219,7 @@ export class DataSourcePicker extends React.Component<DialogProps, State> {
                 dialogContentProps={{
                     className: `sanddance-dialog ${this.props.theme}`,
                     type: base.fluentUI.DialogType.normal,
-                    title: strings.dialogTitleUrl
+                    title: strings.dialogTitleUrl,
                 }}
                 buttons={[
                     (
@@ -230,7 +230,7 @@ export class DataSourcePicker extends React.Component<DialogProps, State> {
                             text={strings.dialogLoadButton}
                             disabled={this.state.working}
                         />
-                    )
+                    ),
                 ]}
             >
                 <section>
@@ -256,7 +256,7 @@ export class DataSourcePicker extends React.Component<DialogProps, State> {
                                     key: `${i}`,
                                     text: urlType,
                                     disabled: this.state.working,
-                                    checked: i === 0
+                                    checked: i === 0,
                                 } as FluentUITypes.IChoiceGroupOption;
                             })
                         }

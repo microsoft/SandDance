@@ -11,7 +11,7 @@ const dualPairs = [
     [defs.red, defs.blue],
     [defs.black, defs.red],
     [defs.black, defs.orange],
-    [defs.black, defs.green]
+    [defs.black, defs.green],
 ];
 
 /**
@@ -20,8 +20,8 @@ const dualPairs = [
 export const colorSchemes: ColorScheme[] = [
     {
         scheme: ColorScaleNone,
-        colors: [defaultViewerOptions.colors.defaultCube]
-    }
+        colors: [defaultViewerOptions.colors.defaultCube],
+    },
 ];
 
 createDualColorSchemes();
@@ -44,7 +44,7 @@ function createPair(names: string[], colors: string[]) {
 function createDualColorSchemes() {
     dualPairs.forEach(colors => {
         const names = colors.map(color => {
-            for (let key in defs) if (color === defs[key]) return key;
+            for (const key in defs) if (color === defs[key]) return key;
         });
         createPair(names, colors);
         createPair([...names].reverse(), [...colors].reverse());

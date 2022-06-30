@@ -10,7 +10,7 @@ import {
     SnapshotExport,
     SnapshotImportLocal,
     SnapshotImportRemote,
-    validSnapshots
+    validSnapshots,
 } from './snapshots';
 import { DataSource, DataSourceSnapshot, InsightMap } from './types';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
@@ -23,7 +23,7 @@ import {
     SandDance,
     SideTabId,
     themePalettes,
-    ViewerOptions
+    ViewerOptions,
 } from '@msrvida/sanddance-explorer';
 import * as React from 'react';
 
@@ -51,8 +51,8 @@ function getViewerOptions(darkTheme: boolean, themeColors: { [theme: string]: Co
     const viewerOptions: Partial<ViewerOptions> = {
         colors: {
             ...getColorSettingsFromThemePalette(themePalettes[darkTheme ? 'dark-theme' : '']),
-            ...colors
-        }
+            ...colors,
+        },
     };
     return viewerOptions;
 }
@@ -93,7 +93,7 @@ export class SandDanceApp extends React.Component<Props, State> {
             compactUI: !!localStorage.getItem('compactUI'),
             dialogMode: null,
             dataSource: snapshotOnLoad && snapshotOnLoad.dataSource || props.dataSources[0],
-            darkTheme: props.darkTheme
+            darkTheme: props.darkTheme,
         };
         this.viewerOptions = getViewerOptions(this.state.darkTheme, props.themeColors);
         this.handlers = {
@@ -105,14 +105,14 @@ export class SandDanceApp extends React.Component<Props, State> {
             },
             resize: e => {
                 this.explorer && this.explorer.resize();
-            }
+            },
         };
         this.wireEventHandlers(true);
         this.changeColorScheme(this.state.darkTheme);
     }
 
     private wireEventHandlers(add: boolean) {
-        for (let key in this.handlers) {
+        for (const key in this.handlers) {
             if (add) {
                 window.addEventListener(key, this.handlers[key]);
             } else {
@@ -184,7 +184,7 @@ export class SandDanceApp extends React.Component<Props, State> {
             columns => {
                 return partialInsight || (this.props.insights && this.props.insights[dataSource.id]);
             },
-            this.props.initialOptions && SandDance.VegaDeckGl.util.deepMerge({}, this.props.initialOptions['*'], this.props.initialOptions[dataSource.id])
+            this.props.initialOptions && SandDance.VegaDeckGl.util.deepMerge({}, this.props.initialOptions['*'], this.props.initialOptions[dataSource.id]),
         );
     }
 
@@ -199,7 +199,7 @@ export class SandDanceApp extends React.Component<Props, State> {
     }
 
     private loadError(dataSource: DataSource) {
-        let error = this.dataSourceError(dataSource);
+        const error = this.dataSourceError(dataSource);
         this.explorer.setState({ errors: [error] });
         this.setState({ dataSource: { dataSourceType: null, id: null, type: null } });
     }
@@ -234,7 +234,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                         this.postLoad = null;
                     }
                 }).catch(() => this.loadError(dataSource));
-            }
+            },
         };
         return (
             <section className="sanddance-app">
@@ -256,28 +256,28 @@ export class SandDanceApp extends React.Component<Props, State> {
                                             {
                                                 key: 'import-local',
                                                 text: strings.menuLocal,
-                                                onClick: () => this.setState({ dialogMode: 'import-local' })
+                                                onClick: () => this.setState({ dialogMode: 'import-local' }),
                                             },
                                             {
                                                 key: 'import-remote',
                                                 text: strings.menuUrl,
-                                                onClick: () => this.setState({ dialogMode: 'import-remote' })
-                                            }
-                                        ]
-                                    }
+                                                onClick: () => this.setState({ dialogMode: 'import-remote' }),
+                                            },
+                                        ],
+                                    },
                                 },
                                 {
                                     key: 'export',
                                     text: strings.menuSnapshotsExportAsJSON,
                                     disabled: snapshots.length === 0,
-                                    onClick: () => downloadSnapshotsJSON(snapshots, `${this.state.dataSource.displayName}.snapshots`)
+                                    onClick: () => downloadSnapshotsJSON(snapshots, `${this.state.dataSource.displayName}.snapshots`),
                                 },
                                 {
                                     key: 'export-as',
                                     text: strings.menuSnapshotsExportAs,
                                     disabled: snapshots.length === 0,
-                                    onClick: () => this.setState({ dialogMode: 'export' })
-                                }
+                                    onClick: () => this.setState({ dialogMode: 'export' }),
+                                },
                             ];
                             return items;
                         },
@@ -334,7 +334,7 @@ export class SandDanceApp extends React.Component<Props, State> {
                             return [{ element }];
                         },
                         getTitle: insight => `${this.state.dataSource.displayName} ${insight.chart}`,
-                        getDescription: insight => '' //TODO create description from filter etc.
+                        getDescription: insight => '', //TODO create description from filter etc.
                     }}
                     onSnapshotClick={(snapshot: DataSourceSnapshot, selectedSnapshotIndex) => this.hydrateSnapshot(snapshot, selectedSnapshotIndex)}
                     initialView="2d"
@@ -364,15 +364,15 @@ export class SandDanceApp extends React.Component<Props, State> {
                             key: 'theme',
                             text: this.state.darkTheme ? strings.buttonThemeLight : strings.buttonThemeDark,
                             iconProps: {
-                                iconName: this.state.darkTheme ? 'Sunny' : 'ClearNight'
+                                iconName: this.state.darkTheme ? 'Sunny' : 'ClearNight',
                             },
                             onClick: () => {
                                 const darkTheme = !this.state.darkTheme;
                                 this.props.setTheme && this.props.setTheme(darkTheme);
                                 this.setState({ darkTheme });
                                 this.changeColorScheme(darkTheme);
-                            }
-                        }
+                            },
+                        },
                     ]}
                     viewerOptions={this.viewerOptions}
                     compactUI={this.state.compactUI}
@@ -393,8 +393,8 @@ export class SandDanceApp extends React.Component<Props, State> {
                                         this.setState({ compactUI: checked });
                                     }}
                                 />
-                            )
-                        }
+                            ),
+                        },
                     ]}
                 >
                 </Explorer>

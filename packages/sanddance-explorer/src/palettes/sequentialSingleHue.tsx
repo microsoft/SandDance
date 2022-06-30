@@ -136,6 +136,6 @@ export function sequentialSingleHue(selected: string) {
         schemeOption(selected, 'greys'),
         schemeOption(selected, 'purples'),
         schemeOption(selected, 'reds'),
-        schemeOption(selected, 'oranges')
+        schemeOption(selected, 'oranges'),
     ];
 }

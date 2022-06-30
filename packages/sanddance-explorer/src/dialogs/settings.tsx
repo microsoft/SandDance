@@ -20,7 +20,7 @@ import {
     Spec,
     Transforms,
     UrlData,
-    ValuesData
+    ValuesData,
 } from 'vega-typings/types';
 import { Signal } from '../controls/signal';
 import { strings } from '../language';
@@ -49,7 +49,7 @@ export interface State {
 }
 
 enum DataRefType {
-    none, inline, url
+    none, inline, url,
 }
 
 function filterSignals(signal: NewSignal) {
@@ -131,7 +131,7 @@ function initState(props: Props): State {
         showSystemDialog: false,
         showVegaDialog: false,
         dataRefType: defaultDataRefType(props.dataFile),
-        spec: null
+        spec: null,
     };
 }
 
@@ -175,20 +175,20 @@ function _Settings(_props: Props) {
                     key: DataRefType.none,
                     text: strings.selectVegaSpecDataNone,
                     selected: this.state.dataRefType === DataRefType.none,
-                    data: DataRefType.none
+                    data: DataRefType.none,
                 },
                 !props.dataFile.rawText && {
                     key: DataRefType.url,
                     text: strings.selectVegaSpecDataUrl,
                     selected: this.state.dataRefType === DataRefType.url,
-                    data: DataRefType.url
+                    data: DataRefType.url,
                 },
                 {
                     key: DataRefType.inline,
                     text: strings.selectVegaSpecDataInline,
                     selected: this.state.dataRefType === DataRefType.inline,
-                    data: DataRefType.inline
-                }
+                    data: DataRefType.inline,
+                },
             ].filter(Boolean);
             const signalGroupMap = vegaSignalGroups(props.explorer.viewer.vegaSpec.signals);
             let first = true;
@@ -213,7 +213,7 @@ function _Settings(_props: Props) {
                                                     if (f.focus) {
                                                         f.focus();
                                                     }
-                                                }
+                                                };
                                             }
                                             return (
                                                 <Signal
@@ -247,7 +247,7 @@ function _Settings(_props: Props) {
                             text={strings.buttonShowVegaSpec}
                             onClick={() => this.setState({
                                 showVegaDialog: true,
-                                spec: serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, this.state.dataRefType, props.explorer.viewer.getInsight().transform, this.props.scheme)
+                                spec: serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, this.state.dataRefType, props.explorer.viewer.getInsight().transform, this.props.scheme),
                             })}
                         />
                     </Group>
@@ -323,8 +323,8 @@ function _Settings(_props: Props) {
                                     iconProps={{ iconName: 'Copy' }}
                                     text={strings.buttonCopyToClipboard}
                                     onClick={() => {
-                                        var pre = document.getElementById('sanddance-vega-spec') as HTMLPreElement;
-                                        var range = document.createRange();
+                                        const pre = document.getElementById('sanddance-vega-spec') as HTMLPreElement;
+                                        const range = document.createRange();
                                         range.selectNode(pre);
                                         const selection = window.getSelection();
                                         selection.removeAllRanges();
@@ -342,7 +342,7 @@ function _Settings(_props: Props) {
                                         window.open('https://vega.github.io/editor/', '_blank');
                                     }}
                                 />
-                            )
+                            ),
                         ]}
                     >
                         <Dropdown
@@ -350,7 +350,7 @@ function _Settings(_props: Props) {
                             options={options}
                             onChange={(e, o) => this.setState({
                                 dataRefType: o.data,
-                                spec: serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, o.data, props.explorer.viewer.getInsight().transform, this.props.scheme)
+                                spec: serializeSpec(props.explorer.viewer.vegaSpec, props.dataFile, o.data, props.explorer.viewer.getInsight().transform, this.props.scheme),
                             })}
                         />
                         <pre id="sanddance-vega-spec">

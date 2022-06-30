@@ -8,7 +8,7 @@ import {
     addMarks,
     addOffsets,
     addTransforms,
-    getGroupBy
+    getGroupBy,
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { addZScale } from '../zBase';
@@ -32,7 +32,7 @@ export class Square extends Layout {
         stack0: string,
         stack1: string,
         zScale: string
-    }
+    };
 
     constructor(public props: SquareProps & LayoutBuildProps) {
         super(props);
@@ -43,7 +43,7 @@ export class Square extends Layout {
             maxGroupSignal: `${p}_max_grouping`,
             stack0: `${p}_stack0`,
             stack1: `${p}_stack1`,
-            zScale: `scale_${p}_z`
+            zScale: `scale_${p}_z`,
         };
     }
 
@@ -59,22 +59,22 @@ export class Square extends Layout {
             ...sortBy && {
                 sort: {
                     field: safeFieldName(sortBy.name),
-                    order: 'ascending'
-                }
-            }
+                    order: 'ascending',
+                },
+            },
         });
 
         const { gap, levelSize, size, squaresPerBand } = this.addSignals();
 
         const heightSignal = {
-            signal: fillDirection === 'down-right' ? size : levelSize
+            signal: fillDirection === 'down-right' ? size : levelSize,
         };
 
         const mark: RectMark = {
             name: prefix,
             type: 'rect',
             from: {
-                data: globalScope.markDataName
+                data: globalScope.markDataName,
             },
             encode: {
                 update: {
@@ -82,30 +82,30 @@ export class Square extends Layout {
                         [
                             {
                                 test: testForCollapseSelection(),
-                                value: 0
+                                value: 0,
                             },
-                            heightSignal
+                            heightSignal,
                         ]
                         :
                         heightSignal,
                     width: {
-                        signal: fillDirection === 'down-right' ? levelSize : size
+                        signal: fillDirection === 'down-right' ? levelSize : size,
                     },
                     ...z && {
                         z: { value: 0 },
                         depth: [
                             {
                                 test: testForCollapseSelection(),
-                                value: 0
+                                value: 0,
                             },
                             {
                                 scale: names.zScale,
-                                field: safeFieldName(z.name)
-                            }
-                        ]
-                    }
-                }
-            }
+                                field: safeFieldName(z.name),
+                            },
+                        ],
+                    },
+                },
+            },
         };
         addMarks(globalScope.markGroup, mark);
 
@@ -116,31 +116,31 @@ export class Square extends Layout {
                 globalScales: {
                     showAxes: true,
                     scales: {
-                        z: [zScale]
-                    }
-                }
+                        z: [zScale],
+                    },
+                },
             },
             offsets: {
                 x: addOffsets(parentScope.offsets.x, tx.expr),
                 y: addOffsets(parentScope.offsets.y, ty.expr),
                 h: size,
-                w: size
+                w: size,
             },
             mark,
             sizeSignals: {
                 layoutHeight: size,
-                layoutWidth: size
+                layoutWidth: size,
             },
             ...collapseYHeight && {
                 encodingRuleMap: {
                     y: [
                         {
                             test: testForCollapseSelection(),
-                            signal: parentScope.offsets.y
-                        }
-                    ]
-                }
-            }
+                            signal: parentScope.offsets.y,
+                        },
+                    ],
+                },
+            },
         };
     }
 
@@ -166,13 +166,13 @@ export class Square extends Layout {
                         type: 'joinaggregate',
                         groupby: getGroupBy(groupings).map(safeFieldName),
                         ops: ['count'],
-                        as: [names.maxGroupField]
+                        as: [names.maxGroupField],
                     },
                     {
                         type: 'extent',
                         field: names.maxGroupField,
-                        signal: names.maxGroupSignal
-                    }
+                        signal: names.maxGroupSignal,
+                    },
                 );
                 maxGroupedUnits = `(${names.maxGroupSignal}[1])`;
             } else {
@@ -201,12 +201,12 @@ export class Square extends Layout {
         const tx: FormulaTransform = {
             type: 'formula',
             expr: null,
-            as: `${prefix}_${FieldNames.OffsetX}`
+            as: `${prefix}_${FieldNames.OffsetX}`,
         };
         const ty: FormulaTransform = {
             type: 'formula',
             expr: null,
-            as: `${prefix}_${FieldNames.OffsetY}`
+            as: `${prefix}_${FieldNames.OffsetY}`,
         };
         switch (fillDirection) {
             case 'down-right': {

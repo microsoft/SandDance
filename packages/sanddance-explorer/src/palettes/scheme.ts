@@ -13,7 +13,7 @@ export function schemeOption(selected: string, scheme: string): ISchemeOption {
         text: scheme,
         selected: selected === scheme,
         scheme: scheme,
-        children: schemesJSX[scheme]
+        children: schemesJSX[scheme],
     };
 }
 

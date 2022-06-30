@@ -23,20 +23,20 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             defaultBins,
             maxbinsSignalName: SignalNames.XBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.XMaxBins,
-            maxbins
+            maxbins,
         },
         minBandWidth: minBarBandWidth,
-        showAxes: true
+        showAxes: true,
     };
     const y: AxisScale = { title: null };
     const axisScales: AxisScales = {
         x: { title: specColumns.x && specColumns.x.name },
         y,
-        z: { title: specColumns.z && specColumns.z.name }
+        z: { title: specColumns.z && specColumns.z.name },
     };
     const layouts: LayoutPair[] = [{
         layoutType: 'Band',
-        props: bandProps
+        props: bandProps,
     }];
     if (insight.totalStyle === 'sum-strip-percent') {
         y.aggregate = 'percent';
@@ -47,11 +47,11 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             orientation: 'vertical',
             size: specColumns.size,
             sort: specColumns.sort,
-            z: specColumns.z
+            z: specColumns.z,
         };
         layouts.push({
             layoutType: 'Strip',
-            props: stripProps
+            props: stripProps,
         });
     } else {
         const aggProps: AggregateContainerProps = {
@@ -60,11 +60,11 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             globalAggregateMaxExtentSignal: 'aggMaxExtent',
             globalAggregateMaxExtentScaledSignal: 'aggMaxExtentScaled',
             sumBy: specColumns.size,
-            showAxes: true
+            showAxes: true,
         };
         layouts.push({
             layoutType: 'AggregateContainer',
-            props: aggProps
+            props: aggProps,
         });
         switch (insight.totalStyle) {
             case 'sum-treemap': {
@@ -74,11 +74,11 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     corner: 'bottom-left',
                     size: specColumns.size,
                     treeMapMethod: specViewOptions.language.treeMapMethod,
-                    z: specColumns.z
+                    z: specColumns.z,
                 };
                 layouts.push({
                     layoutType: 'Treemap',
-                    props: treemapProps
+                    props: treemapProps,
                 });
                 break;
             }
@@ -90,11 +90,11 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     orientation: 'vertical',
                     size: specColumns.size,
                     sort: specColumns.sort,
-                    z: specColumns.z
+                    z: specColumns.z,
                 };
                 layouts.push({
                     layoutType: 'Strip',
-                    props: stripProps
+                    props: stripProps,
                 });
                 break;
             }
@@ -105,11 +105,11 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     sortOrder: 'descending',
                     orientation: 'vertical',
                     sort: specColumns.sort,
-                    z: specColumns.z
+                    z: specColumns.z,
                 };
                 layouts.push({
                     layoutType: 'Strip',
-                    props: stripProps
+                    props: stripProps,
                 });
                 break;
             }
@@ -121,11 +121,11 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     fillDirection: 'right-up',
                     z: specColumns.z,
                     maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
-                    maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal
+                    maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal,
                 };
                 layouts.push({
                     layoutType: 'Square',
-                    props: squareProps
+                    props: squareProps,
                 });
                 break;
             }
@@ -143,38 +143,38 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     binnable: true,
                     axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
                     axisSelectionBetweenTicks: true,
-                    signals: [SignalNames.XBins]
+                    signals: [SignalNames.XBins],
                 },
                 {
                     role: 'z',
                     axisSelection: specColumns.z && specColumns.z.quantitative ? 'range' : 'exact',
-                    allowNone: true
+                    allowNone: true,
                 },
                 {
                     role: 'color',
-                    allowNone: true
+                    allowNone: true,
                 },
                 {
                     role: 'sort',
-                    allowNone: true
+                    allowNone: true,
                 },
                 {
                     role: 'size',
                     allowNone: allowNoneForSize,
                     excludeCategoric: true,
-                    signals: [SignalNames.TreeMapMethod]
+                    signals: [SignalNames.TreeMapMethod],
                 },
                 {
                     role: 'facet',
                     allowNone: true,
-                    signals: [SignalNames.FacetBins]
+                    signals: [SignalNames.FacetBins],
                 },
                 {
                     role: 'facetV',
                     allowNone: true,
-                    signals: [SignalNames.FacetVBins]
-                }
-            ]
-        }
+                    signals: [SignalNames.FacetVBins],
+                },
+            ],
+        },
     };
 }

@@ -58,7 +58,7 @@ const defaultProps: CubeLayerDefaultProps = {
     getSize: x => x.size,
     getPosition: x => x.position,
     getColor: x => x.color,
-    material: { ambient: 0.5, diffuse: 1 }
+    material: { ambient: 0.5, diffuse: 1 },
 };
 
 function _CubeLayer(props?: CubeLayerProps) {
@@ -83,20 +83,20 @@ function _CubeLayer(props?: CubeLayerProps) {
                     size: 3,
                     type: DOUBLE,
                     transition: true,
-                    accessor: 'getPosition'
+                    accessor: 'getPosition',
                 },
                 instanceSizes: {
                     size: 3,
                     transition: true,
-                    accessor: 'getSize'
+                    accessor: 'getSize',
                 },
                 instanceColors: {
                     size: 4,
                     type: UNSIGNED_BYTE,
                     transition: true,
                     accessor: 'getColor',
-                    defaultValue: DEFAULT_COLOR
-                }
+                    defaultValue: DEFAULT_COLOR,
+                },
             });
         }
 
@@ -121,7 +121,7 @@ function _CubeLayer(props?: CubeLayerProps) {
                     geometry: new base.luma.CubeGeometry(),
                     isInstanced: true,
                     //shaderCache: this.context['shaderCache']
-                })
+                }),
             );
         }
 
@@ -132,8 +132,8 @@ function _CubeLayer(props?: CubeLayerProps) {
             }
             this.state.model.setUniforms(
                 Object.assign({}, uniforms, {
-                    lightingMix
-                })
+                    lightingMix,
+                }),
             ).draw();
         }
     }

@@ -11,7 +11,7 @@ import {
     LayoutOffsets,
     SizeSignals,
     Titles,
-    TitleSource
+    TitleSource,
 } from '../interfaces';
 import { createOrdinals, ordinalScale } from '../ordinal';
 import {
@@ -19,7 +19,7 @@ import {
     addMarks,
     addScales,
     addSignals,
-    addTransforms
+    addTransforms,
 } from '../scope';
 import { modifySignal } from '../signals';
 import {
@@ -27,7 +27,7 @@ import {
     GroupMark,
     NewSignal,
     OrdinalScale,
-    SortOrder
+    SortOrder,
 } from 'vega-typings';
 
 export interface CrossProps extends LayoutProps {
@@ -77,7 +77,7 @@ export class Cross extends Layout {
             dimCount: `${p}_count`,
             dimCategorical: `data_${p}_cat`,
             dimCellSize: `${p}_cell_size`,
-            dimCellSizeCalc: `${p}_cell_calc`
+            dimCellSizeCalc: `${p}_cell_calc`,
         };
     }
 
@@ -102,7 +102,7 @@ export class Cross extends Layout {
             padding: SignalNames.FacetPaddingLeft,
             dataOut: <Data>null,
             scaleName: <string>null,
-            position: null
+            position: null,
         };
         const dy: Dimension = {
             dim: 'y',
@@ -116,7 +116,7 @@ export class Cross extends Layout {
             padding: `(${SignalNames.FacetPaddingTop} + ${SignalNames.FacetPaddingBottom})`,
             dataOut: <Data>null,
             scaleName: <string>null,
-            position: null
+            position: null,
         };
 
         const dimensions = [dx, dy];
@@ -135,8 +135,8 @@ export class Cross extends Layout {
                     {
                         type: 'formula',
                         expr: `indata(${JSON.stringify(globalScope.markDataName)}, ${JSON.stringify(bin.fields[0])}, datum[${JSON.stringify(bin.fields[0])}])`,
-                        as: FieldNames.Contains
-                    }
+                        as: FieldNames.Contains,
+                    },
                 );
                 data = bin.dataSequence;
                 dataName = bin.dataSequence.name;
@@ -159,13 +159,13 @@ export class Cross extends Layout {
                 {
                     type: 'formula',
                     expr: serializeAsVegaExpression(bin, FieldNames.First, FieldNames.Last),
-                    as: FieldNames.FacetSearch
+                    as: FieldNames.FacetSearch,
                 },
                 {
                     type: 'formula',
                     expr: displayBin(bin),
-                    as: FieldNames.FacetTitle
-                }
+                    as: FieldNames.FacetTitle,
+                },
             );
             addScales(globalScope.scope, scale);
             const count = `${names.dimCount}_${dim}`;
@@ -175,12 +175,12 @@ export class Cross extends Layout {
             addSignals(globalScope.scope,
                 {
                     name: calc,
-                    update: `${d.layout} / ${count}`
+                    update: `${d.layout} / ${count}`,
                 },
                 {
                     name: size,
-                    update: `max(${d.min}, (${calc} - ${padding}))`
-                }
+                    update: `max(${d.min}, (${calc} - ${padding}))`,
+                },
             );
             modifySignal(d.out, 'max', `((${size} + ${padding}) * ${count})`);
             d.position = this.dimensionOffset(d);
@@ -191,12 +191,12 @@ export class Cross extends Layout {
             encode: {
                 update: {
                     y: {
-                        signal: dy.position
-                    }
-                }
+                        signal: dy.position,
+                    },
+                },
             },
             from: {
-                data: dy.dataOut.name
+                data: dy.dataOut.name,
             },
             data: [
                 {
@@ -206,11 +206,11 @@ export class Cross extends Layout {
                         {
                             type: 'formula',
                             expr: `[datum[${JSON.stringify(FieldNames.FacetSearch)}], merge(parent[${JSON.stringify(FieldNames.FacetSearch)}], { clause: '&&'})]`,
-                            as: FieldNames.FacetSearch
-                        }
-                    ]
-                }
-            ]
+                            as: FieldNames.FacetSearch,
+                        },
+                    ],
+                },
+            ],
         };
 
         const groupCol: GroupMark = {
@@ -220,19 +220,19 @@ export class Cross extends Layout {
             encode: {
                 update: {
                     height: {
-                        signal: `${names.dimCellSize}_y`
+                        signal: `${names.dimCellSize}_y`,
                     },
                     width: {
-                        signal: `${names.dimCellSize}_x`
+                        signal: `${names.dimCellSize}_x`,
                     },
                     x: {
-                        signal: dx.position
-                    }
-                }
+                        signal: dx.position,
+                    },
+                },
             },
             from: {
-                data: names.searchUnion
-            }
+                data: names.searchUnion,
+            },
         };
 
         addMarks(globalScope.markGroup, groupRow);
@@ -242,14 +242,14 @@ export class Cross extends Layout {
             x: this.dimensionOffset(dx),
             y: this.dimensionOffset(dy),
             h: `${names.dimCellSize}_y`,
-            w: `${names.dimCellSize}_x`
+            w: `${names.dimCellSize}_x`,
         };
 
         const sizeSignals: SizeSignals = {
             layoutHeight: `${names.dimCellSize}_y`,
             layoutWidth: `${names.dimCellSize}_x`,
             colCount: `${names.dimCount}_x`,
-            rowCount: `${names.dimCount}_y`
+            rowCount: `${names.dimCount}_y`,
         };
 
         if (colRowTitles) {
@@ -260,7 +260,7 @@ export class Cross extends Layout {
             facetScope: groupCol,
             offsets,
             sizeSignals,
-            titles
+            titles,
         };
     }
 

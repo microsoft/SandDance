@@ -37,7 +37,7 @@ namespace qualBarChartTest {
             myY: i,
             myZ: i,
             myColor: v.toString(),
-            mySort: i
+            mySort: i,
         });
     }
     const glDiv = viewer.presenter.getElement(SandDance.VegaDeckGl.PresenterElement.gl);
@@ -48,15 +48,15 @@ namespace qualBarChartTest {
             uid: 'myUid',
             x: 'myX',
             y: 'myY',
-            z: 'myZ'
+            z: 'myZ',
         },
         scheme: 'category20',
         size: {
             height: glDiv.offsetHeight,
-            width: glDiv.offsetWidth
+            width: glDiv.offsetWidth,
         },
         chart: 'barchart',
-        view: '2d'
+        view: '2d',
     };
 
     viewer.render(insight, data, { columnTypes: { myColor: 'string' } });

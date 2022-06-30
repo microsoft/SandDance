@@ -4,7 +4,7 @@ import {
     Cube,
     PresenterConfig,
     PresenterStyle,
-    Stage
+    Stage,
 } from './interfaces';
 //import { LightSettings } from '@deck.gl/core/lib/layer';
 import { View } from '@msrvida/chart-types';
@@ -38,8 +38,8 @@ export const defaultPresenterConfig: PresenterConfig = {
         color: 100,
         position: 600,
         size: 600,
-        view: 600
-    }
+        view: 600,
+    },
 };
 
 export function createStage(view: View) {
@@ -56,9 +56,9 @@ export function createStage(view: View) {
         gridLines: [],
         textData: [],
         legend: {
-            rows: {}
+            rows: {},
         },
-        facets: []
+        facets: [],
     };
     return stage;
 }
