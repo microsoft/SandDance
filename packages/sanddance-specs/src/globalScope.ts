@@ -12,6 +12,8 @@ import {
 } from 'vega-typings';
 
 export interface GlobalSignals {
+    facetAxesAdjustX: NewSignal;
+    facetAxesAdjustY: NewSignal;
     minCellWidth: NewSignal;
     minCellHeight: NewSignal;
     plotOffsetLeft: NewSignal;

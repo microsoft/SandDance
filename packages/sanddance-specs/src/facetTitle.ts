@@ -226,9 +226,9 @@ export function facetColumnHeaderFooter(data: string, sizeSignals: SizeSignals, 
             encode: {
                 update: {
                     x: {
-                        signal: `(${index}) * (${sizeSignals.layoutWidth} + ${SignalNames.FacetPaddingLeft}) + ${SignalNames.FacetPaddingLeft} + ${SignalNames.PlotOffsetLeft}`
+                        signal: `(${index}) * (${sizeSignals.layoutWidth} + ${SignalNames.FacetPaddingLeft}) + ${SignalNames.FacetPaddingLeft} + ${SignalNames.PlotOffsetLeft} - ${SignalNames.FacetAxesAdjustX}`
                     },
-                    y: { signal: ySignal },
+                    y: { signal: `${ySignal} - ${SignalNames.FacetAxesAdjustY}` },
                     width: { signal: sizeSignals.layoutWidth }
                 }
             }

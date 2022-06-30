@@ -20,6 +20,7 @@
     "build:sanddance-core": "npm run build-typescript",
     "bundle": "rollup -c",
     "deploy": "parcel build ./uitest/sanddance-specs.ts",
+    "deploy-watch": "parcel watch ./uitest/sanddance-specs.ts --target umd",
     "test2": "node -r esm ./test/perf.js"
   },
   "umd": "../../docs/tests/sanddance-specs/v1/js/sanddance-specs.js",

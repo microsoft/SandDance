@@ -51,6 +51,8 @@ export const SignalNames = {
     PlotWidthOut: 'PlotWidthOut',
     ColorBinCount: 'RoleColor_BinCountSignal',
     ColorReverse: 'RoleColor_ReverseSignal',
+    FacetAxesAdjustX: 'RoleFacet_AxesAdjustSignalX',
+    FacetAxesAdjustY: 'RoleFacet_AxesAdjustSignalY',
     FacetBins: 'RoleFacet_BinsSignal',
     FacetVBins: 'RoleFacetV_BinsSignal',
     FacetPaddingTop: 'FacetPaddingTop',

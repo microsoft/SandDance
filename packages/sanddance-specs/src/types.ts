@@ -384,6 +384,8 @@ export interface SpecViewOptions {
     tickSize: number;
 
     zAxisOptions?: ZAxisOptions;
+
+    collapseFacetAxes?: boolean;
 }
 
 export interface SpecContext {

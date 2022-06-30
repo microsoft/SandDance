@@ -9,7 +9,9 @@ import {
     axesTitlePaddingFacetX,
     axesTitlePaddingFacetY,
     axesTitlePaddingX,
-    axesTitlePaddingY
+    axesTitlePaddingY,
+    facetPaddingBottom,
+    facetPaddingLeft
 } from './defaults';
 import { minFacetHeight, minFacetWidth } from './defaults';
 import { FacetLayout } from './facetLayout';
@@ -45,6 +47,7 @@ export interface SpecBuilderProps {
     specCapabilities: SpecCapabilities;
     customZScale?: boolean;
     facetLayout?: FacetLayout;
+    collapseFacetAxes?: boolean;
 }
 
 export class SpecBuilder {
@@ -52,6 +55,8 @@ export class SpecBuilder {
 
     constructor(public props: SpecBuilderProps, public specContext: SpecContext) {
         this.globalSignals = {
+            facetAxesAdjustX: { name: SignalNames.FacetAxesAdjustX, update: props.facetLayout && props.collapseFacetAxes ? facetPaddingLeft.toString() : '0' },
+            facetAxesAdjustY: { name: SignalNames.FacetAxesAdjustY, update: props.facetLayout && props.collapseFacetAxes ? facetPaddingBottom.toString() : '0' },
             minCellWidth: {
                 name: SignalNames.MinCellWidth,
                 update: `${minFacetWidth}`
@@ -107,9 +112,8 @@ export class SpecBuilder {
     }
 
     public build(): SpecResult {
-        const { specContext } = this;
-
-        const { facetLayout, specCapabilities  } = this.props;
+        const { globalSignals, specContext } = this;
+        const { facetLayout, specCapabilities } = this.props;
         const { insight, specColumns, specViewOptions } = specContext;
         const dataName = 'data_source';
         const { vegaSpec, groupMark } = this.initSpec(dataName);
@@ -126,7 +130,7 @@ export class SpecBuilder {
             dataName: colorDataName,
             markGroup: groupMark,
             scope: vegaSpec,
-            signals: this.globalSignals
+            signals: globalSignals
         });
         if (facetLayout) {
             addSignals(vegaSpec,
@@ -143,8 +147,8 @@ export class SpecBuilder {
                     update: `${facetLayout.facetPadding.top}`
                 }
             );
-            this.globalSignals.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
-            this.globalSignals.plotOffsetRight.update = `${facetLayout.plotPadding.x}`;
+            globalSignals.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
+            globalSignals.plotOffsetRight.update = `${facetLayout.plotPadding.x}`;
         }
         const {
             firstScope,
@@ -162,8 +166,8 @@ export class SpecBuilder {
             return specResult;
         }
         if (allGlobalScales.length > 0) {
-            const plotHeightOut = this.globalSignals.plotHeightOut.name;
-            const plotWidthOut = this.globalSignals.plotWidthOut.name;
+            const plotHeightOut = globalSignals.plotHeightOut.name;
+            const plotWidthOut = globalSignals.plotWidthOut.name;
 
             const colTitleScale: LinearScale = {
                 type: 'linear',
@@ -202,14 +206,14 @@ export class SpecBuilder {
                 globalScope,
                 allGlobalScales,
                 axisScales: this.props.axisScales,
-                plotOffsetSignals: { x: this.globalSignals.plotOffsetLeft, y: this.globalSignals.plotOffsetBottom },
+                plotOffsetSignals: { x: globalSignals.plotOffsetLeft, y: globalSignals.plotOffsetBottom },
                 axesOffsets: { x: axesOffsetX, y: axesOffsetY },
                 axesTitlePadding: facetLayout ? { x: axesTitlePaddingFacetX, y: axesTitlePaddingFacetY } : { x: axesTitlePaddingX, y: axesTitlePaddingY },
                 labelBaseline: { x: 'top', y: 'middle' },
                 specColumns,
                 specViewOptions,
                 axesScopes,
-                faceted: !!facetLayout,
+                hideZAxis: !!facetLayout,
                 view: insight.view
             });
         }
@@ -274,7 +278,7 @@ export class SpecBuilder {
 
     private initSpec(dataName: string) {
         const { globalSignals } = this;
-        const { minCellWidth, minCellHeight, plotOffsetLeft, plotOffsetBottom, plotOffsetTop, plotOffsetRight, plotHeightOut, plotWidthOut } = globalSignals;
+        const { facetAxesAdjustX, facetAxesAdjustY, minCellWidth, minCellHeight, plotOffsetLeft, plotOffsetBottom, plotOffsetTop, plotOffsetRight, plotHeightOut, plotWidthOut } = globalSignals;
         const { specContext } = this;
         const { insight } = specContext;
         const groupMark: GroupMark = {
@@ -282,10 +286,10 @@ export class SpecBuilder {
             //style: 'cell',
             encode: {
                 update: {
-                    x: { signal: SignalNames.PlotOffsetLeft },
+                    x: { signal: `${SignalNames.PlotOffsetLeft} - ${SignalNames.FacetAxesAdjustX}` },
                     y: { signal: SignalNames.PlotOffsetTop },
-                    height: { signal: SignalNames.PlotHeightOut },
-                    width: { signal: SignalNames.PlotWidthOut }
+                    height: { signal: `${SignalNames.PlotHeightOut} - ${SignalNames.FacetAxesAdjustY}` },
+                    width: { signal: `${SignalNames.PlotWidthOut} + ${SignalNames.FacetAxesAdjustX}` }
                 }
             }
         };
@@ -310,9 +314,11 @@ export class SpecBuilder {
                 plotOffsetTop,
                 plotOffsetBottom,
                 plotOffsetRight,
+                facetAxesAdjustX,
+                facetAxesAdjustY,
                 {
                     name: SignalNames.PlotHeightIn,
-                    update: `${SignalNames.ViewportHeight} - ${SignalNames.PlotOffsetBottom}`
+                    update: `${SignalNames.ViewportHeight} - ${SignalNames.PlotOffsetBottom} + ${SignalNames.FacetAxesAdjustY}`
                 },
                 {
                     name: SignalNames.PlotWidthIn,
@@ -322,7 +328,7 @@ export class SpecBuilder {
                 plotWidthOut,
                 {
                     name: 'height',
-                    update: `${SignalNames.PlotOffsetTop} + ${SignalNames.PlotHeightOut} + ${SignalNames.PlotOffsetBottom}`
+                    update: `${SignalNames.PlotOffsetTop} + ${SignalNames.PlotHeightOut} + ${SignalNames.PlotOffsetBottom} - ${SignalNames.FacetAxesAdjustY}`
                 },
                 {
                     name: 'width',
