@@ -47,6 +47,7 @@ export interface SpecBuilderProps {
     specCapabilities: SpecCapabilities;
     customZScale?: boolean;
     facetLayout?: FacetLayout;
+    collapseFacetAxes?: boolean;
 }
 
 export class SpecBuilder {
@@ -54,8 +55,8 @@ export class SpecBuilder {
 
     constructor(public props: SpecBuilderProps, public specContext: SpecContext) {
         this.globalSignals = {
-            facetAxesAdjustX: { name: SignalNames.FacetAxesAdjustX, update: props.facetLayout ? facetPaddingLeft.toString() : '0' },
-            facetAxesAdjustY: { name: SignalNames.FacetAxesAdjustY, update: props.facetLayout ? facetPaddingBottom.toString() : '0' },
+            facetAxesAdjustX: { name: SignalNames.FacetAxesAdjustX, update: props.facetLayout && props.collapseFacetAxes ? facetPaddingLeft.toString() : '0' },
+            facetAxesAdjustY: { name: SignalNames.FacetAxesAdjustY, update: props.facetLayout && props.collapseFacetAxes ? facetPaddingBottom.toString() : '0' },
             minCellWidth: {
                 name: SignalNames.MinCellWidth,
                 update: `${minFacetWidth}`
@@ -111,7 +112,7 @@ export class SpecBuilder {
     }
 
     public build(): SpecResult {
-        const { specContext } = this;
+        const { globalSignals, specContext } = this;
         const { facetLayout, specCapabilities } = this.props;
         const { insight, specColumns, specViewOptions } = specContext;
         const dataName = 'data_source';
@@ -129,7 +130,7 @@ export class SpecBuilder {
             dataName: colorDataName,
             markGroup: groupMark,
             scope: vegaSpec,
-            signals: this.globalSignals
+            signals: globalSignals
         });
         if (facetLayout) {
             addSignals(vegaSpec,
@@ -146,8 +147,8 @@ export class SpecBuilder {
                     update: `${facetLayout.facetPadding.top}`
                 }
             );
-            this.globalSignals.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
-            this.globalSignals.plotOffsetRight.update = `${facetLayout.plotPadding.x}`;
+            globalSignals.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
+            globalSignals.plotOffsetRight.update = `${facetLayout.plotPadding.x}`;
         }
         const {
             firstScope,
@@ -165,8 +166,8 @@ export class SpecBuilder {
             return specResult;
         }
         if (allGlobalScales.length > 0) {
-            const plotHeightOut = this.globalSignals.plotHeightOut.name;
-            const plotWidthOut = this.globalSignals.plotWidthOut.name;
+            const plotHeightOut = globalSignals.plotHeightOut.name;
+            const plotWidthOut = globalSignals.plotWidthOut.name;
 
             const colTitleScale: LinearScale = {
                 type: 'linear',
@@ -205,7 +206,7 @@ export class SpecBuilder {
                 globalScope,
                 allGlobalScales,
                 axisScales: this.props.axisScales,
-                plotOffsetSignals: { x: this.globalSignals.plotOffsetLeft, y: this.globalSignals.plotOffsetBottom },
+                plotOffsetSignals: { x: globalSignals.plotOffsetLeft, y: globalSignals.plotOffsetBottom },
                 axesOffsets: { x: axesOffsetX, y: axesOffsetY },
                 axesTitlePadding: facetLayout ? { x: axesTitlePaddingFacetX, y: axesTitlePaddingFacetY } : { x: axesTitlePaddingX, y: axesTitlePaddingY },
                 labelBaseline: { x: 'top', y: 'middle' },

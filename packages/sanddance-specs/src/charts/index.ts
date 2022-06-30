@@ -50,6 +50,7 @@ export function getSpecBuilderPropsForChart(specContext: SpecContext) {
             const { facetLayout, layoutPair } = getFacetLayout(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn, specViewOptions.colors.axisText);
             props.layouts.unshift(layoutPair);
             props.facetLayout = facetLayout;
+            props.collapseFacetAxes = specViewOptions.collapseFacetAxes;
         }
         return props;
     }
