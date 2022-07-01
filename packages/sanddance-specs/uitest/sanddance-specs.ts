@@ -24,7 +24,6 @@ const specViewOptions: SpecViewOptions = {
     },
     maxLegends: 20,
     tickSize: 10,
-    collapseFacetAxes: true,
 };
 let data: object[];
 let columns: Column[];

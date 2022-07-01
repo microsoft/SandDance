@@ -1,0 +1,25 @@
+{
+    "columns": {
+        "x": "Longitude",
+        "y": "Latitude",
+        "color": "Obama",
+        "z": "Education",
+        "sort": "State"
+    },
+    "scheme": "redblue",
+    "backgroundImage": {
+        "url": "https://danmarshall.github.io/htmltest/usa3.png",
+        "extents": {
+            "bottom": 24.5,
+            "left": -126,
+            "right": -65,
+            "top": 51
+        }
+    },
+    "size": {
+        "height": 600,
+        "width": 800
+    },
+    "chart": "stacks",
+    "view": "3d"
+}
