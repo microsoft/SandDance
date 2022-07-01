@@ -13,12 +13,16 @@ import {
 import {
     addData,
     addOffsets,
+    addScales,
     addSignals,
     addTransforms,
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { modifySignal } from '../signals';
-import { BandScale, Scale } from 'vega-typings';
+import { BandScale, RangeRawArray } from 'vega-typings';
+import { linearScale } from '../scales';
+
+export const bandScaleLinearSuffix = '_linear';
 
 export interface BandProps extends LayoutProps {
     excludeEncodingRuleMap?: boolean;
@@ -27,6 +31,7 @@ export interface BandProps extends LayoutProps {
     orientation: Orientation;
     showAxes: boolean;
     style?: string;
+    outerSignalExtents?: { min: number, max: number };
 }
 
 export class Band extends Layout {
@@ -35,7 +40,7 @@ export class Band extends Layout {
         xScale: string,
         yScale: string,
         bandWidth: string,
-        accumulative: string
+        accumulative: string,
     };
 
     constructor(public props: BandProps & LayoutBuildProps) {
@@ -47,7 +52,7 @@ export class Band extends Layout {
             bandWidth: `${p}_bandwidth`,
             accumulative: `${p}_accumulative`,
         };
-        this.bin = binnable(this.prefix, props.globalScope.data.name, props.groupby);
+        this.bin = binnable(this.prefix, props.globalScope.data.name, props.groupby, props.outerSignalExtents);
     }
 
     public getGrouping() {
@@ -86,7 +91,12 @@ export class Band extends Layout {
             },
         );
 
-        const scales = this.getScales(bin, horizontal);
+        const scale = this.getScale(bin, horizontal);
+
+        if (props.outerSignalExtents && bin.native === false) {
+            //add a linear scale for use by background image
+            addScales(globalScope.scope, linearScale(scale.name + bandScaleLinearSuffix, {signal: bin.extentSignal}, scale.range as RangeRawArray, scale.reverse as boolean, false, false));
+        }
 
         let encodingRuleMap: { [key: string]: EncodingRule[] };
         if (!props.excludeEncodingRuleMap) {
@@ -137,8 +147,8 @@ export class Band extends Layout {
             globalScales: {
                 showAxes,
                 scales: {
-                    x: horizontal ? undefined : scales,
-                    y: horizontal ? scales : undefined,
+                    x: horizontal ? undefined : [scale],
+                    y: horizontal ? [scale] : undefined,
                 },
             },
             encodingRuleMap,
@@ -172,12 +182,11 @@ export class Band extends Layout {
         };
     }
 
-    private getScales(bin: Binnable, horizontal: boolean) {
+    private getScale(bin: Binnable, horizontal: boolean) {
         const { names } = this;
         const { parentScope } = this.props;
         const binField = safeFieldName(bin.fields[0]);
 
-        const scales: Scale[] = [];
         let bandScale: BandScale;
         if (horizontal) {
             bandScale = {
@@ -215,7 +224,6 @@ export class Band extends Layout {
                 },
             };
         }
-        scales.push(bandScale);
-        return scales;
+        return bandScale;
     }
 }

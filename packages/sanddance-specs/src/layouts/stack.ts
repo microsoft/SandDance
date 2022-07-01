@@ -17,6 +17,7 @@ import { LinearScale, RectMark } from 'vega-typings';
 
 export interface StackProps extends LayoutProps {
     sort: Column;
+    showAxes: boolean;
 }
 
 export class Stack extends Layout {
@@ -60,7 +61,7 @@ export class Stack extends Layout {
 
     public build(): InnerScope {
         const { names, props } = this;
-        const { globalScope, groupings, parentScope, sort } = props;
+        const { globalScope, groupings, parentScope, showAxes, sort } = props;
         const { sizeSignals } = parentScope;
 
         addTransforms(globalScope.data,
@@ -96,7 +97,7 @@ export class Stack extends Layout {
                         type: 'sequence',
                         start: 1,
                         stop: {
-                            signal: `max(sqrt(${names.globalExtent}[1]),2)`,
+                            signal: `sqrt(${names.globalExtent}[1])`,
                         },
                     },
                     {
@@ -232,7 +233,7 @@ export class Stack extends Layout {
                 layoutWidth: names.size,
             },
             globalScales: {
-                showAxes: true,
+                showAxes,
                 scales: {
                     z: [zScale],
                 },

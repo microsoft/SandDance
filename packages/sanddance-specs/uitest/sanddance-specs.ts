@@ -23,11 +23,12 @@ const specViewOptions: SpecViewOptions = {
         count: "Count"
     },
     maxLegends: 20,
-    tickSize: 10
+    tickSize: 10,
+    collapseFacetAxes: true,
 };
 let data: object[];
 let columns: Column[];
-const container = document.getElementById('vis');
+const container = document.getElementById('vis')!;
 const select = document.getElementById('select-spec') as HTMLSelectElement;
 const insightTextarea = document.getElementById('insight-json') as HTMLTextAreaElement;
 const insightUdateButton = document.getElementById('insight-update') as HTMLButtonElement;
@@ -81,7 +82,7 @@ function renderVegaSpec(vegaSpec: Vega.Spec) {
         .runAsync()
         .catch(e => container.innerHTML = `error ${e}`)
         .then(() => {
-            const d0 = vegaSpec.data[0] as any;
+            const d0 = vegaSpec.data![0] as any;
             delete d0.values;
             d0.format = {
                 parse: 'auto',

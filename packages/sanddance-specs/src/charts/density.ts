@@ -16,10 +16,12 @@ import { SpecContext } from '../types';
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns, specViewOptions } = specContext;
     const axisScales: AxisScales = {
-        x: { title: specColumns.x && specColumns.x.name },
-        y: { title: specColumns.y && specColumns.y.name },
-        z: { title: specColumns.z && specColumns.z.name },
+        x: { title: specColumns.x?.name },
+        y: { title: specColumns.y?.name },
+        z: { title: specColumns.z?.name },
     };
+    const backgroundImage =  specColumns.x?.quantitative && specColumns.y?.quantitative && insight.backgroundImage?.extents && insight.backgroundImage;
+    const showAxes = !backgroundImage;
     const hBandProps: BandProps = {
         excludeEncodingRuleMap: true,
         orientation: 'horizontal',
@@ -31,7 +33,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             maxbins,
         },
         minBandWidth: minBarBandWidth,
-        showAxes: true,
+        showAxes,
+        outerSignalExtents: backgroundImage && { max: backgroundImage.extents.top, min: backgroundImage.extents.bottom },
     };
     const vBandProps: BandProps = {
         excludeEncodingRuleMap: true,
@@ -44,7 +47,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             maxbins,
         },
         minBandWidth: minBarBandWidth,
-        showAxes: true,
+        showAxes,
+        outerSignalExtents: backgroundImage && { max: backgroundImage.extents.right, min: backgroundImage.extents.left },
     };
     const aggProps: AggregateSquareProps = {
         onBuild: null,
@@ -73,6 +77,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 size: specColumns.size,
                 treeMapMethod: specViewOptions.language.treeMapMethod,
                 z: specColumns.z,
+                showAxes,
             };
             layouts.push({
                 layoutType: 'Treemap',
@@ -88,6 +93,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 size: specColumns.size,
                 sort: specColumns.sort,
                 z: specColumns.z,
+                showAxes,
             };
             layouts.push({
                 layoutType: 'Strip',
@@ -102,6 +108,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 orientation: 'vertical',
                 sort: specColumns.sort,
                 z: specColumns.z,
+                showAxes,
             };
             layouts.push({
                 layoutType: 'Strip',
@@ -117,6 +124,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 z: specColumns.z,
                 maxGroupedUnits: null,
                 maxGroupedFillSize: null,
+                showAxes,
             };
             aggProps.onBuild = (aggMaxExtent, aggMaxExtentScaled) => {
                 squareProps.maxGroupedUnits = aggMaxExtent;
@@ -133,25 +141,26 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         axisScales,
         layouts,
         specCapabilities: {
+            backgroundImage: true,
             countsAndSums: true,
             roles: [
                 {
                     role: 'x',
                     binnable: true,
-                    axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
+                    axisSelection: specColumns.x?.quantitative ? 'range' : 'exact',
                     axisSelectionBetweenTicks: true,
                     signals: [SignalNames.XBins],
                 },
                 {
                     role: 'y',
                     binnable: true,
-                    axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
+                    axisSelection: specColumns.y?.quantitative ? 'range' : 'exact',
                     axisSelectionBetweenTicks: true,
                     signals: [SignalNames.YBins],
                 },
                 {
                     role: 'z',
-                    axisSelection: specColumns.z && specColumns.z.quantitative ? 'range' : 'exact',
+                    axisSelection: specColumns.z?.quantitative ? 'range' : 'exact',
                     allowNone: true,
                 },
                 {

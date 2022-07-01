@@ -102,15 +102,15 @@ export function getStats(data: object[], column: Column) {
     for (let i = 0; i < data.length; i++) {
         const row = data[i];
         const value = row[column.name];
-        distinctMap[value] = true;
-        if (stats.max === null || value > stats.max) {
-            stats.max = value;
-        }
-        if (stats.min === null || value < stats.min) {
-            stats.min = value;
-        }
         const num = +value;
+        distinctMap[value] = true;
         if (!isNaN(num)) {
+            if (stats.max === null || num > stats.max) {
+                stats.max = num;
+            }
+            if (stats.min === null || num < stats.min) {
+                stats.min = num;
+            }
             sum += num;
         }
         if (column.type === 'string' && !stats.hasColorData && isColor(value)) {

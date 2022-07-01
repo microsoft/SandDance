@@ -16,6 +16,7 @@ import { SpecContext } from '../types';
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns, specViewOptions } = specContext;
     const { language } = specViewOptions;
+    const showAxes = true;
     const bandProps: BandProps = {
         orientation: 'horizontal',
         groupby: {
@@ -26,13 +27,13 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             maxbins,
         },
         minBandWidth: minBarBandWidth,
-        showAxes: true,
+        showAxes,
     };
     const x: AxisScale = { title: null };
     const axisScales: AxisScales = {
         x,
-        y: { title: specColumns.y && specColumns.y.name },
-        z: { title: specColumns.z && specColumns.z.name },
+        y: { title: specColumns.y?.name },
+        z: { title: specColumns.z?.name },
     };
     const layouts: LayoutPair[] = [{
         layoutType: 'Band',
@@ -48,6 +49,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             size: specColumns.size,
             sort: specColumns.sort,
             z: specColumns.z,
+            showAxes,
         };
         layouts.push({
             layoutType: 'Strip',
@@ -60,7 +62,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             globalAggregateMaxExtentSignal: 'aggMaxExtent',
             globalAggregateMaxExtentScaledSignal: 'aggMaxExtentScaled',
             sumBy: specColumns.size,
-            showAxes: true,
+            showAxes,
         };
         layouts.push({
             layoutType: 'AggregateContainer',
@@ -75,6 +77,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     size: specColumns.size,
                     treeMapMethod: specViewOptions.language.treeMapMethod,
                     z: specColumns.z,
+                    showAxes,
                 };
                 layouts.push({
                     layoutType: 'Treemap',
@@ -91,6 +94,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     size: specColumns.size,
                     sort: specColumns.sort,
                     z: specColumns.z,
+                    showAxes,
                 };
                 layouts.push({
                     layoutType: 'Strip',
@@ -107,6 +111,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     size: specColumns.size,
                     sort: specColumns.sort,
                     z: specColumns.z,
+                    showAxes,
                 };
                 layouts.push({
                     layoutType: 'Strip',
@@ -123,6 +128,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     z: specColumns.z,
                     maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
                     maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal,
+                    showAxes,
                 };
                 layouts.push({
                     layoutType: 'Square',
@@ -142,13 +148,13 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 {
                     role: 'y',
                     binnable: true,
-                    axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
+                    axisSelection: specColumns.y?.quantitative ? 'range' : 'exact',
                     axisSelectionBetweenTicks: true,
                     signals: [SignalNames.YBins],
                 },
                 {
                     role: 'z',
-                    axisSelection: specColumns.z && specColumns.z.quantitative ? 'range' : 'exact',
+                    axisSelection: specColumns.z?.quantitative ? 'range' : 'exact',
                     allowNone: true,
                 },
                 {

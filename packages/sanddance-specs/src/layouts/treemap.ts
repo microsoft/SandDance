@@ -28,6 +28,7 @@ export interface TreemapProps extends LayoutProps {
     size: Column;
     treeMapMethod: string;
     z: Column;
+    showAxes: boolean;
 }
 
 export class Treemap extends Layout {
@@ -47,7 +48,7 @@ export class Treemap extends Layout {
         fieldWidth: string,
         heightExtent: string,
         widthExtent: string,
-        zScale: string
+        zScale: string,
     };
 
     constructor(public props: TreemapProps & LayoutBuildProps) {
@@ -75,7 +76,7 @@ export class Treemap extends Layout {
 
     public build(): InnerScope {
         const { names, props } = this;
-        const { globalScope, parentScope, treeMapMethod, z } = props;
+        const { globalScope, parentScope, showAxes, treeMapMethod, z } = props;
 
         const zScale = addZScale(z, globalScope.zSize, globalScope.data.name, names.zScale);
 
@@ -103,7 +104,7 @@ export class Treemap extends Layout {
         return {
             ...z && {
                 globalScales: {
-                    showAxes: true,
+                    showAxes,
                     scales: {
                         z: [zScale],
                     },

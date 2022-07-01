@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Column, View } from '@msrvida/chart-types';
+import { Column, Size, View } from '@msrvida/chart-types';
 import { Search } from '@msrvida/search-expression';
 import { Transforms } from 'vega-typings';
 
@@ -42,10 +42,24 @@ export interface Facets {
     rows: number;
 }
 
+export interface Extents {
+    bottom: number;
+    left: number;
+    right: number;
+    top: number;
+}
+
+export interface BackgroundImage {
+    url: string;
+    size: Size;
+    extents?: Extents;
+}
+
 /**
  * Options to designate a SandDance visualization.
  */
 export interface Insight {
+    backgroundImage?: BackgroundImage;
     chart: Chart;
     size: Size;
     columns: InsightColumns;
@@ -141,7 +155,12 @@ export interface SpecCapabilities {
     /**
      * Signals associated with this spec type.
      */
-    signals?: string[];
+     signals?: string[];
+    
+    /**
+     * Ability to show background image.
+     */
+     backgroundImage?: boolean;
 }
 
 /**
@@ -162,11 +181,11 @@ export interface SpecColorSettings {
     /**
      * Color of grid lines.
      */
-     gridLine?: string;
+    gridLine?: string;
 
-     /**
-     * Color of axes text.
-     */
+    /**
+    * Color of axes text.
+    */
     axisText?: string;
 }
 
@@ -293,14 +312,6 @@ export interface SpecLanguage {
 
 export interface SignalValues {
     [key: string]: any;
-}
-
-/**
- * Rectangle size.
- */
-export interface Size {
-    height: number;
-    width: number;
 }
 
 /**

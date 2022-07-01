@@ -14,19 +14,16 @@ import {
     SignalRef,
 } from 'vega-typings';
 
-export function linearScale(scaleName: string, data: string, field: string, range: RangeScheme, reverse: boolean, zero: boolean) {
+export function linearScale(scaleName: string, domain: ScaleData | SignalRef, range: RangeScheme, reverse: boolean, zero: boolean, nice = true) {
     const scale: LinearScale = {
         name: scaleName,
         type: 'linear',
         range,
         round: true,
         reverse,
-        domain: {
-            data,
-            field: safeFieldName(field),
-        },
+        domain,
         zero,
-        nice: true,
+        nice,
     };
     return scale;
 }

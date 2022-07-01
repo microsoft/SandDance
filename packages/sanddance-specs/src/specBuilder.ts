@@ -39,6 +39,7 @@ import {
     Spec,
 } from 'vega-typings';
 import { layoutClasses } from './layouts/index';
+import { getImageMark } from './image';
 
 export interface SpecBuilderProps {
     axisScales?: AxisScales;
@@ -108,6 +109,10 @@ export class SpecBuilder {
                 ),
             )
             .filter(Boolean);
+        const { backgroundImage } = specContext.insight;
+        if (backgroundImage && !backgroundImage.extents) {
+            errors.push('BackgroundImage must have extents.');
+        }
         return errors;
     }
 
@@ -183,11 +188,24 @@ export class SpecBuilder {
                 range: [{ signal: plotHeightOut }, 0],
             };
 
+            const facetScope = facetLayout ? firstScope : null;
+
+            const backgroundGroup = facetLayout ? (facetScope.facetScope as GroupMark) : groupMark;
+            //TODO if capability and numeric x,y
+            if (insight.backgroundImage && specCapabilities.backgroundImage && specColumns.x?.quantitative && specColumns.y?.quantitative) {
+                //backgroundGroup.encode.update.fill = { value: 'pink' }
+                if (!backgroundGroup.marks) {
+                    backgroundGroup.marks = [];
+                }
+                const imageMark = getImageMark(insight.backgroundImage, allGlobalScales);
+                backgroundGroup.marks.unshift(imageMark);
+            }
+
             const axesScopes: AxesScopeMap = facetLayout ?
                 addFacetAxesGroupMarks({
                     globalScope: globalScope.scope,
                     plotScope: groupMark,
-                    facetScope: firstScope,
+                    facetScope,
                     colTitleScale,
                     rowTitleScale,
                     colSeqName: 'data_FacetCellColTitles',
