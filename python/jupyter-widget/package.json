@@ -66,6 +66,9 @@
     "source-map-loader": "^0.2.4",
     "style-loader": "^1.0.0"
   },
+  "overrides": {
+    "url-parse": "^1.5.9"
+  },
   "jupyterlab": {
     "extension": "lib/plugin"
   }
