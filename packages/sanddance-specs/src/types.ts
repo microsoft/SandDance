@@ -189,8 +189,8 @@ export interface SpecColorSettings {
     gridLine?: string;
 
     /**
-    * Color of axes text.
-    */
+     * Color of axes text.
+     */
     axisText?: string;
 }
 
