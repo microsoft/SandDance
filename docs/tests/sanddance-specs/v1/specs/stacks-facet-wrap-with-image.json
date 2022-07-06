@@ -10,12 +10,12 @@
     "facetStyle": "wrap",
     "scheme": "redblue",
     "backgroundImage": {
-        "url": "https://danmarshall.github.io/htmltest/usa3.png",
+        "url": "img/usa-counties-equirectangular.png",
         "extents": {
-            "bottom": 24.5,
-            "left": -126,
-            "right": -65,
-            "top": 51
+            "bottom": 24,
+            "left": -125.5,
+            "right": -66.5,
+            "top": 49.75
         }
     },
     "size": {
