@@ -1,0 +1,16 @@
+{
+    "columns": {
+        "x": "Income",
+        "color": "Obama",
+        "z": "Education",
+        "facet": "MedAge"
+    },
+    "facetStyle": "wrap",
+    "scheme": "redblue",
+    "size": {
+        "height": 600,
+        "width": 800
+    },
+    "chart": "barchartV",
+    "view": "3d"
+}

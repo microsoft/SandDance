@@ -1,0 +1,14 @@
+{
+    "columns": {
+        "x": "State",
+        "color": "Obama",
+        "z": "Education"
+    },
+    "scheme": "redblue",
+    "size": {
+        "height": 600,
+        "width": 800
+    },
+    "chart": "barchartV",
+    "view": "3d"
+}
