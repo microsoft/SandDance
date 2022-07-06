@@ -1,8 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { marked } = require('marked');
-
-const pubversion = 'v3';
+const tree = require('../docs/_data/tree.json');
 
 function liquid(layout, title) {
     return `---\nlayout: ${layout}\ntitle: '${title}'\n---\n\n`;
@@ -23,14 +22,6 @@ function copyReadme(title, packageRoot, packageDir, docRoot, version, fileNameIn
     console.log(`readme copied for ${packageDir}`);
 }
 
-function packageSingleDir(title, packageRoot, packageDir, docRoot) {
-    const fullPath = path.resolve(packageRoot, packageDir);
-    if (fs.statSync(fullPath).isDirectory()) {
-        //console.log(`folder: ${f}`);
-        copyReadme(title, packageRoot, packageDir, docRoot, pubversion, 'README.md', 'index.md');
-    }
-}
-
 function convertHomePage() {
     const readmeMarkdown = fs.readFileSync('./README.md', 'UTF8');
     const html = liquid('page', 'Home') + rewriteURLs(marked(readmeMarkdown));
@@ -40,10 +31,12 @@ function convertHomePage() {
 const map = {
     "https://microsoft.github.io": "",
     "dev.md": "https://github.com/Microsoft/SandDance/blob/master/dev.md",
-    "packages/sanddance/README.md": `/SandDance/docs/sanddance/${pubversion}/`,
-    "packages/sanddance-vue/README.md": `/SandDance/docs/sanddance-vue/${pubversion}/`,
-    "packages/sanddance-react/README.md": `/SandDance/docs/sanddance-react/${pubversion}/`,
-    "packages/sanddance-explorer/README.md": `/SandDance/docs/sanddance-explorer/${pubversion}/`
+    "packages/sanddance/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='sanddance')[0].url}/`,
+    "packages/sanddance-specs/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-specs')[0].url}/`,
+    "packages/sanddance-vue/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-vue')[0].url}/`,
+    "packages/sanddance-react/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-react')[0].url}/`,
+    "packages/sanddance-explorer/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-explorer')[0].url}/`,
+    "packages/vega-deck.gl/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='vega-deck.gl')[0].url}/`,
 };
 
 //https://stackoverflow.com/questions/1144783/how-to-replace-all-occurrences-of-a-string-in-javascript
@@ -60,5 +53,4 @@ function rewriteURLs(html) {
     return html;
 }
 
-packageSingleDir('@msrvida/sanddance-vue', './packages', 'sanddance-vue', './docs/docs');
 convertHomePage();
