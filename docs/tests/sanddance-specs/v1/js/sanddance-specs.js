@@ -241,7 +241,7 @@ parcelHelpers.exportAll(_interfaces, exports);
 var _types = require("./types");
 parcelHelpers.exportAll(_types, exports);
 
-},{"./build":"jHFbk","./constants":"eNr4m","./inference":"bdXVF","./interfaces":"52vfF","./types":"a5HkM","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"jHFbk":[function(require,module,exports) {
+},{"./build":"jHFbk","./constants":"eNr4m","./inference":"bdXVF","./interfaces":"52vfF","./types":"a5HkM","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jHFbk":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "build", ()=>build);
@@ -261,7 +261,7 @@ function build(specContext, currData) {
         specColumns.sort,
         specColumns.x,
         specColumns.y,
-        specColumns.z, 
+        specColumns.z
     ];
     (0, _inference.inferAll)(columns, currData);
     const specBuilderProps = (0, _charts.getSpecBuilderPropsForChart)(specContext);
@@ -299,7 +299,7 @@ function build(specContext, currData) {
     return specResult;
 }
 
-},{"./charts":"4pEB6","./inference":"bdXVF","./specBuilder":"33BLD","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"4pEB6":[function(require,module,exports) {
+},{"./charts":"4pEB6","./inference":"bdXVF","./specBuilder":"33BLD","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"4pEB6":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getSpecBuilderPropsForChart", ()=>getSpecBuilderPropsForChart);
@@ -358,13 +358,12 @@ function getSpecBuilderPropsForChart(specContext) {
             const { facetLayout , layoutPair  } = (0, _facetLayout.getFacetLayout)(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn, specViewOptions.colors.axisText);
             props.layouts.unshift(layoutPair);
             props.facetLayout = facetLayout;
-            props.collapseFacetAxes = specViewOptions.collapseFacetAxes;
         }
         return props;
     }
 }
 
-},{"./barchartH":"jwW3p","./barchartV":"gx8bO","./density":"hJwhn","./grid":"dUpaP","./scatterplot":"6EBdS","./stacks":"8N6Z2","./strips":"jnY66","./treemap":"g0eb5","../facetLayout":"fJidQ","../constants":"eNr4m","../defaults":"5iedU","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"jwW3p":[function(require,module,exports) {
+},{"./barchartH":"jwW3p","./barchartV":"gx8bO","./density":"hJwhn","./grid":"dUpaP","./scatterplot":"6EBdS","./stacks":"8N6Z2","./strips":"jnY66","./treemap":"g0eb5","../facetLayout":"fJidQ","../constants":"eNr4m","../defaults":"5iedU","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jwW3p":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -373,10 +372,8 @@ var _constants = require("../constants");
 var _defaults = require("../defaults");
 var _size = require("../size");
 exports.default = function(specContext) {
-    var _a, _b, _c, _d;
     const { insight , specColumns , specViewOptions  } = specContext;
     const { language  } = specViewOptions;
-    const showAxes = true;
     const bandProps = {
         orientation: "horizontal",
         groupby: {
@@ -387,7 +384,7 @@ exports.default = function(specContext) {
             maxbins: (0, _defaults.maxbins)
         },
         minBandWidth: (0, _defaults.minBarBandWidth),
-        showAxes
+        showAxes: true
     };
     const x = {
         title: null
@@ -395,10 +392,10 @@ exports.default = function(specContext) {
     const axisScales = {
         x,
         y: {
-            title: (_a = specColumns.y) === null || _a === void 0 ? void 0 : _a.name
+            title: specColumns.y && specColumns.y.name
         },
         z: {
-            title: (_b = specColumns.z) === null || _b === void 0 ? void 0 : _b.name
+            title: specColumns.z && specColumns.z.name
         }
     };
     const layouts = [
@@ -416,8 +413,7 @@ exports.default = function(specContext) {
             orientation: "horizontal",
             size: specColumns.size,
             sort: specColumns.sort,
-            z: specColumns.z,
-            showAxes
+            z: specColumns.z
         };
         layouts.push({
             layoutType: "Strip",
@@ -430,7 +426,7 @@ exports.default = function(specContext) {
             globalAggregateMaxExtentSignal: "aggMaxExtent",
             globalAggregateMaxExtentScaledSignal: "aggMaxExtentScaled",
             sumBy: specColumns.size,
-            showAxes
+            showAxes: true
         };
         layouts.push({
             layoutType: "AggregateContainer",
@@ -445,8 +441,7 @@ exports.default = function(specContext) {
                         corner: "top-left",
                         size: specColumns.size,
                         treeMapMethod: specViewOptions.language.treeMapMethod,
-                        z: specColumns.z,
-                        showAxes
+                        z: specColumns.z
                     };
                     layouts.push({
                         layoutType: "Treemap",
@@ -463,8 +458,7 @@ exports.default = function(specContext) {
                         orientation: "horizontal",
                         size: specColumns.size,
                         sort: specColumns.sort,
-                        z: specColumns.z,
-                        showAxes
+                        z: specColumns.z
                     };
                     layouts.push({
                         layoutType: "Strip",
@@ -481,8 +475,7 @@ exports.default = function(specContext) {
                         orientation: "horizontal",
                         size: specColumns.size,
                         sort: specColumns.sort,
-                        z: specColumns.z,
-                        showAxes
+                        z: specColumns.z
                     };
                     layouts.push({
                         layoutType: "Strip",
@@ -499,8 +492,7 @@ exports.default = function(specContext) {
                         fillDirection: "down-right",
                         z: specColumns.z,
                         maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
-                        maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal,
-                        showAxes
+                        maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal
                     };
                     layouts.push({
                         layoutType: "Square",
@@ -520,7 +512,7 @@ exports.default = function(specContext) {
                 {
                     role: "y",
                     binnable: true,
-                    axisSelection: ((_c = specColumns.y) === null || _c === void 0 ? void 0 : _c.quantitative) ? "range" : "exact",
+                    axisSelection: specColumns.y && specColumns.y.quantitative ? "range" : "exact",
                     axisSelectionBetweenTicks: true,
                     signals: [
                         (0, _constants.SignalNames).YBins
@@ -528,7 +520,7 @@ exports.default = function(specContext) {
                 },
                 {
                     role: "z",
-                    axisSelection: ((_d = specColumns.z) === null || _d === void 0 ? void 0 : _d.quantitative) ? "range" : "exact",
+                    axisSelection: specColumns.z && specColumns.z.quantitative ? "range" : "exact",
                     allowNone: true
                 },
                 {
@@ -560,13 +552,13 @@ exports.default = function(specContext) {
                     signals: [
                         (0, _constants.SignalNames).FacetVBins
                     ]
-                }, 
+                }
             ]
         }
     };
 };
 
-},{"../constants":"eNr4m","../defaults":"5iedU","../size":"78CLt","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"eNr4m":[function(require,module,exports) {
+},{"../constants":"eNr4m","../defaults":"5iedU","../size":"78CLt","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"eNr4m":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "FieldNames", ()=>FieldNames);
@@ -621,8 +613,6 @@ const SignalNames = {
     PlotWidthOut: "PlotWidthOut",
     ColorBinCount: "RoleColor_BinCountSignal",
     ColorReverse: "RoleColor_ReverseSignal",
-    FacetAxesAdjustX: "RoleFacet_AxesAdjustSignalX",
-    FacetAxesAdjustY: "RoleFacet_AxesAdjustSignalY",
     FacetBins: "RoleFacet_BinsSignal",
     FacetVBins: "RoleFacetV_BinsSignal",
     FacetPaddingTop: "FacetPaddingTop",
@@ -645,7 +635,7 @@ const SignalNames = {
 const Other = "__Other";
 const ColorScaleNone = "none";
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"7Mw3b":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jA2du":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -697,7 +687,6 @@ parcelHelpers.export(exports, "axesOffsetX", ()=>axesOffsetX);
 parcelHelpers.export(exports, "axesOffsetY", ()=>axesOffsetY);
 parcelHelpers.export(exports, "scatterSizedMin", ()=>scatterSizedMin);
 parcelHelpers.export(exports, "scatterSizedDiv", ()=>scatterSizedDiv);
-parcelHelpers.export(exports, "debounce", ()=>debounce);
 const defaultBins = 10;
 const maxbins = 100;
 const minBarBandWidth = 15;
@@ -717,9 +706,8 @@ const axesOffsetX = 120;
 const axesOffsetY = 120;
 const scatterSizedMin = 10;
 const scatterSizedDiv = 20;
-const debounce = 250;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"78CLt":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"78CLt":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "allowNoneForSize", ()=>allowNoneForSize);
@@ -735,7 +723,7 @@ function allowNoneForSize(specContext) {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"gx8bO":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"gx8bO":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -744,10 +732,8 @@ var _constants = require("../constants");
 var _defaults = require("../defaults");
 var _size = require("../size");
 exports.default = function(specContext) {
-    var _a, _b;
     const { insight , specColumns , specViewOptions  } = specContext;
     const { language  } = specViewOptions;
-    const showAxes = true;
     const bandProps = {
         orientation: "vertical",
         groupby: {
@@ -758,7 +744,7 @@ exports.default = function(specContext) {
             maxbins: (0, _defaults.maxbins)
         },
         minBandWidth: (0, _defaults.minBarBandWidth),
-        showAxes
+        showAxes: true
     };
     const y = {
         title: null
@@ -787,8 +773,7 @@ exports.default = function(specContext) {
             orientation: "vertical",
             size: specColumns.size,
             sort: specColumns.sort,
-            z: specColumns.z,
-            showAxes
+            z: specColumns.z
         };
         layouts.push({
             layoutType: "Strip",
@@ -801,7 +786,7 @@ exports.default = function(specContext) {
             globalAggregateMaxExtentSignal: "aggMaxExtent",
             globalAggregateMaxExtentScaledSignal: "aggMaxExtentScaled",
             sumBy: specColumns.size,
-            showAxes
+            showAxes: true
         };
         layouts.push({
             layoutType: "AggregateContainer",
@@ -816,8 +801,7 @@ exports.default = function(specContext) {
                         corner: "bottom-left",
                         size: specColumns.size,
                         treeMapMethod: specViewOptions.language.treeMapMethod,
-                        z: specColumns.z,
-                        showAxes
+                        z: specColumns.z
                     };
                     layouts.push({
                         layoutType: "Treemap",
@@ -834,8 +818,7 @@ exports.default = function(specContext) {
                         orientation: "vertical",
                         size: specColumns.size,
                         sort: specColumns.sort,
-                        z: specColumns.z,
-                        showAxes
+                        z: specColumns.z
                     };
                     layouts.push({
                         layoutType: "Strip",
@@ -851,8 +834,7 @@ exports.default = function(specContext) {
                         sortOrder: "descending",
                         orientation: "vertical",
                         sort: specColumns.sort,
-                        z: specColumns.z,
-                        showAxes
+                        z: specColumns.z
                     };
                     layouts.push({
                         layoutType: "Strip",
@@ -869,8 +851,7 @@ exports.default = function(specContext) {
                         fillDirection: "right-up",
                         z: specColumns.z,
                         maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
-                        maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal,
-                        showAxes
+                        maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal
                     };
                     layouts.push({
                         layoutType: "Square",
@@ -890,7 +871,7 @@ exports.default = function(specContext) {
                 {
                     role: "x",
                     binnable: true,
-                    axisSelection: ((_a = specColumns.x) === null || _a === void 0 ? void 0 : _a.quantitative) ? "range" : "exact",
+                    axisSelection: specColumns.x && specColumns.x.quantitative ? "range" : "exact",
                     axisSelectionBetweenTicks: true,
                     signals: [
                         (0, _constants.SignalNames).XBins
@@ -898,7 +879,7 @@ exports.default = function(specContext) {
                 },
                 {
                     role: "z",
-                    axisSelection: ((_b = specColumns.z) === null || _b === void 0 ? void 0 : _b.quantitative) ? "range" : "exact",
+                    axisSelection: specColumns.z && specColumns.z.quantitative ? "range" : "exact",
                     allowNone: true
                 },
                 {
@@ -930,13 +911,13 @@ exports.default = function(specContext) {
                     signals: [
                         (0, _constants.SignalNames).FacetVBins
                     ]
-                }, 
+                }
             ]
         }
     };
 };
 
-},{"../constants":"eNr4m","../defaults":"5iedU","../size":"78CLt","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"hJwhn":[function(require,module,exports) {
+},{"../constants":"eNr4m","../defaults":"5iedU","../size":"78CLt","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"hJwhn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -945,21 +926,18 @@ var _constants = require("../constants");
 var _defaults = require("../defaults");
 var _size = require("../size");
 exports.default = function(specContext) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     const { insight , specColumns , specViewOptions  } = specContext;
     const axisScales = {
         x: {
-            title: (_a = specColumns.x) === null || _a === void 0 ? void 0 : _a.name
+            title: specColumns.x && specColumns.x.name
         },
         y: {
-            title: (_b = specColumns.y) === null || _b === void 0 ? void 0 : _b.name
+            title: specColumns.y && specColumns.y.name
         },
         z: {
-            title: (_c = specColumns.z) === null || _c === void 0 ? void 0 : _c.name
+            title: specColumns.z && specColumns.z.name
         }
     };
-    const backgroundImage = ((_d = specColumns.x) === null || _d === void 0 ? void 0 : _d.quantitative) && ((_e = specColumns.y) === null || _e === void 0 ? void 0 : _e.quantitative) && ((_f = insight.backgroundImage) === null || _f === void 0 ? void 0 : _f.extents) && insight.backgroundImage;
-    const showAxes = !backgroundImage;
     const hBandProps = {
         excludeEncodingRuleMap: true,
         orientation: "horizontal",
@@ -971,11 +949,7 @@ exports.default = function(specContext) {
             maxbins: (0, _defaults.maxbins)
         },
         minBandWidth: (0, _defaults.minBarBandWidth),
-        showAxes,
-        outerSignalExtents: backgroundImage && {
-            max: backgroundImage.extents.top,
-            min: backgroundImage.extents.bottom
-        }
+        showAxes: true
     };
     const vBandProps = {
         excludeEncodingRuleMap: true,
@@ -988,11 +962,7 @@ exports.default = function(specContext) {
             maxbins: (0, _defaults.maxbins)
         },
         minBandWidth: (0, _defaults.minBarBandWidth),
-        showAxes,
-        outerSignalExtents: backgroundImage && {
-            max: backgroundImage.extents.right,
-            min: backgroundImage.extents.left
-        }
+        showAxes: true
     };
     const aggProps = {
         onBuild: null,
@@ -1011,7 +981,7 @@ exports.default = function(specContext) {
         {
             layoutType: "AggregateSquare",
             props: aggProps
-        }, 
+        }
     ];
     switch(insight.totalStyle){
         case "sum-treemap":
@@ -1021,8 +991,7 @@ exports.default = function(specContext) {
                     corner: "bottom-left",
                     size: specColumns.size,
                     treeMapMethod: specViewOptions.language.treeMapMethod,
-                    z: specColumns.z,
-                    showAxes
+                    z: specColumns.z
                 };
                 layouts.push({
                     layoutType: "Treemap",
@@ -1038,8 +1007,7 @@ exports.default = function(specContext) {
                     orientation: "vertical",
                     size: specColumns.size,
                     sort: specColumns.sort,
-                    z: specColumns.z,
-                    showAxes
+                    z: specColumns.z
                 };
                 layouts.push({
                     layoutType: "Strip",
@@ -1054,8 +1022,7 @@ exports.default = function(specContext) {
                     sortOrder: "ascending",
                     orientation: "vertical",
                     sort: specColumns.sort,
-                    z: specColumns.z,
-                    showAxes
+                    z: specColumns.z
                 };
                 layouts.push({
                     layoutType: "Strip",
@@ -1071,8 +1038,7 @@ exports.default = function(specContext) {
                     fillDirection: "right-down",
                     z: specColumns.z,
                     maxGroupedUnits: null,
-                    maxGroupedFillSize: null,
-                    showAxes
+                    maxGroupedFillSize: null
                 };
                 aggProps.onBuild = (aggMaxExtent, aggMaxExtentScaled)=>{
                     squareProps.maxGroupedUnits = aggMaxExtent;
@@ -1089,13 +1055,12 @@ exports.default = function(specContext) {
         axisScales,
         layouts,
         specCapabilities: {
-            backgroundImage: true,
             countsAndSums: true,
             roles: [
                 {
                     role: "x",
                     binnable: true,
-                    axisSelection: ((_g = specColumns.x) === null || _g === void 0 ? void 0 : _g.quantitative) ? "range" : "exact",
+                    axisSelection: specColumns.x && specColumns.x.quantitative ? "range" : "exact",
                     axisSelectionBetweenTicks: true,
                     signals: [
                         (0, _constants.SignalNames).XBins
@@ -1104,7 +1069,7 @@ exports.default = function(specContext) {
                 {
                     role: "y",
                     binnable: true,
-                    axisSelection: ((_h = specColumns.y) === null || _h === void 0 ? void 0 : _h.quantitative) ? "range" : "exact",
+                    axisSelection: specColumns.y && specColumns.y.quantitative ? "range" : "exact",
                     axisSelectionBetweenTicks: true,
                     signals: [
                         (0, _constants.SignalNames).YBins
@@ -1112,7 +1077,7 @@ exports.default = function(specContext) {
                 },
                 {
                     role: "z",
-                    axisSelection: ((_j = specColumns.z) === null || _j === void 0 ? void 0 : _j.quantitative) ? "range" : "exact",
+                    axisSelection: specColumns.z && specColumns.z.quantitative ? "range" : "exact",
                     allowNone: true
                 },
                 {
@@ -1144,25 +1109,23 @@ exports.default = function(specContext) {
                     signals: [
                         (0, _constants.SignalNames).FacetVBins
                     ]
-                }, 
+                }
             ]
         }
     };
 };
 
-},{"../constants":"eNr4m","../defaults":"5iedU","../size":"78CLt","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"dUpaP":[function(require,module,exports) {
+},{"../constants":"eNr4m","../defaults":"5iedU","../size":"78CLt","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"dUpaP":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _constants = require("../constants");
 exports.default = function(specContext) {
-    var _a;
     const { specColumns  } = specContext;
     const squareProps = {
         sortBy: specColumns.sort,
         fillDirection: "right-down",
         z: specColumns.z,
-        collapseYHeight: true,
-        showAxes: true
+        collapseYHeight: true
     };
     const axisScales = {
         z: {
@@ -1175,14 +1138,14 @@ exports.default = function(specContext) {
             {
                 layoutType: "Square",
                 props: squareProps
-            }, 
+            }
         ],
         specCapabilities: {
             countsAndSums: false,
             roles: [
                 {
                     role: "z",
-                    axisSelection: ((_a = specColumns.z) === null || _a === void 0 ? void 0 : _a.quantitative) ? "range" : "exact",
+                    axisSelection: specColumns.z && specColumns.z.quantitative ? "range" : "exact",
                     allowNone: true
                 },
                 {
@@ -1206,39 +1169,35 @@ exports.default = function(specContext) {
                     signals: [
                         (0, _constants.SignalNames).FacetVBins
                     ]
-                }, 
+                }
             ]
         }
     };
 };
 
-},{"../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"6EBdS":[function(require,module,exports) {
+},{"../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"6EBdS":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _constants = require("../constants");
 exports.default = function(specContext) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
-    const { insight , specColumns , specViewOptions  } = specContext;
-    const backgroundImageExtents = ((_a = specColumns.x) === null || _a === void 0 ? void 0 : _a.quantitative) && ((_b = specColumns.y) === null || _b === void 0 ? void 0 : _b.quantitative) && ((_c = insight.backgroundImage) === null || _c === void 0 ? void 0 : _c.extents);
+    const { specColumns , specViewOptions  } = specContext;
     const scatterProps = {
         x: specColumns.x,
         y: specColumns.y,
         z: specColumns.z,
         size: specColumns.size,
         scatterPointScaleDisplay: specViewOptions.language.scatterPointScale,
-        zGrounded: specViewOptions.language.zGrounded,
-        backgroundImageExtents,
-        showAxes: !backgroundImageExtents
+        zGrounded: specViewOptions.language.zGrounded
     };
     const axisScales = {
         x: {
-            title: (_d = specColumns.x) === null || _d === void 0 ? void 0 : _d.name
+            title: specColumns.x && specColumns.x.name
         },
         y: {
-            title: (_e = specColumns.y) === null || _e === void 0 ? void 0 : _e.name
+            title: specColumns.y && specColumns.y.name
         },
         z: {
-            title: (_f = specColumns.z) === null || _f === void 0 ? void 0 : _f.name
+            title: specColumns.z && specColumns.z.name
         }
     };
     return {
@@ -1247,23 +1206,22 @@ exports.default = function(specContext) {
             {
                 layoutType: "Scatter",
                 props: scatterProps
-            }, 
+            }
         ],
         specCapabilities: {
-            backgroundImage: true,
             countsAndSums: false,
             roles: [
                 {
                     role: "x",
-                    axisSelection: ((_g = specColumns.x) === null || _g === void 0 ? void 0 : _g.quantitative) ? "range" : "exact"
+                    axisSelection: specColumns.x && specColumns.x.quantitative ? "range" : "exact"
                 },
                 {
                     role: "y",
-                    axisSelection: ((_h = specColumns.y) === null || _h === void 0 ? void 0 : _h.quantitative) ? "range" : "exact"
+                    axisSelection: specColumns.y && specColumns.y.quantitative ? "range" : "exact"
                 },
                 {
                     role: "z",
-                    axisSelection: ((_j = specColumns.z) === null || _j === void 0 ? void 0 : _j.quantitative) ? "range" : "exact",
+                    axisSelection: specColumns.z && specColumns.z.quantitative ? "range" : "exact",
                     allowNone: true
                 },
                 {
@@ -1288,7 +1246,7 @@ exports.default = function(specContext) {
                     signals: [
                         (0, _constants.SignalNames).FacetVBins
                     ]
-                }, 
+                }
             ],
             signals: [
                 (0, _constants.SignalNames).PointScale,
@@ -1298,27 +1256,24 @@ exports.default = function(specContext) {
     };
 };
 
-},{"../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"8N6Z2":[function(require,module,exports) {
+},{"../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8N6Z2":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _defaults = require("../defaults");
 var _constants = require("../constants");
 exports.default = function(specContext) {
-    var _a, _b, _c, _d, _e, _f, _g;
-    const { insight , specColumns , specViewOptions  } = specContext;
+    const { specColumns , specViewOptions  } = specContext;
     const axisScales = {
         x: {
-            title: (_a = specColumns.x) === null || _a === void 0 ? void 0 : _a.name
+            title: specColumns.x && specColumns.x.name
         },
         y: {
-            title: (_b = specColumns.y) === null || _b === void 0 ? void 0 : _b.name
+            title: specColumns.y && specColumns.y.name
         },
         z: {
             title: specViewOptions.language.count
         }
     };
-    const backgroundImage = ((_c = specColumns.x) === null || _c === void 0 ? void 0 : _c.quantitative) && ((_d = specColumns.y) === null || _d === void 0 ? void 0 : _d.quantitative) && ((_e = insight.backgroundImage) === null || _e === void 0 ? void 0 : _e.extents) && insight.backgroundImage;
-    const showAxes = !backgroundImage;
     const hBandProps = {
         excludeEncodingRuleMap: true,
         orientation: "horizontal",
@@ -1330,11 +1285,7 @@ exports.default = function(specContext) {
             maxbins: (0, _defaults.maxbins)
         },
         minBandWidth: (0, _defaults.minBarBandWidth),
-        showAxes,
-        outerSignalExtents: backgroundImage && {
-            max: backgroundImage.extents.top,
-            min: backgroundImage.extents.bottom
-        }
+        showAxes: true
     };
     const vBandProps = {
         excludeEncodingRuleMap: true,
@@ -1347,15 +1298,10 @@ exports.default = function(specContext) {
             maxbins: (0, _defaults.maxbins)
         },
         minBandWidth: (0, _defaults.minBarBandWidth),
-        showAxes,
-        outerSignalExtents: backgroundImage && {
-            max: backgroundImage.extents.right,
-            min: backgroundImage.extents.left
-        }
+        showAxes: true
     };
     const stackProps = {
-        sort: specColumns.sort,
-        showAxes
+        sort: specColumns.sort
     };
     return {
         axisScales,
@@ -1372,16 +1318,15 @@ exports.default = function(specContext) {
             {
                 layoutType: "Stack",
                 props: stackProps
-            }, 
+            }
         ],
         specCapabilities: {
-            backgroundImage: true,
             countsAndSums: false,
             roles: [
                 {
                     role: "x",
                     binnable: true,
-                    axisSelection: ((_f = specColumns.x) === null || _f === void 0 ? void 0 : _f.quantitative) ? "range" : "exact",
+                    axisSelection: specColumns.x && specColumns.x.quantitative ? "range" : "exact",
                     axisSelectionBetweenTicks: true,
                     signals: [
                         (0, _constants.SignalNames).XBins
@@ -1390,7 +1335,7 @@ exports.default = function(specContext) {
                 {
                     role: "y",
                     binnable: true,
-                    axisSelection: ((_g = specColumns.y) === null || _g === void 0 ? void 0 : _g.quantitative) ? "range" : "exact",
+                    axisSelection: specColumns.y && specColumns.y.quantitative ? "range" : "exact",
                     axisSelectionBetweenTicks: true,
                     signals: [
                         (0, _constants.SignalNames).YBins
@@ -1417,26 +1362,24 @@ exports.default = function(specContext) {
                     signals: [
                         (0, _constants.SignalNames).FacetVBins
                     ]
-                }, 
+                }
             ]
         }
     };
 };
 
-},{"../defaults":"5iedU","../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"jnY66":[function(require,module,exports) {
+},{"../defaults":"5iedU","../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jnY66":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _constants = require("../constants");
 exports.default = function(specContext) {
-    var _a;
     const { specColumns  } = specContext;
     const stripProps = {
         sortOrder: "ascending",
         orientation: "vertical",
         size: specColumns.size,
         sort: specColumns.sort,
-        z: specColumns.z,
-        showAxes: true
+        z: specColumns.z
     };
     const axisScales = {
         z: {
@@ -1481,7 +1424,7 @@ exports.default = function(specContext) {
                 },
                 {
                     role: "z",
-                    axisSelection: ((_a = specColumns.z) === null || _a === void 0 ? void 0 : _a.quantitative) ? "range" : "exact",
+                    axisSelection: specColumns.z && specColumns.z.quantitative ? "range" : "exact",
                     allowNone: true
                 },
                 {
@@ -1505,26 +1448,24 @@ exports.default = function(specContext) {
                     signals: [
                         (0, _constants.SignalNames).FacetVBins
                     ]
-                }, 
+                }
             ]
         }
     };
 };
 
-},{"../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"g0eb5":[function(require,module,exports) {
+},{"../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"g0eb5":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _constants = require("../constants");
 exports.default = function(specContext) {
-    var _a;
     const { specColumns , specViewOptions  } = specContext;
     const treemapProps = {
         corner: "top-left",
         group: specColumns.group,
         size: specColumns.size,
         treeMapMethod: specViewOptions.language.treeMapMethod,
-        z: specColumns.z,
-        showAxes: true
+        z: specColumns.z
     };
     const axisScales = {
         z: {
@@ -1572,7 +1513,7 @@ exports.default = function(specContext) {
                 },
                 {
                     role: "z",
-                    axisSelection: ((_a = specColumns.z) === null || _a === void 0 ? void 0 : _a.quantitative) ? "range" : "exact",
+                    axisSelection: specColumns.z && specColumns.z.quantitative ? "range" : "exact",
                     allowNone: true
                 },
                 {
@@ -1592,7 +1533,7 @@ exports.default = function(specContext) {
                     signals: [
                         (0, _constants.SignalNames).FacetVBins
                     ]
-                }, 
+                }
             ],
             signals: [
                 (0, _constants.SignalNames).TreeMapMethod
@@ -1601,7 +1542,7 @@ exports.default = function(specContext) {
     };
 };
 
-},{"../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"fJidQ":[function(require,module,exports) {
+},{"../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fJidQ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getFacetLayout", ()=>getFacetLayout);
@@ -1666,7 +1607,7 @@ function getFacetLayout(facetStyle, facetColumn, facetVColumn, axisTextColor) {
     };
 }
 
-},{"./defaults":"5iedU","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"bdXVF":[function(require,module,exports) {
+},{"./defaults":"5iedU","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"bdXVF":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 /**
@@ -1754,15 +1695,13 @@ function getStats(data, column) {
     };
     let sum = 0;
     for(let i = 0; i < data.length; i++){
-        const row = data[i];
-        const value = row[column.name];
-        const num = +value;
+        let row = data[i];
+        let value = row[column.name];
         distinctMap[value] = true;
-        if (!isNaN(num)) {
-            if (stats.max === null || num > stats.max) stats.max = num;
-            if (stats.min === null || num < stats.min) stats.min = num;
-            sum += num;
-        }
+        if (stats.max === null || value > stats.max) stats.max = value;
+        if (stats.min === null || value < stats.min) stats.min = value;
+        let num = +value;
+        if (!isNaN(num)) sum += num;
         if (column.type === "string" && !stats.hasColorData && isColor(value)) stats.hasColorData = true;
     }
     if (column.quantitative) {
@@ -1781,14 +1720,14 @@ function detectNegative(column, data) {
 }
 function detectSequentialColumn(column, data) {
     if (data.length < 2) return false;
-    const colname = column.name;
+    let colname = column.name;
     for(let i = 1; i < data.length; i++){
         if (data[i][colname] !== data[i - 1][colname] + 1) return false;
     }
     return true;
 }
 
-},{"d3-color":"7SCp9","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"7SCp9":[function(require,module,exports) {
+},{"d3-color":"7SCp9","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7SCp9":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "color", ()=>(0, _colorJsDefault.default));
@@ -1806,7 +1745,7 @@ var _labJsDefault = parcelHelpers.interopDefault(_labJs);
 var _cubehelixJs = require("./cubehelix.js");
 var _cubehelixJsDefault = parcelHelpers.interopDefault(_cubehelixJs);
 
-},{"./color.js":"cJlE6","./lab.js":false,"./cubehelix.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"cJlE6":[function(require,module,exports) {
+},{"./color.js":"cJlE6","./lab.js":false,"./cubehelix.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"cJlE6":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Color", ()=>Color);
@@ -2151,7 +2090,7 @@ function Hsl(h, s, l, opacity) {
     return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
 }
 
-},{"./define.js":"fa5me","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"fa5me":[function(require,module,exports) {
+},{"./define.js":"fa5me","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fa5me":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "extend", ()=>extend);
@@ -2165,7 +2104,7 @@ function extend(parent, definition) {
     return prototype;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"33BLD":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"33BLD":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "SpecBuilder", ()=>SpecBuilder);
@@ -2181,20 +2120,11 @@ var _globalScope = require("./globalScope");
 var _scope = require("./scope");
 var _signals = require("./signals");
 var _index = require("./layouts/index");
-var _image = require("./image");
 class SpecBuilder {
     constructor(props, specContext){
         this.props = props;
         this.specContext = specContext;
         this.globalSignals = {
-            facetAxesAdjustX: {
-                name: (0, _constants.SignalNames).FacetAxesAdjustX,
-                update: props.facetLayout && props.collapseFacetAxes ? (0, _defaults.facetPaddingLeft).toString() : "0"
-            },
-            facetAxesAdjustY: {
-                name: (0, _constants.SignalNames).FacetAxesAdjustY,
-                update: props.facetLayout && props.collapseFacetAxes ? (0, _defaults.facetPaddingBottom).toString() : "0"
-            },
             minCellWidth: {
                 name: (0, _constants.SignalNames).MinCellWidth,
                 update: `${0, _defaults.minFacetWidth}`
@@ -2251,13 +2181,10 @@ class SpecBuilder {
             if (specContext.specColumns[r.role] && !specContext.specColumns[r.role].quantitative) return `Field ${r.role} must be quantitative.`;
             else return null;
         })).filter(Boolean);
-        const { backgroundImage  } = specContext.insight;
-        if (backgroundImage && !backgroundImage.extents) errors.push("BackgroundImage must have extents.");
         return errors;
     }
     build() {
-        var _a, _b;
-        const { globalSignals , specContext  } = this;
+        const { specContext  } = this;
         const { facetLayout , specCapabilities  } = this.props;
         const { insight , specColumns , specViewOptions  } = specContext;
         const dataName = "data_source";
@@ -2275,7 +2202,7 @@ class SpecBuilder {
             dataName: colorDataName,
             markGroup: groupMark,
             scope: vegaSpec,
-            signals: globalSignals
+            signals: this.globalSignals
         });
         if (facetLayout) {
             (0, _scope.addSignals)(vegaSpec, {
@@ -2288,16 +2215,16 @@ class SpecBuilder {
                 name: (0, _constants.SignalNames).FacetPaddingTop,
                 update: `${facetLayout.facetPadding.top}`
             });
-            globalSignals.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
-            globalSignals.plotOffsetRight.update = `${facetLayout.plotPadding.x}`;
+            this.globalSignals.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
+            this.globalSignals.plotOffsetRight.update = `${facetLayout.plotPadding.x}`;
         }
-        const { firstScope , finalScope , specResult , allGlobalScales , allEncodingRules ,  } = this.iterateLayouts(globalScope, (i, innerScope)=>{
+        const { firstScope , finalScope , specResult , allGlobalScales , allEncodingRules  } = this.iterateLayouts(globalScope, (i, innerScope)=>{
             if (facetLayout && i === 0) globalScope.zSize = innerScope.offsets.h;
         });
         if (specResult) return specResult;
         if (allGlobalScales.length > 0) {
-            const plotHeightOut = globalSignals.plotHeightOut.name;
-            const plotWidthOut = globalSignals.plotWidthOut.name;
+            const plotHeightOut = this.globalSignals.plotHeightOut.name;
+            const plotWidthOut = this.globalSignals.plotWidthOut.name;
             const colTitleScale = {
                 type: "linear",
                 name: "scale_facet_col_title",
@@ -2326,19 +2253,10 @@ class SpecBuilder {
                     0
                 ]
             };
-            const facetScope = facetLayout ? firstScope : null;
-            const backgroundGroup = facetLayout ? facetScope.facetScope : groupMark;
-            //TODO if capability and numeric x,y
-            if (insight.backgroundImage && specCapabilities.backgroundImage && ((_a = specColumns.x) === null || _a === void 0 ? void 0 : _a.quantitative) && ((_b = specColumns.y) === null || _b === void 0 ? void 0 : _b.quantitative)) {
-                //backgroundGroup.encode.update.fill = { value: 'pink' }
-                if (!backgroundGroup.marks) backgroundGroup.marks = [];
-                const imageMark = (0, _image.getImageMark)(insight.backgroundImage, allGlobalScales);
-                backgroundGroup.marks.unshift(imageMark);
-            }
-            const axesScopes = facetLayout ? (0, _facetTitle.addFacetAxesGroupMarks)({
+            let axesScopes = facetLayout ? (0, _facetTitle.addFacetAxesGroupMarks)({
                 globalScope: globalScope.scope,
                 plotScope: groupMark,
-                facetScope,
+                facetScope: firstScope,
                 colTitleScale,
                 rowTitleScale,
                 colSeqName: "data_FacetCellColTitles",
@@ -2358,8 +2276,8 @@ class SpecBuilder {
                 allGlobalScales,
                 axisScales: this.props.axisScales,
                 plotOffsetSignals: {
-                    x: globalSignals.plotOffsetLeft,
-                    y: globalSignals.plotOffsetBottom
+                    x: this.globalSignals.plotOffsetLeft,
+                    y: this.globalSignals.plotOffsetBottom
                 },
                 axesOffsets: {
                     x: (0, _defaults.axesOffsetX),
@@ -2379,7 +2297,7 @@ class SpecBuilder {
                 specColumns,
                 specViewOptions,
                 axesScopes,
-                hideZAxis: !!facetLayout,
+                faceted: !!facetLayout,
                 view: insight.view
             });
         }
@@ -2401,7 +2319,7 @@ class SpecBuilder {
                         type: "formula",
                         expr: finalScope.offsets.y,
                         as: (0, _constants.FieldNames).OffsetY
-                    }, 
+                    }
                 ]
             });
             update.x = {
@@ -2411,16 +2329,16 @@ class SpecBuilder {
                 field: (0, _constants.FieldNames).OffsetY
             };
             allEncodingRules.forEach((map)=>{
-                for(const key in map)if (update[key]) {
-                    const arrIn = map[key];
+                for(let key in map)if (update[key]) {
+                    let arrIn = map[key];
                     if (!Array.isArray(update[key])) {
-                        const value = update[key];
-                        const arrOut = [];
+                        let value = update[key];
+                        let arrOut = [];
                         update[key] = arrOut;
                         arrIn.forEach((rule)=>arrOut.push(rule));
                         arrOut.push(value);
                     } else {
-                        const arrOut = update[key];
+                        let arrOut = update[key];
                         arrIn.forEach((rule)=>arrOut.unshift(rule));
                     }
                 }
@@ -2435,7 +2353,7 @@ class SpecBuilder {
     }
     initSpec(dataName) {
         const { globalSignals  } = this;
-        const { facetAxesAdjustX , facetAxesAdjustY , minCellWidth , minCellHeight , plotOffsetLeft , plotOffsetBottom , plotOffsetTop , plotOffsetRight , plotHeightOut , plotWidthOut  } = globalSignals;
+        const { minCellWidth , minCellHeight , plotOffsetLeft , plotOffsetBottom , plotOffsetTop , plotOffsetRight , plotHeightOut , plotWidthOut  } = globalSignals;
         const { specContext  } = this;
         const { insight  } = specContext;
         const groupMark = {
@@ -2444,16 +2362,16 @@ class SpecBuilder {
             encode: {
                 update: {
                     x: {
-                        signal: `${(0, _constants.SignalNames).PlotOffsetLeft} - ${(0, _constants.SignalNames).FacetAxesAdjustX}`
+                        signal: (0, _constants.SignalNames).PlotOffsetLeft
                     },
                     y: {
                         signal: (0, _constants.SignalNames).PlotOffsetTop
                     },
                     height: {
-                        signal: `${(0, _constants.SignalNames).PlotHeightOut} - ${(0, _constants.SignalNames).FacetAxesAdjustY}`
+                        signal: (0, _constants.SignalNames).PlotHeightOut
                     },
                     width: {
-                        signal: `${(0, _constants.SignalNames).PlotWidthOut} + ${(0, _constants.SignalNames).FacetAxesAdjustX}`
+                        signal: (0, _constants.SignalNames).PlotWidthOut
                     }
                 }
             }
@@ -2490,11 +2408,9 @@ class SpecBuilder {
                 plotOffsetTop,
                 plotOffsetBottom,
                 plotOffsetRight,
-                facetAxesAdjustX,
-                facetAxesAdjustY,
                 {
                     name: (0, _constants.SignalNames).PlotHeightIn,
-                    update: `${(0, _constants.SignalNames).ViewportHeight} - ${(0, _constants.SignalNames).PlotOffsetBottom} + ${(0, _constants.SignalNames).FacetAxesAdjustY}`
+                    update: `${(0, _constants.SignalNames).ViewportHeight} - ${(0, _constants.SignalNames).PlotOffsetBottom}`
                 },
                 {
                     name: (0, _constants.SignalNames).PlotWidthIn,
@@ -2504,12 +2420,12 @@ class SpecBuilder {
                 plotWidthOut,
                 {
                     name: "height",
-                    update: `${(0, _constants.SignalNames).PlotOffsetTop} + ${(0, _constants.SignalNames).PlotHeightOut} + ${(0, _constants.SignalNames).PlotOffsetBottom} - ${(0, _constants.SignalNames).FacetAxesAdjustY}`
+                    update: `${(0, _constants.SignalNames).PlotOffsetTop} + ${(0, _constants.SignalNames).PlotHeightOut} + ${(0, _constants.SignalNames).PlotOffsetBottom}`
                 },
                 {
                     name: "width",
                     update: `${(0, _constants.SignalNames).PlotWidthOut} + ${(0, _constants.SignalNames).PlotOffsetLeft} + ${(0, _constants.SignalNames).PlotOffsetRight}`
-                }, 
+                }
             ])
         };
         return {
@@ -2526,23 +2442,23 @@ class SpecBuilder {
         let firstScope;
         let childScope;
         const groupings = [];
-        const { layouts , specCapabilities  } = this.props;
+        let { layouts , specCapabilities  } = this.props;
         const allGlobalScales = [];
         const allEncodingRules = [];
         for(let i = 0; i < layouts.length; i++){
             if (!parentScope) continue;
-            const buildProps = {
+            let buildProps = {
                 globalScope,
                 parentScope,
                 axesScales: this.props.axisScales,
                 groupings,
                 id: i
             };
-            const layout = this.createLayout(layouts[i], buildProps);
+            let layout = this.createLayout(layouts[i], buildProps);
             try {
                 childScope = layout.build();
                 childScope.id = i;
-                const groupby = layout.getGrouping();
+                let groupby = layout.getGrouping();
                 if (groupby) groupings.push({
                     id: i,
                     groupby,
@@ -2551,10 +2467,10 @@ class SpecBuilder {
                             field: null,
                             op: "count",
                             as: (0, _constants.FieldNames).Count
-                        }, 
+                        }
                     ]
                 });
-                const sumOp = layout.getAggregateSumOp();
+                let sumOp = layout.getAggregateSumOp();
                 if (sumOp) groupings[groupings.length - 1].fieldOps.push(sumOp);
                 onLayoutBuild(i, childScope);
             } catch (e) {
@@ -2590,7 +2506,7 @@ class SpecBuilder {
     }
 }
 
-},{"./axes":"4VGAd","./color":"7m2aV","./constants":"eNr4m","./defaults":"5iedU","./facetTitle":"6LisZ","./fill":"291dn","./globalScope":"jGiIn","./scope":"k44Ul","./signals":"3piKm","./layouts/index":"8IEIT","./image":"3AjTc","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"4VGAd":[function(require,module,exports) {
+},{"./axes":"4VGAd","./color":"7m2aV","./constants":"eNr4m","./defaults":"5iedU","./facetTitle":"6LisZ","./fill":"291dn","./globalScope":"jGiIn","./scope":"k44Ul","./signals":"3piKm","./layouts/index":"8IEIT","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"4VGAd":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "addGlobalAxes", ()=>addGlobalAxes);
@@ -2604,15 +2520,15 @@ function addGlobalAxes(props1) {
     const { scope  } = globalScope;
     allGlobalScales.forEach((globalScales)=>{
         const { scales  } = globalScales;
-        for(const xyz in scales){
-            const _scales = scales[xyz];
+        for(let xyz in scales){
+            let _scales = scales[xyz];
             if (_scales) {
                 (0, _scope.addScales)(scope, ..._scales);
                 let { showAxes  } = globalScales;
                 let zindex = undefined;
                 if (xyz === "z") {
                     showAxes = false;
-                    if (props1.view === "3d" && specViewOptions.zAxisOptions && !props1.hideZAxis) {
+                    if (props1.view === "3d" && specViewOptions.zAxisOptions && !props1.faceted) {
                         if (specViewOptions.zAxisOptions.showZAxis) {
                             showAxes = true;
                             zindex = specViewOptions.zAxisOptions.zIndex;
@@ -2620,7 +2536,7 @@ function addGlobalAxes(props1) {
                     }
                 }
                 if (showAxes && axisScales) {
-                    const axisScale = axisScales[xyz];
+                    let axisScale = axisScales[xyz];
                     if (axisScale) {
                         const lineColor = specViewOptions.colors.axisLine;
                         const horizontal = xyz === "x";
@@ -2702,7 +2618,7 @@ function createAxis(props) {
     return axis;
 }
 
-},{"./constants":"eNr4m","./defaults":"5iedU","./scope":"k44Ul","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"k44Ul":[function(require,module,exports) {
+},{"./constants":"eNr4m","./defaults":"5iedU","./scope":"k44Ul","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"k44Ul":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "addAxes", ()=>addAxes);
@@ -2714,35 +2630,29 @@ parcelHelpers.export(exports, "addTransforms", ()=>addTransforms);
 parcelHelpers.export(exports, "getDataByName", ()=>getDataByName);
 parcelHelpers.export(exports, "getGroupBy", ()=>getGroupBy);
 parcelHelpers.export(exports, "addOffsets", ()=>addOffsets);
-function addAxes(scope, ...axes) {
-    if (!axes || !axes.length) return;
+function addAxes(scope, ...axis) {
     if (!scope.axes) scope.axes = [];
-    scope.axes.push(...axes.filter(Boolean));
+    scope.axes.push(...axis);
 }
-function addData(scope, ...datas) {
-    if (!datas || !datas.length) return;
+function addData(scope, ...data) {
     if (!scope.data) scope.data = [];
-    scope.data.push(...datas.filter(Boolean));
+    scope.data.push(...data);
 }
 function addMarks(scope, ...marks) {
-    if (!marks || !marks.length) return;
     if (!scope.marks) scope.marks = [];
-    scope.marks.push(...marks.filter(Boolean));
+    scope.marks.push(...marks);
 }
-function addScales(scope, ...scales) {
-    if (!scales || !scales.length) return;
+function addScales(scope, ...scale) {
     if (!scope.scales) scope.scales = [];
-    scope.scales.push(...scales.filter(Boolean));
+    scope.scales.push(...scale.filter(Boolean));
 }
-function addSignals(scope, ...signals) {
-    if (!signals || !signals.length) return;
+function addSignals(scope, ...signal) {
     if (!scope.signals) scope.signals = [];
-    scope.signals.push(...signals.filter(Boolean));
+    scope.signals.push(...signal);
 }
 function addTransforms(data, ...transforms) {
-    if (!transforms || !transforms.length) return;
     if (!data.transform) data.transform = [];
-    data.transform.push(...transforms.filter(Boolean));
+    data.transform.push(...transforms);
 }
 function getDataByName(data, dataName) {
     for(let i = 0; i < data.length; i++){
@@ -2760,7 +2670,7 @@ function addOffsets(...offsets) {
     return offsets.filter(Boolean).join(" + ");
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"7m2aV":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7m2aV":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "addColor", ()=>addColor);
@@ -2808,7 +2718,7 @@ function addColor(props) {
     };
 }
 
-},{"./scope":"k44Ul","./scales":"8b8up","./signals":"3piKm","./constants":"eNr4m","./legends":"d7VwA","./top":"1OWQa","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"8b8up":[function(require,module,exports) {
+},{"./scope":"k44Ul","./scales":"8b8up","./signals":"3piKm","./constants":"eNr4m","./legends":"d7VwA","./top":"1OWQa","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8b8up":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "linearScale", ()=>linearScale);
@@ -2818,16 +2728,19 @@ parcelHelpers.export(exports, "binnableColorScale", ()=>binnableColorScale);
 // Licensed under the MIT license.
 var _constants = require("./constants");
 var _expr = require("./expr");
-function linearScale(scaleName, domain, range, reverse, zero, nice = true) {
+function linearScale(scaleName, data, field, range, reverse, zero) {
     const scale = {
         name: scaleName,
         type: "linear",
         range,
         round: true,
         reverse,
-        domain,
+        domain: {
+            data,
+            field: (0, _expr.safeFieldName)(field)
+        },
         zero,
-        nice
+        nice: true
     };
     return scale;
 }
@@ -2898,7 +2811,7 @@ function binnableColorScale(scaleName, colorBin, data, field, scheme) {
     }
 }
 
-},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"1G99Z":[function(require,module,exports) {
+},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1G99Z":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -2919,7 +2832,7 @@ function exprSafeFieldName(field) {
     return field.replace(/[.,:;+=\-/<>{}|~!@#$%^*[\]`'"()?\s\\]/g, "");
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"3piKm":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3piKm":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "defaultZProportion", ()=>defaultZProportion);
@@ -2928,7 +2841,6 @@ parcelHelpers.export(exports, "colorBinCountSignal", ()=>colorBinCountSignal);
 parcelHelpers.export(exports, "colorReverseSignal", ()=>colorReverseSignal);
 parcelHelpers.export(exports, "modifySignal", ()=>modifySignal);
 var _constants = require("./constants");
-var _defaults = require("./defaults");
 const defaultZProportion = 0.6;
 function textSignals(context, heightSignal) {
     const { specViewOptions  } = context;
@@ -2938,9 +2850,9 @@ function textSignals(context, heightSignal) {
             value: defaultZProportion,
             bind: {
                 name: specViewOptions.language.zScaleProportion,
-                debounce: (0, _defaults.debounce),
+                debounce: 50,
                 input: "range",
-                min: 0.1,
+                min: 0.2,
                 max: 2,
                 step: 0.1
             }
@@ -2954,7 +2866,7 @@ function textSignals(context, heightSignal) {
             value: 1.2,
             bind: {
                 name: specViewOptions.language.textScaleSignal,
-                debounce: (0, _defaults.debounce),
+                debounce: 50,
                 input: "range",
                 min: 0.5,
                 max: 2,
@@ -2974,7 +2886,7 @@ function textSignals(context, heightSignal) {
             value: 30,
             bind: {
                 name: specViewOptions.language.xAxisTextAngleSignal,
-                debounce: (0, _defaults.debounce),
+                debounce: 50,
                 input: "range",
                 min: 0,
                 max: 90,
@@ -2986,7 +2898,7 @@ function textSignals(context, heightSignal) {
             value: 0,
             bind: {
                 name: specViewOptions.language.yAxisTextAngleSignal,
-                debounce: (0, _defaults.debounce),
+                debounce: 50,
                 input: "range",
                 min: -90,
                 max: 0,
@@ -2998,13 +2910,13 @@ function textSignals(context, heightSignal) {
             value: 1,
             bind: {
                 name: specViewOptions.language.markOpacitySignal,
-                debounce: (0, _defaults.debounce),
+                debounce: 50,
                 input: "range",
                 min: 0.1,
                 max: 1,
                 step: 0.05
             }
-        }, 
+        }
     ];
     return signals;
 }
@@ -3015,7 +2927,6 @@ function colorBinCountSignal(context) {
         value: 7,
         bind: {
             name: specViewOptions.language.colorBinCount,
-            debounce: (0, _defaults.debounce),
             input: "range",
             min: 1,
             max: specViewOptions.maxLegends + 1,
@@ -3040,7 +2951,7 @@ function modifySignal(s, fn, update) {
     s.update = `${fn}((${s.update}), (${update}))`;
 }
 
-},{"./constants":"eNr4m","./defaults":"5iedU","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"d7VwA":[function(require,module,exports) {
+},{"./constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"d7VwA":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getLegends", ()=>getLegends);
@@ -3072,7 +2983,7 @@ function getLegends(context, fill) {
     ];
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"1OWQa":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1OWQa":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "topLookup", ()=>topLookup);
@@ -3104,7 +3015,7 @@ function topLookup(column, count, source, legend, lookupName, fieldName, indexNa
                 {
                     type: "filter",
                     expr: `datum[${JSON.stringify(indexName)}] <= ${count}`
-                }, 
+                }
             ]
         },
         {
@@ -3129,14 +3040,14 @@ function topLookup(column, count, source, legend, lookupName, fieldName, indexNa
                     type: "formula",
                     expr: `datum[${JSON.stringify(fieldName)}] == null ? '${(0, _constants.Other)}' : datum[${JSON.stringify(fieldName)}]`,
                     as: fieldName
-                }, 
+                }
             ]
-        }, 
+        }
     ];
     return data;
 }
 
-},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"6LisZ":[function(require,module,exports) {
+},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"6LisZ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "addFacetColRowTitles", ()=>addFacetColRowTitles);
@@ -3277,7 +3188,7 @@ function addFacetAxesGroupMarks(props) {
                 lines: true,
                 labels: false,
                 title: false
-            }, 
+            }
         ],
         x: [
             {
@@ -3292,7 +3203,7 @@ function addFacetAxesGroupMarks(props) {
                 lines: false,
                 labels: false,
                 title: true
-            }, 
+            }
         ],
         y: [
             {
@@ -3307,7 +3218,7 @@ function addFacetAxesGroupMarks(props) {
                 lines: false,
                 labels: false,
                 title: true
-            }, 
+            }
         ]
     };
     return map;
@@ -3351,10 +3262,10 @@ function facetColumnHeaderFooter(data, sizeSignals, index) {
             encode: {
                 update: {
                     x: {
-                        signal: `(${index}) * (${sizeSignals.layoutWidth} + ${(0, _constants.SignalNames).FacetPaddingLeft}) + ${(0, _constants.SignalNames).FacetPaddingLeft} + ${(0, _constants.SignalNames).PlotOffsetLeft} - ${(0, _constants.SignalNames).FacetAxesAdjustX}`
+                        signal: `(${index}) * (${sizeSignals.layoutWidth} + ${(0, _constants.SignalNames).FacetPaddingLeft}) + ${(0, _constants.SignalNames).FacetPaddingLeft} + ${(0, _constants.SignalNames).PlotOffsetLeft}`
                     },
                     y: {
-                        signal: `${ySignal} - ${(0, _constants.SignalNames).FacetAxesAdjustY}`
+                        signal: ySignal
                     },
                     width: {
                         signal: sizeSignals.layoutWidth
@@ -3381,12 +3292,12 @@ function createSequence(dataName, countSignal) {
                 stop: {
                     signal: countSignal
                 }
-            }, 
+            }
         ]
     };
 }
 
-},{"./scope":"k44Ul","./constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"291dn":[function(require,module,exports) {
+},{"./scope":"k44Ul","./constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"291dn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "fill", ()=>fill);
@@ -3414,7 +3325,7 @@ function opacity(context) {
     return result;
 }
 
-},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"jGiIn":[function(require,module,exports) {
+},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jGiIn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "GlobalScope", ()=>GlobalScope);
@@ -3456,7 +3367,7 @@ class GlobalScope {
     }
 }
 
-},{"./constants":"eNr4m","./scope":"k44Ul","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"8IEIT":[function(require,module,exports) {
+},{"./constants":"eNr4m","./scope":"k44Ul","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8IEIT":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "layoutClasses", ()=>layoutClasses);
@@ -3485,7 +3396,7 @@ const layoutClasses = {
     Wrap: (0, _wrap.Wrap)
 };
 
-},{"./aggregateContainer":"2AO1d","./aggregateSquare":"3jVb3","./band":"cD88v","./cross":"3Xmem","./scatter":"jRktq","./square":"425K1","./stack":"b0WQI","./strip":"1pzL4","./treemap":"kPpw1","./wrap":"7BE6v","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"2AO1d":[function(require,module,exports) {
+},{"./aggregateContainer":"2AO1d","./aggregateSquare":"3jVb3","./band":"cD88v","./cross":"3Xmem","./scatter":"jRktq","./square":"425K1","./stack":"b0WQI","./strip":"1pzL4","./treemap":"kPpw1","./wrap":"7BE6v","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"2AO1d":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "AggregateContainer", ()=>AggregateContainer);
@@ -3552,18 +3463,18 @@ class AggregateContainer extends (0, _layout.Layout) {
                 0,
                 {
                     signal: props.globalAggregateMaxExtentSignal
-                }, 
+                }
             ],
             range: horizontal ? [
                 0,
                 {
                     signal: parentScope.sizeSignals.layoutWidth
-                }, 
+                }
             ] : [
                 {
                     signal: parentScope.sizeSignals.layoutHeight
                 },
-                0, 
+                0
             ],
             nice: niceScale,
             zero: true,
@@ -3650,7 +3561,7 @@ class AggregateContainer extends (0, _layout.Layout) {
     }
 }
 
-},{"./layout":"7w384","../constants":"eNr4m","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"7w384":[function(require,module,exports) {
+},{"./layout":"7w384","../constants":"eNr4m","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7w384":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Layout", ()=>Layout);
@@ -3670,7 +3581,7 @@ class Layout {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"lp0UG":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"lp0UG":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "testForCollapseSelection", ()=>testForCollapseSelection);
@@ -3681,7 +3592,7 @@ function testForCollapseSelection() {
     return `datum.${(0, _constants.FieldNames).Collapsed}`;
 }
 
-},{"./constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"3jVb3":[function(require,module,exports) {
+},{"./constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3jVb3":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "AggregateSquare", ()=>AggregateSquare);
@@ -3774,10 +3685,9 @@ class AggregateSquare extends (0, _layout.Layout) {
     }
 }
 
-},{"./layout":"7w384","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"cD88v":[function(require,module,exports) {
+},{"./layout":"7w384","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"cD88v":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "bandScaleLinearSuffix", ()=>bandScaleLinearSuffix);
 parcelHelpers.export(exports, "Band", ()=>Band);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -3787,8 +3697,6 @@ var _expr = require("../expr");
 var _scope = require("../scope");
 var _selection = require("../selection");
 var _signals = require("../signals");
-var _scales = require("../scales");
-const bandScaleLinearSuffix = "_linear";
 class Band extends (0, _layout.Layout) {
     constructor(props){
         super(props);
@@ -3800,7 +3708,7 @@ class Band extends (0, _layout.Layout) {
             bandWidth: `${p}_bandwidth`,
             accumulative: `${p}_accumulative`
         };
-        this.bin = (0, _bin.binnable)(this.prefix, props.globalScope.data.name, props.groupby, props.outerSignalExtents);
+        this.bin = (0, _bin.binnable)(this.prefix, props.globalScope.data.name, props.groupby);
     }
     getGrouping() {
         return this.bin.fields;
@@ -3825,7 +3733,7 @@ class Band extends (0, _layout.Layout) {
                     ops: [
                         "count"
                     ]
-                }, 
+                }
             ]
         });
         const horizontal = orientation === "horizontal";
@@ -3835,37 +3743,33 @@ class Band extends (0, _layout.Layout) {
             name: names.bandWidth,
             update: `bandwidth(${JSON.stringify(horizontal ? names.yScale : names.xScale)})`
         });
-        const scale = this.getScale(bin, horizontal);
-        if (props.outerSignalExtents && bin.native === false) //add a linear scale for use by background image
-        (0, _scope.addScales)(globalScope.scope, (0, _scales.linearScale)(scale.name + bandScaleLinearSuffix, {
-            signal: bin.extentSignal
-        }, scale.range, scale.reverse, false, false));
+        const scales = this.getScales(bin, horizontal);
         let encodingRuleMap;
         if (!props.excludeEncodingRuleMap) encodingRuleMap = horizontal ? {
             x: [
                 {
                     test: (0, _selection.testForCollapseSelection)(),
                     signal: parentScope.offsets.x
-                }, 
+                }
             ],
             width: [
                 {
                     test: (0, _selection.testForCollapseSelection)(),
                     value: 0
-                }, 
+                }
             ]
         } : {
             y: [
                 {
                     test: (0, _selection.testForCollapseSelection)(),
                     signal: (0, _scope.addOffsets)(parentScope.offsets.y, parentScope.offsets.h)
-                }, 
+                }
             ],
             height: [
                 {
                     test: (0, _selection.testForCollapseSelection)(),
                     value: 0
-                }, 
+                }
             ]
         };
         return {
@@ -3880,12 +3784,8 @@ class Band extends (0, _layout.Layout) {
             globalScales: {
                 showAxes,
                 scales: {
-                    x: horizontal ? undefined : [
-                        scale
-                    ],
-                    y: horizontal ? [
-                        scale
-                    ] : undefined
+                    x: horizontal ? undefined : scales,
+                    y: horizontal ? scales : undefined
                 }
             },
             encodingRuleMap
@@ -3901,10 +3801,11 @@ class Band extends (0, _layout.Layout) {
             w: horizontal ? parentScope.offsets.w : names.bandWidth
         };
     }
-    getScale(bin, horizontal) {
+    getScales(bin, horizontal) {
         const { names  } = this;
         const { parentScope  } = this.props;
         const binField = (0, _expr.safeFieldName)(bin.fields[0]);
+        const scales = [];
         let bandScale;
         if (horizontal) bandScale = {
             type: "band",
@@ -3913,7 +3814,7 @@ class Band extends (0, _layout.Layout) {
                 0,
                 {
                     signal: parentScope.sizeSignals.layoutHeight
-                }, 
+                }
             ],
             padding: 0.1,
             domain: {
@@ -3930,7 +3831,7 @@ class Band extends (0, _layout.Layout) {
                 0,
                 {
                     signal: parentScope.sizeSignals.layoutWidth
-                }, 
+                }
             ],
             padding: 0.1,
             domain: {
@@ -3939,46 +3840,44 @@ class Band extends (0, _layout.Layout) {
                 sort: true
             }
         };
-        return bandScale;
+        scales.push(bandScale);
+        return scales;
     }
 }
 
-},{"./layout":"7w384","../bin":"1wZ7F","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","../signals":"3piKm","../scales":"8b8up","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"1wZ7F":[function(require,module,exports) {
+},{"./layout":"7w384","../bin":"1wZ7F","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","../signals":"3piKm","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1wZ7F":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "binnable", ()=>binnable);
-parcelHelpers.export(exports, "outerExtentSignal", ()=>outerExtentSignal);
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var _constants = require("./constants");
 var _expr = require("./expr");
-var _defaults = require("./defaults");
-var _transforms = require("./transforms");
-function binnable(prefix, domainDataName, discreteColumn, outerSignalExtents) {
+function binnable(prefix, domainDataName, discreteColumn) {
     const { column , defaultBins , maxbins , maxbinsSignalDisplayName , maxbinsSignalName  } = discreteColumn;
     if (column.quantitative) {
         const field = `${prefix}_bin_${(0, _expr.exprSafeFieldName)(column.name)}`;
         const fieldEnd = `${field}_end`;
         const binSignal = `${field}_bins`;
-        const dataExtentSignal = `${field}_bin_extent`;
-        const outerSignal = `${field}_outer_extent`;
+        const extentSignal = `${field}_bin_extent`;
         domainDataName = `${field}_sequence`; //override the data name
-        const extentTransform = (0, _transforms.dataExtent)(column, dataExtentSignal);
-        let imageSignal;
-        if (outerSignalExtents) imageSignal = outerExtentSignal(outerSignal, outerSignalExtents.min, outerSignalExtents.max, dataExtentSignal);
+        const extentTransform = {
+            type: "extent",
+            field: (0, _expr.safeFieldName)(column.name),
+            signal: extentSignal
+        };
         const maxbinsSignal = {
             name: maxbinsSignalName,
             value: defaultBins,
             bind: {
                 name: maxbinsSignalDisplayName,
-                debounce: (0, _defaults.debounce),
+                debounce: 50,
                 input: "range",
                 min: 1,
                 max: maxbins,
                 step: 1
             }
         };
-        const extentSignal = (imageSignal === null || imageSignal === void 0 ? void 0 : imageSignal.name) || dataExtentSignal;
         const binTransform = {
             type: "bin",
             field: (0, _expr.safeFieldName)(column.name),
@@ -4037,13 +3936,9 @@ function binnable(prefix, domainDataName, discreteColumn, outerSignalExtents) {
                     type: "formula",
                     expr: `datum.data === ${binSignal}.stop - ${binSignal}.step`,
                     as: (0, _constants.FieldNames).Last
-                }, 
+                }
             ]
         };
-        const signals = [
-            maxbinsSignal
-        ];
-        if (imageSignal) signals.push(imageSignal);
         const augmentBinnable = {
             discreteColumn,
             native: false,
@@ -4056,10 +3951,11 @@ function binnable(prefix, domainDataName, discreteColumn, outerSignalExtents) {
                 fieldEnd
             ],
             binSignal,
-            extentSignal,
             dataSequence,
             domainDataName,
-            signals,
+            signals: [
+                maxbinsSignal
+            ],
             fullScaleDataname: dataSequence.name
         };
         return augmentBinnable;
@@ -4076,27 +3972,8 @@ function binnable(prefix, domainDataName, discreteColumn, outerSignalExtents) {
         return nativeBinnable;
     }
 }
-function outerExtentSignal(name, min, max, dataExtent) {
-    return {
-        name,
-        update: `[min(${min}, ${dataExtent}[0]), max(${max}, ${dataExtent}[1])]`
-    };
-}
 
-},{"./constants":"eNr4m","./expr":"1G99Z","./defaults":"5iedU","./transforms":"6fL08","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"6fL08":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "dataExtent", ()=>dataExtent);
-var _expr = require("./expr");
-function dataExtent(column, signal) {
-    return {
-        type: "extent",
-        field: (0, _expr.safeFieldName)(column.name),
-        signal
-    };
-}
-
-},{"./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"3Xmem":[function(require,module,exports) {
+},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3Xmem":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Cross", ()=>Cross);
@@ -4256,9 +4133,9 @@ class Cross extends (0, _layout.Layout) {
                             type: "formula",
                             expr: `[datum[${JSON.stringify((0, _constants.FieldNames).FacetSearch)}], merge(parent[${JSON.stringify((0, _constants.FieldNames).FacetSearch)}], { clause: '&&'})]`,
                             as: (0, _constants.FieldNames).FacetSearch
-                        }, 
+                        }
                     ]
-                }, 
+                }
             ]
         };
         const groupCol = {
@@ -4310,7 +4187,7 @@ class Cross extends (0, _layout.Layout) {
     }
 }
 
-},{"./layout":"7w384","../bin":"1wZ7F","../constants":"eNr4m","../facetSearch":"2CVGj","../facetTitle":"6LisZ","../ordinal":"l8chc","../scope":"k44Ul","../signals":"3piKm","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"2CVGj":[function(require,module,exports) {
+},{"./layout":"7w384","../bin":"1wZ7F","../constants":"eNr4m","../facetSearch":"2CVGj","../facetTitle":"6LisZ","../ordinal":"l8chc","../scope":"k44Ul","../signals":"3piKm","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"2CVGj":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "displayBin", ()=>displayBin);
@@ -4331,30 +4208,30 @@ function serializeAsVegaExpression(bin, firstFieldName, lastFieldName, clause) {
         const low = [
             `name:${JSON.stringify(bin.discreteColumn.column.name)}`,
             "operator:'>='",
-            `value:datum[${JSON.stringify(bin.fields[0])}]`, 
+            `value:datum[${JSON.stringify(bin.fields[0])}]`
         ];
         const high = [
             "clause:'&&'",
             `name:${JSON.stringify(bin.discreteColumn.column.name)}`,
             "operator:'<'",
-            `value:datum[${JSON.stringify(bin.fields[1])}]`, 
+            `value:datum[${JSON.stringify(bin.fields[1])}]`
         ];
         return obj([
-            `expressions:[ datum[${JSON.stringify(firstFieldName)}] ? null : ${obj(low)}, datum[${JSON.stringify(lastFieldName)}] ? null : ${obj(high)}]`, 
+            `expressions:[ datum[${JSON.stringify(firstFieldName)}] ? null : ${obj(low)}, datum[${JSON.stringify(lastFieldName)}] ? null : ${obj(high)}]`
         ], clause);
     } else {
         const exact = [
             `name:${JSON.stringify(bin.discreteColumn.column.name)}`,
             "operator:'=='",
-            `value:datum[${JSON.stringify(bin.fields[0])}]`, 
+            `value:datum[${JSON.stringify(bin.fields[0])}]`
         ];
         return obj([
-            `expressions:[${obj(exact)}]`, 
+            `expressions:[${obj(exact)}]`
         ], clause);
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"l8chc":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"l8chc":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "createOrdinals", ()=>createOrdinals);
@@ -4389,7 +4266,7 @@ function createOrdinals(source, prefix, binFields, sortOrder) {
                 as: [
                     (0, _constants.FieldNames).Ordinal
                 ]
-            }, 
+            }
         ]
     };
     return {
@@ -4412,7 +4289,7 @@ function ordinalScale(dataName, scaleName, binFields) {
     };
 }
 
-},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"jRktq":[function(require,module,exports) {
+},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jRktq":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Scatter", ()=>Scatter);
@@ -4425,8 +4302,6 @@ var _expr = require("../expr");
 var _scales = require("../scales");
 var _scope = require("../scope");
 var _selection = require("../selection");
-var _transforms = require("../transforms");
-var _bin = require("../bin");
 class Scatter extends (0, _layout.Layout) {
     constructor(props){
         super(props);
@@ -4435,10 +4310,6 @@ class Scatter extends (0, _layout.Layout) {
         this.names = {
             aggregateData: `data_${p}_aggregate`,
             markData: `data_${p}_mark`,
-            xDataExtent: `${p}_xDataExtent`,
-            yDataExtent: `${p}_yDataExtent`,
-            xExtent: `${p}_xExtent`,
-            yExtent: `${p}_yExtent`,
             sizeExtent: `${p}_sizeExtent`,
             sizeRange: `${p}_sizeRange`,
             sizeScale: `${p}_sizeScale`,
@@ -4449,14 +4320,14 @@ class Scatter extends (0, _layout.Layout) {
     }
     build() {
         const { names , prefix , props  } = this;
-        const { backgroundImageExtents , globalScope , parentScope , scatterPointScaleDisplay , showAxes , size , x , y , z , zGrounded  } = props;
+        const { globalScope , parentScope , scatterPointScaleDisplay , size , x , y , z , zGrounded  } = props;
         const qsize = size && size.quantitative && size;
         (0, _scope.addSignals)(globalScope.scope, {
             name: (0, _constants.SignalNames).PointScale,
             value: 5,
             bind: {
                 name: scatterPointScaleDisplay,
-                debounce: (0, _defaults.debounce),
+                debounce: 50,
                 input: "range",
                 min: 1,
                 max: 10,
@@ -4470,12 +4341,6 @@ class Scatter extends (0, _layout.Layout) {
                 input: "checkbox"
             }
         });
-        if (backgroundImageExtents) {
-            (0, _scope.addTransforms)(globalScope.data, (0, _transforms.dataExtent)(x, names.xDataExtent), (0, _transforms.dataExtent)(y, names.yDataExtent));
-            const xSignal = (0, _bin.outerExtentSignal)(names.xExtent, backgroundImageExtents.left, backgroundImageExtents.right, names.xDataExtent);
-            const ySignal = (0, _bin.outerExtentSignal)(names.yExtent, backgroundImageExtents.bottom, backgroundImageExtents.top, names.yDataExtent);
-            (0, _scope.addSignals)(globalScope.scope, xSignal, ySignal);
-        }
         if (qsize) {
             (0, _scope.addTransforms)(globalScope.data, {
                 type: "extent",
@@ -4521,7 +4386,7 @@ class Scatter extends (0, _layout.Layout) {
         });
         globalScope.setMarkDataName(names.markData);
         const globalScales = {
-            showAxes,
+            showAxes: true,
             scales: {}
         };
         const zValue = z ? `scale(${JSON.stringify(names.zScale)}, datum[${JSON.stringify(z.name)}])` : null;
@@ -4534,7 +4399,7 @@ class Scatter extends (0, _layout.Layout) {
                 },
                 {
                     signal: sizeValueSignal
-                }, 
+                }
             ],
             width: {
                 signal: sizeValueSignal
@@ -4547,7 +4412,7 @@ class Scatter extends (0, _layout.Layout) {
                 },
                 {
                     signal: `${(0, _constants.SignalNames).ZGrounded} ? 0 : ${zValue}`
-                }, 
+                }
             ],
             depth: [
                 {
@@ -4556,7 +4421,7 @@ class Scatter extends (0, _layout.Layout) {
                 },
                 {
                     signal: `${(0, _constants.SignalNames).ZGrounded} ? ${zValue} : ${sizeValueSignal}`
-                }, 
+                }
             ]
         });
         const columnSignals = [
@@ -4564,12 +4429,6 @@ class Scatter extends (0, _layout.Layout) {
                 column: x,
                 xyz: "x",
                 scaleName: names.xScale,
-                domain: backgroundImageExtents ? {
-                    signal: names.xExtent
-                } : {
-                    data: globalScope.data.name,
-                    field: (0, _expr.safeFieldName)(x.name)
-                },
                 reverse: false,
                 signal: parentScope.sizeSignals.layoutWidth
             },
@@ -4577,12 +4436,6 @@ class Scatter extends (0, _layout.Layout) {
                 column: y,
                 xyz: "y",
                 scaleName: names.yScale,
-                domain: backgroundImageExtents ? {
-                    signal: names.yExtent
-                } : {
-                    data: globalScope.data.name,
-                    field: (0, _expr.safeFieldName)(y.name)
-                },
                 reverse: true,
                 signal: parentScope.sizeSignals.layoutHeight
             },
@@ -4590,24 +4443,20 @@ class Scatter extends (0, _layout.Layout) {
                 column: z,
                 xyz: "z",
                 scaleName: names.zScale,
-                domain: {
-                    data: globalScope.data.name,
-                    field: z ? (0, _expr.safeFieldName)(z.name) : null
-                },
                 reverse: false,
                 signal: `(${globalScope.zSize}) * ${(0, _constants.SignalNames).ZProportion}`
-            }, 
+            }
         ];
         columnSignals.forEach((cs)=>{
-            const { column , domain , reverse , scaleName , signal , xyz  } = cs;
+            const { column , reverse , scaleName , signal , xyz  } = cs;
             if (!column) return;
             let scale;
-            if (column.quantitative) scale = (0, _scales.linearScale)(scaleName, domain, [
+            if (column.quantitative) scale = (0, _scales.linearScale)(scaleName, globalScope.data.name, column.name, [
                 0,
                 {
                     signal
                 }
-            ], reverse, false, showAxes);
+            ], reverse, false);
             else scale = (0, _scales.pointScale)(scaleName, globalScope.data.name, [
                 0,
                 {
@@ -4647,14 +4496,14 @@ class Scatter extends (0, _layout.Layout) {
                     {
                         test: (0, _selection.testForCollapseSelection)(),
                         signal: (0, _scope.addOffsets)(parentScope.offsets.y, parentScope.sizeSignals.layoutHeight)
-                    }, 
+                    }
                 ]
             }
         };
     }
 }
 
-},{"./layout":"7w384","../constants":"eNr4m","../defaults":"5iedU","../expr":"1G99Z","../scales":"8b8up","../scope":"k44Ul","../selection":"lp0UG","../transforms":"6fL08","../bin":"1wZ7F","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"425K1":[function(require,module,exports) {
+},{"./layout":"7w384","../constants":"eNr4m","../defaults":"5iedU","../expr":"1G99Z","../scales":"8b8up","../scope":"k44Ul","../selection":"lp0UG","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"425K1":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Square", ()=>Square);
@@ -4682,7 +4531,7 @@ class Square extends (0, _layout.Layout) {
     }
     build() {
         const { names , prefix , props  } = this;
-        const { fillDirection , globalScope , groupings , parentScope , collapseYHeight , showAxes , sortBy , z  } = props;
+        const { fillDirection , globalScope , groupings , parentScope , collapseYHeight , sortBy , z  } = props;
         const zScale = (0, _zBase.addZScale)(z, globalScope.zSize, globalScope.data.name, names.zScale);
         (0, _scope.addTransforms)(globalScope.data, Object.assign({
             type: "stack",
@@ -4714,7 +4563,7 @@ class Square extends (0, _layout.Layout) {
                             test: (0, _selection.testForCollapseSelection)(),
                             value: 0
                         },
-                        heightSignal, 
+                        heightSignal
                     ] : heightSignal,
                     width: {
                         signal: fillDirection === "down-right" ? levelSize : size
@@ -4731,7 +4580,7 @@ class Square extends (0, _layout.Layout) {
                         {
                             scale: names.zScale,
                             field: (0, _expr.safeFieldName)(z.name)
-                        }, 
+                        }
                     ]
                 })
             }
@@ -4740,7 +4589,7 @@ class Square extends (0, _layout.Layout) {
         const { tx , ty  } = this.transformXY(gap, levelSize, squaresPerBand);
         return Object.assign(Object.assign(Object.assign({}, z && {
             globalScales: {
-                showAxes,
+                showAxes: true,
                 scales: {
                     z: [
                         zScale
@@ -4765,7 +4614,7 @@ class Square extends (0, _layout.Layout) {
                     {
                         test: (0, _selection.testForCollapseSelection)(),
                         signal: parentScope.offsets.y
-                    }, 
+                    }
                 ]
             }
         });
@@ -4853,7 +4702,7 @@ class Square extends (0, _layout.Layout) {
     }
 }
 
-},{"./layout":"7w384","../constants":"eNr4m","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","../zBase":"kSgN8","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"kSgN8":[function(require,module,exports) {
+},{"./layout":"7w384","../constants":"eNr4m","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","../zBase":"kSgN8","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"kSgN8":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "addZScale", ()=>addZScale);
@@ -4861,7 +4710,6 @@ parcelHelpers.export(exports, "addZScale", ()=>addZScale);
 // Licensed under the MIT license.
 var _constants = require("./constants");
 var _scales = require("./scales");
-var _expr = require("./expr");
 function addZScale(z, zSize, dataName, zScaleName) {
     if (z) {
         const zRange = [
@@ -4870,15 +4718,12 @@ function addZScale(z, zSize, dataName, zScaleName) {
                 signal: `(${zSize}) * ${(0, _constants.SignalNames).ZProportion}`
             }
         ];
-        const scale = z.quantitative ? (0, _scales.linearScale)(zScaleName, {
-            data: dataName,
-            field: (0, _expr.safeFieldName)(z.name)
-        }, zRange, false, true) : (0, _scales.pointScale)(zScaleName, dataName, zRange, z.name, false);
+        const scale = z.quantitative ? (0, _scales.linearScale)(zScaleName, dataName, z.name, zRange, false, true) : (0, _scales.pointScale)(zScaleName, dataName, zRange, z.name, false);
         return scale;
     }
 }
 
-},{"./constants":"eNr4m","./scales":"8b8up","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"b0WQI":[function(require,module,exports) {
+},{"./constants":"eNr4m","./scales":"8b8up","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"b0WQI":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Stack", ()=>Stack);
@@ -4912,7 +4757,7 @@ class Stack extends (0, _layout.Layout) {
     }
     build() {
         const { names , props  } = this;
-        const { globalScope , groupings , parentScope , showAxes , sort  } = props;
+        const { globalScope , groupings , parentScope , sort  } = props;
         const { sizeSignals  } = parentScope;
         (0, _scope.addTransforms)(globalScope.data, {
             type: "joinaggregate",
@@ -4947,7 +4792,7 @@ class Stack extends (0, _layout.Layout) {
                     type: "sequence",
                     start: 1,
                     stop: {
-                        signal: `sqrt(${names.globalExtent}[1])`
+                        signal: `max(sqrt(${names.globalExtent}[1]),2)`
                     }
                 },
                 {
@@ -4991,7 +4836,7 @@ class Stack extends (0, _layout.Layout) {
                 {
                     type: "filter",
                     expr: "datum.row_number === 1"
-                }, 
+                }
             ]
         });
         (0, _scope.addSignals)(globalScope.scope, {
@@ -5055,13 +4900,13 @@ class Stack extends (0, _layout.Layout) {
                 0,
                 {
                     signal: names.maxCount
-                }, 
+                }
             ],
             range: [
                 0,
                 {
                     signal: `${names.maxLevels} * (${names.cube} + 1) - 1`
-                }, 
+                }
             ],
             nice: false
         };
@@ -5073,7 +4918,7 @@ class Stack extends (0, _layout.Layout) {
                 layoutWidth: names.size
             },
             globalScales: {
-                showAxes,
+                showAxes: true,
                 scales: {
                     z: [
                         zScale
@@ -5110,7 +4955,7 @@ class Stack extends (0, _layout.Layout) {
     }
 }
 
-},{"./layout":"7w384","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"1pzL4":[function(require,module,exports) {
+},{"./layout":"7w384","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1pzL4":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Strip", ()=>Strip);
@@ -5137,7 +4982,7 @@ class Strip extends (0, _layout.Layout) {
     }
     build() {
         const { names , prefix , props  } = this;
-        const { addPercentageScale , globalScope , groupings , orientation , showAxes , size , sort , sortOrder , parentScope , z  } = props;
+        const { addPercentageScale , globalScope , groupings , orientation , size , sort , sortOrder , parentScope , z  } = props;
         const zScale = (0, _zBase.addZScale)(z, globalScope.zSize, globalScope.data.name, names.zScale);
         const horizontal = orientation === "horizontal";
         const transform = [];
@@ -5211,7 +5056,7 @@ class Strip extends (0, _layout.Layout) {
                         {
                             scale: names.zScale,
                             field: (0, _expr.safeFieldName)(z.name)
-                        }, 
+                        }
                     ]
                 })
             }
@@ -5230,18 +5075,18 @@ class Strip extends (0, _layout.Layout) {
                     0,
                     {
                         signal: parentScope.sizeSignals.layoutWidth
-                    }, 
+                    }
                 ] : [
                     {
                         signal: parentScope.sizeSignals.layoutHeight
                     },
-                    0, 
+                    0
                 ]
             }
         ];
         return {
             globalScales: {
-                showAxes,
+                showAxes: true,
                 scales: {
                     x: horizontal ? percentageScale : undefined,
                     y: horizontal ? undefined : percentageScale,
@@ -5260,7 +5105,7 @@ class Strip extends (0, _layout.Layout) {
     }
 }
 
-},{"./layout":"7w384","../constants":"eNr4m","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","../zBase":"kSgN8","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"kPpw1":[function(require,module,exports) {
+},{"./layout":"7w384","../constants":"eNr4m","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","../zBase":"kSgN8","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"kPpw1":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Treemap", ()=>Treemap);
@@ -5298,7 +5143,7 @@ class Treemap extends (0, _layout.Layout) {
     }
     build() {
         const { names , props  } = this;
-        const { globalScope , parentScope , showAxes , treeMapMethod , z  } = props;
+        const { globalScope , parentScope , treeMapMethod , z  } = props;
         const zScale = (0, _zBase.addZScale)(z, globalScope.zSize, globalScope.data.name, names.zScale);
         const offsets = {
             x: (0, _scope.addOffsets)(parentScope.offsets.x, fn(names.fieldX0)),
@@ -5315,13 +5160,13 @@ class Treemap extends (0, _layout.Layout) {
                 input: "select",
                 options: [
                     "squarify",
-                    "binary", 
+                    "binary"
                 ]
             }
         });
         return Object.assign(Object.assign({}, z && {
             globalScales: {
-                showAxes,
+                showAxes: true,
                 scales: {
                     z: [
                         zScale
@@ -5355,7 +5200,7 @@ class Treemap extends (0, _layout.Layout) {
                         type: "formula",
                         expr: parentScope.offsets.w,
                         as: names.fieldWidth
-                    }, 
+                    }
                 ]
             });
             const treemapData = {
@@ -5385,10 +5230,10 @@ class Treemap extends (0, _layout.Layout) {
                                 type: "extent",
                                 field: names.fieldWidth,
                                 signal: names.widthExtent
-                            }, 
+                            }
                         ]
                     },
-                    treemapData, 
+                    treemapData
                 ]
             };
             globalScope.setMarkDataName(names.dataFacetMark);
@@ -5431,7 +5276,7 @@ class Treemap extends (0, _layout.Layout) {
                         {
                             scale: names.zScale,
                             field: (0, _expr.safeFieldName)(z.name)
-                        }, 
+                        }
                     ]
                 })
             }
@@ -5469,7 +5314,7 @@ class Treemap extends (0, _layout.Layout) {
                 },
                 {
                     signal: heightSignal
-                }, 
+                }
             ],
             as: [
                 names.fieldX0,
@@ -5477,7 +5322,7 @@ class Treemap extends (0, _layout.Layout) {
                 names.fieldX1,
                 names.fieldY1,
                 names.fieldDepth,
-                names.fieldChildren, 
+                names.fieldChildren
             ]
         });
     }
@@ -5489,7 +5334,7 @@ function subtract(...fields) {
     return fields.map((n)=>fn(n)).join(" - ");
 }
 
-},{"./layout":"7w384","../constants":"eNr4m","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","../zBase":"kSgN8","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"7BE6v":[function(require,module,exports) {
+},{"./layout":"7w384","../constants":"eNr4m","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","../zBase":"kSgN8","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7BE6v":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Wrap", ()=>Wrap);
@@ -5568,7 +5413,7 @@ class Wrap extends (0, _layout.Layout) {
                     type: "formula",
                     expr: `ceil(${names.dataLength} / datum.data)`,
                     as: "complement"
-                }, 
+                }
             ]
         }, {
             name: names.rxc1,
@@ -5582,7 +5427,7 @@ class Wrap extends (0, _layout.Layout) {
                     as: [
                         "cols"
                     ]
-                }, 
+                }
             ]
         }, {
             name: names.rxc2,
@@ -5596,7 +5441,7 @@ class Wrap extends (0, _layout.Layout) {
                     as: [
                         "cols"
                     ]
-                }, 
+                }
             ]
         }, {
             name: names.rxc,
@@ -5666,7 +5511,7 @@ class Wrap extends (0, _layout.Layout) {
                             "descending"
                         ]
                     }
-                }, 
+                }
             ]
         }, {
             name: names.rowColumnDataName,
@@ -5691,7 +5536,7 @@ class Wrap extends (0, _layout.Layout) {
                     type: "formula",
                     expr: (0, _facetSearch.displayBin)(bin),
                     as: (0, _constants.FieldNames).FacetTitle
-                }, 
+                }
             ]
         });
         const dataOut = {
@@ -5709,7 +5554,7 @@ class Wrap extends (0, _layout.Layout) {
                         (0, _constants.FieldNames).WrapRow,
                         (0, _constants.FieldNames).WrapCol
                     ]
-                }, 
+                }
             ]
         };
         (0, _scope.addData)(globalScope.scope, dataOut);
@@ -5811,61 +5656,13 @@ class Wrap extends (0, _layout.Layout) {
     }
 }
 
-},{"./layout":"7w384","../bin":"1wZ7F","../constants":"eNr4m","../expr":"1G99Z","../facetSearch":"2CVGj","../facetTitle":"6LisZ","../ordinal":"l8chc","../scope":"k44Ul","../signals":"3piKm","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"3AjTc":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "getImageMark", ()=>getImageMark);
-var _band = require("./layouts/band");
-function getImageMark(backgroundImage, allGlobalScales) {
-    const xScale = allGlobalScales.filter((s)=>s.scales.x)[0].scales.x[0];
-    const yScale = allGlobalScales.filter((s)=>s.scales.y)[0].scales.y[0];
-    const [xScaleName, yScaleName] = [
-        xScale,
-        yScale
-    ].map((s)=>s.name + (xScale.type === "band" ? (0, _band.bandScaleLinearSuffix) : ""));
-    return {
-        type: "image",
-        encode: {
-            update: {
-                url: {
-                    value: backgroundImage.url
-                },
-                aspect: {
-                    value: false
-                },
-                baseline: {
-                    value: "bottom"
-                },
-                height: {
-                    signal: getScaledSpan(yScaleName, backgroundImage.extents.bottom, backgroundImage.extents.top)
-                },
-                y: {
-                    signal: getScaledValue(yScaleName, backgroundImage.extents.bottom)
-                },
-                width: {
-                    signal: getScaledSpan(xScaleName, backgroundImage.extents.right, backgroundImage.extents.left)
-                },
-                x: {
-                    signal: getScaledValue(xScaleName, backgroundImage.extents.left)
-                }
-            }
-        }
-    };
-}
-function getScaledSpan(scaleName, low, high) {
-    return `abs(scale('${scaleName}', ${low}) - scale('${scaleName}', ${high}))`;
-}
-function getScaledValue(scaleName, value) {
-    return `scale('${scaleName}', ${value})`;
-}
-
-},{"./layouts/band":"cD88v","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"52vfF":[function(require,module,exports) {
+},{"./layout":"7w384","../bin":"1wZ7F","../constants":"eNr4m","../expr":"1G99Z","../facetSearch":"2CVGj","../facetTitle":"6LisZ","../ordinal":"l8chc","../scope":"k44Ul","../signals":"3piKm","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"52vfF":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"a5HkM":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"a5HkM":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}]},["lKiud"], "lKiud", "parcelRequired43a")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}]},["lKiud"], "lKiud", "parcelRequired43a")
 
