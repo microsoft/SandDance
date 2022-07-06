@@ -60,6 +60,11 @@ You will need an array of data objects, so that columns types can be inferred.
 
 ## Versions
 
+### 2.0.0 Changes
+
+* BREAKING: `Size` interface removed, moved to @msrvida/chart-types
+* Added background image
+
 ### 1.4.0 Changes
 
 * Show z-axis scale
