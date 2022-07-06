@@ -28,6 +28,7 @@ export interface StripProps extends LayoutProps {
     size?: Column;
     sort: Column;
     z: Column;
+    showAxes: boolean;
 }
 
 export class Strip extends Layout {
@@ -36,7 +37,7 @@ export class Strip extends Layout {
         lastField: string,
         valueField: string,
         scale: string,
-        zScale: string
+        zScale: string,
     };
 
     constructor(public props: StripProps & LayoutBuildProps) {
@@ -53,7 +54,7 @@ export class Strip extends Layout {
 
     public build(): InnerScope {
         const { names, prefix, props } = this;
-        const { addPercentageScale, globalScope, groupings, orientation, size, sort, sortOrder, parentScope, z } = props;
+        const { addPercentageScale, globalScope, groupings, orientation, showAxes, size, sort, sortOrder, parentScope, z } = props;
 
         const zScale = addZScale(z, globalScope.zSize, globalScope.data.name, names.zScale);
 
@@ -173,13 +174,14 @@ export class Strip extends Layout {
                             signal: parentScope.sizeSignals.layoutHeight,
                         },
                         0,
-                    ],
+                    ]
+                ,
             }];
         }
 
         return {
             globalScales: {
-                showAxes: true,
+                showAxes,
                 scales: {
                     x: horizontal ? percentageScale : undefined,
                     y: horizontal ? undefined : percentageScale,

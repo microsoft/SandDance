@@ -7,7 +7,8 @@ import { SpecBuilderProps } from '../specBuilder';
 import { SpecContext } from '../types';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
-    const { specColumns, specViewOptions } = specContext;
+    const { insight, specColumns, specViewOptions } = specContext;
+    const backgroundImageExtents =  specColumns.x?.quantitative && specColumns.y?.quantitative && insight.backgroundImage?.extents;
     const scatterProps: ScatterProps = {
         x: specColumns.x,
         y: specColumns.y,
@@ -15,11 +16,13 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         size: specColumns.size,
         scatterPointScaleDisplay: specViewOptions.language.scatterPointScale,
         zGrounded: specViewOptions.language.zGrounded,
+        backgroundImageExtents,
+        showAxes: !backgroundImageExtents,
     };
     const axisScales: AxisScales = {
-        x: { title: specColumns.x && specColumns.x.name },
-        y: { title: specColumns.y && specColumns.y.name },
-        z: { title: specColumns.z && specColumns.z.name },
+        x: { title: specColumns.x?.name },
+        y: { title: specColumns.y?.name },
+        z: { title: specColumns.z?.name },
     };
     return {
         axisScales,
@@ -30,19 +33,20 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             },
         ],
         specCapabilities: {
+            backgroundImage: true,
             countsAndSums: false,
             roles: [
                 {
                     role: 'x',
-                    axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
+                    axisSelection: specColumns.x?.quantitative ? 'range' : 'exact',
                 },
                 {
                     role: 'y',
-                    axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
+                    axisSelection: specColumns.y?.quantitative ? 'range' : 'exact',
                 },
                 {
                     role: 'z',
-                    axisSelection: specColumns.z && specColumns.z.quantitative ? 'range' : 'exact',
+                    axisSelection: specColumns.z?.quantitative ? 'range' : 'exact',
                     allowNone: true,
                 },
                 {

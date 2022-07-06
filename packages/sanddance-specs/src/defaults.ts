@@ -31,3 +31,5 @@ export const axesOffsetY = 120;
 
 export const scatterSizedMin = 10;
 export const scatterSizedDiv = 20;
+
+export const debounce = 250;

@@ -60,6 +60,10 @@ You will need an array of data objects, so that columns types can be inferred.
 
 ## Versions
 
+### 1.5.0 Changes
+
+* Added background image
+
 ### 1.4.0 Changes
 
 * Show z-axis scale

@@ -23,7 +23,7 @@ export class AggregateSquare extends Layout {
         barCount: string,
         aggregateField: string,
         globalAggregateExtentSignal: string,
-        extentData: string
+        extentData: string,
     };
 
     constructor(public props: AggregateSquareProps & LayoutBuildProps) {

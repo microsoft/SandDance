@@ -13,6 +13,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         fillDirection: 'right-down',
         z: specColumns.z,
         collapseYHeight: true,
+        showAxes: true,
     };
     const axisScales: AxisScales = {
         z: { title: specColumns.z && specColumns.z.name },
@@ -30,7 +31,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             roles: [
                 {
                     role: 'z',
-                    axisSelection: specColumns.z && specColumns.z.quantitative ? 'range' : 'exact',
+                    axisSelection: specColumns.z?.quantitative ? 'range' : 'exact',
                     allowNone: true,
                 },
                 {

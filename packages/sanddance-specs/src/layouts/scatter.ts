@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
 import { SignalNames } from '../constants';
-import { scatterSizedDiv } from '../defaults';
+import { debounce, scatterSizedDiv } from '../defaults';
 import { safeFieldName } from '../expr';
 import { GlobalScales, InnerScope } from '../interfaces';
 import { linearScale, pointScale } from '../scales';
@@ -20,8 +20,13 @@ import {
     RectEncodeEntry,
     RectMark,
     Scale,
+    ScaleData,
+    SignalRef,
     Transforms,
 } from 'vega-typings';
+import { Extents } from '../types';
+import { dataExtent } from '../transforms';
+import { outerExtentSignal } from '../bin';
 
 export interface ScatterProps extends LayoutProps {
     x: Column;
@@ -30,12 +35,18 @@ export interface ScatterProps extends LayoutProps {
     size: Column;
     scatterPointScaleDisplay: string;
     zGrounded: string;
+    showAxes: boolean;
+    backgroundImageExtents: Extents;
 }
 
 export class Scatter extends Layout {
     private names: {
         aggregateData: string,
         markData: string,
+        xDataExtent: string,
+        yDataExtent: string,
+        xExtent: string,
+        yExtent: string,
         sizeExtent: string,
         sizeRange: string,
         sizeScale: string,
@@ -50,6 +61,10 @@ export class Scatter extends Layout {
         this.names = {
             aggregateData: `data_${p}_aggregate`,
             markData: `data_${p}_mark`,
+            xDataExtent: `${p}_xDataExtent`,
+            yDataExtent: `${p}_yDataExtent`,
+            xExtent: `${p}_xExtent`,
+            yExtent: `${p}_yExtent`,
             sizeExtent: `${p}_sizeExtent`,
             sizeRange: `${p}_sizeRange`,
             sizeScale: `${p}_sizeScale`,
@@ -61,7 +76,7 @@ export class Scatter extends Layout {
 
     public build(): InnerScope {
         const { names, prefix, props } = this;
-        const { globalScope, parentScope, scatterPointScaleDisplay, size, x, y, z, zGrounded } = props;
+        const { backgroundImageExtents, globalScope, parentScope, scatterPointScaleDisplay, showAxes, size, x, y, z, zGrounded } = props;
         const qsize = size && size.quantitative && size;
 
         addSignals(globalScope.scope,
@@ -70,7 +85,7 @@ export class Scatter extends Layout {
                 value: 5,
                 bind: {
                     name: scatterPointScaleDisplay,
-                    debounce: 50,
+                    debounce,
                     input: 'range',
                     min: 1,
                     max: 10,
@@ -86,6 +101,16 @@ export class Scatter extends Layout {
                 },
             },
         );
+
+        if (backgroundImageExtents) {
+            addTransforms(globalScope.data,
+                dataExtent(x, names.xDataExtent),
+                dataExtent(y, names.yDataExtent),
+            );
+            const xSignal = outerExtentSignal(names.xExtent, backgroundImageExtents.left, backgroundImageExtents.right, names.xDataExtent);
+            const ySignal = outerExtentSignal(names.yExtent, backgroundImageExtents.bottom, backgroundImageExtents.top, names.yDataExtent);
+            addSignals(globalScope.scope, xSignal, ySignal);
+        }
 
         if (qsize) {
             addTransforms(globalScope.data,
@@ -125,7 +150,7 @@ export class Scatter extends Layout {
         });
         globalScope.setMarkDataName(names.markData);
 
-        const globalScales: GlobalScales = { showAxes: true, scales: {} };
+        const globalScales: GlobalScales = { showAxes, scales: {} };
         const zValue = z ? `scale(${JSON.stringify(names.zScale)}, datum[${JSON.stringify(z.name)}])` : null;
         const sizeValueSignal = qsize ?
             `scale(${JSON.stringify(names.sizeScale)}, datum[${JSON.stringify(qsize.name)}]) * ${SignalNames.PointScale}`
@@ -170,6 +195,7 @@ export class Scatter extends Layout {
             column: Column,
             xyz: 'x' | 'y' | 'z',
             scaleName: string,
+            domain: ScaleData | SignalRef,
             reverse: boolean,
             signal: string
         }[] = [
@@ -177,6 +203,15 @@ export class Scatter extends Layout {
                 column: x,
                 xyz: 'x',
                 scaleName: names.xScale,
+                domain: backgroundImageExtents ?
+                    {
+                        signal: names.xExtent,
+                    }
+                    :
+                    {
+                        data: globalScope.data.name,
+                        field: safeFieldName(x.name),
+                    },
                 reverse: false,
                 signal: parentScope.sizeSignals.layoutWidth,
             },
@@ -184,6 +219,15 @@ export class Scatter extends Layout {
                 column: y,
                 xyz: 'y',
                 scaleName: names.yScale,
+                domain: backgroundImageExtents ?
+                    {
+                        signal: names.yExtent,
+                    }
+                    :
+                    {
+                        data: globalScope.data.name,
+                        field: safeFieldName(y.name),
+                    },
                 reverse: true,
                 signal: parentScope.sizeSignals.layoutHeight,
             },
@@ -191,22 +235,26 @@ export class Scatter extends Layout {
                 column: z,
                 xyz: 'z',
                 scaleName: names.zScale,
+                domain: {
+                    data: globalScope.data.name,
+                    field: z ? safeFieldName(z.name) : null,
+                },
                 reverse: false,
                 signal: `(${globalScope.zSize}) * ${SignalNames.ZProportion}`,
             },
         ];
         columnSignals.forEach(cs => {
-            const { column, reverse, scaleName, signal, xyz } = cs;
+            const { column, domain, reverse, scaleName, signal, xyz } = cs;
             if (!column) return;
             let scale: Scale;
             if (column.quantitative) {
                 scale = linearScale(
                     scaleName,
-                    globalScope.data.name,
-                    column.name,
+                    domain,
                     [0, { signal }],
                     reverse,
                     false,
+                    showAxes,
                 );
             } else {
                 scale = pointScale(

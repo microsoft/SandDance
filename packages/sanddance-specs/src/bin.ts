@@ -6,10 +6,11 @@ import { DiscreteColumn } from './interfaces';
 import {
     BinTransform,
     Data,
-    ExtentTransform,
     Signal,
     Transforms,
 } from 'vega-typings';
+import { debounce } from './defaults';
+import { dataExtent } from './transforms';
 
 export interface BaseBinnable {
     fields: string[];
@@ -26,37 +27,40 @@ export interface AugmentBinnable extends BaseBinnable {
     native: false;
     transforms: Transforms[];
     binSignal: string;
+    extentSignal: string;
     signals: Signal[];
     dataSequence: Data;
 }
 
 export type Binnable = NativeBinnable | AugmentBinnable;
 
-export function binnable(prefix: string, domainDataName: string, discreteColumn: DiscreteColumn): Binnable {
+export function binnable(prefix: string, domainDataName: string, discreteColumn: DiscreteColumn, outerSignalExtents?: { min: number, max: number }): Binnable {
     const { column, defaultBins, maxbins, maxbinsSignalDisplayName, maxbinsSignalName } = discreteColumn;
     if (column.quantitative) {
         const field = `${prefix}_bin_${exprSafeFieldName(column.name)}`;
         const fieldEnd = `${field}_end`;
         const binSignal = `${field}_bins`;
-        const extentSignal = `${field}_bin_extent`;
+        const dataExtentSignal = `${field}_bin_extent`;
+        const outerSignal = `${field}_outer_extent`;
         domainDataName = `${field}_sequence`;   //override the data name
-        const extentTransform: ExtentTransform = {
-            type: 'extent',
-            field: safeFieldName(column.name),
-            signal: extentSignal,
-        };
+        const extentTransform = dataExtent(column, dataExtentSignal);
+        let imageSignal: Signal;
+        if (outerSignalExtents) {
+            imageSignal = outerExtentSignal(outerSignal, outerSignalExtents.min, outerSignalExtents.max, dataExtentSignal);
+        }
         const maxbinsSignal: Signal = {
             name: maxbinsSignalName,
             value: defaultBins,
             bind: {
                 name: maxbinsSignalDisplayName,
-                debounce: 50,
+                debounce,
                 input: 'range',
                 min: 1,
                 max: maxbins,
                 step: 1,
             },
         };
+        const extentSignal = imageSignal?.name || dataExtentSignal;
         const binTransform: BinTransform = {
             type: 'bin',
             field: safeFieldName(column.name),
@@ -114,15 +118,20 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
                 },
             ],
         };
+        const signals: Signal[] = [maxbinsSignal];
+        if (imageSignal) {
+            signals.push(imageSignal);
+        }
         const augmentBinnable: AugmentBinnable = {
             discreteColumn,
             native: false,
             transforms: [extentTransform, binTransform],
             fields: [field, fieldEnd],
             binSignal,
+            extentSignal,
             dataSequence,
             domainDataName,
-            signals: [maxbinsSignal],
+            signals,
             fullScaleDataname: dataSequence.name,
         };
         return augmentBinnable;
@@ -136,4 +145,11 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
         };
         return nativeBinnable;
     }
+}
+
+export function outerExtentSignal(name: string, min: number, max: number, dataExtent: string): Signal {
+    return {
+        name,
+        update: `[min(${min}, ${dataExtent}[0]), max(${max}, ${dataExtent}[1])]`,
+    };
 }

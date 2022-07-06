@@ -21,7 +21,8 @@ export interface SquareProps extends LayoutProps {
     fillDirection: 'right-down' | 'right-up' | 'down-right';
     maxGroupedUnits?: string;
     maxGroupedFillSize?: string;
-    collapseYHeight?: boolean
+    collapseYHeight?: boolean;
+    showAxes: boolean;
 }
 
 export class Square extends Layout {
@@ -49,7 +50,7 @@ export class Square extends Layout {
 
     public build(): InnerScope {
         const { names, prefix, props } = this;
-        const { fillDirection, globalScope, groupings, parentScope, collapseYHeight, sortBy, z } = props;
+        const { fillDirection, globalScope, groupings, parentScope, collapseYHeight, showAxes, sortBy, z } = props;
         const zScale = addZScale(z, globalScope.zSize, globalScope.data.name, names.zScale);
 
         addTransforms(globalScope.data, {
@@ -114,7 +115,7 @@ export class Square extends Layout {
         return {
             ...z && {
                 globalScales: {
-                    showAxes: true,
+                    showAxes,
                     scales: {
                         z: [zScale],
                     },

@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import { NewSignal } from 'vega-typings/types';
 import { SignalNames } from './constants';
+import { debounce } from './defaults';
 import { SpecContext } from './types';
 
 export const defaultZProportion = 0.6;
@@ -14,9 +15,9 @@ export function textSignals(context: SpecContext, heightSignal: string) {
             value: defaultZProportion,
             bind: {
                 name: specViewOptions.language.zScaleProportion,
-                debounce: 50,
+                debounce,
                 input: 'range',
-                min: 0.2,
+                min: 0.1,
                 max: 2,
                 step: 0.1,
             },
@@ -30,7 +31,7 @@ export function textSignals(context: SpecContext, heightSignal: string) {
             value: 1.2,
             bind: {
                 name: specViewOptions.language.textScaleSignal,
-                debounce: 50,
+                debounce,
                 input: 'range',
                 min: 0.5,
                 max: 2,
@@ -50,7 +51,7 @@ export function textSignals(context: SpecContext, heightSignal: string) {
             value: 30,
             bind: {
                 name: specViewOptions.language.xAxisTextAngleSignal,
-                debounce: 50,
+                debounce,
                 input: 'range',
                 min: 0,
                 max: 90,
@@ -62,7 +63,7 @@ export function textSignals(context: SpecContext, heightSignal: string) {
             value: 0,
             bind: {
                 name: specViewOptions.language.yAxisTextAngleSignal,
-                debounce: 50,
+                debounce,
                 input: 'range',
                 min: -90,
                 max: 0,
@@ -74,7 +75,7 @@ export function textSignals(context: SpecContext, heightSignal: string) {
             value: 1,
             bind: {
                 name: specViewOptions.language.markOpacitySignal,
-                debounce: 50,
+                debounce,
                 input: 'range',
                 min: 0.1,
                 max: 1,
@@ -92,6 +93,7 @@ export function colorBinCountSignal(context: SpecContext) {
         value: 7,
         bind: {
             name: specViewOptions.language.colorBinCount,
+            debounce,
             input: 'range',
             min: 1,
             max: specViewOptions.maxLegends + 1,

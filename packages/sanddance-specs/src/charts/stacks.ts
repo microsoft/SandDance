@@ -9,12 +9,14 @@ import { SpecContext } from '../types';
 import { StackProps } from '../layouts/stack';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
-    const { specColumns, specViewOptions } = specContext;
+    const { insight, specColumns, specViewOptions } = specContext;
     const axisScales: AxisScales = {
-        x: { title: specColumns.x && specColumns.x.name },
-        y: { title: specColumns.y && specColumns.y.name },
+        x: { title: specColumns.x?.name },
+        y: { title: specColumns.y?.name },
         z: { title: specViewOptions.language.count },
     };
+    const backgroundImage =  specColumns.x?.quantitative && specColumns.y?.quantitative && insight.backgroundImage?.extents && insight.backgroundImage;
+    const showAxes = !backgroundImage;
     const hBandProps: BandProps = {
         excludeEncodingRuleMap: true,
         orientation: 'horizontal',
@@ -26,7 +28,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             maxbins,
         },
         minBandWidth: minBarBandWidth,
-        showAxes: true,
+        showAxes,
+        outerSignalExtents: backgroundImage && { max: backgroundImage.extents.top, min: backgroundImage.extents.bottom },
     };
     const vBandProps: BandProps = {
         excludeEncodingRuleMap: true,
@@ -39,10 +42,12 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             maxbins,
         },
         minBandWidth: minBarBandWidth,
-        showAxes: true,
+        showAxes,
+        outerSignalExtents: backgroundImage && { max: backgroundImage.extents.right, min: backgroundImage.extents.left },
     };
     const stackProps: StackProps = {
         sort: specColumns.sort,
+        showAxes,
     };
     return {
         axisScales,
@@ -62,19 +67,20 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             },
         ],
         specCapabilities: {
+            backgroundImage: true,
             countsAndSums: false,
             roles: [
                 {
                     role: 'x',
                     binnable: true,
-                    axisSelection: specColumns.x && specColumns.x.quantitative ? 'range' : 'exact',
+                    axisSelection: specColumns.x?.quantitative ? 'range' : 'exact',
                     axisSelectionBetweenTicks: true,
                     signals: [SignalNames.XBins],
                 },
                 {
                     role: 'y',
                     binnable: true,
-                    axisSelection: specColumns.y && specColumns.y.quantitative ? 'range' : 'exact',
+                    axisSelection: specColumns.y?.quantitative ? 'range' : 'exact',
                     axisSelectionBetweenTicks: true,
                     signals: [SignalNames.YBins],
                 },
