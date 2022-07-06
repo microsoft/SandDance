@@ -7,7 +7,7 @@ import { Transforms } from 'vega-typings';
 /**
  * Deprecated - use @msrvida/chart-types instead.
  */
- export { Size };
+export { Size };
 
 /**
  * Type of selection scope on an axis.
