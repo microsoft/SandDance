@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance-specs",
-  "version": "2.0.0",
+  "version": "1.5.0",
   "description": "SandDance Vega specification generator.",
   "main": "dist/es6/index.js",
   "repository": {
@@ -14,8 +14,8 @@
   ],
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "predocs": "rimraf ../../docs/docs/sanddance-specs/v2",
-    "docs": "typedoc src/index.ts -out ../../docs/docs/sanddance-specs/v2 --theme ../../typedoc/theme --excludePrivate --gitRevision master",
+    "predocs": "rimraf ../../docs/docs/sanddance-specs/v1",
+    "docs": "typedoc src/index.ts -out ../../docs/docs/sanddance-specs/v1 --theme ../../typedoc/theme --excludePrivate --gitRevision master",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "build:sanddance-core": "npm run build-typescript",
@@ -24,10 +24,10 @@
     "deploy-watch": "parcel watch ./uitest/sanddance-specs.ts --target umd",
     "test2": "node -r esm ./test/perf.js"
   },
-  "umd": "../../docs/tests/sanddance-specs/v2/js/sanddance-specs.js",
+  "umd": "../../docs/tests/sanddance-specs/v1/js/sanddance-specs.js",
   "targets": {
     "umd": {
-      "distDir": "../../docs/tests/sanddance-specs/v2/js",
+      "distDir": "../../docs/tests/sanddance-specs/v1/js",
       "includeNodeModules": {},
       "optimize": false,
       "scopeHoist": false,

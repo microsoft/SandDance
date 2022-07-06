@@ -5,6 +5,11 @@ import { Search } from '@msrvida/search-expression';
 import { Transforms } from 'vega-typings';
 
 /**
+ * Deprecated - use @msrvida/chart-types instead.
+ */
+ export { Size };
+
+/**
  * Type of selection scope on an axis.
  */
 export type AxisSelectionType = 'exact' | 'range';
@@ -155,12 +160,12 @@ export interface SpecCapabilities {
     /**
      * Signals associated with this spec type.
      */
-     signals?: string[];
-    
+    signals?: string[];
+
     /**
      * Ability to show background image.
      */
-     backgroundImage?: boolean;
+    backgroundImage?: boolean;
 }
 
 /**
