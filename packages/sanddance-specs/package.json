@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "predocs": "rimraf docs/docs/sanddance-specs/v2",
+    "predocs": "rimraf ../../docs/docs/sanddance-specs/v2",
     "docs": "typedoc src/index.ts -out ../../docs/docs/sanddance-specs/v2 --theme ../../typedoc/theme --excludePrivate --gitRevision master",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
