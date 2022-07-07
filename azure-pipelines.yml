@@ -43,10 +43,6 @@ steps:
   displayName: 'npm build:sanddance-integration'
 
 - script: |
-    npm run build:sanddance-integration-python
-  displayName: 'npm build:sanddance-integration-python'
-
-- script: |
     npm test
   displayName: 'npm test'
 

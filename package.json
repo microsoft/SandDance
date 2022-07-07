@@ -4,7 +4,6 @@
     "version": "1.0.0",
     "description": "SandDance development monorepo.",
     "scripts": {
-        "python:dev": "lerna run dev:all --parallel --scope @msrvida/sanddance-jupyter-widget",
         "vegatest": "lerna run vegatest --parallel",
         "eslint": "lerna run eslint --parallel",
         "build-az": "lerna run build --scope azdata-sanddance",
@@ -14,8 +13,7 @@
         "bootstrap": "lerna bootstrap",
         "build:sanddance-core": "lerna run build:sanddance-core",
         "build:sanddance-integration": "lerna run build:sanddance-integration",
-        "build:sanddance-integration-python": "lerna run build:sanddance-integration-python",
-        "build": "npm run bootstrap && npm run build:sanddance-core && npm run build:sanddance-integration && npm run build:sanddance-integration-python",
+        "build": "npm run bootstrap && npm run build:sanddance-core && npm run build:sanddance-integration",
         "build-test": "lerna run build-test",
         "app-dev": "lerna run start --parallel --scope @msrvida/sanddance-app",
         "watch-css": "lerna run watch-css --parallel",
@@ -26,7 +24,6 @@
         "specs": "npm run specs-message && npm-run-all --parallel specs-watch-typescript specs-watch-parcel",
         "start-app": "parcel serve ./test/index.html --port 8085 --open --no-autoinstall",
         "start": "npm-run-all --parallel watch-typescript watch-css app-dev start-app",
-        "start:python": "npm-run-all --parallel watch-typescript python-webpack-watch python:dev",
         "parcel": "lerna run parcel --parallel",
         "clean-build": "rimraf ./packages/**/dist/ && rimraf ./packages/**/.cache/ && rimraf ./packages/**/.parcel-cache/ && rimraf ./**/package-lock.json && rimraf ./lerna-debug.log",
         "clean": "lerna clean --yes && npm run clean-build",
@@ -37,7 +34,6 @@
         "dev": "lerna run dev --scope dev --parallel",
         "build-rec": "lerna run build --scope @msrvida/chart-recommender",
         "test-rec": "lerna run test --scope @msrvida/chart-recommender",
-        "python-webpack-watch": "lerna run webpack-watch --scope @msrvida/sanddance-jupyter-widget --parallel",
         "azdata-webpack-extension": "lerna run webpack --scope azdata-sanddance --parallel",
         "vscode-webpack-extension": "lerna run webpack --scope vscode-sanddance --parallel"
     },
