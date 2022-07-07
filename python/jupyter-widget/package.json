@@ -67,6 +67,7 @@
     "style-loader": "^1.0.0"
   },
   "overrides": {
+    "moment": "^2.29.4",
     "url-parse": "^1.5.9"
   },
   "jupyterlab": {
