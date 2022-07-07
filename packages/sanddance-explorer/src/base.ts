@@ -1,5 +1,8 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { PositionedColumnMap } from './clickableTextLayer';
 import { DataExportPicker } from './controls/dataExporter';
 import { Chart } from './dialogs/chart';

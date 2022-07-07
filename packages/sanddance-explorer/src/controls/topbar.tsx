@@ -1,5 +1,8 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { CommandBarButtonStyles } from './CommandBarButton.styles';
 import { Logo } from './logo';
 import { base } from '../base';

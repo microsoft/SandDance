@@ -1,5 +1,8 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { color as d3color } from 'd3-color';
 import { Column, ColumnStats, ColumnTypeMap } from '@msrvida/chart-types';
 import { inferTypes } from 'vega-typings';

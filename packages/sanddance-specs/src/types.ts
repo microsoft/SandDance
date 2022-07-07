@@ -1,5 +1,8 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { Column, Size, View } from '@msrvida/chart-types';
 import { Search } from '@msrvida/search-expression';
 import { Transforms } from 'vega-typings';

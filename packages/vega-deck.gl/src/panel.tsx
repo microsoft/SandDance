@@ -1,5 +1,8 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { createElement, mount } from 'tsx-create-element';
 import { minHeight, minWidth } from './defaults';
 import { PresenterElement } from './enums';

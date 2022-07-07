@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
 
 //adapted from https://github.com/OfficeDev/office-ui-fabric-react/blob/master/packages/fluent-theme/src/fluent/styles/CommandBarButton.styles.ts
 

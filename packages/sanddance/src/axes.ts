@@ -1,5 +1,8 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { SpecColorSettings } from '@msrvida/sanddance-specs';
 import * as VegaDeckGl from '@msrvida/vega-deck.gl';
 

@@ -1,5 +1,8 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 export function concat<T>(...args: T[][]) {
     return args.reduce((p, c) => c ? p.concat(c) : p, []);
 }

@@ -1,5 +1,8 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { addGlobalAxes, AxesScopeMap } from './axes';
 import { addColor } from './color';
 import { FieldNames, ScaleNames, SignalNames } from './constants';

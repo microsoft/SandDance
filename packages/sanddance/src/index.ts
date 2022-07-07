@@ -1,5 +1,8 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import * as constants from './constants';
 import * as searchExpression from '@msrvida/search-expression';
 import * as specs from '@msrvida/sanddance-specs';

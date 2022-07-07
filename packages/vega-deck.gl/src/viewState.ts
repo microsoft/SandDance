@@ -1,5 +1,8 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { Position } from '@deck.gl/core/utils/positions';
 import { OrbitViewState } from '@deck.gl/core/views/orbit-view';
 import { View } from '@msrvida/chart-types';

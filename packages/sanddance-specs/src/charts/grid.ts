@@ -1,5 +1,8 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { AxisScales } from '../interfaces';
 import { SignalNames } from '../constants';
 import { SpecBuilderProps } from '../specBuilder';
