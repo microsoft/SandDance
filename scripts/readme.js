@@ -33,7 +33,6 @@ const map = {
     "dev.md": "https://github.com/Microsoft/SandDance/blob/master/dev.md",
     "packages/sanddance/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='sanddance')[0].url}/`,
     "packages/sanddance-specs/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-specs')[0].url}/`,
-    "packages/sanddance-vue/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-vue')[0].url}/`,
     "packages/sanddance-react/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-react')[0].url}/`,
     "packages/sanddance-explorer/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-explorer')[0].url}/`,
     "packages/vega-deck.gl/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='vega-deck.gl')[0].url}/`,

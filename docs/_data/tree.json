@@ -31,10 +31,6 @@
       "url": "/docs/sanddance-explorer/v3"
     },
     {
-      "tree": "sanddance-vue",
-      "url": "/docs/sanddance-vue/v3"
-    },
-    {
       "tree": "vega-deck.gl",
       "url": "/docs/vega-deck.gl/v3"
     }
