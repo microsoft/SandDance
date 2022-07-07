@@ -79,3 +79,8 @@ _site
 .DS_Store
 
 dist
+
+__pycache__
+python/jupyter-widget/lib
+python/jupyter-widget/docs
+python/jupyter-widget/sanddance/nbextension
