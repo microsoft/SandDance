@@ -6,6 +6,7 @@
     "icon": "sanddance-logo.png",
     "preview": true,
     "publisher": "msrvida",
+    "license": "MIT",
     "repository": {
         "type": "git",
         "url": "https://github.com/Microsoft/Sanddance"
