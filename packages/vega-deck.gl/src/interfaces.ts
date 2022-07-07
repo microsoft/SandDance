@@ -1,5 +1,8 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { DeckProps, PickInfo } from '@deck.gl/core/lib/deck';
 import { RGBAColor } from '@deck.gl/core/utils/color';
 import { Position } from '@deck.gl/core/utils/positions';

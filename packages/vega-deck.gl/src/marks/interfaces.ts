@@ -1,5 +1,8 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { Axis, Stage } from '../interfaces';
 import { RGBAColor } from '@deck.gl/core/utils/color';
 import { Mark, Orient, Scene, SceneGroup } from 'vega-typings';

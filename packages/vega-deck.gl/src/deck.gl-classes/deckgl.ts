@@ -1,5 +1,8 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import Deck, { DeckProps, InteractiveState } from '@deck.gl/core/lib/deck';
 import { base } from '../base';
 import { createOrbitControllerClass, OrbitController_Class, OrbitControllerClassOptions } from './orbitController';

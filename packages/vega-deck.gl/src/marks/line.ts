@@ -1,5 +1,8 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { GroupType, MarkStager, MarkStagerOptions } from './interfaces';
 import { colorFromString } from '../color';
 import { Path, Stage } from '../interfaces';

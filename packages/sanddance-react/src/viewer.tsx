@@ -1,5 +1,8 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { base } from './base';
 import { deepCompare } from './util';
 import { specs, types, VegaDeckGl, Viewer } from '@msrvida/sanddance';

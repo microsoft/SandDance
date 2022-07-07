@@ -1,5 +1,8 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { base } from '../base';
 import { Presenter } from '../presenter';
 import { PresenterConfig, Scene3d } from '../interfaces';

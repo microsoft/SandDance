@@ -1,5 +1,8 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { FieldNames, GL_ORDINAL } from './constants';
 
 export { getColumnsFromData, getStats, inferAll } from '@msrvida/sanddance-specs';
