@@ -3,7 +3,7 @@ var test;
     var data = [
         { myUid: 0, myColor: 0, mySort: 0, myX: 0, myY: 0, myZ: 0 },
         { myUid: 1, myColor: 1, mySort: 1, myX: 1, myY: 1, myZ: 1 },
-        { myUid: 2, myColor: 2, mySort: 2, myX: 2, myY: 2, myZ: 2 }
+        { myUid: 2, myColor: 2, mySort: 2, myX: 2, myY: 2, myZ: 2 },
     ];
     var options = {
         columns: {

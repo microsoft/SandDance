@@ -17,7 +17,7 @@ var transformTest;
                 type: 'formula',
                 expr: 'datum.name_split[0]',
                 as: 'brand'
-            }
+            },
         ],
         size: {
             height: 700,

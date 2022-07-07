@@ -25,7 +25,7 @@ var cubeTest;
                 color: colors.blue,
                 position: [0, 100, 100],
                 size: [100, 100, 100]
-            }
+            },
         ],
         legend: { rows: {} },
         axes: {
