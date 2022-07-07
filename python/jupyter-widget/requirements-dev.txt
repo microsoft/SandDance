@@ -1,7 +1,0 @@
-jupyterlab==2.2.10
-notebook==6.4.12
-numpy==1.22.0
-nbval==0.9.5
-pytest==5.4.2
-six==1.14.0
-twine==3.1.1

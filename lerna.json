@@ -2,8 +2,7 @@
   "lerna": "2.8.0",
   "packages": [
     "extensions/*",
-    "packages/*",
-    "python/jupyter-widget"
+    "packages/*"
   ],
   "version": "independent"
 }
