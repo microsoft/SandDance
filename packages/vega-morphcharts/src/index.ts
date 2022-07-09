@@ -3,7 +3,6 @@
 * Licensed under the MIT License.
 */
 
-import * as constants from './constants';
 import * as controls from './exports/controls';
 import * as types from './exports/types';
 import * as util from './exports/util';
@@ -14,7 +13,7 @@ export { Presenter } from './presenter';
 export { ViewGl } from './vega-classes/viewGl';
 
 export * from './enums';
-export { constants, controls, defaults, types, util };
+export { controls, defaults, types, util };
 
 export { McRendererOptions, RGBAColor } from './interfaces';
 
