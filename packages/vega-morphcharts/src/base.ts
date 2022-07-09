@@ -55,7 +55,6 @@ const vega: VegaBase = {
  * References to dependency libraries.
  */
 export interface Base {
-    //TODO MorphCharts???
     vega: VegaBase;
 }
 
