@@ -21,7 +21,6 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
 
     base.vega.sceneVisit(scene, function (item: SceneCube) {
 
-        //for orthographic (2d) - always use 0 or else Deck will not show them
         const z = stage.view === '2d' ? 0 : (item.z || 0) + minZ;
         const depth = (stage.view === '2d' ? 0 : (item.depth || 0)) + min3dDepth;
 
