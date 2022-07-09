@@ -23,7 +23,7 @@ export interface TableProps {
 }
 
 const KeyCodes = {
-    ENTER: 13,
+    ENTER: 'Enter',
 };
 
 export const Table: StatelessComponent<TableProps> = (props: StatelessProps<TableProps>) => {
@@ -36,7 +36,7 @@ export const Table: StatelessComponent<TableProps> = (props: StatelessProps<Tabl
                     onClick={e => props.onRowClick && props.onRowClick(e as any as MouseEvent, i)}
                     tabIndex={props.onRowClick ? 0 : -1}
                     onKeyUp={e => {
-                        if (e.keyCode === KeyCodes.ENTER && props.onRowClick) {
+                        if (e.key === KeyCodes.ENTER && props.onRowClick) {
                             props.onRowClick(e as any as KeyboardEvent, i);
                         }
                     }}
