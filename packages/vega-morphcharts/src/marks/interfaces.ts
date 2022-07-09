@@ -23,12 +23,9 @@ export interface MarkStagerOptions {
     zAxisZindex: number;
 }
 
-//TODO - use vega-typings below
 export interface LabelDatum {
     value: any;
 }
-//TODO - use vega-typings above
-
 
 export interface MarkStager {
     (options: MarkStagerOptions, stage: Stage, scene: Scene, x: number, y: number, groupType: GroupType): void;
