@@ -68,9 +68,6 @@ export const base: Base = {
 /**
  * Specify the dependency libraries to use for rendering.
  * @param vega Vega library.
- * @param deck deck/core library.
- * @param layers deck/layers library.
- * @param luma luma.gl library.
  */
 export function use(vega: VegaBase) {
     base.vega = vega;
