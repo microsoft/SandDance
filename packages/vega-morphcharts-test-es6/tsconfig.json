@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "moduleResolution": "node",
+        "skipLibCheck": true,
+        "target": "es6"
+    },
+    "include": [
+        "src"
+    ]
+}
