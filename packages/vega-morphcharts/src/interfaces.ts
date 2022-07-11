@@ -77,14 +77,6 @@ export interface Path {
     strokeWidth: number;
 }
 
-export interface Polygon {
-    positions: Position[];
-    strokeColor: RGBAColor;
-    fillColor: RGBAColor;
-    strokeWidth: number;
-    depth: number;
-}
-
 export interface ImageBounds {
     x1: number;
     y1: number;
@@ -123,7 +115,6 @@ export interface Stage {
     backgroundImages?: Image[];
     cubeData?: Cube[];
     pathData?: Path[];
-    polygonData?: Polygon[];
     legend?: Legend;
     axes?: { [key in AxisRole]: Axis[] };
     textData?: VegaTextLayerDatum[];

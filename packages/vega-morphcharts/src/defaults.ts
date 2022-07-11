@@ -49,7 +49,6 @@ export function createStage(view: View) {
         view,
         cubeData: [],
         pathData: [],
-        polygonData: [],
         axes: {
             x: [],
             y: [],

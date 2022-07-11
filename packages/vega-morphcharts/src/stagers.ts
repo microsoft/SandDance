@@ -9,7 +9,6 @@ import rect from './marks/rect';
 import rule, { box } from './marks/rule';
 import line from './marks/line';
 import text from './marks/text';
-import area from './marks/area';
 
 import {
     Axis,
@@ -132,7 +131,6 @@ const markStagers: { [id: string]: MarkStager } = {
     rect,
     rule,
     line,
-    area,
     text,
 };
 
