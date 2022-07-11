@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "jsx": "react",
+        "jsxFactory": "createElement",
+        "lib": [
+            "DOM",
+            "ES2019"
+        ],
+        "moduleResolution": "node",
+        "outDir": "dist/es6",
+        "skipLibCheck": true,
+        "target": "es6"
+    },
+    "include": [
+        "src"
+    ]
+}

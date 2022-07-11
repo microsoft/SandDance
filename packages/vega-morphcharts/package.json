@@ -1,0 +1,38 @@
+{
+	"name": "@msrvida/vega-morphcharts",
+	"version": "1.0.0",
+	"description": "MorphCharts renderer for Vega",
+	"main": "dist/es6/index.js",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"vegatest": "parcel serve ./test/vegaspec/vega-morphcharts.test.html --open --no-hmr --no-autoinstall --no-cache",
+		"eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
+		"watch-typescript": "tsc -p . -w",
+		"build-typescript": "tsc -p .",
+		"build:sanddance-core": "npm run build-typescript"
+	},
+	"keywords": [
+		"vega",
+		"webgl"
+	],
+	"author": "Dan Marshall",
+	"license": "MIT",
+	"dependencies": {
+		"@msrvida/chart-types": "^1",
+		"morphcharts": "^1",
+		"d3-color": "^1.4.0",
+		"d3-ease": "^1.0.5",
+		"deepmerge": "^2.1.1",
+		"is-plain-object": "^5.0.0",
+		"tsx-create-element": "^2.2.5",
+		"vega-typings": "0.21.0"
+	},
+	"devDependencies": {
+		"@types/d3-ease": "^3.0.0",
+		"@types/react": ">=16.8.0 <18.0.0",
+		"typescript": "^4.2.3",
+		"vega": "5.20.2"
+	}
+}

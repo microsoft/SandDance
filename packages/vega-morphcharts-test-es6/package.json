@@ -1,0 +1,24 @@
+{
+  "name": "vega-morphcharts-test-es6",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
+    "build:sanddance-core": "tsc -p .",
+    "deploy": "parcel build ./src/vega-morphcharts-test-es6.ts"
+  },
+  "umd": "../../docs/tests/v3/es6/js/vega-morphcharts-test-es6.js",
+  "targets": {
+    "umd": {
+      "distDir": "../../docs/tests/v4/es6/js",
+      "includeNodeModules": {},
+      "optimize": false,
+      "scopeHoist": false,
+      "sourceMap": false
+    }
+  },
+  "dependencies": {
+    "@msrvida/vega-morphcharts": "^1",
+    "vega": "5.20"
+  }
+}

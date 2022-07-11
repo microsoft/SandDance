@@ -10,12 +10,8 @@ title: Examples
 ### sanddance-specs
 * [sanddance-specs 2D vega specs tests](../tests/sanddance-specs/v1/) using UMD/CDN
 
-### cube-layer
-* [cubeTest](../tests/v3/umd/cubeTest.html) using UMD/CDN
-
-### vega-deck.gl
-* [simple vega spec](../tests/v3/umd/vega-deck.gl.test.html) using UMD/CDN
-* [transition between vega specs](../tests/v3/umd/transition.html) using UMD/CDN
+### vega-morphcharts
+* [vega spec test](../tests/v4/es6/vega-morphcharts-test-es6.html) using bundled es6
 
 ## SandDance
 * [simple scatterplot](../tests/v3/umd/test.html) using UMD/CDN
@@ -28,3 +24,7 @@ title: Examples
 
 ## SandDance Explorer
 * [Embed the hosted SandDance Explorer via Iframe](../tests/v3/umd/embed.html)  
+
+## Previous versions
+
+[version 3](v3)

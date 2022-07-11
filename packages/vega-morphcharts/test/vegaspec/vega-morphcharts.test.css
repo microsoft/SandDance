@@ -1,0 +1,95 @@
+
+html,
+body {
+    font-family: sans-serif;
+    height: 100%;
+}
+
+body.rows {
+    display: grid;
+    grid-template-rows: 100px auto 1em;
+    grid-template-areas: "header" "view" "footer";
+    margin: 0;
+    overflow: scroll;
+}
+
+body.columns {
+    display: grid;
+    grid-template-rows: 100px auto 1em;
+    grid-template-columns: 40% 60%;
+    grid-template-areas: "header header" "left right" "footer footer";
+    margin: 0;
+}
+
+header {
+    border-bottom: 1px solid silver;
+    grid-area: header;
+    padding: 0 2em;
+}
+
+footer {
+    border-top: 1px solid silver;
+    grid-area: footer;
+    padding: 0 2em;
+}
+
+#view-type-button {
+    position: absolute;
+    right: 2em;
+    top: 2em;
+}
+
+#view-div, #view-div .vega-morphcharts-gl {
+    height: 100%;
+}
+
+#split-left {
+    grid-area: left;
+    overflow: hidden;
+}
+#vis {
+   grid-area: right;
+   position: relative;
+}
+
+.textform {
+    background-color: #ccc;
+    display: grid;
+    grid-template-rows: auto 2em;
+    height: 100%;
+}
+
+#split-left textarea {
+    border: 0;
+    height: 100%;
+    padding: 0 0 0 5px;
+    resize: none;
+}
+
+#split-right,
+#error {
+    grid-area: right;
+}
+
+#error {
+    font-size: larger;
+    padding: 1em;
+}
+
+#split-right .vega-bindings {
+    padding: 1em;
+}
+
+.vega-morphcharts-root {
+    display: grid;
+    grid-template-rows: auto 200px;
+    height: 100%;
+}
+
+.vega-morphcharts-legend {
+    font-family: sans-serif;
+    position: absolute;
+    right: 1em;
+    top: 1em;
+    z-index: 1;
+}
