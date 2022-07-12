@@ -32,12 +32,9 @@ export const base: Base = {
 export function use(
     react: typeof React,
     reactDOM: typeof ReactDOM,
-    vega: SandDance.VegaDeckGl.types.VegaBase,
-    deck: SandDance.VegaDeckGl.types.DeckBase,
-    layers: SandDance.VegaDeckGl.types.DeckLayerBase,
-    luma: SandDance.VegaDeckGl.types.LumaBase,
+    vega: SandDance.VegaMorphCharts.types.VegaBase,
 ) {
-    SandDance.VegaDeckGl.use(vega, deck, layers, luma);
+    SandDance.VegaMorphCharts.use(vega);
     base.react = react;
     base.reactDOM = reactDOM;
 
