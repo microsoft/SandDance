@@ -4,14 +4,12 @@
 
 namespace scatterplotTest {
 
-    declare const deck: SandDance.VegaDeckGl.types.DeckBase & SandDance.VegaDeckGl.types.DeckLayerBase;
-    declare const luma: SandDance.VegaDeckGl.types.LumaBase;
-    declare const vega: SandDance.VegaDeckGl.types.VegaBase;
+    declare const vega: SandDance.VegaMorphCharts.types.VegaBase;
 
-    SandDance.use(vega, deck, deck, luma);
+    SandDance.use(vega);
     export const viewer = new SandDance.Viewer(document.querySelector('#vis'));
 
-    const glDiv = viewer.presenter.getElement(SandDance.VegaDeckGl.PresenterElement.gl);
+    const glDiv = viewer.presenter.getElement(SandDance.VegaMorphCharts.PresenterElement.gl);
     const options: SandDance.specs.Insight = {
         columns: {
             color: 'Education',

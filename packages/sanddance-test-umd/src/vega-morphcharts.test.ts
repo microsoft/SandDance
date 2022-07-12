@@ -4,11 +4,9 @@
 ///<reference path='vega.d.ts' />
 
 namespace vegaDeckglTest {
-    declare const vega: SandDance.VegaDeckGl.types.VegaBase;
-    declare const deck: SandDance.VegaDeckGl.types.DeckBase & SandDance.VegaDeckGl.types.DeckLayerBase;
-    declare const luma: SandDance.VegaDeckGl.types.LumaBase;
+    declare const vega: SandDance.VegaMorphCharts.types.VegaBase;
 
-    SandDance.use(vega, deck, deck, luma);
+    SandDance.use(vega);
 
     /* eslint-disable */
     const spec: Vega.Spec = {
@@ -108,8 +106,8 @@ namespace vegaDeckglTest {
     };
     /* eslint-enable */
 
-    const view = new SandDance.VegaDeckGl.ViewGl(vega.parse(spec), { getView: () => '2d' })
-        .renderer('deck.gl')
+    const view = new SandDance.VegaMorphCharts.ViewGl(vega.parse(spec), { getView: () => '2d' })
+        .renderer('morphcharts')
         .initialize(document.querySelector('#vis'))
         .run();
 }
