@@ -3,7 +3,7 @@
 * Licensed under the MIT License.
 */
 
-import * as VegaDeckGl from '@msrvida/vega-deck.gl';
+import * as VegaMorphCharts from '@msrvida/vega-morphcharts';
 import { Column } from '@msrvida/chart-types';
 import {
     SearchExpression,
@@ -17,7 +17,7 @@ export function notNice(niceValue: string | number) {
     return (niceValue + '').replace(/[\s,]/g, '');
 }
 
-function tickValue(axis: VegaDeckGl.types.Axis, i: number) {
+function tickValue(axis: VegaMorphCharts.types.Axis, i: number) {
     const tick = axis.tickText[i];
     let value: SearchExpressionValue;
     if (tick) {
@@ -64,7 +64,7 @@ export function selectNone(column: Column, values: string[]) {
     return searchExpressionGroup;
 }
 
-export function selectExactAxis(axis: VegaDeckGl.types.Axis, column: Column, i: number) {
+export function selectExactAxis(axis: VegaMorphCharts.types.Axis, column: Column, i: number) {
     const result = tickValue(axis, i);
     if (result.tick) {
         return selectExact(column, result.value);
@@ -96,7 +96,7 @@ export function selectBetween(column: Column, lowValue: SearchExpressionValue, h
     return searchExpressionGroup;
 }
 
-export function selectBetweenAxis(axis: VegaDeckGl.types.Axis, column: Column, i: number) {
+export function selectBetweenAxis(axis: VegaMorphCharts.types.Axis, column: Column, i: number) {
     const low = tickValue(axis, i);
     const high = tickValue(axis, i + 1);
     return selectBetween(column, low.value, high.value);

@@ -3,9 +3,9 @@
 * Licensed under the MIT License.
 */
 
-import * as VegaDeckGl from '@msrvida/vega-deck.gl';
+import * as VegaMorphCharts from '@msrvida/vega-morphcharts';
 import { Animator } from './animator';
-import { controls, util } from '@msrvida/vega-deck.gl';
+import { controls, util } from '@msrvida/vega-morphcharts';
 import { cssPrefix } from './defaults';
 import { DataScope, UserSelection } from './dataScope';
 import { GL_ORDINAL } from './constants';
@@ -146,9 +146,9 @@ export class Details {
             hasColorMaps: this.hasColorMaps() && hasRefinedData,
             remapColor: this.state.remapColor,
         };
-        const a = VegaDeckGl.util.getActiveElementInfo();
-        VegaDeckGl.util.mount(renderDetails(renderProps), this.element);
-        VegaDeckGl.util.setActiveElement(a);
+        const a = VegaMorphCharts.util.getActiveElementInfo();
+        VegaMorphCharts.util.mount(renderDetails(renderProps), this.element);
+        VegaMorphCharts.util.setActiveElement(a);
     }
 }
 

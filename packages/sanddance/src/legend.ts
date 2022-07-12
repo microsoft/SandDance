@@ -3,7 +3,7 @@
 * Licensed under the MIT License.
 */
 
-import * as VegaDeckGl from '@msrvida/vega-deck.gl';
+import * as VegaMorphCharts from '@msrvida/vega-morphcharts';
 import { ColorBin, Other } from '@msrvida/sanddance-specs';
 import { Column } from '@msrvida/chart-types';
 import { Language, LegendRowWithSearch } from './types';
@@ -16,7 +16,7 @@ import {
 } from './expression';
 import { SearchExpressionGroup, SearchExpressionOperators } from '@msrvida/search-expression';
 
-function legendRange(colorBinType: ColorBin, column: Column, legend: VegaDeckGl.types.Legend, clickedIndex: number): SearchExpressionGroup {
+function legendRange(colorBinType: ColorBin, column: Column, legend: VegaMorphCharts.types.Legend, clickedIndex: number): SearchExpressionGroup {
     if (column.quantitative) {
         return selectQuantitative(colorBinType, column, legend, clickedIndex);
     } else {
@@ -24,7 +24,7 @@ function legendRange(colorBinType: ColorBin, column: Column, legend: VegaDeckGl.
     }
 }
 
-function selectCategorical(column: Column, legend: VegaDeckGl.types.Legend, clickedIndex: number): SearchExpressionGroup {
+function selectCategorical(column: Column, legend: VegaMorphCharts.types.Legend, clickedIndex: number): SearchExpressionGroup {
     const value = legend.rows[clickedIndex].value;
     if (value === Other) {
         const values: string[] = [];
@@ -40,7 +40,7 @@ function selectCategorical(column: Column, legend: VegaDeckGl.types.Legend, clic
     }
 }
 
-function selectQuantitative(colorBinType: ColorBin, column: Column, legend: VegaDeckGl.types.Legend, clickedIndex: number): SearchExpressionGroup {
+function selectQuantitative(colorBinType: ColorBin, column: Column, legend: VegaMorphCharts.types.Legend, clickedIndex: number): SearchExpressionGroup {
     const keys = Object.keys(legend.rows).map(key => +key).sort((a, b) => +a - +b);
     let lowValue: string;
     let lowOperator: SearchExpressionOperators;
@@ -89,7 +89,7 @@ function selectQuantitative(colorBinType: ColorBin, column: Column, legend: Vega
     }
 }
 
-export function finalizeLegend(colorBinType: ColorBin, colorColumn: Column, legend: VegaDeckGl.types.Legend, language: Language) {
+export function finalizeLegend(colorBinType: ColorBin, colorColumn: Column, legend: VegaMorphCharts.types.Legend, language: Language) {
     const rowTexts: string[] = [];
     for (const i in legend.rows) {
         const row = legend.rows[i] as LegendRowWithSearch;

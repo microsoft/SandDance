@@ -8,9 +8,9 @@ import * as searchExpression from '@msrvida/search-expression';
 import * as specs from '@msrvida/sanddance-specs';
 import * as types from './types';
 import * as util from './util';
-import * as VegaDeckGl from '@msrvida/vega-deck.gl';
+import * as VegaMorphCharts from '@msrvida/vega-morphcharts';
 import { colorSchemes } from './colorSchemes';
-import { use as _use } from '@msrvida/vega-deck.gl';
+import { use as _use } from '@msrvida/vega-morphcharts';
 import { Viewer } from './viewer';
 
 const use = _use;
@@ -23,7 +23,7 @@ export {
     types,
     use,
     util,
-    VegaDeckGl,
+    VegaMorphCharts,
     Viewer,
 };
 

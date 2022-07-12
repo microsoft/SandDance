@@ -3,11 +3,13 @@
 * Licensed under the MIT License.
 */
 
-import * as VegaDeckGl from '@msrvida/vega-deck.gl';
+import * as VegaMorphCharts from '@msrvida/vega-morphcharts';
 import {
+    Camera,
     Column,
     ColumnStats,
     ColumnTypeMap,
+    Size,    
     View,
 } from '@msrvida/chart-types';
 //import { LightSettings } from '@deck.gl/core/lib/layer';
@@ -22,7 +24,7 @@ import {
     SpecViewOptions,
 } from '@msrvida/sanddance-specs';
 
-export { Column, ColumnStats, ColumnTypeMap, View };
+export { Camera, Column, ColumnStats, ColumnTypeMap, Size, View };
 
 /**
  * Map of ordinals per unique Id.
@@ -50,7 +52,7 @@ export interface RenderResult {
 /**
  * Lengths of time for a transition animation.
  */
-export interface TransitionDurations extends VegaDeckGl.types.TransitionDurations {
+export interface TransitionDurations extends VegaMorphCharts.types.TransitionDurations {
 
     /**
      * Transition time when a filter is applied / removed.
@@ -116,7 +118,7 @@ export interface ViewerOptions extends SpecViewOptions {
     /**
      * Optional handler when data is on stage.
      */
-    onStage?: (stage: VegaDeckGl.types.Stage, deckProps: Partial<VegaDeckGl.DeckProps>) => void;
+    onStage?: (stage: VegaMorphCharts.types.Stage) => void;
 
     /**
      * Optional handler when chart is presented.
@@ -126,27 +128,22 @@ export interface ViewerOptions extends SpecViewOptions {
     /**
      * Optional handler to modify the stage prior to deck.gl layer construction.
      */
-    onBeforeCreateLayers?: (stage: VegaDeckGl.types.Stage, specCapabilities: SpecCapabilities) => void;
+    onBeforeCreateLayers?: (stage: VegaMorphCharts.types.Stage, specCapabilities: SpecCapabilities) => void;
 
     /**
      * Optional handler to get the color of text elements.
      */
-    getTextColor?: (t: VegaDeckGl.types.VegaTextLayerDatum) => VegaDeckGl.RGBAColor;
+    getTextColor?: (t: VegaMorphCharts.types.VegaTextLayerDatum) => VegaMorphCharts.RGBAColor;
 
     /**
      * Optional handler to get the highlight color of text elements.
      */
-    getTextHighlightColor?: (t: VegaDeckGl.types.VegaTextLayerDatum) => VegaDeckGl.RGBAColor;
-
-    /**
-     * Optional handler to get the alpha cutoff for highlight color of text elements.
-     */
-    getTextHighlightAlphaCutoff?: () => number;
+    getTextHighlightColor?: (t: VegaMorphCharts.types.VegaTextLayerDatum) => VegaMorphCharts.RGBAColor;
 
     /**
      * Optional click handler for text elements.
      */
-    onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, o: VegaDeckGl.types.VegaTextLayerDatum) => void;
+    onTextClick?: (e: MouseEvent | PointerEvent | TouchEvent, o: VegaMorphCharts.types.VegaTextLayerDatum) => void;
 
     /**
      * Optional handler when axis is clicked.
@@ -156,9 +153,9 @@ export interface ViewerOptions extends SpecViewOptions {
     /**
      * Optional handler when cube is clicked.
      */
-     onCubeClick?: (e: TouchEvent | MouseEvent | PointerEvent, cube: VegaDeckGl.types.Cube) => void;
+    onCubeClick?: (e: TouchEvent | MouseEvent | PointerEvent, cube: VegaMorphCharts.types.Cube) => void;
 
-     /**
+    /**
      * Optional handler when legend header is clicked.
      */
     onLegendHeaderClick?: (e: TouchEvent | MouseEvent | PointerEvent) => void;
@@ -190,12 +187,14 @@ export interface ViewerOptions extends SpecViewOptions {
 }
 
 export interface RenderOptions {
+    getCameraTo?: ()=> Camera;
     rebaseFilter?: () => boolean;
     columns?: Column[];
     columnTypes?: ColumnTypeMap;
     ordinalMap?: OrdinalMap;
     initialColorContext?: ColorContext;
     discardColorContextUpdates?: () => boolean;
+    initialMcRendererOptions?: VegaMorphCharts.McRendererOptions
 }
 
 /**
@@ -204,8 +203,13 @@ export interface RenderOptions {
 export interface ColorSettings extends SpecColorSettings {
 
     /**
-     * Color of the individually selected cube.
+     * Color of the background canvas.
      */
+    backgroundColor?: string;
+
+    /**
+    * Color of the individually selected cube.
+    */
     activeCube?: string;
 
     /**
@@ -222,11 +226,6 @@ export interface ColorSettings extends SpecColorSettings {
      * Color of axis hover hotspots.
      */
     axisSelectHighlight?: string;
-
-    /**
-     * Method of coloring unselected cubes.
-     */
-    unselectedColorMethod?: ColorMethod;
 }
 
 /**
@@ -338,31 +337,20 @@ export interface ColorScheme {
 }
 
 export interface ColorMappedItem {
-    color?: VegaDeckGl.RGBAColor;
+    color?: VegaMorphCharts.RGBAColor;
     unSelected?: boolean;
-}
-
-/**
- * Map of ordinal to color.
- */
-export interface ColorMap {
-    [ordinal: number]: ColorMappedItem;
 }
 
 /**
  * ColorMap plus an HTMLElement legend containing color.
  */
 export interface ColorContext {
-    colorMap: ColorMap;
+    colorMap: VegaMorphCharts.types.UnitColorMap;
     legendElement: HTMLElement;
-    legend: VegaDeckGl.types.Legend;
+    legend: VegaMorphCharts.types.Legend;
 }
 
-export interface ColorMethod {
-    (color: VegaDeckGl.RGBAColor): VegaDeckGl.RGBAColor;
-}
-
-export interface LegendRowWithSearch extends VegaDeckGl.types.LegendRow {
+export interface LegendRowWithSearch extends VegaMorphCharts.types.LegendRow {
     search: SearchExpressionGroup;
 }
 
@@ -386,4 +374,5 @@ export interface Snapshot {
     insight?: Insight;
     image?: string;
     bgColor?: string;
+    camera?: Camera;
 }

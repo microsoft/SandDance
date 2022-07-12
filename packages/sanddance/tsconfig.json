@@ -2,7 +2,7 @@
     "compilerOptions": {
         "declaration": true,
         "jsx": "react",
-        "jsxFactory": "VegaDeckGl.util.createElement",
+        "jsxFactory": "VegaMorphCharts.util.createElement",
         "moduleResolution": "node",
         "outDir": "dist/es6",
         "skipLibCheck": true,

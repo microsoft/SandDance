@@ -3,26 +3,21 @@
 * Licensed under the MIT License.
 */
 
-import * as VegaDeckGl from '@msrvida/vega-deck.gl';
+import * as VegaMorphCharts from '@msrvida/vega-morphcharts';
 import { ViewerOptions } from './types';
 
-const { defaultPresenterConfig, defaultPresenterStyle } = VegaDeckGl.defaults;
-const { desaturate } = VegaDeckGl.util;
+const { defaultPresenterConfig, defaultPresenterStyle } = VegaMorphCharts.defaults;
 
 export const defaultViewerOptions: ViewerOptions = {
     colors: {
         activeCube: 'purple',
-        defaultCube: VegaDeckGl.util.colorToString(defaultPresenterStyle.defaultCubeColor),
-        hoveredCube: VegaDeckGl.util.colorToString(defaultPresenterStyle.highlightColor),
+        defaultCube: VegaMorphCharts.util.colorToString(defaultPresenterStyle.defaultCubeColor),
+        hoveredCube: VegaMorphCharts.util.colorToString(defaultPresenterStyle.highlightColor),
         selectedCube: 'yellow',
-        axisSelectHighlight: VegaDeckGl.util.colorToString([128, 128, 128, 128]),
+        axisSelectHighlight: VegaMorphCharts.util.colorToString([128, 128, 128, 128]),
         axisLine: '#000',
         axisText: '#000',
-        unselectedColorMethod: (color) => {
-            const c = desaturate(color, 0.05);
-            c[3] = 171;
-            return c;
-        },
+        gridLine: '#CCC',
     },
     language: {
         headers: {
@@ -79,13 +74,13 @@ export const defaultViewerOptions: ViewerOptions = {
 };
 
 export function getPresenterStyle(options: ViewerOptions) {
-    const style: VegaDeckGl.types.PresenterStyle = {
+    const style: VegaMorphCharts.types.PresenterStyle = {
         cssPrefix,
         fontFamily: options.fontFamily,
-        defaultCubeColor: VegaDeckGl.util.colorFromString(options.colors.defaultCube),
+        defaultCubeColor: VegaMorphCharts.util.colorFromString(options.colors.defaultCube),
     };
     if (options.colors.hoveredCube) {
-        style.highlightColor = VegaDeckGl.util.colorFromString(options.colors.hoveredCube);
+        style.highlightColor = VegaMorphCharts.util.colorFromString(options.colors.hoveredCube);
     }
     //if (options.lightSettings) {
     // style.lightSettings = options.lightSettings;

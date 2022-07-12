@@ -4,7 +4,7 @@
 */
 
 import { Insight } from '@msrvida/sanddance-specs';
-import { types } from '@msrvida/vega-deck.gl';
+import { types } from '@msrvida/vega-morphcharts';
 
 export class CharacterSet {
     private chars: string[];
@@ -22,8 +22,8 @@ export class CharacterSet {
                 Array.from(text).forEach(char => { map[char] = true; });
             };
             stage.textData.forEach(t => addText(t.text));
-            const { x, y, z } = stage.axes;
-            [x, y, z].forEach(axes => {
+            const { x, y } = stage.axes;
+            [x, y].forEach(axes => {
                 axes.forEach(axis => {
                     if (axis.tickText) axis.tickText.forEach(t => addText(t.text));
                     if (axis.title) addText(axis.title.text);
@@ -42,7 +42,6 @@ function needsNewCharacterSet(oldInsight: Insight, newInsight: Insight) {
     if (oldInsight.facetStyle !== newInsight.facetStyle) return true;
     if (oldInsight.totalStyle !== newInsight.totalStyle) return true;
     if (oldInsight.hideAxes !== newInsight.hideAxes) return true;
-    if (oldInsight.view !== newInsight.view) return true;
     if (differentObjectValues(oldInsight.signalValues, newInsight.signalValues)) return true;
     if (differentObjectValues(oldInsight.size, newInsight.size)) return true;
     const oldColumns = oldInsight.columns;

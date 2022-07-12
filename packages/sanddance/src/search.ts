@@ -3,7 +3,7 @@
 * Licensed under the MIT License.
 */
 
-import * as VegaDeckGl from '@msrvida/vega-deck.gl';
+import * as VegaMorphCharts from '@msrvida/vega-morphcharts';
 import { push } from './array';
 import { SearchExpressionGroup } from '@msrvida/search-expression';
 
@@ -14,7 +14,7 @@ export function getSearchGroupFromVegaValue(search: any) {
         //flatten into one group
         group = { expressions: [] };
         vegaSearch.forEach(g => {
-            const clonedExpressions = VegaDeckGl.util.clone(g.expressions).filter(Boolean);
+            const clonedExpressions = VegaMorphCharts.util.clone(g.expressions).filter(Boolean);
             clonedExpressions[0].clause = '&&';
             push(group.expressions, clonedExpressions);
         });
