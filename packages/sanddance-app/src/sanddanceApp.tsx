@@ -176,7 +176,7 @@ export class SandDanceApp extends React.Component<Props, State> {
 
     load(dataSource: DataSource, partialInsight?: Partial<SandDance.specs.Insight>) {
         //clone so that we do not modify original object
-        dataSource = SandDance.VegaDeckGl.util.clone(dataSource);
+        dataSource = SandDance.VegaMorphCharts.util.clone(dataSource);
         this.setState({ dataSource });
         document.title = `SandDance - ${dataSource.displayName}`;
         return this.explorer.load(
@@ -184,7 +184,7 @@ export class SandDanceApp extends React.Component<Props, State> {
             columns => {
                 return partialInsight || (this.props.insights && this.props.insights[dataSource.id]);
             },
-            this.props.initialOptions && SandDance.VegaDeckGl.util.deepMerge({}, this.props.initialOptions['*'], this.props.initialOptions[dataSource.id]),
+            this.props.initialOptions && SandDance.VegaMorphCharts.util.deepMerge({}, this.props.initialOptions['*'], this.props.initialOptions[dataSource.id]),
         );
     }
 
@@ -216,7 +216,7 @@ export class SandDanceApp extends React.Component<Props, State> {
 
     changeColorScheme(darkTheme: boolean) {
         this.updateExplorerViewerOptions(getViewerOptions(darkTheme, this.props.themeColors));
-        SandDance.VegaDeckGl.base.vega.scheme(SandDance.constants.ColorScaleNone, x => this.explorer.viewer.options.colors.defaultCube);
+        SandDance.VegaMorphCharts.base.vega.scheme(SandDance.constants.ColorScaleNone, x => this.explorer.viewer.options.colors.defaultCube);
         this.explorer && this.explorer.viewer && this.explorer.viewer.renderSameLayout(this.viewerOptions);
         base.fluentUI.loadTheme({ palette: this.getThemePalette(darkTheme) });
     }

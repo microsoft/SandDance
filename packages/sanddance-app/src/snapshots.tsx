@@ -13,7 +13,7 @@ import {
 } from '@msrvida/sanddance-explorer';
 import * as React from 'react';
 
-import util = SandDance.VegaDeckGl.util;
+import util = SandDance.VegaMorphCharts.util;
 
 function markdownImageLink(alt: string, imageUrl: string, link: string) {
     return `[![${alt}](${imageUrl})](${link})`;

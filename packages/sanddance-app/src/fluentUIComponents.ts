@@ -38,7 +38,7 @@ export const fluentUI: FluentUIComponents = {
     DialogFooter: DialogFooter as any,
     DialogType,
     Dropdown: Dropdown as any,
-    DropdownMenuItemType,
+    DropdownMenuItemType: DropdownMenuItemType as any,
     Icon: Icon as any,
     IconButton: IconButton as any,
     getFocusStyle,

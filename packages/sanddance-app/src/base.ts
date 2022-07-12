@@ -6,7 +6,7 @@ import { SandDance } from '@msrvida/sanddance-explorer';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import types = SandDance.VegaDeckGl.types;
+import types = SandDance.VegaMorphCharts.types;
 
 /**
  * References to dependency libraries.
@@ -30,10 +30,7 @@ export const base: Base = {
 export function use(
     fluentUI: FluentUIComponents,
     vega: types.VegaBase,
-    deck: types.DeckBase,
-    layers: types.DeckLayerBase,
-    luma: types.LumaBase,
 ) {
-    SandDanceExplorer.use(fluentUI, React, ReactDOM, vega, deck, layers, luma);
+    SandDanceExplorer.use(fluentUI, React, ReactDOM, vega);
     base.fluentUI = fluentUI;
 }
