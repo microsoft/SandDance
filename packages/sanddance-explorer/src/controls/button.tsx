@@ -4,7 +4,7 @@
 */
 
 import { base } from '../base';
-import { IButtonProps as _IButtonProps, ICSSRule, ICSSPixelUnitRule, IPalette } from '@msrvida/fluentui-react-cdn-typings/types';
+import { IButtonProps as _IButtonProps, ICSSRule, ICSSPixelUnitRule, IPalette, IStyle } from '@msrvida/fluentui-react-cdn-typings/types';
 
 export interface IButtonProps extends _IButtonProps {
     iconName?: string;
@@ -12,6 +12,7 @@ export interface IButtonProps extends _IButtonProps {
     textAlign?: string;
     width?: ICSSRule | ICSSPixelUnitRule;
     themePalette: Partial<IPalette>;
+    rootStyle?: IStyle;
 }
 
 export function Button(props: IButtonProps) {
@@ -24,6 +25,7 @@ export function Button(props: IButtonProps) {
                     height: '30px',
                     width: props.width,
                     padding: 0,
+                    ...props.rootStyle as object,
                 },
                 rootDisabled: {
                     backgroundColor: 'transparent',

@@ -47,7 +47,7 @@ const exportTypes: ([DataExportType, string])[] = [
     ['html', strings.labelExportHTML],
 ];
 
-function _DataExportPicker(props: Props) {
+function _DataExportPicker(_props: Props) {
 
     class __DataExportPicker extends base.react.Component<Props, State> {
         constructor(props: Props) {
@@ -186,7 +186,7 @@ function _DataExportPicker(props: Props) {
         }
     }
 
-    return new __DataExportPicker(props);
+    return new __DataExportPicker(_props);
 }
 
 export const DataExportPicker: typeof DataExportPicker_Class = _DataExportPicker as any;

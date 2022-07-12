@@ -10,19 +10,20 @@ import { Dropdown } from '../controls/dropdown';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { Group } from '../controls/group';
 import { SandDance } from '@msrvida/sanddance-react';
-import { Signal } from '../controls/signal';
+import { getInitialSignalValue, Signal } from '../controls/signal';
 import { Signal as VegaSignal } from 'vega-typings';
 import { strings } from '../language';
 import { ToggleColumns } from '../controls/toggleColumns';
 import { getTreemapColumn } from '../columns';
+import { BackgroundImageEditor, BackgroundImageEditor_Class } from './backgroundImageEditor';
 
 export interface Props extends ColumnMapBaseProps {
+    themePalette: Partial<FluentUITypes.IPalette>;
     tooltipExclusions: string[];
     toggleTooltipExclusion: (columnName: string) => void;
     collapseLabels: boolean;
     disabled: boolean;
     chart: SandDance.specs.Chart;
-    onChangeChartType: (chart: SandDance.specs.Chart) => void;
     view: SandDance.types.View;
     insightColumns: SandDance.specs.InsightColumns;
     onChangeSignal: (role: string, column: string, name: string, value: any) => void;
@@ -90,6 +91,7 @@ export function chartLabel(key: SandDance.specs.Chart) {
 function _Chart(_props: Props) {
     class __Chart extends base.react.Component<Props, State> {
         private choiceRef?: React.RefObject<FluentUITypes.IChoiceGroup>;
+        private backgroundImageEditor: BackgroundImageEditor_Class;
         constructor(props: Props) {
             super(props);
             this.state = {
@@ -107,6 +109,7 @@ function _Chart(_props: Props) {
                 specCapabilities &&
                 specCapabilities.signals &&
                 explorer.viewer.vegaSpec.signals.filter(s => specCapabilities.signals.indexOf(s.name) >= 0);
+            const hasOptions = !!signals || specCapabilities?.backgroundImage;
             return (
                 <div>
                     <Group label={strings.labelChart}>
@@ -122,7 +125,7 @@ function _Chart(_props: Props) {
                                             || (o.key === 'treemap' && props.quantitativeColumns.length === 0),
                                     };
                                 })}
-                                onChange={(e, o) => props.onChangeChartType(o.key as SandDance.specs.Chart)}
+                                onChange={(e, o) => props.explorer.changeChartType(o.key as SandDance.specs.Chart)}
                             />
                         </div>
                     </Group>
@@ -196,7 +199,7 @@ function _Chart(_props: Props) {
                                                     const facetData = o.data as FacetData;
                                                     props.changeColumnMapping('facet', 'facet', null, { facetStyle: facetData.facetStyle });
                                                     if (facetData.facetStyle === 'cross') {
-                                                        props.changeColumnMapping('facetV', SandDance.VegaDeckGl.util.clone(facetData.column));
+                                                        props.changeColumnMapping('facetV', SandDance.VegaMorphCharts.util.clone(facetData.column));
                                                     }
                                                 }}
                                             />
@@ -287,26 +290,47 @@ function _Chart(_props: Props) {
                                     />
                                 );
                             })}
-                            <div className="sanddance-tooltipMap">
-                                <base.fluentUI.DefaultButton
-                                    text={strings.buttonTooltipMapping}
-                                    onClick={() => this.setState({ showTooltipDialog: true })}
-                                />
-                            </div>
+                            <base.fluentUI.DefaultButton
+                                className='sanddance-chart-button'
+                                text={strings.buttonTooltipMapping}
+                                onClick={() => this.setState({ showTooltipDialog: true })}
+                            />
                         </div>
                     </Group>
-                    {signals && (
+                    {hasOptions && (
                         <Group label={strings.labelChartTypeOptions}>
-                            {signals.map((signal, i) => (
+                            {signals && signals.map((signal, i) => (
                                 <Signal
                                     key={i}
                                     signal={signal}
                                     explorer={explorer}
+                                    initialValue={getInitialSignalValue(explorer, signal)}
                                     disabled={props.disabled || this.disableSignal(signal)}
                                     collapseLabel={props.collapseLabels}
                                     newViewStateTarget={false}
                                 />
                             ))}
+                            {specCapabilities?.backgroundImage && (
+                                <base.fluentUI.DefaultButton
+                                    className='sanddance-chart-button'
+                                    text={strings.buttonBackgroundImage}
+                                    onClick={() => {
+                                        let insightColumns: SandDance.specs.InsightColumns;
+                                        switch (props.chart) {
+                                            case 'scatterplot':
+                                            case 'stacks':
+                                            {
+                                                insightColumns = props.insightColumns;
+                                                break;
+                                            }
+                                        }
+                                        if (!insightColumns) {
+                                            insightColumns = props.explorer.changeChartType('scatterplot');
+                                        }
+                                        this.backgroundImageEditor.show(insightColumns);
+                                    }}
+                                />
+                            )}
                         </Group>
                     )}
                     <Dialog
@@ -320,6 +344,10 @@ function _Chart(_props: Props) {
                             toggleExclusion={props.toggleTooltipExclusion}
                         />
                     </Dialog>
+                    <BackgroundImageEditor
+                        {...props}
+                        ref={e => this.backgroundImageEditor = e}
+                    />
                 </div>
             );
         }

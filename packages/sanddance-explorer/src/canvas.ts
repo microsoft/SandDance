@@ -1,5 +1,5 @@
 import { SandDance } from '@msrvida/sanddance-react';
-import PresenterElement = SandDance.VegaDeckGl.PresenterElement;
+import PresenterElement = SandDance.VegaMorphCharts.PresenterElement;
 
 export function getCanvas(viewer: SandDance.Viewer) {
     const tags = viewer.presenter.getElement(PresenterElement.gl).getElementsByTagName('canvas');

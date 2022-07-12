@@ -185,15 +185,24 @@ export function ColumnMap(props: Props) {
         }
     }
     const label = roleLabels[props.specRole.role];
-    const signalElements = !props.hideSignals && signals && signals.map((signal, i) => (
-        <Signal
-            key={i}
-            explorer={props.explorer}
-            signal={signal}
-            onChange={value => props.onChangeSignal && props.onChangeSignal(signal.name, value)}
-            collapseLabel={props.collapseLabel}
-        />
-    ));
+    const signalElements = !props.hideSignals && signals && signals.map((signal, i) => {
+        let initialValue: any;
+        try {
+            initialValue = props.explorer.viewer.vegaViewGl.signal(signal.name);
+        } catch (error) {
+            // continue regardless of error
+        }
+        return (
+            <Signal
+                key={signal.name + i + initialValue}
+                explorer={props.explorer}
+                signal={signal}
+                initialValue={initialValue}
+                onChange={value => props.onChangeSignal && props.onChangeSignal(signal.name, value)}
+                collapseLabel={props.collapseLabel}
+            />
+        );
+    });
     return (
         <div
             className="sanddance-columnMap"
@@ -207,7 +216,7 @@ export function ColumnMap(props: Props) {
                     label={label}
                     options={options}
                     onChange={(e, o) =>
-                        props.changeColumnMapping(props.specRole.role, typeof o.data === 'string' ? o.data : SandDance.VegaDeckGl.util.clone(o.data))
+                        props.changeColumnMapping(props.specRole.role, typeof o.data === 'string' ? o.data : SandDance.VegaMorphCharts.util.clone(o.data))
                     }
                     onDismiss={props.onDismiss}
                 />

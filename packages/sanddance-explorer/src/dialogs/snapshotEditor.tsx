@@ -36,7 +36,7 @@ export interface State extends Snapshot {
     editIndex: number;
 }
 
-function _SnapshotEditor(props: Props) {
+function _SnapshotEditor(_props: Props) {
     class __SnapshotEditor extends base.react.Component<Props, State>{
         constructor(props: Props) {
             super(props);
@@ -70,11 +70,12 @@ function _SnapshotEditor(props: Props) {
             if (snapshot) {
                 this.setState({ showEditFormDialog: true, ...snapshot, editIndex });
             } else {
-                const signalValues = this.props.explorer.viewer.getSignalValues();
-                this.props.explorer.viewer.deselect().then(() => {
-                    const canvas = getCanvas(this.props.explorer.viewer);
+                const { explorer } = this.props;
+                const signalValues = explorer.viewer.getSignalValues();
+                explorer.viewer.deselect().then(() => {
+                    const canvas = getCanvas(explorer.viewer);
                     const bgColor = canvas && window.getComputedStyle(canvas).backgroundColor;
-                    const insight = SandDance.VegaDeckGl.util.clone(this.props.explorer.viewer.getInsight());
+                    const insight = SandDance.VegaMorphCharts.util.clone(explorer.viewer.getInsight());
                     delete insight.size;
                     insight.signalValues = signalValues;
                     const title = this.props.getTitle && this.props.getTitle(insight) || '';
@@ -83,8 +84,8 @@ function _SnapshotEditor(props: Props) {
 
                     //allow deselection to render
                     setTimeout(() => {
-                        this.props.explorer.viewer.presenter.canvasToDataURL().then(dataUrl => {
-                            this.resize(dataUrl, this.props.explorer.snapshotThumbWidth);
+                        explorer.viewer.presenter.canvasToDataURL().then(dataUrl => {
+                            this.resize(dataUrl, explorer.snapshotThumbWidth);
                         });
                     }, 500);
                 });
@@ -92,10 +93,11 @@ function _SnapshotEditor(props: Props) {
         }
 
         render() {
+            const { explorer } = this.props;
             return (
                 <Dialog
                     modalProps={{ className: util.classList('sanddance-snapshot-dialog', this.props.theme) }}
-                    minWidth={`${this.props.explorer.snapshotThumbWidth + 64}px`}
+                    minWidth={`${explorer.snapshotThumbWidth + 64}px`}
                     hidden={!this.state.showEditFormDialog}
                     onDismiss={() => this.setState({ showEditFormDialog: false })}
                     title={this.state.editIndex >= 0 ? strings.buttonEditSnapshot : strings.buttonCreateSnapshot}
@@ -110,6 +112,7 @@ function _SnapshotEditor(props: Props) {
                                     insight: this.state.insight,
                                     image: this.state.image,
                                     bgColor: this.state.bgColor,
+                                    camera: explorer.viewer.getCamera(),
                                 };
                                 this.props.modifySnapShot && this.props.modifySnapShot(snapshot);
                                 this.props.onWriteSnapshot(snapshot, this.state.editIndex);
@@ -135,12 +138,12 @@ function _SnapshotEditor(props: Props) {
                         {!this.state.image && <base.fluentUI.Spinner />}
                         {this.state.image && <img src={this.state.image} style={{ backgroundColor: this.state.bgColor }} />}
                     </div>
-                    {this.props.explorer.viewer && this.props.explorer.viewer.colorContexts && this.props.explorer.viewer.colorContexts.length > 1 && <div>{strings.labelColorFilter}</div>}
+                    {explorer.viewer?.colorContexts?.length > 1 && <div>{strings.labelColorFilter}</div>}
                 </Dialog>
             );
         }
     }
-    return new __SnapshotEditor(props);
+    return new __SnapshotEditor(_props);
 }
 
 export const SnapshotEditor: typeof SnapshotEditor_Class = _SnapshotEditor as any;

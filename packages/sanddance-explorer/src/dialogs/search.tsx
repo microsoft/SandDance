@@ -206,7 +206,7 @@ function _Search(_props: Props) {
         updateExpression(partialEx: Partial<InputSearchExpression>, groupIndex: number, index: number) {
             const groups: InputSearchExpressionGroup[] = [...this.state.groups];
             const group = groups[groupIndex];
-            const ex = SandDance.VegaDeckGl.util.clone(group.expressions[index]);
+            const ex = SandDance.VegaMorphCharts.util.clone(group.expressions[index]);
             if (ex.name !== partialEx.name) {
                 //choose an appropriate operator when switching data type
                 const oldColumn = getColumnWithName(ex.name, this.state.sortedColumns);
