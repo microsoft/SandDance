@@ -44,6 +44,7 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
         const fieldEnd = `${field}_end`;
         const binSignal = `${field}_bins`;
         const dataExtentSignal = `${field}_bin_extent`;
+        const dataExtentSpanSignal = `${field}_bin_extent_span`;
         const outerSignal = `${field}_outer_extent`;
         domainDataName = `${field}_sequence`;   //override the data name
         const extentTransform = dataExtent(column, dataExtentSignal);
@@ -119,9 +120,20 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
                     expr: `datum.data === ${binSignal}.stop - ${binSignal}.step`,
                     as: FieldNames.Last,
                 },
+                {
+                    // when there is only one bin, use only first sequence element
+                    type: 'filter',
+                    expr: `${dataExtentSpanSignal} === 0 ? datum[${JSON.stringify(FieldNames.First)}] : true`,
+                }
             ],
         };
-        const signals: Signal[] = [maxbinsSignal];
+        const signals: Signal[] = [
+            maxbinsSignal,
+            {
+                name: dataExtentSpanSignal,
+                update: `${extentSignal}[1] - ${extentSignal}[0]`,
+            },
+        ];
         if (imageSignal) {
             signals.push(imageSignal);
         }
