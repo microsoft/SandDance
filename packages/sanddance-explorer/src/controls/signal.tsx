@@ -75,6 +75,7 @@ map['range'] = (prefix: string, bind: BindRange, initialValue: number, onChange:
     let debouncer: NodeJS.Timeout;
     return (
         <base.fluentUI.Slider
+            componentRef={ref}
             label={prefix + bind.name}
             max={bind.max}
             min={bind.min}
