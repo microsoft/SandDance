@@ -213,7 +213,7 @@ function _Settings(_props: Props) {
                                                 first = false;
                                                 props.explorer.dialogFocusHandler.focus = () => {
                                                     const f = ref.current as Focusable;
-                                                    if (f.focus) {
+                                                    if (f?.focus) {
                                                         f.focus();
                                                     }
                                                 };
