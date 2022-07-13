@@ -1,15 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import SandDance = SandDanceExplorer.SandDance;
-import VegaDeckGl = SandDance.VegaDeckGl;
+import VegaMorphCharts = SandDance.VegaMorphCharts;
 
-declare let vega: VegaDeckGl.types.VegaBase;
-declare let deck: VegaDeckGl.types.DeckBase & VegaDeckGl.types.DeckLayerBase;
-declare let luma: VegaDeckGl.types.LumaBase;
+declare let vega: VegaMorphCharts.types.VegaBase;
 declare let FluentUIReact: _FluentUI.FluentUIComponents;
 
 namespace SandDanceApp {
-    SandDanceExplorer.use(FluentUIReact, React, ReactDOM, vega, deck, deck, luma);
+    SandDanceExplorer.use(FluentUIReact, React, ReactDOM, vega);
 
     function getTextcolor() {
         return getComputedStyle(document.body).color;

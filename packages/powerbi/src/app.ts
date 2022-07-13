@@ -1,9 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as deck from '@deck.gl/core';
 import { fluentUIComponents } from './fluentUIComponents';
-import * as layers from '@deck.gl/layers';
-import * as luma from '@luma.gl/core';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as vega from 'vega';
@@ -12,6 +9,7 @@ import {
     DataFile,
     Explorer,
     Explorer_Class,
+    getColorSettingsFromThemePalette,
     Props as ExplorerProps,
     SandDance,
     themePalettes,
@@ -24,7 +22,7 @@ import { version } from './version';
 import powerbiVisualsApi from 'powerbi-visuals-api';
 
 // tslint:disable-next-line
-use(fluentUIComponents, React as any, ReactDOM as any, vega, deck, layers, luma);
+use(fluentUIComponents, React as any, ReactDOM as any, vega);
 
 function getThemePalette(darkTheme: boolean) {
     const theme = darkTheme ? 'dark-theme' : '';
@@ -32,11 +30,11 @@ function getThemePalette(darkTheme: boolean) {
 }
 
 export interface ViewChangeOptions {
-    signalChange?: boolean;
     tooltipExclusions?: string[];
 }
 
 export interface Props {
+    renderOptions: SandDance.types.RenderOptions;
     mounted: (app: App) => void;
     onViewChange: (viewChangeOptions: ViewChangeOptions) => void;
     onError: (e: any) => void;
@@ -44,51 +42,54 @@ export interface Props {
     onSelectionChanged: (search: SandDance.searchExpression.Search, activeIndex: number, selectedData: object[]) => void;
     onSnapshotsChanged: (snapshots: SandDance.types.Snapshot[]) => void;
     onContextMenu: (e: MouseEvent | PointerEvent, selectionId?: powerbiVisualsApi.extensibility.ISelectionId) => void;
+    onCameraSave: (camera: SandDance.types.Camera) => void;
 }
 
 const RIGHT_MOUSE_BUTTON = 2;
+const cameraSettle = 200;
 
 export interface State {
     loaded: boolean;
+    editmode: boolean;
     chromeless: boolean;
     darkTheme: boolean;
     rowCount: number;
     fetching: boolean;
+    unsavedCamera: SandDance.types.Camera;
 }
 
 export class App extends React.Component<Props, State> {
     private viewerOptions: Partial<SandDance.types.ViewerOptions>;
-    private signalChanged: boolean;
     public explorer: Explorer_Class;
+    private cameraTimer: number;
+    public lastCamera: SandDance.types.Camera;
+    public lastCameraStable: boolean;
 
     constructor(props: Props) {
         super(props);
         this.state = {
             loaded: false,
+            editmode: true,
             chromeless: false,
             darkTheme: null,
             rowCount: null,
             fetching: false,
+            unsavedCamera: null,
         };
         this.viewerOptions = this.getViewerOptions();
     }
 
     finalize() {
+        this.endCameraListener();
         this.explorer && this.explorer.finalize();
         this.explorer = null;
     }
 
     private getViewerOptions(darkTheme?: boolean): Partial<SandDance.types.ViewerOptions> {
-        const textColor = darkTheme ? 'white' : 'black';
-        const color = textColor;
         return {
-            colors: {
-                axisLine: color,
-                axisText: color,
-                hoveredCube: color,
-            },
+            colors: getColorSettingsFromThemePalette(themePalettes[darkTheme ? 'dark-theme' : '']),
             onCubeClick: (e, cube) => {
-                const { button } = e as unknown as MSPointerEvent;
+                const { button } = e as unknown as PointerEvent;
                 if (button === RIGHT_MOUSE_BUTTON) {
                     const row = this.explorer.state.dataContent.data[cube.ordinal];
                     const selectionId = row[SandDance.constants.FieldNames.PowerBISelectionId];
@@ -101,6 +102,9 @@ export class App extends React.Component<Props, State> {
             onDataFilter: this.props.onDataFilter,
             onSelectionChanged: this.props.onSelectionChanged,
             preserveDrawingBuffer: true,
+            onVegaSpec: () => {
+                this.endCameraListener();
+            },
         };
     }
 
@@ -108,23 +112,81 @@ export class App extends React.Component<Props, State> {
         return this.explorer && this.explorer.state.dataContent && this.explorer.state.dataContent.data;
     }
 
-    load(data: DataFile | object[], getPartialInsight: (columns: SandDance.types.Column[]) => Partial<SandDance.specs.Insight>, snapshots: SandDance.types.Snapshot[], tooltipExclusions: string[]) {
+    load(data: DataFile | object[], getPartialInsight: (columns: SandDance.types.Column[]) => Partial<SandDance.specs.Insight>, tooltipExclusions: string[], snapshots: SandDance.types.Snapshot[], snapshotIndex?: number) {
         const wasLoaded = this.state.loaded;
-        this.setState({ loaded: true });
+        const { explorer } = this;
         if (wasLoaded) {
-            this.explorer.setState({
+            const { historyItems, sideTabId } = explorer.state;
+            const loaded = () => {
+                // console.log('reloading history')
+                const last = historyItems[historyItems.length - 1];
+                historyItems.push({
+                    historicInsight: { ...last?.historicInsight || {} },
+                    label: language.historyActionDataChange,
+                });
+                const historyIndex = historyItems.length - 1;
+                explorer.setState({ historyIndex, historyItems, sideTabId });
+            };
+            explorer.setState({
                 calculating: () => {
-                    this.explorer.load(data, getPartialInsight, { tooltipExclusions });
-                    this.explorer.setState({ snapshots });
+                    explorer.load(data, getPartialInsight, { tooltipExclusions }).then(loaded);
+                    explorer.setState({ snapshots });
+                    this.manageSnapshot(snapshotIndex);
                 },
             });
         } else {
-            this.explorer.load(data, getPartialInsight, { tooltipExclusions });
-            this.explorer.setState({ snapshots });
+            explorer.load(data, getPartialInsight, { tooltipExclusions });
+            explorer.setState({ snapshots });
+            this.manageSnapshot(snapshotIndex);
+        }
+        this.setState({ loaded: true });
+    }
+
+    private beginCameraListener(transitionFinal: boolean, stable: boolean) {
+        const { viewer } = this.explorer;
+        this.lastCameraStable = stable;
+        this.lastCamera = viewer.getCamera(transitionFinal);
+        const { transitionDurations } = viewer.options;
+        this.cameraTimer = setTimeout(() => this.listenToCamera(), transitionDurations.position + transitionDurations.stagger + cameraSettle) as unknown as number;
+    }
+
+    private endCameraListener() {
+        clearTimeout(this.cameraTimer);
+    }
+
+    private listenToCamera() {
+        const currCamera = this.explorer.viewer.getCamera(false);
+        const compare = util.deepCompare(currCamera, this.lastCamera);
+        let stable = this.lastCameraStable;
+        if (this.lastCameraStable) {
+            if (!compare) {
+                //camera has moved, listen for stability
+                stable = false;
+                this.setState({ unsavedCamera: null });
+            }
+        } else {
+            if (compare) {
+                //unstable camera has stabilized
+                this.setState({ unsavedCamera: currCamera });
+                stable = true;
+            }
+        }
+        this.beginCameraListener(false, stable);
+    }
+
+    manageSnapshot(selectedSnapshotIndex: number) {
+        const { explorer } = this;
+        if (selectedSnapshotIndex != null) {
+            if (selectedSnapshotIndex !== explorer.state.selectedSnapshotIndex) {
+                explorer.reviveSnapshot(selectedSnapshotIndex);
+            }
+        } else {
+            explorer.setState({ selectedSnapshotIndex });
         }
     }
 
     unload() {
+        this.endCameraListener();
         this.setState({ loaded: false });
     }
 
@@ -136,6 +198,7 @@ export class App extends React.Component<Props, State> {
         this.viewerOptions = this.getViewerOptions(darkTheme);
         if (this.state.darkTheme !== darkTheme && this.explorer) {
             this.explorer.updateViewerOptions(this.viewerOptions);
+            SandDance.VegaMorphCharts.base.vega.scheme(SandDance.constants.ColorScaleNone, x => this.explorer.viewer.options.colors.defaultCube);
             if (this.explorer.viewer) {
                 this.explorer.viewer.renderSameLayout(this.explorer.viewerOptions);
             }
@@ -152,39 +215,56 @@ export class App extends React.Component<Props, State> {
     }
 
     render() {
+        const { props, state } = this;
         const className = util.classList(
             'sanddance-app',
-            this.state.chromeless && 'chromeless',
-            this.state.loaded && 'loaded',
+            state.editmode && 'editmode',
+            state.chromeless && 'chromeless',
+            state.loaded && 'loaded',
         );
         const explorerProps: ExplorerProps = {
+            renderOptions: props.renderOptions,
             hideSidebarControls: true,
             logoClickUrl: 'https://microsoft.github.io/SandDance/',
             bingSearchDisabled: true,
             searchORDisabled: true,
-            theme: this.state.darkTheme && 'dark-theme',
+            theme: state.darkTheme && 'dark-theme',
             viewerOptions: this.viewerOptions,
             initialView: '2d',
             mounted: explorer => {
                 // explorer.snapshotThumbWidth = 240;
                 this.explorer = explorer;
-                this.props.mounted(this);
+                props.mounted(this);
             },
-            onSignalChanged: (signalName, signalValue) => {
-                this.props.onViewChange({ signalChange: true });
-                this.signalChanged = true;
+            onSignalChanged: () => {
+                props.onViewChange({});
             },
-            onSnapshotsChanged: this.props.onSnapshotsChanged,
-            onTooltipExclusionsChanged: tooltipExclusions => this.props.onViewChange({ tooltipExclusions }),
+            snapshotProps: {
+                hidden: !this.explorer?.state.snapshots || this.explorer?.state.snapshots.length === 0,
+            },
+            onSnapshotsChanged: props.onSnapshotsChanged,
+            onTooltipExclusionsChanged: tooltipExclusions => props.onViewChange({ tooltipExclusions }),
             onView: () => {
-                this.explorer.viewer.presenter.getElement(SandDance.VegaDeckGl.PresenterElement.gl).oncontextmenu = (e) => {
-                    this.props.onContextMenu(e);
+                this.setState({ unsavedCamera: null });
+                this.beginCameraListener(true, true);
+                this.explorer.viewer.presenter.getElement(SandDance.VegaMorphCharts.PresenterElement.gl).oncontextmenu = (e) => {
+                    props.onContextMenu(e);
                     return false;
                 };
-                this.props.onViewChange({ signalChange: this.signalChanged });
-                this.signalChanged = false;
+                props.onViewChange({});
             },
-            onError: this.props.onError,
+            onError: props.onError,
+            topBarIconButtonProps: state.editmode ? [{
+                key: 'bookmark',
+                iconProps: {
+                    iconName: state.unsavedCamera ? 'SingleBookmarkSolid' : 'SingleBookmark',
+                    onClick: () => {
+                        this.props.onCameraSave(state.unsavedCamera);
+                        this.setState({ unsavedCamera: null });
+                    },
+                },
+                title: language.bookmarkCamera,
+            }] : null,
             systemInfoChildren: [
                 React.createElement('li', null, `${language.powerBiCustomVisual}: ${version}`),
             ],
@@ -199,8 +279,8 @@ export class App extends React.Component<Props, State> {
                     language.webglDisabled,
                 ),
             ),
-            this.state.fetching && React.createElement('div', { className: 'sanddance-fetch' },
-                `${language.fetching} ${this.state.rowCount ? `(${this.state.rowCount} ${language.fetched})` : ''}`,
+            state.fetching && React.createElement('div', { className: 'sanddance-fetch' },
+                `${language.fetching} ${state.rowCount ? `(${state.rowCount} ${language.fetched})` : ''}`,
             ),
         );
     }

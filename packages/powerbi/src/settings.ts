@@ -34,14 +34,18 @@ import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 
 export class SandDanceConfig {
   [propertyName: string]: DataViewPropertyValue;
+  cameraJSON: string = '';
   insightJSON: string = '';
+  selectionQueryJSON: string = '';
   snapshotsJSON: string = '';
   tooltipExclusionsJSON: string = '';
+  imageHolderJSON: string = '';
 }
 
 export class SandDanceMainSettings {
-    showchrome: boolean = true;
-    darktheme: boolean = false;
+  showchrome: boolean = true;
+  showdebug: boolean = false;
+  darktheme: boolean = false;
 }
 
 export interface IVisualSettings {
@@ -50,6 +54,6 @@ export interface IVisualSettings {
 }
 
 export class VisualSettings extends DataViewObjectsParser implements IVisualSettings {
-    public sandDanceConfig = new SandDanceConfig();
-    public sandDanceMainSettings = new SandDanceMainSettings();
+  public sandDanceConfig = new SandDanceConfig();
+  public sandDanceMainSettings = new SandDanceMainSettings();
 }

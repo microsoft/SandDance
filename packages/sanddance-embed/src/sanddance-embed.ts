@@ -4,11 +4,9 @@
 */
 
 import SandDance = SandDanceExplorer.SandDance;
-import VegaDeckGl = SandDance.VegaDeckGl;
+import VegaMorphCharts = SandDance.VegaMorphCharts;
 
-declare let vega: VegaDeckGl.types.VegaBase;
-declare let deck: VegaDeckGl.types.DeckBase & VegaDeckGl.types.DeckLayerBase;
-declare let luma: VegaDeckGl.types.LumaBase;
+declare let vega: VegaMorphCharts.types.VegaBase;
 declare let FluentUIReact: _FluentUI.FluentUIComponents;
 
 namespace SandDanceEmbed {
@@ -34,7 +32,7 @@ namespace SandDanceEmbed {
             };
 
             const create = () => {
-                SandDanceExplorer.use(FluentUIReact, React, ReactDOM, vega, deck, deck, luma);
+                SandDanceExplorer.use(FluentUIReact, React, ReactDOM, vega);
                 const explorerProps: SandDanceExplorer.Props = {
                     logoClickUrl: 'https://microsoft.github.io/SandDance/',
                     mounted: explorer => {

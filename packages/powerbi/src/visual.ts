@@ -39,7 +39,7 @@ import VisualObjectInstanceEnumerationObject = powerbiVisualsApi.VisualObjectIns
 
 import * as powerbiModels from 'powerbi-models';
 
-import { capabilities, SandDance } from '@msrvida/sanddance-explorer';
+import { capabilities, SandDance, util as util2 } from '@msrvida/sanddance-explorer';
 import { convertFilter } from './convertFilter';
 import { createElement } from 'react';
 import { render } from 'react-dom';
@@ -47,16 +47,10 @@ import { App, Props, ViewChangeOptions } from './app';
 import { convertTableToObjectArray } from './convertTableToObjectArray';
 import { cleanInsight } from './cleanInsight';
 import { VisualSettings, SandDanceConfig, IVisualSettings } from './settings';
+import { language } from './language';
 
-const { util } = SandDance.VegaDeckGl;
-
-interface PersistAction {
-    signalChange?: boolean;
-}
-
-interface PersistOptions extends ViewChangeOptions {
-    reason: string;
-}
+const util1 = SandDance.VegaMorphCharts.util;
+const util = { ...util1, ...util2 };
 
 export class Visual implements IVisual {
     private settings: VisualSettings;
@@ -71,7 +65,14 @@ export class Visual implements IVisual {
     private fetchMoreTimer: number;
     private filters: { sd: SandDance.searchExpression.Search, pbi: powerbiModels.IFilter[] };
     private columns: powerbiVisualsApi.DataViewMetadataColumn[];
-    private persistAction: PersistAction;
+    public persistViewChange: boolean;
+    public persistSelectionChange: boolean;
+    public ignoreSelectionUpdate: boolean;
+    public sanddanceRenderOptions: SandDance.types.RenderOptions;
+    public afterView: (() => void)[];
+    public search: SandDance.searchExpression.Search;
+    public snapshots: SandDance.types.Snapshot[];
+    public lastCameraJSON: string;
 
     public static fetchMoreTimeout = 5000;
 
@@ -80,7 +81,8 @@ export class Visual implements IVisual {
         this.host = options.host;
         this.events = this.host.eventService;
         this.selectionManager = this.host.createSelectionManager();
-        this.persistAction = {};
+        this.afterView = [];
+        this.sanddanceRenderOptions = {};
 
         if (document) {
             options.element.style.position = 'relative';
@@ -89,8 +91,14 @@ export class Visual implements IVisual {
             this.errorElement.style.position = 'absolute';
 
             const props: Props = {
+                renderOptions: this.sanddanceRenderOptions,
                 mounted: (app: App) => {
                     this.app = app;
+                },
+                onCameraSave: (camera: SandDance.types.Camera) => {
+                    // console.log('onCameraChange');
+                    this.lastCameraJSON = JSON.stringify(camera);
+                    this.persist({});
                 },
                 onContextMenu: (e: MouseEvent | PointerEvent, selectionId?: powerbiVisualsApi.extensibility.ISelectionId) => {
                     const position: powerbiVisualsApi.extensibility.IPoint = {
@@ -100,15 +108,25 @@ export class Visual implements IVisual {
                     this.selectionManager.showContextMenu(selectionId || {}, position);
                 },
                 onViewChange: viewChangeOptions => {
-                    // console.log('onViewChange', this.renderingOptions);
+                    // console.log('onViewChange', this.renderingOptions, viewChangeOptions, this.persistViewChange);
+
+                    if (this.afterView.length) {
+                        this.afterView.forEach(fn => fn());
+                        this.afterView.length = 0;
+                    }
+
                     if (this.renderingOptions) {
                         this.events.renderingFinished(this.renderingOptions);
-
-                        this.persist({ reason: 'onViewChange', ...viewChangeOptions }, null);
                     }
+
+                    if (this.persistViewChange) {
+                        this.persist(viewChangeOptions);
+                    }
+                    this.persistViewChange = true;
                 },
                 onSnapshotsChanged: snapshots => {
-                    this.persist({ reason: 'onSnapshotsChanged' }, snapshots);
+                    this.snapshots = snapshots;
+                    this.persist({});
                 },
                 onError: (e: any) => {
                     if (this.renderingOptions) {
@@ -118,6 +136,8 @@ export class Visual implements IVisual {
                 },
                 onDataFilter: (searchFilter, filteredData) => {
                     // console.log('onDataFilter', filteredData);
+
+                    this.persist({});
                     if (filteredData) {
                         const result = convertFilter(searchFilter, this.columns, filteredData);
                         this.applySelection(result.selectedIds);
@@ -129,12 +149,22 @@ export class Visual implements IVisual {
                         this.clearSelection();
                     }
                 },
-                onSelectionChanged: (searchFilter, activeIndex, selectedData) => {
-                    // console.log('onDataSelected', selectedData);
+                onSelectionChanged: (search, activeIndex, selectedData) => {
+                    // console.log('onSelectionChanged', search, selectedData, this.persistSelectionChange);
+                    this.ignoreSelectionUpdate = true;
+
+                    this.search = search;
+
+                    if (this.persistSelectionChange) {
+                        this.persist({});
+                    }
+                    this.persistSelectionChange = true;
+
                     if (selectedData) {
-                        const result = convertFilter(searchFilter, this.columns, selectedData);
+                        const result = convertFilter(search, this.columns, selectedData);
                         this.applySelection(result.selectedIds);
                         this.applyFilters(this.filters ? this.filters.pbi.concat(result.filters) : result.filters);
+
                     } else {
                         this.clearSelection();
                         // revert to filtered if it exists
@@ -150,19 +180,21 @@ export class Visual implements IVisual {
         }
     }
 
-    private persist(options: PersistOptions, snapshots: SandDance.types.Snapshot[]) {
-        if (this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.Edit || this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.InFocusEdit) {
-            this.persistAction = { signalChange: options.signalChange };
-            const insight = this.app.explorer.viewer.getInsight();
-            const tooltipExclusions = options.tooltipExclusions || this.app.explorer.state.tooltipExclusions;
-            snapshots = snapshots || this.app.explorer.state.snapshots;
-            cleanInsight(insight);
+    private persist(options: ViewChangeOptions) {
+        if (this.renderingOptions.viewMode !== powerbiVisualsApi.ViewMode.View) {
+            const { explorer } = this.app;
+            const insight = explorer.viewer.getInsight();
+            const tooltipExclusions = options.tooltipExclusions || explorer.state.tooltipExclusions;
+            cleanInsight(insight, false);
             const config: SandDanceConfig = {
+                cameraJSON: this.lastCameraJSON,
                 insightJSON: JSON.stringify(insight),
-                snapshotsJSON: JSON.stringify(snapshots || []),
+                selectionQueryJSON: JSON.stringify(this.search),
+                snapshotsJSON: JSON.stringify(this.snapshots || []),
                 tooltipExclusionsJSON: JSON.stringify(tooltipExclusions),
+                imageHolderJSON: JSON.stringify(explorer.imageHolder),
             };
-            // console.log(`persist ${options.reason}`, config, this.persistAction);
+            // console.log(`persist`, config);
             this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties: config, selector: null }] });
         }
     }
@@ -195,7 +227,6 @@ export class Visual implements IVisual {
 
     public update(options: VisualUpdateOptions) {
         // console.log('Visual update', options);
-
         this.renderingOptions = options;
         this.events.renderingStarted(this.renderingOptions);
 
@@ -235,32 +266,84 @@ export class Visual implements IVisual {
     show(dataView: powerbiVisualsApi.DataView) {
         this.settings = Visual.parseSettings(dataView);
         const oldData = this.app.getDataContent();
-        const temp = convertTableToObjectArray(dataView.table, oldData, this.host);
-        const { data } = temp;
-        let { different } = temp;
+        const result = convertTableToObjectArray(dataView.table, oldData, this.host);
+        let { different } = result;
+        const { data } = result;
         if (!this.prevSettings) {
             different = true;
         }
 
-        this.app.setChromeless(!this.settings.sandDanceMainSettings.showchrome);
+        const { sandDanceConfig, sandDanceMainSettings } = this.settings;
+
+        this.app.setState({ editmode: this.renderingOptions.viewMode !== powerbiVisualsApi.ViewMode.View });
+        this.app.setChromeless(!sandDanceMainSettings.showchrome);
         this.app.changeTheme(this.settings.sandDanceMainSettings.darktheme);
 
-        const wasSignalChange = this.persistAction.signalChange;
-        this.persistAction = {};
+        const p = this.app.explorer?.viewer?.presenter;
+        if (p) {
+            p.morphchartsref.core.config.textColor = [0, 0, 0];
+            p.morphchartsref.core.config.isDebugVisible = sandDanceMainSettings.showdebug;
+        }
 
         this.prevSettings = util.clone(this.settings);
 
-        if (!different || wasSignalChange) {
+        if (!different) {
             // console.log('Visual update - not different');
+
+            if (this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.Edit) {
+                this.syncSelection(sandDanceConfig.selectionQueryJSON, false);
+            }
+
+            if (this.ignoreSelectionUpdate) {
+                this.ignoreSelectionUpdate = false;
+                this.events.renderingFinished(this.renderingOptions);
+                return;
+            }
+
+            if (this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.View) {
+                this.syncSelection(sandDanceConfig.selectionQueryJSON, false);
+            }
+
+            let setInsight = false;
+            if (sandDanceConfig.insightJSON) {
+                try {
+                    const insight = JSON.parse(sandDanceConfig.insightJSON) as SandDance.specs.Insight;
+
+                    const compA = util.clone(insight);
+                    cleanInsight(compA, false);
+
+                    const compB = util.clone(this.app.explorer.viewer.getInsight());
+
+                    cleanInsight(compB, false);
+
+                    if (!util.deepCompare(compA, compB)) {
+                        setInsight = true;
+                        this.syncCamera(sandDanceConfig.cameraJSON, false);
+                        this.app.explorer.setInsight({ label: language.historyActionUpdate }, null, insight, true);
+                    }
+
+                } catch (e) {
+                    // continue regardless of error
+                }
+            }
+
+            if (!setInsight) {
+                this.syncCamera(sandDanceConfig.cameraJSON, true);
+            }
+
+            //this.app.manageSnapshot(sandDanceMainSettings.snapshot);
             return;
         }
 
-        const { sandDanceConfig } = this.settings;
+        // console.log('Visual update - *is* different');
 
-        let snapshots: SandDance.types.Snapshot[] = [];
         if (sandDanceConfig.snapshotsJSON) {
             try {
-                snapshots = JSON.parse(sandDanceConfig.snapshotsJSON);
+                const snapshots = JSON.parse(sandDanceConfig.snapshotsJSON);
+
+                if (this.snapshots === undefined) {
+                    this.snapshots = snapshots;
+                }
             } catch (e) {
                 // continue regardless of error
             }
@@ -275,6 +358,7 @@ export class Visual implements IVisual {
             }
         }
 
+        this.persistViewChange = false;
         this.app.load(
             data,
             columns => {
@@ -288,10 +372,14 @@ export class Visual implements IVisual {
                     }
                 }
 
+                this.syncSelection(sandDanceConfig.selectionQueryJSON, true);
+                this.syncBackgroundImage(sandDanceConfig.imageHolderJSON);
+
                 let insight: Partial<SandDance.specs.Insight>;
 
                 if (sandDanceConfig.insightJSON) {
                     try {
+                        this.syncCamera(sandDanceConfig.cameraJSON, false);
                         insight = JSON.parse(sandDanceConfig.insightJSON);
                         delete insight.size;
                     } catch (e) {
@@ -305,9 +393,65 @@ export class Visual implements IVisual {
 
                 return insight;
             },
-            snapshots,
-            tooltipExclusions);
+            tooltipExclusions,
+            this.snapshots,
+        );
 
+    }
+
+    syncBackgroundImage(imageHolderJSON: string) {
+        if (imageHolderJSON) {
+            try {
+                const imageHolder = JSON.parse(imageHolderJSON);
+                this.app.explorer.imageHolder = imageHolder;
+            } catch (e) {
+                // continue regardless of error
+            }
+        }
+    }
+
+    syncCamera(cameraJSON: string, now: boolean) {
+        if (cameraJSON && cameraJSON !== this.lastCameraJSON) {
+            let camera: SandDance.types.Camera;
+            try {
+                camera = JSON.parse(cameraJSON);
+            } catch (e) {
+                // continue regardless of error
+            }
+            if (camera) {
+                if (now) {
+                    this.app.explorer.viewer.setCamera(camera);
+                    delete this.sanddanceRenderOptions.getCameraTo;
+                } else {
+                    this.sanddanceRenderOptions.getCameraTo = () => camera;
+                    this.afterView.push(() => delete this.sanddanceRenderOptions.getCameraTo);
+                }
+                this.lastCameraJSON = cameraJSON;
+            }
+        }
+    }
+
+    syncSelection(selectionQueryJSON: string, afterView: boolean) {
+        const existingSelection = (this.app?.explorer?.viewer?.getSelection()?.search) || null;
+        let search: SandDance.searchExpression.Search = null;
+        if (selectionQueryJSON) {
+            try {
+                search = JSON.parse(selectionQueryJSON);
+            } catch (e) {
+                // continue regardless of error
+            }
+        }
+
+        const diff = !SandDance.searchExpression.compare(existingSelection, search);
+        if (diff) {
+            // console.log('sync selection', selectionQueryJSON)
+            this.persistSelectionChange = false;
+            if (afterView || !this.app?.explorer?.viewer) {
+                this.afterView.push(() => this.app.explorer.viewer.select(search));
+            } else {
+                this.app.explorer.viewer.select(search);
+            }
+        }
     }
 
     private static parseSettings(dataView: DataView): VisualSettings {

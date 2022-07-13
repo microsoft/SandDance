@@ -3,9 +3,11 @@
 
 import { SandDance } from '@msrvida/sanddance-explorer';
 
-export function cleanInsight(insight: SandDance.specs.Insight) {
+export function cleanInsight(insight: SandDance.specs.Insight, removeFilter = true) {
     delete insight.size;
-    delete insight.filter;
+    if (removeFilter) {
+        delete insight.filter;
+    }
     visit(insight);
 }
 
