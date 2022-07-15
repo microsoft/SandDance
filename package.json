@@ -8,7 +8,7 @@
         "eslint": "lerna run eslint --parallel",
         "build-az": "lerna run build --scope azdata-sanddance",
         "postinstall": "node ./scripts/copy_inuitcss.js",
-        "predocs": "lerna run predocs && rimraf docs/docs/vega-morphcharts/v1 && rimraf docs/docs/sanddance-specs/v1 && rimraf docs/docs/sanddance/v4 && rimraf docs/docs/sanddance-explorer/v4 && rimraf docs/docs/sanddance-react/v4",
+        "predocs": "lerna run predocs && rimraf docs/docs/vega-deck.gl/v3 && rimraf docs/docs/vega-morphcharts/v1 && rimraf docs/docs/sanddance-specs/v1 && rimraf docs/docs/sanddance/v4 && rimraf docs/docs/sanddance-explorer/v4 && rimraf docs/docs/sanddance-react/v4",
         "docs": "lerna run docs && node ./scripts/readme.js",
         "bootstrap": "lerna bootstrap",
         "build:sanddance-core": "lerna run build:sanddance-core",
