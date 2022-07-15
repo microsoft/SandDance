@@ -10,6 +10,7 @@
     "package": "pbiviz package",
     "version": "node ./scripts/version.js",
     "prepackage": "npm run version",
+    "deploy": "node ./scripts/deploy.js",
     "build:sanddance-integration": "tsc -p ."
   },
   "dependencies": {

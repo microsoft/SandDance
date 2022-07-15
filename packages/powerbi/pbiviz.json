@@ -1,8 +1,9 @@
 {
     "visual": {
-        "name": "SandDance2019",
-        "displayName": "SandDance 2019",
-        "guid": "SandDance201929976D117A654D0BAB8E96507442D80B",
+        "name": "SandDance2019beta4",
+        "displayName": "SandDance 2019 beta4",
+        "guid": "SandDance2019beta4",
+        "prod-guid": "SandDance201929976D117A654D0BAB8E96507442D80B",
         "visualClassName": "Visual",
         "version": "4.0.0",
         "description": "Visually explore, understand, and present your data.",
