@@ -1,0 +1,691 @@
+---
+layout: typedoc
+title: 'util | @msrvida/sanddance'
+---
+<header>
+<div class="tsd-page-title">
+	<div class="typedoc-container">
+		<ul class="tsd-breadcrumb">
+			<li>
+				<a href="../modules.html">@msrvida/sanddance</a>
+			</li>
+			<li>
+				<a href="VegaMorphCharts.html">VegaMorphCharts</a>
+			</li>
+			<li>
+				<a href="VegaMorphCharts.util.html">util</a>
+			</li>
+		</ul>
+		<h1>Namespace util</h1>
+	</div>
+</div>
+</header>
+<div class="container container-main">
+<div class="row">
+	<div class="col-8 col-content">
+		<section class="tsd-panel-group tsd-index-group">
+			<h2>Index</h2>
+			<section class="tsd-panel tsd-index-panel">
+				<div class="tsd-index-content">
+					<section class="tsd-index-section ">
+						<h3>Functions</h3>
+						<ul class="tsd-index-list">
+							<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="VegaMorphCharts.util.html#addDiv" class="tsd-kind-icon">add<wbr>Div</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="VegaMorphCharts.util.html#addEl" class="tsd-kind-icon">add<wbr>El</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter"><a href="VegaMorphCharts.util.html#allTruthy" class="tsd-kind-icon">all<wbr>Truthy</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter"><a href="VegaMorphCharts.util.html#clone" class="tsd-kind-icon">clone</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="VegaMorphCharts.util.html#colorFromString" class="tsd-kind-icon">color<wbr>From<wbr>String</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="VegaMorphCharts.util.html#colorIsEqual" class="tsd-kind-icon">color<wbr>IsEqual</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="VegaMorphCharts.util.html#colorToString" class="tsd-kind-icon">color<wbr>ToString</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter"><a href="VegaMorphCharts.util.html#concat" class="tsd-kind-icon">concat</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter tsd-is-external"><a href="VegaMorphCharts.util.html#createElement" class="tsd-kind-icon">create<wbr>Element</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter"><a href="VegaMorphCharts.util.html#deepMerge" class="tsd-kind-icon">deep<wbr>Merge</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="VegaMorphCharts.util.html#desaturate" class="tsd-kind-icon">desaturate</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-namespace tsd-is-external"><a href="VegaMorphCharts.util.html#getActiveElementInfo" class="tsd-kind-icon">get<wbr>Active<wbr>Element<wbr>Info</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-namespace tsd-is-external"><a href="VegaMorphCharts.util.html#mount" class="tsd-kind-icon">mount</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="VegaMorphCharts.util.html#outerSize" class="tsd-kind-icon">outer<wbr>Size</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter"><a href="VegaMorphCharts.util.html#push" class="tsd-kind-icon">push</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-namespace tsd-is-external"><a href="VegaMorphCharts.util.html#setActiveElement" class="tsd-kind-icon">set<wbr>Active<wbr>Element</a></li>
+						</ul>
+					</section>
+				</div>
+			</section>
+		</section>
+		<section class="tsd-panel-group tsd-member-group ">
+			<h2>Functions</h2>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
+				<a name="addDiv" class="tsd-anchor"></a>
+				<h3>add<wbr>Div</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
+					<li class="tsd-signature tsd-kind-icon">add<wbr>Div<span class="tsd-signature-symbol">(</span>parentElement<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, className<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLDivElement</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in vega-morphcharts/dist/es6/htmlHelpers.d.ts:17</li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Create a new div HTMLElement as a child of another element.</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>parentElement: <span class="tsd-signature-type">HTMLElement</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Reference of the element to append to.</p>
+								</div>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> className: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Optional css class name to apply to the div.</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLDivElement</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
+				<a name="addEl" class="tsd-anchor"></a>
+				<h3>add<wbr>El</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
+					<li class="tsd-signature tsd-kind-icon">add<wbr>El<span class="tsd-signature-symbol">(</span>tagName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, parentElement<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in vega-morphcharts/dist/es6/htmlHelpers.d.ts:11</li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Create a new element as a child of another element.</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>tagName: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Tag name of the new tag to create.</p>
+								</div>
+							</li>
+							<li>
+								<h5>parentElement: <span class="tsd-signature-type">HTMLElement</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Reference of the element to append to.</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
+						<p>new HTMLElement.</p>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter">
+				<a name="allTruthy" class="tsd-anchor"></a>
+				<h3>all<wbr>Truthy</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter">
+					<li class="tsd-signature tsd-kind-icon">all<wbr>Truthy&lt;T&gt;<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in vega-morphcharts/dist/es6/array.d.ts:10</li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Returns array with items which are truthy.</p>
+							</div>
+						</div>
+						<h4 class="tsd-type-parameters-title">Type parameters</h4>
+						<ul class="tsd-type-parameters">
+							<li>
+								<h4>T</h4>
+							</li>
+						</ul>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>array or arrays to concat into a single array.</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter">
+				<a name="clone" class="tsd-anchor"></a>
+				<h3>clone</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter">
+					<li class="tsd-signature tsd-kind-icon">clone&lt;T&gt;<span class="tsd-signature-symbol">(</span>objectToClone<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in vega-morphcharts/dist/es6/clone.d.ts:5</li>
+							</ul>
+						</aside>
+						<h4 class="tsd-type-parameters-title">Type parameters</h4>
+						<ul class="tsd-type-parameters">
+							<li>
+								<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h4>
+							</li>
+						</ul>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>objectToClone: <span class="tsd-signature-type">T</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
+				<a name="colorFromString" class="tsd-anchor"></a>
+				<h3>color<wbr>From<wbr>String</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
+					<li class="tsd-signature tsd-kind-icon">color<wbr>From<wbr>String<span class="tsd-signature-symbol">(</span>cssColorSpecifier<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="VegaMorphCharts.html#RGBAColor" class="tsd-signature-type" data-tsd-kind="Type alias">RGBAColor</a></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in vega-morphcharts/dist/es6/color.d.ts:17</li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Convert a CSS color string to a Deck.gl RGBAColor array - (The rgba color of each object, in r, g, b, [a]. Each component is in the 0-255 range.).</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>cssColorSpecifier: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>A CSS Color Module Level 3 specifier string.</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <a href="VegaMorphCharts.html#RGBAColor" class="tsd-signature-type" data-tsd-kind="Type alias">RGBAColor</a></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
+				<a name="colorIsEqual" class="tsd-anchor"></a>
+				<h3>color<wbr>IsEqual</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
+					<li class="tsd-signature tsd-kind-icon">color<wbr>IsEqual<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><a href="VegaMorphCharts.html#RGBAColor" class="tsd-signature-type" data-tsd-kind="Type alias">RGBAColor</a>, b<span class="tsd-signature-symbol">: </span><a href="VegaMorphCharts.html#RGBAColor" class="tsd-signature-type" data-tsd-kind="Type alias">RGBAColor</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in vega-morphcharts/dist/es6/color.d.ts:12</li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Compares 2 colors to see if they are equal.</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>a: <a href="VegaMorphCharts.html#RGBAColor" class="tsd-signature-type" data-tsd-kind="Type alias">RGBAColor</a></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>RGBAColor to compare</p>
+								</div>
+							</li>
+							<li>
+								<h5>b: <a href="VegaMorphCharts.html#RGBAColor" class="tsd-signature-type" data-tsd-kind="Type alias">RGBAColor</a></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>RGBAColor to compare</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						<p>True if colors are equal.</p>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
+				<a name="colorToString" class="tsd-anchor"></a>
+				<h3>color<wbr>ToString</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
+					<li class="tsd-signature tsd-kind-icon">color<wbr>ToString<span class="tsd-signature-symbol">(</span>color<span class="tsd-signature-symbol">: </span><a href="VegaMorphCharts.html#RGBAColor" class="tsd-signature-type" data-tsd-kind="Type alias">RGBAColor</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in vega-morphcharts/dist/es6/color.d.ts:22</li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Convert a Deck.gl color to a CSS rgba() string.</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>color: <a href="VegaMorphCharts.html#RGBAColor" class="tsd-signature-type" data-tsd-kind="Type alias">RGBAColor</a></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>A Deck.gl RGBAColor array - (The rgba color of each object, in r, g, b, [a]. Each component is in the 0-255 range.)</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter">
+				<a name="concat" class="tsd-anchor"></a>
+				<h3>concat</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter">
+					<li class="tsd-signature tsd-kind-icon">concat&lt;T&gt;<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in vega-morphcharts/dist/es6/array.d.ts:5</li>
+							</ul>
+						</aside>
+						<h4 class="tsd-type-parameters-title">Type parameters</h4>
+						<ul class="tsd-type-parameters">
+							<li>
+								<h4>T</h4>
+							</li>
+						</ul>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter tsd-is-external">
+				<a name="createElement" class="tsd-anchor"></a>
+				<h3>create<wbr>Element</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter tsd-is-external">
+					<li class="tsd-signature tsd-kind-icon">create<wbr>Element&lt;T&gt;<span class="tsd-signature-symbol">(</span>tag<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">StatelessComponent</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>, attrs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">StatelessProps</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>, <span class="tsd-signature-symbol">...</span>children<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">JSX.Element</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					<li class="tsd-signature tsd-kind-icon">create<wbr>Element<span class="tsd-signature-symbol">(</span>tag<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, attrs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">AttributeMap</span>, <span class="tsd-signature-symbol">...</span>children<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">Element</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Content</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in vega-morphcharts/node_modules/tsx-create-element/dist/es6/index.d.ts:19</li>
+							</ul>
+						</aside>
+						<h4 class="tsd-type-parameters-title">Type parameters</h4>
+						<ul class="tsd-type-parameters">
+							<li>
+								<h4>T</h4>
+							</li>
+						</ul>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>tag: <span class="tsd-signature-type">StatelessComponent</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+							</li>
+							<li>
+								<h5>attrs: <span class="tsd-signature-type">StatelessProps</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>children: <span class="tsd-signature-type">JSX.Element</span><span class="tsd-signature-symbol">[]</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+					</li>
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in vega-morphcharts/node_modules/tsx-create-element/dist/es6/index.d.ts:20</li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>tag: <span class="tsd-signature-type">string</span></h5>
+							</li>
+							<li>
+								<h5>attrs: <span class="tsd-signature-type">AttributeMap</span></h5>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>children: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">Element</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Content</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter">
+				<a name="deepMerge" class="tsd-anchor"></a>
+				<h3>deep<wbr>Merge</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter">
+					<li class="tsd-signature tsd-kind-icon">deep<wbr>Merge&lt;T&gt;<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>objectsToMerge<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in vega-morphcharts/dist/es6/clone.d.ts:6</li>
+							</ul>
+						</aside>
+						<h4 class="tsd-type-parameters-title">Type parameters</h4>
+						<ul class="tsd-type-parameters">
+							<li>
+								<h4>T</h4>
+							</li>
+						</ul>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>objectsToMerge: <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
+				<a name="desaturate" class="tsd-anchor"></a>
+				<h3>desaturate</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
+					<li class="tsd-signature tsd-kind-icon">desaturate<span class="tsd-signature-symbol">(</span>color<span class="tsd-signature-symbol">: </span><a href="VegaMorphCharts.html#RGBAColor" class="tsd-signature-type" data-tsd-kind="Type alias">RGBAColor</a>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="VegaMorphCharts.html#RGBAColor" class="tsd-signature-type" data-tsd-kind="Type alias">RGBAColor</a></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in vega-morphcharts/dist/es6/color.d.ts:23</li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>color: <a href="VegaMorphCharts.html#RGBAColor" class="tsd-signature-type" data-tsd-kind="Type alias">RGBAColor</a></h5>
+							</li>
+							<li>
+								<h5>value: <span class="tsd-signature-type">number</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <a href="VegaMorphCharts.html#RGBAColor" class="tsd-signature-type" data-tsd-kind="Type alias">RGBAColor</a></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
+				<a name="getActiveElementInfo" class="tsd-anchor"></a>
+				<h3>get<wbr>Active<wbr>Element<wbr>Info</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
+					<li class="tsd-signature tsd-kind-icon">get<wbr>Active<wbr>Element<wbr>Info<span class="tsd-signature-symbol">(</span>container<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ActiveElementInfo</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in vega-morphcharts/node_modules/tsx-create-element/dist/es6/index.d.ts:26</li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> container: <span class="tsd-signature-type">HTMLElement</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ActiveElementInfo</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
+				<a name="mount" class="tsd-anchor"></a>
+				<h3>mount</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
+					<li class="tsd-signature tsd-kind-icon">mount<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Element</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">JSX.Element</span>, container<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in vega-morphcharts/node_modules/tsx-create-element/dist/es6/index.d.ts:22</li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>element: <span class="tsd-signature-type">Element</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">JSX.Element</span></h5>
+							</li>
+							<li>
+								<h5>container: <span class="tsd-signature-type">HTMLElement</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
+				<a name="outerSize" class="tsd-anchor"></a>
+				<h3>outer<wbr>Size</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
+					<li class="tsd-signature tsd-kind-icon">outer<wbr>Size<span class="tsd-signature-symbol">(</span>el<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>height<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in vega-morphcharts/dist/es6/htmlHelpers.d.ts:22</li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Measure the outer height and width of an HTMLElement, including margin, padding and border.</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>el: <span class="tsd-signature-type">HTMLElement</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>HTML Element to measure.</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{ </span>height<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span></h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>height<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter">
+				<a name="push" class="tsd-anchor"></a>
+				<h3>push</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter">
+					<li class="tsd-signature tsd-kind-icon">push&lt;T&gt;<span class="tsd-signature-symbol">(</span>arr<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span>, items<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in vega-morphcharts/dist/es6/array.d.ts:16</li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Add an array to an existing array in place.</p>
+							</div>
+						</div>
+						<h4 class="tsd-type-parameters-title">Type parameters</h4>
+						<ul class="tsd-type-parameters">
+							<li>
+								<h4>T</h4>
+							</li>
+						</ul>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>arr: <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Array to append to.</p>
+								</div>
+							</li>
+							<li>
+								<h5>items: <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Arrof of items to append.</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
+				<a name="setActiveElement" class="tsd-anchor"></a>
+				<h3>set<wbr>Active<wbr>Element</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
+					<li class="tsd-signature tsd-kind-icon">set<wbr>Active<wbr>Element<span class="tsd-signature-symbol">(</span>activeElementInfo<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ActiveElementInfo</span>, container<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Element</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in vega-morphcharts/node_modules/tsx-create-element/dist/es6/index.d.ts:25</li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>activeElementInfo: <span class="tsd-signature-type">ActiveElementInfo</span></h5>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> container: <span class="tsd-signature-type">Element</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+		</section>
+	</div>
+	<div class="col-4 col-menu menu-highlight">
+		<nav class="tsd-navigation primary">
+			<ul>
+				<li class=" ">
+					<a href="../modules.html">Exports</a>
+				</li>
+				<li class="current tsd-kind-namespace">
+					<a href="VegaMorphCharts.html">Vega<wbr>Morph<wbr>Charts</a>
+					<ul>
+						<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+							<a href="VegaMorphCharts.controls.html">controls</a>
+						</li>
+						<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+							<a href="VegaMorphCharts.defaults.html">defaults</a>
+						</li>
+						<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+							<a href="VegaMorphCharts.types.html">types</a>
+						</li>
+						<li class="current tsd-kind-namespace tsd-parent-kind-namespace">
+							<a href="VegaMorphCharts.util.html">util</a>
+						</li>
+					</ul>
+				</li>
+				<li class=" tsd-kind-namespace">
+					<a href="constants.html">constants</a>
+				</li>
+				<li class=" tsd-kind-namespace">
+					<a href="searchExpression.html">search<wbr>Expression</a>
+				</li>
+				<li class=" tsd-kind-namespace">
+					<a href="specs.html">specs</a>
+				</li>
+				<li class=" tsd-kind-namespace">
+					<a href="types.html">types</a>
+				</li>
+				<li class=" tsd-kind-namespace">
+					<a href="util.html">util</a>
+				</li>
+			</ul>
+		</nav>
+		<nav class="tsd-navigation secondary">
+			<ul class="before-current">
+				<li class=" tsd-kind-function tsd-parent-kind-namespace">
+					<a href="VegaMorphCharts.util.html#addDiv" class="tsd-kind-icon">add<wbr>Div</a>
+				</li>
+				<li class=" tsd-kind-function tsd-parent-kind-namespace">
+					<a href="VegaMorphCharts.util.html#addEl" class="tsd-kind-icon">add<wbr>El</a>
+				</li>
+				<li class=" tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter">
+					<a href="VegaMorphCharts.util.html#allTruthy" class="tsd-kind-icon">all<wbr>Truthy</a>
+				</li>
+				<li class=" tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter">
+					<a href="VegaMorphCharts.util.html#clone" class="tsd-kind-icon">clone</a>
+				</li>
+				<li class=" tsd-kind-function tsd-parent-kind-namespace">
+					<a href="VegaMorphCharts.util.html#colorFromString" class="tsd-kind-icon">color<wbr>From<wbr>String</a>
+				</li>
+				<li class=" tsd-kind-function tsd-parent-kind-namespace">
+					<a href="VegaMorphCharts.util.html#colorIsEqual" class="tsd-kind-icon">color<wbr>IsEqual</a>
+				</li>
+				<li class=" tsd-kind-function tsd-parent-kind-namespace">
+					<a href="VegaMorphCharts.util.html#colorToString" class="tsd-kind-icon">color<wbr>ToString</a>
+				</li>
+				<li class=" tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter">
+					<a href="VegaMorphCharts.util.html#concat" class="tsd-kind-icon">concat</a>
+				</li>
+				<li class=" tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter tsd-is-external">
+					<a href="VegaMorphCharts.util.html#createElement" class="tsd-kind-icon">create<wbr>Element</a>
+				</li>
+				<li class=" tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter">
+					<a href="VegaMorphCharts.util.html#deepMerge" class="tsd-kind-icon">deep<wbr>Merge</a>
+				</li>
+				<li class=" tsd-kind-function tsd-parent-kind-namespace">
+					<a href="VegaMorphCharts.util.html#desaturate" class="tsd-kind-icon">desaturate</a>
+				</li>
+				<li class=" tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
+					<a href="VegaMorphCharts.util.html#getActiveElementInfo" class="tsd-kind-icon">get<wbr>Active<wbr>Element<wbr>Info</a>
+				</li>
+				<li class=" tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
+					<a href="VegaMorphCharts.util.html#mount" class="tsd-kind-icon">mount</a>
+				</li>
+				<li class=" tsd-kind-function tsd-parent-kind-namespace">
+					<a href="VegaMorphCharts.util.html#outerSize" class="tsd-kind-icon">outer<wbr>Size</a>
+				</li>
+				<li class=" tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter">
+					<a href="VegaMorphCharts.util.html#push" class="tsd-kind-icon">push</a>
+				</li>
+				<li class=" tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
+					<a href="VegaMorphCharts.util.html#setActiveElement" class="tsd-kind-icon">set<wbr>Active<wbr>Element</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</div>
+</div>
+<div class="overlay"></div>

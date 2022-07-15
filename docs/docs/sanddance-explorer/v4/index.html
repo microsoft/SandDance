@@ -1,0 +1,174 @@
+---
+layout: typedoc
+title: '@msrvida/sanddance-explorer'
+---
+<header>
+<div class="tsd-page-title">
+	<div class="typedoc-container">
+	</div>
+</div>
+</header>
+<div class="container container-main">
+<div class="row">
+	<div class="col-8 col-content">
+		<div class="tsd-panel tsd-typography">
+			<a href="#msrvidasanddance-explorer" id="msrvidasanddance-explorer" style="color: inherit; text-decoration: none;">
+				<h1>@msrvida/sanddance-explorer</h1>
+			</a>
+			<p>Visually explore, understand, and present your data.</p>
+			<p><img src="https://user-images.githubusercontent.com/11507384/72197128-a99cdd80-33d2-11ea-9b49-5d470db0abc1.png" alt="image"></p>
+			<p><a href="https://microsoft.github.io/SandDance/app">Demo</a> - <a href="https://microsoft.github.io/SandDance/docs/sanddance-explorer/v3">API Reference</a></p>
+			<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+				<h2>Installation</h2>
+			</a>
+			<p>Add these to the <code>dependencies</code> section of your <code>package.json</code>, then run <code>npm install</code>:</p>
+			<pre><code class="language-json"><span style="color: #A31515">&quot;@deck.gl/core&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;^8.3.7&quot;</span><span style="color: #000000">,</span>
+<span style="color: #A31515">&quot;@deck.gl/layers&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;^8.3.7&quot;</span><span style="color: #000000">,</span>
+<span style="color: #A31515">&quot;@msrvida/sanddance-explorer&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;^3&quot;</span><span style="color: #000000">,</span>
+<span style="color: #A31515">&quot;@luma.gl/core&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;^8.3.1&quot;</span><span style="color: #000000">,</span>
+<span style="color: #A31515">&quot;@fluentui/react&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;^7.150.0&quot;</span><span style="color: #000000">,</span>
+<span style="color: #A31515">&quot;vega&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;^5.17.0&quot;</span>
+</code></pre>
+			<p>Import these in your JavaScript:</p>
+			<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">deck</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@deck.gl/core&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">layers</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@deck.gl/layers&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">luma</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@luma.gl/core&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">fluentui</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@fluentui/react&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">vega</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;vega&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">React</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;react&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">ReactDOM</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;react-dom&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">Explorer</span><span style="color: #000000">, </span><span style="color: #001080">use</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@msrvida/sanddance-explorer&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #001080">fluentui</span><span style="color: #000000">.</span><span style="color: #795E26">initializeIcons</span><span style="color: #000000">();</span>
+
+<span style="color: #795E26">use</span><span style="color: #000000">(</span><span style="color: #001080">fluentui</span><span style="color: #000000">, </span><span style="color: #001080">React</span><span style="color: #000000">, </span><span style="color: #001080">ReactDOM</span><span style="color: #000000">, </span><span style="color: #001080">vega</span><span style="color: #000000">, </span><span style="color: #001080">deck</span><span style="color: #000000">, </span><span style="color: #001080">layers</span><span style="color: #000000">, </span><span style="color: #001080">luma</span><span style="color: #000000">);</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">data</span><span style="color: #000000"> = [</span>
+<span style="color: #000000">  { </span><span style="color: #001080">a:</span><span style="color: #000000"> </span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #001080">b:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;c1&quot;</span><span style="color: #000000"> },</span>
+<span style="color: #000000">  { </span><span style="color: #001080">a:</span><span style="color: #000000"> </span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #001080">b:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;c2&quot;</span><span style="color: #000000"> },</span>
+<span style="color: #000000">  { </span><span style="color: #001080">a:</span><span style="color: #000000"> </span><span style="color: #098658">2</span><span style="color: #000000">, </span><span style="color: #001080">b:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;c3&quot;</span><span style="color: #000000"> },</span>
+<span style="color: #000000">  { </span><span style="color: #001080">a:</span><span style="color: #000000"> </span><span style="color: #098658">3</span><span style="color: #000000">, </span><span style="color: #001080">b:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;c4&quot;</span><span style="color: #000000"> }</span>
+<span style="color: #000000">];</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">explorerProps</span><span style="color: #000000"> = {</span>
+<span style="color: #000000">    </span><span style="color: #001080">logoClickUrl:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;https://microsoft.github.io/SandDance/&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #795E26">mounted</span><span style="color: #001080">:</span><span style="color: #000000"> </span><span style="color: #001080">explorer</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">        </span><span style="color: #001080">explorer</span><span style="color: #000000">.</span><span style="color: #795E26">load</span><span style="color: #000000">(</span><span style="color: #001080">data</span><span style="color: #000000">);</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">};</span>
+
+<span style="color: #001080">ReactDOM</span><span style="color: #000000">.</span><span style="color: #795E26">render</span><span style="color: #000000">(</span><span style="color: #001080">React</span><span style="color: #000000">.</span><span style="color: #795E26">createElement</span><span style="color: #000000">(</span><span style="color: #001080">Explorer</span><span style="color: #000000">, </span><span style="color: #001080">explorerProps</span><span style="color: #000000">), </span><span style="color: #001080">document</span><span style="color: #000000">.</span><span style="color: #795E26">getElementById</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;app&#039;</span><span style="color: #000000">));</span>
+</code></pre>
+			<a href="#versions" id="versions" style="color: inherit; text-decoration: none;">
+				<h2>Versions</h2>
+			</a>
+			<a href="#breaking-changes-in-v3" id="breaking-changes-in-v3" style="color: inherit; text-decoration: none;">
+				<h3>Breaking changes in v3</h3>
+			</a>
+			<ul>
+				<li>deck.gl dependency from 6.4 to 8.1</li>
+				<li>fluentui-react 7.x (formerly office-ui-fabric-react 6.x)</li>
+			</ul>
+			<a href="#for-more-information" id="for-more-information" style="color: inherit; text-decoration: none;">
+				<h2>For more information</h2>
+			</a>
+			<p>Please visit the <a href="https://microsoft.github.io/SandDance/">SandDance website</a>.</p>
+		</div>
+	</div>
+	<div class="col-4 col-menu menu-highlight">
+		<nav class="tsd-navigation primary">
+			<ul>
+				<li class=" ">
+					<a href="modules.html">Exports</a>
+				</li>
+				<li class=" tsd-kind-namespace">
+					<a href="modules/SandDance.html">Sand<wbr>Dance</a>
+				</li>
+				<li class=" tsd-kind-namespace">
+					<a href="modules/controls.html">controls</a>
+				</li>
+				<li class=" tsd-kind-namespace">
+					<a href="modules/util.html">util</a>
+				</li>
+			</ul>
+		</nav>
+		<nav class="tsd-navigation secondary">
+			<ul class="before-current">
+				<li class=" tsd-kind-enum">
+					<a href="enums/SideTabId.html" class="tsd-kind-icon">Side<wbr>Tab<wbr>Id</a>
+				</li>
+				<li class=" tsd-kind-class">
+					<a href="classes/Explorer_Class.html" class="tsd-kind-icon">Explorer_<wbr><wbr>Class</a>
+				</li>
+				<li class=" tsd-kind-interface">
+					<a href="interfaces/ColorSettings.html" class="tsd-kind-icon">Color<wbr>Settings</a>
+				</li>
+				<li class=" tsd-kind-interface">
+					<a href="interfaces/DataContent.html" class="tsd-kind-icon">Data<wbr>Content</a>
+				</li>
+				<li class=" tsd-kind-interface">
+					<a href="interfaces/DataFile.html" class="tsd-kind-icon">Data<wbr>File</a>
+				</li>
+				<li class=" tsd-kind-interface">
+					<a href="interfaces/HistoricInsight.html" class="tsd-kind-icon">Historic<wbr>Insight</a>
+				</li>
+				<li class=" tsd-kind-interface">
+					<a href="interfaces/HistoryAction.html" class="tsd-kind-icon">History<wbr>Action</a>
+				</li>
+				<li class=" tsd-kind-interface">
+					<a href="interfaces/HistoryItem.html" class="tsd-kind-icon">History<wbr>Item</a>
+				</li>
+				<li class=" tsd-kind-interface">
+					<a href="interfaces/Options.html" class="tsd-kind-icon">Options</a>
+				</li>
+				<li class=" tsd-kind-interface">
+					<a href="interfaces/Prefs.html" class="tsd-kind-icon">Prefs</a>
+				</li>
+				<li class=" tsd-kind-interface">
+					<a href="interfaces/Props.html" class="tsd-kind-icon">Props</a>
+				</li>
+				<li class=" tsd-kind-interface">
+					<a href="interfaces/SettingsGroup.html" class="tsd-kind-icon">Settings<wbr>Group</a>
+				</li>
+				<li class=" tsd-kind-interface">
+					<a href="interfaces/State.html" class="tsd-kind-icon">State</a>
+				</li>
+				<li class=" tsd-kind-interface">
+					<a href="interfaces/UIState.html" class="tsd-kind-icon">UIState</a>
+				</li>
+				<li class=" tsd-kind-interface">
+					<a href="interfaces/ViewerOptions.html" class="tsd-kind-icon">Viewer<wbr>Options</a>
+				</li>
+				<li class=" tsd-kind-type-alias">
+					<a href="modules.html#DataExportType" class="tsd-kind-icon">Data<wbr>Export<wbr>Type</a>
+				</li>
+				<li class=" tsd-kind-type-alias">
+					<a href="modules.html#DataFileType" class="tsd-kind-icon">Data<wbr>File<wbr>Type</a>
+				</li>
+				<li class=" tsd-kind-variable">
+					<a href="modules.html#Explorer" class="tsd-kind-icon">Explorer</a>
+				</li>
+				<li class=" tsd-kind-variable">
+					<a href="modules.html#capabilities" class="tsd-kind-icon">capabilities</a>
+				</li>
+				<li class=" tsd-kind-variable">
+					<a href="modules.html#themePalettes" class="tsd-kind-icon">theme<wbr>Palettes</a>
+				</li>
+				<li class=" tsd-kind-variable">
+					<a href="modules.html#version" class="tsd-kind-icon">version</a>
+				</li>
+				<li class=" tsd-kind-function">
+					<a href="modules.html#getColorSettingsFromThemePalette" class="tsd-kind-icon">get<wbr>Color<wbr>Settings<wbr>From<wbr>Theme<wbr>Palette</a>
+				</li>
+				<li class=" tsd-kind-function">
+					<a href="modules.html#getEmbedHTML" class="tsd-kind-icon">get<wbr>EmbedHTML</a>
+				</li>
+				<li class=" tsd-kind-function">
+					<a href="modules.html#use" class="tsd-kind-icon">use</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</div>
+</div>
+<div class="overlay"></div>
