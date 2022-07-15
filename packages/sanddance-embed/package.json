@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance-embed",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Embeddable SandDance Explorer.",
   "browser": "dist/umd/sanddance-embed.js",
   "repository": {
@@ -18,7 +18,7 @@
     "build:sanddance-core": "npm run build-css && npm run build-typescript"
   },
   "dependencies": {
-    "@msrvida/sanddance-explorer": "^3"
+    "@msrvida/sanddance-explorer": "^4"
   },
   "devDependencies": {
     "@types/react": ">=16.8.0 <17.0.0",

@@ -17,7 +17,7 @@
     "@babel/runtime": "^7.5.5",
     "@babel/runtime-corejs2": "^7.5.5",
     "@fluentui/react": "^7.111.0",
-    "@msrvida/sanddance-explorer": "^3",
+    "@msrvida/sanddance-explorer": "^4",
     "core-js": "3.2.1",
     "powerbi-models": "^1.6.0",
     "powerbi-visuals-api": "^3.8.0",
