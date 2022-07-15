@@ -3,7 +3,7 @@
 ///<reference path='../node_modules/@msrvida/sanddance/dist/umd/sanddance.d.ts' />
 ///<reference path='vega.d.ts' />
 
-namespace vegaDeckglTest {
+namespace vegaMorphChartsTest {
     declare const vega: SandDance.VegaMorphCharts.types.VegaBase;
 
     SandDance.use(vega);
