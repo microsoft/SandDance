@@ -45500,359 +45500,8 @@ var _sanddanceSpecs = require("@msrvida/sanddance-specs");
 const GL_ORDINAL = "GL_ORDINAL";
 
 },{"@msrvida/sanddance-specs":"aBhpQ","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"aBhpQ":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _build = require("./build");
-parcelHelpers.exportAll(_build, exports);
-var _constants = require("./constants");
-parcelHelpers.exportAll(_constants, exports);
-var _inference = require("./inference");
-parcelHelpers.exportAll(_inference, exports);
-var _interfaces = require("./interfaces");
-parcelHelpers.exportAll(_interfaces, exports);
-var _types = require("./types");
-parcelHelpers.exportAll(_types, exports);
-
-},{"./build":"2pBTq","./constants":"3I5IU","./inference":"hgLDN","./interfaces":"czyLt","./types":"0QlBW","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"2pBTq":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "build", ()=>build);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _charts = require("./charts");
-var _inference = require("./inference");
-var _specBuilder = require("./specBuilder");
-function build(specContext, currData) {
-    const { specColumns  } = specContext;
-    const columns = [
-        specColumns.color,
-        specColumns.facet,
-        specColumns.facetV,
-        specColumns.group,
-        specColumns.size,
-        specColumns.sort,
-        specColumns.x,
-        specColumns.y,
-        specColumns.z, 
-    ];
-    (0, _inference.inferAll)(columns, currData);
-    const specBuilderProps = (0, _charts.getSpecBuilderPropsForChart)(specContext);
-    const specBuilder = new (0, _specBuilder.SpecBuilder)(specBuilderProps, specContext);
-    let specResult;
-    if (specBuilder) {
-        try {
-            const errors = specBuilder.validate();
-            if (errors.length) specResult = {
-                errors,
-                specCapabilities: specBuilderProps.specCapabilities,
-                vegaSpec: null
-            };
-            else specResult = specBuilder.build();
-        } catch (e) {
-            specResult = {
-                specCapabilities: null,
-                vegaSpec: null,
-                errors: [
-                    e.stack
-                ]
-            };
-        }
-        if (!specResult.errors) {
-            const data0 = specResult.vegaSpec.data[0];
-            data0.values = currData;
-        }
-    } else specResult = {
-        specCapabilities: null,
-        vegaSpec: null,
-        errors: [
-            `could not build spec for ${specContext.insight.chart}`
-        ]
-    };
-    return specResult;
-}
-
-},{"./charts":"euC7e","./inference":"hgLDN","./specBuilder":"bLsvI","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"euC7e":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "getSpecBuilderPropsForChart", ()=>getSpecBuilderPropsForChart);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _barchartH = require("./barchartH");
-var _barchartHDefault = parcelHelpers.interopDefault(_barchartH);
-var _barchartV = require("./barchartV");
-var _barchartVDefault = parcelHelpers.interopDefault(_barchartV);
-var _density = require("./density");
-var _densityDefault = parcelHelpers.interopDefault(_density);
-var _grid = require("./grid");
-var _gridDefault = parcelHelpers.interopDefault(_grid);
-var _scatterplot = require("./scatterplot");
-var _scatterplotDefault = parcelHelpers.interopDefault(_scatterplot);
-var _stacks = require("./stacks");
-var _stacksDefault = parcelHelpers.interopDefault(_stacks);
-var _strips = require("./strips");
-var _stripsDefault = parcelHelpers.interopDefault(_strips);
-var _treemap = require("./treemap");
-var _treemapDefault = parcelHelpers.interopDefault(_treemap);
-var _facetLayout = require("../facetLayout");
-var _constants = require("../constants");
-var _defaults = require("../defaults");
-const map = {
-    barchart: (0, _barchartVDefault.default),
-    barchartH: (0, _barchartHDefault.default),
-    barchartV: (0, _barchartVDefault.default),
-    density: (0, _densityDefault.default),
-    grid: (0, _gridDefault.default),
-    scatterplot: (0, _scatterplotDefault.default),
-    stacks: (0, _stacksDefault.default),
-    strips: (0, _stripsDefault.default),
-    treemap: (0, _treemapDefault.default)
-};
-function getSpecBuilderPropsForChart(specContext) {
-    const { insight , specColumns , specViewOptions  } = specContext;
-    const fn = map[insight.chart];
-    if (fn) {
-        const props = fn(specContext);
-        if (insight.columns.facet) {
-            const discreteFacetColumn = {
-                column: specColumns.facet,
-                defaultBins: (0, _defaults.defaultBins),
-                maxbins: (0, _defaults.maxbins),
-                maxbinsSignalDisplayName: specViewOptions.language.FacetMaxBins,
-                maxbinsSignalName: (0, _constants.SignalNames).FacetBins
-            };
-            const discreteFacetVColumn = {
-                column: specColumns.facetV,
-                defaultBins: (0, _defaults.defaultBins),
-                maxbins: (0, _defaults.maxbins),
-                maxbinsSignalDisplayName: specViewOptions.language.FacetVMaxBins,
-                maxbinsSignalName: (0, _constants.SignalNames).FacetVBins
-            };
-            const { facetLayout , layoutPair  } = (0, _facetLayout.getFacetLayout)(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn, specViewOptions.colors.axisText);
-            props.layouts.unshift(layoutPair);
-            props.facetLayout = facetLayout;
-            props.collapseFacetAxes = specViewOptions.collapseFacetAxes;
-        }
-        return props;
-    }
-}
-
-},{"./barchartH":"62o3l","./barchartV":"1ulMm","./density":"d1hGL","./grid":"7qJJk","./scatterplot":"bmKhB","./stacks":"36aPG","./strips":"bdRT1","./treemap":"dXgQh","../facetLayout":"kRHoI","../constants":"3I5IU","../defaults":"5kAFI","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"62o3l":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _constants = require("../constants");
-var _defaults = require("../defaults");
-var _size = require("../size");
-exports.default = function(specContext) {
-    var _a, _b, _c, _d;
-    const { insight , specColumns , specViewOptions  } = specContext;
-    const { language  } = specViewOptions;
-    const showAxes = true;
-    const bandProps = {
-        orientation: "horizontal",
-        groupby: {
-            column: specColumns.y,
-            defaultBins: (0, _defaults.defaultBins),
-            maxbinsSignalName: (0, _constants.SignalNames).YBins,
-            maxbinsSignalDisplayName: specContext.specViewOptions.language.YMaxBins,
-            maxbins: (0, _defaults.maxbins)
-        },
-        minBandWidth: (0, _defaults.minBarBandWidth),
-        showAxes
-    };
-    const x = {
-        title: null
-    };
-    const axisScales = {
-        x,
-        y: {
-            title: (_a = specColumns.y) === null || _a === void 0 ? void 0 : _a.name
-        },
-        z: {
-            title: (_b = specColumns.z) === null || _b === void 0 ? void 0 : _b.name
-        }
-    };
-    const layouts = [
-        {
-            layoutType: "Band",
-            props: bandProps
-        }
-    ];
-    if (insight.totalStyle === "sum-strip-percent") {
-        x.aggregate = "percent";
-        x.title = language.percent;
-        const stripProps = {
-            addPercentageScale: true,
-            sortOrder: "ascending",
-            orientation: "horizontal",
-            size: specColumns.size,
-            sort: specColumns.sort,
-            z: specColumns.z,
-            showAxes
-        };
-        layouts.push({
-            layoutType: "Strip",
-            props: stripProps
-        });
-    } else {
-        const aggProps = {
-            niceScale: true,
-            dock: "left",
-            globalAggregateMaxExtentSignal: "aggMaxExtent",
-            globalAggregateMaxExtentScaledSignal: "aggMaxExtentScaled",
-            sumBy: specColumns.size,
-            showAxes
-        };
-        layouts.push({
-            layoutType: "AggregateContainer",
-            props: aggProps
-        });
-        switch(insight.totalStyle){
-            case "sum-treemap":
-                {
-                    x.aggregate = "sum";
-                    x.title = language.sum;
-                    const treemapProps = {
-                        corner: "top-left",
-                        size: specColumns.size,
-                        treeMapMethod: specViewOptions.language.treeMapMethod,
-                        z: specColumns.z,
-                        showAxes
-                    };
-                    layouts.push({
-                        layoutType: "Treemap",
-                        props: treemapProps
-                    });
-                    break;
-                }
-            case "sum-strip":
-                {
-                    x.aggregate = "sum";
-                    x.title = language.sum;
-                    const stripProps = {
-                        sortOrder: "ascending",
-                        orientation: "horizontal",
-                        size: specColumns.size,
-                        sort: specColumns.sort,
-                        z: specColumns.z,
-                        showAxes
-                    };
-                    layouts.push({
-                        layoutType: "Strip",
-                        props: stripProps
-                    });
-                    break;
-                }
-            case "count-strip":
-                {
-                    x.aggregate = "count";
-                    x.title = language.count;
-                    const stripProps = {
-                        sortOrder: "ascending",
-                        orientation: "horizontal",
-                        size: specColumns.size,
-                        sort: specColumns.sort,
-                        z: specColumns.z,
-                        showAxes
-                    };
-                    layouts.push({
-                        layoutType: "Strip",
-                        props: stripProps
-                    });
-                    break;
-                }
-            default:
-                {
-                    x.aggregate = "count";
-                    x.title = language.count;
-                    const squareProps = {
-                        sortBy: specColumns.sort,
-                        fillDirection: "down-right",
-                        z: specColumns.z,
-                        maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
-                        maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal,
-                        showAxes
-                    };
-                    layouts.push({
-                        layoutType: "Square",
-                        props: squareProps
-                    });
-                    break;
-                }
-        }
-    }
-    return {
-        axisScales,
-        layouts,
-        specCapabilities: {
-            countsAndSums: true,
-            percentage: true,
-            roles: [
-                {
-                    role: "y",
-                    binnable: true,
-                    axisSelection: ((_c = specColumns.y) === null || _c === void 0 ? void 0 : _c.quantitative) ? "range" : "exact",
-                    axisSelectionBetweenTicks: true,
-                    signals: [
-                        (0, _constants.SignalNames).YBins
-                    ]
-                },
-                {
-                    role: "z",
-                    axisSelection: ((_d = specColumns.z) === null || _d === void 0 ? void 0 : _d.quantitative) ? "range" : "exact",
-                    allowNone: true
-                },
-                {
-                    role: "color",
-                    allowNone: true
-                },
-                {
-                    role: "sort",
-                    allowNone: true
-                },
-                {
-                    role: "size",
-                    allowNone: (0, _size.allowNoneForSize),
-                    excludeCategoric: true,
-                    signals: [
-                        (0, _constants.SignalNames).TreeMapMethod
-                    ]
-                },
-                {
-                    role: "facet",
-                    allowNone: true,
-                    signals: [
-                        (0, _constants.SignalNames).FacetBins
-                    ]
-                },
-                {
-                    role: "facetV",
-                    allowNone: true,
-                    signals: [
-                        (0, _constants.SignalNames).FacetVBins
-                    ]
-                }, 
-            ]
-        }
-    };
-};
-
-},{"../constants":"3I5IU","../defaults":"5kAFI","../size":"ev1W0","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3I5IU":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "FieldNames", ()=>FieldNames);
-parcelHelpers.export(exports, "ScaleNames", ()=>ScaleNames);
-parcelHelpers.export(exports, "SignalNames", ()=>SignalNames);
-parcelHelpers.export(exports, "Other", ()=>Other);
-parcelHelpers.export(exports, "ColorScaleNone", ()=>ColorScaleNone);
-const FieldNames = {
+var $cQmOi$d3color = require("d3-color");
+const $8e68118808d817fe$export$10df5429b7082be2 = {
     Active: "__SandDance__Active",
     Collapsed: "__SandDance__Collapsed",
     Contains: "__SandDance__Contains",
@@ -45878,13 +45527,13 @@ const FieldNames = {
     OffsetHeight: "__SandDance__H",
     OffsetWidth: "__SandDance__W"
 };
-const ScaleNames = {
+const $8e68118808d817fe$export$c9f17d36dfc40d76 = {
     Color: "scale_color",
     X: "scale_x",
     Y: "scale_y",
     Z: "scale_z"
 };
-const SignalNames = {
+const $8e68118808d817fe$export$809e371dee643808 = {
     ViewportWidth: "ViewportWidth",
     ViewportHeight: "ViewportHeight",
     MinCellWidth: "MinCellWidth",
@@ -45920,61 +45569,29 @@ const SignalNames = {
     ZGrounded: "RoleZ_Grounded",
     ZProportion: "RoleZ_ProportionSignal"
 };
-const Other = "__Other";
-const ColorScaleNone = "none";
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"5kAFI":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "defaultBins", ()=>defaultBins);
-parcelHelpers.export(exports, "maxbins", ()=>maxbins);
-parcelHelpers.export(exports, "minBarBandWidth", ()=>minBarBandWidth);
-parcelHelpers.export(exports, "minFacetWidth", ()=>minFacetWidth);
-parcelHelpers.export(exports, "minFacetHeight", ()=>minFacetHeight);
-parcelHelpers.export(exports, "facetPaddingLeft", ()=>facetPaddingLeft);
-parcelHelpers.export(exports, "facetPaddingTop", ()=>facetPaddingTop);
-parcelHelpers.export(exports, "facetPaddingBottom", ()=>facetPaddingBottom);
-parcelHelpers.export(exports, "facetPaddingRight", ()=>facetPaddingRight);
-parcelHelpers.export(exports, "axesLabelLimit", ()=>axesLabelLimit);
-parcelHelpers.export(exports, "axesTitleLimit", ()=>axesTitleLimit);
-parcelHelpers.export(exports, "axesTitlePaddingX", ()=>axesTitlePaddingX);
-parcelHelpers.export(exports, "axesTitlePaddingY", ()=>axesTitlePaddingY);
-parcelHelpers.export(exports, "axesTitlePaddingFacetX", ()=>axesTitlePaddingFacetX);
-parcelHelpers.export(exports, "axesTitlePaddingFacetY", ()=>axesTitlePaddingFacetY);
-parcelHelpers.export(exports, "axesOffsetX", ()=>axesOffsetX);
-parcelHelpers.export(exports, "axesOffsetY", ()=>axesOffsetY);
-parcelHelpers.export(exports, "scatterSizedMin", ()=>scatterSizedMin);
-parcelHelpers.export(exports, "scatterSizedDiv", ()=>scatterSizedDiv);
-parcelHelpers.export(exports, "debounce", ()=>debounce);
-const defaultBins = 10;
-const maxbins = 100;
-const minBarBandWidth = 15;
-const minFacetWidth = 140;
-const minFacetHeight = 180;
-const facetPaddingLeft = 40;
-const facetPaddingTop = 40;
-const facetPaddingBottom = 40;
-const facetPaddingRight = 40;
-const axesLabelLimit = 100;
-const axesTitleLimit = 100;
-const axesTitlePaddingX = 30;
-const axesTitlePaddingY = 60;
-const axesTitlePaddingFacetX = 69;
-const axesTitlePaddingFacetY = 92;
-const axesOffsetX = 120;
-const axesOffsetY = 120;
-const scatterSizedMin = 10;
-const scatterSizedDiv = 20;
-const debounce = 250;
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"ev1W0":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ parcelHelpers.export(exports, "allowNoneForSize", ()=>allowNoneForSize);
-function allowNoneForSize(specContext) {
+const $8e68118808d817fe$export$8653a30c44b6e879 = "__Other";
+const $8e68118808d817fe$export$c991c3dd58d9959c = "none";
+const $1953ae18505373b7$export$4a9b1843df49fbce = 10;
+const $1953ae18505373b7$export$15c9d32f115776f9 = 100;
+const $1953ae18505373b7$export$929dfe98c4c4722c = 15;
+const $1953ae18505373b7$export$7794a0aff56142de = 140;
+const $1953ae18505373b7$export$7c432db1d0b63312 = 180;
+const $1953ae18505373b7$export$6bd206e55cb747ae = 40;
+const $1953ae18505373b7$export$c2b9f0002271e8ba = 40;
+const $1953ae18505373b7$export$bdb7a7da14f9ff2b = 40;
+const $1953ae18505373b7$export$c11851bee1b89f04 = 40;
+const $1953ae18505373b7$export$2aa02e522549e01e = 100;
+const $1953ae18505373b7$export$d3da25ad66816957 = 100;
+const $1953ae18505373b7$export$2e7279af2df830e3 = 30;
+const $1953ae18505373b7$export$f0388d9263db6e5f = 60;
+const $1953ae18505373b7$export$fd4a597070549ada = 69;
+const $1953ae18505373b7$export$a26a082bf9fa4ca0 = 92;
+const $1953ae18505373b7$export$3f5b554d51e74365 = 120;
+const $1953ae18505373b7$export$c33f11801bb18430 = 120;
+const $1953ae18505373b7$export$e1f76e63dbed4a9a = 10;
+const $1953ae18505373b7$export$c223d3ee3c0620d9 = 20;
+const $1953ae18505373b7$export$61fc7d43ac8f84b0 = 250;
+function $814fc2477600f283$export$d3be63162ba033ae(specContext) {
     switch(specContext.insight.totalStyle){
         case "sum-strip":
         case "sum-strip-percent":
@@ -45985,32 +45602,215 @@ function allowNoneForSize(specContext) {
             return true;
     }
 }
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1ulMm":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _constants = require("../constants");
-var _defaults = require("../defaults");
-var _size = require("../size");
-exports.default = function(specContext) {
+function $0f2fd63cde7b4eed$export$2e2bcd8739ae039(specContext) {
+    var _a, _b, _c, _d;
+    const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
+    const { language: language  } = specViewOptions;
+    const showAxes = true;
+    const bandProps = {
+        orientation: "horizontal",
+        groupby: {
+            column: specColumns.y,
+            defaultBins: $1953ae18505373b7$export$4a9b1843df49fbce,
+            maxbinsSignalName: $8e68118808d817fe$export$809e371dee643808.YBins,
+            maxbinsSignalDisplayName: specContext.specViewOptions.language.YMaxBins,
+            maxbins: $1953ae18505373b7$export$15c9d32f115776f9
+        },
+        minBandWidth: $1953ae18505373b7$export$929dfe98c4c4722c,
+        showAxes: showAxes
+    };
+    const x = {
+        title: null
+    };
+    const axisScales = {
+        x: x,
+        y: {
+            title: (_a = specColumns.y) === null || _a === void 0 ? void 0 : _a.name
+        },
+        z: {
+            title: (_b = specColumns.z) === null || _b === void 0 ? void 0 : _b.name
+        }
+    };
+    const layouts = [
+        {
+            layoutType: "Band",
+            props: bandProps
+        }
+    ];
+    if (insight.totalStyle === "sum-strip-percent") {
+        x.aggregate = "percent";
+        x.title = language.percent;
+        const stripProps = {
+            addPercentageScale: true,
+            sortOrder: "ascending",
+            orientation: "horizontal",
+            size: specColumns.size,
+            sort: specColumns.sort,
+            z: specColumns.z,
+            showAxes: showAxes
+        };
+        layouts.push({
+            layoutType: "Strip",
+            props: stripProps
+        });
+    } else {
+        const aggProps = {
+            niceScale: true,
+            dock: "left",
+            globalAggregateMaxExtentSignal: "aggMaxExtent",
+            globalAggregateMaxExtentScaledSignal: "aggMaxExtentScaled",
+            sumBy: specColumns.size,
+            showAxes: showAxes
+        };
+        layouts.push({
+            layoutType: "AggregateContainer",
+            props: aggProps
+        });
+        switch(insight.totalStyle){
+            case "sum-treemap":
+                {
+                    x.aggregate = "sum";
+                    x.title = language.sum;
+                    const treemapProps = {
+                        corner: "top-left",
+                        size: specColumns.size,
+                        treeMapMethod: specViewOptions.language.treeMapMethod,
+                        z: specColumns.z,
+                        showAxes: showAxes
+                    };
+                    layouts.push({
+                        layoutType: "Treemap",
+                        props: treemapProps
+                    });
+                    break;
+                }
+            case "sum-strip":
+                {
+                    x.aggregate = "sum";
+                    x.title = language.sum;
+                    const stripProps = {
+                        sortOrder: "ascending",
+                        orientation: "horizontal",
+                        size: specColumns.size,
+                        sort: specColumns.sort,
+                        z: specColumns.z,
+                        showAxes: showAxes
+                    };
+                    layouts.push({
+                        layoutType: "Strip",
+                        props: stripProps
+                    });
+                    break;
+                }
+            case "count-strip":
+                {
+                    x.aggregate = "count";
+                    x.title = language.count;
+                    const stripProps = {
+                        sortOrder: "ascending",
+                        orientation: "horizontal",
+                        size: specColumns.size,
+                        sort: specColumns.sort,
+                        z: specColumns.z,
+                        showAxes: showAxes
+                    };
+                    layouts.push({
+                        layoutType: "Strip",
+                        props: stripProps
+                    });
+                    break;
+                }
+            default:
+                {
+                    x.aggregate = "count";
+                    x.title = language.count;
+                    const squareProps = {
+                        sortBy: specColumns.sort,
+                        fillDirection: "down-right",
+                        z: specColumns.z,
+                        maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
+                        maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal,
+                        showAxes: showAxes
+                    };
+                    layouts.push({
+                        layoutType: "Square",
+                        props: squareProps
+                    });
+                    break;
+                }
+        }
+    }
+    return {
+        axisScales: axisScales,
+        layouts: layouts,
+        specCapabilities: {
+            countsAndSums: true,
+            percentage: true,
+            roles: [
+                {
+                    role: "y",
+                    binnable: true,
+                    axisSelection: ((_c = specColumns.y) === null || _c === void 0 ? void 0 : _c.quantitative) ? "range" : "exact",
+                    axisSelectionBetweenTicks: true,
+                    signals: [
+                        $8e68118808d817fe$export$809e371dee643808.YBins
+                    ]
+                },
+                {
+                    role: "z",
+                    axisSelection: ((_d = specColumns.z) === null || _d === void 0 ? void 0 : _d.quantitative) ? "range" : "exact",
+                    allowNone: true
+                },
+                {
+                    role: "color",
+                    allowNone: true
+                },
+                {
+                    role: "sort",
+                    allowNone: true
+                },
+                {
+                    role: "size",
+                    allowNone: $814fc2477600f283$export$d3be63162ba033ae,
+                    excludeCategoric: true,
+                    signals: [
+                        $8e68118808d817fe$export$809e371dee643808.TreeMapMethod
+                    ]
+                },
+                {
+                    role: "facet",
+                    allowNone: true,
+                    signals: [
+                        $8e68118808d817fe$export$809e371dee643808.FacetBins
+                    ]
+                },
+                {
+                    role: "facetV",
+                    allowNone: true,
+                    signals: [
+                        $8e68118808d817fe$export$809e371dee643808.FacetVBins
+                    ]
+                }, 
+            ]
+        }
+    };
+}
+function $f7d8a1396e031deb$export$2e2bcd8739ae039(specContext) {
     var _a, _b;
-    const { insight , specColumns , specViewOptions  } = specContext;
-    const { language  } = specViewOptions;
+    const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
+    const { language: language  } = specViewOptions;
     const showAxes = true;
     const bandProps = {
         orientation: "vertical",
         groupby: {
             column: specColumns.x,
-            defaultBins: (0, _defaults.defaultBins),
-            maxbinsSignalName: (0, _constants.SignalNames).XBins,
+            defaultBins: $1953ae18505373b7$export$4a9b1843df49fbce,
+            maxbinsSignalName: $8e68118808d817fe$export$809e371dee643808.XBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.XMaxBins,
-            maxbins: (0, _defaults.maxbins)
+            maxbins: $1953ae18505373b7$export$15c9d32f115776f9
         },
-        minBandWidth: (0, _defaults.minBarBandWidth),
-        showAxes
+        minBandWidth: $1953ae18505373b7$export$929dfe98c4c4722c,
+        showAxes: showAxes
     };
     const y = {
         title: null
@@ -46019,7 +45819,7 @@ exports.default = function(specContext) {
         x: {
             title: specColumns.x && specColumns.x.name
         },
-        y,
+        y: y,
         z: {
             title: specColumns.z && specColumns.z.name
         }
@@ -46040,7 +45840,7 @@ exports.default = function(specContext) {
             size: specColumns.size,
             sort: specColumns.sort,
             z: specColumns.z,
-            showAxes
+            showAxes: showAxes
         };
         layouts.push({
             layoutType: "Strip",
@@ -46053,7 +45853,7 @@ exports.default = function(specContext) {
             globalAggregateMaxExtentSignal: "aggMaxExtent",
             globalAggregateMaxExtentScaledSignal: "aggMaxExtentScaled",
             sumBy: specColumns.size,
-            showAxes
+            showAxes: showAxes
         };
         layouts.push({
             layoutType: "AggregateContainer",
@@ -46069,7 +45869,7 @@ exports.default = function(specContext) {
                         size: specColumns.size,
                         treeMapMethod: specViewOptions.language.treeMapMethod,
                         z: specColumns.z,
-                        showAxes
+                        showAxes: showAxes
                     };
                     layouts.push({
                         layoutType: "Treemap",
@@ -46087,7 +45887,7 @@ exports.default = function(specContext) {
                         size: specColumns.size,
                         sort: specColumns.sort,
                         z: specColumns.z,
-                        showAxes
+                        showAxes: showAxes
                     };
                     layouts.push({
                         layoutType: "Strip",
@@ -46104,7 +45904,7 @@ exports.default = function(specContext) {
                         orientation: "vertical",
                         sort: specColumns.sort,
                         z: specColumns.z,
-                        showAxes
+                        showAxes: showAxes
                     };
                     layouts.push({
                         layoutType: "Strip",
@@ -46122,7 +45922,7 @@ exports.default = function(specContext) {
                         z: specColumns.z,
                         maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
                         maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal,
-                        showAxes
+                        showAxes: showAxes
                     };
                     layouts.push({
                         layoutType: "Square",
@@ -46133,8 +45933,8 @@ exports.default = function(specContext) {
         }
     }
     return {
-        axisScales,
-        layouts,
+        axisScales: axisScales,
+        layouts: layouts,
         specCapabilities: {
             countsAndSums: true,
             percentage: true,
@@ -46145,7 +45945,7 @@ exports.default = function(specContext) {
                     axisSelection: ((_a = specColumns.x) === null || _a === void 0 ? void 0 : _a.quantitative) ? "range" : "exact",
                     axisSelectionBetweenTicks: true,
                     signals: [
-                        (0, _constants.SignalNames).XBins
+                        $8e68118808d817fe$export$809e371dee643808.XBins
                     ]
                 },
                 {
@@ -46163,43 +45963,33 @@ exports.default = function(specContext) {
                 },
                 {
                     role: "size",
-                    allowNone: (0, _size.allowNoneForSize),
+                    allowNone: $814fc2477600f283$export$d3be63162ba033ae,
                     excludeCategoric: true,
                     signals: [
-                        (0, _constants.SignalNames).TreeMapMethod
+                        $8e68118808d817fe$export$809e371dee643808.TreeMapMethod
                     ]
                 },
                 {
                     role: "facet",
                     allowNone: true,
                     signals: [
-                        (0, _constants.SignalNames).FacetBins
+                        $8e68118808d817fe$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: "facetV",
                     allowNone: true,
                     signals: [
-                        (0, _constants.SignalNames).FacetVBins
+                        $8e68118808d817fe$export$809e371dee643808.FacetVBins
                     ]
                 }, 
             ]
         }
     };
-};
-
-},{"../constants":"3I5IU","../defaults":"5kAFI","../size":"ev1W0","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"d1hGL":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _constants = require("../constants");
-var _defaults = require("../defaults");
-var _size = require("../size");
-exports.default = function(specContext) {
+}
+function $357cacd817ada74c$export$2e2bcd8739ae039(specContext) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
-    const { insight , specColumns , specViewOptions  } = specContext;
+    const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
     const axisScales = {
         x: {
             title: (_a = specColumns.x) === null || _a === void 0 ? void 0 : _a.name
@@ -46218,13 +46008,13 @@ exports.default = function(specContext) {
         orientation: "horizontal",
         groupby: {
             column: specColumns.y,
-            defaultBins: (0, _defaults.defaultBins),
-            maxbinsSignalName: (0, _constants.SignalNames).YBins,
+            defaultBins: $1953ae18505373b7$export$4a9b1843df49fbce,
+            maxbinsSignalName: $8e68118808d817fe$export$809e371dee643808.YBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.YMaxBins,
-            maxbins: (0, _defaults.maxbins)
+            maxbins: $1953ae18505373b7$export$15c9d32f115776f9
         },
-        minBandWidth: (0, _defaults.minBarBandWidth),
-        showAxes,
+        minBandWidth: $1953ae18505373b7$export$929dfe98c4c4722c,
+        showAxes: showAxes,
         outerSignalExtents: backgroundImage && {
             max: backgroundImage.extents.top,
             min: backgroundImage.extents.bottom
@@ -46235,13 +46025,13 @@ exports.default = function(specContext) {
         orientation: "vertical",
         groupby: {
             column: specColumns.x,
-            defaultBins: (0, _defaults.defaultBins),
-            maxbinsSignalName: (0, _constants.SignalNames).XBins,
+            defaultBins: $1953ae18505373b7$export$4a9b1843df49fbce,
+            maxbinsSignalName: $8e68118808d817fe$export$809e371dee643808.XBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.XMaxBins,
-            maxbins: (0, _defaults.maxbins)
+            maxbins: $1953ae18505373b7$export$15c9d32f115776f9
         },
-        minBandWidth: (0, _defaults.minBarBandWidth),
-        showAxes,
+        minBandWidth: $1953ae18505373b7$export$929dfe98c4c4722c,
+        showAxes: showAxes,
         outerSignalExtents: backgroundImage && {
             max: backgroundImage.extents.right,
             min: backgroundImage.extents.left
@@ -46275,7 +46065,7 @@ exports.default = function(specContext) {
                     size: specColumns.size,
                     treeMapMethod: specViewOptions.language.treeMapMethod,
                     z: specColumns.z,
-                    showAxes
+                    showAxes: showAxes
                 };
                 layouts.push({
                     layoutType: "Treemap",
@@ -46292,7 +46082,7 @@ exports.default = function(specContext) {
                     size: specColumns.size,
                     sort: specColumns.sort,
                     z: specColumns.z,
-                    showAxes
+                    showAxes: showAxes
                 };
                 layouts.push({
                     layoutType: "Strip",
@@ -46308,7 +46098,7 @@ exports.default = function(specContext) {
                     orientation: "vertical",
                     sort: specColumns.sort,
                     z: specColumns.z,
-                    showAxes
+                    showAxes: showAxes
                 };
                 layouts.push({
                     layoutType: "Strip",
@@ -46325,7 +46115,7 @@ exports.default = function(specContext) {
                     z: specColumns.z,
                     maxGroupedUnits: null,
                     maxGroupedFillSize: null,
-                    showAxes
+                    showAxes: showAxes
                 };
                 aggProps.onBuild = (aggMaxExtent, aggMaxExtentScaled)=>{
                     squareProps.maxGroupedUnits = aggMaxExtent;
@@ -46339,8 +46129,8 @@ exports.default = function(specContext) {
             }
     }
     return {
-        axisScales,
-        layouts,
+        axisScales: axisScales,
+        layouts: layouts,
         specCapabilities: {
             backgroundImage: true,
             countsAndSums: true,
@@ -46351,7 +46141,7 @@ exports.default = function(specContext) {
                     axisSelection: ((_g = specColumns.x) === null || _g === void 0 ? void 0 : _g.quantitative) ? "range" : "exact",
                     axisSelectionBetweenTicks: true,
                     signals: [
-                        (0, _constants.SignalNames).XBins
+                        $8e68118808d817fe$export$809e371dee643808.XBins
                     ]
                 },
                 {
@@ -46360,7 +46150,7 @@ exports.default = function(specContext) {
                     axisSelection: ((_h = specColumns.y) === null || _h === void 0 ? void 0 : _h.quantitative) ? "range" : "exact",
                     axisSelectionBetweenTicks: true,
                     signals: [
-                        (0, _constants.SignalNames).YBins
+                        $8e68118808d817fe$export$809e371dee643808.YBins
                     ]
                 },
                 {
@@ -46378,41 +46168,33 @@ exports.default = function(specContext) {
                 },
                 {
                     role: "size",
-                    allowNone: (0, _size.allowNoneForSize),
+                    allowNone: $814fc2477600f283$export$d3be63162ba033ae,
                     excludeCategoric: true,
                     signals: [
-                        (0, _constants.SignalNames).TreeMapMethod
+                        $8e68118808d817fe$export$809e371dee643808.TreeMapMethod
                     ]
                 },
                 {
                     role: "facet",
                     allowNone: true,
                     signals: [
-                        (0, _constants.SignalNames).FacetBins
+                        $8e68118808d817fe$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: "facetV",
                     allowNone: true,
                     signals: [
-                        (0, _constants.SignalNames).FacetVBins
+                        $8e68118808d817fe$export$809e371dee643808.FacetVBins
                     ]
                 }, 
             ]
         }
     };
-};
-
-},{"../constants":"3I5IU","../defaults":"5kAFI","../size":"ev1W0","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7qJJk":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _constants = require("../constants");
-exports.default = function(specContext) {
+}
+function $fd4dedff97a69e9f$export$2e2bcd8739ae039(specContext) {
     var _a;
-    const { specColumns  } = specContext;
+    const { specColumns: specColumns  } = specContext;
     const squareProps = {
         sortBy: specColumns.sort,
         fillDirection: "right-down",
@@ -46426,7 +46208,7 @@ exports.default = function(specContext) {
         }
     };
     return {
-        axisScales,
+        axisScales: axisScales,
         layouts: [
             {
                 layoutType: "Square",
@@ -46453,31 +46235,23 @@ exports.default = function(specContext) {
                     role: "facet",
                     allowNone: true,
                     signals: [
-                        (0, _constants.SignalNames).FacetBins
+                        $8e68118808d817fe$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: "facetV",
                     allowNone: true,
                     signals: [
-                        (0, _constants.SignalNames).FacetVBins
+                        $8e68118808d817fe$export$809e371dee643808.FacetVBins
                     ]
                 }, 
             ]
         }
     };
-};
-
-},{"../constants":"3I5IU","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"bmKhB":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _constants = require("../constants");
-exports.default = function(specContext) {
+}
+function $5d6c93528a6186fb$export$2e2bcd8739ae039(specContext) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
-    const { insight , specColumns , specViewOptions  } = specContext;
+    const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
     const backgroundImageExtents = ((_a = specColumns.x) === null || _a === void 0 ? void 0 : _a.quantitative) && ((_b = specColumns.y) === null || _b === void 0 ? void 0 : _b.quantitative) && ((_c = insight.backgroundImage) === null || _c === void 0 ? void 0 : _c.extents);
     const scatterProps = {
         x: specColumns.x,
@@ -46486,7 +46260,7 @@ exports.default = function(specContext) {
         size: specColumns.size,
         scatterPointScaleDisplay: specViewOptions.language.scatterPointScale,
         zGrounded: specViewOptions.language.zGrounded,
-        backgroundImageExtents,
+        backgroundImageExtents: backgroundImageExtents,
         showAxes: !backgroundImageExtents
     };
     const axisScales = {
@@ -46501,7 +46275,7 @@ exports.default = function(specContext) {
         }
     };
     return {
-        axisScales,
+        axisScales: axisScales,
         layouts: [
             {
                 layoutType: "Scatter",
@@ -46538,36 +46312,27 @@ exports.default = function(specContext) {
                     role: "facet",
                     allowNone: true,
                     signals: [
-                        (0, _constants.SignalNames).FacetBins
+                        $8e68118808d817fe$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: "facetV",
                     allowNone: true,
                     signals: [
-                        (0, _constants.SignalNames).FacetVBins
+                        $8e68118808d817fe$export$809e371dee643808.FacetVBins
                     ]
                 }, 
             ],
             signals: [
-                (0, _constants.SignalNames).PointScale,
-                (0, _constants.SignalNames).ZGrounded
+                $8e68118808d817fe$export$809e371dee643808.PointScale,
+                $8e68118808d817fe$export$809e371dee643808.ZGrounded
             ]
         }
     };
-};
-
-},{"../constants":"3I5IU","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"36aPG":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _defaults = require("../defaults");
-var _constants = require("../constants");
-exports.default = function(specContext) {
+}
+function $86557584ad8f4118$export$2e2bcd8739ae039(specContext) {
     var _a, _b, _c, _d, _e, _f, _g;
-    const { insight , specColumns , specViewOptions  } = specContext;
+    const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
     const axisScales = {
         x: {
             title: (_a = specColumns.x) === null || _a === void 0 ? void 0 : _a.name
@@ -46586,13 +46351,13 @@ exports.default = function(specContext) {
         orientation: "horizontal",
         groupby: {
             column: specColumns.y,
-            defaultBins: (0, _defaults.defaultBins),
-            maxbinsSignalName: (0, _constants.SignalNames).YBins,
+            defaultBins: $1953ae18505373b7$export$4a9b1843df49fbce,
+            maxbinsSignalName: $8e68118808d817fe$export$809e371dee643808.YBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.YMaxBins,
-            maxbins: (0, _defaults.maxbins)
+            maxbins: $1953ae18505373b7$export$15c9d32f115776f9
         },
-        minBandWidth: (0, _defaults.minBarBandWidth),
-        showAxes,
+        minBandWidth: $1953ae18505373b7$export$929dfe98c4c4722c,
+        showAxes: showAxes,
         outerSignalExtents: backgroundImage && {
             max: backgroundImage.extents.top,
             min: backgroundImage.extents.bottom
@@ -46603,13 +46368,13 @@ exports.default = function(specContext) {
         orientation: "vertical",
         groupby: {
             column: specColumns.x,
-            defaultBins: (0, _defaults.defaultBins),
-            maxbinsSignalName: (0, _constants.SignalNames).XBins,
+            defaultBins: $1953ae18505373b7$export$4a9b1843df49fbce,
+            maxbinsSignalName: $8e68118808d817fe$export$809e371dee643808.XBins,
             maxbinsSignalDisplayName: specContext.specViewOptions.language.XMaxBins,
-            maxbins: (0, _defaults.maxbins)
+            maxbins: $1953ae18505373b7$export$15c9d32f115776f9
         },
-        minBandWidth: (0, _defaults.minBarBandWidth),
-        showAxes,
+        minBandWidth: $1953ae18505373b7$export$929dfe98c4c4722c,
+        showAxes: showAxes,
         outerSignalExtents: backgroundImage && {
             max: backgroundImage.extents.right,
             min: backgroundImage.extents.left
@@ -46617,10 +46382,10 @@ exports.default = function(specContext) {
     };
     const stackProps = {
         sort: specColumns.sort,
-        showAxes
+        showAxes: showAxes
     };
     return {
-        axisScales,
+        axisScales: axisScales,
         customZScale: true,
         layouts: [
             {
@@ -46646,7 +46411,7 @@ exports.default = function(specContext) {
                     axisSelection: ((_f = specColumns.x) === null || _f === void 0 ? void 0 : _f.quantitative) ? "range" : "exact",
                     axisSelectionBetweenTicks: true,
                     signals: [
-                        (0, _constants.SignalNames).XBins
+                        $8e68118808d817fe$export$809e371dee643808.XBins
                     ]
                 },
                 {
@@ -46655,7 +46420,7 @@ exports.default = function(specContext) {
                     axisSelection: ((_g = specColumns.y) === null || _g === void 0 ? void 0 : _g.quantitative) ? "range" : "exact",
                     axisSelectionBetweenTicks: true,
                     signals: [
-                        (0, _constants.SignalNames).YBins
+                        $8e68118808d817fe$export$809e371dee643808.YBins
                     ]
                 },
                 {
@@ -46670,31 +46435,23 @@ exports.default = function(specContext) {
                     role: "facet",
                     allowNone: true,
                     signals: [
-                        (0, _constants.SignalNames).FacetBins
+                        $8e68118808d817fe$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: "facetV",
                     allowNone: true,
                     signals: [
-                        (0, _constants.SignalNames).FacetVBins
+                        $8e68118808d817fe$export$809e371dee643808.FacetVBins
                     ]
                 }, 
             ]
         }
     };
-};
-
-},{"../defaults":"5kAFI","../constants":"3I5IU","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"bdRT1":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _constants = require("../constants");
-exports.default = function(specContext) {
+}
+function $b1fe74b9ed9706c5$export$2e2bcd8739ae039(specContext) {
     var _a;
-    const { specColumns  } = specContext;
+    const { specColumns: specColumns  } = specContext;
     const stripProps = {
         sortOrder: "ascending",
         orientation: "vertical",
@@ -46719,14 +46476,14 @@ exports.default = function(specContext) {
         const props = {
             dock: "top",
             niceScale: false,
-            globalAggregateMaxExtentScaledSignal,
-            globalAggregateMaxExtentSignal,
+            globalAggregateMaxExtentScaledSignal: globalAggregateMaxExtentScaledSignal,
+            globalAggregateMaxExtentSignal: globalAggregateMaxExtentSignal,
             sumBy: specColumns.size,
             showAxes: false
         };
         layouts.push({
             layoutType: "AggregateContainer",
-            props
+            props: props
         });
     }
     layouts.push({
@@ -46734,8 +46491,8 @@ exports.default = function(specContext) {
         props: stripProps
     });
     return {
-        axisScales,
-        layouts,
+        axisScales: axisScales,
+        layouts: layouts,
         specCapabilities: {
             countsAndSums: false,
             roles: [
@@ -46761,31 +46518,23 @@ exports.default = function(specContext) {
                     role: "facet",
                     allowNone: true,
                     signals: [
-                        (0, _constants.SignalNames).FacetBins
+                        $8e68118808d817fe$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: "facetV",
                     allowNone: true,
                     signals: [
-                        (0, _constants.SignalNames).FacetVBins
+                        $8e68118808d817fe$export$809e371dee643808.FacetVBins
                     ]
                 }, 
             ]
         }
     };
-};
-
-},{"../constants":"3I5IU","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"dXgQh":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _constants = require("../constants");
-exports.default = function(specContext) {
+}
+function $c9d6bf8fd68be707$export$2e2bcd8739ae039(specContext) {
     var _a;
-    const { specColumns , specViewOptions  } = specContext;
+    const { specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
     const treemapProps = {
         corner: "top-left",
         group: specColumns.group,
@@ -46810,14 +46559,14 @@ exports.default = function(specContext) {
         const props = {
             dock: "top",
             niceScale: false,
-            globalAggregateMaxExtentScaledSignal,
-            globalAggregateMaxExtentSignal,
+            globalAggregateMaxExtentScaledSignal: globalAggregateMaxExtentScaledSignal,
+            globalAggregateMaxExtentSignal: globalAggregateMaxExtentSignal,
             sumBy: specColumns.size,
             showAxes: false
         };
         layouts.push({
             layoutType: "AggregateContainer",
-            props
+            props: props
         });
     }
     layouts.push({
@@ -46825,8 +46574,8 @@ exports.default = function(specContext) {
         props: treemapProps
     });
     return {
-        axisScales,
-        layouts,
+        axisScales: axisScales,
+        layouts: layouts,
         specCapabilities: {
             countsAndSums: false,
             roles: [
@@ -46851,33 +46600,24 @@ exports.default = function(specContext) {
                     role: "facet",
                     allowNone: true,
                     signals: [
-                        (0, _constants.SignalNames).FacetBins
+                        $8e68118808d817fe$export$809e371dee643808.FacetBins
                     ]
                 },
                 {
                     role: "facetV",
                     allowNone: true,
                     signals: [
-                        (0, _constants.SignalNames).FacetVBins
+                        $8e68118808d817fe$export$809e371dee643808.FacetVBins
                     ]
                 }, 
             ],
             signals: [
-                (0, _constants.SignalNames).TreeMapMethod
+                $8e68118808d817fe$export$809e371dee643808.TreeMapMethod
             ]
         }
     };
-};
-
-},{"../constants":"3I5IU","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"kRHoI":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "getFacetLayout", ()=>getFacetLayout);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _defaults = require("./defaults");
-function getFacetLayout(facetStyle, facetColumn, facetVColumn, axisTextColor) {
+}
+function $1374567bcb000be3$export$fb43a8c8f10fdc99(facetStyle, facetColumn, facetVColumn, axisTextColor) {
     let layoutPair;
     const groupby = facetColumn;
     const plotPadding = {
@@ -46889,97 +46629,113 @@ function getFacetLayout(facetStyle, facetColumn, facetVColumn, axisTextColor) {
         case "cross":
             {
                 const props = {
-                    axisTextColor,
+                    axisTextColor: axisTextColor,
                     colRowTitles: true,
                     groupbyX: groupby,
                     groupbyY: facetVColumn
                 };
                 layoutPair = {
                     layoutType: "Cross",
-                    props
+                    props: props
                 };
                 facetPadding = {
-                    bottom: (0, _defaults.facetPaddingBottom),
-                    left: (0, _defaults.facetPaddingLeft),
+                    bottom: $1953ae18505373b7$export$bdb7a7da14f9ff2b,
+                    left: $1953ae18505373b7$export$6bd206e55cb747ae,
                     top: 0
                 };
-                plotPadding.y = (0, _defaults.facetPaddingTop);
-                plotPadding.x = (0, _defaults.facetPaddingRight);
+                plotPadding.y = $1953ae18505373b7$export$c2b9f0002271e8ba;
+                plotPadding.x = $1953ae18505373b7$export$c11851bee1b89f04;
                 break;
             }
         case "wrap":
         default:
             {
                 const props = {
-                    axisTextColor,
+                    axisTextColor: axisTextColor,
                     cellTitles: true,
-                    groupby
+                    groupby: groupby
                 };
                 layoutPair = {
                     layoutType: "Wrap",
-                    props
+                    props: props
                 };
                 facetPadding = {
-                    bottom: (0, _defaults.facetPaddingBottom),
-                    left: (0, _defaults.facetPaddingLeft),
-                    top: (0, _defaults.facetPaddingTop)
+                    bottom: $1953ae18505373b7$export$bdb7a7da14f9ff2b,
+                    left: $1953ae18505373b7$export$6bd206e55cb747ae,
+                    top: $1953ae18505373b7$export$c2b9f0002271e8ba
                 };
                 break;
             }
     }
     const facetLayout = {
-        facetPadding,
-        plotPadding
+        facetPadding: facetPadding,
+        plotPadding: plotPadding
     };
     return {
-        layoutPair,
-        facetLayout
+        layoutPair: layoutPair,
+        facetLayout: facetLayout
     };
 }
-
-},{"./defaults":"5kAFI","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"hgLDN":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-/**
- * Derive column metadata from the data array.
- * @param data Array of data objects.
- */ parcelHelpers.export(exports, "getColumnsFromData", ()=>getColumnsFromData);
-/**
- * Get columns associated with each Insight role.
- * @param insight Insight to specify column roles.
- * @param columns Array of Columns inferred from the data.
- */ parcelHelpers.export(exports, "getSpecColumns", ()=>getSpecColumns);
-/**
- * Populate columns with type inferences and stats.
- * @param columns Array of columns.
- * @param data Array of data objects.
- */ parcelHelpers.export(exports, "inferAll", ()=>inferAll);
-parcelHelpers.export(exports, "getStats", ()=>getStats);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _d3Color = require("d3-color");
-function isColor(cssColorSpecifier) {
-    return !!(0, _d3Color.color)(cssColorSpecifier);
+const $653fe05a0bd37229$var$map = {
+    barchart: $f7d8a1396e031deb$export$2e2bcd8739ae039,
+    barchartH: $0f2fd63cde7b4eed$export$2e2bcd8739ae039,
+    barchartV: $f7d8a1396e031deb$export$2e2bcd8739ae039,
+    density: $357cacd817ada74c$export$2e2bcd8739ae039,
+    grid: $fd4dedff97a69e9f$export$2e2bcd8739ae039,
+    scatterplot: $5d6c93528a6186fb$export$2e2bcd8739ae039,
+    stacks: $86557584ad8f4118$export$2e2bcd8739ae039,
+    strips: $b1fe74b9ed9706c5$export$2e2bcd8739ae039,
+    treemap: $c9d6bf8fd68be707$export$2e2bcd8739ae039
+};
+function $653fe05a0bd37229$export$104083a36c1647a7(specContext) {
+    const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
+    const fn = $653fe05a0bd37229$var$map[insight.chart];
+    if (fn) {
+        const props = fn(specContext);
+        if (insight.columns.facet) {
+            const discreteFacetColumn = {
+                column: specColumns.facet,
+                defaultBins: $1953ae18505373b7$export$4a9b1843df49fbce,
+                maxbins: $1953ae18505373b7$export$15c9d32f115776f9,
+                maxbinsSignalDisplayName: specViewOptions.language.FacetMaxBins,
+                maxbinsSignalName: $8e68118808d817fe$export$809e371dee643808.FacetBins
+            };
+            const discreteFacetVColumn = {
+                column: specColumns.facetV,
+                defaultBins: $1953ae18505373b7$export$4a9b1843df49fbce,
+                maxbins: $1953ae18505373b7$export$15c9d32f115776f9,
+                maxbinsSignalDisplayName: specViewOptions.language.FacetVMaxBins,
+                maxbinsSignalName: $8e68118808d817fe$export$809e371dee643808.FacetVBins
+            };
+            const { facetLayout: facetLayout , layoutPair: layoutPair  } = $1374567bcb000be3$export$fb43a8c8f10fdc99(insight.facetStyle, discreteFacetColumn, discreteFacetVColumn, specViewOptions.colors.axisText);
+            props.layouts.unshift(layoutPair);
+            props.facetLayout = facetLayout;
+            props.collapseFacetAxes = specViewOptions.collapseFacetAxes;
+        }
+        return props;
+    }
 }
-function isQuantitative(column) {
+function $905f7ac6d17f4e91$var$isColor(cssColorSpecifier) {
+    return !!(0, $cQmOi$d3color.color)(cssColorSpecifier);
+}
+function $905f7ac6d17f4e91$var$isQuantitative(column) {
     return column.type === "number" || column.type === "integer";
 }
-function getColumnsFromData(inferTypesFn, data, columnTypes) {
+function $905f7ac6d17f4e91$export$3f19ad07848df794(inferTypesFn, data, columnTypes) {
     const sample = data[0];
     const fields = sample ? Object.keys(sample) : [];
     const inferences = Object.assign(Object.assign({}, inferTypesFn(data, fields)), columnTypes);
     const columns = fields.map((name)=>{
         const column = {
-            name,
+            name: name,
             type: inferences[name]
         };
         return column;
     });
-    inferAll(columns, data);
+    $905f7ac6d17f4e91$export$e04a97cc71178399(columns, data);
     return columns;
 }
-function getSpecColumns(insight, columns) {
+function $905f7ac6d17f4e91$export$9e6128b2231f5173(insight, columns) {
     function getColumnByName(name) {
         return columns.filter((c)=>c.name === name)[0];
     }
@@ -46996,27 +46752,27 @@ function getSpecColumns(insight, columns) {
         z: getColumnByName(insight.columns && insight.columns.z)
     };
 }
-function inferAll(columns, data) {
+function $905f7ac6d17f4e91$export$e04a97cc71178399(columns, data) {
     columns.forEach((column)=>{
         if (column) {
-            if (typeof column.quantitative !== "boolean") column.quantitative = isQuantitative(column);
-            if (!column.stats) column.stats = getStats(data, column);
-            if (column.type === "string" && typeof column.isColorData !== "boolean") checkIsColorData(data, column);
+            if (typeof column.quantitative !== "boolean") column.quantitative = $905f7ac6d17f4e91$var$isQuantitative(column);
+            if (!column.stats) column.stats = $905f7ac6d17f4e91$export$432f698644f45d1(data, column);
+            if (column.type === "string" && typeof column.isColorData !== "boolean") $905f7ac6d17f4e91$var$checkIsColorData(data, column);
         }
     });
 }
-function checkIsColorData(data, column) {
+function $905f7ac6d17f4e91$var$checkIsColorData(data, column) {
     if (!column.stats.hasColorData) {
         column.isColorData = false;
         return;
     }
-    for(let i = 0; i < data.length; i++)if (!isColor(data[i][column.name])) {
+    for(let i = 0; i < data.length; i++)if (!$905f7ac6d17f4e91$var$isColor(data[i][column.name])) {
         column.isColorData = false;
         return;
     }
     column.isColorData = true;
 }
-function getStats(data, column) {
+function $905f7ac6d17f4e91$export$432f698644f45d1(data, column) {
     const distinctMap = {};
     const stats = {
         distinctValueCount: null,
@@ -47035,23 +46791,23 @@ function getStats(data, column) {
             if (stats.min === null || num < stats.min) stats.min = num;
             sum += num;
         }
-        if (column.type === "string" && !stats.hasColorData && isColor(value)) stats.hasColorData = true;
+        if (column.type === "string" && !stats.hasColorData && $905f7ac6d17f4e91$var$isColor(value)) stats.hasColorData = true;
     }
     if (column.quantitative) {
         stats.mean = data.length > 0 && sum / data.length;
-        stats.hasNegative = detectNegative(column, data);
-        if (column.type === "integer") stats.isSequential = detectSequentialColumn(column, data);
+        stats.hasNegative = $905f7ac6d17f4e91$var$detectNegative(column, data);
+        if (column.type === "integer") stats.isSequential = $905f7ac6d17f4e91$var$detectSequentialColumn(column, data);
     }
     stats.distinctValueCount = Object.keys(distinctMap).length;
     return stats;
 }
-function detectNegative(column, data) {
+function $905f7ac6d17f4e91$var$detectNegative(column, data) {
     for(let i = 1; i < data.length; i++){
         if (data[i][column.name] < 0) return true;
     }
     return false;
 }
-function detectSequentialColumn(column, data) {
+function $905f7ac6d17f4e91$var$detectSequentialColumn(column, data) {
     if (data.length < 2) return false;
     const colname = column.name;
     for(let i = 1; i < data.length; i++){
@@ -47059,8 +46815,3489 @@ function detectSequentialColumn(column, data) {
     }
     return true;
 }
+function $964ba569d246ec1b$export$b18909608a999daa(scope, ...axes) {
+    if (!axes || !axes.length) return;
+    if (!scope.axes) scope.axes = [];
+    scope.axes.push(...axes.filter(Boolean));
+}
+function $964ba569d246ec1b$export$6853292f627997e4(scope, ...datas) {
+    if (!datas || !datas.length) return;
+    if (!scope.data) scope.data = [];
+    scope.data.push(...datas.filter(Boolean));
+}
+function $964ba569d246ec1b$export$3df320e901c23a48(scope, ...marks) {
+    if (!marks || !marks.length) return;
+    if (!scope.marks) scope.marks = [];
+    scope.marks.push(...marks.filter(Boolean));
+}
+function $964ba569d246ec1b$export$290268902279a991(scope, ...scales) {
+    if (!scales || !scales.length) return;
+    if (!scope.scales) scope.scales = [];
+    scope.scales.push(...scales.filter(Boolean));
+}
+function $964ba569d246ec1b$export$5346a0d8a9111b3f(scope, ...signals) {
+    if (!signals || !signals.length) return;
+    if (!scope.signals) scope.signals = [];
+    scope.signals.push(...signals.filter(Boolean));
+}
+function $964ba569d246ec1b$export$eea5d31e98930019(data, ...transforms) {
+    if (!transforms || !transforms.length) return;
+    if (!data.transform) data.transform = [];
+    data.transform.push(...transforms.filter(Boolean));
+}
+function $964ba569d246ec1b$export$ef4373c7e62b2278(data, dataName) {
+    for(let i = 0; i < data.length; i++){
+        if (data[i].name === dataName) return {
+            data: data[i],
+            index: i
+        };
+    }
+}
+function $964ba569d246ec1b$export$53a21aeef48e14a8(groupings) {
+    const groupby = groupings.map((g)=>g.groupby);
+    return groupby.reduce((acc, val)=>acc.concat(val), []);
+}
+function $964ba569d246ec1b$export$e6b6683aec0fe907(...offsets) {
+    return offsets.filter(Boolean).join(" + ");
+}
+function $2a7b48a829408e96$export$3678bfcfeaea7c36(props1) {
+    const { axesOffsets: axesOffsets , axisScales: axisScales , axesScopes: axesScopes , axesTitlePadding: axesTitlePadding , allGlobalScales: allGlobalScales , globalScope: globalScope , labelBaseline: labelBaseline , plotOffsetSignals: plotOffsetSignals , specColumns: specColumns , specViewOptions: specViewOptions  } = props1;
+    const { scope: scope  } = globalScope;
+    allGlobalScales.forEach((globalScales)=>{
+        const { scales: scales  } = globalScales;
+        for(const xyz in scales){
+            const _scales = scales[xyz];
+            if (_scales) {
+                $964ba569d246ec1b$export$290268902279a991(scope, ..._scales);
+                let { showAxes: showAxes  } = globalScales;
+                let zindex = undefined;
+                if (xyz === "z") {
+                    showAxes = false;
+                    if (props1.view === "3d" && specViewOptions.zAxisOptions && !props1.hideZAxis) {
+                        if (specViewOptions.zAxisOptions.showZAxis) {
+                            showAxes = true;
+                            zindex = specViewOptions.zAxisOptions.zIndex;
+                        }
+                    }
+                }
+                if (showAxes && axisScales) {
+                    const axisScale = axisScales[xyz];
+                    if (axisScale) {
+                        const lineColor = specViewOptions.colors.axisLine;
+                        const horizontal = xyz === "x";
+                        const column = specColumns[xyz] || {
+                            quantitative: true
+                        };
+                        const title = axisScale.title;
+                        const props = {
+                            title: title,
+                            horizontal: horizontal,
+                            column: column,
+                            specViewOptions: specViewOptions,
+                            lineColor: lineColor,
+                            titlePadding: axesTitlePadding[xyz],
+                            labelBaseline: labelBaseline[xyz],
+                            zindex: zindex
+                        };
+                        axesScopes["main"].forEach((a)=>$964ba569d246ec1b$export$b18909608a999daa(a.scope, $2a7b48a829408e96$var$createAxis(Object.assign(Object.assign({}, props), {
+                                scale: a.scale || _scales[0],
+                                showTitle: a.title,
+                                showLabels: a.labels,
+                                showLines: a.lines
+                            }))));
+                        if (axesScopes[xyz]) axesScopes[xyz].forEach((a)=>$964ba569d246ec1b$export$b18909608a999daa(a.scope, $2a7b48a829408e96$var$createAxis(Object.assign(Object.assign({}, props), {
+                                scale: a.scale || _scales[0],
+                                showTitle: a.title,
+                                showLabels: a.labels,
+                                showLines: a.lines
+                            }))));
+                        if (plotOffsetSignals[xyz] && axesOffsets[xyz]) {
+                            const plotOffsetSignal = plotOffsetSignals[xyz];
+                            plotOffsetSignal.update = `${axesOffsets[xyz]}`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+function $2a7b48a829408e96$var$createAxis(props) {
+    const { column: column , horizontal: horizontal , labelBaseline: labelBaseline , lineColor: lineColor , scale: scale , showLabels: showLabels , showTitle: showTitle , showLines: showLines , specViewOptions: specViewOptions , title: title , titlePadding: titlePadding , zindex: zindex  } = props;
+    const axis = Object.assign(Object.assign(Object.assign(Object.assign({
+        zindex: zindex,
+        scale: scale.name,
+        orient: horizontal ? "bottom" : "left",
+        domain: showLines,
+        ticks: showLines
+    }, showLines && {
+        domainColor: lineColor,
+        tickColor: lineColor,
+        tickSize: specViewOptions.tickSize
+    }), showTitle && {
+        title: title,
+        titleAlign: horizontal ? "left" : "right",
+        titleAngle: {
+            signal: horizontal ? $8e68118808d817fe$export$809e371dee643808.TextAngleX : $8e68118808d817fe$export$809e371dee643808.TextAngleY
+        },
+        titleColor: specViewOptions.colors.axisText,
+        titleFontSize: {
+            signal: $8e68118808d817fe$export$809e371dee643808.TextTitleSize
+        },
+        titleLimit: $1953ae18505373b7$export$d3da25ad66816957,
+        titlePadding: titlePadding
+    }), {
+        labels: showLabels
+    }), showLabels && {
+        labelAlign: horizontal ? "left" : "right",
+        labelBaseline: labelBaseline,
+        labelAngle: {
+            signal: horizontal ? $8e68118808d817fe$export$809e371dee643808.TextAngleX : $8e68118808d817fe$export$809e371dee643808.TextAngleY
+        },
+        labelColor: specViewOptions.colors.axisText,
+        labelFontSize: {
+            signal: $8e68118808d817fe$export$809e371dee643808.TextSize
+        },
+        labelLimit: $1953ae18505373b7$export$2aa02e522549e01e
+    });
+    if (column.quantitative) axis.format = "~r";
+    return axis;
+}
+function $e968f13a53253dc9$export$fb70365b00e8cb7b(field) {
+    return field.replace(".", "\\.").replace("[", "\\[").replace("]", "\\]");
+}
+function $e968f13a53253dc9$export$74df930fa4adaae4(field) {
+    //remove whitespace, period, accessors and logical modifiers
+    return field.replace(/[.,:;+=\-/<>{}|~!@#$%^*[\]`'"()?\s\\]/g, "");
+}
+function $3d841d51af3f959e$export$fefe9507ec0904ed(scaleName, domain, range, reverse, zero, nice = true) {
+    const scale = {
+        name: scaleName,
+        type: "linear",
+        range: range,
+        round: true,
+        reverse: reverse,
+        domain: domain,
+        zero: zero,
+        nice: nice
+    };
+    return scale;
+}
+function $3d841d51af3f959e$export$b67158f831e00d0d(scaleName, data, range, field, reverse) {
+    const scale = {
+        name: scaleName,
+        type: "point",
+        range: range,
+        domain: {
+            data: data,
+            field: $e968f13a53253dc9$export$fb70365b00e8cb7b(field),
+            sort: true
+        },
+        padding: 0.5
+    };
+    if (reverse !== undefined) scale.reverse = reverse;
+    return scale;
+}
+function $3d841d51af3f959e$export$530110e7506d659d(scaleName, colorBin, data, field, scheme) {
+    scheme = scheme || $8e68118808d817fe$export$c991c3dd58d9959c;
+    const domain = {
+        data: data,
+        field: $e968f13a53253dc9$export$fb70365b00e8cb7b(field)
+    };
+    const range = {
+        scheme: scheme
+    };
+    const reverse = {
+        signal: $8e68118808d817fe$export$809e371dee643808.ColorReverse
+    };
+    if (colorBin !== "continuous") range.count = {
+        signal: $8e68118808d817fe$export$809e371dee643808.ColorBinCount
+    };
+    switch(colorBin){
+        case "continuous":
+            {
+                const sequentialScale = {
+                    name: scaleName,
+                    type: "linear",
+                    domain: domain,
+                    range: range,
+                    reverse: reverse
+                };
+                return sequentialScale;
+            }
+        case "quantile":
+            {
+                const quantileScale = {
+                    name: scaleName,
+                    type: "quantile",
+                    domain: domain,
+                    range: range,
+                    reverse: reverse
+                };
+                return quantileScale;
+            }
+        default:
+            {
+                const quantizeScale = {
+                    name: scaleName,
+                    type: "quantize",
+                    domain: domain,
+                    range: range,
+                    reverse: reverse
+                };
+                return quantizeScale;
+            }
+    }
+}
+const $86da97a0f38ad760$export$7bc9b23ce3036e78 = 0.6;
+function $86da97a0f38ad760$export$d9407ec206a3236c(context, heightSignal) {
+    const { specViewOptions: specViewOptions  } = context;
+    const signals = [
+        {
+            name: $8e68118808d817fe$export$809e371dee643808.ZProportion,
+            value: $86da97a0f38ad760$export$7bc9b23ce3036e78,
+            bind: {
+                name: specViewOptions.language.zScaleProportion,
+                debounce: $1953ae18505373b7$export$61fc7d43ac8f84b0,
+                input: "range",
+                min: 0.1,
+                max: 2,
+                step: 0.1
+            }
+        },
+        {
+            name: $8e68118808d817fe$export$809e371dee643808.ZHeight,
+            update: `${heightSignal} * ${$8e68118808d817fe$export$809e371dee643808.ZProportion}`
+        },
+        {
+            name: $8e68118808d817fe$export$809e371dee643808.TextScale,
+            value: 1.2,
+            bind: {
+                name: specViewOptions.language.textScaleSignal,
+                debounce: $1953ae18505373b7$export$61fc7d43ac8f84b0,
+                input: "range",
+                min: 0.5,
+                max: 2,
+                step: 0.1
+            }
+        },
+        {
+            name: $8e68118808d817fe$export$809e371dee643808.TextSize,
+            update: `${$8e68118808d817fe$export$809e371dee643808.TextScale} * 10`
+        },
+        {
+            name: $8e68118808d817fe$export$809e371dee643808.TextTitleSize,
+            update: `${$8e68118808d817fe$export$809e371dee643808.TextScale} * 15`
+        },
+        {
+            name: $8e68118808d817fe$export$809e371dee643808.TextAngleX,
+            value: 30,
+            bind: {
+                name: specViewOptions.language.xAxisTextAngleSignal,
+                debounce: $1953ae18505373b7$export$61fc7d43ac8f84b0,
+                input: "range",
+                min: 0,
+                max: 90,
+                step: 1
+            }
+        },
+        {
+            name: $8e68118808d817fe$export$809e371dee643808.TextAngleY,
+            value: 0,
+            bind: {
+                name: specViewOptions.language.yAxisTextAngleSignal,
+                debounce: $1953ae18505373b7$export$61fc7d43ac8f84b0,
+                input: "range",
+                min: -90,
+                max: 0,
+                step: 1
+            }
+        },
+        {
+            name: $8e68118808d817fe$export$809e371dee643808.MarkOpacity,
+            value: 1,
+            bind: {
+                name: specViewOptions.language.markOpacitySignal,
+                debounce: $1953ae18505373b7$export$61fc7d43ac8f84b0,
+                input: "range",
+                min: 0.1,
+                max: 1,
+                step: 0.05
+            }
+        }, 
+    ];
+    return signals;
+}
+function $86da97a0f38ad760$export$641fa4f0ca86c2ad(context) {
+    const { specViewOptions: specViewOptions  } = context;
+    const signal = {
+        name: $8e68118808d817fe$export$809e371dee643808.ColorBinCount,
+        value: 7,
+        bind: {
+            name: specViewOptions.language.colorBinCount,
+            debounce: $1953ae18505373b7$export$61fc7d43ac8f84b0,
+            input: "range",
+            min: 1,
+            max: specViewOptions.maxLegends + 1,
+            step: 1
+        }
+    };
+    return signal;
+}
+function $86da97a0f38ad760$export$526461dda4c87775(context) {
+    const { specViewOptions: specViewOptions  } = context;
+    const signal = {
+        name: $8e68118808d817fe$export$809e371dee643808.ColorReverse,
+        value: false,
+        bind: {
+            name: specViewOptions.language.colorReverse,
+            input: "checkbox"
+        }
+    };
+    return signal;
+}
+function $86da97a0f38ad760$export$cdc9366ba30317bd(s, fn, update) {
+    s.update = `${fn}((${s.update}), (${update}))`;
+}
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ function $8b834d9a9d79311e$var$legend(column, fill) {
+    const legend1 = {
+        orient: "none",
+        title: column.name,
+        fill: fill,
+        encode: {
+            symbols: {
+                update: {
+                    shape: {
+                        value: "square"
+                    }
+                }
+            }
+        }
+    };
+    if (column.quantitative) {
+        legend1.type = "symbol";
+        legend1.format = "~r";
+    }
+    return legend1;
+}
+function $8b834d9a9d79311e$export$765837a81fadca85(context, fill) {
+    const { specColumns: specColumns , insight: insight  } = context;
+    if (specColumns.color && !insight.hideLegend && !insight.directColor && !specColumns.color.isColorData) return [
+        $8b834d9a9d79311e$var$legend(specColumns.color, fill)
+    ];
+}
+function $4498fd2612a55b4d$export$a4725aa19e8564dd(column, count, source, legend, lookupName, fieldName, indexName) {
+    const data = [
+        {
+            name: lookupName,
+            source: source,
+            transform: [
+                {
+                    type: "aggregate",
+                    groupby: [
+                        $e968f13a53253dc9$export$fb70365b00e8cb7b(column.name)
+                    ]
+                },
+                {
+                    type: "window",
+                    ops: [
+                        "count"
+                    ],
+                    as: [
+                        indexName
+                    ]
+                },
+                {
+                    type: "filter",
+                    expr: `datum[${JSON.stringify(indexName)}] <= ${count}`
+                }, 
+            ]
+        },
+        {
+            name: legend,
+            source: source,
+            transform: [
+                {
+                    type: "lookup",
+                    from: lookupName,
+                    key: $e968f13a53253dc9$export$fb70365b00e8cb7b(column.name),
+                    fields: [
+                        column.name
+                    ].map($e968f13a53253dc9$export$fb70365b00e8cb7b),
+                    values: [
+                        column.name
+                    ].map($e968f13a53253dc9$export$fb70365b00e8cb7b),
+                    as: [
+                        fieldName
+                    ]
+                },
+                {
+                    type: "formula",
+                    expr: `datum[${JSON.stringify(fieldName)}] == null ? '${$8e68118808d817fe$export$8653a30c44b6e879}' : datum[${JSON.stringify(fieldName)}]`,
+                    as: fieldName
+                }, 
+            ]
+        }, 
+    ];
+    return data;
+}
+function $906fa06e51164985$export$4c4d9288a45f1fb3(props) {
+    const { colorReverseSignalName: colorReverseSignalName , dataName: dataName , scope: scope , legendDataName: legendDataName , scaleName: scaleName , specContext: specContext , topLookupName: topLookupName  } = props;
+    let colorDataName = dataName;
+    const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
+    const legends = $8b834d9a9d79311e$export$765837a81fadca85(specContext, scaleName);
+    if (legends) scope.legends = legends;
+    const categoricalColor = specColumns.color && !specColumns.color.quantitative;
+    if (categoricalColor) {
+        $964ba569d246ec1b$export$6853292f627997e4(scope, ...$4498fd2612a55b4d$export$a4725aa19e8564dd(specColumns.color, specViewOptions.maxLegends, dataName, legendDataName, topLookupName, $8e68118808d817fe$export$10df5429b7082be2.TopColor, $8e68118808d817fe$export$10df5429b7082be2.TopIndex));
+        colorDataName = legendDataName;
+    }
+    if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
+        if (specColumns.color.quantitative) $964ba569d246ec1b$export$290268902279a991(scope, $3d841d51af3f959e$export$530110e7506d659d(scaleName, insight.colorBin, dataName, specColumns.color.name, insight.scheme));
+        else $964ba569d246ec1b$export$290268902279a991(scope, {
+            name: scaleName,
+            type: "ordinal",
+            domain: {
+                data: colorDataName,
+                field: $8e68118808d817fe$export$10df5429b7082be2.TopColor,
+                sort: true
+            },
+            range: {
+                scheme: insight.scheme || $8e68118808d817fe$export$c991c3dd58d9959c
+            },
+            reverse: {
+                signal: colorReverseSignalName
+            }
+        });
+    }
+    $964ba569d246ec1b$export$5346a0d8a9111b3f(scope, $86da97a0f38ad760$export$641fa4f0ca86c2ad(specContext), $86da97a0f38ad760$export$526461dda4c87775(specContext));
+    return {
+        topColorField: $8e68118808d817fe$export$10df5429b7082be2.TopColor,
+        colorDataName: colorDataName
+    };
+}
+function $614e9936fbd8f464$export$4fec84497b9e6e3f(globalScope, colTitleSource, rowTitleSource, sizeSignals, axisTextColor) {
+    const titleSignal = `parent[${JSON.stringify($8e68118808d817fe$export$10df5429b7082be2.FacetTitle)}]`;
+    const index = `datum[${JSON.stringify($8e68118808d817fe$export$10df5429b7082be2.Ordinal)}] - 1`;
+    const col = $614e9936fbd8f464$export$4f57a5f5fbf1456e(colTitleSource.dataName, sizeSignals, index);
+    const row = $614e9936fbd8f464$export$d0cc3dc227001793(rowTitleSource.dataName, sizeSignals, index);
+    $964ba569d246ec1b$export$3df320e901c23a48(globalScope, col.header, row.footer);
+    $964ba569d246ec1b$export$3df320e901c23a48(col.header, {
+        type: "text",
+        encode: {
+            enter: {
+                align: {
+                    value: "center"
+                },
+                baseline: {
+                    value: "middle"
+                },
+                fill: {
+                    value: axisTextColor
+                }
+            },
+            update: {
+                metaData: {
+                    signal: `{search: parent[${JSON.stringify($8e68118808d817fe$export$10df5429b7082be2.FacetSearch)}]}`
+                },
+                x: {
+                    signal: `${sizeSignals.layoutWidth} / 2`
+                },
+                limit: {
+                    signal: sizeSignals.layoutWidth
+                },
+                fontSize: {
+                    signal: $8e68118808d817fe$export$809e371dee643808.TextSize
+                },
+                text: {
+                    signal: titleSignal
+                }
+            }
+        }
+    });
+    $964ba569d246ec1b$export$3df320e901c23a48(row.footer, {
+        type: "text",
+        encode: {
+            enter: {
+                align: {
+                    value: "left"
+                },
+                baseline: {
+                    value: "middle"
+                },
+                fill: {
+                    value: axisTextColor
+                }
+            },
+            update: {
+                metaData: {
+                    signal: `{search: parent[${JSON.stringify($8e68118808d817fe$export$10df5429b7082be2.FacetSearch)}]}`
+                },
+                y: {
+                    signal: `${sizeSignals.layoutHeight} / 2`
+                },
+                limit: {
+                    signal: $8e68118808d817fe$export$809e371dee643808.PlotOffsetRight
+                },
+                fontSize: {
+                    signal: $8e68118808d817fe$export$809e371dee643808.TextSize
+                },
+                text: {
+                    signal: titleSignal
+                }
+            }
+        }
+    });
+}
+function $614e9936fbd8f464$export$3735b1dd76112836(scope, sizeSignals, axisTextColor) {
+    $964ba569d246ec1b$export$3df320e901c23a48(scope, {
+        type: "text",
+        encode: {
+            enter: {
+                align: {
+                    value: "center"
+                },
+                baseline: {
+                    value: "bottom"
+                },
+                fill: {
+                    value: axisTextColor
+                }
+            },
+            update: {
+                metaData: {
+                    signal: `{search: parent[${JSON.stringify($8e68118808d817fe$export$10df5429b7082be2.FacetSearch)}]}`
+                },
+                x: {
+                    signal: `(${sizeSignals.layoutWidth}) / 2`
+                },
+                text: {
+                    signal: `parent[${JSON.stringify($8e68118808d817fe$export$10df5429b7082be2.FacetTitle)}]`
+                },
+                fontSize: {
+                    signal: $8e68118808d817fe$export$809e371dee643808.TextSize
+                },
+                limit: {
+                    signal: sizeSignals.layoutWidth
+                },
+                y: {
+                    signal: `-${$8e68118808d817fe$export$809e371dee643808.FacetPaddingTop} / 2`
+                }
+            }
+        }
+    });
+}
+function $614e9936fbd8f464$export$9f0b19d6fd936707(props) {
+    const { colSeqName: colSeqName , colTitleScale: colTitleScale , globalScope: globalScope , facetScope: facetScope , plotScope: plotScope , rowSeqName: rowSeqName , rowTitleScale: rowTitleScale  } = props;
+    const { sizeSignals: sizeSignals  } = facetScope;
+    const colSequence = $614e9936fbd8f464$var$createSequence(colSeqName, sizeSignals.colCount);
+    const rowSequence = $614e9936fbd8f464$var$createSequence(rowSeqName, sizeSignals.rowCount);
+    const index = "datum.data";
+    const col = $614e9936fbd8f464$export$4f57a5f5fbf1456e(colSeqName, sizeSignals, index);
+    const row = $614e9936fbd8f464$export$d0cc3dc227001793(rowSeqName, sizeSignals, index);
+    $964ba569d246ec1b$export$6853292f627997e4(globalScope, colSequence, rowSequence);
+    $964ba569d246ec1b$export$3df320e901c23a48(globalScope, col.footer, row.header);
+    $964ba569d246ec1b$export$290268902279a991(globalScope, colTitleScale, rowTitleScale);
+    const map = {
+        main: [
+            {
+                scope: facetScope.facetScope,
+                lines: true,
+                labels: false,
+                title: false
+            }, 
+        ],
+        x: [
+            {
+                scope: col.footer,
+                lines: true,
+                labels: true,
+                title: false
+            },
+            {
+                scope: plotScope,
+                scale: colTitleScale,
+                lines: false,
+                labels: false,
+                title: true
+            }, 
+        ],
+        y: [
+            {
+                scope: row.header,
+                lines: true,
+                labels: true,
+                title: false
+            },
+            {
+                scope: plotScope,
+                scale: rowTitleScale,
+                lines: false,
+                labels: false,
+                title: true
+            }, 
+        ]
+    };
+    return map;
+}
+function $614e9936fbd8f464$export$d0cc3dc227001793(data, sizeSignals, index) {
+    const rowFn = (xSignal)=>{
+        return {
+            type: "group",
+            from: {
+                data: data
+            },
+            encode: {
+                update: {
+                    x: {
+                        signal: xSignal
+                    },
+                    y: {
+                        signal: `${$8e68118808d817fe$export$809e371dee643808.PlotOffsetTop} + ${$8e68118808d817fe$export$809e371dee643808.FacetPaddingTop} + (${index}) * (${sizeSignals.layoutHeight} + ${$8e68118808d817fe$export$809e371dee643808.FacetPaddingTop} + ${$8e68118808d817fe$export$809e371dee643808.FacetPaddingBottom})`
+                    },
+                    height: {
+                        signal: sizeSignals.layoutHeight
+                    }
+                }
+            }
+        };
+    };
+    const header = rowFn($8e68118808d817fe$export$809e371dee643808.PlotOffsetLeft);
+    const footer = rowFn(`${$8e68118808d817fe$export$809e371dee643808.PlotOffsetLeft} + ${$8e68118808d817fe$export$809e371dee643808.PlotWidthOut} + ${$8e68118808d817fe$export$809e371dee643808.PlotOffsetRight} / 2`);
+    return {
+        header: header,
+        footer: footer
+    };
+}
+function $614e9936fbd8f464$export$4f57a5f5fbf1456e(data, sizeSignals, index) {
+    const colFn = (ySignal)=>{
+        return {
+            type: "group",
+            from: {
+                data: data
+            },
+            encode: {
+                update: {
+                    x: {
+                        signal: `(${index}) * (${sizeSignals.layoutWidth} + ${$8e68118808d817fe$export$809e371dee643808.FacetPaddingLeft}) + ${$8e68118808d817fe$export$809e371dee643808.FacetPaddingLeft} + ${$8e68118808d817fe$export$809e371dee643808.PlotOffsetLeft} - ${$8e68118808d817fe$export$809e371dee643808.FacetAxesAdjustX}`
+                    },
+                    y: {
+                        signal: `${ySignal} - ${$8e68118808d817fe$export$809e371dee643808.FacetAxesAdjustY}`
+                    },
+                    width: {
+                        signal: sizeSignals.layoutWidth
+                    }
+                }
+            }
+        };
+    };
+    //create group marks based on data sequences
+    const header = colFn(`${$8e68118808d817fe$export$809e371dee643808.PlotOffsetTop} / 2`);
+    const footer = colFn(`${$8e68118808d817fe$export$809e371dee643808.PlotOffsetTop} + ${$8e68118808d817fe$export$809e371dee643808.PlotHeightOut}`);
+    return {
+        header: header,
+        footer: footer
+    };
+}
+function $614e9936fbd8f464$var$createSequence(dataName, countSignal) {
+    return {
+        name: dataName,
+        transform: [
+            {
+                type: "sequence",
+                start: 0,
+                stop: {
+                    signal: countSignal
+                }
+            }, 
+        ]
+    };
+}
+function $00b9f47bd333aea9$export$9563e054e6f787fb(context, colorFieldName, scale) {
+    const { specColumns: specColumns , insight: insight , specViewOptions: specViewOptions  } = context;
+    const colorColumn = specColumns.color;
+    return colorColumn ? colorColumn.isColorData || insight.directColor ? {
+        field: $e968f13a53253dc9$export$fb70365b00e8cb7b(colorColumn.name)
+    } : {
+        scale: scale,
+        field: colorColumn.quantitative ? $e968f13a53253dc9$export$fb70365b00e8cb7b(colorColumn.name) : colorFieldName
+    } : {
+        value: specViewOptions.colors.defaultCube
+    };
+}
+function $00b9f47bd333aea9$export$c17a3be1057836e(context) {
+    const result = {
+        signal: $8e68118808d817fe$export$809e371dee643808.MarkOpacity
+    };
+    return result;
+}
+class $be25f09b8166f6c1$export$5fdf684e73bb2de5 {
+    constructor(props){
+        const { dataName: dataName , markGroup: markGroup , scope: scope , signals: signals  } = props;
+        this.scope = scope;
+        this._markGroup = markGroup;
+        this.signals = signals;
+        this.data = $964ba569d246ec1b$export$ef4373c7e62b2278(scope.data, dataName).data;
+        this._markDataName = dataName;
+        this.offsets = {
+            x: "0",
+            y: "0",
+            h: $8e68118808d817fe$export$809e371dee643808.PlotHeightIn,
+            w: $8e68118808d817fe$export$809e371dee643808.PlotWidthIn
+        };
+        this.sizeSignals = {
+            layoutHeight: $8e68118808d817fe$export$809e371dee643808.PlotHeightIn,
+            layoutWidth: $8e68118808d817fe$export$809e371dee643808.PlotWidthIn
+        };
+        this.zSize = $8e68118808d817fe$export$809e371dee643808.PlotHeightIn;
+    }
+    get markDataName() {
+        return this._markDataName;
+    }
+    setMarkDataName(markDataName) {
+        this._markDataName = markDataName;
+    }
+    get markGroup() {
+        return this._markGroup;
+    }
+    setMarkGroup(markGroup) {
+        this._markGroup = markGroup;
+    }
+}
+class $e6372eec76e9defe$export$c84671f46d6a1ca {
+    constructor(props){
+        this.props = props;
+        this.id = props.id;
+    }
+    getGrouping() {
+        return null;
+    }
+    getAggregateSumOp() {
+        return null;
+    }
+    build() {
+        throw "Not implemented";
+    }
+}
+function $125f731ad9159d1a$export$71c45f78b1166d35() {
+    return `datum.${$8e68118808d817fe$export$10df5429b7082be2.Collapsed}`;
+}
+class $2b4dbf0c360e0079$export$fd744dfcd98e5f49 extends $e6372eec76e9defe$export$c84671f46d6a1ca {
+    constructor(props){
+        super(props);
+        this.props = props;
+        const a = this.aggregation = this.getAggregation();
+        const p = this.prefix = `agg_${this.id}`;
+        this.names = {
+            barCount: `${p}_count`,
+            aggregateField: `${p}_aggregate_value`,
+            globalAggregateExtentSignal: `${p}_${a}_extent`,
+            scale: `scale_${p}`,
+            extentData: `data_${p}_extent`,
+            offsets: `data_${p}_offsets`
+        };
+    }
+    getAggregateSumOp() {
+        if (this.aggregation === "sum") {
+            const fieldOp = {
+                field: $e968f13a53253dc9$export$fb70365b00e8cb7b(this.props.sumBy.name),
+                op: "sum",
+                as: $8e68118808d817fe$export$10df5429b7082be2.Sum
+            };
+            return fieldOp;
+        }
+    }
+    build() {
+        const { aggregation: aggregation , names: names , props: props  } = this;
+        const { dock: dock , globalScope: globalScope , groupings: groupings , niceScale: niceScale , parentScope: parentScope , showAxes: showAxes  } = props;
+        $964ba569d246ec1b$export$eea5d31e98930019(globalScope.data, Object.assign(Object.assign({}, this.getTransforms(aggregation, $964ba569d246ec1b$export$53a21aeef48e14a8(groupings))), {
+            as: [
+                names.aggregateField
+            ]
+        }), {
+            type: "extent",
+            field: $e968f13a53253dc9$export$fb70365b00e8cb7b(names.aggregateField),
+            signal: names.globalAggregateExtentSignal
+        });
+        $964ba569d246ec1b$export$5346a0d8a9111b3f(globalScope.scope, {
+            name: props.globalAggregateMaxExtentSignal,
+            update: `${names.globalAggregateExtentSignal}[1]`
+        });
+        const horizontal = dock === "left";
+        const groupScaled = `scale(${JSON.stringify(names.scale)}, datum[${JSON.stringify(names.aggregateField)}])`;
+        const offsets = {
+            x: parentScope.offsets.x,
+            y: $964ba569d246ec1b$export$e6b6683aec0fe907(parentScope.offsets.y, dock === "bottom" ? groupScaled : ""),
+            h: horizontal ? parentScope.offsets.h : dock === "top" ? groupScaled : `${parentScope.offsets.h} - ${groupScaled}`,
+            w: horizontal ? groupScaled : parentScope.offsets.w
+        };
+        const scale = {
+            type: "linear",
+            name: names.scale,
+            domain: [
+                0,
+                {
+                    signal: props.globalAggregateMaxExtentSignal
+                }, 
+            ],
+            range: horizontal ? [
+                0,
+                {
+                    signal: parentScope.sizeSignals.layoutWidth
+                }, 
+            ] : [
+                {
+                    signal: parentScope.sizeSignals.layoutHeight
+                },
+                0, 
+            ],
+            nice: niceScale,
+            zero: true,
+            reverse: dock === "top"
+        };
+        const globalAggregateMaxExtentScaledValue = `scale(${JSON.stringify(names.scale)}, ${props.globalAggregateMaxExtentSignal})`;
+        $964ba569d246ec1b$export$5346a0d8a9111b3f(globalScope.scope, {
+            name: props.globalAggregateMaxExtentScaledSignal,
+            update: dock === "bottom" ? `${parentScope.sizeSignals.layoutHeight} - ${globalAggregateMaxExtentScaledValue}` : globalAggregateMaxExtentScaledValue
+        });
+        return {
+            offsets: offsets,
+            sizeSignals: horizontal ? {
+                layoutHeight: parentScope.sizeSignals.layoutHeight,
+                layoutWidth: null
+            } : {
+                layoutHeight: null,
+                layoutWidth: parentScope.sizeSignals.layoutWidth
+            },
+            globalScales: {
+                showAxes: showAxes,
+                scales: {
+                    x: horizontal ? [
+                        scale
+                    ] : undefined,
+                    y: horizontal ? undefined : [
+                        scale
+                    ]
+                }
+            },
+            encodingRuleMap: horizontal ? {
+                x: [
+                    {
+                        test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                        signal: parentScope.offsets.x
+                    }
+                ],
+                width: [
+                    {
+                        test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                        value: 0
+                    }
+                ]
+            } : {
+                y: [
+                    {
+                        test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                        signal: dock === "top" ? parentScope.offsets.y : $964ba569d246ec1b$export$e6b6683aec0fe907(parentScope.offsets.y, parentScope.offsets.h)
+                    }
+                ],
+                height: [
+                    {
+                        test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                        value: 0
+                    }
+                ]
+            }
+        };
+    }
+    getTransforms(aggregation, groupby) {
+        const trans = {
+            type: "joinaggregate",
+            groupby: groupby.map($e968f13a53253dc9$export$fb70365b00e8cb7b),
+            ops: [
+                aggregation
+            ]
+        };
+        if (aggregation === "sum") trans.fields = [
+            this.props.sumBy.name
+        ].map($e968f13a53253dc9$export$fb70365b00e8cb7b);
+        return trans;
+    }
+    getAggregation() {
+        const { props: props  } = this;
+        let s;
+        if (props.dock === "left") s = props.axesScales.x;
+        else s = props.axesScales.y;
+        switch(s.aggregate){
+            case "sum":
+                return "sum";
+            default:
+                return "count";
+        }
+    }
+}
+class $45d3ecfc03203bea$export$7eda37970b01b2c extends $e6372eec76e9defe$export$c84671f46d6a1ca {
+    constructor(props){
+        super(props);
+        this.props = props;
+        const a = this.props.aggregation;
+        const p = this.prefix = `agg_${this.id}`;
+        this.names = {
+            barCount: `${p}_count`,
+            aggregateField: `${p}_aggregate_value`,
+            globalAggregateExtentSignal: `${p}_${a}_extent`,
+            extentData: `data_${p}_extent`
+        };
+    }
+    build() {
+        const { names: names , props: props  } = this;
+        const { aggregation: aggregation , globalScope: globalScope , groupings: groupings , onBuild: onBuild , parentScope: parentScope  } = props;
+        const { sizeSignals: sizeSignals  } = parentScope;
+        $964ba569d246ec1b$export$eea5d31e98930019(globalScope.data, Object.assign(Object.assign({}, this.getTransforms(aggregation, $964ba569d246ec1b$export$53a21aeef48e14a8(groupings))), {
+            as: [
+                names.aggregateField
+            ]
+        }), {
+            type: "extent",
+            field: $e968f13a53253dc9$export$fb70365b00e8cb7b(names.aggregateField),
+            signal: names.globalAggregateExtentSignal
+        });
+        const localAggregateMaxExtent = `datum[${JSON.stringify(names.aggregateField)}]`;
+        const squareMaxSide = `min((${sizeSignals.layoutHeight}), (${sizeSignals.layoutWidth}))`;
+        const squareMaxArea = `(${[
+            squareMaxSide,
+            squareMaxSide
+        ].join(" * ")})`;
+        const shrinkRatio = `((${localAggregateMaxExtent}) / (${names.globalAggregateExtentSignal}[1]))`;
+        const squareArea = `(${[
+            squareMaxArea,
+            shrinkRatio
+        ].join(" * ")})`;
+        const squareSide = `sqrt(${squareArea})`;
+        const localAggregateMaxExtentScaled = squareSide;
+        onBuild && onBuild(localAggregateMaxExtent, localAggregateMaxExtentScaled);
+        const offsets = {
+            x: $964ba569d246ec1b$export$e6b6683aec0fe907(parentScope.offsets.x, `(${parentScope.offsets.w} - ${squareSide}) / 2`),
+            y: $964ba569d246ec1b$export$e6b6683aec0fe907(parentScope.offsets.y, `(${parentScope.offsets.h} - ${squareSide}) / 2`),
+            h: squareSide,
+            w: squareSide
+        };
+        return {
+            offsets: offsets,
+            sizeSignals: {
+                layoutHeight: null,
+                layoutWidth: null
+            },
+            encodingRuleMap: {
+                y: [
+                    {
+                        test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                        signal: offsets.y
+                    }
+                ],
+                height: [
+                    {
+                        test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                        value: 0
+                    }
+                ]
+            }
+        };
+    }
+    getTransforms(aggregation, groupby) {
+        const trans = {
+            type: "joinaggregate",
+            groupby: groupby.map($e968f13a53253dc9$export$fb70365b00e8cb7b),
+            ops: [
+                aggregation
+            ]
+        };
+        if (aggregation === "sum") trans.fields = [
+            this.props.sumBy.name
+        ].map($e968f13a53253dc9$export$fb70365b00e8cb7b);
+        return trans;
+    }
+}
+function $5aa87f3c3a9074f3$export$e1e8339c59091971(column, signal) {
+    return {
+        type: "extent",
+        field: $e968f13a53253dc9$export$fb70365b00e8cb7b(column.name),
+        signal: signal
+    };
+}
+function $41ff5dbbe7f2be3a$export$6868fd1605c79d3d(prefix, domainDataName, discreteColumn, outerSignalExtents) {
+    const { column: column , defaultBins: defaultBins , maxbins: maxbins , maxbinsSignalDisplayName: maxbinsSignalDisplayName , maxbinsSignalName: maxbinsSignalName  } = discreteColumn;
+    if (column.quantitative) {
+        const field = `${prefix}_bin_${$e968f13a53253dc9$export$74df930fa4adaae4(column.name)}`;
+        const fieldEnd = `${field}_end`;
+        const binSignal = `${field}_bins`;
+        const dataExtentSignal = `${field}_bin_extent`;
+        const dataExtentSpanSignal = `${field}_bin_extent_span`;
+        const outerSignal = `${field}_outer_extent`;
+        domainDataName = `${field}_sequence`; //override the data name
+        const extentTransform = $5aa87f3c3a9074f3$export$e1e8339c59091971(column, dataExtentSignal);
+        let imageSignal;
+        if (outerSignalExtents) imageSignal = $41ff5dbbe7f2be3a$export$3794e0ea8ab2e895(outerSignal, outerSignalExtents.min, outerSignalExtents.max, dataExtentSignal);
+        const maxbinsSignal = {
+            name: maxbinsSignalName,
+            value: defaultBins,
+            bind: {
+                name: maxbinsSignalDisplayName,
+                debounce: $1953ae18505373b7$export$61fc7d43ac8f84b0,
+                input: "range",
+                min: 1,
+                max: maxbins,
+                step: 1
+            }
+        };
+        const extentSignal = (imageSignal === null || imageSignal === void 0 ? void 0 : imageSignal.name) || dataExtentSignal;
+        const binTransform = {
+            type: "bin",
+            field: $e968f13a53253dc9$export$fb70365b00e8cb7b(column.name),
+            as: [
+                field,
+                fieldEnd, 
+            ],
+            signal: binSignal,
+            extent: {
+                signal: `[${extentSignal}[0], ${extentSignal}[1] + 1e-11]`
+            },
+            maxbins: {
+                signal: maxbinsSignalName
+            }
+        };
+        const dataSequence = {
+            name: domainDataName,
+            transform: [
+                {
+                    type: "sequence",
+                    start: {
+                        signal: `${binSignal}.start`
+                    },
+                    stop: {
+                        signal: `${binSignal}.stop`
+                    },
+                    step: {
+                        signal: `${binSignal}.step`
+                    }
+                },
+                {
+                    type: "formula",
+                    expr: "datum.data",
+                    as: field
+                },
+                {
+                    type: "formula",
+                    expr: `datum.data + ${binSignal}.step`,
+                    as: fieldEnd
+                },
+                {
+                    type: "window",
+                    ops: [
+                        "row_number"
+                    ],
+                    as: [
+                        $8e68118808d817fe$export$10df5429b7082be2.Ordinal
+                    ]
+                },
+                {
+                    type: "formula",
+                    expr: `datum.data === ${binSignal}.start`,
+                    as: $8e68118808d817fe$export$10df5429b7082be2.First
+                },
+                {
+                    type: "formula",
+                    expr: `datum.data === ${binSignal}.stop - ${binSignal}.step`,
+                    as: $8e68118808d817fe$export$10df5429b7082be2.Last
+                },
+                {
+                    // when there is only one bin, use only first sequence element
+                    type: "filter",
+                    expr: `${dataExtentSpanSignal} === 0 ? datum[${JSON.stringify($8e68118808d817fe$export$10df5429b7082be2.First)}] : true`
+                }
+            ]
+        };
+        const signals = [
+            maxbinsSignal,
+            {
+                name: dataExtentSpanSignal,
+                update: `${extentSignal}[1] - ${extentSignal}[0]`
+            }, 
+        ];
+        if (imageSignal) signals.push(imageSignal);
+        const augmentBinnable = {
+            discreteColumn: discreteColumn,
+            native: false,
+            transforms: [
+                extentTransform,
+                binTransform
+            ],
+            fields: [
+                field,
+                fieldEnd
+            ],
+            binSignal: binSignal,
+            extentSignal: extentSignal,
+            dataSequence: dataSequence,
+            domainDataName: domainDataName,
+            signals: signals,
+            fullScaleDataname: dataSequence.name
+        };
+        return augmentBinnable;
+    } else {
+        const nativeBinnable = {
+            discreteColumn: discreteColumn,
+            native: true,
+            fields: [
+                column.name
+            ],
+            domainDataName: domainDataName,
+            fullScaleDataname: domainDataName
+        };
+        return nativeBinnable;
+    }
+}
+function $41ff5dbbe7f2be3a$export$3794e0ea8ab2e895(name, min, max, dataExtent1) {
+    return {
+        name: name,
+        update: `[min(${min}, ${dataExtent1}[0]), max(${max}, ${dataExtent1}[1])]`
+    };
+}
+const $7f86b9cde23af8d8$export$d437166a1bdbfdf0 = "_linear";
+class $7f86b9cde23af8d8$export$5b22a87d7feca398 extends $e6372eec76e9defe$export$c84671f46d6a1ca {
+    constructor(props){
+        super(props);
+        this.props = props;
+        const p = this.prefix = `band_${this.id}`;
+        this.names = {
+            xScale: `scale_${p}_x`,
+            yScale: `scale_${p}_y`,
+            bandWidth: `${p}_bandwidth`,
+            accumulative: `${p}_accumulative`
+        };
+        this.bin = $41ff5dbbe7f2be3a$export$6868fd1605c79d3d(this.prefix, props.globalScope.data.name, props.groupby, props.outerSignalExtents);
+    }
+    getGrouping() {
+        return this.bin.fields;
+    }
+    build() {
+        const { bin: bin , names: names , props: props  } = this;
+        const { globalScope: globalScope , minBandWidth: minBandWidth , orientation: orientation , parentScope: parentScope , showAxes: showAxes  } = props;
+        const binField = bin.fields[0];
+        if (bin.native === false) {
+            $964ba569d246ec1b$export$5346a0d8a9111b3f(globalScope.scope, ...bin.signals);
+            $964ba569d246ec1b$export$eea5d31e98930019(globalScope.data, ...bin.transforms);
+            $964ba569d246ec1b$export$6853292f627997e4(globalScope.scope, bin.dataSequence);
+        }
+        //TODO don't add this, use existing dataset
+        $964ba569d246ec1b$export$6853292f627997e4(globalScope.scope, {
+            name: names.accumulative,
+            source: bin.fullScaleDataname,
+            transform: [
+                {
+                    type: "aggregate",
+                    groupby: this.getGrouping().map($e968f13a53253dc9$export$fb70365b00e8cb7b),
+                    ops: [
+                        "count"
+                    ]
+                }, 
+            ]
+        });
+        const horizontal = orientation === "horizontal";
+        const minCellSignal = horizontal ? globalScope.signals.minCellHeight : globalScope.signals.minCellWidth;
+        $86da97a0f38ad760$export$cdc9366ba30317bd(minCellSignal, "max", `length(data(${JSON.stringify(names.accumulative)})) * ${minBandWidth}`);
+        $964ba569d246ec1b$export$5346a0d8a9111b3f(globalScope.scope, {
+            name: names.bandWidth,
+            update: `bandwidth(${JSON.stringify(horizontal ? names.yScale : names.xScale)})`
+        });
+        const scale = this.getScale(bin, horizontal);
+        if (props.outerSignalExtents && bin.native === false) $964ba569d246ec1b$export$290268902279a991(globalScope.scope, $3d841d51af3f959e$export$fefe9507ec0904ed(scale.name + $7f86b9cde23af8d8$export$d437166a1bdbfdf0, {
+            signal: bin.extentSignal
+        }, scale.range, scale.reverse, false, false));
+        let encodingRuleMap;
+        if (!props.excludeEncodingRuleMap) encodingRuleMap = horizontal ? {
+            x: [
+                {
+                    test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                    signal: parentScope.offsets.x
+                }, 
+            ],
+            width: [
+                {
+                    test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                    value: 0
+                }, 
+            ]
+        } : {
+            y: [
+                {
+                    test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                    signal: $964ba569d246ec1b$export$e6b6683aec0fe907(parentScope.offsets.y, parentScope.offsets.h)
+                }, 
+            ],
+            height: [
+                {
+                    test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                    value: 0
+                }, 
+            ]
+        };
+        return {
+            offsets: this.getOffset(horizontal, binField),
+            sizeSignals: horizontal ? {
+                layoutHeight: names.bandWidth,
+                layoutWidth: parentScope.sizeSignals.layoutWidth
+            } : {
+                layoutHeight: parentScope.sizeSignals.layoutHeight,
+                layoutWidth: names.bandWidth
+            },
+            globalScales: {
+                showAxes: showAxes,
+                scales: {
+                    x: horizontal ? undefined : [
+                        scale
+                    ],
+                    y: horizontal ? [
+                        scale
+                    ] : undefined
+                }
+            },
+            encodingRuleMap: encodingRuleMap
+        };
+    }
+    getOffset(horizontal, binField) {
+        const { names: names , props: props  } = this;
+        const { parentScope: parentScope  } = props;
+        return {
+            x: $964ba569d246ec1b$export$e6b6683aec0fe907(parentScope.offsets.x, horizontal ? "" : `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(binField)}])`),
+            y: $964ba569d246ec1b$export$e6b6683aec0fe907(parentScope.offsets.y, horizontal ? `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(binField)}])` : ""),
+            h: horizontal ? names.bandWidth : parentScope.offsets.h,
+            w: horizontal ? parentScope.offsets.w : names.bandWidth
+        };
+    }
+    getScale(bin, horizontal) {
+        const { names: names  } = this;
+        const { parentScope: parentScope  } = this.props;
+        const binField = $e968f13a53253dc9$export$fb70365b00e8cb7b(bin.fields[0]);
+        let bandScale;
+        if (horizontal) bandScale = {
+            type: "band",
+            name: names.yScale,
+            range: [
+                0,
+                {
+                    signal: parentScope.sizeSignals.layoutHeight
+                }, 
+            ],
+            padding: 0.1,
+            domain: {
+                data: bin.domainDataName,
+                field: binField,
+                sort: true
+            },
+            reverse: true
+        };
+        else bandScale = {
+            type: "band",
+            name: names.xScale,
+            range: [
+                0,
+                {
+                    signal: parentScope.sizeSignals.layoutWidth
+                }, 
+            ],
+            padding: 0.1,
+            domain: {
+                data: bin.domainDataName,
+                field: binField,
+                sort: true
+            }
+        };
+        return bandScale;
+    }
+}
+function $078aa86507cb3dde$export$f241323700beca17(bin) {
+    const val = (index)=>`datum[${JSON.stringify(bin.fields[index])}]`;
+    return bin.discreteColumn.column.quantitative ? `format(${val(0)}, '~r') + ' - ' + format(${val(1)}, '~r')` : val(0);
+}
+function $078aa86507cb3dde$var$obj(nameValues, clause) {
+    if (clause) nameValues = [
+        clause,
+        ...nameValues
+    ];
+    return `{${nameValues.join()}}`;
+}
+function $078aa86507cb3dde$export$b292ca0d4c2e4690(bin, firstFieldName, lastFieldName, clause) {
+    if (bin.discreteColumn.column.quantitative) {
+        const low = [
+            `name:${JSON.stringify(bin.discreteColumn.column.name)}`,
+            "operator:'>='",
+            `value:datum[${JSON.stringify(bin.fields[0])}]`, 
+        ];
+        const high = [
+            "clause:'&&'",
+            `name:${JSON.stringify(bin.discreteColumn.column.name)}`,
+            "operator:'<'",
+            `value:datum[${JSON.stringify(bin.fields[1])}]`, 
+        ];
+        return $078aa86507cb3dde$var$obj([
+            `expressions:[ datum[${JSON.stringify(firstFieldName)}] ? null : ${$078aa86507cb3dde$var$obj(low)}, datum[${JSON.stringify(lastFieldName)}] ? null : ${$078aa86507cb3dde$var$obj(high)}]`, 
+        ], clause);
+    } else {
+        const exact = [
+            `name:${JSON.stringify(bin.discreteColumn.column.name)}`,
+            "operator:'=='",
+            `value:datum[${JSON.stringify(bin.fields[0])}]`, 
+        ];
+        return $078aa86507cb3dde$var$obj([
+            `expressions:[${$078aa86507cb3dde$var$obj(exact)}]`, 
+        ], clause);
+    }
+}
+function $134416bff3e16123$export$71d2e96f63f1ac97(source, prefix, binFields, sortOrder) {
+    const _binFields = binFields.map($e968f13a53253dc9$export$fb70365b00e8cb7b);
+    const dataName = `${prefix}_bin_order`;
+    const data = {
+        name: dataName,
+        source: source,
+        transform: [
+            {
+                type: "aggregate",
+                groupby: _binFields
+            },
+            {
+                type: "collect",
+                sort: {
+                    field: _binFields,
+                    order: _binFields.map((f)=>sortOrder)
+                }
+            },
+            {
+                type: "window",
+                ops: [
+                    "row_number"
+                ],
+                as: [
+                    $8e68118808d817fe$export$10df5429b7082be2.Ordinal
+                ]
+            }, 
+        ]
+    };
+    return {
+        data: data,
+        scale: $134416bff3e16123$export$f85d5aad90241781(dataName, `scale_${prefix}_order`, binFields)
+    };
+}
+function $134416bff3e16123$export$f85d5aad90241781(dataName, scaleName, binFields) {
+    return {
+        type: "ordinal",
+        name: scaleName,
+        domain: {
+            data: dataName,
+            field: $e968f13a53253dc9$export$fb70365b00e8cb7b(binFields[0])
+        },
+        range: {
+            data: dataName,
+            field: $8e68118808d817fe$export$10df5429b7082be2.Ordinal
+        }
+    };
+}
+class $732335c7cbd3f514$export$3c877bb842c36952 extends $e6372eec76e9defe$export$c84671f46d6a1ca {
+    constructor(props){
+        super(props);
+        this.props = props;
+        const p = this.prefix = `cross_${this.id}`;
+        this.binX = $41ff5dbbe7f2be3a$export$6868fd1605c79d3d(`${p}_x`, props.globalScope.data.name, props.groupbyX);
+        this.binY = $41ff5dbbe7f2be3a$export$6868fd1605c79d3d(`${p}_y`, props.globalScope.data.name, props.groupbyY);
+        this.names = {
+            facetDataName: `data_${p}_facet`,
+            searchUnion: `data_${p}_search`,
+            dimScale: `scale_${p}`,
+            dimCount: `${p}_count`,
+            dimCategorical: `data_${p}_cat`,
+            dimCellSize: `${p}_cell_size`,
+            dimCellSizeCalc: `${p}_cell_calc`
+        };
+    }
+    getGrouping() {
+        return this.binX.fields.concat(this.binY.fields);
+    }
+    build() {
+        const { binX: binX , binY: binY , names: names , prefix: prefix , props: props  } = this;
+        const { axisTextColor: axisTextColor , colRowTitles: colRowTitles , globalScope: globalScope , parentScope: parentScope  } = props;
+        const titles = {
+            x: {
+                dataName: null,
+                quantitative: null
+            },
+            y: {
+                dataName: null,
+                quantitative: null
+            }
+        };
+        const dx = {
+            dim: "x",
+            bin: binX,
+            sortOrder: "ascending",
+            size: parentScope.sizeSignals.layoutWidth,
+            layout: parentScope.sizeSignals.layoutWidth,
+            min: globalScope.signals.minCellWidth.name,
+            out: globalScope.signals.plotWidthOut,
+            offset: $8e68118808d817fe$export$809e371dee643808.FacetPaddingLeft,
+            padding: $8e68118808d817fe$export$809e371dee643808.FacetPaddingLeft,
+            dataOut: null,
+            scaleName: null,
+            position: null
+        };
+        const dy = {
+            dim: "y",
+            bin: binY,
+            sortOrder: "ascending",
+            size: parentScope.sizeSignals.layoutHeight,
+            layout: parentScope.sizeSignals.layoutHeight,
+            min: globalScope.signals.minCellHeight.name,
+            out: globalScope.signals.plotHeightOut,
+            offset: $8e68118808d817fe$export$809e371dee643808.FacetPaddingTop,
+            padding: `(${$8e68118808d817fe$export$809e371dee643808.FacetPaddingTop} + ${$8e68118808d817fe$export$809e371dee643808.FacetPaddingBottom})`,
+            dataOut: null,
+            scaleName: null,
+            position: null
+        };
+        const dimensions = [
+            dx,
+            dy
+        ];
+        dimensions.forEach((d)=>{
+            const { bin: bin , dim: dim , padding: padding , sortOrder: sortOrder  } = d;
+            let data;
+            let dataName;
+            let countSignal;
+            let scale;
+            const titleSource = titles[dim];
+            if (bin.native === false) {
+                $964ba569d246ec1b$export$5346a0d8a9111b3f(globalScope.scope, ...bin.signals);
+                $964ba569d246ec1b$export$eea5d31e98930019(globalScope.data, ...bin.transforms);
+                $964ba569d246ec1b$export$6853292f627997e4(globalScope.scope, bin.dataSequence);
+                $964ba569d246ec1b$export$eea5d31e98930019(bin.dataSequence, {
+                    type: "formula",
+                    expr: `indata(${JSON.stringify(globalScope.markDataName)}, ${JSON.stringify(bin.fields[0])}, datum[${JSON.stringify(bin.fields[0])}])`,
+                    as: $8e68118808d817fe$export$10df5429b7082be2.Contains
+                });
+                data = bin.dataSequence;
+                dataName = bin.dataSequence.name;
+                countSignal = `length(data(${JSON.stringify(dataName)}))`;
+                scale = $134416bff3e16123$export$f85d5aad90241781(dataName, `${names.dimScale}_${dim}`, bin.fields);
+                titleSource.dataName = bin.dataSequence.name;
+            } else {
+                dataName = globalScope.markDataName;
+                const ord = $134416bff3e16123$export$71d2e96f63f1ac97(dataName, `${prefix}_${dim}`, bin.fields, sortOrder);
+                data = ord.data;
+                $964ba569d246ec1b$export$6853292f627997e4(globalScope.scope, ord.data);
+                countSignal = `length(data(${JSON.stringify(ord.data.name)}))`;
+                scale = ord.scale;
+                titleSource.dataName = ord.data.name;
+            }
+            titleSource.quantitative = bin.discreteColumn.column.quantitative;
+            d.dataOut = data;
+            d.scaleName = scale.name;
+            $964ba569d246ec1b$export$eea5d31e98930019(data, {
+                type: "formula",
+                expr: $078aa86507cb3dde$export$b292ca0d4c2e4690(bin, $8e68118808d817fe$export$10df5429b7082be2.First, $8e68118808d817fe$export$10df5429b7082be2.Last),
+                as: $8e68118808d817fe$export$10df5429b7082be2.FacetSearch
+            }, {
+                type: "formula",
+                expr: $078aa86507cb3dde$export$f241323700beca17(bin),
+                as: $8e68118808d817fe$export$10df5429b7082be2.FacetTitle
+            });
+            $964ba569d246ec1b$export$290268902279a991(globalScope.scope, scale);
+            const count = `${names.dimCount}_${dim}`;
+            const calc = `${names.dimCellSizeCalc}_${dim}`;
+            const size = `${names.dimCellSize}_${dim}`;
+            $964ba569d246ec1b$export$5346a0d8a9111b3f(globalScope.scope, {
+                name: count,
+                update: countSignal
+            });
+            $964ba569d246ec1b$export$5346a0d8a9111b3f(globalScope.scope, {
+                name: calc,
+                update: `${d.layout} / ${count}`
+            }, {
+                name: size,
+                update: `max(${d.min}, (${calc} - ${padding}))`
+            });
+            $86da97a0f38ad760$export$cdc9366ba30317bd(d.out, "max", `((${size} + ${padding}) * ${count})`);
+            d.position = this.dimensionOffset(d);
+        });
+        const groupRow = {
+            type: "group",
+            encode: {
+                update: {
+                    y: {
+                        signal: dy.position
+                    }
+                }
+            },
+            from: {
+                data: dy.dataOut.name
+            },
+            data: [
+                {
+                    name: names.searchUnion,
+                    source: dx.dataOut.name,
+                    transform: [
+                        {
+                            type: "formula",
+                            expr: `[datum[${JSON.stringify($8e68118808d817fe$export$10df5429b7082be2.FacetSearch)}], merge(parent[${JSON.stringify($8e68118808d817fe$export$10df5429b7082be2.FacetSearch)}], { clause: '&&'})]`,
+                            as: $8e68118808d817fe$export$10df5429b7082be2.FacetSearch
+                        }, 
+                    ]
+                }, 
+            ]
+        };
+        const groupCol = {
+            style: "cell",
+            name: prefix,
+            type: "group",
+            encode: {
+                update: {
+                    height: {
+                        signal: `${names.dimCellSize}_y`
+                    },
+                    width: {
+                        signal: `${names.dimCellSize}_x`
+                    },
+                    x: {
+                        signal: dx.position
+                    }
+                }
+            },
+            from: {
+                data: names.searchUnion
+            }
+        };
+        $964ba569d246ec1b$export$3df320e901c23a48(globalScope.markGroup, groupRow);
+        $964ba569d246ec1b$export$3df320e901c23a48(groupRow, groupCol);
+        const offsets = {
+            x: this.dimensionOffset(dx),
+            y: this.dimensionOffset(dy),
+            h: `${names.dimCellSize}_y`,
+            w: `${names.dimCellSize}_x`
+        };
+        const sizeSignals = {
+            layoutHeight: `${names.dimCellSize}_y`,
+            layoutWidth: `${names.dimCellSize}_x`,
+            colCount: `${names.dimCount}_x`,
+            rowCount: `${names.dimCount}_y`
+        };
+        if (colRowTitles) $614e9936fbd8f464$export$4fec84497b9e6e3f(globalScope.scope, titles.x, titles.y, sizeSignals, axisTextColor);
+        return {
+            facetScope: groupCol,
+            offsets: offsets,
+            sizeSignals: sizeSignals,
+            titles: titles
+        };
+    }
+    dimensionOffset(d) {
+        const { names: names  } = this;
+        return `${d.offset} + (scale(${JSON.stringify(d.scaleName)}, datum[${JSON.stringify(d.bin.fields[0])}]) - 1) * (${names.dimCellSize}_${d.dim} + ${d.padding})`;
+    }
+}
+class $a85e042c8f2d0108$export$1c460fb4285edadc extends $e6372eec76e9defe$export$c84671f46d6a1ca {
+    constructor(props){
+        super(props);
+        this.props = props;
+        const p = this.prefix = `scatter_${this.id}`;
+        this.names = {
+            aggregateData: `data_${p}_aggregate`,
+            markData: `data_${p}_mark`,
+            xDataExtent: `${p}_xDataExtent`,
+            yDataExtent: `${p}_yDataExtent`,
+            xExtent: `${p}_xExtent`,
+            yExtent: `${p}_yExtent`,
+            sizeExtent: `${p}_sizeExtent`,
+            sizeRange: `${p}_sizeRange`,
+            sizeScale: `${p}_sizeScale`,
+            xScale: `scale_${p}_x`,
+            yScale: `scale_${p}_y`,
+            zScale: `scale_${p}_z`
+        };
+    }
+    build() {
+        const { names: names , prefix: prefix , props: props  } = this;
+        const { backgroundImageExtents: backgroundImageExtents , globalScope: globalScope , parentScope: parentScope , scatterPointScaleDisplay: scatterPointScaleDisplay , showAxes: showAxes , size: size , x: x , y: y , z: z , zGrounded: zGrounded  } = props;
+        const qsize = size && size.quantitative && size;
+        $964ba569d246ec1b$export$5346a0d8a9111b3f(globalScope.scope, {
+            name: $8e68118808d817fe$export$809e371dee643808.PointScale,
+            value: 5,
+            bind: {
+                name: scatterPointScaleDisplay,
+                debounce: $1953ae18505373b7$export$61fc7d43ac8f84b0,
+                input: "range",
+                min: 1,
+                max: 10,
+                step: 1
+            }
+        }, {
+            name: $8e68118808d817fe$export$809e371dee643808.ZGrounded,
+            value: false,
+            bind: {
+                name: zGrounded,
+                input: "checkbox"
+            }
+        });
+        if (backgroundImageExtents) {
+            $964ba569d246ec1b$export$eea5d31e98930019(globalScope.data, $5aa87f3c3a9074f3$export$e1e8339c59091971(x, names.xDataExtent), $5aa87f3c3a9074f3$export$e1e8339c59091971(y, names.yDataExtent));
+            const xSignal = $41ff5dbbe7f2be3a$export$3794e0ea8ab2e895(names.xExtent, backgroundImageExtents.left, backgroundImageExtents.right, names.xDataExtent);
+            const ySignal = $41ff5dbbe7f2be3a$export$3794e0ea8ab2e895(names.yExtent, backgroundImageExtents.bottom, backgroundImageExtents.top, names.yDataExtent);
+            $964ba569d246ec1b$export$5346a0d8a9111b3f(globalScope.scope, xSignal, ySignal);
+        }
+        if (qsize) {
+            $964ba569d246ec1b$export$eea5d31e98930019(globalScope.data, {
+                type: "extent",
+                field: $e968f13a53253dc9$export$fb70365b00e8cb7b(qsize.name),
+                signal: names.sizeExtent
+            });
+            $964ba569d246ec1b$export$290268902279a991(globalScope.scope, {
+                name: names.sizeScale,
+                type: "linear",
+                domain: [
+                    0,
+                    {
+                        signal: `${names.sizeExtent}[1]`
+                    }
+                ],
+                range: [
+                    0,
+                    {
+                        signal: names.sizeRange
+                    }
+                ]
+            });
+            $964ba569d246ec1b$export$5346a0d8a9111b3f(globalScope.scope, {
+                name: names.sizeRange,
+                update: `min(${parentScope.sizeSignals.layoutHeight}, ${parentScope.sizeSignals.layoutWidth}) / ${$1953ae18505373b7$export$c223d3ee3c0620d9}`
+            });
+        }
+        $964ba569d246ec1b$export$6853292f627997e4(globalScope.scope, {
+            name: names.markData,
+            source: globalScope.markDataName,
+            transform: [
+                x,
+                y,
+                z
+            ].map((c)=>{
+                if (!c || !c.quantitative) return;
+                const t = {
+                    type: "filter",
+                    expr: `isValid(datum[${JSON.stringify(c.name)}])`
+                };
+                return t;
+            }).filter(Boolean)
+        });
+        globalScope.setMarkDataName(names.markData);
+        const globalScales = {
+            showAxes: showAxes,
+            scales: {}
+        };
+        const zValue = z ? `scale(${JSON.stringify(names.zScale)}, datum[${JSON.stringify(z.name)}])` : null;
+        const sizeValueSignal = qsize ? `scale(${JSON.stringify(names.sizeScale)}, datum[${JSON.stringify(qsize.name)}]) * ${$8e68118808d817fe$export$809e371dee643808.PointScale}` : $8e68118808d817fe$export$809e371dee643808.PointScale;
+        const update = Object.assign({
+            height: [
+                {
+                    test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                    value: 0
+                },
+                {
+                    signal: sizeValueSignal
+                }, 
+            ],
+            width: {
+                signal: sizeValueSignal
+            }
+        }, z && {
+            z: [
+                {
+                    test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                    value: 0
+                },
+                {
+                    signal: `${$8e68118808d817fe$export$809e371dee643808.ZGrounded} ? 0 : ${zValue}`
+                }, 
+            ],
+            depth: [
+                {
+                    test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                    value: 0
+                },
+                {
+                    signal: `${$8e68118808d817fe$export$809e371dee643808.ZGrounded} ? ${zValue} : ${sizeValueSignal}`
+                }, 
+            ]
+        });
+        const columnSignals = [
+            {
+                column: x,
+                xyz: "x",
+                scaleName: names.xScale,
+                domain: backgroundImageExtents ? {
+                    signal: names.xExtent
+                } : {
+                    data: globalScope.data.name,
+                    field: $e968f13a53253dc9$export$fb70365b00e8cb7b(x.name)
+                },
+                reverse: false,
+                signal: parentScope.sizeSignals.layoutWidth
+            },
+            {
+                column: y,
+                xyz: "y",
+                scaleName: names.yScale,
+                domain: backgroundImageExtents ? {
+                    signal: names.yExtent
+                } : {
+                    data: globalScope.data.name,
+                    field: $e968f13a53253dc9$export$fb70365b00e8cb7b(y.name)
+                },
+                reverse: true,
+                signal: parentScope.sizeSignals.layoutHeight
+            },
+            {
+                column: z,
+                xyz: "z",
+                scaleName: names.zScale,
+                domain: {
+                    data: globalScope.data.name,
+                    field: z ? $e968f13a53253dc9$export$fb70365b00e8cb7b(z.name) : null
+                },
+                reverse: false,
+                signal: `(${globalScope.zSize}) * ${$8e68118808d817fe$export$809e371dee643808.ZProportion}`
+            }, 
+        ];
+        columnSignals.forEach((cs)=>{
+            const { column: column , domain: domain , reverse: reverse , scaleName: scaleName , signal: signal , xyz: xyz  } = cs;
+            if (!column) return;
+            let scale;
+            if (column.quantitative) scale = $3d841d51af3f959e$export$fefe9507ec0904ed(scaleName, domain, [
+                0,
+                {
+                    signal: signal
+                }
+            ], reverse, false, showAxes);
+            else scale = $3d841d51af3f959e$export$b67158f831e00d0d(scaleName, globalScope.data.name, [
+                0,
+                {
+                    signal: signal
+                }
+            ], column.name, reverse);
+            globalScales.scales[xyz] = [
+                scale
+            ];
+        });
+        const mark = {
+            name: prefix,
+            type: "rect",
+            from: {
+                data: globalScope.markDataName
+            },
+            encode: {
+                update: update
+            }
+        };
+        $964ba569d246ec1b$export$3df320e901c23a48(globalScope.markGroup, mark);
+        return {
+            offsets: {
+                x: $964ba569d246ec1b$export$e6b6683aec0fe907(parentScope.offsets.x, `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(x.name)}])`),
+                y: $964ba569d246ec1b$export$e6b6683aec0fe907(parentScope.offsets.y, `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(y.name)}]) - ${sizeValueSignal}`),
+                h: sizeValueSignal,
+                w: sizeValueSignal
+            },
+            sizeSignals: {
+                layoutHeight: null,
+                layoutWidth: null
+            },
+            globalScales: globalScales,
+            mark: mark,
+            encodingRuleMap: {
+                y: [
+                    {
+                        test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                        signal: $964ba569d246ec1b$export$e6b6683aec0fe907(parentScope.offsets.y, parentScope.sizeSignals.layoutHeight)
+                    }, 
+                ]
+            }
+        };
+    }
+}
+function $5788af9dc1e9d27d$export$9e1d5954d0bb865c(z, zSize, dataName, zScaleName) {
+    if (z) {
+        const zRange = [
+            0,
+            {
+                signal: `(${zSize}) * ${$8e68118808d817fe$export$809e371dee643808.ZProportion}`
+            }
+        ];
+        const scale = z.quantitative ? $3d841d51af3f959e$export$fefe9507ec0904ed(zScaleName, {
+            data: dataName,
+            field: $e968f13a53253dc9$export$fb70365b00e8cb7b(z.name)
+        }, zRange, false, true) : $3d841d51af3f959e$export$b67158f831e00d0d(zScaleName, dataName, zRange, z.name, false);
+        return scale;
+    }
+}
+class $da92a837c7747db7$export$b09fb900337259de extends $e6372eec76e9defe$export$c84671f46d6a1ca {
+    constructor(props){
+        super(props);
+        this.props = props;
+        const p = this.prefix = `square_${this.id}`;
+        this.names = {
+            bandWidth: this.getBandWidth(),
+            maxGroupField: `${p}_max_group`,
+            maxGroupSignal: `${p}_max_grouping`,
+            stack0: `${p}_stack0`,
+            stack1: `${p}_stack1`,
+            zScale: `scale_${p}_z`
+        };
+    }
+    build() {
+        const { names: names , prefix: prefix , props: props  } = this;
+        const { fillDirection: fillDirection , globalScope: globalScope , groupings: groupings , parentScope: parentScope , collapseYHeight: collapseYHeight , showAxes: showAxes , sortBy: sortBy , z: z  } = props;
+        const zScale = $5788af9dc1e9d27d$export$9e1d5954d0bb865c(z, globalScope.zSize, globalScope.data.name, names.zScale);
+        $964ba569d246ec1b$export$eea5d31e98930019(globalScope.data, Object.assign({
+            type: "stack",
+            groupby: $964ba569d246ec1b$export$53a21aeef48e14a8(groupings).map($e968f13a53253dc9$export$fb70365b00e8cb7b),
+            as: [
+                names.stack0,
+                names.stack1
+            ]
+        }, sortBy && {
+            sort: {
+                field: $e968f13a53253dc9$export$fb70365b00e8cb7b(sortBy.name),
+                order: "ascending"
+            }
+        }));
+        const { gap: gap , levelSize: levelSize , size: size , squaresPerBand: squaresPerBand  } = this.addSignals();
+        const heightSignal = {
+            signal: fillDirection === "down-right" ? size : levelSize
+        };
+        const mark = {
+            name: prefix,
+            type: "rect",
+            from: {
+                data: globalScope.markDataName
+            },
+            encode: {
+                update: Object.assign({
+                    height: collapseYHeight ? [
+                        {
+                            test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                            value: 0
+                        },
+                        heightSignal, 
+                    ] : heightSignal,
+                    width: {
+                        signal: fillDirection === "down-right" ? levelSize : size
+                    }
+                }, z && {
+                    z: {
+                        value: 0
+                    },
+                    depth: [
+                        {
+                            test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                            value: 0
+                        },
+                        {
+                            scale: names.zScale,
+                            field: $e968f13a53253dc9$export$fb70365b00e8cb7b(z.name)
+                        }, 
+                    ]
+                })
+            }
+        };
+        $964ba569d246ec1b$export$3df320e901c23a48(globalScope.markGroup, mark);
+        const { tx: tx , ty: ty  } = this.transformXY(gap, levelSize, squaresPerBand);
+        return Object.assign(Object.assign(Object.assign({}, z && {
+            globalScales: {
+                showAxes: showAxes,
+                scales: {
+                    z: [
+                        zScale
+                    ]
+                }
+            }
+        }), {
+            offsets: {
+                x: $964ba569d246ec1b$export$e6b6683aec0fe907(parentScope.offsets.x, tx.expr),
+                y: $964ba569d246ec1b$export$e6b6683aec0fe907(parentScope.offsets.y, ty.expr),
+                h: size,
+                w: size
+            },
+            mark: mark,
+            sizeSignals: {
+                layoutHeight: size,
+                layoutWidth: size
+            }
+        }), collapseYHeight && {
+            encodingRuleMap: {
+                y: [
+                    {
+                        test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                        signal: parentScope.offsets.y
+                    }, 
+                ]
+            }
+        });
+    }
+    getBandWidth() {
+        const { offsets: offsets  } = this.props.parentScope;
+        switch(this.props.fillDirection){
+            case "down-right":
+                return offsets.h;
+            default:
+                return offsets.w;
+        }
+    }
+    addSignals() {
+        const { names: names , props: props  } = this;
+        const { fillDirection: fillDirection , globalScope: globalScope , groupings: groupings , parentScope: parentScope  } = props;
+        let { maxGroupedFillSize: maxGroupedFillSize , maxGroupedUnits: maxGroupedUnits  } = props;
+        if (!maxGroupedUnits) {
+            if (groupings) {
+                $964ba569d246ec1b$export$eea5d31e98930019(globalScope.data, {
+                    type: "joinaggregate",
+                    groupby: $964ba569d246ec1b$export$53a21aeef48e14a8(groupings).map($e968f13a53253dc9$export$fb70365b00e8cb7b),
+                    ops: [
+                        "count"
+                    ],
+                    as: [
+                        names.maxGroupField
+                    ]
+                }, {
+                    type: "extent",
+                    field: names.maxGroupField,
+                    signal: names.maxGroupSignal
+                });
+                maxGroupedUnits = `(${names.maxGroupSignal}[1])`;
+            } else maxGroupedUnits = `length(data(${JSON.stringify(globalScope.data.name)}))`;
+        }
+        if (!maxGroupedFillSize) maxGroupedFillSize = fillDirection === "down-right" ? parentScope.offsets.w : parentScope.offsets.h;
+        const aspect = `((${names.bandWidth}) / (${maxGroupedFillSize}))`;
+        const squaresPerBand = `ceil(sqrt(${maxGroupedUnits} * ${aspect}))`;
+        const gap = `min(0.1 * ((${names.bandWidth}) / (${squaresPerBand} - 1)), 1)`;
+        const size = `(((${names.bandWidth}) / ${squaresPerBand}) - ${gap})`;
+        const levels = `ceil(${maxGroupedUnits} / ${squaresPerBand})`;
+        const levelSize = `(((${maxGroupedFillSize}) / ${levels}) - ${gap})`;
+        return {
+            gap: gap,
+            levelSize: levelSize,
+            size: size,
+            squaresPerBand: squaresPerBand
+        };
+    }
+    transformXY(gap, levelSize, squaresPerBand) {
+        const { names: names , prefix: prefix  } = this;
+        const compartment = `(${names.bandWidth}) / ${squaresPerBand} * ((datum[${JSON.stringify(names.stack0)}]) % ${squaresPerBand})`;
+        const level = `floor((datum[${JSON.stringify(names.stack0)}]) / ${squaresPerBand})`;
+        const { fillDirection: fillDirection , parentScope: parentScope  } = this.props;
+        const tx = {
+            type: "formula",
+            expr: null,
+            as: `${prefix}_${$8e68118808d817fe$export$10df5429b7082be2.OffsetX}`
+        };
+        const ty = {
+            type: "formula",
+            expr: null,
+            as: `${prefix}_${$8e68118808d817fe$export$10df5429b7082be2.OffsetY}`
+        };
+        switch(fillDirection){
+            case "down-right":
+                tx.expr = `${level} * (${levelSize} + ${gap})`;
+                ty.expr = compartment;
+                break;
+            case "right-up":
+                tx.expr = compartment;
+                ty.expr = `${parentScope.offsets.h} - ${levelSize} - ${level} * (${levelSize} + ${gap})`;
+                break;
+            case "right-down":
+            default:
+                tx.expr = compartment;
+                ty.expr = `${level} * (${levelSize} + ${gap})`;
+                break;
+        }
+        return {
+            tx: tx,
+            ty: ty
+        };
+    }
+}
+class $16012cae6636a432$export$694e0d28c7ffc90c extends $e6372eec76e9defe$export$c84671f46d6a1ca {
+    constructor(props){
+        super(props);
+        this.props = props;
+        const p = this.prefix = `stack_${this.id}`;
+        this.names = {
+            cube: `${p}_cube`,
+            globalDataName: `data_${p}_count`,
+            globalExtent: `${p}_global_extent`,
+            levelDataName: `data_${p}_level`,
+            count: `${p}_count`,
+            stack0: `${p}_stack0`,
+            stack1: `${p}_stack1`,
+            sequence: `data_${p}_sequence`,
+            sides: `${p}_sides`,
+            size: `${p}_size`,
+            squared: `${p}_squared`,
+            maxCount: `${p}_maxCount`,
+            maxLevels: `${p}_maxLevels`,
+            zScale: `${p}_zScale`
+        };
+    }
+    build() {
+        const { names: names , props: props  } = this;
+        const { globalScope: globalScope , groupings: groupings , parentScope: parentScope , showAxes: showAxes , sort: sort  } = props;
+        const { sizeSignals: sizeSignals  } = parentScope;
+        $964ba569d246ec1b$export$eea5d31e98930019(globalScope.data, {
+            type: "joinaggregate",
+            groupby: $964ba569d246ec1b$export$53a21aeef48e14a8(groupings).map($e968f13a53253dc9$export$fb70365b00e8cb7b),
+            ops: [
+                "count"
+            ],
+            as: [
+                names.count
+            ]
+        }, {
+            type: "extent",
+            field: names.count,
+            signal: names.globalExtent
+        }, Object.assign({
+            type: "stack",
+            groupby: $964ba569d246ec1b$export$53a21aeef48e14a8(groupings).map($e968f13a53253dc9$export$fb70365b00e8cb7b),
+            as: [
+                names.stack0,
+                names.stack1
+            ]
+        }, sort && {
+            sort: {
+                field: $e968f13a53253dc9$export$fb70365b00e8cb7b(sort.name),
+                order: "ascending"
+            }
+        }));
+        $964ba569d246ec1b$export$6853292f627997e4(globalScope.scope, {
+            name: names.sequence,
+            transform: [
+                {
+                    type: "sequence",
+                    start: 1,
+                    stop: {
+                        signal: `sqrt(${names.globalExtent}[1])`
+                    }
+                },
+                {
+                    type: "formula",
+                    expr: "datum.data * datum.data",
+                    as: "squared"
+                },
+                {
+                    type: "formula",
+                    expr: `ceil(${names.globalExtent}[1] / datum.squared)`,
+                    as: "maxlevels"
+                },
+                {
+                    type: "formula",
+                    expr: `(${names.size} - (datum.data - 1) * datum.data) / datum.data`,
+                    as: "side"
+                },
+                {
+                    type: "formula",
+                    expr: "datum.side * datum.maxlevels + datum.maxlevels - 1",
+                    as: "sidecubeheight"
+                },
+                {
+                    type: "formula",
+                    expr: `abs(${globalScope.zSize} - datum.sidecubeheight)`,
+                    as: "heightmatch"
+                },
+                {
+                    type: "collect",
+                    sort: {
+                        field: "heightmatch",
+                        order: "ascending"
+                    }
+                },
+                {
+                    type: "window",
+                    ops: [
+                        "row_number"
+                    ]
+                },
+                {
+                    type: "filter",
+                    expr: "datum.row_number === 1"
+                }, 
+            ]
+        });
+        $964ba569d246ec1b$export$5346a0d8a9111b3f(globalScope.scope, {
+            name: names.size,
+            update: `min((${sizeSignals.layoutHeight}), (${sizeSignals.layoutWidth}))`
+        }, {
+            name: names.squared,
+            update: `data('${names.sequence}')[0].squared`
+        }, {
+            name: names.sides,
+            update: `sqrt(${names.squared})`
+        }, {
+            name: names.cube,
+            update: `(${names.size} - (${names.sides} - 1)) / ${names.sides}`
+        }, {
+            name: names.maxLevels,
+            update: `data('${names.sequence}')[0].maxlevels`
+        }, {
+            name: names.maxCount,
+            update: `${names.maxLevels} * ${names.squared}`
+        });
+        const zLevel = `floor(datum[${JSON.stringify(names.stack0)}] / ${names.squared})`;
+        const layerOrdinal = `(datum[${JSON.stringify(names.stack0)}] % ${names.squared})`;
+        const cubeX = `(${layerOrdinal} % ${names.sides})`;
+        const cubeY = `floor(${layerOrdinal} / ${names.sides})`;
+        const groupX = `(${sizeSignals.layoutWidth} - ${names.size}) / 2`;
+        const groupY = `(${sizeSignals.layoutHeight} - ${names.size}) / 2`;
+        const offsets = {
+            x: $964ba569d246ec1b$export$e6b6683aec0fe907(parentScope.offsets.x, groupX, `${cubeX} * (${names.cube} + 1)`),
+            y: $964ba569d246ec1b$export$e6b6683aec0fe907(parentScope.offsets.y, groupY, `${cubeY} * (${names.cube} + 1)`),
+            h: names.size,
+            w: names.size
+        };
+        const mark = {
+            type: "rect",
+            from: {
+                data: this.names.levelDataName
+            },
+            encode: {
+                update: {
+                    z: {
+                        signal: `${zLevel} * (${names.cube} + 1)`
+                    },
+                    height: {
+                        signal: names.cube
+                    },
+                    width: {
+                        signal: names.cube
+                    },
+                    depth: {
+                        signal: names.cube
+                    }
+                }
+            }
+        };
+        $964ba569d246ec1b$export$3df320e901c23a48(globalScope.markGroup, mark);
+        const zScale = {
+            type: "linear",
+            name: names.zScale,
+            domain: [
+                0,
+                {
+                    signal: names.maxCount
+                }, 
+            ],
+            range: [
+                0,
+                {
+                    signal: `${names.maxLevels} * (${names.cube} + 1) - 1`
+                }, 
+            ],
+            nice: false
+        };
+        return {
+            offsets: offsets,
+            mark: mark,
+            sizeSignals: {
+                layoutHeight: names.size,
+                layoutWidth: names.size
+            },
+            globalScales: {
+                showAxes: showAxes,
+                scales: {
+                    z: [
+                        zScale
+                    ]
+                }
+            },
+            encodingRuleMap: {
+                y: [
+                    {
+                        test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                        signal: parentScope.offsets.y
+                    }
+                ],
+                z: [
+                    {
+                        test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                        value: 0
+                    }
+                ],
+                depth: [
+                    {
+                        test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                        value: 0
+                    }
+                ],
+                height: [
+                    {
+                        test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                        value: 0
+                    }
+                ]
+            }
+        };
+    }
+}
+class $4ecb80f24537aec2$export$c4df0d8c6c8f50e4 extends $e6372eec76e9defe$export$c84671f46d6a1ca {
+    constructor(props){
+        super(props);
+        this.props = props;
+        const p = this.prefix = `strip_${this.id}`;
+        this.names = {
+            firstField: `${p}${$8e68118808d817fe$export$10df5429b7082be2.First}`,
+            lastField: `${p}${$8e68118808d817fe$export$10df5429b7082be2.Last}`,
+            valueField: `${p}${$8e68118808d817fe$export$10df5429b7082be2.Value}`,
+            scale: `scale_${p}`,
+            zScale: `scale_${p}_z`
+        };
+    }
+    build() {
+        const { names: names , prefix: prefix , props: props  } = this;
+        const { addPercentageScale: addPercentageScale , globalScope: globalScope , groupings: groupings , orientation: orientation , showAxes: showAxes , size: size , sort: sort , sortOrder: sortOrder , parentScope: parentScope , z: z  } = props;
+        const zScale = $5788af9dc1e9d27d$export$9e1d5954d0bb865c(z, globalScope.zSize, globalScope.data.name, names.zScale);
+        const horizontal = orientation === "horizontal";
+        const transform = [];
+        if (sort) transform.push({
+            type: "collect",
+            sort: {
+                field: $e968f13a53253dc9$export$fb70365b00e8cb7b(sort.name),
+                order: sortOrder
+            }
+        });
+        let stackField;
+        if (size) {
+            stackField = size.name;
+            transform.push({
+                type: "filter",
+                expr: `datum[${JSON.stringify(size.name)}] > 0`
+            });
+        } else {
+            stackField = names.valueField;
+            transform.push({
+                type: "formula",
+                expr: "1",
+                as: stackField
+            });
+        }
+        const stackTransform = {
+            type: "stack",
+            field: $e968f13a53253dc9$export$fb70365b00e8cb7b(stackField),
+            offset: "normalize",
+            as: [
+                names.firstField,
+                names.lastField
+            ]
+        };
+        if (groupings.length) stackTransform.groupby = $964ba569d246ec1b$export$53a21aeef48e14a8(groupings).map($e968f13a53253dc9$export$fb70365b00e8cb7b);
+        transform.push(stackTransform);
+        $964ba569d246ec1b$export$eea5d31e98930019(globalScope.data, ...transform);
+        const span = [
+            names.lastField,
+            names.firstField
+        ].map((f)=>`datum[${JSON.stringify(f)}]`).join(" - ");
+        const offsets = {
+            x: $964ba569d246ec1b$export$e6b6683aec0fe907(parentScope.offsets.x, horizontal ? `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.w})` : ""),
+            y: $964ba569d246ec1b$export$e6b6683aec0fe907(parentScope.offsets.y, horizontal ? "" : `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.h})`),
+            h: horizontal ? parentScope.offsets.h : `(${span}) * (${parentScope.offsets.h})`,
+            w: horizontal ? `(${span}) * (${parentScope.offsets.w})` : parentScope.offsets.w
+        };
+        const mark = {
+            name: prefix,
+            type: "rect",
+            from: {
+                data: globalScope.markDataName
+            },
+            encode: {
+                update: Object.assign({
+                    height: {
+                        signal: offsets.h
+                    },
+                    width: {
+                        signal: offsets.w
+                    }
+                }, z && {
+                    z: {
+                        value: 0
+                    },
+                    depth: [
+                        {
+                            test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                            value: 0
+                        },
+                        {
+                            scale: names.zScale,
+                            field: $e968f13a53253dc9$export$fb70365b00e8cb7b(z.name)
+                        }, 
+                    ]
+                })
+            }
+        };
+        $964ba569d246ec1b$export$3df320e901c23a48(globalScope.markGroup, mark);
+        let percentageScale;
+        if (addPercentageScale) percentageScale = [
+            {
+                type: "linear",
+                name: names.scale,
+                domain: [
+                    0,
+                    100
+                ],
+                range: horizontal ? [
+                    0,
+                    {
+                        signal: parentScope.sizeSignals.layoutWidth
+                    }, 
+                ] : [
+                    {
+                        signal: parentScope.sizeSignals.layoutHeight
+                    },
+                    0, 
+                ]
+            }
+        ];
+        return {
+            globalScales: {
+                showAxes: showAxes,
+                scales: {
+                    x: horizontal ? percentageScale : undefined,
+                    y: horizontal ? undefined : percentageScale,
+                    z: zScale && [
+                        zScale
+                    ]
+                }
+            },
+            offsets: offsets,
+            sizeSignals: {
+                layoutHeight: null,
+                layoutWidth: null
+            },
+            mark: mark
+        };
+    }
+}
+class $dd378f0ca2c463c6$export$d685cd2b84b49ee extends $e6372eec76e9defe$export$c84671f46d6a1ca {
+    constructor(props){
+        super(props);
+        this.props = props;
+        const p = this.prefix = `treemap_${this.id}`;
+        this.names = {
+            dataName: `data_${p}`,
+            dataHeightWidth: `data_${p}_hw`,
+            dataExtents: `data_${p}_extents`,
+            dataFacet: `data_${p}_facet`,
+            dataFacetMark: `data_${p}_facetMark`,
+            fieldChildren: `${p}_children`,
+            fieldDepth: `${p}_depth`,
+            fieldX0: `${p}_x0`,
+            fieldX1: `${p}_x1`,
+            fieldY0: `${p}_y0`,
+            fieldY1: `${p}_y1`,
+            fieldHeight: `${p}_h`,
+            fieldWidth: `${p}_w`,
+            heightExtent: `${p}_heightExtent`,
+            widthExtent: `${p}_widthExtent`,
+            zScale: `scale_${p}_z`
+        };
+    }
+    build() {
+        const { names: names , props: props  } = this;
+        const { globalScope: globalScope , parentScope: parentScope , showAxes: showAxes , treeMapMethod: treeMapMethod , z: z  } = props;
+        const zScale = $5788af9dc1e9d27d$export$9e1d5954d0bb865c(z, globalScope.zSize, globalScope.data.name, names.zScale);
+        const offsets = {
+            x: $964ba569d246ec1b$export$e6b6683aec0fe907(parentScope.offsets.x, $dd378f0ca2c463c6$var$fn(names.fieldX0)),
+            y: $964ba569d246ec1b$export$e6b6683aec0fe907(parentScope.offsets.y, $dd378f0ca2c463c6$var$fn(names.fieldY0)),
+            h: $dd378f0ca2c463c6$var$subtract(names.fieldY1, names.fieldY0),
+            w: $dd378f0ca2c463c6$var$subtract(names.fieldX1, names.fieldX0)
+        };
+        const mark = this.transformedMark(offsets);
+        $964ba569d246ec1b$export$5346a0d8a9111b3f(globalScope.scope, {
+            name: $8e68118808d817fe$export$809e371dee643808.TreeMapMethod,
+            value: "squarify",
+            bind: {
+                name: treeMapMethod,
+                input: "select",
+                options: [
+                    "squarify",
+                    "binary", 
+                ]
+            }
+        });
+        return Object.assign(Object.assign({}, z && {
+            globalScales: {
+                showAxes: showAxes,
+                scales: {
+                    z: [
+                        zScale
+                    ]
+                }
+            }
+        }), {
+            mark: mark,
+            offsets: offsets,
+            sizeSignals: {
+                layoutHeight: null,
+                layoutWidth: null
+            }
+        });
+    }
+    transformedMark(offsets) {
+        const { names: names , props: props  } = this;
+        const { globalScope: globalScope , groupings: groupings , parentScope: parentScope  } = props;
+        if (groupings.length) {
+            //treemap transform can't have it's boundary size grouped, so we need to facet the data.
+            $964ba569d246ec1b$export$6853292f627997e4(globalScope.scope, {
+                name: names.dataHeightWidth,
+                source: globalScope.markDataName,
+                transform: [
+                    {
+                        type: "formula",
+                        expr: parentScope.offsets.h,
+                        as: names.fieldHeight
+                    },
+                    {
+                        type: "formula",
+                        expr: parentScope.offsets.w,
+                        as: names.fieldWidth
+                    }, 
+                ]
+            });
+            const treemapData = {
+                name: names.dataFacetMark,
+                source: names.dataFacet
+            };
+            const facets = {
+                type: "group",
+                from: {
+                    facet: {
+                        name: names.dataFacet,
+                        data: names.dataHeightWidth,
+                        groupby: $964ba569d246ec1b$export$53a21aeef48e14a8(groupings).map($e968f13a53253dc9$export$fb70365b00e8cb7b)
+                    }
+                },
+                data: [
+                    {
+                        name: names.dataExtents,
+                        source: names.dataFacet,
+                        transform: [
+                            {
+                                type: "extent",
+                                field: names.fieldHeight,
+                                signal: names.heightExtent
+                            },
+                            {
+                                type: "extent",
+                                field: names.fieldWidth,
+                                signal: names.widthExtent
+                            }, 
+                        ]
+                    },
+                    treemapData, 
+                ]
+            };
+            globalScope.setMarkDataName(names.dataFacetMark);
+            $964ba569d246ec1b$export$3df320e901c23a48(globalScope.markGroup, facets);
+            //assign new markgroup after adding mark to original group
+            globalScope.setMarkGroup(facets);
+            this.treemapTransform(treemapData, `${names.widthExtent}[0]`, `${names.heightExtent}[0]`);
+            return this.addMark(offsets, facets, globalScope.markDataName);
+        } else {
+            this.treemapTransform(globalScope.data, parentScope.offsets.w, parentScope.offsets.h);
+            return this.addMark(offsets, globalScope.markGroup, globalScope.markDataName);
+        }
+    }
+    addMark(offsets, markParent, markDataName) {
+        const { names: names , prefix: prefix , props: props  } = this;
+        const { z: z  } = props;
+        const mark = {
+            name: prefix,
+            type: "rect",
+            from: {
+                data: markDataName
+            },
+            encode: {
+                update: Object.assign({
+                    width: {
+                        signal: offsets.w
+                    },
+                    height: {
+                        signal: offsets.h
+                    }
+                }, z && {
+                    z: {
+                        value: 0
+                    },
+                    depth: [
+                        {
+                            test: $125f731ad9159d1a$export$71c45f78b1166d35(),
+                            value: 0
+                        },
+                        {
+                            scale: names.zScale,
+                            field: $e968f13a53253dc9$export$fb70365b00e8cb7b(z.name)
+                        }, 
+                    ]
+                })
+            }
+        };
+        $964ba569d246ec1b$export$3df320e901c23a48(markParent, mark);
+        return mark;
+    }
+    treemapTransform(treemapData, widthSignal, heightSignal) {
+        const { names: names , props: props  } = this;
+        const { group: group , size: size  } = props;
+        $964ba569d246ec1b$export$eea5d31e98930019(treemapData, {
+            type: "filter",
+            expr: `datum[${JSON.stringify(size.name)}] > 0`
+        }, {
+            type: "nest",
+            keys: [
+                group && group.name || "__NONE__"
+            ]
+        }, {
+            type: "treemap",
+            field: $e968f13a53253dc9$export$fb70365b00e8cb7b(size.name),
+            sort: {
+                field: "value",
+                order: "descending"
+            },
+            round: true,
+            method: {
+                signal: $8e68118808d817fe$export$809e371dee643808.TreeMapMethod
+            },
+            paddingInner: 1,
+            paddingOuter: 0,
+            size: [
+                {
+                    signal: widthSignal
+                },
+                {
+                    signal: heightSignal
+                }, 
+            ],
+            as: [
+                names.fieldX0,
+                names.fieldY0,
+                names.fieldX1,
+                names.fieldY1,
+                names.fieldDepth,
+                names.fieldChildren, 
+            ]
+        });
+    }
+}
+function $dd378f0ca2c463c6$var$fn(n) {
+    return `datum[${JSON.stringify(n)}]`;
+}
+function $dd378f0ca2c463c6$var$subtract(...fields) {
+    return fields.map((n)=>$dd378f0ca2c463c6$var$fn(n)).join(" - ");
+}
+class $189b4473874028f9$export$f6b1e3902165e5e1 extends $e6372eec76e9defe$export$c84671f46d6a1ca {
+    constructor(props){
+        super(props);
+        this.props = props;
+        const p = this.prefix = `wrap_${this.id}`;
+        this.bin = $41ff5dbbe7f2be3a$export$6868fd1605c79d3d(this.prefix, props.globalScope.data.name, props.groupby);
+        this.names = {
+            outputData: `data_${p}_out`,
+            rowColumnDataName: `data_${p}_row_col`,
+            cellHeight: `${p}_cellHeight`,
+            cellWidth: `${p}_cellWidth`,
+            fits: `${p}_fits`,
+            target: `${p}_target`,
+            minArea: `${p}_minArea`,
+            aspect: `${p}_aspect`,
+            minAspect: `${p}_minAspect`,
+            idealAspect: `${p}_idealAspect`,
+            dataLength: `${p}_dataLength`,
+            rxc0: `${p}_rxc0`,
+            rxc1: `${p}_rxc1`,
+            rxc2: `${p}_rxc2`,
+            rxc: `${p}_rxc`,
+            growColCount: `${p}_growColCount`,
+            growCellWidth: `${p}_growCellWidth`,
+            fitsArea: `${p}_fitsArea`,
+            colCount: `${p}_colCount`
+        };
+    }
+    getGrouping() {
+        return this.bin.fields;
+    }
+    build() {
+        const { bin: bin , names: names , prefix: prefix , props: props  } = this;
+        const { axisTextColor: axisTextColor , cellTitles: cellTitles , globalScope: globalScope , parentScope: parentScope  } = props;
+        let ordinalBinData;
+        if (bin.native === false) {
+            $964ba569d246ec1b$export$5346a0d8a9111b3f(globalScope.scope, ...bin.signals);
+            $964ba569d246ec1b$export$eea5d31e98930019(globalScope.data, ...bin.transforms);
+            $964ba569d246ec1b$export$6853292f627997e4(globalScope.scope, bin.dataSequence);
+            $964ba569d246ec1b$export$eea5d31e98930019(bin.dataSequence, {
+                type: "formula",
+                expr: `indata(${JSON.stringify(globalScope.data.name)}, ${JSON.stringify(bin.fields[0])}, datum[${JSON.stringify(bin.fields[0])}])`,
+                as: $8e68118808d817fe$export$10df5429b7082be2.Contains
+            });
+            ordinalBinData = bin.dataSequence.name;
+        } else {
+            const ord = $134416bff3e16123$export$71d2e96f63f1ac97(globalScope.data.name, prefix, bin.fields, "ascending");
+            $964ba569d246ec1b$export$6853292f627997e4(globalScope.scope, ord.data);
+            ordinalBinData = ord.data.name;
+        }
+        $964ba569d246ec1b$export$6853292f627997e4(globalScope.scope, {
+            name: names.rxc0,
+            transform: [
+                {
+                    type: "sequence",
+                    start: 1,
+                    stop: {
+                        signal: `ceil(sqrt(${names.dataLength})) + 1`
+                    }
+                },
+                {
+                    type: "formula",
+                    expr: `ceil(${names.dataLength} / datum.data)`,
+                    as: "complement"
+                }, 
+            ]
+        }, {
+            name: names.rxc1,
+            source: names.rxc0,
+            transform: [
+                {
+                    type: "project",
+                    fields: [
+                        "data"
+                    ],
+                    as: [
+                        "cols"
+                    ]
+                }, 
+            ]
+        }, {
+            name: names.rxc2,
+            source: names.rxc0,
+            transform: [
+                {
+                    type: "project",
+                    fields: [
+                        "complement"
+                    ],
+                    as: [
+                        "cols"
+                    ]
+                }, 
+            ]
+        }, {
+            name: names.rxc,
+            source: [
+                names.rxc1,
+                names.rxc2
+            ],
+            transform: [
+                {
+                    type: "formula",
+                    expr: `ceil(${names.dataLength} / datum.cols)`,
+                    as: "rows"
+                },
+                {
+                    type: "formula",
+                    expr: `${parentScope.sizeSignals.layoutWidth} / datum.cols`,
+                    as: "cellw"
+                },
+                {
+                    type: "formula",
+                    expr: `datum.cols === 1 ? max(datum.cellw, ${$8e68118808d817fe$export$809e371dee643808.MinCellWidth}) : datum.cellw`,
+                    as: "cellw"
+                },
+                {
+                    type: "formula",
+                    expr: `${parentScope.sizeSignals.layoutHeight} / datum.rows`,
+                    as: "cellh"
+                },
+                {
+                    type: "formula",
+                    expr: `datum.rows === 1 ? max(datum.cellh, ${$8e68118808d817fe$export$809e371dee643808.MinCellHeight}) : datum.cellh`,
+                    as: "cellh"
+                },
+                {
+                    type: "formula",
+                    expr: `(datum.cellw >= ${$8e68118808d817fe$export$809e371dee643808.MinCellWidth} && datum.cellh >= ${$8e68118808d817fe$export$809e371dee643808.MinCellHeight})`,
+                    as: "meetsmin"
+                },
+                {
+                    type: "filter",
+                    expr: "datum.meetsmin"
+                },
+                {
+                    type: "formula",
+                    expr: "datum.cellw / datum.cellh",
+                    as: names.aspect
+                },
+                {
+                    type: "formula",
+                    expr: `abs(datum.${names.aspect} - ${names.target})`,
+                    as: names.idealAspect
+                },
+                {
+                    type: "formula",
+                    expr: `${names.dataLength} / (datum.cols * datum.rows)`,
+                    as: "coverage"
+                },
+                {
+                    type: "collect",
+                    sort: {
+                        field: [
+                            names.idealAspect,
+                            "coverage"
+                        ],
+                        order: [
+                            "ascending",
+                            "descending"
+                        ]
+                    }
+                }, 
+            ]
+        }, {
+            name: names.rowColumnDataName,
+            source: ordinalBinData,
+            transform: [
+                {
+                    type: "formula",
+                    expr: `floor((datum[${JSON.stringify($8e68118808d817fe$export$10df5429b7082be2.Ordinal)}] - 1) / ${names.colCount})`,
+                    as: $8e68118808d817fe$export$10df5429b7082be2.WrapRow
+                },
+                {
+                    type: "formula",
+                    expr: `(datum[${JSON.stringify($8e68118808d817fe$export$10df5429b7082be2.Ordinal)}] - 1) % ${names.colCount}`,
+                    as: $8e68118808d817fe$export$10df5429b7082be2.WrapCol
+                },
+                {
+                    type: "formula",
+                    expr: $078aa86507cb3dde$export$b292ca0d4c2e4690(bin, $8e68118808d817fe$export$10df5429b7082be2.First, $8e68118808d817fe$export$10df5429b7082be2.Last),
+                    as: $8e68118808d817fe$export$10df5429b7082be2.FacetSearch
+                },
+                {
+                    type: "formula",
+                    expr: $078aa86507cb3dde$export$f241323700beca17(bin),
+                    as: $8e68118808d817fe$export$10df5429b7082be2.FacetTitle
+                }, 
+            ]
+        });
+        const dataOut = {
+            name: names.outputData,
+            source: globalScope.data.name,
+            transform: [
+                {
+                    type: "lookup",
+                    from: names.rowColumnDataName,
+                    key: $e968f13a53253dc9$export$fb70365b00e8cb7b(bin.fields[0]),
+                    fields: [
+                        bin.fields[0]
+                    ].map($e968f13a53253dc9$export$fb70365b00e8cb7b),
+                    values: [
+                        $8e68118808d817fe$export$10df5429b7082be2.WrapRow,
+                        $8e68118808d817fe$export$10df5429b7082be2.WrapCol
+                    ]
+                }, 
+            ]
+        };
+        $964ba569d246ec1b$export$6853292f627997e4(globalScope.scope, dataOut);
+        globalScope.setMarkDataName(names.outputData);
+        $964ba569d246ec1b$export$5346a0d8a9111b3f(globalScope.scope, {
+            name: names.minAspect,
+            update: `${$8e68118808d817fe$export$809e371dee643808.MinCellWidth} / ${$8e68118808d817fe$export$809e371dee643808.MinCellHeight}`
+        }, {
+            name: names.target,
+            update: `${names.minAspect} === 1 ? ${1.2} : ${names.minAspect}`
+        }, {
+            name: names.minArea,
+            update: `${$8e68118808d817fe$export$809e371dee643808.MinCellWidth}*${$8e68118808d817fe$export$809e371dee643808.MinCellHeight}`
+        }, {
+            name: names.aspect,
+            update: `${parentScope.sizeSignals.layoutWidth} / ${parentScope.sizeSignals.layoutHeight}`
+        }, {
+            name: names.dataLength,
+            update: `data(${JSON.stringify(ordinalBinData)}).length`
+        }, {
+            name: names.growColCount,
+            update: `max(floor(${parentScope.sizeSignals.layoutWidth} / ${$8e68118808d817fe$export$809e371dee643808.MinCellWidth}), 1)`
+        }, {
+            name: names.growCellWidth,
+            update: `${parentScope.sizeSignals.layoutWidth} / ${names.growColCount}`
+        }, {
+            name: names.fitsArea,
+            update: `((${names.dataLength} * ${names.minArea}) <= (${parentScope.sizeSignals.layoutWidth} * ${parentScope.sizeSignals.layoutHeight}))`
+        }, {
+            name: names.fits,
+            update: `${names.fitsArea} && length(data(${JSON.stringify(names.rxc)})) > 0`
+        }, {
+            name: names.colCount,
+            update: `${names.fits} ? data(${JSON.stringify(names.rxc)})[0].cols : ${names.growColCount}`
+        }, {
+            name: names.cellWidth,
+            update: `${names.fits} ? data(${JSON.stringify(names.rxc)})[0].cellw : ${names.growCellWidth}`
+        }, {
+            name: names.cellHeight,
+            update: `${names.fits} ? data(${JSON.stringify(names.rxc)})[0].cellh : ${$8e68118808d817fe$export$809e371dee643808.MinCellHeight}`
+        });
+        $86da97a0f38ad760$export$cdc9366ba30317bd(globalScope.signals.plotHeightOut, "max", `(${names.cellHeight} * ceil(${names.dataLength} / ${names.colCount}))`);
+        $86da97a0f38ad760$export$cdc9366ba30317bd(globalScope.signals.plotWidthOut, "max", `(${names.cellWidth} * ${names.colCount})`);
+        const signalH = [
+            names.cellHeight,
+            $8e68118808d817fe$export$809e371dee643808.FacetPaddingTop,
+            $8e68118808d817fe$export$809e371dee643808.FacetPaddingBottom
+        ].join(" - ");
+        const signalW = [
+            names.cellWidth,
+            $8e68118808d817fe$export$809e371dee643808.FacetPaddingLeft
+        ].join(" - ");
+        const signalX = $964ba569d246ec1b$export$e6b6683aec0fe907(parentScope.offsets.x, `datum[${JSON.stringify($8e68118808d817fe$export$10df5429b7082be2.WrapCol)}] * ${names.cellWidth}`, $8e68118808d817fe$export$809e371dee643808.FacetPaddingLeft);
+        const signalY = $964ba569d246ec1b$export$e6b6683aec0fe907(parentScope.offsets.y, `datum[${JSON.stringify($8e68118808d817fe$export$10df5429b7082be2.WrapRow)}] * ${names.cellHeight}`, $8e68118808d817fe$export$809e371dee643808.FacetPaddingTop);
+        const update = {
+            height: {
+                signal: signalH
+            },
+            width: {
+                signal: signalW
+            },
+            x: {
+                signal: signalX
+            },
+            y: {
+                signal: signalY
+            }
+        };
+        const offsets = {
+            x: signalX,
+            y: signalY,
+            h: signalH,
+            w: signalW
+        };
+        const group = {
+            style: "cell",
+            name: prefix,
+            type: "group",
+            from: {
+                data: names.rowColumnDataName
+            },
+            encode: {
+                update: update
+            }
+        };
+        $964ba569d246ec1b$export$3df320e901c23a48(globalScope.markGroup, group);
+        const sizeSignals = {
+            layoutHeight: `(${names.cellHeight} - ${$8e68118808d817fe$export$809e371dee643808.FacetPaddingTop} - ${$8e68118808d817fe$export$809e371dee643808.FacetPaddingBottom})`,
+            layoutWidth: `(${names.cellWidth} - ${$8e68118808d817fe$export$809e371dee643808.FacetPaddingLeft})`,
+            colCount: names.colCount,
+            rowCount: `ceil(${names.dataLength} / ${names.colCount})`
+        };
+        if (cellTitles) $614e9936fbd8f464$export$3735b1dd76112836(group, sizeSignals, axisTextColor);
+        return {
+            facetScope: group,
+            sizeSignals: sizeSignals,
+            offsets: offsets
+        };
+    }
+}
+const $2e754805dfb2e272$export$8b2ec0ba67742226 = {
+    AggregateContainer: $2b4dbf0c360e0079$export$fd744dfcd98e5f49,
+    AggregateSquare: $45d3ecfc03203bea$export$7eda37970b01b2c,
+    Band: $7f86b9cde23af8d8$export$5b22a87d7feca398,
+    Cross: $732335c7cbd3f514$export$3c877bb842c36952,
+    Scatter: $a85e042c8f2d0108$export$1c460fb4285edadc,
+    Square: $da92a837c7747db7$export$b09fb900337259de,
+    Stack: $16012cae6636a432$export$694e0d28c7ffc90c,
+    Strip: $4ecb80f24537aec2$export$c4df0d8c6c8f50e4,
+    Treemap: $dd378f0ca2c463c6$export$d685cd2b84b49ee,
+    Wrap: $189b4473874028f9$export$f6b1e3902165e5e1
+};
+function $5debb16ccf7f9780$export$f4cf47d56985b7f(backgroundImage, allGlobalScales) {
+    const xScale = allGlobalScales.filter((s)=>s.scales.x)[0].scales.x[0];
+    const yScale = allGlobalScales.filter((s)=>s.scales.y)[0].scales.y[0];
+    const [xScaleName, yScaleName] = [
+        xScale,
+        yScale
+    ].map((s)=>s.name + (xScale.type === "band" ? $7f86b9cde23af8d8$export$d437166a1bdbfdf0 : ""));
+    return {
+        type: "image",
+        encode: {
+            update: {
+                url: {
+                    value: backgroundImage.url
+                },
+                aspect: {
+                    value: false
+                },
+                baseline: {
+                    value: "bottom"
+                },
+                height: {
+                    signal: $5debb16ccf7f9780$var$getScaledSpan(yScaleName, backgroundImage.extents.bottom, backgroundImage.extents.top)
+                },
+                y: {
+                    signal: $5debb16ccf7f9780$var$getScaledValue(yScaleName, backgroundImage.extents.bottom)
+                },
+                width: {
+                    signal: $5debb16ccf7f9780$var$getScaledSpan(xScaleName, backgroundImage.extents.right, backgroundImage.extents.left)
+                },
+                x: {
+                    signal: $5debb16ccf7f9780$var$getScaledValue(xScaleName, backgroundImage.extents.left)
+                }
+            }
+        }
+    };
+}
+function $5debb16ccf7f9780$var$getScaledSpan(scaleName, low, high) {
+    return `abs(scale('${scaleName}', ${low}) - scale('${scaleName}', ${high}))`;
+}
+function $5debb16ccf7f9780$var$getScaledValue(scaleName, value) {
+    return `scale('${scaleName}', ${value})`;
+}
+class $a735328ea0dc7655$export$e2e6dd2b1097c25b {
+    constructor(props, specContext){
+        this.props = props;
+        this.specContext = specContext;
+        this.globalSignals = {
+            facetAxesAdjustX: {
+                name: $8e68118808d817fe$export$809e371dee643808.FacetAxesAdjustX,
+                update: props.facetLayout && props.collapseFacetAxes ? $1953ae18505373b7$export$6bd206e55cb747ae.toString() : "0"
+            },
+            facetAxesAdjustY: {
+                name: $8e68118808d817fe$export$809e371dee643808.FacetAxesAdjustY,
+                update: props.facetLayout && props.collapseFacetAxes ? $1953ae18505373b7$export$bdb7a7da14f9ff2b.toString() : "0"
+            },
+            minCellWidth: {
+                name: $8e68118808d817fe$export$809e371dee643808.MinCellWidth,
+                update: `${$1953ae18505373b7$export$7794a0aff56142de}`
+            },
+            minCellHeight: {
+                name: $8e68118808d817fe$export$809e371dee643808.MinCellHeight,
+                update: `${$1953ae18505373b7$export$7c432db1d0b63312}`
+            },
+            plotOffsetLeft: {
+                name: $8e68118808d817fe$export$809e371dee643808.PlotOffsetLeft,
+                update: "0"
+            },
+            plotOffsetTop: {
+                name: $8e68118808d817fe$export$809e371dee643808.PlotOffsetTop,
+                update: "0"
+            },
+            plotOffsetBottom: {
+                name: $8e68118808d817fe$export$809e371dee643808.PlotOffsetBottom,
+                update: "0"
+            },
+            plotOffsetRight: {
+                name: $8e68118808d817fe$export$809e371dee643808.PlotOffsetRight,
+                update: "0"
+            },
+            plotHeightOut: {
+                name: $8e68118808d817fe$export$809e371dee643808.PlotHeightOut,
+                update: $8e68118808d817fe$export$809e371dee643808.PlotHeightIn
+            },
+            plotWidthOut: {
+                name: $8e68118808d817fe$export$809e371dee643808.PlotWidthOut,
+                update: $8e68118808d817fe$export$809e371dee643808.PlotWidthIn
+            }
+        };
+    }
+    validate() {
+        const { specContext: specContext  } = this;
+        const { specCapabilities: specCapabilities  } = this.props;
+        const { roles: roles  } = specCapabilities;
+        const required = roles.filter((r)=>{
+            switch(typeof r.allowNone){
+                case "boolean":
+                    return !r.allowNone;
+                case "undefined":
+                    return true;
+                case "function":
+                    return !r.allowNone(specContext);
+            }
+        });
+        const numeric = roles.filter((r)=>r.excludeCategoric);
+        const errors = required.map((r)=>{
+            if (specContext.specColumns[r.role]) return null;
+            else return `Field ${r.role} is required.`;
+        }).concat(numeric.map((r)=>{
+            if (specContext.specColumns[r.role] && !specContext.specColumns[r.role].quantitative) return `Field ${r.role} must be quantitative.`;
+            else return null;
+        })).filter(Boolean);
+        const { backgroundImage: backgroundImage  } = specContext.insight;
+        if (backgroundImage && !backgroundImage.extents) errors.push("BackgroundImage must have extents.");
+        return errors;
+    }
+    build() {
+        var _a, _b;
+        const { globalSignals: globalSignals , specContext: specContext  } = this;
+        const { facetLayout: facetLayout , specCapabilities: specCapabilities  } = this.props;
+        const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
+        const dataName = "data_source";
+        const { vegaSpec: vegaSpec , groupMark: groupMark  } = this.initSpec(dataName);
+        const { topColorField: topColorField , colorDataName: colorDataName  } = $906fa06e51164985$export$4c4d9288a45f1fb3({
+            scope: vegaSpec,
+            dataName: dataName,
+            specContext: specContext,
+            scaleName: $8e68118808d817fe$export$c9f17d36dfc40d76.Color,
+            legendDataName: "data_legend",
+            topLookupName: "data_topcolorlookup",
+            colorReverseSignalName: $8e68118808d817fe$export$809e371dee643808.ColorReverse
+        });
+        const globalScope = new $be25f09b8166f6c1$export$5fdf684e73bb2de5({
+            dataName: colorDataName,
+            markGroup: groupMark,
+            scope: vegaSpec,
+            signals: globalSignals
+        });
+        if (facetLayout) {
+            $964ba569d246ec1b$export$5346a0d8a9111b3f(vegaSpec, {
+                name: $8e68118808d817fe$export$809e371dee643808.FacetPaddingBottom,
+                update: `${facetLayout.facetPadding.bottom}`
+            }, {
+                name: $8e68118808d817fe$export$809e371dee643808.FacetPaddingLeft,
+                update: `${facetLayout.facetPadding.left}`
+            }, {
+                name: $8e68118808d817fe$export$809e371dee643808.FacetPaddingTop,
+                update: `${facetLayout.facetPadding.top}`
+            });
+            globalSignals.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
+            globalSignals.plotOffsetRight.update = `${facetLayout.plotPadding.x}`;
+        }
+        const { firstScope: firstScope , finalScope: finalScope , specResult: specResult , allGlobalScales: allGlobalScales , allEncodingRules: allEncodingRules ,  } = this.iterateLayouts(globalScope, (i, innerScope)=>{
+            if (facetLayout && i === 0) globalScope.zSize = innerScope.offsets.h;
+        });
+        if (specResult) return specResult;
+        if (allGlobalScales.length > 0) {
+            const plotHeightOut = globalSignals.plotHeightOut.name;
+            const plotWidthOut = globalSignals.plotWidthOut.name;
+            const colTitleScale = {
+                type: "linear",
+                name: "scale_facet_col_title",
+                domain: [
+                    0,
+                    1
+                ],
+                range: [
+                    0,
+                    {
+                        signal: plotWidthOut
+                    }
+                ]
+            };
+            const rowTitleScale = {
+                type: "linear",
+                name: "scale_facet_row_title",
+                domain: [
+                    0,
+                    1
+                ],
+                range: [
+                    {
+                        signal: plotHeightOut
+                    },
+                    0
+                ]
+            };
+            const facetScope = facetLayout ? firstScope : null;
+            const backgroundGroup = facetLayout ? facetScope.facetScope : groupMark;
+            //TODO if capability and numeric x,y
+            if (insight.backgroundImage && specCapabilities.backgroundImage && ((_a = specColumns.x) === null || _a === void 0 ? void 0 : _a.quantitative) && ((_b = specColumns.y) === null || _b === void 0 ? void 0 : _b.quantitative)) {
+                //backgroundGroup.encode.update.fill = { value: 'pink' }
+                if (!backgroundGroup.marks) backgroundGroup.marks = [];
+                const imageMark = $5debb16ccf7f9780$export$f4cf47d56985b7f(insight.backgroundImage, allGlobalScales);
+                backgroundGroup.marks.unshift(imageMark);
+            }
+            const axesScopes = facetLayout ? $614e9936fbd8f464$export$9f0b19d6fd936707({
+                globalScope: globalScope.scope,
+                plotScope: groupMark,
+                facetScope: facetScope,
+                colTitleScale: colTitleScale,
+                rowTitleScale: rowTitleScale,
+                colSeqName: "data_FacetCellColTitles",
+                rowSeqName: "data_FacetCellRowTitles"
+            }) : {
+                main: [
+                    {
+                        scope: groupMark,
+                        lines: true,
+                        labels: true,
+                        title: true
+                    }
+                ]
+            };
+            $2a7b48a829408e96$export$3678bfcfeaea7c36({
+                globalScope: globalScope,
+                allGlobalScales: allGlobalScales,
+                axisScales: this.props.axisScales,
+                plotOffsetSignals: {
+                    x: globalSignals.plotOffsetLeft,
+                    y: globalSignals.plotOffsetBottom
+                },
+                axesOffsets: {
+                    x: $1953ae18505373b7$export$3f5b554d51e74365,
+                    y: $1953ae18505373b7$export$c33f11801bb18430
+                },
+                axesTitlePadding: facetLayout ? {
+                    x: $1953ae18505373b7$export$fd4a597070549ada,
+                    y: $1953ae18505373b7$export$a26a082bf9fa4ca0
+                } : {
+                    x: $1953ae18505373b7$export$2e7279af2df830e3,
+                    y: $1953ae18505373b7$export$f0388d9263db6e5f
+                },
+                labelBaseline: {
+                    x: "top",
+                    y: "middle"
+                },
+                specColumns: specColumns,
+                specViewOptions: specViewOptions,
+                axesScopes: axesScopes,
+                hideZAxis: !!facetLayout,
+                view: insight.view
+            });
+        }
+        //add mark to the final scope
+        if (finalScope.mark) {
+            const { update: update  } = finalScope.mark.encode;
+            const outputDataName = "output";
+            finalScope.mark.from.data = outputDataName;
+            $964ba569d246ec1b$export$6853292f627997e4(globalScope.markGroup, {
+                name: outputDataName,
+                source: globalScope.markDataName,
+                transform: [
+                    {
+                        type: "formula",
+                        expr: finalScope.offsets.x,
+                        as: $8e68118808d817fe$export$10df5429b7082be2.OffsetX
+                    },
+                    {
+                        type: "formula",
+                        expr: finalScope.offsets.y,
+                        as: $8e68118808d817fe$export$10df5429b7082be2.OffsetY
+                    }, 
+                ]
+            });
+            update.x = {
+                field: $8e68118808d817fe$export$10df5429b7082be2.OffsetX
+            };
+            update.y = {
+                field: $8e68118808d817fe$export$10df5429b7082be2.OffsetY
+            };
+            allEncodingRules.forEach((map)=>{
+                for(const key in map)if (update[key]) {
+                    const arrIn = map[key];
+                    if (!Array.isArray(update[key])) {
+                        const value = update[key];
+                        const arrOut = [];
+                        update[key] = arrOut;
+                        arrIn.forEach((rule)=>arrOut.push(rule));
+                        arrOut.push(value);
+                    } else {
+                        const arrOut = update[key];
+                        arrIn.forEach((rule)=>arrOut.unshift(rule));
+                    }
+                }
+            });
+            update.fill = $00b9f47bd333aea9$export$9563e054e6f787fb(specContext, topColorField, $8e68118808d817fe$export$c9f17d36dfc40d76.Color);
+            update.opacity = $00b9f47bd333aea9$export$c17a3be1057836e(specContext);
+        }
+        return {
+            specCapabilities: specCapabilities,
+            vegaSpec: vegaSpec
+        };
+    }
+    initSpec(dataName) {
+        const { globalSignals: globalSignals  } = this;
+        const { facetAxesAdjustX: facetAxesAdjustX , facetAxesAdjustY: facetAxesAdjustY , minCellWidth: minCellWidth , minCellHeight: minCellHeight , plotOffsetLeft: plotOffsetLeft , plotOffsetBottom: plotOffsetBottom , plotOffsetTop: plotOffsetTop , plotOffsetRight: plotOffsetRight , plotHeightOut: plotHeightOut , plotWidthOut: plotWidthOut  } = globalSignals;
+        const { specContext: specContext  } = this;
+        const { insight: insight  } = specContext;
+        const groupMark = {
+            type: "group",
+            //style: 'cell',
+            encode: {
+                update: {
+                    x: {
+                        signal: `${$8e68118808d817fe$export$809e371dee643808.PlotOffsetLeft} - ${$8e68118808d817fe$export$809e371dee643808.FacetAxesAdjustX}`
+                    },
+                    y: {
+                        signal: $8e68118808d817fe$export$809e371dee643808.PlotOffsetTop
+                    },
+                    height: {
+                        signal: `${$8e68118808d817fe$export$809e371dee643808.PlotHeightOut} - ${$8e68118808d817fe$export$809e371dee643808.FacetAxesAdjustY}`
+                    },
+                    width: {
+                        signal: `${$8e68118808d817fe$export$809e371dee643808.PlotWidthOut} + ${$8e68118808d817fe$export$809e371dee643808.FacetAxesAdjustX}`
+                    }
+                }
+            }
+        };
+        const inputDataname = "input";
+        const vegaSpec = {
+            $schema: "https://vega.github.io/schema/vega/v5.json",
+            //style: 'cell',
+            data: [
+                {
+                    name: inputDataname
+                },
+                {
+                    name: dataName,
+                    source: inputDataname,
+                    transform: []
+                }
+            ],
+            marks: [
+                groupMark
+            ],
+            signals: $86da97a0f38ad760$export$d9407ec206a3236c(specContext, $8e68118808d817fe$export$809e371dee643808.ViewportHeight).concat([
+                minCellWidth,
+                minCellHeight,
+                {
+                    name: $8e68118808d817fe$export$809e371dee643808.ViewportHeight,
+                    update: `max(${$8e68118808d817fe$export$809e371dee643808.MinCellHeight}, ${insight.size.height})`
+                },
+                {
+                    name: $8e68118808d817fe$export$809e371dee643808.ViewportWidth,
+                    update: `max(${$8e68118808d817fe$export$809e371dee643808.MinCellWidth}, ${insight.size.width})`
+                },
+                plotOffsetLeft,
+                plotOffsetTop,
+                plotOffsetBottom,
+                plotOffsetRight,
+                facetAxesAdjustX,
+                facetAxesAdjustY,
+                {
+                    name: $8e68118808d817fe$export$809e371dee643808.PlotHeightIn,
+                    update: `${$8e68118808d817fe$export$809e371dee643808.ViewportHeight} - ${$8e68118808d817fe$export$809e371dee643808.PlotOffsetBottom} + ${$8e68118808d817fe$export$809e371dee643808.FacetAxesAdjustY}`
+                },
+                {
+                    name: $8e68118808d817fe$export$809e371dee643808.PlotWidthIn,
+                    update: `${$8e68118808d817fe$export$809e371dee643808.ViewportWidth} - ${$8e68118808d817fe$export$809e371dee643808.PlotOffsetLeft} - ${$8e68118808d817fe$export$809e371dee643808.PlotOffsetRight}`
+                },
+                plotHeightOut,
+                plotWidthOut,
+                {
+                    name: "height",
+                    update: `${$8e68118808d817fe$export$809e371dee643808.PlotOffsetTop} + ${$8e68118808d817fe$export$809e371dee643808.PlotHeightOut} + ${$8e68118808d817fe$export$809e371dee643808.PlotOffsetBottom} - ${$8e68118808d817fe$export$809e371dee643808.FacetAxesAdjustY}`
+                },
+                {
+                    name: "width",
+                    update: `${$8e68118808d817fe$export$809e371dee643808.PlotWidthOut} + ${$8e68118808d817fe$export$809e371dee643808.PlotOffsetLeft} + ${$8e68118808d817fe$export$809e371dee643808.PlotOffsetRight}`
+                }, 
+            ])
+        };
+        return {
+            vegaSpec: vegaSpec,
+            groupMark: groupMark
+        };
+    }
+    iterateLayouts(globalScope, onLayoutBuild) {
+        let specResult;
+        let parentScope = {
+            sizeSignals: globalScope.sizeSignals,
+            offsets: globalScope.offsets
+        };
+        let firstScope;
+        let childScope;
+        const groupings = [];
+        const { layouts: layouts , specCapabilities: specCapabilities  } = this.props;
+        const allGlobalScales = [];
+        const allEncodingRules = [];
+        for(let i = 0; i < layouts.length; i++){
+            if (!parentScope) continue;
+            const buildProps = {
+                globalScope: globalScope,
+                parentScope: parentScope,
+                axesScales: this.props.axisScales,
+                groupings: groupings,
+                id: i
+            };
+            const layout = this.createLayout(layouts[i], buildProps);
+            try {
+                childScope = layout.build();
+                childScope.id = i;
+                const groupby = layout.getGrouping();
+                if (groupby) groupings.push({
+                    id: i,
+                    groupby: groupby,
+                    fieldOps: [
+                        {
+                            field: null,
+                            op: "count",
+                            as: $8e68118808d817fe$export$10df5429b7082be2.Count
+                        }, 
+                    ]
+                });
+                const sumOp = layout.getAggregateSumOp();
+                if (sumOp) groupings[groupings.length - 1].fieldOps.push(sumOp);
+                onLayoutBuild(i, childScope);
+            } catch (e) {
+                specResult = {
+                    errors: [
+                        e.stack
+                    ],
+                    specCapabilities: specCapabilities,
+                    vegaSpec: null
+                };
+                break;
+            }
+            if (childScope && childScope.globalScales) allGlobalScales.push(childScope.globalScales);
+            if (childScope.encodingRuleMap) allEncodingRules.push(childScope.encodingRuleMap);
+            if (i === 0) firstScope = childScope;
+            parentScope = childScope;
+        }
+        return {
+            firstScope: firstScope,
+            finalScope: parentScope,
+            specResult: specResult,
+            allGlobalScales: allGlobalScales,
+            allEncodingRules: allEncodingRules
+        };
+    }
+    createLayout(layoutPair, buildProps) {
+        const { layoutType: layoutType , props: props  } = layoutPair;
+        const layoutBuildProps = Object.assign(Object.assign({}, props), buildProps);
+        const layoutClass = $2e754805dfb2e272$export$8b2ec0ba67742226[layoutType];
+        const layout = new layoutClass(layoutBuildProps);
+        layout.id = buildProps.id;
+        return layout;
+    }
+}
+function $cdabc45392fba1ae$export$3f8fe6489e95757d(specContext, currData) {
+    const { specColumns: specColumns  } = specContext;
+    const columns = [
+        specColumns.color,
+        specColumns.facet,
+        specColumns.facetV,
+        specColumns.group,
+        specColumns.size,
+        specColumns.sort,
+        specColumns.x,
+        specColumns.y,
+        specColumns.z, 
+    ];
+    $905f7ac6d17f4e91$export$e04a97cc71178399(columns, currData);
+    const specBuilderProps = $653fe05a0bd37229$export$104083a36c1647a7(specContext);
+    const specBuilder = new $a735328ea0dc7655$export$e2e6dd2b1097c25b(specBuilderProps, specContext);
+    let specResult;
+    if (specBuilder) {
+        try {
+            const errors = specBuilder.validate();
+            if (errors.length) specResult = {
+                errors: errors,
+                specCapabilities: specBuilderProps.specCapabilities,
+                vegaSpec: null
+            };
+            else specResult = specBuilder.build();
+        } catch (e) {
+            specResult = {
+                specCapabilities: null,
+                vegaSpec: null,
+                errors: [
+                    e.stack
+                ]
+            };
+        }
+        if (!specResult.errors) {
+            const data0 = specResult.vegaSpec.data[0];
+            data0.values = currData;
+        }
+    } else specResult = {
+        specCapabilities: null,
+        vegaSpec: null,
+        errors: [
+            `could not build spec for ${specContext.insight.chart}`
+        ]
+    };
+    return specResult;
+}
+const $f6b586d34580d151$var$dataUrl = "/SandDance/sample-data/demovote.tsv";
+const $f6b586d34580d151$var$specViewOptions = {
+    colors: {
+        defaultCube: "steelblue",
+        axisLine: "#000",
+        axisText: "#000"
+    },
+    language: {
+        count: "Count"
+    },
+    maxLegends: 20,
+    tickSize: 10
+};
+let $f6b586d34580d151$var$data;
+let $f6b586d34580d151$var$columns;
+const $f6b586d34580d151$var$container = document.getElementById("vis");
+const $f6b586d34580d151$var$select = document.getElementById("select-spec");
+const $f6b586d34580d151$var$insightTextarea = document.getElementById("insight-json");
+const $f6b586d34580d151$var$insightUdateButton = document.getElementById("insight-update");
+const $f6b586d34580d151$var$vegaOutput = document.getElementById("vega-spec");
+const $f6b586d34580d151$var$vegaCopy = document.getElementById("vega-spec-copy");
+$f6b586d34580d151$var$select.onchange = ()=>$f6b586d34580d151$var$selected($f6b586d34580d151$var$select.selectedIndex);
+$f6b586d34580d151$var$insightUdateButton.onclick = ()=>{
+    const insight = JSON.parse($f6b586d34580d151$var$insightTextarea.value);
+    $f6b586d34580d151$var$render(insight);
+};
+$f6b586d34580d151$var$vegaCopy.onclick = ()=>{
+    $f6b586d34580d151$var$vegaOutput.select();
+    document.execCommand("copy");
+    $f6b586d34580d151$var$vegaCopy.innerText = "copied";
+    setTimeout(()=>{
+        $f6b586d34580d151$var$vegaCopy.innerText = "copy";
+    }, 2000);
+};
+function $f6b586d34580d151$var$selected(selectedIndex) {
+    $f6b586d34580d151$var$container.innerHTML = `loading spec...`;
+    $f6b586d34580d151$var$fetchInsight($f6b586d34580d151$var$select.options[selectedIndex].value);
+}
+function $f6b586d34580d151$var$fetchInsight(specFilename) {
+    fetch(`specs/${specFilename}`).then((response)=>response.json()).then((insight)=>$f6b586d34580d151$var$render(insight)).catch((error)=>$f6b586d34580d151$var$container.innerText = error);
+}
+function $f6b586d34580d151$var$render(insight) {
+    $f6b586d34580d151$var$insightTextarea.value = JSON.stringify(insight, null, 2);
+    const specColumns = $905f7ac6d17f4e91$export$9e6128b2231f5173(insight, $f6b586d34580d151$var$columns);
+    const context = {
+        specColumns: specColumns,
+        insight: insight,
+        specViewOptions: $f6b586d34580d151$var$specViewOptions
+    };
+    const specResult = $cdabc45392fba1ae$export$3f8fe6489e95757d(context, $f6b586d34580d151$var$data);
+    if (specResult.errors) $f6b586d34580d151$var$container.innerText = specResult.errors.map((error)=>error).join("\n");
+    else $f6b586d34580d151$var$renderVegaSpec(specResult.vegaSpec);
+}
+function $f6b586d34580d151$var$renderVegaSpec(vegaSpec) {
+    const runtime = vega.parse(vegaSpec);
+    const vegaView = new vega.View(runtime, {
+        container: $f6b586d34580d151$var$container
+    });
+    vegaView.runAsync().catch((e)=>$f6b586d34580d151$var$container.innerHTML = `error ${e}`).then(()=>{
+        const d0 = vegaSpec.data[0];
+        delete d0.values;
+        d0.format = {
+            parse: "auto",
+            type: "tsv"
+        };
+        d0.url = "https://microsoft.github.io" + $f6b586d34580d151$var$dataUrl;
+        $f6b586d34580d151$var$vegaOutput.value = JSON.stringify(vegaSpec, null, 2);
+    });
+}
+$f6b586d34580d151$var$container.innerHTML = `loading ${$f6b586d34580d151$var$dataUrl}...`;
+vega.loader().load($f6b586d34580d151$var$dataUrl).then((tsv_data)=>{
+    $f6b586d34580d151$var$data = vega.read(tsv_data, {
+        type: "tsv",
+        parse: "auto"
+    });
+    $f6b586d34580d151$var$columns = $905f7ac6d17f4e91$export$3f19ad07848df794(vega.inferTypes, $f6b586d34580d151$var$data);
+    $f6b586d34580d151$var$selected(0);
+});
 
-},{"d3-color":"cAejr","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"cAejr":[function(require,module,exports) {
+},{"d3-color":"cAejr"}],"cAejr":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "color", ()=>(0, _colorJsDefault.default));
@@ -47078,7 +50315,7 @@ var _labJsDefault = parcelHelpers.interopDefault(_labJs);
 var _cubehelixJs = require("./cubehelix.js");
 var _cubehelixJsDefault = parcelHelpers.interopDefault(_cubehelixJs);
 
-},{"./color.js":"gKmlp","./lab.js":false,"./cubehelix.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"gKmlp":[function(require,module,exports) {
+},{"./color.js":"gKmlp","./lab.js":"eKlKd","./cubehelix.js":"kaRfv","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"gKmlp":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Color", ()=>Color);
@@ -47437,3764 +50674,157 @@ function extend(parent, definition) {
     return prototype;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"bLsvI":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"eKlKd":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "SpecBuilder", ()=>SpecBuilder);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _axes = require("./axes");
-var _color = require("./color");
-var _constants = require("./constants");
-var _defaults = require("./defaults");
-var _facetTitle = require("./facetTitle");
-var _fill = require("./fill");
-var _globalScope = require("./globalScope");
-var _scope = require("./scope");
-var _signals = require("./signals");
-var _index = require("./layouts/index");
-var _image = require("./image");
-class SpecBuilder {
-    constructor(props, specContext){
-        this.props = props;
-        this.specContext = specContext;
-        this.globalSignals = {
-            facetAxesAdjustX: {
-                name: (0, _constants.SignalNames).FacetAxesAdjustX,
-                update: props.facetLayout && props.collapseFacetAxes ? (0, _defaults.facetPaddingLeft).toString() : "0"
-            },
-            facetAxesAdjustY: {
-                name: (0, _constants.SignalNames).FacetAxesAdjustY,
-                update: props.facetLayout && props.collapseFacetAxes ? (0, _defaults.facetPaddingBottom).toString() : "0"
-            },
-            minCellWidth: {
-                name: (0, _constants.SignalNames).MinCellWidth,
-                update: `${0, _defaults.minFacetWidth}`
-            },
-            minCellHeight: {
-                name: (0, _constants.SignalNames).MinCellHeight,
-                update: `${0, _defaults.minFacetHeight}`
-            },
-            plotOffsetLeft: {
-                name: (0, _constants.SignalNames).PlotOffsetLeft,
-                update: "0"
-            },
-            plotOffsetTop: {
-                name: (0, _constants.SignalNames).PlotOffsetTop,
-                update: "0"
-            },
-            plotOffsetBottom: {
-                name: (0, _constants.SignalNames).PlotOffsetBottom,
-                update: "0"
-            },
-            plotOffsetRight: {
-                name: (0, _constants.SignalNames).PlotOffsetRight,
-                update: "0"
-            },
-            plotHeightOut: {
-                name: (0, _constants.SignalNames).PlotHeightOut,
-                update: (0, _constants.SignalNames).PlotHeightIn
-            },
-            plotWidthOut: {
-                name: (0, _constants.SignalNames).PlotWidthOut,
-                update: (0, _constants.SignalNames).PlotWidthIn
-            }
-        };
+parcelHelpers.export(exports, "gray", ()=>gray);
+parcelHelpers.export(exports, "Lab", ()=>Lab);
+parcelHelpers.export(exports, "lch", ()=>lch);
+parcelHelpers.export(exports, "hcl", ()=>hcl);
+parcelHelpers.export(exports, "Hcl", ()=>Hcl);
+var _defineJs = require("./define.js");
+var _defineJsDefault = parcelHelpers.interopDefault(_defineJs);
+var _colorJs = require("./color.js");
+var _mathJs = require("./math.js");
+// https://observablehq.com/@mbostock/lab-and-rgb
+var K = 18, Xn = 0.96422, Yn = 1, Zn = 0.82521, t0 = 4 / 29, t1 = 6 / 29, t2 = 3 * t1 * t1, t3 = t1 * t1 * t1;
+function labConvert(o) {
+    if (o instanceof Lab) return new Lab(o.l, o.a, o.b, o.opacity);
+    if (o instanceof Hcl) return hcl2lab(o);
+    if (!(o instanceof (0, _colorJs.Rgb))) o = (0, _colorJs.rgbConvert)(o);
+    var r = rgb2lrgb(o.r), g = rgb2lrgb(o.g), b = rgb2lrgb(o.b), y = xyz2lab((0.2225045 * r + 0.7168786 * g + 0.0606169 * b) / Yn), x, z;
+    if (r === g && g === b) x = z = y;
+    else {
+        x = xyz2lab((0.4360747 * r + 0.3850649 * g + 0.1430804 * b) / Xn);
+        z = xyz2lab((0.0139322 * r + 0.0971045 * g + 0.7141733 * b) / Zn);
     }
-    validate() {
-        const { specContext  } = this;
-        const { specCapabilities  } = this.props;
-        const { roles  } = specCapabilities;
-        const required = roles.filter((r)=>{
-            switch(typeof r.allowNone){
-                case "boolean":
-                    return !r.allowNone;
-                case "undefined":
-                    return true;
-                case "function":
-                    return !r.allowNone(specContext);
-            }
-        });
-        const numeric = roles.filter((r)=>r.excludeCategoric);
-        const errors = required.map((r)=>{
-            if (specContext.specColumns[r.role]) return null;
-            else return `Field ${r.role} is required.`;
-        }).concat(numeric.map((r)=>{
-            if (specContext.specColumns[r.role] && !specContext.specColumns[r.role].quantitative) return `Field ${r.role} must be quantitative.`;
-            else return null;
-        })).filter(Boolean);
-        const { backgroundImage  } = specContext.insight;
-        if (backgroundImage && !backgroundImage.extents) errors.push("BackgroundImage must have extents.");
-        return errors;
-    }
-    build() {
-        var _a, _b;
-        const { globalSignals , specContext  } = this;
-        const { facetLayout , specCapabilities  } = this.props;
-        const { insight , specColumns , specViewOptions  } = specContext;
-        const dataName = "data_source";
-        const { vegaSpec , groupMark  } = this.initSpec(dataName);
-        const { topColorField , colorDataName  } = (0, _color.addColor)({
-            scope: vegaSpec,
-            dataName,
-            specContext,
-            scaleName: (0, _constants.ScaleNames).Color,
-            legendDataName: "data_legend",
-            topLookupName: "data_topcolorlookup",
-            colorReverseSignalName: (0, _constants.SignalNames).ColorReverse
-        });
-        const globalScope = new (0, _globalScope.GlobalScope)({
-            dataName: colorDataName,
-            markGroup: groupMark,
-            scope: vegaSpec,
-            signals: globalSignals
-        });
-        if (facetLayout) {
-            (0, _scope.addSignals)(vegaSpec, {
-                name: (0, _constants.SignalNames).FacetPaddingBottom,
-                update: `${facetLayout.facetPadding.bottom}`
-            }, {
-                name: (0, _constants.SignalNames).FacetPaddingLeft,
-                update: `${facetLayout.facetPadding.left}`
-            }, {
-                name: (0, _constants.SignalNames).FacetPaddingTop,
-                update: `${facetLayout.facetPadding.top}`
-            });
-            globalSignals.plotOffsetTop.update = `${facetLayout.plotPadding.y}`;
-            globalSignals.plotOffsetRight.update = `${facetLayout.plotPadding.x}`;
-        }
-        const { firstScope , finalScope , specResult , allGlobalScales , allEncodingRules ,  } = this.iterateLayouts(globalScope, (i, innerScope)=>{
-            if (facetLayout && i === 0) globalScope.zSize = innerScope.offsets.h;
-        });
-        if (specResult) return specResult;
-        if (allGlobalScales.length > 0) {
-            const plotHeightOut = globalSignals.plotHeightOut.name;
-            const plotWidthOut = globalSignals.plotWidthOut.name;
-            const colTitleScale = {
-                type: "linear",
-                name: "scale_facet_col_title",
-                domain: [
-                    0,
-                    1
-                ],
-                range: [
-                    0,
-                    {
-                        signal: plotWidthOut
-                    }
-                ]
-            };
-            const rowTitleScale = {
-                type: "linear",
-                name: "scale_facet_row_title",
-                domain: [
-                    0,
-                    1
-                ],
-                range: [
-                    {
-                        signal: plotHeightOut
-                    },
-                    0
-                ]
-            };
-            const facetScope = facetLayout ? firstScope : null;
-            const backgroundGroup = facetLayout ? facetScope.facetScope : groupMark;
-            //TODO if capability and numeric x,y
-            if (insight.backgroundImage && specCapabilities.backgroundImage && ((_a = specColumns.x) === null || _a === void 0 ? void 0 : _a.quantitative) && ((_b = specColumns.y) === null || _b === void 0 ? void 0 : _b.quantitative)) {
-                //backgroundGroup.encode.update.fill = { value: 'pink' }
-                if (!backgroundGroup.marks) backgroundGroup.marks = [];
-                const imageMark = (0, _image.getImageMark)(insight.backgroundImage, allGlobalScales);
-                backgroundGroup.marks.unshift(imageMark);
-            }
-            const axesScopes = facetLayout ? (0, _facetTitle.addFacetAxesGroupMarks)({
-                globalScope: globalScope.scope,
-                plotScope: groupMark,
-                facetScope,
-                colTitleScale,
-                rowTitleScale,
-                colSeqName: "data_FacetCellColTitles",
-                rowSeqName: "data_FacetCellRowTitles"
-            }) : {
-                main: [
-                    {
-                        scope: groupMark,
-                        lines: true,
-                        labels: true,
-                        title: true
-                    }
-                ]
-            };
-            (0, _axes.addGlobalAxes)({
-                globalScope,
-                allGlobalScales,
-                axisScales: this.props.axisScales,
-                plotOffsetSignals: {
-                    x: globalSignals.plotOffsetLeft,
-                    y: globalSignals.plotOffsetBottom
-                },
-                axesOffsets: {
-                    x: (0, _defaults.axesOffsetX),
-                    y: (0, _defaults.axesOffsetY)
-                },
-                axesTitlePadding: facetLayout ? {
-                    x: (0, _defaults.axesTitlePaddingFacetX),
-                    y: (0, _defaults.axesTitlePaddingFacetY)
-                } : {
-                    x: (0, _defaults.axesTitlePaddingX),
-                    y: (0, _defaults.axesTitlePaddingY)
-                },
-                labelBaseline: {
-                    x: "top",
-                    y: "middle"
-                },
-                specColumns,
-                specViewOptions,
-                axesScopes,
-                hideZAxis: !!facetLayout,
-                view: insight.view
-            });
-        }
-        //add mark to the final scope
-        if (finalScope.mark) {
-            const { update  } = finalScope.mark.encode;
-            const outputDataName = "output";
-            finalScope.mark.from.data = outputDataName;
-            (0, _scope.addData)(globalScope.markGroup, {
-                name: outputDataName,
-                source: globalScope.markDataName,
-                transform: [
-                    {
-                        type: "formula",
-                        expr: finalScope.offsets.x,
-                        as: (0, _constants.FieldNames).OffsetX
-                    },
-                    {
-                        type: "formula",
-                        expr: finalScope.offsets.y,
-                        as: (0, _constants.FieldNames).OffsetY
-                    }, 
-                ]
-            });
-            update.x = {
-                field: (0, _constants.FieldNames).OffsetX
-            };
-            update.y = {
-                field: (0, _constants.FieldNames).OffsetY
-            };
-            allEncodingRules.forEach((map)=>{
-                for(const key in map)if (update[key]) {
-                    const arrIn = map[key];
-                    if (!Array.isArray(update[key])) {
-                        const value = update[key];
-                        const arrOut = [];
-                        update[key] = arrOut;
-                        arrIn.forEach((rule)=>arrOut.push(rule));
-                        arrOut.push(value);
-                    } else {
-                        const arrOut = update[key];
-                        arrIn.forEach((rule)=>arrOut.unshift(rule));
-                    }
-                }
-            });
-            update.fill = (0, _fill.fill)(specContext, topColorField, (0, _constants.ScaleNames).Color);
-            update.opacity = (0, _fill.opacity)(specContext);
-        }
-        return {
-            specCapabilities,
-            vegaSpec
-        };
-    }
-    initSpec(dataName) {
-        const { globalSignals  } = this;
-        const { facetAxesAdjustX , facetAxesAdjustY , minCellWidth , minCellHeight , plotOffsetLeft , plotOffsetBottom , plotOffsetTop , plotOffsetRight , plotHeightOut , plotWidthOut  } = globalSignals;
-        const { specContext  } = this;
-        const { insight  } = specContext;
-        const groupMark = {
-            type: "group",
-            //style: 'cell',
-            encode: {
-                update: {
-                    x: {
-                        signal: `${(0, _constants.SignalNames).PlotOffsetLeft} - ${(0, _constants.SignalNames).FacetAxesAdjustX}`
-                    },
-                    y: {
-                        signal: (0, _constants.SignalNames).PlotOffsetTop
-                    },
-                    height: {
-                        signal: `${(0, _constants.SignalNames).PlotHeightOut} - ${(0, _constants.SignalNames).FacetAxesAdjustY}`
-                    },
-                    width: {
-                        signal: `${(0, _constants.SignalNames).PlotWidthOut} + ${(0, _constants.SignalNames).FacetAxesAdjustX}`
-                    }
-                }
-            }
-        };
-        const inputDataname = "input";
-        const vegaSpec = {
-            $schema: "https://vega.github.io/schema/vega/v5.json",
-            //style: 'cell',
-            data: [
-                {
-                    name: inputDataname
-                },
-                {
-                    name: dataName,
-                    source: inputDataname,
-                    transform: []
-                }
-            ],
-            marks: [
-                groupMark
-            ],
-            signals: (0, _signals.textSignals)(specContext, (0, _constants.SignalNames).ViewportHeight).concat([
-                minCellWidth,
-                minCellHeight,
-                {
-                    name: (0, _constants.SignalNames).ViewportHeight,
-                    update: `max(${(0, _constants.SignalNames).MinCellHeight}, ${insight.size.height})`
-                },
-                {
-                    name: (0, _constants.SignalNames).ViewportWidth,
-                    update: `max(${(0, _constants.SignalNames).MinCellWidth}, ${insight.size.width})`
-                },
-                plotOffsetLeft,
-                plotOffsetTop,
-                plotOffsetBottom,
-                plotOffsetRight,
-                facetAxesAdjustX,
-                facetAxesAdjustY,
-                {
-                    name: (0, _constants.SignalNames).PlotHeightIn,
-                    update: `${(0, _constants.SignalNames).ViewportHeight} - ${(0, _constants.SignalNames).PlotOffsetBottom} + ${(0, _constants.SignalNames).FacetAxesAdjustY}`
-                },
-                {
-                    name: (0, _constants.SignalNames).PlotWidthIn,
-                    update: `${(0, _constants.SignalNames).ViewportWidth} - ${(0, _constants.SignalNames).PlotOffsetLeft} - ${(0, _constants.SignalNames).PlotOffsetRight}`
-                },
-                plotHeightOut,
-                plotWidthOut,
-                {
-                    name: "height",
-                    update: `${(0, _constants.SignalNames).PlotOffsetTop} + ${(0, _constants.SignalNames).PlotHeightOut} + ${(0, _constants.SignalNames).PlotOffsetBottom} - ${(0, _constants.SignalNames).FacetAxesAdjustY}`
-                },
-                {
-                    name: "width",
-                    update: `${(0, _constants.SignalNames).PlotWidthOut} + ${(0, _constants.SignalNames).PlotOffsetLeft} + ${(0, _constants.SignalNames).PlotOffsetRight}`
-                }, 
-            ])
-        };
-        return {
-            vegaSpec,
-            groupMark
-        };
-    }
-    iterateLayouts(globalScope, onLayoutBuild) {
-        let specResult;
-        let parentScope = {
-            sizeSignals: globalScope.sizeSignals,
-            offsets: globalScope.offsets
-        };
-        let firstScope;
-        let childScope;
-        const groupings = [];
-        const { layouts , specCapabilities  } = this.props;
-        const allGlobalScales = [];
-        const allEncodingRules = [];
-        for(let i = 0; i < layouts.length; i++){
-            if (!parentScope) continue;
-            const buildProps = {
-                globalScope,
-                parentScope,
-                axesScales: this.props.axisScales,
-                groupings,
-                id: i
-            };
-            const layout = this.createLayout(layouts[i], buildProps);
-            try {
-                childScope = layout.build();
-                childScope.id = i;
-                const groupby = layout.getGrouping();
-                if (groupby) groupings.push({
-                    id: i,
-                    groupby,
-                    fieldOps: [
-                        {
-                            field: null,
-                            op: "count",
-                            as: (0, _constants.FieldNames).Count
-                        }, 
-                    ]
-                });
-                const sumOp = layout.getAggregateSumOp();
-                if (sumOp) groupings[groupings.length - 1].fieldOps.push(sumOp);
-                onLayoutBuild(i, childScope);
-            } catch (e) {
-                specResult = {
-                    errors: [
-                        e.stack
-                    ],
-                    specCapabilities,
-                    vegaSpec: null
-                };
-                break;
-            }
-            if (childScope && childScope.globalScales) allGlobalScales.push(childScope.globalScales);
-            if (childScope.encodingRuleMap) allEncodingRules.push(childScope.encodingRuleMap);
-            if (i === 0) firstScope = childScope;
-            parentScope = childScope;
-        }
-        return {
-            firstScope,
-            finalScope: parentScope,
-            specResult,
-            allGlobalScales,
-            allEncodingRules
-        };
-    }
-    createLayout(layoutPair, buildProps) {
-        const { layoutType , props  } = layoutPair;
-        const layoutBuildProps = Object.assign(Object.assign({}, props), buildProps);
-        const layoutClass = (0, _index.layoutClasses)[layoutType];
-        const layout = new layoutClass(layoutBuildProps);
-        layout.id = buildProps.id;
-        return layout;
-    }
+    return new Lab(116 * y - 16, 500 * (x - y), 200 * (y - z), o.opacity);
 }
+function gray(l, opacity) {
+    return new Lab(l, 0, 0, opacity == null ? 1 : opacity);
+}
+function lab(l, a, b, opacity) {
+    return arguments.length === 1 ? labConvert(l) : new Lab(l, a, b, opacity == null ? 1 : opacity);
+}
+exports.default = lab;
+function Lab(l, a, b, opacity) {
+    this.l = +l;
+    this.a = +a;
+    this.b = +b;
+    this.opacity = +opacity;
+}
+(0, _defineJsDefault.default)(Lab, lab, (0, _defineJs.extend)((0, _colorJs.Color), {
+    brighter: function(k) {
+        return new Lab(this.l + K * (k == null ? 1 : k), this.a, this.b, this.opacity);
+    },
+    darker: function(k) {
+        return new Lab(this.l - K * (k == null ? 1 : k), this.a, this.b, this.opacity);
+    },
+    rgb: function() {
+        var y = (this.l + 16) / 116, x = isNaN(this.a) ? y : y + this.a / 500, z = isNaN(this.b) ? y : y - this.b / 200;
+        x = Xn * lab2xyz(x);
+        y = Yn * lab2xyz(y);
+        z = Zn * lab2xyz(z);
+        return new (0, _colorJs.Rgb)(lrgb2rgb(3.1338561 * x - 1.6168667 * y - 0.4906146 * z), lrgb2rgb(-0.9787684 * x + 1.9161415 * y + 0.0334540 * z), lrgb2rgb(0.0719453 * x - 0.2289914 * y + 1.4052427 * z), this.opacity);
+    }
+}));
+function xyz2lab(t) {
+    return t > t3 ? Math.pow(t, 1 / 3) : t / t2 + t0;
+}
+function lab2xyz(t) {
+    return t > t1 ? t * t * t : t2 * (t - t0);
+}
+function lrgb2rgb(x) {
+    return 255 * (x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
+}
+function rgb2lrgb(x) {
+    return (x /= 255) <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+}
+function hclConvert(o) {
+    if (o instanceof Hcl) return new Hcl(o.h, o.c, o.l, o.opacity);
+    if (!(o instanceof Lab)) o = labConvert(o);
+    if (o.a === 0 && o.b === 0) return new Hcl(NaN, 0 < o.l && o.l < 100 ? 0 : NaN, o.l, o.opacity);
+    var h = Math.atan2(o.b, o.a) * (0, _mathJs.rad2deg);
+    return new Hcl(h < 0 ? h + 360 : h, Math.sqrt(o.a * o.a + o.b * o.b), o.l, o.opacity);
+}
+function lch(l, c, h, opacity) {
+    return arguments.length === 1 ? hclConvert(l) : new Hcl(h, c, l, opacity == null ? 1 : opacity);
+}
+function hcl(h, c, l, opacity) {
+    return arguments.length === 1 ? hclConvert(h) : new Hcl(h, c, l, opacity == null ? 1 : opacity);
+}
+function Hcl(h, c, l, opacity) {
+    this.h = +h;
+    this.c = +c;
+    this.l = +l;
+    this.opacity = +opacity;
+}
+function hcl2lab(o) {
+    if (isNaN(o.h)) return new Lab(o.l, 0, 0, o.opacity);
+    var h = o.h * (0, _mathJs.deg2rad);
+    return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
+}
+(0, _defineJsDefault.default)(Hcl, hcl, (0, _defineJs.extend)((0, _colorJs.Color), {
+    brighter: function(k) {
+        return new Hcl(this.h, this.c, this.l + K * (k == null ? 1 : k), this.opacity);
+    },
+    darker: function(k) {
+        return new Hcl(this.h, this.c, this.l - K * (k == null ? 1 : k), this.opacity);
+    },
+    rgb: function() {
+        return hcl2lab(this).rgb();
+    }
+}));
 
-},{"./axes":"6V3Kf","./color":"bR3Rc","./constants":"3I5IU","./defaults":"5kAFI","./facetTitle":"k14Ax","./fill":"cZVNs","./globalScope":"8eLZx","./scope":"deG3T","./signals":"6xNUg","./layouts/index":"6WMRo","./image":"CdrH9","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"6V3Kf":[function(require,module,exports) {
+},{"./define.js":"X423M","./color.js":"gKmlp","./math.js":"d8eBx","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"d8eBx":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "addGlobalAxes", ()=>addGlobalAxes);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _constants = require("./constants");
-var _defaults = require("./defaults");
-var _scope = require("./scope");
-function addGlobalAxes(props1) {
-    const { axesOffsets , axisScales , axesScopes , axesTitlePadding , allGlobalScales , globalScope , labelBaseline , plotOffsetSignals , specColumns , specViewOptions  } = props1;
-    const { scope  } = globalScope;
-    allGlobalScales.forEach((globalScales)=>{
-        const { scales  } = globalScales;
-        for(const xyz in scales){
-            const _scales = scales[xyz];
-            if (_scales) {
-                (0, _scope.addScales)(scope, ..._scales);
-                let { showAxes  } = globalScales;
-                let zindex = undefined;
-                if (xyz === "z") {
-                    showAxes = false;
-                    if (props1.view === "3d" && specViewOptions.zAxisOptions && !props1.hideZAxis) {
-                        if (specViewOptions.zAxisOptions.showZAxis) {
-                            showAxes = true;
-                            zindex = specViewOptions.zAxisOptions.zIndex;
-                        }
-                    }
-                }
-                if (showAxes && axisScales) {
-                    const axisScale = axisScales[xyz];
-                    if (axisScale) {
-                        const lineColor = specViewOptions.colors.axisLine;
-                        const horizontal = xyz === "x";
-                        const column = specColumns[xyz] || {
-                            quantitative: true
-                        };
-                        const title = axisScale.title;
-                        const props = {
-                            title,
-                            horizontal,
-                            column,
-                            specViewOptions,
-                            lineColor,
-                            titlePadding: axesTitlePadding[xyz],
-                            labelBaseline: labelBaseline[xyz],
-                            zindex
-                        };
-                        axesScopes["main"].forEach((a)=>(0, _scope.addAxes)(a.scope, createAxis(Object.assign(Object.assign({}, props), {
-                                scale: a.scale || _scales[0],
-                                showTitle: a.title,
-                                showLabels: a.labels,
-                                showLines: a.lines
-                            }))));
-                        if (axesScopes[xyz]) axesScopes[xyz].forEach((a)=>(0, _scope.addAxes)(a.scope, createAxis(Object.assign(Object.assign({}, props), {
-                                scale: a.scale || _scales[0],
-                                showTitle: a.title,
-                                showLabels: a.labels,
-                                showLines: a.lines
-                            }))));
-                        if (plotOffsetSignals[xyz] && axesOffsets[xyz]) {
-                            const plotOffsetSignal = plotOffsetSignals[xyz];
-                            plotOffsetSignal.update = `${axesOffsets[xyz]}`;
-                        }
-                    }
-                }
-            }
-        }
-    });
-}
-function createAxis(props) {
-    const { column , horizontal , labelBaseline , lineColor , scale , showLabels , showTitle , showLines , specViewOptions , title , titlePadding , zindex  } = props;
-    const axis = Object.assign(Object.assign(Object.assign(Object.assign({
-        zindex,
-        scale: scale.name,
-        orient: horizontal ? "bottom" : "left",
-        domain: showLines,
-        ticks: showLines
-    }, showLines && {
-        domainColor: lineColor,
-        tickColor: lineColor,
-        tickSize: specViewOptions.tickSize
-    }), showTitle && {
-        title,
-        titleAlign: horizontal ? "left" : "right",
-        titleAngle: {
-            signal: horizontal ? (0, _constants.SignalNames).TextAngleX : (0, _constants.SignalNames).TextAngleY
-        },
-        titleColor: specViewOptions.colors.axisText,
-        titleFontSize: {
-            signal: (0, _constants.SignalNames).TextTitleSize
-        },
-        titleLimit: (0, _defaults.axesTitleLimit),
-        titlePadding
-    }), {
-        labels: showLabels
-    }), showLabels && {
-        labelAlign: horizontal ? "left" : "right",
-        labelBaseline,
-        labelAngle: {
-            signal: horizontal ? (0, _constants.SignalNames).TextAngleX : (0, _constants.SignalNames).TextAngleY
-        },
-        labelColor: specViewOptions.colors.axisText,
-        labelFontSize: {
-            signal: (0, _constants.SignalNames).TextSize
-        },
-        labelLimit: (0, _defaults.axesLabelLimit)
-    });
-    if (column.quantitative) axis.format = "~r";
-    return axis;
-}
+parcelHelpers.export(exports, "deg2rad", ()=>deg2rad);
+parcelHelpers.export(exports, "rad2deg", ()=>rad2deg);
+var deg2rad = Math.PI / 180;
+var rad2deg = 180 / Math.PI;
 
-},{"./constants":"3I5IU","./defaults":"5kAFI","./scope":"deG3T","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"deG3T":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"kaRfv":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ parcelHelpers.export(exports, "addAxes", ()=>addAxes);
-parcelHelpers.export(exports, "addData", ()=>addData);
-parcelHelpers.export(exports, "addMarks", ()=>addMarks);
-parcelHelpers.export(exports, "addScales", ()=>addScales);
-parcelHelpers.export(exports, "addSignals", ()=>addSignals);
-parcelHelpers.export(exports, "addTransforms", ()=>addTransforms);
-parcelHelpers.export(exports, "getDataByName", ()=>getDataByName);
-parcelHelpers.export(exports, "getGroupBy", ()=>getGroupBy);
-parcelHelpers.export(exports, "addOffsets", ()=>addOffsets);
-function addAxes(scope, ...axes) {
-    if (!axes || !axes.length) return;
-    if (!scope.axes) scope.axes = [];
-    scope.axes.push(...axes.filter(Boolean));
+parcelHelpers.export(exports, "Cubehelix", ()=>Cubehelix);
+var _defineJs = require("./define.js");
+var _defineJsDefault = parcelHelpers.interopDefault(_defineJs);
+var _colorJs = require("./color.js");
+var _mathJs = require("./math.js");
+var A = -0.14861, B = 1.78277, C = -0.29227, D = -0.90649, E = 1.97294, ED = E * D, EB = E * B, BC_DA = B * C - D * A;
+function cubehelixConvert(o) {
+    if (o instanceof Cubehelix) return new Cubehelix(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof (0, _colorJs.Rgb))) o = (0, _colorJs.rgbConvert)(o);
+    var r = o.r / 255, g = o.g / 255, b = o.b / 255, l = (BC_DA * b + ED * r - EB * g) / (BC_DA + ED - EB), bl = b - l, k = (E * (g - l) - C * bl) / D, s = Math.sqrt(k * k + bl * bl) / (E * l * (1 - l)), h = s ? Math.atan2(k, bl) * (0, _mathJs.rad2deg) - 120 : NaN;
+    return new Cubehelix(h < 0 ? h + 360 : h, s, l, o.opacity);
 }
-function addData(scope, ...datas) {
-    if (!datas || !datas.length) return;
-    if (!scope.data) scope.data = [];
-    scope.data.push(...datas.filter(Boolean));
+function cubehelix(h, s, l, opacity) {
+    return arguments.length === 1 ? cubehelixConvert(h) : new Cubehelix(h, s, l, opacity == null ? 1 : opacity);
 }
-function addMarks(scope, ...marks) {
-    if (!marks || !marks.length) return;
-    if (!scope.marks) scope.marks = [];
-    scope.marks.push(...marks.filter(Boolean));
+exports.default = cubehelix;
+function Cubehelix(h, s, l, opacity) {
+    this.h = +h;
+    this.s = +s;
+    this.l = +l;
+    this.opacity = +opacity;
 }
-function addScales(scope, ...scales) {
-    if (!scales || !scales.length) return;
-    if (!scope.scales) scope.scales = [];
-    scope.scales.push(...scales.filter(Boolean));
-}
-function addSignals(scope, ...signals) {
-    if (!signals || !signals.length) return;
-    if (!scope.signals) scope.signals = [];
-    scope.signals.push(...signals.filter(Boolean));
-}
-function addTransforms(data, ...transforms) {
-    if (!transforms || !transforms.length) return;
-    if (!data.transform) data.transform = [];
-    data.transform.push(...transforms.filter(Boolean));
-}
-function getDataByName(data, dataName) {
-    for(let i = 0; i < data.length; i++){
-        if (data[i].name === dataName) return {
-            data: data[i],
-            index: i
-        };
+(0, _defineJsDefault.default)(Cubehelix, cubehelix, (0, _defineJs.extend)((0, _colorJs.Color), {
+    brighter: function(k) {
+        k = k == null ? (0, _colorJs.brighter) : Math.pow((0, _colorJs.brighter), k);
+        return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
+    },
+    darker: function(k) {
+        k = k == null ? (0, _colorJs.darker) : Math.pow((0, _colorJs.darker), k);
+        return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
+    },
+    rgb: function() {
+        var h = isNaN(this.h) ? 0 : (this.h + 120) * (0, _mathJs.deg2rad), l = +this.l, a = isNaN(this.s) ? 0 : this.s * l * (1 - l), cosh = Math.cos(h), sinh = Math.sin(h);
+        return new (0, _colorJs.Rgb)(255 * (l + a * (A * cosh + B * sinh)), 255 * (l + a * (C * cosh + D * sinh)), 255 * (l + a * (E * cosh)), this.opacity);
     }
-}
-function getGroupBy(groupings) {
-    const groupby = groupings.map((g)=>g.groupby);
-    return groupby.reduce((acc, val)=>acc.concat(val), []);
-}
-function addOffsets(...offsets) {
-    return offsets.filter(Boolean).join(" + ");
-}
+}));
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"bR3Rc":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "addColor", ()=>addColor);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _scope = require("./scope");
-var _scales = require("./scales");
-var _signals = require("./signals");
-var _constants = require("./constants");
-var _legends = require("./legends");
-var _top = require("./top");
-function addColor(props) {
-    const { colorReverseSignalName , dataName , scope , legendDataName , scaleName , specContext , topLookupName  } = props;
-    let colorDataName = dataName;
-    const { insight , specColumns , specViewOptions  } = specContext;
-    const legends = (0, _legends.getLegends)(specContext, scaleName);
-    if (legends) scope.legends = legends;
-    const categoricalColor = specColumns.color && !specColumns.color.quantitative;
-    if (categoricalColor) {
-        (0, _scope.addData)(scope, ...(0, _top.topLookup)(specColumns.color, specViewOptions.maxLegends, dataName, legendDataName, topLookupName, (0, _constants.FieldNames).TopColor, (0, _constants.FieldNames).TopIndex));
-        colorDataName = legendDataName;
-    }
-    if (specColumns.color && !specColumns.color.isColorData && !insight.directColor) {
-        if (specColumns.color.quantitative) (0, _scope.addScales)(scope, (0, _scales.binnableColorScale)(scaleName, insight.colorBin, dataName, specColumns.color.name, insight.scheme));
-        else (0, _scope.addScales)(scope, {
-            name: scaleName,
-            type: "ordinal",
-            domain: {
-                data: colorDataName,
-                field: (0, _constants.FieldNames).TopColor,
-                sort: true
-            },
-            range: {
-                scheme: insight.scheme || (0, _constants.ColorScaleNone)
-            },
-            reverse: {
-                signal: colorReverseSignalName
-            }
-        });
-    }
-    (0, _scope.addSignals)(scope, (0, _signals.colorBinCountSignal)(specContext), (0, _signals.colorReverseSignal)(specContext));
-    return {
-        topColorField: (0, _constants.FieldNames).TopColor,
-        colorDataName
-    };
-}
-
-},{"./scope":"deG3T","./scales":"hjH4p","./signals":"6xNUg","./constants":"3I5IU","./legends":"b8dQ9","./top":"5wQr0","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"hjH4p":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "linearScale", ()=>linearScale);
-parcelHelpers.export(exports, "pointScale", ()=>pointScale);
-parcelHelpers.export(exports, "binnableColorScale", ()=>binnableColorScale);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _constants = require("./constants");
-var _expr = require("./expr");
-function linearScale(scaleName, domain, range, reverse, zero, nice = true) {
-    const scale = {
-        name: scaleName,
-        type: "linear",
-        range,
-        round: true,
-        reverse,
-        domain,
-        zero,
-        nice
-    };
-    return scale;
-}
-function pointScale(scaleName, data, range, field, reverse) {
-    const scale = {
-        name: scaleName,
-        type: "point",
-        range,
-        domain: {
-            data,
-            field: (0, _expr.safeFieldName)(field),
-            sort: true
-        },
-        padding: 0.5
-    };
-    if (reverse !== undefined) scale.reverse = reverse;
-    return scale;
-}
-function binnableColorScale(scaleName, colorBin, data, field, scheme) {
-    scheme = scheme || (0, _constants.ColorScaleNone);
-    const domain = {
-        data,
-        field: (0, _expr.safeFieldName)(field)
-    };
-    const range = {
-        scheme
-    };
-    const reverse = {
-        signal: (0, _constants.SignalNames).ColorReverse
-    };
-    if (colorBin !== "continuous") range.count = {
-        signal: (0, _constants.SignalNames).ColorBinCount
-    };
-    switch(colorBin){
-        case "continuous":
-            {
-                const sequentialScale = {
-                    name: scaleName,
-                    type: "linear",
-                    domain,
-                    range,
-                    reverse
-                };
-                return sequentialScale;
-            }
-        case "quantile":
-            {
-                const quantileScale = {
-                    name: scaleName,
-                    type: "quantile",
-                    domain,
-                    range,
-                    reverse
-                };
-                return quantileScale;
-            }
-        default:
-            {
-                const quantizeScale = {
-                    name: scaleName,
-                    type: "quantize",
-                    domain,
-                    range,
-                    reverse
-                };
-                return quantizeScale;
-            }
-    }
-}
-
-},{"./constants":"3I5IU","./expr":"7TBI4","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7TBI4":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ /**
- * Make sure that the field name is accessible via Vega's Field type
- * https://vega.github.io/vega/docs/types/#Field
- * examples: "source.x", "target['x']", "[my.field]"
- */ parcelHelpers.export(exports, "safeFieldName", ()=>safeFieldName);
-/**
- * Make sure the field name is usable in a Vega expression
- */ parcelHelpers.export(exports, "exprSafeFieldName", ()=>exprSafeFieldName);
-function safeFieldName(field) {
-    return field.replace(".", "\\.").replace("[", "\\[").replace("]", "\\]");
-}
-function exprSafeFieldName(field) {
-    //remove whitespace, period, accessors and logical modifiers
-    return field.replace(/[.,:;+=\-/<>{}|~!@#$%^*[\]`'"()?\s\\]/g, "");
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"6xNUg":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "defaultZProportion", ()=>defaultZProportion);
-parcelHelpers.export(exports, "textSignals", ()=>textSignals);
-parcelHelpers.export(exports, "colorBinCountSignal", ()=>colorBinCountSignal);
-parcelHelpers.export(exports, "colorReverseSignal", ()=>colorReverseSignal);
-parcelHelpers.export(exports, "modifySignal", ()=>modifySignal);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _constants = require("./constants");
-var _defaults = require("./defaults");
-const defaultZProportion = 0.6;
-function textSignals(context, heightSignal) {
-    const { specViewOptions  } = context;
-    const signals = [
-        {
-            name: (0, _constants.SignalNames).ZProportion,
-            value: defaultZProportion,
-            bind: {
-                name: specViewOptions.language.zScaleProportion,
-                debounce: (0, _defaults.debounce),
-                input: "range",
-                min: 0.1,
-                max: 2,
-                step: 0.1
-            }
-        },
-        {
-            name: (0, _constants.SignalNames).ZHeight,
-            update: `${heightSignal} * ${(0, _constants.SignalNames).ZProportion}`
-        },
-        {
-            name: (0, _constants.SignalNames).TextScale,
-            value: 1.2,
-            bind: {
-                name: specViewOptions.language.textScaleSignal,
-                debounce: (0, _defaults.debounce),
-                input: "range",
-                min: 0.5,
-                max: 2,
-                step: 0.1
-            }
-        },
-        {
-            name: (0, _constants.SignalNames).TextSize,
-            update: `${(0, _constants.SignalNames).TextScale} * 10`
-        },
-        {
-            name: (0, _constants.SignalNames).TextTitleSize,
-            update: `${(0, _constants.SignalNames).TextScale} * 15`
-        },
-        {
-            name: (0, _constants.SignalNames).TextAngleX,
-            value: 30,
-            bind: {
-                name: specViewOptions.language.xAxisTextAngleSignal,
-                debounce: (0, _defaults.debounce),
-                input: "range",
-                min: 0,
-                max: 90,
-                step: 1
-            }
-        },
-        {
-            name: (0, _constants.SignalNames).TextAngleY,
-            value: 0,
-            bind: {
-                name: specViewOptions.language.yAxisTextAngleSignal,
-                debounce: (0, _defaults.debounce),
-                input: "range",
-                min: -90,
-                max: 0,
-                step: 1
-            }
-        },
-        {
-            name: (0, _constants.SignalNames).MarkOpacity,
-            value: 1,
-            bind: {
-                name: specViewOptions.language.markOpacitySignal,
-                debounce: (0, _defaults.debounce),
-                input: "range",
-                min: 0.1,
-                max: 1,
-                step: 0.05
-            }
-        }, 
-    ];
-    return signals;
-}
-function colorBinCountSignal(context) {
-    const { specViewOptions  } = context;
-    const signal = {
-        name: (0, _constants.SignalNames).ColorBinCount,
-        value: 7,
-        bind: {
-            name: specViewOptions.language.colorBinCount,
-            debounce: (0, _defaults.debounce),
-            input: "range",
-            min: 1,
-            max: specViewOptions.maxLegends + 1,
-            step: 1
-        }
-    };
-    return signal;
-}
-function colorReverseSignal(context) {
-    const { specViewOptions  } = context;
-    const signal = {
-        name: (0, _constants.SignalNames).ColorReverse,
-        value: false,
-        bind: {
-            name: specViewOptions.language.colorReverse,
-            input: "checkbox"
-        }
-    };
-    return signal;
-}
-function modifySignal(s, fn, update) {
-    s.update = `${fn}((${s.update}), (${update}))`;
-}
-
-},{"./constants":"3I5IU","./defaults":"5kAFI","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"b8dQ9":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "getLegends", ()=>getLegends);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ function legend(column, fill) {
-    const legend1 = {
-        orient: "none",
-        title: column.name,
-        fill,
-        encode: {
-            symbols: {
-                update: {
-                    shape: {
-                        value: "square"
-                    }
-                }
-            }
-        }
-    };
-    if (column.quantitative) {
-        legend1.type = "symbol";
-        legend1.format = "~r";
-    }
-    return legend1;
-}
-function getLegends(context, fill) {
-    const { specColumns , insight  } = context;
-    if (specColumns.color && !insight.hideLegend && !insight.directColor && !specColumns.color.isColorData) return [
-        legend(specColumns.color, fill)
-    ];
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"5wQr0":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "topLookup", ()=>topLookup);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _constants = require("./constants");
-var _expr = require("./expr");
-function topLookup(column, count, source, legend, lookupName, fieldName, indexName) {
-    const data = [
-        {
-            name: lookupName,
-            source,
-            transform: [
-                {
-                    type: "aggregate",
-                    groupby: [
-                        (0, _expr.safeFieldName)(column.name)
-                    ]
-                },
-                {
-                    type: "window",
-                    ops: [
-                        "count"
-                    ],
-                    as: [
-                        indexName
-                    ]
-                },
-                {
-                    type: "filter",
-                    expr: `datum[${JSON.stringify(indexName)}] <= ${count}`
-                }, 
-            ]
-        },
-        {
-            name: legend,
-            source,
-            transform: [
-                {
-                    type: "lookup",
-                    from: lookupName,
-                    key: (0, _expr.safeFieldName)(column.name),
-                    fields: [
-                        column.name
-                    ].map((0, _expr.safeFieldName)),
-                    values: [
-                        column.name
-                    ].map((0, _expr.safeFieldName)),
-                    as: [
-                        fieldName
-                    ]
-                },
-                {
-                    type: "formula",
-                    expr: `datum[${JSON.stringify(fieldName)}] == null ? '${(0, _constants.Other)}' : datum[${JSON.stringify(fieldName)}]`,
-                    as: fieldName
-                }, 
-            ]
-        }, 
-    ];
-    return data;
-}
-
-},{"./constants":"3I5IU","./expr":"7TBI4","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"k14Ax":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "addFacetColRowTitles", ()=>addFacetColRowTitles);
-parcelHelpers.export(exports, "addFacetCellTitles", ()=>addFacetCellTitles);
-parcelHelpers.export(exports, "addFacetAxesGroupMarks", ()=>addFacetAxesGroupMarks);
-parcelHelpers.export(exports, "facetRowHeaderFooter", ()=>facetRowHeaderFooter);
-parcelHelpers.export(exports, "facetColumnHeaderFooter", ()=>facetColumnHeaderFooter);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _scope = require("./scope");
-var _constants = require("./constants");
-function addFacetColRowTitles(globalScope, colTitleSource, rowTitleSource, sizeSignals, axisTextColor) {
-    const titleSignal = `parent[${JSON.stringify((0, _constants.FieldNames).FacetTitle)}]`;
-    const index = `datum[${JSON.stringify((0, _constants.FieldNames).Ordinal)}] - 1`;
-    const col = facetColumnHeaderFooter(colTitleSource.dataName, sizeSignals, index);
-    const row = facetRowHeaderFooter(rowTitleSource.dataName, sizeSignals, index);
-    (0, _scope.addMarks)(globalScope, col.header, row.footer);
-    (0, _scope.addMarks)(col.header, {
-        type: "text",
-        encode: {
-            enter: {
-                align: {
-                    value: "center"
-                },
-                baseline: {
-                    value: "middle"
-                },
-                fill: {
-                    value: axisTextColor
-                }
-            },
-            update: {
-                metaData: {
-                    signal: `{search: parent[${JSON.stringify((0, _constants.FieldNames).FacetSearch)}]}`
-                },
-                x: {
-                    signal: `${sizeSignals.layoutWidth} / 2`
-                },
-                limit: {
-                    signal: sizeSignals.layoutWidth
-                },
-                fontSize: {
-                    signal: (0, _constants.SignalNames).TextSize
-                },
-                text: {
-                    signal: titleSignal
-                }
-            }
-        }
-    });
-    (0, _scope.addMarks)(row.footer, {
-        type: "text",
-        encode: {
-            enter: {
-                align: {
-                    value: "left"
-                },
-                baseline: {
-                    value: "middle"
-                },
-                fill: {
-                    value: axisTextColor
-                }
-            },
-            update: {
-                metaData: {
-                    signal: `{search: parent[${JSON.stringify((0, _constants.FieldNames).FacetSearch)}]}`
-                },
-                y: {
-                    signal: `${sizeSignals.layoutHeight} / 2`
-                },
-                limit: {
-                    signal: (0, _constants.SignalNames).PlotOffsetRight
-                },
-                fontSize: {
-                    signal: (0, _constants.SignalNames).TextSize
-                },
-                text: {
-                    signal: titleSignal
-                }
-            }
-        }
-    });
-}
-function addFacetCellTitles(scope, sizeSignals, axisTextColor) {
-    (0, _scope.addMarks)(scope, {
-        type: "text",
-        encode: {
-            enter: {
-                align: {
-                    value: "center"
-                },
-                baseline: {
-                    value: "bottom"
-                },
-                fill: {
-                    value: axisTextColor
-                }
-            },
-            update: {
-                metaData: {
-                    signal: `{search: parent[${JSON.stringify((0, _constants.FieldNames).FacetSearch)}]}`
-                },
-                x: {
-                    signal: `(${sizeSignals.layoutWidth}) / 2`
-                },
-                text: {
-                    signal: `parent[${JSON.stringify((0, _constants.FieldNames).FacetTitle)}]`
-                },
-                fontSize: {
-                    signal: (0, _constants.SignalNames).TextSize
-                },
-                limit: {
-                    signal: sizeSignals.layoutWidth
-                },
-                y: {
-                    signal: `-${(0, _constants.SignalNames).FacetPaddingTop} / 2`
-                }
-            }
-        }
-    });
-}
-function addFacetAxesGroupMarks(props) {
-    const { colSeqName , colTitleScale , globalScope , facetScope , plotScope , rowSeqName , rowTitleScale  } = props;
-    const { sizeSignals  } = facetScope;
-    const colSequence = createSequence(colSeqName, sizeSignals.colCount);
-    const rowSequence = createSequence(rowSeqName, sizeSignals.rowCount);
-    const index = "datum.data";
-    const col = facetColumnHeaderFooter(colSeqName, sizeSignals, index);
-    const row = facetRowHeaderFooter(rowSeqName, sizeSignals, index);
-    (0, _scope.addData)(globalScope, colSequence, rowSequence);
-    (0, _scope.addMarks)(globalScope, col.footer, row.header);
-    (0, _scope.addScales)(globalScope, colTitleScale, rowTitleScale);
-    const map = {
-        main: [
-            {
-                scope: facetScope.facetScope,
-                lines: true,
-                labels: false,
-                title: false
-            }, 
-        ],
-        x: [
-            {
-                scope: col.footer,
-                lines: true,
-                labels: true,
-                title: false
-            },
-            {
-                scope: plotScope,
-                scale: colTitleScale,
-                lines: false,
-                labels: false,
-                title: true
-            }, 
-        ],
-        y: [
-            {
-                scope: row.header,
-                lines: true,
-                labels: true,
-                title: false
-            },
-            {
-                scope: plotScope,
-                scale: rowTitleScale,
-                lines: false,
-                labels: false,
-                title: true
-            }, 
-        ]
-    };
-    return map;
-}
-function facetRowHeaderFooter(data, sizeSignals, index) {
-    const rowFn = (xSignal)=>{
-        return {
-            type: "group",
-            from: {
-                data
-            },
-            encode: {
-                update: {
-                    x: {
-                        signal: xSignal
-                    },
-                    y: {
-                        signal: `${(0, _constants.SignalNames).PlotOffsetTop} + ${(0, _constants.SignalNames).FacetPaddingTop} + (${index}) * (${sizeSignals.layoutHeight} + ${(0, _constants.SignalNames).FacetPaddingTop} + ${(0, _constants.SignalNames).FacetPaddingBottom})`
-                    },
-                    height: {
-                        signal: sizeSignals.layoutHeight
-                    }
-                }
-            }
-        };
-    };
-    const header = rowFn((0, _constants.SignalNames).PlotOffsetLeft);
-    const footer = rowFn(`${(0, _constants.SignalNames).PlotOffsetLeft} + ${(0, _constants.SignalNames).PlotWidthOut} + ${(0, _constants.SignalNames).PlotOffsetRight} / 2`);
-    return {
-        header,
-        footer
-    };
-}
-function facetColumnHeaderFooter(data, sizeSignals, index) {
-    const colFn = (ySignal)=>{
-        return {
-            type: "group",
-            from: {
-                data
-            },
-            encode: {
-                update: {
-                    x: {
-                        signal: `(${index}) * (${sizeSignals.layoutWidth} + ${(0, _constants.SignalNames).FacetPaddingLeft}) + ${(0, _constants.SignalNames).FacetPaddingLeft} + ${(0, _constants.SignalNames).PlotOffsetLeft} - ${(0, _constants.SignalNames).FacetAxesAdjustX}`
-                    },
-                    y: {
-                        signal: `${ySignal} - ${(0, _constants.SignalNames).FacetAxesAdjustY}`
-                    },
-                    width: {
-                        signal: sizeSignals.layoutWidth
-                    }
-                }
-            }
-        };
-    };
-    //create group marks based on data sequences
-    const header = colFn(`${(0, _constants.SignalNames).PlotOffsetTop} / 2`);
-    const footer = colFn(`${(0, _constants.SignalNames).PlotOffsetTop} + ${(0, _constants.SignalNames).PlotHeightOut}`);
-    return {
-        header,
-        footer
-    };
-}
-function createSequence(dataName, countSignal) {
-    return {
-        name: dataName,
-        transform: [
-            {
-                type: "sequence",
-                start: 0,
-                stop: {
-                    signal: countSignal
-                }
-            }, 
-        ]
-    };
-}
-
-},{"./scope":"deG3T","./constants":"3I5IU","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"cZVNs":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "fill", ()=>fill);
-parcelHelpers.export(exports, "opacity", ()=>opacity);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _constants = require("./constants");
-var _expr = require("./expr");
-function fill(context, colorFieldName, scale) {
-    const { specColumns , insight , specViewOptions  } = context;
-    const colorColumn = specColumns.color;
-    return colorColumn ? colorColumn.isColorData || insight.directColor ? {
-        field: (0, _expr.safeFieldName)(colorColumn.name)
-    } : {
-        scale,
-        field: colorColumn.quantitative ? (0, _expr.safeFieldName)(colorColumn.name) : colorFieldName
-    } : {
-        value: specViewOptions.colors.defaultCube
-    };
-}
-function opacity(context) {
-    const result = {
-        signal: (0, _constants.SignalNames).MarkOpacity
-    };
-    return result;
-}
-
-},{"./constants":"3I5IU","./expr":"7TBI4","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8eLZx":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "GlobalScope", ()=>GlobalScope);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _constants = require("./constants");
-var _scope = require("./scope");
-class GlobalScope {
-    constructor(props){
-        const { dataName , markGroup , scope , signals  } = props;
-        this.scope = scope;
-        this._markGroup = markGroup;
-        this.signals = signals;
-        this.data = (0, _scope.getDataByName)(scope.data, dataName).data;
-        this._markDataName = dataName;
-        this.offsets = {
-            x: "0",
-            y: "0",
-            h: (0, _constants.SignalNames).PlotHeightIn,
-            w: (0, _constants.SignalNames).PlotWidthIn
-        };
-        this.sizeSignals = {
-            layoutHeight: (0, _constants.SignalNames).PlotHeightIn,
-            layoutWidth: (0, _constants.SignalNames).PlotWidthIn
-        };
-        this.zSize = (0, _constants.SignalNames).PlotHeightIn;
-    }
-    get markDataName() {
-        return this._markDataName;
-    }
-    setMarkDataName(markDataName) {
-        this._markDataName = markDataName;
-    }
-    get markGroup() {
-        return this._markGroup;
-    }
-    setMarkGroup(markGroup) {
-        this._markGroup = markGroup;
-    }
-}
-
-},{"./constants":"3I5IU","./scope":"deG3T","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"6WMRo":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "layoutClasses", ()=>layoutClasses);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _aggregateContainer = require("./aggregateContainer");
-var _aggregateSquare = require("./aggregateSquare");
-var _band = require("./band");
-var _cross = require("./cross");
-var _scatter = require("./scatter");
-var _square = require("./square");
-var _stack = require("./stack");
-var _strip = require("./strip");
-var _treemap = require("./treemap");
-var _wrap = require("./wrap");
-const layoutClasses = {
-    AggregateContainer: (0, _aggregateContainer.AggregateContainer),
-    AggregateSquare: (0, _aggregateSquare.AggregateSquare),
-    Band: (0, _band.Band),
-    Cross: (0, _cross.Cross),
-    Scatter: (0, _scatter.Scatter),
-    Square: (0, _square.Square),
-    Stack: (0, _stack.Stack),
-    Strip: (0, _strip.Strip),
-    Treemap: (0, _treemap.Treemap),
-    Wrap: (0, _wrap.Wrap)
-};
-
-},{"./aggregateContainer":"bTNWm","./aggregateSquare":"BLoBC","./band":"j7AHg","./cross":"IDkEt","./scatter":"aSoBU","./square":"3Z7xY","./stack":"5GWVY","./strip":"6r0rk","./treemap":"it60v","./wrap":"h0NOR","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"bTNWm":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "AggregateContainer", ()=>AggregateContainer);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _layout = require("./layout");
-var _constants = require("../constants");
-var _expr = require("../expr");
-var _scope = require("../scope");
-var _selection = require("../selection");
-class AggregateContainer extends (0, _layout.Layout) {
-    constructor(props){
-        super(props);
-        this.props = props;
-        const a = this.aggregation = this.getAggregation();
-        const p = this.prefix = `agg_${this.id}`;
-        this.names = {
-            barCount: `${p}_count`,
-            aggregateField: `${p}_aggregate_value`,
-            globalAggregateExtentSignal: `${p}_${a}_extent`,
-            scale: `scale_${p}`,
-            extentData: `data_${p}_extent`,
-            offsets: `data_${p}_offsets`
-        };
-    }
-    getAggregateSumOp() {
-        if (this.aggregation === "sum") {
-            const fieldOp = {
-                field: (0, _expr.safeFieldName)(this.props.sumBy.name),
-                op: "sum",
-                as: (0, _constants.FieldNames).Sum
-            };
-            return fieldOp;
-        }
-    }
-    build() {
-        const { aggregation , names , props  } = this;
-        const { dock , globalScope , groupings , niceScale , parentScope , showAxes  } = props;
-        (0, _scope.addTransforms)(globalScope.data, Object.assign(Object.assign({}, this.getTransforms(aggregation, (0, _scope.getGroupBy)(groupings))), {
-            as: [
-                names.aggregateField
-            ]
-        }), {
-            type: "extent",
-            field: (0, _expr.safeFieldName)(names.aggregateField),
-            signal: names.globalAggregateExtentSignal
-        });
-        (0, _scope.addSignals)(globalScope.scope, {
-            name: props.globalAggregateMaxExtentSignal,
-            update: `${names.globalAggregateExtentSignal}[1]`
-        });
-        const horizontal = dock === "left";
-        const groupScaled = `scale(${JSON.stringify(names.scale)}, datum[${JSON.stringify(names.aggregateField)}])`;
-        const offsets = {
-            x: parentScope.offsets.x,
-            y: (0, _scope.addOffsets)(parentScope.offsets.y, dock === "bottom" ? groupScaled : ""),
-            h: horizontal ? parentScope.offsets.h : dock === "top" ? groupScaled : `${parentScope.offsets.h} - ${groupScaled}`,
-            w: horizontal ? groupScaled : parentScope.offsets.w
-        };
-        const scale = {
-            type: "linear",
-            name: names.scale,
-            domain: [
-                0,
-                {
-                    signal: props.globalAggregateMaxExtentSignal
-                }, 
-            ],
-            range: horizontal ? [
-                0,
-                {
-                    signal: parentScope.sizeSignals.layoutWidth
-                }, 
-            ] : [
-                {
-                    signal: parentScope.sizeSignals.layoutHeight
-                },
-                0, 
-            ],
-            nice: niceScale,
-            zero: true,
-            reverse: dock === "top"
-        };
-        const globalAggregateMaxExtentScaledValue = `scale(${JSON.stringify(names.scale)}, ${props.globalAggregateMaxExtentSignal})`;
-        (0, _scope.addSignals)(globalScope.scope, {
-            name: props.globalAggregateMaxExtentScaledSignal,
-            update: dock === "bottom" ? `${parentScope.sizeSignals.layoutHeight} - ${globalAggregateMaxExtentScaledValue}` : globalAggregateMaxExtentScaledValue
-        });
-        return {
-            offsets,
-            sizeSignals: horizontal ? {
-                layoutHeight: parentScope.sizeSignals.layoutHeight,
-                layoutWidth: null
-            } : {
-                layoutHeight: null,
-                layoutWidth: parentScope.sizeSignals.layoutWidth
-            },
-            globalScales: {
-                showAxes,
-                scales: {
-                    x: horizontal ? [
-                        scale
-                    ] : undefined,
-                    y: horizontal ? undefined : [
-                        scale
-                    ]
-                }
-            },
-            encodingRuleMap: horizontal ? {
-                x: [
-                    {
-                        test: (0, _selection.testForCollapseSelection)(),
-                        signal: parentScope.offsets.x
-                    }
-                ],
-                width: [
-                    {
-                        test: (0, _selection.testForCollapseSelection)(),
-                        value: 0
-                    }
-                ]
-            } : {
-                y: [
-                    {
-                        test: (0, _selection.testForCollapseSelection)(),
-                        signal: dock === "top" ? parentScope.offsets.y : (0, _scope.addOffsets)(parentScope.offsets.y, parentScope.offsets.h)
-                    }
-                ],
-                height: [
-                    {
-                        test: (0, _selection.testForCollapseSelection)(),
-                        value: 0
-                    }
-                ]
-            }
-        };
-    }
-    getTransforms(aggregation, groupby) {
-        const trans = {
-            type: "joinaggregate",
-            groupby: groupby.map((0, _expr.safeFieldName)),
-            ops: [
-                aggregation
-            ]
-        };
-        if (aggregation === "sum") trans.fields = [
-            this.props.sumBy.name
-        ].map((0, _expr.safeFieldName));
-        return trans;
-    }
-    getAggregation() {
-        const { props  } = this;
-        let s;
-        if (props.dock === "left") s = props.axesScales.x;
-        else s = props.axesScales.y;
-        switch(s.aggregate){
-            case "sum":
-                return "sum";
-            default:
-                return "count";
-        }
-    }
-}
-
-},{"./layout":"jBcoW","../constants":"3I5IU","../expr":"7TBI4","../scope":"deG3T","../selection":"a3WxW","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jBcoW":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ parcelHelpers.export(exports, "Layout", ()=>Layout);
-class Layout {
-    constructor(props){
-        this.props = props;
-        this.id = props.id;
-    }
-    getGrouping() {
-        return null;
-    }
-    getAggregateSumOp() {
-        return null;
-    }
-    build() {
-        throw "Not implemented";
-    }
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"a3WxW":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "testForCollapseSelection", ()=>testForCollapseSelection);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _constants = require("./constants");
-function testForCollapseSelection() {
-    return `datum.${(0, _constants.FieldNames).Collapsed}`;
-}
-
-},{"./constants":"3I5IU","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"BLoBC":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "AggregateSquare", ()=>AggregateSquare);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _layout = require("./layout");
-var _expr = require("../expr");
-var _scope = require("../scope");
-var _selection = require("../selection");
-class AggregateSquare extends (0, _layout.Layout) {
-    constructor(props){
-        super(props);
-        this.props = props;
-        const a = this.props.aggregation;
-        const p = this.prefix = `agg_${this.id}`;
-        this.names = {
-            barCount: `${p}_count`,
-            aggregateField: `${p}_aggregate_value`,
-            globalAggregateExtentSignal: `${p}_${a}_extent`,
-            extentData: `data_${p}_extent`
-        };
-    }
-    build() {
-        const { names , props  } = this;
-        const { aggregation , globalScope , groupings , onBuild , parentScope  } = props;
-        const { sizeSignals  } = parentScope;
-        (0, _scope.addTransforms)(globalScope.data, Object.assign(Object.assign({}, this.getTransforms(aggregation, (0, _scope.getGroupBy)(groupings))), {
-            as: [
-                names.aggregateField
-            ]
-        }), {
-            type: "extent",
-            field: (0, _expr.safeFieldName)(names.aggregateField),
-            signal: names.globalAggregateExtentSignal
-        });
-        const localAggregateMaxExtent = `datum[${JSON.stringify(names.aggregateField)}]`;
-        const squareMaxSide = `min((${sizeSignals.layoutHeight}), (${sizeSignals.layoutWidth}))`;
-        const squareMaxArea = `(${[
-            squareMaxSide,
-            squareMaxSide
-        ].join(" * ")})`;
-        const shrinkRatio = `((${localAggregateMaxExtent}) / (${names.globalAggregateExtentSignal}[1]))`;
-        const squareArea = `(${[
-            squareMaxArea,
-            shrinkRatio
-        ].join(" * ")})`;
-        const squareSide = `sqrt(${squareArea})`;
-        const localAggregateMaxExtentScaled = squareSide;
-        onBuild && onBuild(localAggregateMaxExtent, localAggregateMaxExtentScaled);
-        const offsets = {
-            x: (0, _scope.addOffsets)(parentScope.offsets.x, `(${parentScope.offsets.w} - ${squareSide}) / 2`),
-            y: (0, _scope.addOffsets)(parentScope.offsets.y, `(${parentScope.offsets.h} - ${squareSide}) / 2`),
-            h: squareSide,
-            w: squareSide
-        };
-        return {
-            offsets,
-            sizeSignals: {
-                layoutHeight: null,
-                layoutWidth: null
-            },
-            encodingRuleMap: {
-                y: [
-                    {
-                        test: (0, _selection.testForCollapseSelection)(),
-                        signal: offsets.y
-                    }
-                ],
-                height: [
-                    {
-                        test: (0, _selection.testForCollapseSelection)(),
-                        value: 0
-                    }
-                ]
-            }
-        };
-    }
-    getTransforms(aggregation, groupby) {
-        const trans = {
-            type: "joinaggregate",
-            groupby: groupby.map((0, _expr.safeFieldName)),
-            ops: [
-                aggregation
-            ]
-        };
-        if (aggregation === "sum") trans.fields = [
-            this.props.sumBy.name
-        ].map((0, _expr.safeFieldName));
-        return trans;
-    }
-}
-
-},{"./layout":"jBcoW","../expr":"7TBI4","../scope":"deG3T","../selection":"a3WxW","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"j7AHg":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "bandScaleLinearSuffix", ()=>bandScaleLinearSuffix);
-parcelHelpers.export(exports, "Band", ()=>Band);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _layout = require("./layout");
-var _bin = require("../bin");
-var _expr = require("../expr");
-var _scope = require("../scope");
-var _selection = require("../selection");
-var _signals = require("../signals");
-var _scales = require("../scales");
-const bandScaleLinearSuffix = "_linear";
-class Band extends (0, _layout.Layout) {
-    constructor(props){
-        super(props);
-        this.props = props;
-        const p = this.prefix = `band_${this.id}`;
-        this.names = {
-            xScale: `scale_${p}_x`,
-            yScale: `scale_${p}_y`,
-            bandWidth: `${p}_bandwidth`,
-            accumulative: `${p}_accumulative`
-        };
-        this.bin = (0, _bin.binnable)(this.prefix, props.globalScope.data.name, props.groupby, props.outerSignalExtents);
-    }
-    getGrouping() {
-        return this.bin.fields;
-    }
-    build() {
-        const { bin , names , props  } = this;
-        const { globalScope , minBandWidth , orientation , parentScope , showAxes  } = props;
-        const binField = bin.fields[0];
-        if (bin.native === false) {
-            (0, _scope.addSignals)(globalScope.scope, ...bin.signals);
-            (0, _scope.addTransforms)(globalScope.data, ...bin.transforms);
-            (0, _scope.addData)(globalScope.scope, bin.dataSequence);
-        }
-        //TODO don't add this, use existing dataset
-        (0, _scope.addData)(globalScope.scope, {
-            name: names.accumulative,
-            source: bin.fullScaleDataname,
-            transform: [
-                {
-                    type: "aggregate",
-                    groupby: this.getGrouping().map((0, _expr.safeFieldName)),
-                    ops: [
-                        "count"
-                    ]
-                }, 
-            ]
-        });
-        const horizontal = orientation === "horizontal";
-        const minCellSignal = horizontal ? globalScope.signals.minCellHeight : globalScope.signals.minCellWidth;
-        (0, _signals.modifySignal)(minCellSignal, "max", `length(data(${JSON.stringify(names.accumulative)})) * ${minBandWidth}`);
-        (0, _scope.addSignals)(globalScope.scope, {
-            name: names.bandWidth,
-            update: `bandwidth(${JSON.stringify(horizontal ? names.yScale : names.xScale)})`
-        });
-        const scale = this.getScale(bin, horizontal);
-        if (props.outerSignalExtents && bin.native === false) //add a linear scale for use by background image
-        (0, _scope.addScales)(globalScope.scope, (0, _scales.linearScale)(scale.name + bandScaleLinearSuffix, {
-            signal: bin.extentSignal
-        }, scale.range, scale.reverse, false, false));
-        let encodingRuleMap;
-        if (!props.excludeEncodingRuleMap) encodingRuleMap = horizontal ? {
-            x: [
-                {
-                    test: (0, _selection.testForCollapseSelection)(),
-                    signal: parentScope.offsets.x
-                }, 
-            ],
-            width: [
-                {
-                    test: (0, _selection.testForCollapseSelection)(),
-                    value: 0
-                }, 
-            ]
-        } : {
-            y: [
-                {
-                    test: (0, _selection.testForCollapseSelection)(),
-                    signal: (0, _scope.addOffsets)(parentScope.offsets.y, parentScope.offsets.h)
-                }, 
-            ],
-            height: [
-                {
-                    test: (0, _selection.testForCollapseSelection)(),
-                    value: 0
-                }, 
-            ]
-        };
-        return {
-            offsets: this.getOffset(horizontal, binField),
-            sizeSignals: horizontal ? {
-                layoutHeight: names.bandWidth,
-                layoutWidth: parentScope.sizeSignals.layoutWidth
-            } : {
-                layoutHeight: parentScope.sizeSignals.layoutHeight,
-                layoutWidth: names.bandWidth
-            },
-            globalScales: {
-                showAxes,
-                scales: {
-                    x: horizontal ? undefined : [
-                        scale
-                    ],
-                    y: horizontal ? [
-                        scale
-                    ] : undefined
-                }
-            },
-            encodingRuleMap
-        };
-    }
-    getOffset(horizontal, binField) {
-        const { names , props  } = this;
-        const { parentScope  } = props;
-        return {
-            x: (0, _scope.addOffsets)(parentScope.offsets.x, horizontal ? "" : `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(binField)}])`),
-            y: (0, _scope.addOffsets)(parentScope.offsets.y, horizontal ? `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(binField)}])` : ""),
-            h: horizontal ? names.bandWidth : parentScope.offsets.h,
-            w: horizontal ? parentScope.offsets.w : names.bandWidth
-        };
-    }
-    getScale(bin, horizontal) {
-        const { names  } = this;
-        const { parentScope  } = this.props;
-        const binField = (0, _expr.safeFieldName)(bin.fields[0]);
-        let bandScale;
-        if (horizontal) bandScale = {
-            type: "band",
-            name: names.yScale,
-            range: [
-                0,
-                {
-                    signal: parentScope.sizeSignals.layoutHeight
-                }, 
-            ],
-            padding: 0.1,
-            domain: {
-                data: bin.domainDataName,
-                field: binField,
-                sort: true
-            },
-            reverse: true
-        };
-        else bandScale = {
-            type: "band",
-            name: names.xScale,
-            range: [
-                0,
-                {
-                    signal: parentScope.sizeSignals.layoutWidth
-                }, 
-            ],
-            padding: 0.1,
-            domain: {
-                data: bin.domainDataName,
-                field: binField,
-                sort: true
-            }
-        };
-        return bandScale;
-    }
-}
-
-},{"./layout":"jBcoW","../bin":"9Oj9O","../expr":"7TBI4","../scope":"deG3T","../selection":"a3WxW","../signals":"6xNUg","../scales":"hjH4p","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"9Oj9O":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "binnable", ()=>binnable);
-parcelHelpers.export(exports, "outerExtentSignal", ()=>outerExtentSignal);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _constants = require("./constants");
-var _expr = require("./expr");
-var _defaults = require("./defaults");
-var _transforms = require("./transforms");
-function binnable(prefix, domainDataName, discreteColumn, outerSignalExtents) {
-    const { column , defaultBins , maxbins , maxbinsSignalDisplayName , maxbinsSignalName  } = discreteColumn;
-    if (column.quantitative) {
-        const field = `${prefix}_bin_${(0, _expr.exprSafeFieldName)(column.name)}`;
-        const fieldEnd = `${field}_end`;
-        const binSignal = `${field}_bins`;
-        const dataExtentSignal = `${field}_bin_extent`;
-        const dataExtentSpanSignal = `${field}_bin_extent_span`;
-        const outerSignal = `${field}_outer_extent`;
-        domainDataName = `${field}_sequence`; //override the data name
-        const extentTransform = (0, _transforms.dataExtent)(column, dataExtentSignal);
-        let imageSignal;
-        if (outerSignalExtents) imageSignal = outerExtentSignal(outerSignal, outerSignalExtents.min, outerSignalExtents.max, dataExtentSignal);
-        const maxbinsSignal = {
-            name: maxbinsSignalName,
-            value: defaultBins,
-            bind: {
-                name: maxbinsSignalDisplayName,
-                debounce: (0, _defaults.debounce),
-                input: "range",
-                min: 1,
-                max: maxbins,
-                step: 1
-            }
-        };
-        const extentSignal = (imageSignal === null || imageSignal === void 0 ? void 0 : imageSignal.name) || dataExtentSignal;
-        const binTransform = {
-            type: "bin",
-            field: (0, _expr.safeFieldName)(column.name),
-            as: [
-                field,
-                fieldEnd, 
-            ],
-            signal: binSignal,
-            extent: {
-                signal: `[${extentSignal}[0], ${extentSignal}[1] + 1e-11]`
-            },
-            maxbins: {
-                signal: maxbinsSignalName
-            }
-        };
-        const dataSequence = {
-            name: domainDataName,
-            transform: [
-                {
-                    type: "sequence",
-                    start: {
-                        signal: `${binSignal}.start`
-                    },
-                    stop: {
-                        signal: `${binSignal}.stop`
-                    },
-                    step: {
-                        signal: `${binSignal}.step`
-                    }
-                },
-                {
-                    type: "formula",
-                    expr: "datum.data",
-                    as: field
-                },
-                {
-                    type: "formula",
-                    expr: `datum.data + ${binSignal}.step`,
-                    as: fieldEnd
-                },
-                {
-                    type: "window",
-                    ops: [
-                        "row_number"
-                    ],
-                    as: [
-                        (0, _constants.FieldNames).Ordinal
-                    ]
-                },
-                {
-                    type: "formula",
-                    expr: `datum.data === ${binSignal}.start`,
-                    as: (0, _constants.FieldNames).First
-                },
-                {
-                    type: "formula",
-                    expr: `datum.data === ${binSignal}.stop - ${binSignal}.step`,
-                    as: (0, _constants.FieldNames).Last
-                },
-                {
-                    // when there is only one bin, use only first sequence element
-                    type: "filter",
-                    expr: `${dataExtentSpanSignal} === 0 ? datum[${JSON.stringify((0, _constants.FieldNames).First)}] : true`
-                }
-            ]
-        };
-        const signals = [
-            maxbinsSignal,
-            {
-                name: dataExtentSpanSignal,
-                update: `${extentSignal}[1] - ${extentSignal}[0]`
-            }, 
-        ];
-        if (imageSignal) signals.push(imageSignal);
-        const augmentBinnable = {
-            discreteColumn,
-            native: false,
-            transforms: [
-                extentTransform,
-                binTransform
-            ],
-            fields: [
-                field,
-                fieldEnd
-            ],
-            binSignal,
-            extentSignal,
-            dataSequence,
-            domainDataName,
-            signals,
-            fullScaleDataname: dataSequence.name
-        };
-        return augmentBinnable;
-    } else {
-        const nativeBinnable = {
-            discreteColumn,
-            native: true,
-            fields: [
-                column.name
-            ],
-            domainDataName,
-            fullScaleDataname: domainDataName
-        };
-        return nativeBinnable;
-    }
-}
-function outerExtentSignal(name, min, max, dataExtent) {
-    return {
-        name,
-        update: `[min(${min}, ${dataExtent}[0]), max(${max}, ${dataExtent}[1])]`
-    };
-}
-
-},{"./constants":"3I5IU","./expr":"7TBI4","./defaults":"5kAFI","./transforms":"bWcDn","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"bWcDn":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "dataExtent", ()=>dataExtent);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _expr = require("./expr");
-function dataExtent(column, signal) {
-    return {
-        type: "extent",
-        field: (0, _expr.safeFieldName)(column.name),
-        signal
-    };
-}
-
-},{"./expr":"7TBI4","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"IDkEt":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Cross", ()=>Cross);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _layout = require("./layout");
-var _bin = require("../bin");
-var _constants = require("../constants");
-var _facetSearch = require("../facetSearch");
-var _facetTitle = require("../facetTitle");
-var _ordinal = require("../ordinal");
-var _scope = require("../scope");
-var _signals = require("../signals");
-class Cross extends (0, _layout.Layout) {
-    constructor(props){
-        super(props);
-        this.props = props;
-        const p = this.prefix = `cross_${this.id}`;
-        this.binX = (0, _bin.binnable)(`${p}_x`, props.globalScope.data.name, props.groupbyX);
-        this.binY = (0, _bin.binnable)(`${p}_y`, props.globalScope.data.name, props.groupbyY);
-        this.names = {
-            facetDataName: `data_${p}_facet`,
-            searchUnion: `data_${p}_search`,
-            dimScale: `scale_${p}`,
-            dimCount: `${p}_count`,
-            dimCategorical: `data_${p}_cat`,
-            dimCellSize: `${p}_cell_size`,
-            dimCellSizeCalc: `${p}_cell_calc`
-        };
-    }
-    getGrouping() {
-        return this.binX.fields.concat(this.binY.fields);
-    }
-    build() {
-        const { binX , binY , names , prefix , props  } = this;
-        const { axisTextColor , colRowTitles , globalScope , parentScope  } = props;
-        const titles = {
-            x: {
-                dataName: null,
-                quantitative: null
-            },
-            y: {
-                dataName: null,
-                quantitative: null
-            }
-        };
-        const dx = {
-            dim: "x",
-            bin: binX,
-            sortOrder: "ascending",
-            size: parentScope.sizeSignals.layoutWidth,
-            layout: parentScope.sizeSignals.layoutWidth,
-            min: globalScope.signals.minCellWidth.name,
-            out: globalScope.signals.plotWidthOut,
-            offset: (0, _constants.SignalNames).FacetPaddingLeft,
-            padding: (0, _constants.SignalNames).FacetPaddingLeft,
-            dataOut: null,
-            scaleName: null,
-            position: null
-        };
-        const dy = {
-            dim: "y",
-            bin: binY,
-            sortOrder: "ascending",
-            size: parentScope.sizeSignals.layoutHeight,
-            layout: parentScope.sizeSignals.layoutHeight,
-            min: globalScope.signals.minCellHeight.name,
-            out: globalScope.signals.plotHeightOut,
-            offset: (0, _constants.SignalNames).FacetPaddingTop,
-            padding: `(${(0, _constants.SignalNames).FacetPaddingTop} + ${(0, _constants.SignalNames).FacetPaddingBottom})`,
-            dataOut: null,
-            scaleName: null,
-            position: null
-        };
-        const dimensions = [
-            dx,
-            dy
-        ];
-        dimensions.forEach((d)=>{
-            const { bin , dim , padding , sortOrder  } = d;
-            let data;
-            let dataName;
-            let countSignal;
-            let scale;
-            const titleSource = titles[dim];
-            if (bin.native === false) {
-                (0, _scope.addSignals)(globalScope.scope, ...bin.signals);
-                (0, _scope.addTransforms)(globalScope.data, ...bin.transforms);
-                (0, _scope.addData)(globalScope.scope, bin.dataSequence);
-                (0, _scope.addTransforms)(bin.dataSequence, {
-                    type: "formula",
-                    expr: `indata(${JSON.stringify(globalScope.markDataName)}, ${JSON.stringify(bin.fields[0])}, datum[${JSON.stringify(bin.fields[0])}])`,
-                    as: (0, _constants.FieldNames).Contains
-                });
-                data = bin.dataSequence;
-                dataName = bin.dataSequence.name;
-                countSignal = `length(data(${JSON.stringify(dataName)}))`;
-                scale = (0, _ordinal.ordinalScale)(dataName, `${names.dimScale}_${dim}`, bin.fields);
-                titleSource.dataName = bin.dataSequence.name;
-            } else {
-                dataName = globalScope.markDataName;
-                const ord = (0, _ordinal.createOrdinals)(dataName, `${prefix}_${dim}`, bin.fields, sortOrder);
-                data = ord.data;
-                (0, _scope.addData)(globalScope.scope, ord.data);
-                countSignal = `length(data(${JSON.stringify(ord.data.name)}))`;
-                scale = ord.scale;
-                titleSource.dataName = ord.data.name;
-            }
-            titleSource.quantitative = bin.discreteColumn.column.quantitative;
-            d.dataOut = data;
-            d.scaleName = scale.name;
-            (0, _scope.addTransforms)(data, {
-                type: "formula",
-                expr: (0, _facetSearch.serializeAsVegaExpression)(bin, (0, _constants.FieldNames).First, (0, _constants.FieldNames).Last),
-                as: (0, _constants.FieldNames).FacetSearch
-            }, {
-                type: "formula",
-                expr: (0, _facetSearch.displayBin)(bin),
-                as: (0, _constants.FieldNames).FacetTitle
-            });
-            (0, _scope.addScales)(globalScope.scope, scale);
-            const count = `${names.dimCount}_${dim}`;
-            const calc = `${names.dimCellSizeCalc}_${dim}`;
-            const size = `${names.dimCellSize}_${dim}`;
-            (0, _scope.addSignals)(globalScope.scope, {
-                name: count,
-                update: countSignal
-            });
-            (0, _scope.addSignals)(globalScope.scope, {
-                name: calc,
-                update: `${d.layout} / ${count}`
-            }, {
-                name: size,
-                update: `max(${d.min}, (${calc} - ${padding}))`
-            });
-            (0, _signals.modifySignal)(d.out, "max", `((${size} + ${padding}) * ${count})`);
-            d.position = this.dimensionOffset(d);
-        });
-        const groupRow = {
-            type: "group",
-            encode: {
-                update: {
-                    y: {
-                        signal: dy.position
-                    }
-                }
-            },
-            from: {
-                data: dy.dataOut.name
-            },
-            data: [
-                {
-                    name: names.searchUnion,
-                    source: dx.dataOut.name,
-                    transform: [
-                        {
-                            type: "formula",
-                            expr: `[datum[${JSON.stringify((0, _constants.FieldNames).FacetSearch)}], merge(parent[${JSON.stringify((0, _constants.FieldNames).FacetSearch)}], { clause: '&&'})]`,
-                            as: (0, _constants.FieldNames).FacetSearch
-                        }, 
-                    ]
-                }, 
-            ]
-        };
-        const groupCol = {
-            style: "cell",
-            name: prefix,
-            type: "group",
-            encode: {
-                update: {
-                    height: {
-                        signal: `${names.dimCellSize}_y`
-                    },
-                    width: {
-                        signal: `${names.dimCellSize}_x`
-                    },
-                    x: {
-                        signal: dx.position
-                    }
-                }
-            },
-            from: {
-                data: names.searchUnion
-            }
-        };
-        (0, _scope.addMarks)(globalScope.markGroup, groupRow);
-        (0, _scope.addMarks)(groupRow, groupCol);
-        const offsets = {
-            x: this.dimensionOffset(dx),
-            y: this.dimensionOffset(dy),
-            h: `${names.dimCellSize}_y`,
-            w: `${names.dimCellSize}_x`
-        };
-        const sizeSignals = {
-            layoutHeight: `${names.dimCellSize}_y`,
-            layoutWidth: `${names.dimCellSize}_x`,
-            colCount: `${names.dimCount}_x`,
-            rowCount: `${names.dimCount}_y`
-        };
-        if (colRowTitles) (0, _facetTitle.addFacetColRowTitles)(globalScope.scope, titles.x, titles.y, sizeSignals, axisTextColor);
-        return {
-            facetScope: groupCol,
-            offsets,
-            sizeSignals,
-            titles
-        };
-    }
-    dimensionOffset(d) {
-        const { names  } = this;
-        return `${d.offset} + (scale(${JSON.stringify(d.scaleName)}, datum[${JSON.stringify(d.bin.fields[0])}]) - 1) * (${names.dimCellSize}_${d.dim} + ${d.padding})`;
-    }
-}
-
-},{"./layout":"jBcoW","../bin":"9Oj9O","../constants":"3I5IU","../facetSearch":"fnVov","../facetTitle":"k14Ax","../ordinal":"l9Svf","../scope":"deG3T","../signals":"6xNUg","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fnVov":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ parcelHelpers.export(exports, "displayBin", ()=>displayBin);
-parcelHelpers.export(exports, "serializeAsVegaExpression", ()=>serializeAsVegaExpression);
-function displayBin(bin) {
-    const val = (index)=>`datum[${JSON.stringify(bin.fields[index])}]`;
-    return bin.discreteColumn.column.quantitative ? `format(${val(0)}, '~r') + ' - ' + format(${val(1)}, '~r')` : val(0);
-}
-function obj(nameValues, clause) {
-    if (clause) nameValues = [
-        clause,
-        ...nameValues
-    ];
-    return `{${nameValues.join()}}`;
-}
-function serializeAsVegaExpression(bin, firstFieldName, lastFieldName, clause) {
-    if (bin.discreteColumn.column.quantitative) {
-        const low = [
-            `name:${JSON.stringify(bin.discreteColumn.column.name)}`,
-            "operator:'>='",
-            `value:datum[${JSON.stringify(bin.fields[0])}]`, 
-        ];
-        const high = [
-            "clause:'&&'",
-            `name:${JSON.stringify(bin.discreteColumn.column.name)}`,
-            "operator:'<'",
-            `value:datum[${JSON.stringify(bin.fields[1])}]`, 
-        ];
-        return obj([
-            `expressions:[ datum[${JSON.stringify(firstFieldName)}] ? null : ${obj(low)}, datum[${JSON.stringify(lastFieldName)}] ? null : ${obj(high)}]`, 
-        ], clause);
-    } else {
-        const exact = [
-            `name:${JSON.stringify(bin.discreteColumn.column.name)}`,
-            "operator:'=='",
-            `value:datum[${JSON.stringify(bin.fields[0])}]`, 
-        ];
-        return obj([
-            `expressions:[${obj(exact)}]`, 
-        ], clause);
-    }
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"l9Svf":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "createOrdinals", ()=>createOrdinals);
-parcelHelpers.export(exports, "ordinalScale", ()=>ordinalScale);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _constants = require("./constants");
-var _expr = require("./expr");
-function createOrdinals(source, prefix, binFields, sortOrder) {
-    const _binFields = binFields.map((0, _expr.safeFieldName));
-    const dataName = `${prefix}_bin_order`;
-    const data = {
-        name: dataName,
-        source,
-        transform: [
-            {
-                type: "aggregate",
-                groupby: _binFields
-            },
-            {
-                type: "collect",
-                sort: {
-                    field: _binFields,
-                    order: _binFields.map((f)=>sortOrder)
-                }
-            },
-            {
-                type: "window",
-                ops: [
-                    "row_number"
-                ],
-                as: [
-                    (0, _constants.FieldNames).Ordinal
-                ]
-            }, 
-        ]
-    };
-    return {
-        data,
-        scale: ordinalScale(dataName, `scale_${prefix}_order`, binFields)
-    };
-}
-function ordinalScale(dataName, scaleName, binFields) {
-    return {
-        type: "ordinal",
-        name: scaleName,
-        domain: {
-            data: dataName,
-            field: (0, _expr.safeFieldName)(binFields[0])
-        },
-        range: {
-            data: dataName,
-            field: (0, _constants.FieldNames).Ordinal
-        }
-    };
-}
-
-},{"./constants":"3I5IU","./expr":"7TBI4","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"aSoBU":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Scatter", ()=>Scatter);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _layout = require("./layout");
-var _constants = require("../constants");
-var _defaults = require("../defaults");
-var _expr = require("../expr");
-var _scales = require("../scales");
-var _scope = require("../scope");
-var _selection = require("../selection");
-var _transforms = require("../transforms");
-var _bin = require("../bin");
-class Scatter extends (0, _layout.Layout) {
-    constructor(props){
-        super(props);
-        this.props = props;
-        const p = this.prefix = `scatter_${this.id}`;
-        this.names = {
-            aggregateData: `data_${p}_aggregate`,
-            markData: `data_${p}_mark`,
-            xDataExtent: `${p}_xDataExtent`,
-            yDataExtent: `${p}_yDataExtent`,
-            xExtent: `${p}_xExtent`,
-            yExtent: `${p}_yExtent`,
-            sizeExtent: `${p}_sizeExtent`,
-            sizeRange: `${p}_sizeRange`,
-            sizeScale: `${p}_sizeScale`,
-            xScale: `scale_${p}_x`,
-            yScale: `scale_${p}_y`,
-            zScale: `scale_${p}_z`
-        };
-    }
-    build() {
-        const { names , prefix , props  } = this;
-        const { backgroundImageExtents , globalScope , parentScope , scatterPointScaleDisplay , showAxes , size , x , y , z , zGrounded  } = props;
-        const qsize = size && size.quantitative && size;
-        (0, _scope.addSignals)(globalScope.scope, {
-            name: (0, _constants.SignalNames).PointScale,
-            value: 5,
-            bind: {
-                name: scatterPointScaleDisplay,
-                debounce: (0, _defaults.debounce),
-                input: "range",
-                min: 1,
-                max: 10,
-                step: 1
-            }
-        }, {
-            name: (0, _constants.SignalNames).ZGrounded,
-            value: false,
-            bind: {
-                name: zGrounded,
-                input: "checkbox"
-            }
-        });
-        if (backgroundImageExtents) {
-            (0, _scope.addTransforms)(globalScope.data, (0, _transforms.dataExtent)(x, names.xDataExtent), (0, _transforms.dataExtent)(y, names.yDataExtent));
-            const xSignal = (0, _bin.outerExtentSignal)(names.xExtent, backgroundImageExtents.left, backgroundImageExtents.right, names.xDataExtent);
-            const ySignal = (0, _bin.outerExtentSignal)(names.yExtent, backgroundImageExtents.bottom, backgroundImageExtents.top, names.yDataExtent);
-            (0, _scope.addSignals)(globalScope.scope, xSignal, ySignal);
-        }
-        if (qsize) {
-            (0, _scope.addTransforms)(globalScope.data, {
-                type: "extent",
-                field: (0, _expr.safeFieldName)(qsize.name),
-                signal: names.sizeExtent
-            });
-            (0, _scope.addScales)(globalScope.scope, {
-                name: names.sizeScale,
-                type: "linear",
-                domain: [
-                    0,
-                    {
-                        signal: `${names.sizeExtent}[1]`
-                    }
-                ],
-                range: [
-                    0,
-                    {
-                        signal: names.sizeRange
-                    }
-                ]
-            });
-            (0, _scope.addSignals)(globalScope.scope, {
-                name: names.sizeRange,
-                update: `min(${parentScope.sizeSignals.layoutHeight}, ${parentScope.sizeSignals.layoutWidth}) / ${(0, _defaults.scatterSizedDiv)}`
-            });
-        }
-        (0, _scope.addData)(globalScope.scope, {
-            name: names.markData,
-            source: globalScope.markDataName,
-            transform: [
-                x,
-                y,
-                z
-            ].map((c)=>{
-                if (!c || !c.quantitative) return;
-                const t = {
-                    type: "filter",
-                    expr: `isValid(datum[${JSON.stringify(c.name)}])`
-                };
-                return t;
-            }).filter(Boolean)
-        });
-        globalScope.setMarkDataName(names.markData);
-        const globalScales = {
-            showAxes,
-            scales: {}
-        };
-        const zValue = z ? `scale(${JSON.stringify(names.zScale)}, datum[${JSON.stringify(z.name)}])` : null;
-        const sizeValueSignal = qsize ? `scale(${JSON.stringify(names.sizeScale)}, datum[${JSON.stringify(qsize.name)}]) * ${(0, _constants.SignalNames).PointScale}` : (0, _constants.SignalNames).PointScale;
-        const update = Object.assign({
-            height: [
-                {
-                    test: (0, _selection.testForCollapseSelection)(),
-                    value: 0
-                },
-                {
-                    signal: sizeValueSignal
-                }, 
-            ],
-            width: {
-                signal: sizeValueSignal
-            }
-        }, z && {
-            z: [
-                {
-                    test: (0, _selection.testForCollapseSelection)(),
-                    value: 0
-                },
-                {
-                    signal: `${(0, _constants.SignalNames).ZGrounded} ? 0 : ${zValue}`
-                }, 
-            ],
-            depth: [
-                {
-                    test: (0, _selection.testForCollapseSelection)(),
-                    value: 0
-                },
-                {
-                    signal: `${(0, _constants.SignalNames).ZGrounded} ? ${zValue} : ${sizeValueSignal}`
-                }, 
-            ]
-        });
-        const columnSignals = [
-            {
-                column: x,
-                xyz: "x",
-                scaleName: names.xScale,
-                domain: backgroundImageExtents ? {
-                    signal: names.xExtent
-                } : {
-                    data: globalScope.data.name,
-                    field: (0, _expr.safeFieldName)(x.name)
-                },
-                reverse: false,
-                signal: parentScope.sizeSignals.layoutWidth
-            },
-            {
-                column: y,
-                xyz: "y",
-                scaleName: names.yScale,
-                domain: backgroundImageExtents ? {
-                    signal: names.yExtent
-                } : {
-                    data: globalScope.data.name,
-                    field: (0, _expr.safeFieldName)(y.name)
-                },
-                reverse: true,
-                signal: parentScope.sizeSignals.layoutHeight
-            },
-            {
-                column: z,
-                xyz: "z",
-                scaleName: names.zScale,
-                domain: {
-                    data: globalScope.data.name,
-                    field: z ? (0, _expr.safeFieldName)(z.name) : null
-                },
-                reverse: false,
-                signal: `(${globalScope.zSize}) * ${(0, _constants.SignalNames).ZProportion}`
-            }, 
-        ];
-        columnSignals.forEach((cs)=>{
-            const { column , domain , reverse , scaleName , signal , xyz  } = cs;
-            if (!column) return;
-            let scale;
-            if (column.quantitative) scale = (0, _scales.linearScale)(scaleName, domain, [
-                0,
-                {
-                    signal
-                }
-            ], reverse, false, showAxes);
-            else scale = (0, _scales.pointScale)(scaleName, globalScope.data.name, [
-                0,
-                {
-                    signal
-                }
-            ], column.name, reverse);
-            globalScales.scales[xyz] = [
-                scale
-            ];
-        });
-        const mark = {
-            name: prefix,
-            type: "rect",
-            from: {
-                data: globalScope.markDataName
-            },
-            encode: {
-                update
-            }
-        };
-        (0, _scope.addMarks)(globalScope.markGroup, mark);
-        return {
-            offsets: {
-                x: (0, _scope.addOffsets)(parentScope.offsets.x, `scale(${JSON.stringify(names.xScale)}, datum[${JSON.stringify(x.name)}])`),
-                y: (0, _scope.addOffsets)(parentScope.offsets.y, `scale(${JSON.stringify(names.yScale)}, datum[${JSON.stringify(y.name)}]) - ${sizeValueSignal}`),
-                h: sizeValueSignal,
-                w: sizeValueSignal
-            },
-            sizeSignals: {
-                layoutHeight: null,
-                layoutWidth: null
-            },
-            globalScales,
-            mark,
-            encodingRuleMap: {
-                y: [
-                    {
-                        test: (0, _selection.testForCollapseSelection)(),
-                        signal: (0, _scope.addOffsets)(parentScope.offsets.y, parentScope.sizeSignals.layoutHeight)
-                    }, 
-                ]
-            }
-        };
-    }
-}
-
-},{"./layout":"jBcoW","../constants":"3I5IU","../defaults":"5kAFI","../expr":"7TBI4","../scales":"hjH4p","../scope":"deG3T","../selection":"a3WxW","../transforms":"bWcDn","../bin":"9Oj9O","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3Z7xY":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Square", ()=>Square);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _layout = require("./layout");
-var _constants = require("../constants");
-var _expr = require("../expr");
-var _scope = require("../scope");
-var _selection = require("../selection");
-var _zBase = require("../zBase");
-class Square extends (0, _layout.Layout) {
-    constructor(props){
-        super(props);
-        this.props = props;
-        const p = this.prefix = `square_${this.id}`;
-        this.names = {
-            bandWidth: this.getBandWidth(),
-            maxGroupField: `${p}_max_group`,
-            maxGroupSignal: `${p}_max_grouping`,
-            stack0: `${p}_stack0`,
-            stack1: `${p}_stack1`,
-            zScale: `scale_${p}_z`
-        };
-    }
-    build() {
-        const { names , prefix , props  } = this;
-        const { fillDirection , globalScope , groupings , parentScope , collapseYHeight , showAxes , sortBy , z  } = props;
-        const zScale = (0, _zBase.addZScale)(z, globalScope.zSize, globalScope.data.name, names.zScale);
-        (0, _scope.addTransforms)(globalScope.data, Object.assign({
-            type: "stack",
-            groupby: (0, _scope.getGroupBy)(groupings).map((0, _expr.safeFieldName)),
-            as: [
-                names.stack0,
-                names.stack1
-            ]
-        }, sortBy && {
-            sort: {
-                field: (0, _expr.safeFieldName)(sortBy.name),
-                order: "ascending"
-            }
-        }));
-        const { gap , levelSize , size , squaresPerBand  } = this.addSignals();
-        const heightSignal = {
-            signal: fillDirection === "down-right" ? size : levelSize
-        };
-        const mark = {
-            name: prefix,
-            type: "rect",
-            from: {
-                data: globalScope.markDataName
-            },
-            encode: {
-                update: Object.assign({
-                    height: collapseYHeight ? [
-                        {
-                            test: (0, _selection.testForCollapseSelection)(),
-                            value: 0
-                        },
-                        heightSignal, 
-                    ] : heightSignal,
-                    width: {
-                        signal: fillDirection === "down-right" ? levelSize : size
-                    }
-                }, z && {
-                    z: {
-                        value: 0
-                    },
-                    depth: [
-                        {
-                            test: (0, _selection.testForCollapseSelection)(),
-                            value: 0
-                        },
-                        {
-                            scale: names.zScale,
-                            field: (0, _expr.safeFieldName)(z.name)
-                        }, 
-                    ]
-                })
-            }
-        };
-        (0, _scope.addMarks)(globalScope.markGroup, mark);
-        const { tx , ty  } = this.transformXY(gap, levelSize, squaresPerBand);
-        return Object.assign(Object.assign(Object.assign({}, z && {
-            globalScales: {
-                showAxes,
-                scales: {
-                    z: [
-                        zScale
-                    ]
-                }
-            }
-        }), {
-            offsets: {
-                x: (0, _scope.addOffsets)(parentScope.offsets.x, tx.expr),
-                y: (0, _scope.addOffsets)(parentScope.offsets.y, ty.expr),
-                h: size,
-                w: size
-            },
-            mark,
-            sizeSignals: {
-                layoutHeight: size,
-                layoutWidth: size
-            }
-        }), collapseYHeight && {
-            encodingRuleMap: {
-                y: [
-                    {
-                        test: (0, _selection.testForCollapseSelection)(),
-                        signal: parentScope.offsets.y
-                    }, 
-                ]
-            }
-        });
-    }
-    getBandWidth() {
-        const { offsets  } = this.props.parentScope;
-        switch(this.props.fillDirection){
-            case "down-right":
-                return offsets.h;
-            default:
-                return offsets.w;
-        }
-    }
-    addSignals() {
-        const { names , props  } = this;
-        const { fillDirection , globalScope , groupings , parentScope  } = props;
-        let { maxGroupedFillSize , maxGroupedUnits  } = props;
-        if (!maxGroupedUnits) {
-            if (groupings) {
-                (0, _scope.addTransforms)(globalScope.data, {
-                    type: "joinaggregate",
-                    groupby: (0, _scope.getGroupBy)(groupings).map((0, _expr.safeFieldName)),
-                    ops: [
-                        "count"
-                    ],
-                    as: [
-                        names.maxGroupField
-                    ]
-                }, {
-                    type: "extent",
-                    field: names.maxGroupField,
-                    signal: names.maxGroupSignal
-                });
-                maxGroupedUnits = `(${names.maxGroupSignal}[1])`;
-            } else maxGroupedUnits = `length(data(${JSON.stringify(globalScope.data.name)}))`;
-        }
-        if (!maxGroupedFillSize) maxGroupedFillSize = fillDirection === "down-right" ? parentScope.offsets.w : parentScope.offsets.h;
-        const aspect = `((${names.bandWidth}) / (${maxGroupedFillSize}))`;
-        const squaresPerBand = `ceil(sqrt(${maxGroupedUnits} * ${aspect}))`;
-        const gap = `min(0.1 * ((${names.bandWidth}) / (${squaresPerBand} - 1)), 1)`;
-        const size = `(((${names.bandWidth}) / ${squaresPerBand}) - ${gap})`;
-        const levels = `ceil(${maxGroupedUnits} / ${squaresPerBand})`;
-        const levelSize = `(((${maxGroupedFillSize}) / ${levels}) - ${gap})`;
-        return {
-            gap,
-            levelSize,
-            size,
-            squaresPerBand
-        };
-    }
-    transformXY(gap, levelSize, squaresPerBand) {
-        const { names , prefix  } = this;
-        const compartment = `(${names.bandWidth}) / ${squaresPerBand} * ((datum[${JSON.stringify(names.stack0)}]) % ${squaresPerBand})`;
-        const level = `floor((datum[${JSON.stringify(names.stack0)}]) / ${squaresPerBand})`;
-        const { fillDirection , parentScope  } = this.props;
-        const tx = {
-            type: "formula",
-            expr: null,
-            as: `${prefix}_${(0, _constants.FieldNames).OffsetX}`
-        };
-        const ty = {
-            type: "formula",
-            expr: null,
-            as: `${prefix}_${(0, _constants.FieldNames).OffsetY}`
-        };
-        switch(fillDirection){
-            case "down-right":
-                tx.expr = `${level} * (${levelSize} + ${gap})`;
-                ty.expr = compartment;
-                break;
-            case "right-up":
-                tx.expr = compartment;
-                ty.expr = `${parentScope.offsets.h} - ${levelSize} - ${level} * (${levelSize} + ${gap})`;
-                break;
-            case "right-down":
-            default:
-                tx.expr = compartment;
-                ty.expr = `${level} * (${levelSize} + ${gap})`;
-                break;
-        }
-        return {
-            tx,
-            ty
-        };
-    }
-}
-
-},{"./layout":"jBcoW","../constants":"3I5IU","../expr":"7TBI4","../scope":"deG3T","../selection":"a3WxW","../zBase":"9NSN1","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"9NSN1":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "addZScale", ()=>addZScale);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _constants = require("./constants");
-var _scales = require("./scales");
-var _expr = require("./expr");
-function addZScale(z, zSize, dataName, zScaleName) {
-    if (z) {
-        const zRange = [
-            0,
-            {
-                signal: `(${zSize}) * ${(0, _constants.SignalNames).ZProportion}`
-            }
-        ];
-        const scale = z.quantitative ? (0, _scales.linearScale)(zScaleName, {
-            data: dataName,
-            field: (0, _expr.safeFieldName)(z.name)
-        }, zRange, false, true) : (0, _scales.pointScale)(zScaleName, dataName, zRange, z.name, false);
-        return scale;
-    }
-}
-
-},{"./constants":"3I5IU","./scales":"hjH4p","./expr":"7TBI4","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"5GWVY":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Stack", ()=>Stack);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _layout = require("./layout");
-var _expr = require("../expr");
-var _scope = require("../scope");
-var _selection = require("../selection");
-class Stack extends (0, _layout.Layout) {
-    constructor(props){
-        super(props);
-        this.props = props;
-        const p = this.prefix = `stack_${this.id}`;
-        this.names = {
-            cube: `${p}_cube`,
-            globalDataName: `data_${p}_count`,
-            globalExtent: `${p}_global_extent`,
-            levelDataName: `data_${p}_level`,
-            count: `${p}_count`,
-            stack0: `${p}_stack0`,
-            stack1: `${p}_stack1`,
-            sequence: `data_${p}_sequence`,
-            sides: `${p}_sides`,
-            size: `${p}_size`,
-            squared: `${p}_squared`,
-            maxCount: `${p}_maxCount`,
-            maxLevels: `${p}_maxLevels`,
-            zScale: `${p}_zScale`
-        };
-    }
-    build() {
-        const { names , props  } = this;
-        const { globalScope , groupings , parentScope , showAxes , sort  } = props;
-        const { sizeSignals  } = parentScope;
-        (0, _scope.addTransforms)(globalScope.data, {
-            type: "joinaggregate",
-            groupby: (0, _scope.getGroupBy)(groupings).map((0, _expr.safeFieldName)),
-            ops: [
-                "count"
-            ],
-            as: [
-                names.count
-            ]
-        }, {
-            type: "extent",
-            field: names.count,
-            signal: names.globalExtent
-        }, Object.assign({
-            type: "stack",
-            groupby: (0, _scope.getGroupBy)(groupings).map((0, _expr.safeFieldName)),
-            as: [
-                names.stack0,
-                names.stack1
-            ]
-        }, sort && {
-            sort: {
-                field: (0, _expr.safeFieldName)(sort.name),
-                order: "ascending"
-            }
-        }));
-        (0, _scope.addData)(globalScope.scope, {
-            name: names.sequence,
-            transform: [
-                {
-                    type: "sequence",
-                    start: 1,
-                    stop: {
-                        signal: `sqrt(${names.globalExtent}[1])`
-                    }
-                },
-                {
-                    type: "formula",
-                    expr: "datum.data * datum.data",
-                    as: "squared"
-                },
-                {
-                    type: "formula",
-                    expr: `ceil(${names.globalExtent}[1] / datum.squared)`,
-                    as: "maxlevels"
-                },
-                {
-                    type: "formula",
-                    expr: `(${names.size} - (datum.data - 1) * datum.data) / datum.data`,
-                    as: "side"
-                },
-                {
-                    type: "formula",
-                    expr: "datum.side * datum.maxlevels + datum.maxlevels - 1",
-                    as: "sidecubeheight"
-                },
-                {
-                    type: "formula",
-                    expr: `abs(${globalScope.zSize} - datum.sidecubeheight)`,
-                    as: "heightmatch"
-                },
-                {
-                    type: "collect",
-                    sort: {
-                        field: "heightmatch",
-                        order: "ascending"
-                    }
-                },
-                {
-                    type: "window",
-                    ops: [
-                        "row_number"
-                    ]
-                },
-                {
-                    type: "filter",
-                    expr: "datum.row_number === 1"
-                }, 
-            ]
-        });
-        (0, _scope.addSignals)(globalScope.scope, {
-            name: names.size,
-            update: `min((${sizeSignals.layoutHeight}), (${sizeSignals.layoutWidth}))`
-        }, {
-            name: names.squared,
-            update: `data('${names.sequence}')[0].squared`
-        }, {
-            name: names.sides,
-            update: `sqrt(${names.squared})`
-        }, {
-            name: names.cube,
-            update: `(${names.size} - (${names.sides} - 1)) / ${names.sides}`
-        }, {
-            name: names.maxLevels,
-            update: `data('${names.sequence}')[0].maxlevels`
-        }, {
-            name: names.maxCount,
-            update: `${names.maxLevels} * ${names.squared}`
-        });
-        const zLevel = `floor(datum[${JSON.stringify(names.stack0)}] / ${names.squared})`;
-        const layerOrdinal = `(datum[${JSON.stringify(names.stack0)}] % ${names.squared})`;
-        const cubeX = `(${layerOrdinal} % ${names.sides})`;
-        const cubeY = `floor(${layerOrdinal} / ${names.sides})`;
-        const groupX = `(${sizeSignals.layoutWidth} - ${names.size}) / 2`;
-        const groupY = `(${sizeSignals.layoutHeight} - ${names.size}) / 2`;
-        const offsets = {
-            x: (0, _scope.addOffsets)(parentScope.offsets.x, groupX, `${cubeX} * (${names.cube} + 1)`),
-            y: (0, _scope.addOffsets)(parentScope.offsets.y, groupY, `${cubeY} * (${names.cube} + 1)`),
-            h: names.size,
-            w: names.size
-        };
-        const mark = {
-            type: "rect",
-            from: {
-                data: this.names.levelDataName
-            },
-            encode: {
-                update: {
-                    z: {
-                        signal: `${zLevel} * (${names.cube} + 1)`
-                    },
-                    height: {
-                        signal: names.cube
-                    },
-                    width: {
-                        signal: names.cube
-                    },
-                    depth: {
-                        signal: names.cube
-                    }
-                }
-            }
-        };
-        (0, _scope.addMarks)(globalScope.markGroup, mark);
-        const zScale = {
-            type: "linear",
-            name: names.zScale,
-            domain: [
-                0,
-                {
-                    signal: names.maxCount
-                }, 
-            ],
-            range: [
-                0,
-                {
-                    signal: `${names.maxLevels} * (${names.cube} + 1) - 1`
-                }, 
-            ],
-            nice: false
-        };
-        return {
-            offsets,
-            mark,
-            sizeSignals: {
-                layoutHeight: names.size,
-                layoutWidth: names.size
-            },
-            globalScales: {
-                showAxes,
-                scales: {
-                    z: [
-                        zScale
-                    ]
-                }
-            },
-            encodingRuleMap: {
-                y: [
-                    {
-                        test: (0, _selection.testForCollapseSelection)(),
-                        signal: parentScope.offsets.y
-                    }
-                ],
-                z: [
-                    {
-                        test: (0, _selection.testForCollapseSelection)(),
-                        value: 0
-                    }
-                ],
-                depth: [
-                    {
-                        test: (0, _selection.testForCollapseSelection)(),
-                        value: 0
-                    }
-                ],
-                height: [
-                    {
-                        test: (0, _selection.testForCollapseSelection)(),
-                        value: 0
-                    }
-                ]
-            }
-        };
-    }
-}
-
-},{"./layout":"jBcoW","../expr":"7TBI4","../scope":"deG3T","../selection":"a3WxW","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"6r0rk":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Strip", ()=>Strip);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _layout = require("./layout");
-var _constants = require("../constants");
-var _expr = require("../expr");
-var _scope = require("../scope");
-var _selection = require("../selection");
-var _zBase = require("../zBase");
-class Strip extends (0, _layout.Layout) {
-    constructor(props){
-        super(props);
-        this.props = props;
-        const p = this.prefix = `strip_${this.id}`;
-        this.names = {
-            firstField: `${p}${(0, _constants.FieldNames).First}`,
-            lastField: `${p}${(0, _constants.FieldNames).Last}`,
-            valueField: `${p}${(0, _constants.FieldNames).Value}`,
-            scale: `scale_${p}`,
-            zScale: `scale_${p}_z`
-        };
-    }
-    build() {
-        const { names , prefix , props  } = this;
-        const { addPercentageScale , globalScope , groupings , orientation , showAxes , size , sort , sortOrder , parentScope , z  } = props;
-        const zScale = (0, _zBase.addZScale)(z, globalScope.zSize, globalScope.data.name, names.zScale);
-        const horizontal = orientation === "horizontal";
-        const transform = [];
-        if (sort) transform.push({
-            type: "collect",
-            sort: {
-                field: (0, _expr.safeFieldName)(sort.name),
-                order: sortOrder
-            }
-        });
-        let stackField;
-        if (size) {
-            stackField = size.name;
-            transform.push({
-                type: "filter",
-                expr: `datum[${JSON.stringify(size.name)}] > 0`
-            });
-        } else {
-            stackField = names.valueField;
-            transform.push({
-                type: "formula",
-                expr: "1",
-                as: stackField
-            });
-        }
-        const stackTransform = {
-            type: "stack",
-            field: (0, _expr.safeFieldName)(stackField),
-            offset: "normalize",
-            as: [
-                names.firstField,
-                names.lastField
-            ]
-        };
-        if (groupings.length) stackTransform.groupby = (0, _scope.getGroupBy)(groupings).map((0, _expr.safeFieldName));
-        transform.push(stackTransform);
-        (0, _scope.addTransforms)(globalScope.data, ...transform);
-        const span = [
-            names.lastField,
-            names.firstField
-        ].map((f)=>`datum[${JSON.stringify(f)}]`).join(" - ");
-        const offsets = {
-            x: (0, _scope.addOffsets)(parentScope.offsets.x, horizontal ? `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.w})` : ""),
-            y: (0, _scope.addOffsets)(parentScope.offsets.y, horizontal ? "" : `datum[${JSON.stringify(names.firstField)}] * (${parentScope.offsets.h})`),
-            h: horizontal ? parentScope.offsets.h : `(${span}) * (${parentScope.offsets.h})`,
-            w: horizontal ? `(${span}) * (${parentScope.offsets.w})` : parentScope.offsets.w
-        };
-        const mark = {
-            name: prefix,
-            type: "rect",
-            from: {
-                data: globalScope.markDataName
-            },
-            encode: {
-                update: Object.assign({
-                    height: {
-                        signal: offsets.h
-                    },
-                    width: {
-                        signal: offsets.w
-                    }
-                }, z && {
-                    z: {
-                        value: 0
-                    },
-                    depth: [
-                        {
-                            test: (0, _selection.testForCollapseSelection)(),
-                            value: 0
-                        },
-                        {
-                            scale: names.zScale,
-                            field: (0, _expr.safeFieldName)(z.name)
-                        }, 
-                    ]
-                })
-            }
-        };
-        (0, _scope.addMarks)(globalScope.markGroup, mark);
-        let percentageScale;
-        if (addPercentageScale) percentageScale = [
-            {
-                type: "linear",
-                name: names.scale,
-                domain: [
-                    0,
-                    100
-                ],
-                range: horizontal ? [
-                    0,
-                    {
-                        signal: parentScope.sizeSignals.layoutWidth
-                    }, 
-                ] : [
-                    {
-                        signal: parentScope.sizeSignals.layoutHeight
-                    },
-                    0, 
-                ]
-            }
-        ];
-        return {
-            globalScales: {
-                showAxes,
-                scales: {
-                    x: horizontal ? percentageScale : undefined,
-                    y: horizontal ? undefined : percentageScale,
-                    z: zScale && [
-                        zScale
-                    ]
-                }
-            },
-            offsets,
-            sizeSignals: {
-                layoutHeight: null,
-                layoutWidth: null
-            },
-            mark
-        };
-    }
-}
-
-},{"./layout":"jBcoW","../constants":"3I5IU","../expr":"7TBI4","../scope":"deG3T","../selection":"a3WxW","../zBase":"9NSN1","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"it60v":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Treemap", ()=>Treemap);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _layout = require("./layout");
-var _constants = require("../constants");
-var _expr = require("../expr");
-var _scope = require("../scope");
-var _selection = require("../selection");
-var _zBase = require("../zBase");
-class Treemap extends (0, _layout.Layout) {
-    constructor(props){
-        super(props);
-        this.props = props;
-        const p = this.prefix = `treemap_${this.id}`;
-        this.names = {
-            dataName: `data_${p}`,
-            dataHeightWidth: `data_${p}_hw`,
-            dataExtents: `data_${p}_extents`,
-            dataFacet: `data_${p}_facet`,
-            dataFacetMark: `data_${p}_facetMark`,
-            fieldChildren: `${p}_children`,
-            fieldDepth: `${p}_depth`,
-            fieldX0: `${p}_x0`,
-            fieldX1: `${p}_x1`,
-            fieldY0: `${p}_y0`,
-            fieldY1: `${p}_y1`,
-            fieldHeight: `${p}_h`,
-            fieldWidth: `${p}_w`,
-            heightExtent: `${p}_heightExtent`,
-            widthExtent: `${p}_widthExtent`,
-            zScale: `scale_${p}_z`
-        };
-    }
-    build() {
-        const { names , props  } = this;
-        const { globalScope , parentScope , showAxes , treeMapMethod , z  } = props;
-        const zScale = (0, _zBase.addZScale)(z, globalScope.zSize, globalScope.data.name, names.zScale);
-        const offsets = {
-            x: (0, _scope.addOffsets)(parentScope.offsets.x, fn(names.fieldX0)),
-            y: (0, _scope.addOffsets)(parentScope.offsets.y, fn(names.fieldY0)),
-            h: subtract(names.fieldY1, names.fieldY0),
-            w: subtract(names.fieldX1, names.fieldX0)
-        };
-        const mark = this.transformedMark(offsets);
-        (0, _scope.addSignals)(globalScope.scope, {
-            name: (0, _constants.SignalNames).TreeMapMethod,
-            value: "squarify",
-            bind: {
-                name: treeMapMethod,
-                input: "select",
-                options: [
-                    "squarify",
-                    "binary", 
-                ]
-            }
-        });
-        return Object.assign(Object.assign({}, z && {
-            globalScales: {
-                showAxes,
-                scales: {
-                    z: [
-                        zScale
-                    ]
-                }
-            }
-        }), {
-            mark,
-            offsets,
-            sizeSignals: {
-                layoutHeight: null,
-                layoutWidth: null
-            }
-        });
-    }
-    transformedMark(offsets) {
-        const { names , props  } = this;
-        const { globalScope , groupings , parentScope  } = props;
-        if (groupings.length) {
-            //treemap transform can't have it's boundary size grouped, so we need to facet the data.
-            (0, _scope.addData)(globalScope.scope, {
-                name: names.dataHeightWidth,
-                source: globalScope.markDataName,
-                transform: [
-                    {
-                        type: "formula",
-                        expr: parentScope.offsets.h,
-                        as: names.fieldHeight
-                    },
-                    {
-                        type: "formula",
-                        expr: parentScope.offsets.w,
-                        as: names.fieldWidth
-                    }, 
-                ]
-            });
-            const treemapData = {
-                name: names.dataFacetMark,
-                source: names.dataFacet
-            };
-            const facets = {
-                type: "group",
-                from: {
-                    facet: {
-                        name: names.dataFacet,
-                        data: names.dataHeightWidth,
-                        groupby: (0, _scope.getGroupBy)(groupings).map((0, _expr.safeFieldName))
-                    }
-                },
-                data: [
-                    {
-                        name: names.dataExtents,
-                        source: names.dataFacet,
-                        transform: [
-                            {
-                                type: "extent",
-                                field: names.fieldHeight,
-                                signal: names.heightExtent
-                            },
-                            {
-                                type: "extent",
-                                field: names.fieldWidth,
-                                signal: names.widthExtent
-                            }, 
-                        ]
-                    },
-                    treemapData, 
-                ]
-            };
-            globalScope.setMarkDataName(names.dataFacetMark);
-            (0, _scope.addMarks)(globalScope.markGroup, facets);
-            //assign new markgroup after adding mark to original group
-            globalScope.setMarkGroup(facets);
-            this.treemapTransform(treemapData, `${names.widthExtent}[0]`, `${names.heightExtent}[0]`);
-            return this.addMark(offsets, facets, globalScope.markDataName);
-        } else {
-            this.treemapTransform(globalScope.data, parentScope.offsets.w, parentScope.offsets.h);
-            return this.addMark(offsets, globalScope.markGroup, globalScope.markDataName);
-        }
-    }
-    addMark(offsets, markParent, markDataName) {
-        const { names , prefix , props  } = this;
-        const { z  } = props;
-        const mark = {
-            name: prefix,
-            type: "rect",
-            from: {
-                data: markDataName
-            },
-            encode: {
-                update: Object.assign({
-                    width: {
-                        signal: offsets.w
-                    },
-                    height: {
-                        signal: offsets.h
-                    }
-                }, z && {
-                    z: {
-                        value: 0
-                    },
-                    depth: [
-                        {
-                            test: (0, _selection.testForCollapseSelection)(),
-                            value: 0
-                        },
-                        {
-                            scale: names.zScale,
-                            field: (0, _expr.safeFieldName)(z.name)
-                        }, 
-                    ]
-                })
-            }
-        };
-        (0, _scope.addMarks)(markParent, mark);
-        return mark;
-    }
-    treemapTransform(treemapData, widthSignal, heightSignal) {
-        const { names , props  } = this;
-        const { group , size  } = props;
-        (0, _scope.addTransforms)(treemapData, {
-            type: "filter",
-            expr: `datum[${JSON.stringify(size.name)}] > 0`
-        }, {
-            type: "nest",
-            keys: [
-                group && group.name || "__NONE__"
-            ]
-        }, {
-            type: "treemap",
-            field: (0, _expr.safeFieldName)(size.name),
-            sort: {
-                field: "value",
-                order: "descending"
-            },
-            round: true,
-            method: {
-                signal: (0, _constants.SignalNames).TreeMapMethod
-            },
-            paddingInner: 1,
-            paddingOuter: 0,
-            size: [
-                {
-                    signal: widthSignal
-                },
-                {
-                    signal: heightSignal
-                }, 
-            ],
-            as: [
-                names.fieldX0,
-                names.fieldY0,
-                names.fieldX1,
-                names.fieldY1,
-                names.fieldDepth,
-                names.fieldChildren, 
-            ]
-        });
-    }
-}
-function fn(n) {
-    return `datum[${JSON.stringify(n)}]`;
-}
-function subtract(...fields) {
-    return fields.map((n)=>fn(n)).join(" - ");
-}
-
-},{"./layout":"jBcoW","../constants":"3I5IU","../expr":"7TBI4","../scope":"deG3T","../selection":"a3WxW","../zBase":"9NSN1","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"h0NOR":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Wrap", ()=>Wrap);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _layout = require("./layout");
-var _bin = require("../bin");
-var _constants = require("../constants");
-var _expr = require("../expr");
-var _facetSearch = require("../facetSearch");
-var _facetTitle = require("../facetTitle");
-var _ordinal = require("../ordinal");
-var _scope = require("../scope");
-var _signals = require("../signals");
-class Wrap extends (0, _layout.Layout) {
-    constructor(props){
-        super(props);
-        this.props = props;
-        const p = this.prefix = `wrap_${this.id}`;
-        this.bin = (0, _bin.binnable)(this.prefix, props.globalScope.data.name, props.groupby);
-        this.names = {
-            outputData: `data_${p}_out`,
-            rowColumnDataName: `data_${p}_row_col`,
-            cellHeight: `${p}_cellHeight`,
-            cellWidth: `${p}_cellWidth`,
-            fits: `${p}_fits`,
-            target: `${p}_target`,
-            minArea: `${p}_minArea`,
-            aspect: `${p}_aspect`,
-            minAspect: `${p}_minAspect`,
-            idealAspect: `${p}_idealAspect`,
-            dataLength: `${p}_dataLength`,
-            rxc0: `${p}_rxc0`,
-            rxc1: `${p}_rxc1`,
-            rxc2: `${p}_rxc2`,
-            rxc: `${p}_rxc`,
-            growColCount: `${p}_growColCount`,
-            growCellWidth: `${p}_growCellWidth`,
-            fitsArea: `${p}_fitsArea`,
-            colCount: `${p}_colCount`
-        };
-    }
-    getGrouping() {
-        return this.bin.fields;
-    }
-    build() {
-        const { bin , names , prefix , props  } = this;
-        const { axisTextColor , cellTitles , globalScope , parentScope  } = props;
-        let ordinalBinData;
-        if (bin.native === false) {
-            (0, _scope.addSignals)(globalScope.scope, ...bin.signals);
-            (0, _scope.addTransforms)(globalScope.data, ...bin.transforms);
-            (0, _scope.addData)(globalScope.scope, bin.dataSequence);
-            (0, _scope.addTransforms)(bin.dataSequence, {
-                type: "formula",
-                expr: `indata(${JSON.stringify(globalScope.data.name)}, ${JSON.stringify(bin.fields[0])}, datum[${JSON.stringify(bin.fields[0])}])`,
-                as: (0, _constants.FieldNames).Contains
-            });
-            ordinalBinData = bin.dataSequence.name;
-        } else {
-            const ord = (0, _ordinal.createOrdinals)(globalScope.data.name, prefix, bin.fields, "ascending");
-            (0, _scope.addData)(globalScope.scope, ord.data);
-            ordinalBinData = ord.data.name;
-        }
-        (0, _scope.addData)(globalScope.scope, {
-            name: names.rxc0,
-            transform: [
-                {
-                    type: "sequence",
-                    start: 1,
-                    stop: {
-                        signal: `ceil(sqrt(${names.dataLength})) + 1`
-                    }
-                },
-                {
-                    type: "formula",
-                    expr: `ceil(${names.dataLength} / datum.data)`,
-                    as: "complement"
-                }, 
-            ]
-        }, {
-            name: names.rxc1,
-            source: names.rxc0,
-            transform: [
-                {
-                    type: "project",
-                    fields: [
-                        "data"
-                    ],
-                    as: [
-                        "cols"
-                    ]
-                }, 
-            ]
-        }, {
-            name: names.rxc2,
-            source: names.rxc0,
-            transform: [
-                {
-                    type: "project",
-                    fields: [
-                        "complement"
-                    ],
-                    as: [
-                        "cols"
-                    ]
-                }, 
-            ]
-        }, {
-            name: names.rxc,
-            source: [
-                names.rxc1,
-                names.rxc2
-            ],
-            transform: [
-                {
-                    type: "formula",
-                    expr: `ceil(${names.dataLength} / datum.cols)`,
-                    as: "rows"
-                },
-                {
-                    type: "formula",
-                    expr: `${parentScope.sizeSignals.layoutWidth} / datum.cols`,
-                    as: "cellw"
-                },
-                {
-                    type: "formula",
-                    expr: `datum.cols === 1 ? max(datum.cellw, ${(0, _constants.SignalNames).MinCellWidth}) : datum.cellw`,
-                    as: "cellw"
-                },
-                {
-                    type: "formula",
-                    expr: `${parentScope.sizeSignals.layoutHeight} / datum.rows`,
-                    as: "cellh"
-                },
-                {
-                    type: "formula",
-                    expr: `datum.rows === 1 ? max(datum.cellh, ${(0, _constants.SignalNames).MinCellHeight}) : datum.cellh`,
-                    as: "cellh"
-                },
-                {
-                    type: "formula",
-                    expr: `(datum.cellw >= ${(0, _constants.SignalNames).MinCellWidth} && datum.cellh >= ${(0, _constants.SignalNames).MinCellHeight})`,
-                    as: "meetsmin"
-                },
-                {
-                    type: "filter",
-                    expr: "datum.meetsmin"
-                },
-                {
-                    type: "formula",
-                    expr: "datum.cellw / datum.cellh",
-                    as: names.aspect
-                },
-                {
-                    type: "formula",
-                    expr: `abs(datum.${names.aspect} - ${names.target})`,
-                    as: names.idealAspect
-                },
-                {
-                    type: "formula",
-                    expr: `${names.dataLength} / (datum.cols * datum.rows)`,
-                    as: "coverage"
-                },
-                {
-                    type: "collect",
-                    sort: {
-                        field: [
-                            names.idealAspect,
-                            "coverage"
-                        ],
-                        order: [
-                            "ascending",
-                            "descending"
-                        ]
-                    }
-                }, 
-            ]
-        }, {
-            name: names.rowColumnDataName,
-            source: ordinalBinData,
-            transform: [
-                {
-                    type: "formula",
-                    expr: `floor((datum[${JSON.stringify((0, _constants.FieldNames).Ordinal)}] - 1) / ${names.colCount})`,
-                    as: (0, _constants.FieldNames).WrapRow
-                },
-                {
-                    type: "formula",
-                    expr: `(datum[${JSON.stringify((0, _constants.FieldNames).Ordinal)}] - 1) % ${names.colCount}`,
-                    as: (0, _constants.FieldNames).WrapCol
-                },
-                {
-                    type: "formula",
-                    expr: (0, _facetSearch.serializeAsVegaExpression)(bin, (0, _constants.FieldNames).First, (0, _constants.FieldNames).Last),
-                    as: (0, _constants.FieldNames).FacetSearch
-                },
-                {
-                    type: "formula",
-                    expr: (0, _facetSearch.displayBin)(bin),
-                    as: (0, _constants.FieldNames).FacetTitle
-                }, 
-            ]
-        });
-        const dataOut = {
-            name: names.outputData,
-            source: globalScope.data.name,
-            transform: [
-                {
-                    type: "lookup",
-                    from: names.rowColumnDataName,
-                    key: (0, _expr.safeFieldName)(bin.fields[0]),
-                    fields: [
-                        bin.fields[0]
-                    ].map((0, _expr.safeFieldName)),
-                    values: [
-                        (0, _constants.FieldNames).WrapRow,
-                        (0, _constants.FieldNames).WrapCol
-                    ]
-                }, 
-            ]
-        };
-        (0, _scope.addData)(globalScope.scope, dataOut);
-        globalScope.setMarkDataName(names.outputData);
-        (0, _scope.addSignals)(globalScope.scope, {
-            name: names.minAspect,
-            update: `${(0, _constants.SignalNames).MinCellWidth} / ${(0, _constants.SignalNames).MinCellHeight}`
-        }, {
-            name: names.target,
-            update: `${names.minAspect} === 1 ? ${1.2} : ${names.minAspect}`
-        }, {
-            name: names.minArea,
-            update: `${(0, _constants.SignalNames).MinCellWidth}*${(0, _constants.SignalNames).MinCellHeight}`
-        }, {
-            name: names.aspect,
-            update: `${parentScope.sizeSignals.layoutWidth} / ${parentScope.sizeSignals.layoutHeight}`
-        }, {
-            name: names.dataLength,
-            update: `data(${JSON.stringify(ordinalBinData)}).length`
-        }, {
-            name: names.growColCount,
-            update: `max(floor(${parentScope.sizeSignals.layoutWidth} / ${(0, _constants.SignalNames).MinCellWidth}), 1)`
-        }, {
-            name: names.growCellWidth,
-            update: `${parentScope.sizeSignals.layoutWidth} / ${names.growColCount}`
-        }, {
-            name: names.fitsArea,
-            update: `((${names.dataLength} * ${names.minArea}) <= (${parentScope.sizeSignals.layoutWidth} * ${parentScope.sizeSignals.layoutHeight}))`
-        }, {
-            name: names.fits,
-            update: `${names.fitsArea} && length(data(${JSON.stringify(names.rxc)})) > 0`
-        }, {
-            name: names.colCount,
-            update: `${names.fits} ? data(${JSON.stringify(names.rxc)})[0].cols : ${names.growColCount}`
-        }, {
-            name: names.cellWidth,
-            update: `${names.fits} ? data(${JSON.stringify(names.rxc)})[0].cellw : ${names.growCellWidth}`
-        }, {
-            name: names.cellHeight,
-            update: `${names.fits} ? data(${JSON.stringify(names.rxc)})[0].cellh : ${(0, _constants.SignalNames).MinCellHeight}`
-        });
-        (0, _signals.modifySignal)(globalScope.signals.plotHeightOut, "max", `(${names.cellHeight} * ceil(${names.dataLength} / ${names.colCount}))`);
-        (0, _signals.modifySignal)(globalScope.signals.plotWidthOut, "max", `(${names.cellWidth} * ${names.colCount})`);
-        const signalH = [
-            names.cellHeight,
-            (0, _constants.SignalNames).FacetPaddingTop,
-            (0, _constants.SignalNames).FacetPaddingBottom
-        ].join(" - ");
-        const signalW = [
-            names.cellWidth,
-            (0, _constants.SignalNames).FacetPaddingLeft
-        ].join(" - ");
-        const signalX = (0, _scope.addOffsets)(parentScope.offsets.x, `datum[${JSON.stringify((0, _constants.FieldNames).WrapCol)}] * ${names.cellWidth}`, (0, _constants.SignalNames).FacetPaddingLeft);
-        const signalY = (0, _scope.addOffsets)(parentScope.offsets.y, `datum[${JSON.stringify((0, _constants.FieldNames).WrapRow)}] * ${names.cellHeight}`, (0, _constants.SignalNames).FacetPaddingTop);
-        const update = {
-            height: {
-                signal: signalH
-            },
-            width: {
-                signal: signalW
-            },
-            x: {
-                signal: signalX
-            },
-            y: {
-                signal: signalY
-            }
-        };
-        const offsets = {
-            x: signalX,
-            y: signalY,
-            h: signalH,
-            w: signalW
-        };
-        const group = {
-            style: "cell",
-            name: prefix,
-            type: "group",
-            from: {
-                data: names.rowColumnDataName
-            },
-            encode: {
-                update
-            }
-        };
-        (0, _scope.addMarks)(globalScope.markGroup, group);
-        const sizeSignals = {
-            layoutHeight: `(${names.cellHeight} - ${(0, _constants.SignalNames).FacetPaddingTop} - ${(0, _constants.SignalNames).FacetPaddingBottom})`,
-            layoutWidth: `(${names.cellWidth} - ${(0, _constants.SignalNames).FacetPaddingLeft})`,
-            colCount: names.colCount,
-            rowCount: `ceil(${names.dataLength} / ${names.colCount})`
-        };
-        if (cellTitles) (0, _facetTitle.addFacetCellTitles)(group, sizeSignals, axisTextColor);
-        return {
-            facetScope: group,
-            sizeSignals,
-            offsets
-        };
-    }
-}
-
-},{"./layout":"jBcoW","../bin":"9Oj9O","../constants":"3I5IU","../expr":"7TBI4","../facetSearch":"fnVov","../facetTitle":"k14Ax","../ordinal":"l9Svf","../scope":"deG3T","../signals":"6xNUg","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"CdrH9":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "getImageMark", ()=>getImageMark);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _band = require("./layouts/band");
-function getImageMark(backgroundImage, allGlobalScales) {
-    const xScale = allGlobalScales.filter((s)=>s.scales.x)[0].scales.x[0];
-    const yScale = allGlobalScales.filter((s)=>s.scales.y)[0].scales.y[0];
-    const [xScaleName, yScaleName] = [
-        xScale,
-        yScale
-    ].map((s)=>s.name + (xScale.type === "band" ? (0, _band.bandScaleLinearSuffix) : ""));
-    return {
-        type: "image",
-        encode: {
-            update: {
-                url: {
-                    value: backgroundImage.url
-                },
-                aspect: {
-                    value: false
-                },
-                baseline: {
-                    value: "bottom"
-                },
-                height: {
-                    signal: getScaledSpan(yScaleName, backgroundImage.extents.bottom, backgroundImage.extents.top)
-                },
-                y: {
-                    signal: getScaledValue(yScaleName, backgroundImage.extents.bottom)
-                },
-                width: {
-                    signal: getScaledSpan(xScaleName, backgroundImage.extents.right, backgroundImage.extents.left)
-                },
-                x: {
-                    signal: getScaledValue(xScaleName, backgroundImage.extents.left)
-                }
-            }
-        }
-    };
-}
-function getScaledSpan(scaleName, low, high) {
-    return `abs(scale('${scaleName}', ${low}) - scale('${scaleName}', ${high}))`;
-}
-function getScaledValue(scaleName, value) {
-    return `scale('${scaleName}', ${value})`;
-}
-
-},{"./layouts/band":"j7AHg","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"czyLt":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"0QlBW":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3EP3i":[function(require,module,exports) {
+},{"./define.js":"X423M","./color.js":"gKmlp","./math.js":"d8eBx","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3EP3i":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 /*!
@@ -82541,7 +82171,7 @@ function differentObjectValues(a, b) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "version", ()=>version);
-const version = "3.2.1";
+const version = "4.0.0";
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}]},["gK9HS"], "gK9HS", "parcelRequire0e59")
 

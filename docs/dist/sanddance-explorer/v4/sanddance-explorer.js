@@ -3169,6 +3169,7 @@ function $02bd8e9b090c20c5$export$6868fd1605c79d3d(prefix, domainDataName, discr
         const fieldEnd = `${field}_end`;
         const binSignal = `${field}_bins`;
         const dataExtentSignal = `${field}_bin_extent`;
+        const dataExtentSpanSignal = `${field}_bin_extent_span`;
         const outerSignal = `${field}_outer_extent`;
         domainDataName = `${field}_sequence`; //override the data name
         const extentTransform = (0, $972fb167c824da8f$export$e1e8339c59091971)(column, dataExtentSignal);
@@ -3245,11 +3246,20 @@ function $02bd8e9b090c20c5$export$6868fd1605c79d3d(prefix, domainDataName, discr
                     type: "formula",
                     expr: `datum.data === ${binSignal}.stop - ${binSignal}.step`,
                     as: (0, $ec270fbe8d9983b4$export$10df5429b7082be2).Last
-                }, 
+                },
+                {
+                    // when there is only one bin, use only first sequence element
+                    type: "filter",
+                    expr: `${dataExtentSpanSignal} === 0 ? datum[${JSON.stringify((0, $ec270fbe8d9983b4$export$10df5429b7082be2).First)}] : true`
+                }
             ]
         };
         const signals = [
-            maxbinsSignal
+            maxbinsSignal,
+            {
+                name: dataExtentSpanSignal,
+                update: `${extentSignal}[1] - ${extentSignal}[0]`
+            }, 
         ];
         if (imageSignal) signals.push(imageSignal);
         const augmentBinnable = {
@@ -32369,7 +32379,7 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
  */ $0000a41cc7b5918f$export$2ec4afd9b3c16a85.defaultViewerOptions = (0, $74c2763994d75bb8$export$fb736e4909afb3d7);
 
 
-const $15874c145702a1a4$export$83d89fbfd8236492 = "3.2.1";
+const $15874c145702a1a4$export$83d89fbfd8236492 = "4.0.0";
 
 
 const $3b509b9541e52a8f$export$1f96ae73734a86cc = (0, $94c0add5c61b9a48$export$1f96ae73734a86cc);
@@ -32533,7 +32543,7 @@ const $81745c046077d503$export$441ac54c4cda559d = $81745c046077d503$var$_SandDan
 
 
 
-const $b7e03869cd46da1e$export$83d89fbfd8236492 = "3.0.1";
+const $b7e03869cd46da1e$export$83d89fbfd8236492 = "4.0.0";
 
 
 
@@ -34654,7 +34664,7 @@ const $29728562a99c68a2$export$8e76ac9f37578d1b = {
 
 
 
-const $f56a95f33c4cc847$export$83d89fbfd8236492 = "3.2.0";
+const $f56a95f33c4cc847$export$83d89fbfd8236492 = "4.0.0";
 
 
 var $4805700d8b417596$var$SandDance = $3b509b9541e52a8f$exports;
