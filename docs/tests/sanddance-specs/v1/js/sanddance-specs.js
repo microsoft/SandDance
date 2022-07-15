@@ -4098,7 +4098,7 @@ function binnable(prefix, domainDataName, discreteColumn, outerSignalExtents) {
                     // when there is only one bin, use only first sequence element
                     type: "filter",
                     expr: `${dataExtentSpanSignal} === 0 ? datum[${JSON.stringify((0, _constants.FieldNames).First)}] : true`
-                }
+                }, 
             ]
         };
         const signals = [
