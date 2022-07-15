@@ -3,10 +3,10 @@
 * Licensed under the MIT License.
 */
 
-import * as SandDance from '@msrvida/sanddance';
+import { Column } from '@msrvida/chart-types';
 import { isGeo } from './geo';
 
-export function preferredColumnForTreemapSize(columns: SandDance.types.Column[], strict: boolean) {
+export function preferredColumnForTreemapSize(columns: Column[], strict: boolean) {
     for (let i = 0; i < columns.length; i++) {
         const c = columns[i];
         if (c.quantitative) {

@@ -3,14 +3,14 @@
 * Licensed under the MIT License.
 */
 
-import * as SandDance from '@msrvida/sanddance';
+import { Column } from '@msrvida/chart-types';
 import { defaultColorScheme, maxCategoricalColors, Recommendation } from './recommender';
 import { isLatitude, isLongitude } from './geo';
 
 export class ScatterPlotRecommenderSummary {
     public best: Recommendation;
 
-    constructor(columns: SandDance.types.Column[], data: object[]) {
+    constructor(columns: Column[], data: object[]) {
         const rec: Recommendation = {
             chart: 'scatterplot',
             score: undefined,

@@ -3,25 +3,26 @@
 * Licensed under the MIT License.
 */
 
-import * as SandDance from '@msrvida/sanddance';
+import { Column } from '@msrvida/chart-types';
+import { Insight } from '@msrvida/sanddance-specs';
 
 export const maxCategoricalColors: number = 20;
 
 export interface Rule {
-    (column: SandDance.types.Column): boolean;
+    (column: Column): boolean;
 }
 
-export interface Recommendation extends Partial<SandDance.specs.Insight> {
+export interface Recommendation extends Partial<Insight> {
     score: number;
 }
 
 export abstract class Recommender {
-    constructor(columns: SandDance.types.Column, data: object[]) { }
+    constructor(columns: Column, data: object[]) { }
     abstract rules: Rule[];
     abstract recommend(): Recommendation;
 }
 
-export function defaultColorScheme(c: SandDance.types.Column) {
+export function defaultColorScheme(c: Column) {
     if (c.quantitative) {
         return 'redyellowgreen';
     } else if (c.stats.distinctValueCount === 2) {
