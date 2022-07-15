@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vega-deck.gl transition</title>
+    <link rel="stylesheet" href="css/transition.css">
+</head>
+
+<body class="columns">
+    <script src="https://unpkg.com/vega@^5.20/build/vega.js" charset="utf-8"></script>
+    <script src="../../../dist/sanddance/v4/sanddance.js"></script>
+
+    <header>
+        <h1>vega-deck.gl transition editor</h1>
+        <button id="view-type-button" onclick="transition.toggleView()">2D / 3D</button>
+    </header>
+    <div id="split-left" class="double">
+        <div class="textform">
+            <textarea id="text1"></textarea>
+            <button onclick="transition.getText('text1')">Apply this spec</button>
+        </div>
+        <div class="textform">
+            <textarea id="text2"></textarea>
+            <button onclick="transition.getText('text2')">Apply this spec</button>
+        </div>
+    </div>
+    <div id="split-right">
+    </div>
+    <div id="error"></div>
+    <footer>
+    </footer>
+
+    <script src="js/transition.js"></script>
+
+</body>
+
+</html>
