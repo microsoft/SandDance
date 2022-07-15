@@ -1,6 +1,6 @@
 var vegaMorphChartsTest;
 (function (vegaMorphChartsTest) {
-    SandDance.use(vega);
+    VegaMorphCharts.use(vega);
     var spec = {
         "$schema": "https://vega.github.io/schema/vega/v4.json",
         "background": "#DEDEDE",
@@ -92,7 +92,7 @@ var vegaMorphChartsTest;
             }
         ]
     };
-    var view = new SandDance.VegaMorphCharts.ViewGl(vega.parse(spec), { getView: function () { return '2d'; } })
+    var view = new VegaMorphCharts.ViewGl(vega.parse(spec), { getView: function () { return '2d'; } })
         .renderer('morphcharts')
         .initialize(document.querySelector('#vis'))
         .run();

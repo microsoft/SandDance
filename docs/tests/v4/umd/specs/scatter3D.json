@@ -1,0 +1,325 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
+    "width": 700,
+    "height": 700,
+    "padding": 5,
+    "signals": [
+        {
+            "name": "depth",
+            "value": 700
+        },
+        {
+            "name": "xaxis",
+            "value": "Longitude",
+            "bind": {
+                "input": "select",
+                "options": [
+                    "ProjLongitude",
+                    "ProjLatitude",
+                    "Longitude",
+                    "Latitude",
+                    "TotalPop",
+                    "MedAge",
+                    "Education",
+                    "Income",
+                    "Obama",
+                    "MedHomeValue",
+                    "Winner",
+                    "State"
+                ]
+            }
+        },
+        {
+            "name": "yaxis",
+            "value": "Latitude",
+            "bind": {
+                "input": "select",
+                "options": [
+                    "ProjLongitude",
+                    "ProjLatitude",
+                    "Longitude",
+                    "Latitude",
+                    "TotalPop",
+                    "MedAge",
+                    "Education",
+                    "Income",
+                    "Obama",
+                    "MedHomeValue",
+                    "Winner",
+                    "State"
+                ]
+            }
+        },
+        {
+            "name": "zaxis",
+            "value": "Obama",
+            "bind": {
+                "input": "select",
+                "options": [
+                    "ProjLongitude",
+                    "ProjLatitude",
+                    "Longitude",
+                    "Latitude",
+                    "TotalPop",
+                    "MedAge",
+                    "Education",
+                    "Income",
+                    "Obama",
+                    "MedHomeValue",
+                    "Winner",
+                    "State"
+                ]
+            }
+        },
+        {
+            "name": "colorBy",
+            "value": "Income",
+            "bind": {
+                "input": "select",
+                "options": [
+                    "ProjLongitude",
+                    "ProjLatitude",
+                    "Longitude",
+                    "Latitude",
+                    "TotalPop",
+                    "MedAge",
+                    "Education",
+                    "Income",
+                    "Obama",
+                    "MedHomeValue",
+                    "Winner",
+                    "State"
+                ]
+            }
+        },
+        {
+            "name": "size",
+            "value": "MedAge",
+            "bind": {
+                "input": "select",
+                "options": [
+                    "ProjLongitude",
+                    "ProjLatitude",
+                    "Longitude",
+                    "Latitude",
+                    "TotalPop",
+                    "MedAge",
+                    "Education",
+                    "Income",
+                    "Obama",
+                    "MedHomeValue",
+                    "Winner",
+                    "State"
+                ]
+            }
+        },
+        {
+            "name": "reverseColor",
+            "value": false,
+            "bind": {
+                "input": "checkbox"
+            }
+        }
+    ],
+    "projections": [
+        {
+            "name": "projection",
+            "type": "albersUsa"
+        }
+    ],
+    "data": [
+        {
+            "name": "source",
+            "format": {
+                "type": "tsv",
+                "parse": "auto"
+            },
+            "url": "../../../sample-data/demovote.tsv",
+            "transform": [
+                {
+                    "type": "geopoint",
+                    "projection": "projection",
+                    "fields": [
+                        "Longitude",
+                        "Latitude"
+                    ],
+                    "as": [
+                        "ProjLongitude",
+                        "ProjLatitude"
+                    ]
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "round": true,
+            "nice": true,
+            "zero": false,
+            "domain": {
+                "data": "source",
+                "field": {
+                    "signal": "xaxis"
+                }
+            },
+            "range": "width"
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "round": true,
+            "nice": true,
+            "zero": false,
+            "domain": {
+                "data": "source",
+                "field": {
+                    "signal": "yaxis"
+                }
+            },
+            "range": "height"
+        },
+        {
+            "name": "z",
+            "type": "linear",
+            "round": true,
+            "nice": true,
+            "zero": false,
+            "domain": {
+                "data": "source",
+                "field": {
+                    "signal": "zaxis"
+                }
+            },
+            "range": [
+                0,
+                {
+                    "signal": "depth"
+                }
+            ]
+        },
+        {
+            "name": "size",
+            "type": "linear",
+            "round": true,
+            "nice": false,
+            "zero": true,
+            "domain": {
+                "data": "source",
+                "field": {
+                    "signal": "size"
+                }
+            },
+            "range": [
+                5,
+                30
+            ]
+        },
+        {
+            "name": "mycolorscale",
+            "type": "sequential",
+            "interpolate": "rgb",
+            "reverse": {
+                "signal": "reverseColor"
+            },
+            "domain": {
+                "data": "source",
+                "field": {
+                    "signal": "colorBy"
+                }
+            },
+            "range": [
+                "#0000ff",
+                "#00ff00",
+                "#ff0000"
+            ]
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "grid": true,
+            "domain": false,
+            "orient": "bottom",
+            "tickCount": 5,
+            "title": {
+                "signal": "xaxis"
+            }
+        },
+        {
+            "scale": "y",
+            "grid": true,
+            "domain": false,
+            "orient": "left",
+            "titlePadding": 5,
+            "title": {
+                "signal": "yaxis"
+            }
+        }
+    ],
+    "marks": [
+        {
+            "name": "marks2",
+            "type": "rect",
+            "from": {
+                "data": "source"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": {
+                            "signal": "xaxis"
+                        }
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": {
+                            "signal": "yaxis"
+                        }
+                    },
+                    "z": {
+                        "scale": "z",
+                        "field": {
+                            "signal": "zaxis"
+                        }
+                    },
+                    "depth": {
+                        "scale": "size",
+                        "field": {
+                            "signal": "size"
+                        }
+                    },
+                    "width": {
+                        "scale": "size",
+                        "field": {
+                            "signal": "size"
+                        }
+                    },
+                    "height": {
+                        "scale": "size",
+                        "field": {
+                            "signal": "size"
+                        }
+                    },
+                    "opacity": {
+                        "value": 0.6
+                    },
+                    "fill": {
+                        "scale": "mycolorscale",
+                        "field": {
+                            "signal": "colorBy"
+                        }
+                    },
+                    "stroke": {
+                        "scale": "mycolorscale",
+                        "field": {
+                            "signal": "colorBy"
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

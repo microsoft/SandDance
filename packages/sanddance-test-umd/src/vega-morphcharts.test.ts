@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-///<reference path='../node_modules/@msrvida/sanddance/dist/umd/sanddance.d.ts' />
+///<reference path='../node_modules/@msrvida/sanddance/node_modules/@msrvida/vega-morphcharts/dist/umd/vega-morphcharts.d.ts' />
 ///<reference path='vega.d.ts' />
 
 namespace vegaMorphChartsTest {
-    declare const vega: SandDance.VegaMorphCharts.types.VegaBase;
+    declare const vega: VegaMorphCharts.types.VegaBase;
 
-    SandDance.use(vega);
+    VegaMorphCharts.use(vega);
 
     /* eslint-disable */
     const spec: Vega.Spec = {
@@ -106,7 +106,7 @@ namespace vegaMorphChartsTest {
     };
     /* eslint-enable */
 
-    const view = new SandDance.VegaMorphCharts.ViewGl(vega.parse(spec), { getView: () => '2d' })
+    const view = new VegaMorphCharts.ViewGl(vega.parse(spec), { getView: () => '2d' })
         .renderer('morphcharts')
         .initialize(document.querySelector('#vis'))
         .run();

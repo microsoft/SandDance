@@ -11,7 +11,9 @@ title: Examples
 * [sanddance-specs 2D vega specs tests](../tests/sanddance-specs/v1/) using UMD/CDN
 
 ### vega-morphcharts
+* [simple vega spec](../tests/v4/umd/vega-morphcharts.test.html) using UMD/CDN
 * [vega spec test](../tests/v4/es6/vega-morphcharts-test-es6.html) using bundled es6
+* [transition between vega specs](../tests/v4/umd/transition.html) using UMD/CDN
 
 ## SandDance component v4 Beta
 * [simple scatterplot](../tests/v4/umd/test.html) using UMD/CDN

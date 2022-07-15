@@ -38,7 +38,7 @@ footer {
     top: 2em;
 }
 
-#view-div, #view-div .vega-deckgl-gl {
+#view-div, #view-div .vega-morphcharts-gl {
     height: 100%;
 }
 
@@ -83,13 +83,13 @@ footer {
     padding: 1em;
 }
 
-.vega-deckgl-root {
+.vega-morphcharts-root {
     display: grid;
     grid-template-rows: auto 200px;
     height: 100%;
 }
 
-.vega-deckgl-legend {
+.vega-morphcharts-legend {
     font-family: sans-serif;
     position: absolute;
     right: 1em;
