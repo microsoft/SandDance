@@ -18,7 +18,7 @@
     "docs": "typedoc src/index.ts -out ../../docs/docs/sanddance-specs/v1 --theme ../../typedoc/theme --excludePrivate --gitRevision master",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
-    "build:sanddance-core": "npm run build-typescript",
+    "build:sanddance-core": "npm run build-typescript && npm run bundle",
     "bundle": "rollup -c",
     "deploy": "parcel build ./uitest/sanddance-specs.ts",
     "deploy-watch": "parcel watch ./uitest/sanddance-specs.ts --target umd",
