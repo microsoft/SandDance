@@ -2851,7 +2851,7 @@
                         // when there is only one bin, use only first sequence element
                         type: 'filter',
                         expr: `${dataExtentSpanSignal} === 0 ? datum[${JSON.stringify(FieldNames.First)}] : true`,
-                    }
+                    },
                 ],
             };
             const signals = [
@@ -24058,7 +24058,7 @@ f 5/6/6 1/12/6 8/11/6`;
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
-    const version$1 = 'DEBUG';
+    const version$1 = '1.0.0';
 
     /*!
     * Copyright (c) Microsoft Corporation.

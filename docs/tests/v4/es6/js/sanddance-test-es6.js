@@ -47915,7 +47915,7 @@ function $41ff5dbbe7f2be3a$export$6868fd1605c79d3d(prefix, domainDataName, discr
                     // when there is only one bin, use only first sequence element
                     type: "filter",
                     expr: `${dataExtentSpanSignal} === 0 ? datum[${JSON.stringify($8e68118808d817fe$export$10df5429b7082be2.First)}] : true`
-                }
+                }, 
             ]
         };
         const signals = [
@@ -80320,7 +80320,7 @@ const RendererGl = _RendererGl;
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "version", ()=>version);
-const version = "DEBUG";
+const version = "1.0.0";
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"bPdl3":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");

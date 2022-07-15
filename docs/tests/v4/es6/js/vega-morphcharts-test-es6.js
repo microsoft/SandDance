@@ -165,12 +165,12 @@ class SpecRenderer {
         return document.getElementsByTagName("textarea")[0];
     }
     getText() {
-        var textarea = this.getTextArea();
-        var text = textarea.value;
-        var errorDiv = document.getElementById("error");
-        var splitRight = document.getElementById("vis");
+        const textarea = this.getTextArea();
+        const text = textarea.value;
+        const errorDiv = document.getElementById("error");
+        const splitRight = document.getElementById("vis");
         try {
-            var spec = JSON.parse(text);
+            const spec = JSON.parse(text);
             splitRight.style.opacity = "1";
             errorDiv.style.display = "none";
             this.update(spec, text);
@@ -74505,7 +74505,7 @@ const RendererGl = _RendererGl;
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "version", ()=>version);
-const version = "DEBUG";
+const version = "1.0.0";
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}]},["dlIYU"], "dlIYU", "parcelRequire1c68")
 
