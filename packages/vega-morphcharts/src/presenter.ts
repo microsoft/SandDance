@@ -50,7 +50,7 @@ export class Presenter {
     /**
      * Handle to recent MorphCharts rendering result.
      */
-    public mcRenderResult: MorphChartsRendering
+    public mcRenderResult: MorphChartsRendering;
 
     /**
      * Logger, such as console.log

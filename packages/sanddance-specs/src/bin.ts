@@ -124,7 +124,7 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
                     // when there is only one bin, use only first sequence element
                     type: 'filter',
                     expr: `${dataExtentSpanSignal} === 0 ? datum[${JSON.stringify(FieldNames.First)}] : true`,
-                }
+                },
             ],
         };
         const signals: Signal[] = [
