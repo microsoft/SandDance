@@ -51,5 +51,9 @@ steps:
   displayName: 'generate docs'
 
 - script: |
+    npm run package
+  displayName: 'package'
+
+- script: |
     npm run deploy
   displayName: 'deploy to website'
