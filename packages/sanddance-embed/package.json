@@ -21,9 +21,9 @@
     "@msrvida/sanddance-explorer": "^4"
   },
   "devDependencies": {
-    "@types/react": ">=16.8.0 <17.0.0",
-    "@types/react-dom": ">=16.8.0 <17.0.0",
-    "@msrvida/fluentui-react-cdn-typings": "*"
+    "@types/react": ">=16.8.0 <18.0.0",
+    "@types/react-dom": ">=16.8.0 <18.0.0",
+    "@msrvida/fluentui-react-cdn-typings": "^2"
   },
   "author": "",
   "license": "MIT"

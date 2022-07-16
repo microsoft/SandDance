@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/fluentui-react-cdn-typings",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "",
   "main": "index.js",
   "repository": {
@@ -15,10 +15,10 @@
   "keywords": [],
   "author": "",
   "dependencies": {
-    "@fluentui/react": "^7.150.0"
+    "@fluentui/react": "^8"
   },
   "peerDependencies": {
-    "@types/react": ">=16.8.0 <17.0.0"
+    "@types/react": ">=16.8.0 <18.0.0"
   },
   "license": "MIT"
 }
