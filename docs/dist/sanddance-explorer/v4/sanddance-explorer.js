@@ -3251,7 +3251,7 @@ function $02bd8e9b090c20c5$export$6868fd1605c79d3d(prefix, domainDataName, discr
                     // when there is only one bin, use only first sequence element
                     type: "filter",
                     expr: `${dataExtentSpanSignal} === 0 ? datum[${JSON.stringify((0, $ec270fbe8d9983b4$export$10df5429b7082be2).First)}] : true`
-                }
+                }, 
             ]
         };
         const signals = [
@@ -30538,7 +30538,7 @@ const $d35dded7832c8625$export$6d8f9057dcd7f9e6 = $d35dded7832c8625$var$_ViewGl;
 
 
 
-const $6cb4b91d47e414da$export$83d89fbfd8236492 = "DEBUG";
+const $6cb4b91d47e414da$export$83d89fbfd8236492 = "1.0.0";
 
 
 $parcel$exportWildcard($77c6d719b6f16e7d$exports, $20fbdb0de5c041fa$exports);
@@ -33408,19 +33408,18 @@ const $8f1b85a9470d3af5$export$c4b7cd609ccf4a5a = (title, embed)=>`<!DOCTYPE htm
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${title}</title>
     <link rel="stylesheet" type="text/css"
-        href="https://unpkg.com/@msrvida/sanddance-embed@3/dist/css/sanddance-embed.css" />
+        href="https://unpkg.com/@msrvida/sanddance-embed@4/dist/css/sanddance-embed.css" />
     <link rel="stylesheet" type="text/css"
-        href="https://unpkg.com/@msrvida/sanddance-explorer@3/dist/css/sanddance-explorer.css" />
+        href="https://unpkg.com/@msrvida/sanddance-explorer@4/dist/css/sanddance-explorer.css" />
 </head>
 
 <body>
-    <script src="https://unpkg.com/react@16.13/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@16.13/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/deck.gl@8.3.7/dist.min.js"></script>
-    <script src="https://unpkg.com/vega@5.17/build/vega.min.js"></script>
-    <script src="https://unpkg.com/@fluentui/react@7.150/dist/fluentui-react.js"></script>
-    <script src="https://unpkg.com/@msrvida/sanddance-explorer@3/dist/umd/sanddance-explorer.js"></script>
-    <script src="https://unpkg.com/@msrvida/sanddance-embed@3/dist/umd/sanddance-embed.js"></script>
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/vega@5.20/build/vega.min.js"></script>
+    <script src="https://unpkg.com/@fluentui/react@8/dist/fluentui-react.js"></script>
+    <script src="https://unpkg.com/@msrvida/sanddance-explorer@4/dist/umd/sanddance-explorer.js"></script>
+    <script src="https://unpkg.com/@msrvida/sanddance-embed@4/dist/umd/sanddance-embed.js"></script>
 
     <div id="app"></div>
 
@@ -33579,12 +33578,12 @@ function $e98d3084b701f145$var$_DataExportPicker(_props) {
             }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.ChoiceGroup, {
                 className: "sanddance-form-separate",
                 disabled: disabled,
+                selectedKey: this.state.exportType,
                 options: $e98d3084b701f145$var$exportTypes.map(([exportType, text])=>{
                     return {
                         key: exportType,
                         text: text,
-                        disabled: false,
-                        checked: exportType === this.state.exportType
+                        disabled: false
                     };
                 }),
                 onChange: (ev, option)=>this.setState({
@@ -33878,10 +33877,10 @@ function $247884a4197e9da6$var$_Chart(_props) {
                 className: "calculator"
             }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.ChoiceGroup, {
                 componentRef: this.choiceRef,
+                selectedKey: props.chart,
                 className: "sanddance-chart-type",
                 options: $247884a4197e9da6$export$3fab399b77d7be2a.map((o)=>{
                     return Object.assign(Object.assign({}, o), {
-                        checked: props.chart === o.key,
                         disabled: props.disabled || o.key === "treemap" && props.quantitativeColumns.length === 0
                     });
                 }),
