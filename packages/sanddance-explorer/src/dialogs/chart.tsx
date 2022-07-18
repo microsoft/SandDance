@@ -116,11 +116,11 @@ function _Chart(_props: Props) {
                         <div className="calculator">
                             <base.fluentUI.ChoiceGroup
                                 componentRef={this.choiceRef}
+                                selectedKey={props.chart}
                                 className="sanddance-chart-type"
                                 options={chartLabelMap.map(o => {
                                     return {
                                         ...o,
-                                        checked: props.chart === o.key,
                                         disabled: props.disabled
                                             || (o.key === 'treemap' && props.quantitativeColumns.length === 0),
                                     };
@@ -319,10 +319,10 @@ function _Chart(_props: Props) {
                                         switch (props.chart) {
                                             case 'scatterplot':
                                             case 'stacks':
-                                            {
-                                                insightColumns = props.insightColumns;
-                                                break;
-                                            }
+                                                {
+                                                    insightColumns = props.insightColumns;
+                                                    break;
+                                                }
                                         }
                                         if (!insightColumns) {
                                             insightColumns = props.explorer.changeChartType('scatterplot');

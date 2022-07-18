@@ -165,13 +165,13 @@ function _DataExportPicker(_props: Props) {
                         <base.fluentUI.ChoiceGroup
                             className="sanddance-form-separate"
                             disabled={disabled}
+                            selectedKey={this.state.exportType}
                             options={
                                 exportTypes.map(([exportType, text]) => {
                                     return {
                                         key: exportType,
                                         text,
                                         disabled: false,
-                                        checked: exportType === this.state.exportType,
                                     } as FluentUITypes.IChoiceGroupOption;
                                 })
                             }
