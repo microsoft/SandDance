@@ -21,8 +21,8 @@
 $sidetab-width: 50px;
 $toolbar-width: 300px;
 $toolbar-margin: 12px;
-$layout-margin-left: $sidetab-width;
-$layout-margin-right: 150px; //room for legend
+$layout-margin-left: 0; //$sidetab-width;
+$layout-margin-right: 0; //150px; //room for legend
 
 @include topbar($toolbar-margin: $toolbar-margin, $toolbar-width: $toolbar-width, $sidetab-width: $sidetab-width);
 @include group($margin: $toolbar-margin, $border-color: $toolbar-border, $bg-color: $toolbar-bg);
@@ -99,6 +99,7 @@ $layout-margin-right: 150px; //room for legend
         left: $toolbar-width;
     }
     .sanddance-ReactViewer {
+        overflow: hidden;
         position: absolute;
         top: 0;
         left: $layout-margin-left - $layout-margin-right;   //oversize canvas to align center
@@ -145,6 +146,51 @@ $layout-margin-right: 150px; //room for legend
         display: none;  //keep dialogs from occupying the grid when toolbar is floating
     }
 }
+
+.sanddance-advanced-renderer {
+    height: 36px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40px;
+}
+
+.sanddance-renderer-dialog {
+    ul {
+        list-style-type: none;
+        padding-left: 2em;
+    }
+}
+
+.sanddance-background-image-dialog {
+    min-width: 32em;
+    .thumbnail {
+        border-bottom: 1px solid #ccc;
+        display: grid;
+        grid-template-columns: auto auto;
+        padding-bottom: 1em;
+        > * {
+            align-self: center;
+        }
+        img {
+            margin-right: 1em;
+            max-height: 160px;
+            max-width: 16em;
+            object-fit: contain;
+        }
+    }
+    .axis-bounds {
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 1em;
+    }
+    .axis-bound-fields {
+        display: grid;
+        column-gap: 1em;
+        grid-template-columns: auto auto;
+        margin-bottom: 1em;
+    }
+}
+
 
 #sanddance-vega-spec {
     border: 1px inset;

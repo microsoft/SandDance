@@ -165,12 +165,12 @@ class SpecRenderer {
         return document.getElementsByTagName("textarea")[0];
     }
     getText() {
-        var textarea = this.getTextArea();
-        var text = textarea.value;
-        var errorDiv = document.getElementById("error");
-        var splitRight = document.getElementById("vis");
+        const textarea = this.getTextArea();
+        const text = textarea.value;
+        const errorDiv = document.getElementById("error");
+        const splitRight = document.getElementById("vis");
         try {
-            var spec = JSON.parse(text);
+            const spec = JSON.parse(text);
             splitRight.style.opacity = "1";
             errorDiv.style.display = "none";
             this.update(spec, text);
@@ -45492,16 +45492,15 @@ parcelHelpers.export(exports, "base", ()=>(0, _base.base));
 parcelHelpers.export(exports, "use", ()=>(0, _base.use));
 parcelHelpers.export(exports, "Presenter", ()=>(0, _presenter.Presenter));
 parcelHelpers.export(exports, "ViewGl", ()=>(0, _viewGl.ViewGl));
-parcelHelpers.export(exports, "constants", ()=>_constants);
 parcelHelpers.export(exports, "controls", ()=>_controls);
 parcelHelpers.export(exports, "defaults", ()=>_defaults);
 parcelHelpers.export(exports, "types", ()=>_types);
 parcelHelpers.export(exports, "util", ()=>_util);
 parcelHelpers.export(exports, "version", ()=>(0, _version.version));
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _constants = require("./constants");
-var _controls = require("./exports/controls");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _controls = require("./exports/controls");
 var _types = require("./exports/types");
 var _util = require("./exports/util");
 var _defaults = require("./defaults");
@@ -45512,26 +45511,15 @@ var _enums = require("./enums");
 parcelHelpers.exportAll(_enums, exports);
 var _version = require("./version");
 
-},{"./constants":"4CGBr","./exports/controls":"7YVdE","./exports/types":"dqNiW","./exports/util":"eR5Ig","./defaults":"rYstm","./base":"4hPDY","./presenter":"bqYNS","./vega-classes/viewGl":"fQ572","./enums":"gGi06","./version":"aUbEh","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"4CGBr":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "layerNames", ()=>layerNames);
-const layerNames = {
-    cubes: "LAYER_CUBES",
-    lines: "LAYER_LINES",
-    text: "LAYER_TEXT",
-    paths: "LAYER_PATHS",
-    polygons: "LAYER_POLYGONS"
-};
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7YVdE":[function(require,module,exports) {
+},{"./exports/controls":"7YVdE","./exports/types":"dqNiW","./exports/util":"eR5Ig","./defaults":"rYstm","./base":"4hPDY","./presenter":"bqYNS","./vega-classes/viewGl":"fQ572","./enums":"gGi06","./version":"aUbEh","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7YVdE":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 //alphabetize variables for documentation
 parcelHelpers.export(exports, "Table", ()=>(0, _controls.Table));
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-/**
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ /**
  * This file is for external facing export only, do not use this for internal references,
  * as it may cause circular dependencies in Rollup.
  */ var _controls = require("../controls");
@@ -45540,11 +45528,12 @@ parcelHelpers.export(exports, "Table", ()=>(0, _controls.Table));
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Table", ()=>Table);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _tsxCreateElement = require("tsx-create-element");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _tsxCreateElement = require("tsx-create-element");
 const KeyCodes = {
-    ENTER: 13
+    ENTER: "Enter"
 };
 const Table = (props)=>{
     return (0, _tsxCreateElement.createElement)("table", {
@@ -45554,7 +45543,7 @@ const Table = (props)=>{
             onClick: (e)=>props.onRowClick && props.onRowClick(e, i),
             tabIndex: props.onRowClick ? 0 : -1,
             onKeyUp: (e)=>{
-                if (e.keyCode === KeyCodes.ENTER && props.onRowClick) props.onRowClick(e, i);
+                if (e.key === KeyCodes.ENTER && props.onRowClick) props.onRowClick(e, i);
             }
         }, row.cells.map((cell, i)=>(0, _tsxCreateElement.createElement)("td", {
                 className: cell.className || "",
@@ -45704,9 +45693,10 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 //alphabetize interfaces  for documentation
 parcelHelpers.export(exports, "MorphChartsCore", ()=>(0, _interfaces.MorphChartsCore));
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-/**
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ /**
  * This file is for external facing export only, do not use this for internal references,
  * as it may cause circular dependencies in Rollup.
  */ var _interfaces = require("../interfaces");
@@ -45715,7 +45705,10 @@ parcelHelpers.export(exports, "MorphChartsCore", ()=>(0, _interfaces.MorphCharts
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "MorphChartsCore", ()=>(0, _morphcharts.Core));
-var _morphcharts = require("morphcharts");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _morphcharts = require("morphcharts");
 
 },{"morphcharts":"dzm75","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"dzm75":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -45812,7 +45805,6 @@ var _objJs = require("../helpers/obj.js");
 var _glMatrix = require("gl-matrix");
 var _cubeJs = require("../meshes/cube.js");
 var _vertexJs = require("../vertex.js");
-var _xmlHttpJs = require("../providers/xmlHttp.js");
 class ControllerVisual {
     constructor(controller){
         this.controller = controller;
@@ -45821,13 +45813,66 @@ class ControllerVisual {
     update(elapsedTime) {}
 }
 class Controller {
-    constructor(core, profile, handedness){
+    constructor(core, options){
+        this._cubeObj = `o Cube
+v 1.000000 -1.000000 -1.000000
+v 1.000000 -1.000000 1.000000
+v -1.000000 -1.000000 1.000000
+v -1.000000 -1.000000 -1.000000
+v 1.000000 1.000000 -0.999999
+v 0.999999 1.000000 1.000001
+v -1.000000 1.000000 1.000000
+v -1.000000 1.000000 -1.000000
+vt 1.000000 0.333333
+vt 1.000000 0.666667
+vt 0.666667 0.666667
+vt 0.666667 0.333333
+vt 0.666667 0.000000
+vt 0.000000 0.333333
+vt 0.000000 0.000000
+vt 0.333333 0.000000
+vt 0.333333 1.000000
+vt 0.000000 1.000000
+vt 0.000000 0.666667
+vt 0.333333 0.333333
+vt 0.333333 0.666667
+vt 1.000000 0.000000
+vn 0.000000 -1.000000 0.000000
+vn 0.000000 1.000000 0.000000
+vn 1.000000 0.000000 0.000000
+vn -0.000000 0.000000 1.000000
+vn -1.000000 -0.000000 -0.000000
+vn 0.000000 0.000000 -1.000000
+s off
+f 2/1/1 3/2/1 4/3/1
+f 8/1/2 7/4/2 6/5/2
+f 5/6/3 6/7/3 2/8/3
+f 6/8/4 7/5/4 3/4/4
+f 3/9/5 7/10/5 8/11/5
+f 1/12/6 4/13/6 8/11/6
+f 1/4/1 2/1/1 4/3/1
+f 5/14/2 8/1/2 6/5/2
+f 1/12/3 5/6/3 2/8/3
+f 2/12/4 6/8/4 3/4/4
+f 4/13/5 3/9/5 8/11/5
+f 5/6/6 1/12/6 8/11/6`;
         this._core = core;
-        this._xmlHttp = new (0, _xmlHttpJs.XmlHttp)(core);
-        this._rayMMatrix = (0, _glMatrix.mat4).create();
+        this._obj = options.obj;
+        this._texture = options.texture || new ImageData(new Uint8ClampedArray([
+            0,
+            0,
+            0,
+            255
+        ]), 1, 1);
     }
-    get imageData() {
-        return this._imageData;
+    get isInitialized() {
+        return this._isInitialized;
+    }
+    get mMatrix() {
+        return this._mMatrix;
+    }
+    get indexCount() {
+        return this._indexCount;
     }
     get vertices() {
         return this._vertices;
@@ -45835,65 +45880,63 @@ class Controller {
     get indices() {
         return this._indices;
     }
-    get indexCount() {
-        return this._indexCount;
-    }
-    get isInitialized() {
-        return this._isInitialized;
-    }
-    get dataUrl() {
-        return this._dataUrl;
-    }
-    get objMesh() {
-        return this._objMesh;
+    get texture() {
+        return this._texture;
     }
     get rayMMatrix() {
         return this._rayMMatrix;
     }
-    initialize(completed) {
-        this._xmlHttp.loadText(`models/${this._core.config.xrControllerProfile}-${this._core.config.xrControllerHandedness}.obj`, (objMesh)=>{
-            this._xmlHttp.loadImage(`models/${this._core.config.xrControllerProfile}.png`, (imageElement)=>{
-                const objHelper = new (0, _objJs.ObjHelper)(this._core);
-                this._objMesh = objHelper.read(objMesh);
-                const canvas = document.createElement("canvas");
-                const ctx = canvas.getContext("2d");
-                canvas.width = imageElement.width;
-                canvas.height = imageElement.height;
-                ctx.drawImage(imageElement, 0, 0);
-                this._imageData = ctx.getImageData(0, 0, imageElement.width, imageElement.height);
-                const vertices = (0, _cubeJs.Cube).POSITIONS;
-                this._vertices = new ArrayBuffer((0, _vertexJs.PositionColorVertex).SIZE_BYTES * vertices.length / (0, _vertexJs.PositionVertex).SIZE);
-                const verticesView = new DataView(this._vertices);
-                const indices = (0, _cubeJs.Cube).INDICES;
-                this._indices = new Uint16Array(indices);
-                const vertexCount = vertices.length / (0, _vertexJs.PositionVertex).SIZE;
-                this._indexCount = indices.length;
-                const _vec3 = (0, _glMatrix.vec3).create();
-                for(let i = 0; i < vertexCount; i++){
-                    (0, _glMatrix.vec3).set(_vec3, vertices[i * (0, _vertexJs.PositionVertex).SIZE], vertices[i * (0, _vertexJs.PositionVertex).SIZE + 1], vertices[i * (0, _vertexJs.PositionVertex).SIZE + 2]);
-                    (0, _vertexJs.PositionColorVertex).setPosition(verticesView, i, _vec3);
-                    (0, _vertexJs.PositionColorVertex).setColor(verticesView, i, this._core.config.xrControllerRayColor);
-                }
-                const thickness = 0.0025;
-                const length = 10;
-                (0, _glMatrix.vec3).set(_vec3, thickness, thickness, length);
-                (0, _glMatrix.mat4).fromScaling(this._rayMMatrix, _vec3);
-                (0, _glMatrix.vec3).set(_vec3, 0, 0, -0.5);
-                (0, _glMatrix.mat4).translate(this._rayMMatrix, this._rayMMatrix, _vec3);
-                this._isInitialized = true;
-                this._core.log.write((0, _mainJs.LogLevel).info, "controller initialized");
-                completed();
-            }, (message)=>{
-                this._core.log.write((0, _mainJs.LogLevel).error, message);
-            });
-        }, (message)=>{
-            this._core.log.write((0, _mainJs.LogLevel).error, message);
-        });
+    get rayIndexCount() {
+        return this._rayIndexCount;
+    }
+    get rayVertices() {
+        return this._rayVertices;
+    }
+    get rayIndices() {
+        return this._rayIndices;
+    }
+    initialize() {
+        const _vec3 = (0, _glMatrix.vec3).create();
+        this._mMatrix = (0, _glMatrix.mat4).create();
+        const objMesh = new (0, _objJs.ObjHelper)(this._core).read(this._obj || this._cubeObj);
+        if (!this._obj) {
+            this.useRayPose = true;
+            const modelThickness = 0.02;
+            const modelLength = 0.1;
+            (0, _glMatrix.vec3).set(_vec3, modelThickness, modelThickness, modelLength);
+            (0, _glMatrix.mat4).fromScaling(this._mMatrix, _vec3);
+            (0, _glMatrix.vec3).set(_vec3, 0, 0, 1);
+            (0, _glMatrix.mat4).translate(this._mMatrix, this._mMatrix, _vec3);
+        }
+        this._vertices = objMesh.vertices;
+        this._indices = objMesh.indices;
+        this._indexCount = objMesh.indexCount;
+        this._rayMMatrix = (0, _glMatrix.mat4).create();
+        const rayVertices = (0, _cubeJs.Cube).POSITIONS;
+        this._rayVertices = new ArrayBuffer((0, _vertexJs.PositionColorVertex).SIZE_BYTES * rayVertices.length / (0, _vertexJs.PositionVertex).SIZE);
+        const rayVerticesView = new DataView(this._rayVertices);
+        const rayIndices = (0, _cubeJs.Cube).INDICES;
+        this._rayIndices = new Uint16Array(rayIndices);
+        const rayVertexCount = rayVertices.length / (0, _vertexJs.PositionVertex).SIZE;
+        this._rayIndexCount = rayIndices.length;
+        for(let i = 0; i < rayVertexCount; i++){
+            (0, _glMatrix.vec3).set(_vec3, rayVertices[i * (0, _vertexJs.PositionVertex).SIZE], rayVertices[i * (0, _vertexJs.PositionVertex).SIZE + 1], rayVertices[i * (0, _vertexJs.PositionVertex).SIZE + 2]);
+            (0, _vertexJs.PositionColorVertex).setPosition(rayVerticesView, i, _vec3);
+            (0, _vertexJs.PositionColorVertex).setColor(rayVerticesView, i, this._core.config.xrControllerRayColor);
+        }
+        const rayThickness = 0.0025;
+        const rayLength = 10;
+        (0, _glMatrix.vec3).set(_vec3, rayThickness, rayThickness, rayLength);
+        (0, _glMatrix.mat4).fromScaling(this._rayMMatrix, _vec3);
+        (0, _glMatrix.vec3).set(_vec3, 0, 0, -0.5);
+        (0, _glMatrix.mat4).translate(this._rayMMatrix, this._rayMMatrix, _vec3);
+        this._isInitialized = true;
+        this._core.log.write((0, _mainJs.LogLevel).info, "controller initialized");
     }
     update(elapsedTime) {}
 }
 
-},{"../main.js":"2JYph","../helpers/obj.js":"aHITK","gl-matrix":"3mrln","../meshes/cube.js":"dgOpu","../vertex.js":"7T2qu","../providers/xmlHttp.js":"kfGpT","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"2JYph":[function(require,module,exports) {
+},{"../main.js":"2JYph","../helpers/obj.js":"aHITK","gl-matrix":"3mrln","../meshes/cube.js":"dgOpu","../vertex.js":"7T2qu","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"2JYph":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Core", ()=>Core);
@@ -46157,8 +46200,25 @@ class Core {
         if (event.added.length > 0) {
             const added = event.added[0];
             if (added.targetRayMode == "tracked-pointer") {
-                const controller = new (0, _controllerJs.Controller)(this, added.profiles[0], added.handedness);
-                this.renderer.controllers.push(this.renderer.createControllerVisual(controller));
+                const profiles = added.profiles;
+                const handedness = added.handedness;
+                if (this.webXRInputSourceRequestCallback) this.webXRInputSourceRequestCallback(profiles, handedness, (response)=>{
+                    const options = {
+                        profiles: profiles,
+                        handedness: handedness,
+                        obj: response.obj,
+                        texture: response.texture
+                    };
+                    const controller = new (0, _controllerJs.Controller)(this, options);
+                    this.renderer.controllers.push(this.renderer.createControllerVisual(controller));
+                }, (e)=>{
+                    this._log.write(LogLevel.error, e);
+                });
+                else {
+                    const options = {};
+                    const controller = new (0, _controllerJs.Controller)(this, options);
+                    this.renderer.controllers.push(this.renderer.createControllerVisual(controller));
+                }
             }
         }
         if (event.removed.length > 0) this.renderer.controllers.length = 0;
@@ -56512,16 +56572,6 @@ Cube.CUBE_MAP_INDICES = new Uint16Array([
     6,
     7
 ]);
-Cube.CORNERS = [
-    (0, _glMatrix.vec3).fromValues(-0.5, 0.5, 0.5),
-    (0, _glMatrix.vec3).fromValues(0.5, 0.5, 0.5),
-    (0, _glMatrix.vec3).fromValues(0.5, -0.5, 0.5),
-    (0, _glMatrix.vec3).fromValues(-0.5, -0.5, 0.5),
-    (0, _glMatrix.vec3).fromValues(-0.5, 0.5, -0.5),
-    (0, _glMatrix.vec3).fromValues(0.5, 0.5, -0.5),
-    (0, _glMatrix.vec3).fromValues(0.5, -0.5, -0.5),
-    (0, _glMatrix.vec3).fromValues(-0.5, -0.5, -0.5)
-];
 Cube.FACE_NORMALS = [
     (0, _glMatrix.vec3).fromValues(0, 1, 0),
     (0, _glMatrix.vec3).fromValues(1, 0, 0),
@@ -58438,14 +58488,12 @@ class Manager {
                     if (gripPose) controllerVisual.mMatrix = gripPose.transform.matrix;
                     const gamepad = inputSource.gamepad;
                     this._core.renderer.isPickingEnabled = false;
-                    if (gamepad.buttons[0].value > 0) {
-                        if (this.isPickingEnabled) {
-                            const rayPose = xrFrame.getPose(inputSource.targetRaySpace, this._core.renderer.webXRReferenceSpace);
-                            if (rayPose) {
-                                controllerVisual.rayMMatrix = rayPose.transform.matrix;
-                                this._core.renderer.pickVMatrix = rayPose.transform.inverse.matrix;
-                                this._core.renderer.isPickingEnabled = true;
-                            }
+                    const rayPose = xrFrame.getPose(inputSource.targetRaySpace, this._core.renderer.webXRReferenceSpace);
+                    if (rayPose) {
+                        controllerVisual.rayMMatrix = rayPose.transform.matrix;
+                        if (gamepad.buttons[0].value > 0 && this.isPickingEnabled) {
+                            this._core.renderer.pickVMatrix = rayPose.transform.inverse.matrix;
+                            this._core.renderer.isPickingEnabled = true;
                         }
                     }
                     const threshold = 0.2;
@@ -59197,7 +59245,7 @@ class ObjHelper {
         }
         for(let i1 = 0; i1 < meshes.length - 1; i1++)indexCounts.push(indexOffsets[i1 + 1] - indexOffsets[i1]);
         indexCounts.push(indices.length - indexOffsets[meshes.length - 1]);
-        const vertices = new ArrayBuffer((0, _vertexJs.PositionNormalTextureVertex).SIZE_BYTES * positions.length / 3);
+        const vertices = new ArrayBuffer((0, _vertexJs.PositionNormalTextureVertex).SIZE_BYTES * Object.keys(faceLookup).length);
         const dataView = new DataView(vertices);
         let minX = Number.MAX_VALUE;
         let minY = Number.MAX_VALUE;
@@ -59263,58 +59311,7 @@ class ObjHelper {
     }
 }
 
-},{"gl-matrix":"3mrln","../main.js":"2JYph","../vertex.js":"7T2qu","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"kfGpT":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-/*!
- * Copyright (c) Microsoft Corporation.
- * Licensed under the MIT License.
- */ parcelHelpers.export(exports, "XmlHttp", ()=>XmlHttp);
-class XmlHttp {
-    constructor(core){}
-    loadText(url, completed, failed) {
-        const request = new XMLHttpRequest();
-        request.open("GET", url);
-        request.onreadystatechange = ()=>{
-            if (request.readyState == XMLHttpRequest.DONE) switch(request.status){
-                case 200:
-                    completed(request.responseText);
-                    break;
-                default:
-                    failed(request.statusText);
-                    break;
-            }
-        };
-        request.send();
-    }
-    loadImage(url, completed, failed) {
-        const image = new Image();
-        image.onload = ()=>completed(image);
-        image.onerror = (event)=>{
-            const error = event.message;
-            failed(error);
-        };
-        image.src = url;
-    }
-    loadArrayBuffer(url, completed, failed) {
-        const request = new XMLHttpRequest();
-        request.open("GET", url);
-        request.responseType = "arraybuffer";
-        request.onreadystatechange = ()=>{
-            if (request.readyState == XMLHttpRequest.DONE) switch(request.status){
-                case 200:
-                    completed(request.response);
-                    break;
-                default:
-                    failed(request.statusText);
-                    break;
-            }
-        };
-        request.send();
-    }
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"4PuF6":[function(require,module,exports) {
+},{"gl-matrix":"3mrln","../main.js":"2JYph","../vertex.js":"7T2qu","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"4PuF6":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "LabelVisual", ()=>LabelVisual);
@@ -64168,6 +64165,57 @@ class LocalFile {
     }
 }
 
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"kfGpT":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+/*!
+ * Copyright (c) Microsoft Corporation.
+ * Licensed under the MIT License.
+ */ parcelHelpers.export(exports, "XmlHttp", ()=>XmlHttp);
+class XmlHttp {
+    constructor(core){}
+    loadText(url, completed, failed) {
+        const request = new XMLHttpRequest();
+        request.open("GET", url);
+        request.onreadystatechange = ()=>{
+            if (request.readyState == XMLHttpRequest.DONE) switch(request.status){
+                case 200:
+                    completed(request.responseText);
+                    break;
+                default:
+                    failed(request.statusText);
+                    break;
+            }
+        };
+        request.send();
+    }
+    loadImage(url, completed, failed) {
+        const image = new Image();
+        image.onload = ()=>completed(image);
+        image.onerror = (event)=>{
+            const error = event.message;
+            failed(error);
+        };
+        image.src = url;
+    }
+    loadArrayBuffer(url, completed, failed) {
+        const request = new XMLHttpRequest();
+        request.open("GET", url);
+        request.responseType = "arraybuffer";
+        request.onreadystatechange = ()=>{
+            if (request.readyState == XMLHttpRequest.DONE) switch(request.status){
+                case 200:
+                    completed(request.response);
+                    break;
+                default:
+                    failed(request.statusText);
+                    break;
+            }
+        };
+        request.send();
+    }
+}
+
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"cnTlF":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
@@ -64306,6 +64354,9 @@ class Main extends (0, _rendererJs.RendererBase) {
     }
     get isSupported() {
         return this._createContext(document.createElement("canvas")) !== null;
+    }
+    get isWebXRSupported() {
+        return true;
     }
     initialize(core) {
         super.initialize(core);
@@ -65048,6 +65099,9 @@ class RendererBase {
     }
     createFontVisual(font) {
         return new (0, _fontJs.FontVisual)(font);
+    }
+    get isWebXRSupported() {
+        return false;
     }
     initialize(core) {
         this._core = core;
@@ -67407,26 +67461,24 @@ class ControllerVisual {
         return this._controller;
     }
     initializeContext(gl) {
-        if (this._controller.isInitialized) this._initialize(gl, this._controller.imageData);
-        else this._controller.initialize(()=>{
-            this._initialize(gl, this._controller.imageData);
-        });
+        if (!this._controller.isInitialized) this._controller.initialize();
+        this._initialize(gl);
     }
-    _initialize(gl, imageData) {
+    _initialize(gl) {
         this._gl = gl;
-        this.modelTexture = (0, _textureJs.TextureHelper).fromImage(gl, imageData, false, gl.LINEAR);
+        this.modelTexture = (0, _textureJs.TextureHelper).fromImage(gl, this._controller.texture, false, gl.LINEAR);
         this._modelVertexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this._modelVertexBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, this._controller.objMesh.vertices, gl.STATIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, this._controller.vertices, gl.STATIC_DRAW);
         this._modelIndexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this._modelIndexBuffer);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this._controller.objMesh.indices, gl.STATIC_DRAW);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this._controller.indices, gl.STATIC_DRAW);
         this._rayVertexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this._rayVertexBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, this._controller.vertices, gl.STATIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, this._controller.rayVertices, gl.STATIC_DRAW);
         this._rayIndexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this._rayIndexBuffer);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this._controller.indices, gl.STATIC_DRAW);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this._controller.rayIndices, gl.STATIC_DRAW);
         this._isInitialized = true;
     }
     update(elapsedTime) {}
@@ -67436,7 +67488,8 @@ class ControllerVisual {
             this._modelShader.indexBuffer = this._modelIndexBuffer;
             this._modelShader.texture2D = this.modelTexture;
             this._modelShader.prepare();
-            this._modelShader.mMatrix = this.mMatrix;
+            (0, _glMatrix.mat4).multiply(this._mMatrix, this._controller.useRayPose ? this.rayMMatrix : this.mMatrix, this._controller.mMatrix);
+            this._modelShader.mMatrix = this._mMatrix;
             this._modelShader.specularPower = 10;
             this._modelShader.specularIntensity = 0.01;
             this._modelShader.apply();
@@ -67450,7 +67503,7 @@ class ControllerVisual {
                 this._modelShader.vMatrix = this.vMatrices[viewport];
                 this._modelShader.pMatrix = this.pMatrices[viewport];
                 this._modelShader.applyView();
-                this._gl.drawElements(this._gl.TRIANGLES, this._controller.objMesh.indexCount, this._gl.UNSIGNED_SHORT, 0);
+                this._gl.drawElements(this._gl.TRIANGLES, this._controller.indexCount, this._gl.UNSIGNED_SHORT, 0);
             }
             if (this.isRayVisible) {
                 this._colorShader.vertexBuffer = this._rayVertexBuffer;
@@ -67467,7 +67520,7 @@ class ControllerVisual {
                     this._colorShader.vMatrix = this.vMatrices[viewport];
                     this._colorShader.pMatrix = this.pMatrices[viewport];
                     this._colorShader.applyView();
-                    this._gl.drawElements(this._gl.TRIANGLE_STRIP, this._controller.indexCount, this._gl.UNSIGNED_SHORT, 0);
+                    this._gl.drawElements(this._gl.TRIANGLE_STRIP, this._controller.rayIndexCount, this._gl.UNSIGNED_SHORT, 0);
                 }
             }
         }
@@ -71664,9 +71717,10 @@ parcelHelpers.export(exports, "mount", ()=>(0, _tsxCreateElement.mount));
 parcelHelpers.export(exports, "outerSize", ()=>(0, _htmlHelpers.outerSize));
 parcelHelpers.export(exports, "push", ()=>(0, _array.push));
 parcelHelpers.export(exports, "setActiveElement", ()=>(0, _tsxCreateElement.setActiveElement));
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-/**
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ /**
  * This file is for external facing export only, do not use this for internal references,
  * as it may cause circular dependencies in Rollup.
  */ var _array = require("../array");
@@ -71678,9 +71732,10 @@ var _tsxCreateElement = require("tsx-create-element");
 },{"../array":"6yl9e","../htmlHelpers":"hDHUb","../clone":"l4wsy","../color":"cXyMC","tsx-create-element":"1Cr5U","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"6yl9e":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-parcelHelpers.export(exports, "concat", ()=>concat);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ parcelHelpers.export(exports, "concat", ()=>concat);
 /**
  * Returns array with items which are truthy.
  * @param args array or arrays to concat into a single array.
@@ -71703,9 +71758,10 @@ function push(arr, items) {
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"hDHUb":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-/**
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ /**
  * Create a new element as a child of another element.
  * @param tagName Tag name of the new tag to create.
  * @param parentElement Reference of the element to append to.
@@ -71745,9 +71801,10 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "clone", ()=>clone);
 parcelHelpers.export(exports, "deepMerge", ()=>deepMerge);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _deepmerge = require("deepmerge");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _deepmerge = require("deepmerge");
 var _isPlainObject = require("is-plain-object");
 const deepmerge = _deepmerge.default || _deepmerge;
 function clone(objectToClone) {
@@ -71871,9 +71928,10 @@ parcelHelpers.defineInteropFlag(exports);
  * @param color A Deck.gl RGBAColor array - (The rgba color of each object, in r, g, b, [a]. Each component is in the 0-255 range.)
  */ parcelHelpers.export(exports, "colorToString", ()=>colorToString);
 parcelHelpers.export(exports, "desaturate", ()=>desaturate);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _d3Color = require("d3-color");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _d3Color = require("d3-color");
 function rgbToDeckglColor(c) {
     return [
         c.r,
@@ -72305,7 +72363,10 @@ parcelHelpers.export(exports, "minZ", ()=>minZ);
 parcelHelpers.export(exports, "min3dDepth", ()=>min3dDepth);
 parcelHelpers.export(exports, "minPixelSize", ()=>minPixelSize);
 parcelHelpers.export(exports, "defaultOnAxisItem", ()=>defaultOnAxisItem);
-var _color = require("./color");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _color = require("./color");
 const minHeight = "100px";
 const minWidth = "100px";
 const defaultPresenterStyle = {
@@ -72345,7 +72406,6 @@ function createStage(view) {
         view,
         cubeData: [],
         pathData: [],
-        polygonData: [],
         axes: {
             x: [],
             y: [],
@@ -72408,11 +72468,11 @@ parcelHelpers.export(exports, "base", ()=>base);
 /**
  * Specify the dependency libraries to use for rendering.
  * @param vega Vega library.
- * @param deck deck/core library.
- * @param layers deck/layers library.
- * @param luma luma.gl library.
  */ parcelHelpers.export(exports, "use", ()=>use);
-const vega = {
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ const vega = {
     CanvasHandler: null,
     inferType: null,
     inferTypes: null,
@@ -72439,9 +72499,10 @@ parcelHelpers.defineInteropFlag(exports);
 /**
  * Class which presents a Stage of chart data using MorphCharts to render.
  */ parcelHelpers.export(exports, "Presenter", ()=>Presenter);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _clone = require("./clone");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _clone = require("./clone");
 var _defaults = require("./defaults");
 var _enums = require("./enums");
 var _legend = require("./legend");
@@ -72637,9 +72698,10 @@ var PresenterElement;
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "LegendView", ()=>LegendView);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _tsxCreateElement = require("tsx-create-element");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _tsxCreateElement = require("tsx-create-element");
 var _controls = require("./controls");
 const LegendView = (props)=>{
     const rows = [];
@@ -72692,9 +72754,10 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "initializePanel", ()=>initializePanel);
 parcelHelpers.export(exports, "className", ()=>className);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _tsxCreateElement = require("tsx-create-element");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _tsxCreateElement = require("tsx-create-element");
 var _defaults = require("./defaults");
 var _enums = require("./enums");
 function initializePanel(presenter) {
@@ -72722,7 +72785,10 @@ function className(type, presenter) {
 },{"tsx-create-element":"1Cr5U","./defaults":"rYstm","./enums":"gGi06","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"2YUY8":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "patchCubeArray", ()=>patchCubeArray);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ parcelHelpers.export(exports, "patchCubeArray", ()=>patchCubeArray);
 function patchCubeArray(allocatedSize, empty, cubes) {
     const patched = new Array(allocatedSize);
     patched.fill(empty);
@@ -72734,9 +72800,10 @@ function patchCubeArray(allocatedSize, empty, cubes) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "sceneToStage", ()=>sceneToStage);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _legend = require("./marks/legend");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _legend = require("./marks/legend");
 var _legendDefault = parcelHelpers.interopDefault(_legend);
 var _image = require("./marks/image");
 var _imageDefault = parcelHelpers.interopDefault(_image);
@@ -72748,8 +72815,6 @@ var _line = require("./marks/line");
 var _lineDefault = parcelHelpers.interopDefault(_line);
 var _text = require("./marks/text");
 var _textDefault = parcelHelpers.interopDefault(_text);
-var _area = require("./marks/area");
-var _areaDefault = parcelHelpers.interopDefault(_area);
 var _base = require("./base");
 var _color = require("./color");
 var _defaults = require("./defaults");
@@ -72823,7 +72888,6 @@ const markStagers = {
     rect: (0, _rectDefault.default),
     rule: (0, _ruleDefault.default),
     line: (0, _lineDefault.default),
-    area: (0, _areaDefault.default),
     text: (0, _textDefault.default)
 };
 const mainStager = (options, stage, scene, x, y, groupType)=>{
@@ -72854,12 +72918,13 @@ function orderDomain(domain, dim) {
     }
 }
 
-},{"./marks/legend":"byXAS","./marks/image":"79573","./marks/rect":"dPt5N","./marks/rule":"7VQ6s","./marks/line":"fTgYt","./marks/text":"iaph5","./marks/area":"86lAL","./base":"4hPDY","./color":"cXyMC","./defaults":"rYstm","./marks/interfaces":"8AxXf","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"byXAS":[function(require,module,exports) {
+},{"./marks/legend":"byXAS","./marks/image":"79573","./marks/rect":"dPt5N","./marks/rule":"7VQ6s","./marks/line":"fTgYt","./marks/text":"iaph5","./base":"4hPDY","./color":"cXyMC","./defaults":"rYstm","./marks/interfaces":"8AxXf","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"byXAS":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _base = require("../base");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _base = require("../base");
 const legendMap = {
     "legend-title": function(legend, textItem) {
         legend.title = textItem.text;
@@ -72895,9 +72960,10 @@ exports.default = markStager;
 },{"../base":"4hPDY","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"79573":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _base = require("../base");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _base = require("../base");
 const markStager = (options, stage, scene, x, y, groupType)=>{
     (0, _base.base).vega.sceneVisit(scene, function(item) {
         const { bounds , height , url , width  } = item;
@@ -72925,14 +72991,14 @@ exports.default = markStager;
 },{"../base":"4hPDY","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"dPt5N":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _base = require("../base");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _base = require("../base");
 var _color = require("../color");
 var _defaults = require("../defaults");
 const markStager = (options, stage, scene, x, y, groupType)=>{
     (0, _base.base).vega.sceneVisit(scene, function(item) {
-        //for orthographic (2d) - always use 0 or else Deck will not show them
         const z = stage.view === "2d" ? 0 : (item.z || 0) + (0, _defaults.minZ);
         const depth = (stage.view === "2d" ? 0 : item.depth || 0) + (0, _defaults.min3dDepth);
         //change direction of y from SVG to GL
@@ -72971,9 +73037,10 @@ exports.default = markStager;
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "box", ()=>box);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _base = require("../base");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _base = require("../base");
 var _color = require("../color");
 var _defaults = require("../defaults");
 const markStager = (options, stage, scene, x, y, groupType)=>{
@@ -73025,7 +73092,10 @@ exports.default = markStager;
 },{"../base":"4hPDY","../color":"cXyMC","../defaults":"rYstm","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fTgYt":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-var _color = require("../color");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _color = require("../color");
 //change direction of y from SVG to GL
 const ty = -1;
 const markStager = (options, stage, scene, x, y, groupType)=>{
@@ -73052,9 +73122,10 @@ exports.default = markStager;
 },{"../color":"cXyMC","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"iaph5":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-// import { AlignmentBaseline, TextAnchor } from '@deck.gl/layers/text-layer/text-layer';
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ // import { AlignmentBaseline, TextAnchor } from '@deck.gl/layers/text-layer/text-layer';
 var _base = require("../base");
 var _color = require("../color");
 const markStager = (options, stage, scene, x, y, groupType)=>{
@@ -73110,86 +73181,7 @@ function convertAngle(vegaTextAngle) {
 // }
 exports.default = markStager;
 
-},{"../base":"4hPDY","../color":"cXyMC","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"86lAL":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-var _color = require("../color");
-//change direction of y from SVG to GL
-const ty = -1;
-const markStager = (options, stage, scene, x, y, groupType)=>{
-    const g = Object.assign({
-        fillOpacity: 1,
-        opacity: 1,
-        strokeOpacity: 1,
-        strokeWidth: 0,
-        depth: 0
-    }, scene.items[0]);
-    const points = scene.items.map((item)=>{
-        item = Object.assign({
-            z: 0
-        }, item);
-        item = Object.assign({
-            x2: item.x,
-            y2: item.y,
-            z2: item.z
-        }, item);
-        return [
-            item.x,
-            ty * item.y,
-            item.z,
-            item.x2,
-            ty * item.y2,
-            item.z2, 
-        ];
-    });
-    //TODO populate column instead of item
-    const positions = [];
-    const startpoint = [
-        points[0][0],
-        points[0][1],
-        points[0][2]
-    ];
-    points.forEach((p)=>{
-        positions.push([
-            p[0],
-            p[1],
-            p[2]
-        ]);
-    });
-    points.reverse().forEach((p)=>{
-        positions.push([
-            p[3],
-            p[4],
-            p[5]
-        ]);
-    });
-    positions.push(startpoint);
-    const polygon = {
-        fillColor: (0, _color.colorFromString)(g.fill) || [
-            0,
-            0,
-            0,
-            0
-        ],
-        positions,
-        strokeColor: (0, _color.colorFromString)(g.stroke) || [
-            0,
-            0,
-            0,
-            0
-        ],
-        strokeWidth: g.strokeWidth,
-        depth: g.depth
-    };
-    polygon.fillColor[3] *= g.fillOpacity;
-    polygon.fillColor[3] *= g.opacity;
-    polygon.strokeColor[3] *= g.strokeOpacity;
-    polygon.strokeColor[3] *= g.opacity;
-    stage.polygonData.push(polygon);
-};
-exports.default = markStager;
-
-},{"../color":"cXyMC","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8AxXf":[function(require,module,exports) {
+},{"../base":"4hPDY","../color":"cXyMC","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8AxXf":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "GroupType", ()=>GroupType);
@@ -73208,9 +73200,10 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "init", ()=>init);
 parcelHelpers.export(exports, "mcRender", ()=>mcRender);
 parcelHelpers.export(exports, "colorConfig", ()=>colorConfig);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _morphcharts = require("morphcharts");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _morphcharts = require("morphcharts");
 var _color = require("../color");
 var _axes = require("./axes");
 var _bounds = require("./bounds");
@@ -73542,9 +73535,10 @@ function convertBounds(bounds) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "createAxesLayer", ()=>createAxesLayer);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _morphcharts = require("morphcharts");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _morphcharts = require("morphcharts");
 var _bounds = require("./bounds");
 const createAxesLayer = (props)=>{
     const { config , height , ref , stage  } = props;
@@ -73865,9 +73859,10 @@ function convertAxis(axis, domain, dim, height) {
 },{"morphcharts":"dzm75","./bounds":"ipKbZ","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"ipKbZ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-parcelHelpers.export(exports, "outerBounds", ()=>outerBounds);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ parcelHelpers.export(exports, "outerBounds", ()=>outerBounds);
 parcelHelpers.export(exports, "increment", ()=>increment);
 function outerBounds(b1, b2) {
     if (!b1 && !b2) return;
@@ -73909,9 +73904,10 @@ function increment(b, minBoundsX, minBoundsY, minBoundsZ, maxBoundsX, maxBoundsY
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "createCubeLayer", ()=>createCubeLayer);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _morphcharts = require("morphcharts");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _morphcharts = require("morphcharts");
 var _bounds = require("./bounds");
 var _color = require("./color");
 const key = "cube";
@@ -74015,9 +74011,10 @@ function convert(stage) {
 },{"morphcharts":"dzm75","./bounds":"ipKbZ","./color":"4Hopn","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"4Hopn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-parcelHelpers.export(exports, "ColorMap", ()=>ColorMap);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ parcelHelpers.export(exports, "ColorMap", ()=>ColorMap);
 class ColorMap {
     constructor(quant = 5){
         this.quant = quant;
@@ -74052,9 +74049,10 @@ class ColorMap {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "createLineLayer", ()=>createLineLayer);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _morphcharts = require("morphcharts");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _morphcharts = require("morphcharts");
 var _bounds = require("./bounds");
 var _color = require("./color");
 const key = "line";
@@ -74170,9 +74168,10 @@ parcelHelpers.export(exports, "shouldChangeRenderer", ()=>shouldChangeRenderer);
 parcelHelpers.export(exports, "getRenderer", ()=>getRenderer);
 parcelHelpers.export(exports, "setRendererOptions", ()=>setRendererOptions);
 parcelHelpers.export(exports, "rendererEnabled", ()=>rendererEnabled);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _morphcharts = require("morphcharts");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _morphcharts = require("morphcharts");
 function shouldChangeRenderer(prev, next) {
     var _a, _b;
     if (!prev || !next) return true;
@@ -74199,7 +74198,10 @@ function rendererEnabled(advanced) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "createTextLayer", ()=>createTextLayer);
-var _morphcharts = require("morphcharts");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _morphcharts = require("morphcharts");
 var _bounds = require("./bounds");
 var _color = require("./color");
 const createTextLayer = (props)=>{
@@ -74283,9 +74285,10 @@ function convert(stage) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "easing", ()=>easing);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _d3Ease = require("d3-ease");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _d3Ease = require("d3-ease");
 function easing(t) {
     if (t === 0 || t === 1) return t;
     return (0, _d3Ease.easeCubicInOut)(t);
@@ -74363,9 +74366,10 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getImageData", ()=>getImageData);
 parcelHelpers.export(exports, "createImageQuad", ()=>createImageQuad);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _morphcharts = require("morphcharts");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _morphcharts = require("morphcharts");
 function getImageData(url) {
     return new Promise((resolve, reject)=>{
         const imageElement = document.createElement("img");
@@ -74402,9 +74406,10 @@ function createImageQuad(core, imageData, bounds, position, width, height) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ViewGl", ()=>ViewGl);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _base = require("../base");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _base = require("../base");
 var _defaults = require("../defaults");
 var _presenter = require("../presenter");
 var _enums = require("../enums");
@@ -74461,9 +74466,10 @@ const ViewGl = _ViewGl;
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "RendererGl", ()=>RendererGl);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _base = require("../base");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _base = require("../base");
 //pass in the SuperClass, which should be a vega.View
 function _RendererGl(loader) {
     //dynamic superclass, since we don't know have vega.View in the declaration phase
@@ -74499,7 +74505,7 @@ const RendererGl = _RendererGl;
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "version", ()=>version);
-const version = "DEBUG-2022-06-30";
+const version = "1.0.0";
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}]},["dlIYU"], "dlIYU", "parcelRequire1c68")
 

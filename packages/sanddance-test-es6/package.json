@@ -7,10 +7,10 @@
     "build:sanddance-core": "tsc -p .",
     "deploy": "parcel build ./src/sanddance-test-es6.ts"
   },
-  "umd": "../../docs/tests/v3/es6/js/sanddance-test-es6.js",
+  "umd": "../../docs/tests/v4/es6/js/sanddance-test-es6.js",
   "targets": {
     "umd": {
-      "distDir": "../../docs/tests/v3/es6/js",
+      "distDir": "../../docs/tests/v4/es6/js",
       "includeNodeModules": {},
       "optimize": false,
       "scopeHoist": false,
@@ -18,10 +18,7 @@
     }
   },
   "dependencies": {
-    "@deck.gl/core": "8.3.7",
-    "@deck.gl/layers": "8.3.7",
-    "@luma.gl/core": "8.3.1",
-    "@msrvida/sanddance": "^3",
+    "@msrvida/sanddance": "^4",
     "vega": "5.20"
   },
   "devDependencies": {

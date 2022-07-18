@@ -250,13 +250,13 @@ export class DataSourcePicker extends React.Component<DialogProps, State> {
                 </section>
                 <section>
                     <base.fluentUI.ChoiceGroup
+                        selectedKey={this.state.urlType}
                         options={
                             DataSourcePicker.urlTypes.map((urlType, i) => {
                                 return {
-                                    key: `${i}`,
+                                    key: urlType,
                                     text: urlType,
                                     disabled: this.state.working,
-                                    checked: i === 0,
                                 } as FluentUITypes.IChoiceGroupOption;
                             })
                         }

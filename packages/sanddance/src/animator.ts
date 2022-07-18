@@ -11,7 +11,7 @@ export enum DataLayoutChange {
 }
 
 export interface Props {
-    onAnimateDataChange: (dataChange: DataLayoutChange, waitingLabel: string, handlerLabel: string) => Promise<void>;
+    onAnimateDataChange: (dataChange: DataLayoutChange, waitingLabel: string, handlerLabel: string, time?: number) => Promise<void>;
     onDataChanged: (dataChange: DataLayoutChange, search?: Search) => void;
 }
 
@@ -37,7 +37,7 @@ export class Animator {
 
     filter(search: Search, keepData: object[], collapseData: object[], rebase: boolean) {
         if (rebase) {
-            this.dataScope.collapse(false, keepData);    
+            this.dataScope.collapse(false, keepData);
         }
         this.dataScope.collapse(true, collapseData);
         return new Promise<void>((resolve, reject) => {
@@ -53,8 +53,13 @@ export class Animator {
     reset() {
         return new Promise<void>((resolve, reject) => {
             this.dataScope.deselect();
-            this.dataScope.setFilteredData(null);
-            this.props.onAnimateDataChange(DataLayoutChange.reset, 'before reset', 'reset').then(() => {
+            let time: number;
+            if (!this.dataScope.hasFilteredData()) {
+                time = 0;
+            } else {
+                this.dataScope.setFilteredData(null);
+            }
+            this.props.onAnimateDataChange(DataLayoutChange.reset, 'before reset', 'reset', time).then(() => {
                 this.dataScope.collapse(false);
                 this.props.onDataChanged(DataLayoutChange.reset);
                 resolve();

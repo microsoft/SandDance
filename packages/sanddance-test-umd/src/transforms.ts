@@ -4,9 +4,7 @@
 
 namespace transformTest {
 
-    declare const deck: SandDance.VegaDeckGl.types.DeckBase & SandDance.VegaDeckGl.types.DeckLayerBase;
-    declare const luma: SandDance.VegaDeckGl.types.LumaBase;
-    declare const vega: SandDance.VegaDeckGl.types.VegaBase;
+    declare const vega: SandDance.VegaMorphCharts.types.VegaBase;
 
     const insight: SandDance.specs.Insight = {
         columns: {
@@ -42,7 +40,7 @@ namespace transformTest {
         },
     };
 
-    SandDance.use(vega, deck, deck, luma);
+    SandDance.use(vega);
     export const viewer = new SandDance.Viewer(document.querySelector('#vis'));
 
     fetch('https://vega.github.io/editor/data/cars.json').then(response => {

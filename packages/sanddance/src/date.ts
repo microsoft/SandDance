@@ -3,11 +3,11 @@
 * Licensed under the MIT License.
 */
 
-import * as VegaDeckGl from '@msrvida/vega-deck.gl';
+import * as VegaMorphCharts from '@msrvida/vega-morphcharts';
 import { ColumnStats } from '@msrvida/chart-types';
 import { Spec } from 'vega-typings';
 
-export function makeDateRange(tickTexts: VegaDeckGl.types.TickText[], columnStats: ColumnStats) {
+export function makeDateRange(tickTexts: VegaMorphCharts.types.TickText[], columnStats: ColumnStats) {
     if (tickTexts.length === 1) {
         const d3TimeFormat = getD3TimeFormat(columnStats.min, columnStats.max);
         tickTexts[0].text = vegaTimeFormat([[columnStats.min, columnStats.max]], d3TimeFormat)[0];
@@ -60,7 +60,7 @@ function vegaTimeFormat(values: [number, number][], d3TimeFormat: string) {
             }],
         }],
     };
-    const runtime = VegaDeckGl.base.vega.parse(spec);
-    const view = new VegaDeckGl.ViewGl(runtime).run();
+    const runtime = VegaMorphCharts.base.vega.parse(spec);
+    const view = new VegaMorphCharts.ViewGl(runtime).run();
     return view.data(name).map(row => row[as]);
 }

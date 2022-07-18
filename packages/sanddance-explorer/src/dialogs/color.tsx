@@ -9,7 +9,7 @@ import { DataContent } from '../interfaces';
 import { NewSignal } from 'vega-typings/types';
 import { Palette } from '../palettes';
 import { SandDance } from '@msrvida/sanddance-react';
-import { Signal } from '../controls/signal';
+import { getInitialSignalValue, Signal } from '../controls/signal';
 import { strings } from '../language';
 import { Group } from '../controls/group';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
@@ -66,6 +66,7 @@ export function Color(props: Props) {
                     disabled={props.disabled || !colorColumn || props.directColor || (colorColumn && colorColumn.isColorData)}
                     signal={props.colorReverseSignal}
                     explorer={props.explorer}
+                    initialValue={getInitialSignalValue(props.explorer, props.colorReverseSignal)}
                     onChange={props.onColorReverseChange}
                     collapseLabel={props.compactUI}
                 />}
@@ -73,23 +74,21 @@ export function Color(props: Props) {
             {colorColumn && !colorColumn.isColorData && <Group label={strings.labelColorBin}>
                 <div className="sanddance-explanation">{strings.labelColorBinExplanation}</div>
                 <base.fluentUI.ChoiceGroup
+                    selectedKey={colorBin}
                     options={[
                         {
                             key: 'continuous',
                             text: strings.labelColorBinNone,
-                            checked: colorBin === 'continuous',
                             disabled: disabledColorBin,
                         },
                         {
                             key: 'quantize',
                             text: strings.labelColorBinQuantize,
-                            checked: colorBin === 'quantize',
                             disabled: disabledColorBin,
                         },
                         {
                             key: 'quantile',
                             text: strings.labelColorBinQuantile,
-                            checked: colorBin === 'quantile',
                             disabled: disabledColorBin,
                         },
                     ]}
@@ -101,6 +100,7 @@ export function Color(props: Props) {
                     disabled={props.disabled || disabledColorBin || props.colorBin === 'continuous'}
                     signal={props.colorBinSignal}
                     explorer={props.explorer}
+                    initialValue={getInitialSignalValue(props.explorer, props.colorBinSignal)}
                     onChange={props.onColorBinCountChange}
                     collapseLabel={props.compactUI}
                 />

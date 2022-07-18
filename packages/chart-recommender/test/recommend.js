@@ -4,8 +4,7 @@ var assert = require('assert');
 var recommender = require("../dist/es5");
 var fs = require('fs');
 var vega = require('vega');
-var SandDance = require('@msrvida/sanddance/dist/umd/sanddance');
-SandDance.use(vega);
+var { getColumnsFromData } = require('@msrvida/sanddance-specs/dist/umd/sanddance-specs');
 
 var sampleDir = './test-data/';
 
@@ -14,14 +13,14 @@ function GetDataAndColumns(sampleFile) {
         fs.readFile(sampleDir + sampleFile, function (err, buffer) {
             const rawText = buffer.toString();
             const data = vega.read(rawText, { type: 'tsv', parse: "auto" });
-            const columns = SandDance.util.getColumnsFromData(vega.inferTypes, data);
+            const columns = getColumnsFromData(vega.inferTypes, data);
             resolve({ data, columns });
         });
     });
 }
 
 function RawDataAndColumns(data) {
-    const columns = SandDance.util.getColumnsFromData(vega.inferTypes, data);
+    const columns = getColumnsFromData(vega.inferTypes, data);
     return { data, columns };
 }
 

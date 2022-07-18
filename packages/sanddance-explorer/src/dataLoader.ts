@@ -12,7 +12,7 @@ import {
 import { SandDance } from '@msrvida/sanddance-react';
 
 export const loadDataFile = (dataFile: DataFile) => new Promise<DataContent>((resolve, reject) => {
-    const vega = SandDance.VegaDeckGl.base.vega;
+    const vega = SandDance.VegaMorphCharts.base.vega;
     const loader = vega.loader();
 
     function handleRawText(text: string) {
@@ -65,7 +65,7 @@ export const loadDataArray = (data: object[], type: DataFileType) => new Promise
         });
     }
     const columns = SandDance.util.
-        getColumnsFromData(SandDance.VegaDeckGl.base.vega.inferTypes, data)
+        getColumnsFromData(SandDance.VegaMorphCharts.base.vega.inferTypes, data)
         .filter(c => c.name && c.name.trim())
         .sort((a, b) => a.name.localeCompare(b.name));
     if (parse) {

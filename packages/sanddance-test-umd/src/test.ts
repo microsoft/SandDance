@@ -4,9 +4,7 @@
 
 namespace test {
 
-    declare const deck: SandDance.VegaDeckGl.types.DeckBase & SandDance.VegaDeckGl.types.DeckLayerBase;
-    declare const luma: SandDance.VegaDeckGl.types.LumaBase;
-    declare const vega: SandDance.VegaDeckGl.types.VegaBase;
+    declare const vega: SandDance.VegaMorphCharts.types.VegaBase;
 
     interface MyData {
         myColor: number;
@@ -39,7 +37,7 @@ namespace test {
         chart: 'scatterplot',
     };
 
-    SandDance.use(vega, deck, deck, luma);
+    SandDance.use(vega);
     export const viewer = new SandDance.Viewer(document.querySelector('#vis'));
     viewer.render(options, data);
 }

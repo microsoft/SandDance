@@ -3,7 +3,7 @@
 * Licensed under the MIT License.
 */
 
-import * as VegaDeckGl from '@msrvida/vega-deck.gl';
+import * as VegaMorphCharts from '@msrvida/vega-morphcharts';
 import { ColorScaleNone } from '@msrvida/sanddance-specs';
 import { ColorScheme } from './types';
 import { defaultViewerOptions, dualColorSchemeColors as defs } from './defaults';
@@ -29,7 +29,7 @@ export const colorSchemes: ColorScheme[] = [
 
 createDualColorSchemes();
 
-export function registerColorSchemes(vega: VegaDeckGl.types.VegaBase) {
+export function registerColorSchemes(vega: VegaMorphCharts.types.VegaBase) {
     colorSchemes.forEach(cs => {
         if (cs.colors.length === 1) {
             vega.scheme(cs.scheme, x => cs.colors[0]);

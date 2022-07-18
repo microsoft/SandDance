@@ -3,7 +3,7 @@
 * Licensed under the MIT License.
 */
 
-import * as SandDance from '@msrvida/sanddance';
+import { Column } from '@msrvida/chart-types';
 import { BarChartRecommenderSummary } from './barChart';
 import { Recommendation } from './recommender';
 import { ScatterPlotRecommenderSummary } from './scatterPlot';
@@ -11,7 +11,7 @@ import { ScatterPlotRecommenderSummary } from './scatterPlot';
 export class RecommenderSummary {
     public rec: Recommendation;
 
-    constructor(columns: SandDance.types.Column[], data: object[]) {
+    constructor(columns: Column[], data: object[]) {
         const quickRec: Recommendation = new ScatterPlotRecommenderSummary(columns, data).recommend();
         if (quickRec) {
             this.rec = quickRec;

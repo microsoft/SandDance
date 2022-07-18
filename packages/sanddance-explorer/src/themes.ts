@@ -7,7 +7,7 @@ import { ColorSettings } from './interfaces';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';
 
-import util = SandDance.VegaDeckGl.util;
+import util = SandDance.VegaMorphCharts.util;
 
 export const themePalettes: { [theme: string]: Partial<FluentUITypes.IPalette> } = {};
 
@@ -67,10 +67,11 @@ export function getColorSettingsFromThemePalette(themePalette: Partial<FluentUIT
     return {
         axisLine: themePalette.black,
         axisText: themePalette.black,
+        gridLine: themePalette.neutralLight,
+        backgroundColor: themePalette.white,
         hoveredCube: themePalette.black,
         clickableText: themePalette.themeDark,
         clickableTextHighlight: util.colorToString(c),
-        clickableTextHighlightAlphaCutoff: 0,
         searchText: themePalette.neutralPrimary,
         searchTextHighlight: themePalette.neutralPrimaryAlt,
     };

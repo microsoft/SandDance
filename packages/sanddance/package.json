@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "description": "SandDance visualization canvas component.",
   "main": "dist/es6/index.js",
   "repository": {
@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "docs": "typedoc src/index.ts -out ../../docs/docs/sanddance/v3 --theme ../../typedoc/theme --excludePrivate --gitRevision master",
+    "docs": "typedoc src/index.ts -out ../../docs/docs/sanddance/v4 --theme ../../typedoc/theme --excludePrivate --gitRevision master",
     "deploy": "node ./scripts/deploy.js",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
@@ -33,7 +33,7 @@
     "@msrvida/chart-types": "^1",
     "@msrvida/sanddance-specs": "^1",
     "@msrvida/search-expression": "^1",
-    "@msrvida/vega-deck.gl": "^3",
+    "@msrvida/vega-morphcharts": "^1",
     "vega-typings": "0.21.0"
   }
 }

@@ -3,7 +3,7 @@
 * Licensed under the MIT License.
 */
 
-import * as VegaDeckGl from '@msrvida/vega-deck.gl';
+import * as VegaMorphCharts from '@msrvida/vega-morphcharts';
 import { Column } from '@msrvida/chart-types';
 import { Insight, SpecColumns } from '@msrvida/sanddance-specs';
 import { GL_ORDINAL } from './constants';
@@ -29,7 +29,7 @@ export function assignOrdinals(columns: SpecColumns, data: object[], ordinalMap?
     return ordinalMap;
 }
 
-export function getDataIndexOfCube(cube: VegaDeckGl.types.Cube, data: object[]) {
+export function getDataIndexOfCube(cube: VegaMorphCharts.types.Cube, data: object[]) {
     const len = data.length;
     for (let i = 0; i < len; i++) {
         if (data[i][GL_ORDINAL] === cube.ordinal) {

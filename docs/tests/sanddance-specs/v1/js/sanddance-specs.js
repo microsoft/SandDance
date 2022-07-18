@@ -228,9 +228,10 @@ vega.loader().load(dataUrl).then((tsv_data)=>{
 },{"../dist/es6":"7COGi"}],"7COGi":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _build = require("./build");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _build = require("./build");
 parcelHelpers.exportAll(_build, exports);
 var _constants = require("./constants");
 parcelHelpers.exportAll(_constants, exports);
@@ -241,13 +242,14 @@ parcelHelpers.exportAll(_interfaces, exports);
 var _types = require("./types");
 parcelHelpers.exportAll(_types, exports);
 
-},{"./build":"jHFbk","./constants":"eNr4m","./inference":"bdXVF","./interfaces":"52vfF","./types":"a5HkM","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"jHFbk":[function(require,module,exports) {
+},{"./build":"jHFbk","./constants":"eNr4m","./inference":"bdXVF","./interfaces":"52vfF","./types":"a5HkM","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jHFbk":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "build", ()=>build);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _charts = require("./charts");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _charts = require("./charts");
 var _inference = require("./inference");
 var _specBuilder = require("./specBuilder");
 function build(specContext, currData) {
@@ -299,13 +301,14 @@ function build(specContext, currData) {
     return specResult;
 }
 
-},{"./charts":"4pEB6","./inference":"bdXVF","./specBuilder":"33BLD","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"4pEB6":[function(require,module,exports) {
+},{"./charts":"4pEB6","./inference":"bdXVF","./specBuilder":"33BLD","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"4pEB6":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getSpecBuilderPropsForChart", ()=>getSpecBuilderPropsForChart);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _barchartH = require("./barchartH");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _barchartH = require("./barchartH");
 var _barchartHDefault = parcelHelpers.interopDefault(_barchartH);
 var _barchartV = require("./barchartV");
 var _barchartVDefault = parcelHelpers.interopDefault(_barchartV);
@@ -364,12 +367,13 @@ function getSpecBuilderPropsForChart(specContext) {
     }
 }
 
-},{"./barchartH":"jwW3p","./barchartV":"gx8bO","./density":"hJwhn","./grid":"dUpaP","./scatterplot":"6EBdS","./stacks":"8N6Z2","./strips":"jnY66","./treemap":"g0eb5","../facetLayout":"fJidQ","../constants":"eNr4m","../defaults":"5iedU","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"jwW3p":[function(require,module,exports) {
+},{"./barchartH":"jwW3p","./barchartV":"gx8bO","./density":"hJwhn","./grid":"dUpaP","./scatterplot":"6EBdS","./stacks":"8N6Z2","./strips":"jnY66","./treemap":"g0eb5","../facetLayout":"fJidQ","../constants":"eNr4m","../defaults":"5iedU","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jwW3p":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _constants = require("../constants");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _constants = require("../constants");
 var _defaults = require("../defaults");
 var _size = require("../size");
 exports.default = function(specContext) {
@@ -566,7 +570,7 @@ exports.default = function(specContext) {
     };
 };
 
-},{"../constants":"eNr4m","../defaults":"5iedU","../size":"78CLt","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"eNr4m":[function(require,module,exports) {
+},{"../constants":"eNr4m","../defaults":"5iedU","../size":"78CLt","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"eNr4m":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "FieldNames", ()=>FieldNames);
@@ -645,7 +649,7 @@ const SignalNames = {
 const Other = "__Other";
 const ColorScaleNone = "none";
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"7Mw3b":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jA2du":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -719,10 +723,13 @@ const scatterSizedMin = 10;
 const scatterSizedDiv = 20;
 const debounce = 250;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"78CLt":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"78CLt":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "allowNoneForSize", ()=>allowNoneForSize);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ parcelHelpers.export(exports, "allowNoneForSize", ()=>allowNoneForSize);
 function allowNoneForSize(specContext) {
     switch(specContext.insight.totalStyle){
         case "sum-strip":
@@ -735,12 +742,13 @@ function allowNoneForSize(specContext) {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"gx8bO":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"gx8bO":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _constants = require("../constants");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _constants = require("../constants");
 var _defaults = require("../defaults");
 var _size = require("../size");
 exports.default = function(specContext) {
@@ -936,12 +944,13 @@ exports.default = function(specContext) {
     };
 };
 
-},{"../constants":"eNr4m","../defaults":"5iedU","../size":"78CLt","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"hJwhn":[function(require,module,exports) {
+},{"../constants":"eNr4m","../defaults":"5iedU","../size":"78CLt","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"hJwhn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _constants = require("../constants");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _constants = require("../constants");
 var _defaults = require("../defaults");
 var _size = require("../size");
 exports.default = function(specContext) {
@@ -1150,10 +1159,13 @@ exports.default = function(specContext) {
     };
 };
 
-},{"../constants":"eNr4m","../defaults":"5iedU","../size":"78CLt","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"dUpaP":[function(require,module,exports) {
+},{"../constants":"eNr4m","../defaults":"5iedU","../size":"78CLt","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"dUpaP":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-var _constants = require("../constants");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _constants = require("../constants");
 exports.default = function(specContext) {
     var _a;
     const { specColumns  } = specContext;
@@ -1212,10 +1224,13 @@ exports.default = function(specContext) {
     };
 };
 
-},{"../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"6EBdS":[function(require,module,exports) {
+},{"../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"6EBdS":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-var _constants = require("../constants");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _constants = require("../constants");
 exports.default = function(specContext) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     const { insight , specColumns , specViewOptions  } = specContext;
@@ -1298,10 +1313,13 @@ exports.default = function(specContext) {
     };
 };
 
-},{"../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"8N6Z2":[function(require,module,exports) {
+},{"../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8N6Z2":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-var _defaults = require("../defaults");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _defaults = require("../defaults");
 var _constants = require("../constants");
 exports.default = function(specContext) {
     var _a, _b, _c, _d, _e, _f, _g;
@@ -1423,10 +1441,13 @@ exports.default = function(specContext) {
     };
 };
 
-},{"../defaults":"5iedU","../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"jnY66":[function(require,module,exports) {
+},{"../defaults":"5iedU","../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jnY66":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-var _constants = require("../constants");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _constants = require("../constants");
 exports.default = function(specContext) {
     var _a;
     const { specColumns  } = specContext;
@@ -1511,10 +1532,13 @@ exports.default = function(specContext) {
     };
 };
 
-},{"../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"g0eb5":[function(require,module,exports) {
+},{"../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"g0eb5":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-var _constants = require("../constants");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _constants = require("../constants");
 exports.default = function(specContext) {
     var _a;
     const { specColumns , specViewOptions  } = specContext;
@@ -1601,11 +1625,14 @@ exports.default = function(specContext) {
     };
 };
 
-},{"../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"fJidQ":[function(require,module,exports) {
+},{"../constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fJidQ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getFacetLayout", ()=>getFacetLayout);
-var _defaults = require("./defaults");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _defaults = require("./defaults");
 function getFacetLayout(facetStyle, facetColumn, facetVColumn, axisTextColor) {
     let layoutPair;
     const groupby = facetColumn;
@@ -1666,7 +1693,7 @@ function getFacetLayout(facetStyle, facetColumn, facetVColumn, axisTextColor) {
     };
 }
 
-},{"./defaults":"5iedU","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"bdXVF":[function(require,module,exports) {
+},{"./defaults":"5iedU","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"bdXVF":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 /**
@@ -1684,9 +1711,10 @@ parcelHelpers.defineInteropFlag(exports);
  * @param data Array of data objects.
  */ parcelHelpers.export(exports, "inferAll", ()=>inferAll);
 parcelHelpers.export(exports, "getStats", ()=>getStats);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _d3Color = require("d3-color");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _d3Color = require("d3-color");
 function isColor(cssColorSpecifier) {
     return !!(0, _d3Color.color)(cssColorSpecifier);
 }
@@ -1788,7 +1816,7 @@ function detectSequentialColumn(column, data) {
     return true;
 }
 
-},{"d3-color":"7SCp9","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"7SCp9":[function(require,module,exports) {
+},{"d3-color":"7SCp9","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7SCp9":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "color", ()=>(0, _colorJsDefault.default));
@@ -1806,7 +1834,7 @@ var _labJsDefault = parcelHelpers.interopDefault(_labJs);
 var _cubehelixJs = require("./cubehelix.js");
 var _cubehelixJsDefault = parcelHelpers.interopDefault(_cubehelixJs);
 
-},{"./color.js":"cJlE6","./lab.js":false,"./cubehelix.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"cJlE6":[function(require,module,exports) {
+},{"./color.js":"cJlE6","./lab.js":false,"./cubehelix.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"cJlE6":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Color", ()=>Color);
@@ -2151,7 +2179,7 @@ function Hsl(h, s, l, opacity) {
     return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
 }
 
-},{"./define.js":"fa5me","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"fa5me":[function(require,module,exports) {
+},{"./define.js":"fa5me","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fa5me":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "extend", ()=>extend);
@@ -2165,13 +2193,14 @@ function extend(parent, definition) {
     return prototype;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"33BLD":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"33BLD":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "SpecBuilder", ()=>SpecBuilder);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _axes = require("./axes");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _axes = require("./axes");
 var _color = require("./color");
 var _constants = require("./constants");
 var _defaults = require("./defaults");
@@ -2590,13 +2619,14 @@ class SpecBuilder {
     }
 }
 
-},{"./axes":"4VGAd","./color":"7m2aV","./constants":"eNr4m","./defaults":"5iedU","./facetTitle":"6LisZ","./fill":"291dn","./globalScope":"jGiIn","./scope":"k44Ul","./signals":"3piKm","./layouts/index":"8IEIT","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b","./image":"3AjTc"}],"4VGAd":[function(require,module,exports) {
+},{"./axes":"4VGAd","./color":"7m2aV","./constants":"eNr4m","./defaults":"5iedU","./facetTitle":"6LisZ","./fill":"291dn","./globalScope":"jGiIn","./scope":"k44Ul","./signals":"3piKm","./layouts/index":"8IEIT","./image":"3AjTc","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"4VGAd":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "addGlobalAxes", ()=>addGlobalAxes);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _constants = require("./constants");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _constants = require("./constants");
 var _defaults = require("./defaults");
 var _scope = require("./scope");
 function addGlobalAxes(props1) {
@@ -2702,10 +2732,13 @@ function createAxis(props) {
     return axis;
 }
 
-},{"./constants":"eNr4m","./defaults":"5iedU","./scope":"k44Ul","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"k44Ul":[function(require,module,exports) {
+},{"./constants":"eNr4m","./defaults":"5iedU","./scope":"k44Ul","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"k44Ul":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "addAxes", ()=>addAxes);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ parcelHelpers.export(exports, "addAxes", ()=>addAxes);
 parcelHelpers.export(exports, "addData", ()=>addData);
 parcelHelpers.export(exports, "addMarks", ()=>addMarks);
 parcelHelpers.export(exports, "addScales", ()=>addScales);
@@ -2760,13 +2793,14 @@ function addOffsets(...offsets) {
     return offsets.filter(Boolean).join(" + ");
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"7m2aV":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7m2aV":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "addColor", ()=>addColor);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _scope = require("./scope");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _scope = require("./scope");
 var _scales = require("./scales");
 var _signals = require("./signals");
 var _constants = require("./constants");
@@ -2808,15 +2842,16 @@ function addColor(props) {
     };
 }
 
-},{"./scope":"k44Ul","./scales":"8b8up","./signals":"3piKm","./constants":"eNr4m","./legends":"d7VwA","./top":"1OWQa","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"8b8up":[function(require,module,exports) {
+},{"./scope":"k44Ul","./scales":"8b8up","./signals":"3piKm","./constants":"eNr4m","./legends":"d7VwA","./top":"1OWQa","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8b8up":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "linearScale", ()=>linearScale);
 parcelHelpers.export(exports, "pointScale", ()=>pointScale);
 parcelHelpers.export(exports, "binnableColorScale", ()=>binnableColorScale);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _constants = require("./constants");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _constants = require("./constants");
 var _expr = require("./expr");
 function linearScale(scaleName, domain, range, reverse, zero, nice = true) {
     const scale = {
@@ -2898,12 +2933,13 @@ function binnableColorScale(scaleName, colorBin, data, field, scheme) {
     }
 }
 
-},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"1G99Z":[function(require,module,exports) {
+},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1G99Z":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-/**
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ /**
  * Make sure that the field name is accessible via Vega's Field type
  * https://vega.github.io/vega/docs/types/#Field
  * examples: "source.x", "target['x']", "[my.field]"
@@ -2919,7 +2955,7 @@ function exprSafeFieldName(field) {
     return field.replace(/[.,:;+=\-/<>{}|~!@#$%^*[\]`'"()?\s\\]/g, "");
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"3piKm":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3piKm":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "defaultZProportion", ()=>defaultZProportion);
@@ -2927,7 +2963,10 @@ parcelHelpers.export(exports, "textSignals", ()=>textSignals);
 parcelHelpers.export(exports, "colorBinCountSignal", ()=>colorBinCountSignal);
 parcelHelpers.export(exports, "colorReverseSignal", ()=>colorReverseSignal);
 parcelHelpers.export(exports, "modifySignal", ()=>modifySignal);
-var _constants = require("./constants");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _constants = require("./constants");
 var _defaults = require("./defaults");
 const defaultZProportion = 0.6;
 function textSignals(context, heightSignal) {
@@ -3040,11 +3079,14 @@ function modifySignal(s, fn, update) {
     s.update = `${fn}((${s.update}), (${update}))`;
 }
 
-},{"./constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b","./defaults":"5iedU"}],"d7VwA":[function(require,module,exports) {
+},{"./constants":"eNr4m","./defaults":"5iedU","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"d7VwA":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getLegends", ()=>getLegends);
-function legend(column, fill) {
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ function legend(column, fill) {
     const legend1 = {
         orient: "none",
         title: column.name,
@@ -3072,13 +3114,14 @@ function getLegends(context, fill) {
     ];
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"1OWQa":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1OWQa":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "topLookup", ()=>topLookup);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _constants = require("./constants");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _constants = require("./constants");
 var _expr = require("./expr");
 function topLookup(column, count, source, legend, lookupName, fieldName, indexName) {
     const data = [
@@ -3136,7 +3179,7 @@ function topLookup(column, count, source, legend, lookupName, fieldName, indexNa
     return data;
 }
 
-},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"6LisZ":[function(require,module,exports) {
+},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"6LisZ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "addFacetColRowTitles", ()=>addFacetColRowTitles);
@@ -3144,9 +3187,10 @@ parcelHelpers.export(exports, "addFacetCellTitles", ()=>addFacetCellTitles);
 parcelHelpers.export(exports, "addFacetAxesGroupMarks", ()=>addFacetAxesGroupMarks);
 parcelHelpers.export(exports, "facetRowHeaderFooter", ()=>facetRowHeaderFooter);
 parcelHelpers.export(exports, "facetColumnHeaderFooter", ()=>facetColumnHeaderFooter);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _scope = require("./scope");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _scope = require("./scope");
 var _constants = require("./constants");
 function addFacetColRowTitles(globalScope, colTitleSource, rowTitleSource, sizeSignals, axisTextColor) {
     const titleSignal = `parent[${JSON.stringify((0, _constants.FieldNames).FacetTitle)}]`;
@@ -3386,14 +3430,15 @@ function createSequence(dataName, countSignal) {
     };
 }
 
-},{"./scope":"k44Ul","./constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"291dn":[function(require,module,exports) {
+},{"./scope":"k44Ul","./constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"291dn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "fill", ()=>fill);
 parcelHelpers.export(exports, "opacity", ()=>opacity);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _constants = require("./constants");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _constants = require("./constants");
 var _expr = require("./expr");
 function fill(context, colorFieldName, scale) {
     const { specColumns , insight , specViewOptions  } = context;
@@ -3414,13 +3459,14 @@ function opacity(context) {
     return result;
 }
 
-},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"jGiIn":[function(require,module,exports) {
+},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jGiIn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "GlobalScope", ()=>GlobalScope);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _constants = require("./constants");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _constants = require("./constants");
 var _scope = require("./scope");
 class GlobalScope {
     constructor(props){
@@ -3456,13 +3502,14 @@ class GlobalScope {
     }
 }
 
-},{"./constants":"eNr4m","./scope":"k44Ul","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"8IEIT":[function(require,module,exports) {
+},{"./constants":"eNr4m","./scope":"k44Ul","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8IEIT":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "layoutClasses", ()=>layoutClasses);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _aggregateContainer = require("./aggregateContainer");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _aggregateContainer = require("./aggregateContainer");
 var _aggregateSquare = require("./aggregateSquare");
 var _band = require("./band");
 var _cross = require("./cross");
@@ -3485,13 +3532,14 @@ const layoutClasses = {
     Wrap: (0, _wrap.Wrap)
 };
 
-},{"./aggregateContainer":"2AO1d","./aggregateSquare":"3jVb3","./band":"cD88v","./cross":"3Xmem","./scatter":"jRktq","./square":"425K1","./stack":"b0WQI","./strip":"1pzL4","./treemap":"kPpw1","./wrap":"7BE6v","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"2AO1d":[function(require,module,exports) {
+},{"./aggregateContainer":"2AO1d","./aggregateSquare":"3jVb3","./band":"cD88v","./cross":"3Xmem","./scatter":"jRktq","./square":"425K1","./stack":"b0WQI","./strip":"1pzL4","./treemap":"kPpw1","./wrap":"7BE6v","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"2AO1d":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "AggregateContainer", ()=>AggregateContainer);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _layout = require("./layout");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _layout = require("./layout");
 var _constants = require("../constants");
 var _expr = require("../expr");
 var _scope = require("../scope");
@@ -3650,10 +3698,13 @@ class AggregateContainer extends (0, _layout.Layout) {
     }
 }
 
-},{"./layout":"7w384","../constants":"eNr4m","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"7w384":[function(require,module,exports) {
+},{"./layout":"7w384","../constants":"eNr4m","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7w384":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Layout", ()=>Layout);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ parcelHelpers.export(exports, "Layout", ()=>Layout);
 class Layout {
     constructor(props){
         this.props = props;
@@ -3670,24 +3721,26 @@ class Layout {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"lp0UG":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"lp0UG":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "testForCollapseSelection", ()=>testForCollapseSelection);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _constants = require("./constants");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _constants = require("./constants");
 function testForCollapseSelection() {
     return `datum.${(0, _constants.FieldNames).Collapsed}`;
 }
 
-},{"./constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"3jVb3":[function(require,module,exports) {
+},{"./constants":"eNr4m","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3jVb3":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "AggregateSquare", ()=>AggregateSquare);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _layout = require("./layout");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _layout = require("./layout");
 var _expr = require("../expr");
 var _scope = require("../scope");
 var _selection = require("../selection");
@@ -3774,14 +3827,15 @@ class AggregateSquare extends (0, _layout.Layout) {
     }
 }
 
-},{"./layout":"7w384","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"cD88v":[function(require,module,exports) {
+},{"./layout":"7w384","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"cD88v":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "bandScaleLinearSuffix", ()=>bandScaleLinearSuffix);
 parcelHelpers.export(exports, "Band", ()=>Band);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _layout = require("./layout");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _layout = require("./layout");
 var _bin = require("../bin");
 var _expr = require("../expr");
 var _scope = require("../scope");
@@ -3943,14 +3997,15 @@ class Band extends (0, _layout.Layout) {
     }
 }
 
-},{"./layout":"7w384","../bin":"1wZ7F","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","../signals":"3piKm","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b","../scales":"8b8up"}],"1wZ7F":[function(require,module,exports) {
+},{"./layout":"7w384","../bin":"1wZ7F","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","../signals":"3piKm","../scales":"8b8up","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1wZ7F":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "binnable", ()=>binnable);
 parcelHelpers.export(exports, "outerExtentSignal", ()=>outerExtentSignal);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _constants = require("./constants");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _constants = require("./constants");
 var _expr = require("./expr");
 var _defaults = require("./defaults");
 var _transforms = require("./transforms");
@@ -3961,6 +4016,7 @@ function binnable(prefix, domainDataName, discreteColumn, outerSignalExtents) {
         const fieldEnd = `${field}_end`;
         const binSignal = `${field}_bins`;
         const dataExtentSignal = `${field}_bin_extent`;
+        const dataExtentSpanSignal = `${field}_bin_extent_span`;
         const outerSignal = `${field}_outer_extent`;
         domainDataName = `${field}_sequence`; //override the data name
         const extentTransform = (0, _transforms.dataExtent)(column, dataExtentSignal);
@@ -4037,11 +4093,20 @@ function binnable(prefix, domainDataName, discreteColumn, outerSignalExtents) {
                     type: "formula",
                     expr: `datum.data === ${binSignal}.stop - ${binSignal}.step`,
                     as: (0, _constants.FieldNames).Last
+                },
+                {
+                    // when there is only one bin, use only first sequence element
+                    type: "filter",
+                    expr: `${dataExtentSpanSignal} === 0 ? datum[${JSON.stringify((0, _constants.FieldNames).First)}] : true`
                 }, 
             ]
         };
         const signals = [
-            maxbinsSignal
+            maxbinsSignal,
+            {
+                name: dataExtentSpanSignal,
+                update: `${extentSignal}[1] - ${extentSignal}[0]`
+            }, 
         ];
         if (imageSignal) signals.push(imageSignal);
         const augmentBinnable = {
@@ -4083,11 +4148,14 @@ function outerExtentSignal(name, min, max, dataExtent) {
     };
 }
 
-},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b","./defaults":"5iedU","./transforms":"6fL08"}],"6fL08":[function(require,module,exports) {
+},{"./constants":"eNr4m","./expr":"1G99Z","./defaults":"5iedU","./transforms":"6fL08","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"6fL08":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "dataExtent", ()=>dataExtent);
-var _expr = require("./expr");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _expr = require("./expr");
 function dataExtent(column, signal) {
     return {
         type: "extent",
@@ -4096,13 +4164,14 @@ function dataExtent(column, signal) {
     };
 }
 
-},{"./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"3Xmem":[function(require,module,exports) {
+},{"./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3Xmem":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Cross", ()=>Cross);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _layout = require("./layout");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _layout = require("./layout");
 var _bin = require("../bin");
 var _constants = require("../constants");
 var _facetSearch = require("../facetSearch");
@@ -4310,10 +4379,13 @@ class Cross extends (0, _layout.Layout) {
     }
 }
 
-},{"./layout":"7w384","../bin":"1wZ7F","../constants":"eNr4m","../facetSearch":"2CVGj","../facetTitle":"6LisZ","../ordinal":"l8chc","../scope":"k44Ul","../signals":"3piKm","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"2CVGj":[function(require,module,exports) {
+},{"./layout":"7w384","../bin":"1wZ7F","../constants":"eNr4m","../facetSearch":"2CVGj","../facetTitle":"6LisZ","../ordinal":"l8chc","../scope":"k44Ul","../signals":"3piKm","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"2CVGj":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "displayBin", ()=>displayBin);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ parcelHelpers.export(exports, "displayBin", ()=>displayBin);
 parcelHelpers.export(exports, "serializeAsVegaExpression", ()=>serializeAsVegaExpression);
 function displayBin(bin) {
     const val = (index)=>`datum[${JSON.stringify(bin.fields[index])}]`;
@@ -4354,14 +4426,15 @@ function serializeAsVegaExpression(bin, firstFieldName, lastFieldName, clause) {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"l8chc":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"l8chc":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "createOrdinals", ()=>createOrdinals);
 parcelHelpers.export(exports, "ordinalScale", ()=>ordinalScale);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _constants = require("./constants");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _constants = require("./constants");
 var _expr = require("./expr");
 function createOrdinals(source, prefix, binFields, sortOrder) {
     const _binFields = binFields.map((0, _expr.safeFieldName));
@@ -4412,13 +4485,14 @@ function ordinalScale(dataName, scaleName, binFields) {
     };
 }
 
-},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"jRktq":[function(require,module,exports) {
+},{"./constants":"eNr4m","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jRktq":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Scatter", ()=>Scatter);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _layout = require("./layout");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _layout = require("./layout");
 var _constants = require("../constants");
 var _defaults = require("../defaults");
 var _expr = require("../expr");
@@ -4654,13 +4728,14 @@ class Scatter extends (0, _layout.Layout) {
     }
 }
 
-},{"./layout":"7w384","../constants":"eNr4m","../defaults":"5iedU","../expr":"1G99Z","../scales":"8b8up","../scope":"k44Ul","../selection":"lp0UG","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b","../transforms":"6fL08","../bin":"1wZ7F"}],"425K1":[function(require,module,exports) {
+},{"./layout":"7w384","../constants":"eNr4m","../defaults":"5iedU","../expr":"1G99Z","../scales":"8b8up","../scope":"k44Ul","../selection":"lp0UG","../transforms":"6fL08","../bin":"1wZ7F","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"425K1":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Square", ()=>Square);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _layout = require("./layout");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _layout = require("./layout");
 var _constants = require("../constants");
 var _expr = require("../expr");
 var _scope = require("../scope");
@@ -4853,13 +4928,14 @@ class Square extends (0, _layout.Layout) {
     }
 }
 
-},{"./layout":"7w384","../constants":"eNr4m","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","../zBase":"kSgN8","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"kSgN8":[function(require,module,exports) {
+},{"./layout":"7w384","../constants":"eNr4m","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","../zBase":"kSgN8","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"kSgN8":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "addZScale", ()=>addZScale);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _constants = require("./constants");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _constants = require("./constants");
 var _scales = require("./scales");
 var _expr = require("./expr");
 function addZScale(z, zSize, dataName, zScaleName) {
@@ -4878,13 +4954,14 @@ function addZScale(z, zSize, dataName, zScaleName) {
     }
 }
 
-},{"./constants":"eNr4m","./scales":"8b8up","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b","./expr":"1G99Z"}],"b0WQI":[function(require,module,exports) {
+},{"./constants":"eNr4m","./scales":"8b8up","./expr":"1G99Z","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"b0WQI":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Stack", ()=>Stack);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _layout = require("./layout");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _layout = require("./layout");
 var _expr = require("../expr");
 var _scope = require("../scope");
 var _selection = require("../selection");
@@ -5110,13 +5187,14 @@ class Stack extends (0, _layout.Layout) {
     }
 }
 
-},{"./layout":"7w384","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"1pzL4":[function(require,module,exports) {
+},{"./layout":"7w384","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1pzL4":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Strip", ()=>Strip);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _layout = require("./layout");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _layout = require("./layout");
 var _constants = require("../constants");
 var _expr = require("../expr");
 var _scope = require("../scope");
@@ -5260,13 +5338,14 @@ class Strip extends (0, _layout.Layout) {
     }
 }
 
-},{"./layout":"7w384","../constants":"eNr4m","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","../zBase":"kSgN8","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"kPpw1":[function(require,module,exports) {
+},{"./layout":"7w384","../constants":"eNr4m","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","../zBase":"kSgN8","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"kPpw1":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Treemap", ()=>Treemap);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _layout = require("./layout");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _layout = require("./layout");
 var _constants = require("../constants");
 var _expr = require("../expr");
 var _scope = require("../scope");
@@ -5489,13 +5568,14 @@ function subtract(...fields) {
     return fields.map((n)=>fn(n)).join(" - ");
 }
 
-},{"./layout":"7w384","../constants":"eNr4m","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","../zBase":"kSgN8","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"7BE6v":[function(require,module,exports) {
+},{"./layout":"7w384","../constants":"eNr4m","../expr":"1G99Z","../scope":"k44Ul","../selection":"lp0UG","../zBase":"kSgN8","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7BE6v":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Wrap", ()=>Wrap);
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-var _layout = require("./layout");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _layout = require("./layout");
 var _bin = require("../bin");
 var _constants = require("../constants");
 var _expr = require("../expr");
@@ -5811,11 +5891,14 @@ class Wrap extends (0, _layout.Layout) {
     }
 }
 
-},{"./layout":"7w384","../bin":"1wZ7F","../constants":"eNr4m","../expr":"1G99Z","../facetSearch":"2CVGj","../facetTitle":"6LisZ","../ordinal":"l8chc","../scope":"k44Ul","../signals":"3piKm","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"3AjTc":[function(require,module,exports) {
+},{"./layout":"7w384","../bin":"1wZ7F","../constants":"eNr4m","../expr":"1G99Z","../facetSearch":"2CVGj","../facetTitle":"6LisZ","../ordinal":"l8chc","../scope":"k44Ul","../signals":"3piKm","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3AjTc":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getImageMark", ()=>getImageMark);
-var _band = require("./layouts/band");
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _band = require("./layouts/band");
 function getImageMark(backgroundImage, allGlobalScales) {
     const xScale = allGlobalScales.filter((s)=>s.scales.x)[0].scales.x[0];
     const yScale = allGlobalScales.filter((s)=>s.scales.y)[0].scales.y[0];
@@ -5859,13 +5942,13 @@ function getScaledValue(scaleName, value) {
     return `scale('${scaleName}', ${value})`;
 }
 
-},{"./layouts/band":"cD88v","@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"52vfF":[function(require,module,exports) {
+},{"./layouts/band":"cD88v","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"52vfF":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}],"a5HkM":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"a5HkM":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"7Mw3b"}]},["lKiud"], "lKiud", "parcelRequired43a")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}]},["lKiud"], "lKiud", "parcelRequired43a")
 

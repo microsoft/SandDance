@@ -1,0 +1,94 @@
+.sanddance-root {
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+
+.sanddance-gl {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.sanddance-gl.show-center {
+  background: linear-gradient(to right, transparent 49.9%, rgba(255, 0, 0, 0.7), transparent 50.1%), linear-gradient(to bottom, transparent 49.9%, rgba(255, 0, 0, 0.7), transparent 50.1%);
+}
+.sanddance-gl canvas {
+  outline: none;
+}
+
+.sanddance-panel {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  bottom: 1em;
+  background: #fff;
+  box-shadow: 8px 8px 12px -6px #ccc;
+  border: 1px solid #ccc;
+  overflow-y: scroll;
+  padding-bottom: 1em;
+  padding-left: 1em;
+}
+
+.sanddance-legend table {
+  border-collapse: collapse;
+}
+.sanddance-legend th {
+  word-break: break-word;
+  max-width: 11em;
+}
+.sanddance-legend .legend-row {
+  cursor: pointer;
+}
+.sanddance-legend .legend-row td {
+  padding: 2px;
+}
+.sanddance-legend .legend-row:hover {
+  background-color: #efefef;
+}
+.sanddance-legend .symbol div {
+  border-style: outset;
+  border-width: 1.5px;
+}
+.sanddance-legend .label {
+  max-width: 9em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.sanddance-details {
+  font-size: smaller;
+}
+
+.sanddance-details-scroll {
+  padding-bottom: 1em;
+}
+
+.sanddance-tooltip {
+  z-index: 1;
+}
+.sanddance-tooltip table {
+  background: #333;
+  color: #fff;
+  font-size: smaller;
+  margin: 1em;
+  min-width: 16em;
+  padding: 6px;
+  position: absolute;
+}
+.sanddance-tooltip td {
+  max-width: 16em;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  vertical-align: top;
+  width: 75%;
+}
+.sanddance-tooltip td:first-child {
+  width: 25%;
+}
+
+/*# sourceMappingURL=sanddance.css.map */

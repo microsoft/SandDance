@@ -1,8 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as deck from '@deck.gl/core';
-import * as layers from '@deck.gl/layers';
-import * as luma from '@luma.gl/core';
 import * as vega from 'vega';
 import * as SandDance from '@msrvida/sanddance';
 
@@ -26,7 +23,7 @@ for (let x = 0; x < size; x++) {
     }
 }
 
-SandDance.use(vega, deck, layers, luma);
+SandDance.use(vega);
 
 const viewer = new SandDance.Viewer(document.getElementById('vis'));
 

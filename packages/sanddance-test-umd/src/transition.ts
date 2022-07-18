@@ -4,15 +4,13 @@
 ///<reference path='vega.d.ts' />
 
 namespace transition {
-    declare const deck: SandDance.VegaDeckGl.types.DeckBase & SandDance.VegaDeckGl.types.DeckLayerBase;
-    declare const luma: SandDance.VegaDeckGl.types.LumaBase;
-    declare const vega: SandDance.VegaDeckGl.types.VegaBase;
+    declare const vega: SandDance.VegaMorphCharts.types.VegaBase;
 
     let view: SandDance.ViewGl_Class;
     let lastSpec: Vega.Spec;
     let viewType: SandDance.types.View = '3d';
 
-    SandDance.use(vega, deck, deck, luma);
+    SandDance.use(vega);
 
     export function toggleView() {
         if (viewType === '3d') {
@@ -24,8 +22,8 @@ namespace transition {
     }
 
     export function update(spec: Vega.Spec) {
-        view = new SandDance.VegaDeckGl.ViewGl(vega.parse(spec), { presenter: view && view.presenter, getView: () => viewType })
-            .renderer('deck.gl')
+        view = new SandDance.VegaMorphCharts.ViewGl(vega.parse(spec), { presenter: view && view.presenter, getView: () => viewType })
+            .renderer('morphcharts')
             .initialize(document.querySelector('#split-right'))
             .run();
 

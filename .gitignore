@@ -79,6 +79,7 @@ _site
 .DS_Store
 
 dist
+!docs/dist
 
 __pycache__
 python/jupyter-widget/lib

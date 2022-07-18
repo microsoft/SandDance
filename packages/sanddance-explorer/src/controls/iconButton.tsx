@@ -16,27 +16,32 @@ export interface IIconButtonProps {
     title: string;
     themePalette: Partial<FluentUITypes.IPalette>;
     role?: string;
+    styles?: FluentUITypes.IButtonStyles;
 }
 
 export function IconButton(props: IIconButtonProps) {
     return (
         <base.fluentUI.IconButton
             {...props}
-            styles={{
-                root: {
-                    color: props.themePalette.black,
-                },
-                rootHovered: {
-                    background: 'transparent',
-                    color: props.themePalette.themePrimary,
-                },
-                rootPressed: {
-                    background: 'transparent',
-                },
-                menuIcon: {
-                    display: 'none',
-                },
-            }}
+            styles={
+                props.styles
+                ||
+                {
+                    root: {
+                        color: props.themePalette.black,
+                    },
+                    rootHovered: {
+                        background: 'transparent',
+                        color: props.themePalette.themePrimary,
+                    },
+                    rootPressed: {
+                        background: 'transparent',
+                    },
+                    menuIcon: {
+                        display: 'none',
+                    },
+                }
+            }
             iconProps={{ iconName: props.iconName }}
             menuProps={props.menuProps}
         />

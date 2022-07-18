@@ -3,6 +3,7 @@
 * Licensed under the MIT License.
 */
 
+import { BackgroundImageEditor } from './dialogs/backgroundImageEditor';
 import { PositionedColumnMap } from './clickableTextLayer';
 import { DataExportPicker } from './controls/dataExporter';
 import { Chart } from './dialogs/chart';
@@ -15,6 +16,7 @@ import { FluentUIComponents } from '@msrvida/fluentui-react-cdn-typings';
 import { SandDance, use as _use } from '@msrvida/sanddance-react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { Renderer } from './controls/renderer';
 
 /**
  * References to dependency libraries.
@@ -44,23 +46,22 @@ export function use(
     fluentUI: FluentUIComponents,
     react: typeof React,
     reactDOM: typeof ReactDOM,
-    vega: SandDance.VegaDeckGl.types.VegaBase,
-    deck: SandDance.VegaDeckGl.types.DeckBase,
-    layers: SandDance.VegaDeckGl.types.DeckLayerBase,
-    luma: SandDance.VegaDeckGl.types.LumaBase,
+    vega: SandDance.VegaMorphCharts.types.VegaBase,
 ) {
-    _use(react, reactDOM, vega, deck, layers, luma);
+    _use(react, reactDOM, vega);
     base.fluentUI = fluentUI;
     base.react = react;
     base.reactDOM = reactDOM;
 
     //inform React that we are using a dynamic base class
+    BackgroundImageEditor.prototype = react.Component.prototype as any;
     Chart.prototype = react.Component.prototype as any;
     DataExportPicker.prototype = react.Component.prototype as any;
     Explorer.prototype = react.Component.prototype as any;
     PositionedColumnMap.prototype = react.Component.prototype as any;
+    Renderer.prototype = react.Component.prototype as any;
     Search.prototype = react.Component.prototype as any;
     SnapshotEditor.prototype = react.Component.prototype as any;
     Snapshots.prototype = react.Component.prototype as any;
-    Settings.prototype = react.Component.prototype as any;
+    Settings.prototype = react.Component.prototype as any;    
 }

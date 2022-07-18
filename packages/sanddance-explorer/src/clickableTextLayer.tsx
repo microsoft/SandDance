@@ -9,18 +9,18 @@ import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';
 import { MousePosition } from './mouseEvent';
 
-export interface TextWithSpecRole extends SandDance.VegaDeckGl.types.VegaTextLayerDatum {
+export interface TextWithSpecRole extends SandDance.VegaMorphCharts.types.VegaTextLayerDatum {
     specRole: SandDance.specs.SpecRoleCapabilities;
 }
 
 export function onBeforeCreateLayers(
-    stage: SandDance.VegaDeckGl.types.Stage,
+    stage: SandDance.VegaMorphCharts.types.Stage,
     specCapabilities: SandDance.specs.SpecCapabilities,
 ) {
     for (const axisName in stage.axes) {
         specCapabilities.roles.forEach(specRole => {
             if (specRole.role === axisName) {
-                const axes = stage.axes[axisName] as SandDance.VegaDeckGl.types.Axis[];
+                const axes = stage.axes[axisName] as SandDance.VegaMorphCharts.types.Axis[];
                 axes.forEach(axis => {
                     if (axis.title) {
                         const textItem = axis.title as TextWithSpecRole;
@@ -42,7 +42,7 @@ export interface PositionedColumnMapProps extends ColumnMapProps, MousePosition 
 
 export interface PositionedColumnMapState extends MousePosition { }
 
-function _PositionedColumnMap(props: PositionedColumnMapProps) {
+function _PositionedColumnMap(_props: PositionedColumnMapProps) {
     class __PositionedColumnMap extends base.react.Component<PositionedColumnMapProps, PositionedColumnMapState> {
         private dropdownRef?: React.RefObject<FluentUITypes.IDropdown>;
         private focused: boolean;
@@ -63,7 +63,7 @@ function _PositionedColumnMap(props: PositionedColumnMapProps) {
         }
 
         componentDidMount() {
-            const size = SandDance.VegaDeckGl.util.outerSize(this.div);
+            const size = SandDance.VegaMorphCharts.util.outerSize(this.div);
             const over: MousePosition = {
                 left: Math.max(0, this.state.left + size.width - this.props.container.offsetWidth),
                 top: Math.max(0, this.state.top + size.height - this.props.container.offsetHeight),
@@ -99,7 +99,7 @@ function _PositionedColumnMap(props: PositionedColumnMapProps) {
         }
     }
 
-    return new __PositionedColumnMap(props);
+    return new __PositionedColumnMap(_props);
 }
 
 export const PositionedColumnMap: typeof PositionedColumnMap_Class = _PositionedColumnMap as any;

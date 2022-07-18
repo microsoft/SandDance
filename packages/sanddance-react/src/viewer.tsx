@@ -4,8 +4,8 @@
 */
 
 import { base } from './base';
-import { deepCompare } from './util';
-import { specs, types, VegaDeckGl, Viewer } from '@msrvida/sanddance';
+import { compareInsight } from './util';
+import { specs, types, VegaMorphCharts, Viewer } from '@msrvida/sanddance';
 
 export interface Props {
     viewerOptions?: Partial<types.ViewerOptions>;
@@ -20,20 +20,7 @@ export interface Props {
 export interface State {
 }
 
-function addNullable(insight: specs.Insight, signalValues: specs.SignalValues) {
-    const withNulls: specs.Insight = { view: null, filter: null, ...insight, signalValues };
-    return withNulls;
-}
-
-export function compareProps(viewer: Viewer, insight: specs.Insight) {
-    const currentInsight = viewer.getInsight();
-    const a = addNullable(currentInsight, { ...viewer.insight.signalValues, ...currentInsight.signalValues });
-    const b = addNullable(insight, { ...a.signalValues, ...insight.signalValues });
-    const compare = deepCompare(a, b);
-    return { a, b, compare };
-}
-
-function _SandDanceReact(props: Props) {
+function _SandDanceReact(_props: Props) {
 
     class __SandDanceReact extends base.react.Component<Props, State> {
         public viewer: Viewer;
@@ -41,25 +28,27 @@ function _SandDanceReact(props: Props) {
         private lastData: object[];
 
         private layout() {
-            this.lastData = this.props.data;
+            const { props } = this;
+            this.lastData = props.data;
             this.viewer.render(
-                this.props.insight,
-                this.props.data,
-                this.props.renderOptions,
+                props.insight,
+                props.data,
+                props.renderOptions,
             ).then(renderResult => {
                 //TODO: show errors if any
                 //console.log('viewer render');
-                this.props.onView && this.props.onView(renderResult);
+                props.onView && props.onView(renderResult);
             }).catch(e => {
                 //console.log('viewer error');
-                this.props.onError && this.props.onError(e);
+                props.onError && props.onError(e);
             });
         }
 
         private view() {
-            if (this.props.insight && this.props.data) {
-                const c = compareProps(this.viewer, this.props.insight);
-                const sameDataRef = this.props.data === this.lastData;
+            const { props } = this;
+            if (props.insight && props.data) {
+                const c = compareInsight(this.viewer, props.insight);
+                const sameDataRef = props.data === this.lastData;
                 if (!c.compare || !sameDataRef) {
                     this.layout();
                 }
@@ -67,10 +56,11 @@ function _SandDanceReact(props: Props) {
         }
 
         componentDidMount() {
+            const { props } = this;
             const element = base.reactDOM.findDOMNode(this.viewerDiv) as HTMLElement;
-            this.viewer = new Viewer(element, this.props.viewerOptions);
-            if (this.props.onMount) {
-                if (this.props.onMount(this.viewer.presenter.getElement(VegaDeckGl.PresenterElement.gl))) {
+            this.viewer = new Viewer(element, props.viewerOptions);
+            if (props.onMount) {
+                if (props.onMount(this.viewer.presenter.getElement(VegaMorphCharts.PresenterElement.gl))) {
                     this.view();
                 }
             } else {
@@ -79,7 +69,8 @@ function _SandDanceReact(props: Props) {
         }
 
         componentDidUpdate() {
-            this.viewer.options = VegaDeckGl.util.deepMerge(this.viewer.options, this.props.viewerOptions) as types.ViewerOptions;
+            const { props } = this;
+            this.viewer.options = VegaMorphCharts.util.deepMerge(this.viewer.options, props.viewerOptions) as types.ViewerOptions;
             this.view();
         }
 
@@ -94,7 +85,7 @@ function _SandDanceReact(props: Props) {
         }
     }
 
-    return new __SandDanceReact(props);
+    return new __SandDanceReact(_props);
 }
 
 export const SandDanceReact: typeof SandDanceReact_Class = _SandDanceReact as any;

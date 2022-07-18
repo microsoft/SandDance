@@ -18,6 +18,7 @@ export interface Props {
     logoClickUrl: string;
     logoClickTarget: string;
     buttons?: FluentUITypes.ICommandBarItemProps[];
+    iconButtons?: FluentUITypes.ICommandBarItemProps[];
     doFilter: { (search: Search, historicFilterChange: string): void };
     doUnfilter: (historicFilterChange: string) => void;
     doDeselect: () => void;
@@ -26,12 +27,12 @@ export interface Props {
     selectionState: SandDance.types.SelectionState;
     selectionSearch: Search;
     view: SandDance.types.View;
+    snapshotsHidden: boolean;
     snapshots: SandDance.types.Snapshot[];
     onSnapshotClick: () => void;
     onSnapshotNextClick: () => void;
     onSnapshotPreviousClick: () => void;
     onViewClick: () => void;
-    onHomeClick: () => void;
     themePalette: Partial<FluentUITypes.IPalette>;
     historyIndex: number;
     historyItems: HistoryItem[];
@@ -104,15 +105,16 @@ export function Topbar(props: Props) {
     if (props.collapseLabels) {
         items.forEach(item => item.iconOnly = true);
     }
-    const farItems: FluentUITypes.ICommandBarItemProps[] = [
-        {
+    const farItems: FluentUITypes.ICommandBarItemProps[] = [];
+    if (!props.snapshotsHidden) {
+        farItems.push({
             key: 'previous-snapshot',
             iconProps: {
                 iconName: 'Previous',
             },
             title: strings.buttonPrevSnapshot,
             onClick: props.onSnapshotPreviousClick,
-            disabled: props.snapshots.length < 2,
+            disabled: !props.snapshots || props.snapshots.length < 2,
         },
         {
             key: 'snapshot',
@@ -130,8 +132,10 @@ export function Topbar(props: Props) {
             },
             title: strings.buttonNextSnapshot,
             onClick: props.onSnapshotNextClick,
-            disabled: props.snapshots.length < 2,
-        },
+            disabled: !props.snapshots || props.snapshots.length < 2,
+        });
+    }
+    farItems.push(
         {
             key: 'view',
             iconProps: {
@@ -140,17 +144,10 @@ export function Topbar(props: Props) {
             title: props.view === '2d' ? strings.labelViewType3d : strings.labelViewType2d,
             onClick: props.onViewClick,
             disabled: !props.loaded,
-        },
-        {
-            key: 'home',
-            iconProps: {
-                iconName: 'PicturePosition',
-            },
-            title: strings.buttonCameraHome,
-            onClick: props.onHomeClick,
-            disabled: !props.loaded,
-        },
-    ];
+        });
+    if (props.iconButtons?.length) {
+        farItems.push(...props.iconButtons);
+    }
 
     return (
         <div className="sanddance-explorer-topbar">

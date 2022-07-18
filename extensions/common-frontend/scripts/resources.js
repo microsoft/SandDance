@@ -6,7 +6,6 @@ const resources = [
     "./node_modules/common-frontend/dist/app.js",
     "./node_modules/common-frontend/node_modules/@msrvida/sanddance-explorer/dist/umd/sanddance-explorer.js",
     "./node_modules/common-frontend/node_modules/vega/build/vega.js",
-    "./node_modules/common-frontend/node_modules/deck.gl/dist.min.js",
     "./node_modules/common-frontend/node_modules/react/umd/react.production.min.js",
     "./node_modules/common-frontend/node_modules/react-dom/umd/react-dom.production.min.js",
     "./node_modules/common-frontend/node_modules/@fluentui/react/dist/fluentui-react.js"

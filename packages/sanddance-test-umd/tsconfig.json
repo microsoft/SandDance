@@ -3,7 +3,7 @@
         "lib": [
             "dom", "es2015"
         ],
-        "outDir": "../../docs/tests/v3/umd/js/",
+        "outDir": "../../docs/tests/v4/umd/js/",
         "removeComments": true,
         "skipLibCheck": true
     }

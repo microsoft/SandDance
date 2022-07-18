@@ -3,7 +3,7 @@
 * Licensed under the MIT License.
 */
 
-import { util } from '@msrvida/vega-deck.gl';
+import { util } from '@msrvida/vega-morphcharts';
 
 const { allTruthy, concat, push } = util;
 

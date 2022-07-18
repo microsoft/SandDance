@@ -16,6 +16,7 @@ export interface Props {
     calculating: boolean;
     children: React.ReactNode;
     hideSidebarControls: boolean;
+    snapshotsHidden: boolean;
     onSideTabClick: (sideTabId: SideTabId) => void;
     selectedSideTab: SideTabId;
     disabled: boolean;
@@ -47,7 +48,7 @@ export function Sidebar(props: Props) {
             iconName: 'Search',
             title: strings.labelSearch,
         },
-        {
+        !props.snapshotsHidden && {
             sideTabId: SideTabId.Snapshots,
             iconName: 'Camera',
             title: strings.labelSnapshots,
@@ -62,7 +63,7 @@ export function Sidebar(props: Props) {
             iconName: 'Settings',
             title: strings.labelChartSettings,
         },
-    ];
+    ].filter(Boolean);
     return (
         <div className={util.classList('sanddance-sidebar', 'calculator', props.pinned && 'pinned', props.closed && 'closed')}>
             <div className="sidebar-content">

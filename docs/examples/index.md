@@ -11,19 +11,22 @@ title: Examples
 * [sanddance-specs 2D vega specs tests](../tests/sanddance-specs/v1/) using UMD/CDN
 
 ### vega-morphcharts
+* [simple vega spec](../tests/v4/umd/vega-morphcharts.test.html) using UMD/CDN
 * [vega spec test](../tests/v4/es6/vega-morphcharts-test-es6.html) using bundled es6
+* [transition between vega specs](../tests/v4/umd/transition.html) using UMD/CDN
 
-## SandDance
-* [simple scatterplot](../tests/v3/umd/test.html) using UMD/CDN
-* [scatterplot fetch + transform](../tests/v3/umd/transforms.html) using UMD/CDN
-* [scatterplot](../tests/v3/es6/sanddance-test-es6.html) using bundled ES6
-* [demovote scatterplot](../tests/v3/umd/scatterplotTest.html) using UMD/CDN
-* [qualitative barchart](../tests/v3/umd/qualBarChartTest.html) using UMD/CDN
-* [quantitative barchart](../tests/v3/umd/quanBarChartTest.html) using UMD/CDN
-* [titanic treemap](../tests/v3/umd/treeMapTest.html) using UMD/CDN
+## SandDance component v4 Beta
+* [simple scatterplot](../tests/v4/umd/test.html) using UMD/CDN
+* [scatterplot fetch + transform](../tests/v4/umd/transforms.html) using UMD/CDN
+* [scatterplot](../tests/v4/es6/sanddance-test-es6.html) using bundled ES6
+* [demovote scatterplot](../tests/v4/umd/scatterplotTest.html) using UMD/CDN
+* [qualitative barchart](../tests/v4/umd/qualBarChartTest.html) using UMD/CDN
+* [quantitative barchart](../tests/v4/umd/quanBarChartTest.html) using UMD/CDN
+* [titanic treemap](../tests/v4/umd/treeMapTest.html) using UMD/CDN
 
-## SandDance Explorer
-* [Embed the hosted SandDance Explorer via Iframe](../tests/v3/umd/embed.html)  
+## SandDance apps v4 Beta
+* [Web app](../tests/v4/es6/app)
+* [Power BI custom visual](../dist/powerbi/v4/SandDance2019beta4.4.0.0.pbiviz) SandDance 2019 beta4 4.0.0
 
 ## Previous versions
 

@@ -14,7 +14,6 @@ import { Explorer_Class } from '../explorer';
 
 export interface Props {
     disabled?: boolean;
-    theme: string;
     themePalette: Partial<FluentUITypes.IPalette>;
     historyIndex: number;
     historyItems: HistoryItem[];

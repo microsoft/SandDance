@@ -4,7 +4,7 @@
 */
 
 import { Headers } from './types';
-import { Presenter, PresenterElement } from '@msrvida/vega-deck.gl';
+import { Presenter, PresenterElement } from '@msrvida/vega-morphcharts';
 
 export function ensureHeaders(presenter: Presenter, headers: Headers) {
     const vegaControls = presenter.getElement(PresenterElement.vegaControls);

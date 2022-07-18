@@ -39,12 +39,12 @@ export interface SnapshotAction {
 }
 
 export interface SnapshotProps extends SnapshotEditorProps, SnapshotListProps {
+  hidden?: boolean;
 }
 
 export interface ColorSettings extends SandDance.types.ColorSettings {
   clickableText?: string;
   clickableTextHighlight?: string;
-  clickableTextHighlightAlphaCutoff?: number;
   searchText?: string;
   searchTextHighlight?: string;
 }
@@ -70,4 +70,26 @@ export interface ChangeColumnMappingOptions {
   scheme?: string;
   facetStyle?: SandDance.specs.FacetStyle;
   totalStyle?: SandDance.specs.TotalStyle;
+}
+
+export type DataExtent = 'max' | 'min';
+export type BackgroundImageDimension = 'x' | 'y';
+
+export interface BackgroundImageColumnBound {
+  columnName: string;
+  dimension: BackgroundImageDimension;
+  dataExtent: DataExtent;
+  stringValue: string;
+  numericValue: number;
+  valid: boolean;
+}
+
+export interface ImageHolder {
+  img: {
+    src: string;
+    height: number;
+    width: number;
+  };
+  backgroundImageColumnBounds: BackgroundImageColumnBound[];
+  showBackgroundImage: boolean;
 }

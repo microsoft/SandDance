@@ -3,35 +3,38 @@
 * Licensed under the MIT License.
 */
 
-import * as VegaDeckGl from '@msrvida/vega-deck.gl';
+import * as VegaMorphCharts from '@msrvida/vega-morphcharts';
 import { GL_ORDINAL } from './constants';
 import { isInternalFieldName } from './util';
 import { TooltipOptions } from './types';
 
-const { outerSize } = VegaDeckGl.util;
-const { Table } = VegaDeckGl.controls;
+const { outerSize } = VegaMorphCharts.util;
+const { Table } = VegaMorphCharts.controls;
 
 interface Props {
     cssPrefix: string;
     options: TooltipOptions;
     item: object;
     position?: { clientX: number; clientY: number };
+    finalized: () => void;
 }
 
 interface RenderProps {
     cssPrefix: string;
-    rows: VegaDeckGl.controls.TableRow[];
+    rows: VegaMorphCharts.controls.TableRow[];
 }
 
 export class Tooltip {
     private element: HTMLElement;
     private child: HTMLElement;
+    private finalizeHandler: () => void;
 
-    constructor(props: Props) {
+    constructor(private props: Props) {
         const renderProps: RenderProps = {
             cssPrefix: props.cssPrefix,
             rows: getRows(props.item, props.options),
         };
+        this.finalizeHandler = () => this.finalize();
         this.element = renderTooltip(renderProps) as any as HTMLElement;
         if (this.element) {
             this.element.style.position = 'absolute';
@@ -63,19 +66,26 @@ export class Tooltip {
                 this.element.style.top = `${props.position.clientY}px`;
             }
             this.element.style.left = `${props.position.clientX}px`;
+            this.child.addEventListener('mouseenter', this.finalizeHandler);
+            this.child.addEventListener('mousemove', this.finalizeHandler);
+            this.child.addEventListener('mouseover', this.finalizeHandler);
         }
     }
 
     finalize() {
+        this.child.removeEventListener('mouseenter', this.finalizeHandler);
+        this.child.removeEventListener('mousemove', this.finalizeHandler);
+        this.child.removeEventListener('mouseover', this.finalizeHandler);
         if (this.element) {
             document.body.removeChild(this.element);
         }
         this.element = null;
+        this.props.finalized();
     }
 }
 
 function getRows(item: object, options: TooltipOptions) {
-    const rows: VegaDeckGl.controls.TableRow[] = [];
+    const rows: VegaMorphCharts.controls.TableRow[] = [];
     for (const columnName in item) {
         if (columnName === GL_ORDINAL) {
             continue;

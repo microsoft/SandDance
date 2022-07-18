@@ -25,7 +25,7 @@ import {
     UrlData,
     ValuesData,
 } from 'vega-typings/types';
-import { Signal } from '../controls/signal';
+import { getInitialSignalValue, Signal } from '../controls/signal';
 import { strings } from '../language';
 import { version } from '../version';
 
@@ -76,13 +76,13 @@ function cloneData(vegaSpec: Spec) {
     const valuesData = data0 as ValuesData;
     const values = valuesData.values;
     delete valuesData.values;
-    const data = SandDance.VegaDeckGl.util.clone(vegaSpec.data);
+    const data = SandDance.VegaMorphCharts.util.clone(vegaSpec.data);
     valuesData.values = values;
     return { data, values };
 }
 
 function cloneScales(vegaSpec: Spec) {
-    return SandDance.VegaDeckGl.util.clone(vegaSpec.scales);
+    return SandDance.VegaMorphCharts.util.clone(vegaSpec.scales);
 }
 
 function serializeSpec(vegaSpec: Spec, datafile: DataFile, dataRefType: DataRefType, transform: Transforms[], scheme: string) {
@@ -213,7 +213,7 @@ function _Settings(_props: Props) {
                                                 first = false;
                                                 props.explorer.dialogFocusHandler.focus = () => {
                                                     const f = ref.current as Focusable;
-                                                    if (f.focus) {
+                                                    if (f?.focus) {
                                                         f.focus();
                                                     }
                                                 };
@@ -224,6 +224,7 @@ function _Settings(_props: Props) {
                                                     key={i}
                                                     signal={signal}
                                                     explorer={props.explorer}
+                                                    initialValue={getInitialSignalValue(props.explorer, signal)}
                                                     newViewStateTarget={false}
                                                 />
                                             );
@@ -285,13 +286,13 @@ function _Settings(_props: Props) {
                             defaultValue={this.props.explorer.viewerOptions.transitionDurations.position}
                         />
                         <base.fluentUI.Slider
-                            label={strings.labelTransitionSize}
+                            label={strings.labelTransitionStagger}
                             onChange={value => {
-                                this.props.explorer.viewerOptions.transitionDurations.size = value;
+                                this.props.explorer.viewerOptions.transitionDurations.stagger = value;
                             }}
                             min={0}
                             max={10000}
-                            defaultValue={this.props.explorer.viewerOptions.transitionDurations.size}
+                            defaultValue={this.props.explorer.viewerOptions.transitionDurations.stagger}
                         />
                         <base.fluentUI.Slider
                             label={strings.labelTransitionCamera}
@@ -378,6 +379,9 @@ function _Settings(_props: Props) {
                             </li>
                             <li>
                                 SandDance version: {SandDance.version}
+                            </li>
+                            <li>
+                                Vega-MorphCharts version: {SandDance.VegaMorphCharts.version}
                             </li>
                             <li>
                                 WebGL enabled: {capabilities.webgl ? strings.labelYes : strings.labelNo}

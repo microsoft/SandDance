@@ -15,6 +15,7 @@ import { Explorer_Class } from '../explorer';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 
 export interface Props {
+    initialValue: any;
     newViewStateTarget?: boolean;
     collapseLabel?: boolean;
     explorer: Explorer_Class;
@@ -23,6 +24,16 @@ export interface Props {
     disabled?: boolean;
     onChange?: (value: any) => void;
     componentRef?: any;
+}
+
+export function getInitialSignalValue(explorer: Explorer_Class, signal: NewSignal) {
+    let initialValue: any;
+    try {
+        initialValue = explorer.viewer.vegaViewGl.signal(signal.name);
+    } catch (error) {
+        // continue regardless of error
+    }
+    return initialValue;
 }
 
 export function Signal(props: Props) {
@@ -35,16 +46,10 @@ export function Signal(props: Props) {
             const fn = map[input];
             if (fn) {
                 const prefix = props.prefix ? `${props.prefix} ` : '';
-                let initialValue: any;
-                try {
-                    initialValue = props.explorer.viewer.vegaViewGl.signal(props.signal.name);
-                } catch (error) {
-                    // continue regardless of error
-                }
                 const control = fn(
                     prefix,
                     props.signal.bind,
-                    initialValue,
+                    props.initialValue,
                     (value) => {
                         props.onChange && props.onChange(value);
                         props.explorer.signal(props.signal.name, value, props.newViewStateTarget);
@@ -67,6 +72,7 @@ export function Signal(props: Props) {
 const map: { [input: string]: (prefix: string, bind: Binding, initialValue: any, onChange: (value: any) => void, disabled: boolean, collapseLabel: boolean, ref: any) => JSX.Element } = {};
 
 map['range'] = (prefix: string, bind: BindRange, initialValue: number, onChange: (value: number) => void, disabled: boolean, collapseLabel: boolean, ref: any) => {
+    let debouncer: NodeJS.Timeout;
     return (
         <base.fluentUI.Slider
             componentRef={ref}
@@ -75,7 +81,12 @@ map['range'] = (prefix: string, bind: BindRange, initialValue: number, onChange:
             min={bind.min}
             step={bind.step}
             defaultValue={initialValue}
-            onChange={onChange}
+            onChange={value => {
+                if (debouncer) {
+                    clearTimeout(debouncer);
+                }
+                debouncer = setTimeout(() => onChange(value), bind.debounce || 0);
+            }}
             disabled={disabled}
         />
     );

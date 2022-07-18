@@ -60,9 +60,9 @@ export function saveSignalValuePref(prefs: Prefs, chart: SandDance.specs.Chart, 
 }
 
 export function copyPrefToNewState(prefs: Prefs, chart: SandDance.specs.Chart, role: string, columnName: string) {
-    const specTypePrefs = SandDance.VegaDeckGl.util.deepMerge({}, prefs['*'], prefs[chart]);
-    const rolePrefs = SandDance.VegaDeckGl.util.deepMerge({}, specTypePrefs['*'], specTypePrefs[role]);
-    const partialInsight = SandDance.VegaDeckGl.util.deepMerge({}, rolePrefs['*'], rolePrefs[columnName]);
+    const specTypePrefs = SandDance.VegaMorphCharts.util.deepMerge({}, prefs['*'], prefs[chart]);
+    const rolePrefs = SandDance.VegaMorphCharts.util.deepMerge({}, specTypePrefs['*'], specTypePrefs[role]);
+    const partialInsight = SandDance.VegaMorphCharts.util.deepMerge({}, rolePrefs['*'], rolePrefs[columnName]);
     return partialInsight;
 }
 
@@ -73,6 +73,6 @@ export function savePref(prefs: Prefs, chart: SandDance.specs.Chart, role: strin
     const rolePrefs = SpecTypePrefs[role] || {};
     SpecTypePrefs[role] = rolePrefs;
 
-    rolePrefs[column] = SandDance.VegaDeckGl.util.deepMerge({}, rolePrefs[column], partialInsight);
+    rolePrefs[column] = SandDance.VegaMorphCharts.util.deepMerge({}, rolePrefs[column], partialInsight);
     return rolePrefs[column];
 }

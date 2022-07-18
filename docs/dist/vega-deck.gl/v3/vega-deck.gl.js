@@ -19,14 +19,16 @@
         return Object.freeze(n);
     }
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
-    // Licensed under the MIT license.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     const layerNames = {
         cubes: 'LAYER_CUBES',
         lines: 'LAYER_LINES',
         text: 'LAYER_TEXT',
         paths: 'LAYER_PATHS',
-        polygons: 'LAYER_POLYGONS'
+        polygons: 'LAYER_POLYGONS',
     };
 
     var constants = /*#__PURE__*/Object.freeze({
@@ -415,7 +417,10 @@
         }
     }
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     const KeyCodes = {
         ENTER: 'Enter',
     };
@@ -429,21 +434,29 @@
                 } }, row.cells.map((cell, i) => (createElement("td", { className: cell.className || '', title: cell.title || '' }, cell.content))))))));
     };
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
 
     var controls = /*#__PURE__*/Object.freeze({
         __proto__: null,
         Table: Table
     });
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
 
     var types = /*#__PURE__*/Object.freeze({
         __proto__: null
     });
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
-    // Licensed under the MIT license.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     function concat(...args) {
         return args.reduce((p, c) => c ? p.concat(c) : p, []);
     }
@@ -463,8 +476,10 @@
         arr.push.apply(arr, items);
     }
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
-    // Licensed under the MIT license.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     /**
      * Create a new element as a child of another element.
      * @param tagName Tag name of the new tag to create.
@@ -592,7 +607,10 @@
         'default': deepmerge_1
     });
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     const deepmerge = (deepmerge_1 || _deepmerge);
     function clone(objectToClone) {
         if (!objectToClone)
@@ -986,6 +1004,10 @@
           : m1) * 255;
     }
 
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     function rgbToDeckglColor(c) {
         return [c.r, c.g, c.b, c.opacity * 255];
     }
@@ -1036,7 +1058,11 @@
         return rgbToDeckglColor(c);
     }
 
-    let vega = {
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
+    const vega = {
         CanvasHandler: null,
         inferType: null,
         inferTypes: null,
@@ -1048,9 +1074,9 @@
         sceneVisit: null,
         scheme: null,
         truncate: null,
-        View: null
+        View: null,
     };
-    let deck = {
+    const deck = {
         _CameraLight: null,
         AmbientLight: null,
         CompositeLayer: null,
@@ -1064,19 +1090,19 @@
         OrbitController: null,
         gouraudLighting: null,
         picking: null,
-        project32: null
+        project32: null,
     };
-    let layers = {
+    const layers = {
         IconLayer: null,
         LineLayer: null,
         PathLayer: null,
         PolygonLayer: null,
-        TextLayer: null
+        TextLayer: null,
     };
-    let luma = {
+    const luma = {
         CubeGeometry: null,
         Model: null,
-        Texture2D: null
+        Texture2D: null,
     };
     /**
      * References to dependency libraries.
@@ -1085,7 +1111,7 @@
         deck,
         layers,
         luma,
-        vega
+        vega,
     };
     /**
      * Specify the dependency libraries to use for rendering.
@@ -1138,6 +1164,10 @@ void main(void) {
 }
 `;
 
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     const minHeight = '100px';
     const minWidth = '100px';
     // const lightSettings: { [view in View]: LightSettings } = {
@@ -1164,8 +1194,8 @@ void main(void) {
             color: 100,
             position: 600,
             size: 600,
-            view: 600
-        }
+            view: 600,
+        },
     };
     function createStage(view) {
         const stage = {
@@ -1181,9 +1211,9 @@ void main(void) {
             gridLines: [],
             textData: [],
             legend: {
-                rows: {}
+                rows: {},
             },
-            facets: []
+            facets: [],
         };
         return stage;
     }
@@ -1267,7 +1297,7 @@ void main(void) {
         getSize: x => x.size,
         getPosition: x => x.position,
         getColor: x => x.color,
-        material: { ambient: 0.5, diffuse: 1 }
+        material: { ambient: 0.5, diffuse: 1 },
     };
     function _CubeLayer(props) {
         //dynamic superclass, since we don't know have deck.Layer in the declaration phase
@@ -1282,20 +1312,20 @@ void main(void) {
                         size: 3,
                         type: DOUBLE,
                         transition: true,
-                        accessor: 'getPosition'
+                        accessor: 'getPosition',
                     },
                     instanceSizes: {
                         size: 3,
                         transition: true,
-                        accessor: 'getSize'
+                        accessor: 'getSize',
                     },
                     instanceColors: {
                         size: 4,
                         type: UNSIGNED_BYTE,
                         transition: true,
                         accessor: 'getColor',
-                        defaultValue: DEFAULT_COLOR
-                    }
+                        defaultValue: DEFAULT_COLOR,
+                    },
                 });
             }
             updateState({ props, oldProps, changeFlags }) {
@@ -1324,7 +1354,7 @@ void main(void) {
                     lightingMix = this.props.interpolator.layerInterpolatedProps.lightingMix;
                 }
                 this.state.model.setUniforms(Object.assign({}, uniforms, {
-                    lightingMix
+                    lightingMix,
                 })).draw();
             }
         }
@@ -1350,14 +1380,20 @@ void main(void) {
       return ((t *= 2) <= 1 ? tpmt(1 - t) : 2 - tpmt(t - 1)) / 2;
     }
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     function easing(t) {
         if (t === 0 || t === 1)
             return t;
         return expInOut(t);
     }
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     function getLayers(presenter, config, stage, lightSettings /*LightSettings*/, lightingMix, interpolator, guideLines) {
         const cubeLayer = newCubeLayer(presenter, config, stage.cubeData, presenter.style.highlightColor, lightSettings, lightingMix, interpolator);
         const { x, y, z } = stage.axes;
@@ -1425,8 +1461,8 @@ void main(void) {
             transitions: {
                 getPosition,
                 getColor,
-                getSize
-            }
+                getSize,
+            },
         };
         return new CubeLayer(cubeLayerProps);
     }
@@ -1437,7 +1473,7 @@ void main(void) {
             widthUnits: 'pixels',
             coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
             getColor: (o) => o.color,
-            getWidth: (o) => o.strokeWidth
+            getWidth: (o) => o.strokeWidth,
         });
     }
     function newPathLayer(id, data) {
@@ -1453,13 +1489,13 @@ void main(void) {
             coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
             getPath: (o) => o.positions,
             getColor: (o) => o.strokeColor,
-            getWidth: (o) => o.strokeWidth
+            getWidth: (o) => o.strokeWidth,
         });
     }
     function newPolygonLayer(id, data) {
         if (!data)
             return null;
-        let newlayer = new base.layers.PolygonLayer({
+        const newlayer = new base.layers.PolygonLayer({
             id,
             data,
             coordinateSystem: base.deck.COORDINATE_SYSTEM.CARTESIAN,
@@ -1472,7 +1508,7 @@ void main(void) {
             pickable: true,
             extruded: true,
             getElevation: (o) => o.depth,
-            getLineWidth: (o) => o.strokeWidth
+            getLineWidth: (o) => o.strokeWidth,
         });
         return newlayer;
     }
@@ -1498,7 +1534,7 @@ void main(void) {
                 }
             },
             onClick: (o, e) => {
-                let pe = e && e.srcEvent;
+                const pe = e && e.srcEvent;
                 config.onTextClick && config.onTextClick(pe, o.object);
             },
             onHover: (o, e) => {
@@ -1516,9 +1552,9 @@ void main(void) {
             fontSettings: {
                 sdf: false,
                 fontSize: 128,
-                buffer: 3
+                buffer: 3,
             },
-            _subLayerProps: { characters: { alphaCutoff } }
+            _subLayerProps: { characters: { alphaCutoff } },
         };
         if (fontFamily) {
             props.fontFamily = fontFamily;
@@ -1530,7 +1566,7 @@ void main(void) {
         if (duration) {
             timing = {
                 duration,
-                type: 'interpolation'
+                type: 'interpolation',
             };
             if (easing) {
                 timing.easing = easing;
@@ -1549,7 +1585,10 @@ void main(void) {
         return cubeLayerProps.data;
     }
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
 
     var util = /*#__PURE__*/Object.freeze({
         __proto__: null,
@@ -1573,6 +1612,10 @@ void main(void) {
         setActiveElement: setActiveElement
     });
 
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     function createOrbitControllerClass(factoryOptions) {
         function wrapper(props) {
             class OrbitControllerInternal extends base.deck.OrbitController {
@@ -1595,13 +1638,17 @@ void main(void) {
         return wrapper;
     }
 
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     //adapted from https://github.com/uber/deck.gl/blob/5.3-release/modules/lite/src/deckgl.js
     const CANVAS_STYLE = {
         position: 'absolute',
         left: 0,
         top: 0,
         width: '100%',
-        height: '100%'
+        height: '100%',
     };
     // Create canvas elements for map and deck
     function createCanvas(props) {
@@ -1648,7 +1695,7 @@ void main(void) {
                         height: '100%',
                         canvas: deckCanvas,
                         controller: OrbitControllerClass,
-                        initialViewState: viewState
+                        initialViewState: viewState,
                     }));
                     // Callback for the controller
                     this._updateViewState = params => {
@@ -1673,11 +1720,14 @@ void main(void) {
         }
         return {
             OrbitControllerClass,
-            DeckGL_Class: wrapper
+            DeckGL_Class: wrapper,
         };
     }
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     function wrapper(props) {
         class LinearInterpolatorInternal extends base.deck.LinearInterpolator {
             constructor(transitionProps) {
@@ -1695,15 +1745,18 @@ void main(void) {
     }
     const LinearInterpolator = wrapper;
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     function lightingEffects() {
         const ambientLight = new base.deck.AmbientLight({
             color: [255, 255, 255],
-            intensity: 0.3
+            intensity: 0.3,
         });
         const cameraLight = new base.deck._CameraLight({
             color: [255, 255, 255],
-            intensity: 1
+            intensity: 1,
         });
         // const directionalLight = new base.deck.DirectionalLight({
         //     color: [255, 255, 255],
@@ -1713,8 +1766,10 @@ void main(void) {
         return [new base.deck.LightingEffect({ ambientLight, cameraLight })];
     }
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
-    // Licensed under the MIT license.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     /**
      * HTML elements outputted by the presenter.
      */
@@ -1727,7 +1782,10 @@ void main(void) {
         PresenterElement[PresenterElement["vegaControls"] = 4] = "vegaControls";
     })(exports.PresenterElement || (exports.PresenterElement = {}));
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     const LegendView = (props) => {
         const rows = [];
         const addRow = (row, i) => {
@@ -1743,11 +1801,11 @@ void main(void) {
             rows.push({
                 cells: [
                     { className: 'symbol', content: jsx },
-                    { className: 'label', content: row.label, title: row.label }
-                ]
+                    { className: 'label', content: row.label, title: row.label },
+                ],
             });
         };
-        var sorted = Object.keys(props.legend.rows).sort((a, b) => +a - +b);
+        const sorted = Object.keys(props.legend.rows).sort((a, b) => +a - +b);
         sorted.forEach(i => addRow(props.legend.rows[i]));
         if (sorted.length) {
             return (createElement(Table, { rows: rows, rowClassName: "legend-row", onRowClick: (e, i) => props.onClick(e, props.legend, i) }, props.legend.title !== undefined && (createElement("tr", { tabIndex: props.onClick ? 0 : -1, onClick: e => props.onClick(e, props.legend, null), onKeyUp: e => {
@@ -1764,13 +1822,17 @@ void main(void) {
                     height: `${symbol.bounds.y2 - symbol.bounds.y1}px`,
                     width: `${symbol.bounds.x2 - symbol.bounds.x1}px`,
                     backgroundColor: symbol.fill,
-                    borderColor: symbol.fill
+                    borderColor: symbol.fill,
                 } }));
-        }
+        },
     };
 
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     function zSwap(v3) {
-        let temp = -v3[1]; //negeative y to positive z
+        const temp = -v3[1]; //negeative y to positive z
         if (v3[0] === lineZ) {
             v3[0] = 0;
         }
@@ -1778,7 +1840,10 @@ void main(void) {
         v3[2] = temp;
     }
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     const markStager$5 = (options, stage, scene, x, y, groupType) => {
         base.vega.sceneVisit(scene, function (item) {
             const x1 = item.x || 0;
@@ -1810,7 +1875,7 @@ void main(void) {
             sourcePosition: [x1, -y1, lineZ],
             targetPosition: [x2, -y2, lineZ],
             color: colorFromString(stroke),
-            strokeWidth: strokeWidth
+            strokeWidth: strokeWidth,
         };
         return line;
     }
@@ -1819,7 +1884,7 @@ void main(void) {
             styledLine(gx, gy, gx + width, gy, stroke, strokeWidth),
             styledLine(gx + width, gy, gx + width, gy + height, stroke, strokeWidth),
             styledLine(gx + width, gy + height, gx, gy + height, stroke, strokeWidth),
-            styledLine(gx, gy + height, gx, gy, stroke, strokeWidth)
+            styledLine(gx, gy + height, gx, gy, stroke, strokeWidth),
         ];
         if (diagonals) {
             lines.push(styledLine(gx, gy, gx + width, gy + height, stroke, strokeWidth));
@@ -1828,7 +1893,10 @@ void main(void) {
         return lines;
     }
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     function initializePanel(presenter) {
         const rootDiv = (createElement("div", { className: className(exports.PresenterElement.root, presenter) },
             createElement("div", { className: className(exports.PresenterElement.gl, presenter), style: { minHeight, minWidth } }),
@@ -1841,6 +1909,10 @@ void main(void) {
         return `${presenter.style.cssPrefix}${exports.PresenterElement[type]}`;
     }
 
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     function patchCubeArray(allocatedSize, empty, cubes) {
         const patched = new Array(allocatedSize);
         patched.fill(empty);
@@ -1848,7 +1920,10 @@ void main(void) {
         return patched;
     }
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     const legendMap = {
         'legend-title': function (legend, textItem) {
             legend.title = textItem.text;
@@ -1867,7 +1942,7 @@ void main(void) {
             const row = legend.rows[i];
             row.label = label.text;
             row.value = label.datum.value;
-        }
+        },
     };
     const markStager$4 = (options, stage, scene, x, y, groupType) => {
         base.vega.sceneVisit(scene, function (item) {
@@ -1878,7 +1953,10 @@ void main(void) {
         });
     };
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     const markStager$3 = (options, stage, scene, x, y, groupType) => {
         base.vega.sceneVisit(scene, function (item) {
             //for orthographic (2d) - always use 0 or else Deck will not show them
@@ -1886,7 +1964,7 @@ void main(void) {
             const depth = (stage.view === '2d' ? 0 : (item.depth || 0)) + min3dDepth;
             //change direction of y from SVG to GL
             const ty = -1;
-            let ordinal = options.assignCubeOrdinal(item.datum);
+            const ordinal = options.assignCubeOrdinal(item.datum);
             if (ordinal > options.maxOrdinal) {
                 options.maxOrdinal = ordinal;
             }
@@ -1896,7 +1974,7 @@ void main(void) {
                     ordinal,
                     size: [item.width, item.height, depth],
                     position: [x + (item.x || 0), ty * (y + (item.y || 0)) - item.height, z],
-                    color: colorFromString(item.fill) || options.defaultCubeColor || [128, 128, 128, 128]
+                    color: colorFromString(item.fill) || options.defaultCubeColor || [128, 128, 128, 128],
                 };
                 cube.color[3] = item.opacity === undefined ? 255 : 255 * item.opacity;
                 stage.cubeData.push(cube);
@@ -1904,6 +1982,10 @@ void main(void) {
         });
     };
 
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     //change direction of y from SVG to GL
     const ty$1 = -1;
     const markStager$2 = (options, stage, scene, x, y, groupType) => {
@@ -1914,14 +1996,18 @@ void main(void) {
             positions: scene.items.map((it) => [
                 it.x,
                 ty$1 * it.y,
-                it.z || 0
-            ])
+                it.z || 0,
+            ]),
         };
         path.strokeColor[3] *= g.strokeOpacity;
         path.strokeColor[3] *= g.opacity;
         stage.pathData.push(path);
     };
 
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     const markStager$1 = (options, stage, scene, x, y, groupType) => {
         //scale Deck.Gl text to Vega size
         const fontScale = 1;
@@ -1941,7 +2027,7 @@ void main(void) {
                 angle: convertAngle(item.angle),
                 textAnchor: convertAlignment(item.align),
                 alignmentBaseline,
-                metaData: item.metaData
+                metaData: item.metaData,
             };
             if (item.mark.role === 'axis-label') {
                 const tickText = textItem;
@@ -1983,6 +2069,10 @@ void main(void) {
         return baseline || 'bottom';
     }
 
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     //change direction of y from SVG to GL
     const ty = -1;
     const markStager = (options, stage, scene, x, y, groupType) => {
@@ -1996,11 +2086,11 @@ void main(void) {
                 item.z,
                 item.x2,
                 ty * item.y2,
-                item.z2
+                item.z2,
             ];
         });
-        let positions = [];
-        let startpoint = [points[0][0], points[0][1], points[0][2]];
+        const positions = [];
+        const startpoint = [points[0][0], points[0][1], points[0][2]];
         points.forEach(p => {
             positions.push([p[0], p[1], p[2]]);
         });
@@ -2013,7 +2103,7 @@ void main(void) {
             positions,
             strokeColor: colorFromString(g.stroke) || [0, 0, 0, 0],
             strokeWidth: g.strokeWidth,
-            depth: g.depth
+            depth: g.depth,
         };
         polygon.fillColor[3] *= g.fillOpacity;
         polygon.fillColor[3] *= g.opacity;
@@ -2022,6 +2112,10 @@ void main(void) {
         stage.polygonData.push(polygon);
     };
 
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     var GroupType;
     (function (GroupType) {
         GroupType[GroupType["none"] = 0] = "none";
@@ -2031,7 +2125,10 @@ void main(void) {
         GroupType[GroupType["zAxis"] = 4] = "zAxis";
     })(GroupType || (GroupType = {}));
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     function getOrientItem(group) {
         if (group.orient) {
             return group;
@@ -2067,7 +2164,7 @@ void main(void) {
             if (g.stroke) {
                 const facetRect = {
                     datum: g.datum,
-                    lines: box(gx + x, gy + y, g.height, g.width, g.stroke, groupStrokeWidth)
+                    lines: box(gx + x, gy + y, g.height, g.width, g.stroke, groupStrokeWidth),
                 };
                 stage.facets.push(facetRect);
             }
@@ -2102,7 +2199,7 @@ void main(void) {
             domain: null,
             tickText: [],
             ticks: [],
-            role
+            role,
         };
         axes.push(options.currAxis);
     }
@@ -2113,7 +2210,7 @@ void main(void) {
         rule: markStager$5,
         line: markStager$2,
         area: markStager,
-        text: markStager$1
+        text: markStager$1,
     };
     const mainStager = (options, stage, scene, x, y, groupType) => {
         if (scene.marktype !== 'group' && groupType === GroupType.legend) {
@@ -2147,6 +2244,10 @@ void main(void) {
         }
     }
 
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     const viewStateProps = ['target', 'rotationOrbit', 'rotationX', 'zoom'];
     function targetViewState(height, width, view) {
         const target = [width / 2, -height / 2, 0];
@@ -2155,7 +2256,7 @@ void main(void) {
                 target,
                 rotationOrbit: 0,
                 rotationX: 90,
-                zoom: -0.2
+                zoom: -0.2,
             };
         }
         else {
@@ -2163,12 +2264,15 @@ void main(void) {
                 target,
                 rotationOrbit: 25,
                 rotationX: 30,
-                zoom: -0.4
+                zoom: -0.4,
             };
         }
     }
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     /**
      * Class which presents a Stage of chart data using Deck.gl to render.
      */
@@ -2248,14 +2352,14 @@ void main(void) {
          */
         present(sceneOrStage, height, width, config) {
             this.animationCancel();
-            let scene = sceneOrStage;
+            const scene = sceneOrStage;
             let stage;
-            let options = {
+            const options = {
                 maxOrdinal: 0,
                 currAxis: null,
                 defaultCubeColor: this.style.defaultCubeColor,
                 assignCubeOrdinal: (config === null || config === void 0 ? void 0 : config.onSceneRectAssignCubeOrdinal) || (() => options.maxOrdinal++),
-                zAxisZindex: config === null || config === void 0 ? void 0 : config.zAxisZindex
+                zAxisZindex: config === null || config === void 0 ? void 0 : config.zAxisZindex,
             };
             //determine if this is a vega scene
             if (scene.marktype) {
@@ -2269,7 +2373,7 @@ void main(void) {
                 const classes = createDeckGLClassesForPresenter({
                     doubleClickHandler: () => {
                         this.homeCamera();
-                    }
+                    },
                 });
                 this.OrbitControllerClass = classes.OrbitControllerClass;
                 const initialViewState = targetViewState(height, width, stage.view);
@@ -2297,7 +2401,7 @@ void main(void) {
                         else {
                             return 'grab';
                         }
-                    }
+                    },
                 };
                 if (stage.backgroundColor) {
                     deckProps.style = { 'background-color': colorToString(stage.backgroundColor) };
@@ -2309,7 +2413,7 @@ void main(void) {
                 cubeCount = Math.max(cubeCount, options.maxOrdinal);
                 const empty = {
                     isEmpty: true,
-                    color: [0, 0, 0, 0] // possibly a bug in Deck.gl? set color to invisible.
+                    color: [0, 0, 0, 0], // possibly a bug in Deck.gl? set color to invisible.
                 };
                 stage.cubeData = patchCubeArray(cubeCount, empty, stage.cubeData);
             }
@@ -2333,12 +2437,12 @@ void main(void) {
         }
         isNewBounds(view, height, width, cubeCount) {
             const lastBounds = this.lastBounds();
-            for (let prop in lastBounds) {
+            for (const prop in lastBounds) {
                 if (lastBounds[prop] === null)
                     return true;
             }
             const newBounds = { cubeCount, height, view, width };
-            for (let prop in lastBounds) {
+            for (const prop in lastBounds) {
                 if (lastBounds[prop] !== newBounds[prop])
                     return true;
             }
@@ -2351,7 +2455,7 @@ void main(void) {
             const config = deepMerge(defaultPresenterConfig, modifyConfig);
             const newBounds = this.isNewBounds(stage.view, height, width, cubeCount);
             //let lightSettings = this.style.lightSettings[stage.view];
-            let lightingMix = stage.view === '3d' ? 1.0 : 0.0;
+            const lightingMix = stage.view === '3d' ? 1.0 : 0.0;
             let linearInterpolator;
             //choose the current OrbitView viewstate if possible
             let viewState = (this.deckgl.viewState && Object.keys(this.deckgl.viewState).length && this.deckgl.viewState.OrbitView)
@@ -2388,7 +2492,7 @@ void main(void) {
                 effects: lightingEffects(),
                 views: [new base.deck.OrbitView({ controller: base.deck.OrbitController })],
                 initialViewState: viewState,
-                layers
+                layers,
             };
             if (config && config.preStage) {
                 config.preStage(stage, deckProps);
@@ -2404,7 +2508,7 @@ void main(void) {
                 height,
                 width,
                 stage: stage,
-                view: stage.view
+                view: stage.view,
             };
         }
         canvasToDataURL() {
@@ -2428,7 +2532,7 @@ void main(void) {
                 effects: lightingEffects(),
                 views: this.deckgl.props.views,
                 initialViewState: viewState,
-                layers: this.deckgl.props.layers
+                layers: this.deckgl.props.layers,
             };
             this.deckgl.setProps(deckProps);
         }
@@ -2460,7 +2564,10 @@ void main(void) {
         }
     }
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     //pass in the SuperClass, which should be a vega.View
     function _RendererGl(loader) {
         //dynamic superclass, since we don't know have vega.View in the declaration phase
@@ -2498,7 +2605,10 @@ void main(void) {
      */
     const RendererGl = _RendererGl;
 
-    // Copyright (c) Microsoft Corporation. All rights reserved.
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     let registered = false;
     //dynamic superclass lets us create a subclass at execution phase instead of declaration phase.
     //This allows us to retrieve vega.View from either UMD or ES6 consumers of this class.

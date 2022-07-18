@@ -4,9 +4,6 @@ import { use } from './base';
 import { fluentUI } from './fluentUIComponents';
 import { SandDanceApp } from './sanddanceApp';
 import { DataSource, InsightMap } from './types';
-import * as deck from '@deck.gl/core';
-import * as layers from '@deck.gl/layers';
-import * as luma from '@luma.gl/core';
 import * as SandDanceExplorer from '@msrvida/sanddance-explorer';
 import {
     ColorSettings,
@@ -18,7 +15,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as vega from 'vega';
 
-use(fluentUI, vega, deck, layers, luma);
+use(fluentUI, vega);
 
 const staticContent = Array.from(
     document.querySelectorAll<HTMLAnchorElement>('a.sanddance-app-static-content'),

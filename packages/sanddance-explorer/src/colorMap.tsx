@@ -16,14 +16,14 @@ function ensureToolbar(panel: HTMLElement) {
     if (existing.length > 0) {
         return existing[0];
     } else {
-        const div = SandDance.VegaDeckGl.util.addDiv(panel, className);
+        const div = SandDance.VegaMorphCharts.util.addDiv(panel, className);
         panel.insertAdjacentElement('afterbegin', div);
         return div;
     }
 }
 
-export function applyColorButtons(presenter: SandDance.VegaDeckGl.Presenter, showLegend: boolean, props: Props) {
-    const panel = presenter.getElement(SandDance.VegaDeckGl.PresenterElement.panel);
+export function applyColorButtons(presenter: SandDance.VegaMorphCharts.Presenter, showLegend: boolean, props: Props) {
+    const panel = presenter.getElement(SandDance.VegaMorphCharts.PresenterElement.panel);
     const div = ensureToolbar(panel);
     base.reactDOM.render(ColorMap(props), div);
 
@@ -31,10 +31,10 @@ export function applyColorButtons(presenter: SandDance.VegaDeckGl.Presenter, sho
 }
 
 export interface Props {
-  canRemap?: boolean;
-  colorMapHandler: { (remap: boolean): void };
-  isRemap: boolean;
-  themePalette: Partial<FluentUITypes.IPalette>;
+    canRemap?: boolean;
+    colorMapHandler: { (remap: boolean): void };
+    isRemap: boolean;
+    themePalette: Partial<FluentUITypes.IPalette>;
 }
 
 function ColorMap(props: Props) {
@@ -57,6 +57,11 @@ function ColorMap(props: Props) {
     return (
         <div>
             <IconButton
+                styles={{
+                    menuIcon: {
+                        display: 'none',
+                    },
+                }}
                 themePalette={props.themePalette}
                 title={strings.buttonColorSchemeMap}
                 onClick={null}

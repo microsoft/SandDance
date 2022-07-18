@@ -3,7 +3,7 @@
 * Licensed under the MIT License.
 */
 
-import * as SandDance from '@msrvida/sanddance';
+import { Column } from '@msrvida/chart-types';
 import {
     defaultColorScheme,
     maxCategoricalColors,
@@ -18,7 +18,7 @@ const minDistinctVal = 2;
 export class BarChartRecommenderSummary {
     public best: Recommendation;
 
-    constructor(columns: SandDance.types.Column[], data: object[]) {
+    constructor(columns: Column[], data: object[]) {
         let score: number = -1;
         for (let i = 0; i < columns.length; i++) {
             const recommendation = new BarChartRecommender(columns[i], data).recommend();
@@ -51,10 +51,10 @@ export class BarChartRecommenderSummary {
 
 export class BarChartRecommender implements Recommender {
     public rules: Rule[];
-    public column: SandDance.types.Column;
+    public column: Column;
     public score: number;
 
-    constructor(column: SandDance.types.Column, data: object[]) {
+    constructor(column: Column, data: object[]) {
         this.score = 0;
         this.column = column;
         //the total score for bar chart is 1
