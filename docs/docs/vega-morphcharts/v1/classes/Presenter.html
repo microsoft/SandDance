@@ -1,0 +1,649 @@
+---
+layout: typedoc
+title: 'Presenter | @msrvida/vega-morphcharts'
+---
+<header>
+<div class="tsd-page-title">
+	<div class="typedoc-container">
+		<ul class="tsd-breadcrumb">
+			<li>
+				<a href="../modules.html">@msrvida/vega-morphcharts</a>
+			</li>
+			<li>
+				<a href="Presenter.html">Presenter</a>
+			</li>
+		</ul>
+		<h1>Class Presenter</h1>
+	</div>
+</div>
+</header>
+<div class="container container-main">
+<div class="row">
+	<div class="col-8 col-content">
+		<section class="tsd-panel tsd-comment">
+			<div class="tsd-comment tsd-typography">
+				<div class="lead">
+					<p>Class which presents a Stage of chart data using MorphCharts to render.</p>
+				</div>
+			</div>
+		</section>
+		<section class="tsd-panel tsd-hierarchy">
+			<h3>Hierarchy</h3>
+			<ul class="tsd-hierarchy">
+				<li>
+					<span class="target">Presenter</span>
+				</li>
+			</ul>
+		</section>
+		<section class="tsd-panel-group tsd-index-group">
+			<h2>Index</h2>
+			<section class="tsd-panel tsd-index-panel">
+				<div class="tsd-index-content">
+					<section class="tsd-index-section ">
+						<h3>Constructors</h3>
+						<ul class="tsd-index-list">
+							<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="Presenter.html#constructor" class="tsd-kind-icon">constructor</a></li>
+						</ul>
+					</section>
+					<section class="tsd-index-section ">
+						<h3>Properties</h3>
+						<ul class="tsd-index-list">
+							<li class="tsd-kind-property tsd-parent-kind-class"><a href="Presenter.html#animationTimer" class="tsd-kind-icon">animation<wbr>Timer</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class"><a href="Presenter.html#el" class="tsd-kind-icon">el</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class"><a href="Presenter.html#logger" class="tsd-kind-icon">logger</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class"><a href="Presenter.html#mcRenderResult" class="tsd-kind-icon">mc<wbr>Render<wbr>Result</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class"><a href="Presenter.html#morphchartsref" class="tsd-kind-icon">morphchartsref</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class"><a href="Presenter.html#style" class="tsd-kind-icon">style</a></li>
+						</ul>
+					</section>
+					<section class="tsd-index-section ">
+						<h3>Accessors</h3>
+						<ul class="tsd-index-list">
+							<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="Presenter.html#stage" class="tsd-kind-icon">stage</a></li>
+							<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="Presenter.html#view" class="tsd-kind-icon">view</a></li>
+						</ul>
+					</section>
+					<section class="tsd-index-section ">
+						<h3>Methods</h3>
+						<ul class="tsd-index-list">
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="Presenter.html#animationCancel" class="tsd-kind-icon">animation<wbr>Cancel</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="Presenter.html#animationQueue" class="tsd-kind-icon">animation<wbr>Queue</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="Presenter.html#canvasToDataURL" class="tsd-kind-icon">canvas<wbr>ToDataURL</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="Presenter.html#configColors" class="tsd-kind-icon">config<wbr>Colors</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="Presenter.html#finalize" class="tsd-kind-icon">finalize</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="Presenter.html#getElement" class="tsd-kind-icon">get<wbr>Element</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="Presenter.html#homeCamera" class="tsd-kind-icon">home<wbr>Camera</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="Presenter.html#present" class="tsd-kind-icon">present</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="Presenter.html#showGuides" class="tsd-kind-icon">show<wbr>Guides</a></li>
+						</ul>
+					</section>
+				</div>
+			</section>
+		</section>
+		<section class="tsd-panel-group tsd-member-group ">
+			<h2>Constructors</h2>
+			<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+				<a name="constructor" class="tsd-anchor"></a>
+				<h3>constructor</h3>
+				<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">new <wbr>Presenter<span class="tsd-signature-symbol">(</span>el<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, style<span class="tsd-signature-symbol">?: </span><a href="../interfaces/types.PresenterStyle.html" class="tsd-signature-type" data-tsd-kind="Interface">PresenterStyle</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Presenter.html" class="tsd-signature-type" data-tsd-kind="Class">Presenter</a></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/presenter.ts#L90">src/presenter.ts:90</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Instantiate a new Presenter.</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>el: <span class="tsd-signature-type">HTMLElement</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Parent HTMLElement to present within.</p>
+									</div>
+								</div>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> style: <a href="../interfaces/types.PresenterStyle.html" class="tsd-signature-type" data-tsd-kind="Interface">PresenterStyle</a></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Optional PresenterStyle styling options.</p>
+									</div>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <a href="Presenter.html" class="tsd-signature-type" data-tsd-kind="Class">Presenter</a></h4>
+					</li>
+				</ul>
+			</section>
+		</section>
+		<section class="tsd-panel-group tsd-member-group ">
+			<h2>Properties</h2>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<a name="animationTimer" class="tsd-anchor"></a>
+				<h3>animation<wbr>Timer</h3>
+				<div class="tsd-signature tsd-kind-icon">animation<wbr>Timer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/presenter.ts#L43">src/presenter.ts:43</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Handle of the timer for animation.</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<a name="el" class="tsd-anchor"></a>
+				<h3>el</h3>
+				<div class="tsd-signature tsd-kind-icon">el<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
+				<aside class="tsd-sources">
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<a name="logger" class="tsd-anchor"></a>
+				<h3>logger</h3>
+				<div class="tsd-signature tsd-kind-icon">logger<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, <span class="tsd-signature-symbol">...</span>optionalParams<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/presenter.ts#L58">src/presenter.ts:58</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Logger, such as console.log</p>
+					</div>
+				</div>
+				<div class="tsd-type-declaration">
+					<h4>Type declaration</h4>
+					<ul class="tsd-parameters">
+						<li class="tsd-parameter-signature">
+							<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-class">
+								<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, <span class="tsd-signature-symbol">...</span>optionalParams<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+							</ul>
+							<ul class="tsd-descriptions">
+								<li class="tsd-description">
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>Logger, such as console.log</p>
+										</div>
+									</div>
+									<h4 class="tsd-parameters-title">Parameters</h4>
+									<ul class="tsd-parameters">
+										<li>
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> message: <span class="tsd-signature-type">any</span></h5>
+										</li>
+										<li>
+											<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>optionalParams: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+										</li>
+									</ul>
+									<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<a name="mcRenderResult" class="tsd-anchor"></a>
+				<h3>mc<wbr>Render<wbr>Result</h3>
+				<div class="tsd-signature tsd-kind-icon">mc<wbr>Render<wbr>Result<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">MorphChartsRendering</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/presenter.ts#L53">src/presenter.ts:53</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Handle to recent MorphCharts rendering result.</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<a name="morphchartsref" class="tsd-anchor"></a>
+				<h3>morphchartsref</h3>
+				<div class="tsd-signature tsd-kind-icon">morphchartsref<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">MorphChartsRef</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/presenter.ts#L48">src/presenter.ts:48</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>MorphCharts instance for rendering WebGL.</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<a name="style" class="tsd-anchor"></a>
+				<h3>style</h3>
+				<div class="tsd-signature tsd-kind-icon">style<span class="tsd-signature-symbol">:</span> <a href="../interfaces/types.PresenterStyle.html" class="tsd-signature-type" data-tsd-kind="Interface">PresenterStyle</a></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/presenter.ts#L70">src/presenter.ts:70</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Options for styling the output.</p>
+					</div>
+				</div>
+			</section>
+		</section>
+		<section class="tsd-panel-group tsd-member-group ">
+			<h2>Accessors</h2>
+			<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+				<a name="stage" class="tsd-anchor"></a>
+				<h3>stage</h3>
+				<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> stage<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/types.Stage.html" class="tsd-signature-type" data-tsd-kind="Interface">Stage</a></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/presenter.ts#L63">src/presenter.ts:63</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Get the previously rendered Stage object.</p>
+							</div>
+						</div>
+						<h4 class="tsd-returns-title">Returns <a href="../interfaces/types.Stage.html" class="tsd-signature-type" data-tsd-kind="Interface">Stage</a></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+				<a name="view" class="tsd-anchor"></a>
+				<h3>view</h3>
+				<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> view<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">View</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/presenter.ts#L75">src/presenter.ts:75</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Get the current View camera type.</p>
+							</div>
+						</div>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">View</span></h4>
+					</li>
+				</ul>
+			</section>
+		</section>
+		<section class="tsd-panel-group tsd-member-group ">
+			<h2>Methods</h2>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="animationCancel" class="tsd-anchor"></a>
+				<h3>animation<wbr>Cancel</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">animation<wbr>Cancel<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/presenter.ts#L99">src/presenter.ts:99</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Cancels any pending animation, calling animationCanceled() on original queue.</p>
+							</div>
+						</div>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="animationQueue" class="tsd-anchor"></a>
+				<h3>animation<wbr>Queue</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">animation<wbr>Queue<span class="tsd-signature-symbol">(</span>handler<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span>, timeout<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/types.QueuedAnimationOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">QueuedAnimationOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/presenter.ts#L118">src/presenter.ts:118</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Stops the current animation and queues a new animation.</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>handler: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Function to invoke when timeout is complete.</p>
+								</div>
+								<ul class="tsd-parameters">
+									<li class="tsd-parameter-signature">
+										<ul class="tsd-signatures tsd-kind-type-literal">
+											<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+										</ul>
+										<ul class="tsd-descriptions">
+											<li class="tsd-description">
+												<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<h5>timeout: <span class="tsd-signature-type">number</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Length of time to wait before invoking the handler.</p>
+								</div>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../interfaces/types.QueuedAnimationOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">QueuedAnimationOptions</a></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Optional QueuedAnimationOptions object.</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="canvasToDataURL" class="tsd-anchor"></a>
+				<h3>canvas<wbr>ToDataURL</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">canvas<wbr>ToDataURL<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/presenter.ts#L217">src/presenter.ts:217</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="configColors" class="tsd-anchor"></a>
+				<h3>config<wbr>Colors</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">config<wbr>Colors<span class="tsd-signature-symbol">(</span>mcColors<span class="tsd-signature-symbol">: </span><a href="../interfaces/types.McColors.html" class="tsd-signature-type" data-tsd-kind="Interface">McColors</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/presenter.ts#L228">src/presenter.ts:228</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>mcColors: <a href="../interfaces/types.McColors.html" class="tsd-signature-type" data-tsd-kind="Interface">McColors</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="finalize" class="tsd-anchor"></a>
+				<h3>finalize</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">finalize<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/presenter.ts#L247">src/presenter.ts:247</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="getElement" class="tsd-anchor"></a>
+				<h3>get<wbr>Element</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">get<wbr>Element<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><a href="../enums/PresenterElement.html" class="tsd-signature-type" data-tsd-kind="Enumeration">PresenterElement</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/presenter.ts#L135">src/presenter.ts:135</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Retrieve a sub-element of the rendered output.</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>type: <a href="../enums/PresenterElement.html" class="tsd-signature-type" data-tsd-kind="Enumeration">PresenterElement</a></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>PresenterElement type of the HTMLElement to retrieve.</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="homeCamera" class="tsd-anchor"></a>
+				<h3>home<wbr>Camera</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">home<wbr>Camera<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/presenter.ts#L235">src/presenter.ts:235</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Home the camera to the last initial position.</p>
+							</div>
+						</div>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="present" class="tsd-anchor"></a>
+				<h3>present</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">present<span class="tsd-signature-symbol">(</span>sceneOrStage<span class="tsd-signature-symbol">: </span><a href="../interfaces/types.Stage.html" class="tsd-signature-type" data-tsd-kind="Interface">Stage</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/types.Scene3d.html" class="tsd-signature-type" data-tsd-kind="Interface">Scene3d</a>, height<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, config<span class="tsd-signature-symbol">?: </span><a href="../interfaces/types.PresenterConfig.html" class="tsd-signature-type" data-tsd-kind="Interface">PresenterConfig</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/presenter.ts#L149">src/presenter.ts:149</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Present the Vega Scene, or Stage object using Morphcharts.</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>sceneOrStage: <a href="../interfaces/types.Stage.html" class="tsd-signature-type" data-tsd-kind="Interface">Stage</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/types.Scene3d.html" class="tsd-signature-type" data-tsd-kind="Interface">Scene3d</a></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Vega Scene object, or Stage object containing chart layout info.</p>
+								</div>
+							</li>
+							<li>
+								<h5>height: <span class="tsd-signature-type">number</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Height of the rendering area.</p>
+								</div>
+							</li>
+							<li>
+								<h5>width: <span class="tsd-signature-type">number</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Width of the rendering area.</p>
+								</div>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> config: <a href="../interfaces/types.PresenterConfig.html" class="tsd-signature-type" data-tsd-kind="Interface">PresenterConfig</a></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Optional presentation configuration object.</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="showGuides" class="tsd-anchor"></a>
+				<h3>show<wbr>Guides</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">show<wbr>Guides<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/presenter.ts#L242">src/presenter.ts:242</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Show guidelines of rendering height/width and center of OrbitView.</p>
+							</div>
+						</div>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+		</section>
+	</div>
+	<div class="col-4 col-menu menu-highlight">
+		<nav class="tsd-navigation primary">
+			<ul>
+				<li class=" ">
+					<a href="../modules.html">Exports</a>
+				</li>
+			</ul>
+		</nav>
+		<nav class="tsd-navigation secondary">
+			<ul class="before-current">
+				<li class=" tsd-kind-enum">
+					<a href="../enums/PresenterElement.html" class="tsd-kind-icon">Presenter<wbr>Element</a>
+				</li>
+			</ul>
+			<ul class="current">
+				<li class="current tsd-kind-class">
+					<a href="Presenter.html" class="tsd-kind-icon">Presenter</a>
+					<ul>
+						<li class=" tsd-kind-constructor tsd-parent-kind-class">
+							<a href="Presenter.html#constructor" class="tsd-kind-icon">constructor</a>
+						</li>
+						<li class=" tsd-kind-property tsd-parent-kind-class">
+							<a href="Presenter.html#animationTimer" class="tsd-kind-icon">animation<wbr>Timer</a>
+						</li>
+						<li class=" tsd-kind-property tsd-parent-kind-class">
+							<a href="Presenter.html#el" class="tsd-kind-icon">el</a>
+						</li>
+						<li class=" tsd-kind-property tsd-parent-kind-class">
+							<a href="Presenter.html#logger" class="tsd-kind-icon">logger</a>
+						</li>
+						<li class=" tsd-kind-property tsd-parent-kind-class">
+							<a href="Presenter.html#mcRenderResult" class="tsd-kind-icon">mc<wbr>Render<wbr>Result</a>
+						</li>
+						<li class=" tsd-kind-property tsd-parent-kind-class">
+							<a href="Presenter.html#morphchartsref" class="tsd-kind-icon">morphchartsref</a>
+						</li>
+						<li class=" tsd-kind-property tsd-parent-kind-class">
+							<a href="Presenter.html#style" class="tsd-kind-icon">style</a>
+						</li>
+						<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+							<a href="Presenter.html#stage" class="tsd-kind-icon">stage</a>
+						</li>
+						<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+							<a href="Presenter.html#view" class="tsd-kind-icon">view</a>
+						</li>
+						<li class=" tsd-kind-method tsd-parent-kind-class">
+							<a href="Presenter.html#animationCancel" class="tsd-kind-icon">animation<wbr>Cancel</a>
+						</li>
+						<li class=" tsd-kind-method tsd-parent-kind-class">
+							<a href="Presenter.html#animationQueue" class="tsd-kind-icon">animation<wbr>Queue</a>
+						</li>
+						<li class=" tsd-kind-method tsd-parent-kind-class">
+							<a href="Presenter.html#canvasToDataURL" class="tsd-kind-icon">canvas<wbr>ToDataURL</a>
+						</li>
+						<li class=" tsd-kind-method tsd-parent-kind-class">
+							<a href="Presenter.html#configColors" class="tsd-kind-icon">config<wbr>Colors</a>
+						</li>
+						<li class=" tsd-kind-method tsd-parent-kind-class">
+							<a href="Presenter.html#finalize" class="tsd-kind-icon">finalize</a>
+						</li>
+						<li class=" tsd-kind-method tsd-parent-kind-class">
+							<a href="Presenter.html#getElement" class="tsd-kind-icon">get<wbr>Element</a>
+						</li>
+						<li class=" tsd-kind-method tsd-parent-kind-class">
+							<a href="Presenter.html#homeCamera" class="tsd-kind-icon">home<wbr>Camera</a>
+						</li>
+						<li class=" tsd-kind-method tsd-parent-kind-class">
+							<a href="Presenter.html#present" class="tsd-kind-icon">present</a>
+						</li>
+						<li class=" tsd-kind-method tsd-parent-kind-class">
+							<a href="Presenter.html#showGuides" class="tsd-kind-icon">show<wbr>Guides</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+			<ul class="after-current">
+				<li class=" tsd-kind-interface">
+					<a href="../interfaces/McRendererOptions.html" class="tsd-kind-icon">Mc<wbr>Renderer<wbr>Options</a>
+				</li>
+				<li class=" tsd-kind-type-alias">
+					<a href="../modules.html#RGBAColor" class="tsd-kind-icon">RGBAColor</a>
+				</li>
+				<li class=" tsd-kind-variable">
+					<a href="../modules.html#ViewGl" class="tsd-kind-icon">View<wbr>Gl</a>
+				</li>
+				<li class=" tsd-kind-variable">
+					<a href="../modules.html#base" class="tsd-kind-icon">base</a>
+				</li>
+				<li class=" tsd-kind-variable">
+					<a href="../modules.html#version" class="tsd-kind-icon">version</a>
+				</li>
+				<li class=" tsd-kind-function">
+					<a href="../modules.html#use" class="tsd-kind-icon">use</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</div>
+</div>
+<div class="overlay"></div>

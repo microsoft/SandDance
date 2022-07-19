@@ -16,7 +16,7 @@
   "Components": [
     {
       "tree": "sanddance",
-      "url": "/docs/sanddance/v3"
+      "url": "/docs/sanddance/v4"
     },
     {
       "tree": "sanddance-specs",
@@ -24,15 +24,20 @@
     },
     {
       "tree": "sanddance-react",
-      "url": "/docs/sanddance-react/v3"
+      "url": "/docs/sanddance-react/v4"
     },
     {
       "tree": "sanddance-explorer",
-      "url": "/docs/sanddance-explorer/v3"
+      "url": "/docs/sanddance-explorer/v4"
     },
     {
+      "tree": "vega-morphcharts",
+      "url": "/docs/vega-morphcharts/v1"
+    },
+    {
+      "hidden": true,
       "tree": "vega-deck.gl",
-      "url": "/docs/vega-deck.gl/v3"
+      "url": "/docs/vega-deck.gl/v1"
     }
   ],
   "Resources": [
@@ -41,8 +46,8 @@
       "url": "https://vega.github.io/"
     },
     {
-      "tree": "Deck.gl",
-      "url": "https://deck.gl/"
+      "tree": "MorphCharts",
+      "url": "https://morphcharts.com/"
     }
   ]
 }

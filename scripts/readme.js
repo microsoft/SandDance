@@ -36,6 +36,7 @@ const map = {
     "packages/sanddance-react/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-react')[0].url}/`,
     "packages/sanddance-explorer/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-explorer')[0].url}/`,
     "packages/vega-deck.gl/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='vega-deck.gl')[0].url}/`,
+    "packages/vega-morphcharts/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='vega-morphcharts')[0].url}/`,
 };
 
 //https://stackoverflow.com/questions/1144783/how-to-replace-all-occurrences-of-a-string-in-javascript

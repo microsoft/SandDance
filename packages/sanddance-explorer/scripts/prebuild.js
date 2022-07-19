@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const pubversion = 'v3';
+const pubversion = 'v4';
 
 let html = fs.readFileSync(`../../docs/embed/${pubversion}/sanddance-embed.html`, 'utf8');
 
