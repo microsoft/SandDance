@@ -64,6 +64,7 @@ SandDance is an offering of several JavaScript components:
 
 ## Changelog
 
+* July 2022 - Major version bump to v4: Now using MorphCharts.
 * June 2020 - Major version bump to v3: Now using Deck.gl@8.
 * December 2019 - Major version bump to v2: Now using Vega@5.
 * August 2019 - Initial release to AppSource (Power BI marketplace).
@@ -83,7 +84,7 @@ SandDance is an offering of several JavaScript components:
 
 ## Dependencies
 
-SandDance is created with open source libraries, using [Vega](https://vega.github.io) for chart layout and [Deck.gl](https://deck.gl) for WebGL rendering.
+SandDance is created with open source libraries, using [Vega](https://vega.github.io) for chart layout.
 
 ## Development
 
