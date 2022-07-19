@@ -33,6 +33,11 @@
     {
       "tree": "vega-morphcharts",
       "url": "/docs/vega-morphcharts/v1"
+    },
+    {
+      "hidden": true,
+      "tree": "vega-deck.gl",
+      "url": "/docs/vega-deck.gl/v1"
     }
   ],
   "Resources": [

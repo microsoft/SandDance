@@ -31,31 +31,32 @@ layout: default
 
                         <ul class="c-tree__submenu">
                             {% for branch in tree[1] %}
+                                {% if branch.hidden != true %}
+                                    {% assign page_url = page.url %}
+                                    {% assign page_num = page_url | size | minus: 1 %}
+                                    {% assign page_last_char = page_url | slice: page_num, page_num %}
+                                    {% if page_last_char == "/" %}
+                                        {% assign page_url = page_url | slice: 0, page_num %}
+                                    {% endif %}
 
-                            {% assign page_url = page.url %}
-                            {% assign page_num = page_url | size | minus: 1 %}
-                            {% assign page_last_char = page_url | slice: page_num, page_num %}
-                            {% if page_last_char == "/" %}
-                                {% assign page_url = page_url | slice: 0, page_num %}
-                            {% endif %}
+                                    {% assign branch_url = branch.url %}
+                                    {% assign branch_num = branch_url | size | minus: 1 %}
+                                    {% assign branch_last_char = branch_url | slice: branch_num, branch_num %}
+                                    {% if branch_last_char == "/" %}
+                                        {% assign branch_url = branch_url | slice: 0, branch_num %}
+                                    {% endif %}
+                                    {% if branch.url contains "https://" %}
+                                        {% assign branch_link = branch_url %}
+                                    {% else %}
+                                        {% capture branch_link %}{{ site.baseurl }}{{branch_url}}{% endcapture %}
+                                    {% endif %}
 
-                            {% assign branch_url = branch.url %}
-                            {% assign branch_num = branch_url | size | minus: 1 %}
-                            {% assign branch_last_char = branch_url | slice: branch_num, branch_num %}
-                            {% if branch_last_char == "/" %}
-                                {% assign branch_url = branch_url | slice: 0, branch_num %}
-                            {% endif %}
-                            {% if branch.url contains "https://" %}
-                                {% assign branch_link = branch_url %}
-                            {% else %}
-                                {% capture branch_link %}{{ site.baseurl }}{{branch_url}}{% endcapture %}
-                            {% endif %}
-
-                            <li class="c-tree__item {% if branch.url == match %} is-active{% endif %}">
-                                <a href="{{ branch_link }}" {% if branch.url == match %}class="is-active"{% endif %}>
-                                    {{ branch.tree }}
-                                </a>
-                            </li>
+                                    <li class="c-tree__item {% if branch.url == match %} is-active{% endif %}">
+                                        <a href="{{ branch_link }}" {% if branch.url == match %}class="is-active"{% endif %}>
+                                            {{ branch.tree }}
+                                        </a>
+                                    </li>
+                                {% endif %}
                             {% endfor %}
                         </ul>
 
