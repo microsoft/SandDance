@@ -4,7 +4,7 @@ Visually explore, understand, and present your data.
 
 ![sanddance-animation](https://user-images.githubusercontent.com/11507384/54236654-52d42800-44d1-11e9-859e-6c5d297a46d2.gif)
 
-[Demo](https://microsoft.github.io/SandDance/app) - [API Reference](https://microsoft.github.io/SandDance/docs/sanddance/v3)
+[Demo](https://microsoft.github.io/SandDance/app) - [API Reference](https://microsoft.github.io/SandDance/docs/sanddance/v4)
 
 ## Installation
 
@@ -14,15 +14,14 @@ You will need to consider how to load the libraries that `sanddance` depends on,
 
 Load dependencies via `<script>` tags in your HTML:
 ```html
-<script src="https://unpkg.com/vega@^5.11/build/vega.js" charset="utf-8"></script>
-<script src="https://unpkg.com/deck.gl@~6.4/deckgl.min.js"></script>
-<script src="https://unpkg.com/@msrvida/sanddance@^3/dist/umd/sanddance.js"></script>
+<script src="https://unpkg.com/vega@^5.20/build/vega.js" charset="utf-8"></script>
+<script src="https://unpkg.com/@msrvida/sanddance@^4/dist/umd/sanddance.js"></script>
 ```
 
 A global variable named `SandDance` will be available to you. In your JavaScript, call the `use` function to pass the dependency libraries:
 
 ```js
-SandDance.use(vega, deck, deck, luma);
+SandDance.use(vega);
 ```
 
 ## Installation via Node.js
@@ -30,26 +29,24 @@ SandDance.use(vega, deck, deck, luma);
 Add these to the `dependencies` section of your `package.json`, then run `npm install`:
 
 ```json
-"@deck.gl/core": "^8.3.7",
-"@deck.gl/layers": "^8.3.7",
-"@msrvida/sanddance": "^3",
-"@luma.gl/core": "^8.3.1",
-"vega": "^5.17.0"
+"@msrvida/sanddance": "^4",
+"vega": "^5.20"
 ```
 
-Import these in your JavaScript, then call the `use()` function to pass the dependency libraries to `SandDance.VegaDeckGl`:
+Import these in your JavaScript, then call the `use()` function to pass the dependency libraries to `SandDance.VegaMorphCharts`:
 
 ```js
-import * as deck from '@deck.gl/core';
-import * as layers from '@deck.gl/layers';
-import * as luma from '@luma.gl/core';
 import * as vega from 'vega';
 import * as SandDance from '@msrvida/sanddance';
 
-SandDance.use(vega, deck, layers, luma);
+SandDance.use(vega);
 ```
 
 ## Versions
+
+### 4.0.0 Changes
+
+* Use MorphCharts as WebGL engine
 
 ### 3.2.0 Changes
 
