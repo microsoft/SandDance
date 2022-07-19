@@ -1,6 +1,6 @@
 {
 	"name": "@msrvida/vega-morphcharts",
-	"version": "1.0.0-beta.0",
+	"version": "1.0.0",
 	"description": "MorphCharts renderer for Vega",
 	"main": "dist/es6/index.js",
 	"files": [
