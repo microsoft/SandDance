@@ -246,12 +246,22 @@ function _Explorer(_props: Props) {
             this.viewerOptions = {
                 ...SandDance.VegaMorphCharts.util.deepMerge(
                     defaultViewerOptions,
+                    {
+                        tooltipOptions: {
+                            prepareDataItem: (item => {
+                                const ret: object = {};
+                                for (const columnName in item) {
+                                    if (this.state.tooltipExclusions.indexOf(columnName) < 0) {
+                                        ret[columnName] = item[columnName];
+                                    }
+                                }
+                                return ret;
+                            })
+                        }
+                    },
                     this.viewerOptions,
                     viewerOptions,
                 ),
-                tooltipOptions: {
-                    exclude: columnName => this.state.tooltipExclusions.indexOf(columnName) >= 0,
-                },
                 onColorContextChange: () => this.manageColorToolbar(),
                 onDataFilter: (filter, filteredData) => {
                     const selectedItemIndex = { ...this.state.selectedItemIndex };

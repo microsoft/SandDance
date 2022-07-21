@@ -17,7 +17,7 @@ import { finalizeLegend } from './legend';
 import { assignOrdinals, getDataIndexOfCube } from './ordinal';
 import { getSearchGroupFromVegaValue } from './search';
 import { applySignalValues, extractSignalValuesFromView } from './signals';
-import { Tooltip } from './tooltip';
+import { cleanDataItem, Tooltip } from './tooltip';
 import {
     ColorContext,
     ColorSettings,
@@ -25,6 +25,8 @@ import {
     RenderOptions,
     RenderResult,
     SelectionState,
+    TooltipCreateOptions,
+    TooltipDestroyable,
     ViewerOptions,
 } from './types';
 import { Camera, Column } from '@msrvida/chart-types';
@@ -110,7 +112,7 @@ export class Viewer {
     private _dataScope: DataScope;
     private _animator: Animator;
     private _details: Details;
-    private _tooltip: Tooltip;
+    private _tooltip: TooltipDestroyable;
     private _shouldSaveColorContext: () => boolean;
     private _lastColorOptions: ColorSettings;
     private _characterSet: CharacterSet;
@@ -501,7 +503,8 @@ export class Viewer {
 
     private async _render(insight: Insight, data: object[], renderOptions: RenderOptions, forceNewCharacterSet: boolean) {
         if (this._tooltip) {
-            this._tooltip.finalize();
+            this._tooltip.destroy();
+            this._tooltip = null;
         }
         if (this._dataScope.setData(data, renderOptions.columns)) {
             //apply transform to the data
@@ -627,9 +630,10 @@ export class Viewer {
         this.select(search);
     }
 
-    private onCubeHover(e: MouseEvent | PointerEvent | TouchEvent, cube: VegaMorphCharts.types.Cube) {
+    private onCubeHover(event: MouseEvent | PointerEvent | TouchEvent, cube: VegaMorphCharts.types.Cube) {
         if (this._tooltip) {
-            this._tooltip.finalize();
+            this._tooltip.destroy();
+            this._tooltip = null;
         }
         if (!cube) {
             return;
@@ -637,13 +641,19 @@ export class Viewer {
         const currentData = this._dataScope.currentData();
         const index = getDataIndexOfCube(cube, currentData);
         if (index >= 0) {
-            this._tooltip = new Tooltip({
-                options: this.options.tooltipOptions,
-                item: currentData[index],
-                position: e as MouseEvent,
-                cssPrefix: this.presenter.style.cssPrefix,
-                finalized: () => this._tooltip = null,
-            });
+            const dataItem = cleanDataItem(this.options.tooltipOptions?.prepareDataItem(currentData[index]) || currentData[index]);
+            const tooltipCreateOptions: TooltipCreateOptions = {
+                dataItem,
+                event,
+            };
+            if (this.options.tooltipOptions?.create) {
+                this._tooltip = this.options.tooltipOptions.create(tooltipCreateOptions);
+            } else {
+                this._tooltip = new Tooltip({
+                    ...tooltipCreateOptions,
+                    cssPrefix: this.presenter.style.cssPrefix,
+                });
+            }
         }
     }
 
@@ -931,7 +941,7 @@ export class Viewer {
     finalize() {
         if (this._dataScope) this._dataScope.finalize();
         if (this._details) this._details.finalize();
-        if (this._tooltip) this._tooltip.finalize();
+        if (this._tooltip) this._tooltip.destroy();
         if (this.vegaViewGl) this.vegaViewGl.finalize();
         if (this.presenter) this.presenter.finalize();
         if (this.element) this.element.innerHTML = '';

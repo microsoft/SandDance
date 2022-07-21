@@ -9,7 +9,7 @@ import {
     Column,
     ColumnStats,
     ColumnTypeMap,
-    Size,    
+    Size,
     View,
 } from '@msrvida/chart-types';
 //import { LightSettings } from '@deck.gl/core/lib/layer';
@@ -187,7 +187,7 @@ export interface ViewerOptions extends SpecViewOptions {
 }
 
 export interface RenderOptions {
-    getCameraTo?: ()=> Camera;
+    getCameraTo?: () => Camera;
     rebaseFilter?: () => boolean;
     columns?: Column[];
     columnTypes?: ColumnTypeMap;
@@ -360,9 +360,18 @@ export interface SelectionState {
     active?: object;
 }
 
+export interface TooltipCreateOptions {
+    dataItem: object;
+    event: MouseEvent | PointerEvent | TouchEvent;
+}
+
+export interface TooltipDestroyable {
+    destroy: () => void;
+}
+
 export interface TooltipOptions {
-    exclude?: (columnName: string) => boolean;
-    displayValue?: (value: any) => string;
+    prepareDataItem?: (dataItem: object) => object;
+    create?: (props: TooltipCreateOptions) => TooltipDestroyable;
 }
 
 /**
