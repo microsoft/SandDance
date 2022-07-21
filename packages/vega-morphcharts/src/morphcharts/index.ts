@@ -3,7 +3,7 @@
 * Licensed under the MIT License.
 */
 
-import { Constants, Core, Helpers, Input, SingleTouchAction } from 'morphcharts';
+import { Constants, Core, Helpers } from 'morphcharts';
 import { colorFromString } from '../color';
 import { MorphChartsColorMapper, UnitColorMap } from '../exports/types';
 import { IBounds, ILayerProps, MorphChartsRendering, MorphChartsRef, PreStage, Stage, McColor, McColors, PresenterConfig, McRendererOptions, LayerSelection, ILayer, ImageBounds } from '../interfaces';
@@ -18,6 +18,7 @@ import { easing } from '../easing';
 import { createImageQuad, getImageData } from './image';
 import { minZ } from '../defaults';
 import { vec3 } from 'gl-matrix';
+import { listenCanvasEvents } from './canvas';
 
 export { MorphChartsRef };
 
@@ -31,82 +32,13 @@ export interface McOptions {
 }
 
 export function init(options: McOptions, mcRendererOptions: McRendererOptions) {
-    const { container, pickGridCallback } = options;
+    const { container } = options;
     const core = new Core({ container });
 
     getRenderer(mcRendererOptions, core);
+    listenCanvasEvents(core, options);
 
     core.config.pickSelectDelay = 50;
-    const { inputManager } = core;
-    inputManager.pickAxesGridCallback = ({ divisionX, divisionY, divisionZ, manipulator }) => {
-        clearClickTimeout();
-        const { altKey, button, shiftKey } = manipulator;
-        const me = { altKey, shiftKey, button } as MouseEvent;
-        const e: MouseEvent | PointerEvent | TouchEvent = me;
-        pickGridCallback([divisionX, divisionY, divisionZ], e);
-    };
-
-    inputManager.pickLassoCallback = result => {
-        options.onLasso(result.ids[0], result.manipulator.event as MouseEvent);
-    };
-
-    const rightButton = 2;
-    inputManager.singleTouchAction = manipulator => {
-        if (manipulator.button == rightButton || manipulator.shiftKey || manipulator.ctrlKey) {
-            return SingleTouchAction.rotate;
-        }
-        else if (manipulator.altKey) {
-            return SingleTouchAction.lasso;
-        }
-        else {
-            return SingleTouchAction.translate;
-        }
-    };
-
-    //synthesize a hover event
-    const canvas = container.getElementsByTagName('canvas')[0];
-    let pickedId: number;
-    const hover = (e: MouseEvent) => {
-        if (core.renderer.pickedId !== pickedId) {
-            pickedId = core.renderer.pickedId;
-            const ordinal = core.renderer.transitionBuffers[0].pickIdLookup[pickedId];
-            options.onCubeHover(e, ordinal);
-        }
-    };
-    canvas.addEventListener('mousemove', (e) => {
-        clearClickTimeout();
-        if (mousedown) {
-            options.onCubeHover(e, null);
-        }
-        hover(e);
-    });
-    canvas.addEventListener('mouseout', hover);
-    canvas.addEventListener('mouseover', hover);
-
-    let mousedown: boolean;
-    canvas.addEventListener('mousedown', (e) => {
-        mousedown = true;
-    });
-    canvas.addEventListener('mouseup', (e) => {
-        mousedown = false;
-    });
-
-    let canvasClickTimeout: NodeJS.Timeout;
-    const clearClickTimeout = () => {
-        clearTimeout(canvasClickTimeout);
-        canvasClickTimeout = null;
-    };
-    canvas.addEventListener('click', (e) => {
-        canvasClickTimeout = setTimeout(() => {
-            options.onCanvasClick(e);
-        }, 50);
-    });
-
-    inputManager.pickItemCallback = ({ manipulator }) => {
-        clearClickTimeout();
-        const ordinal = core.renderer.transitionBuffers[0].pickIdLookup[pickedId];
-        options.onCubeClick(manipulator.event as MouseEvent, ordinal);
-    };
 
     const ref: MorphChartsRef = {
         supportedRenders: {
@@ -138,6 +70,7 @@ export function init(options: McOptions, mcRendererOptions: McRendererOptions) {
         setMcRendererOptions(mcRendererOptions: McRendererOptions) {
             if (shouldChangeRenderer(ref.lastMcRendererOptions, mcRendererOptions)) {
                 getRenderer(mcRendererOptions, core);
+                listenCanvasEvents(core, options);
             } else {
                 if (mcRendererOptions.advanced) {
                     //same renderer, poke the config
@@ -155,7 +88,7 @@ export function init(options: McOptions, mcRendererOptions: McRendererOptions) {
         core.camera.setPosition(ref.vCameraPositionCurrent, false);
 
         // disable picking during transitions, as the performance degradation could reduce the framerate
-        inputManager.isPickingEnabled = false;
+        core.inputManager.isPickingEnabled = false;
     };
     core.updateCallback = (elapsedTime) => {
         if (ref.isTransitioning) {
@@ -182,7 +115,7 @@ export function init(options: McOptions, mcRendererOptions: McRendererOptions) {
             const t = easing(ref.cameraTime / totalTime);
             cam(t);
         } else {
-            inputManager.isPickingEnabled = true;
+            core.inputManager.isPickingEnabled = true;
         }
     };
     return ref;
