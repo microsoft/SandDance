@@ -39436,7 +39436,7 @@ function $dc870545cd7ec4ba$var$_Renderer(_props) {
         sync(advanced) {
             const { state: state  } = this;
             const { antialias: antialias , bloomIntensity: bloomIntensity , dofFocusRange: dofFocusRange , isBloomEnabled: isBloomEnabled , isDofEnabled: isDofEnabled , isFxaaEnabled: isFxaaEnabled , isShadowEnabled: isShadowEnabled , isSsaoEnabled: isSsaoEnabled  } = state;
-            state.viewer.presenter.morphchartsref.setMcRendererOptions({
+            state.viewer.presenter.morphchartsref.setMorphChartsRendererOptions({
                 advanced: advanced,
                 advancedOptions: {
                     bloomIntensity: bloomIntensity,
@@ -39484,7 +39484,7 @@ function $dc870545cd7ec4ba$var$_Renderer(_props) {
                     this.sync(this.needsSync.advanced);
                     this.needsSync = null;
                 }
-                const { advanced: advanced  } = morphchartsref.lastMcRendererOptions;
+                const { advanced: advanced  } = morphchartsref.lastMorphChartsRendererOptions;
                 return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $adfb025456b8f57f$export$c25acd513dcc8062), {
                     iconName: "PicturePosition",
                     title: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonCameraHome,
@@ -39695,10 +39695,15 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
             if (this.viewer) this.viewer.finalize();
         }
         updateViewerOptions(viewerOptions) {
-            this.viewerOptions = Object.assign(Object.assign({}, (0, $3b509b9541e52a8f$exports).VegaMorphCharts.util.deepMerge((0, $8bfbb5c28cff0e2c$export$fb736e4909afb3d7), this.viewerOptions, viewerOptions)), {
+            this.viewerOptions = Object.assign(Object.assign({}, (0, $3b509b9541e52a8f$exports).VegaMorphCharts.util.deepMerge((0, $8bfbb5c28cff0e2c$export$fb736e4909afb3d7), {
                 tooltipOptions: {
-                    exclude: (columnName)=>this.state.tooltipExclusions.indexOf(columnName) >= 0
-                },
+                    prepareDataItem: (item)=>{
+                        const ret = {};
+                        for(const columnName in item)if (this.state.tooltipExclusions.indexOf(columnName) < 0) ret[columnName] = item[columnName];
+                        return ret;
+                    }
+                }
+            }, this.viewerOptions, viewerOptions)), {
                 onColorContextChange: ()=>this.manageColorToolbar(),
                 onDataFilter: (filter, filteredData)=>{
                     const selectedItemIndex = Object.assign({}, this.state.selectedItemIndex);
@@ -40494,7 +40499,7 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                     rebaseFilter: ()=>this.rebaseFilter,
                     initialColorContext: this.getColorContext && this.getColorContext(this.viewer.insight, insight),
                     discardColorContextUpdates: ()=>this.discardColorContextUpdates,
-                    initialMcRendererOptions: this.props.initialMcRendererOptions
+                    initialMorphChartsRendererOptions: this.props.initialMorphChartsRendererOptions
                 });
                 if (this.cameraTo) renderOptions.getCameraTo = ()=>this.cameraTo;
             }

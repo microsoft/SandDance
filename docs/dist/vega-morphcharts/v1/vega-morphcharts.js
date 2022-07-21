@@ -16709,7 +16709,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        stagger: 600,
 	        view: 600,
 	    },
-	    initialMcRendererOptions: {
+	    initialMorphChartsRendererOptions: {
 	        advanced: false,
 	        advancedOptions: {},
 	        basicOptions: {
@@ -18014,23 +18014,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	* Copyright (c) Microsoft Corporation.
 	* Licensed under the MIT License.
 	*/
-	function init(options, mcRendererOptions) {
+	const rightButton = 2;
+	function listenCanvasEvents(core, options) {
 	    const { container, pickGridCallback } = options;
-	    const core = new Core({ container });
-	    getRenderer(mcRendererOptions, core);
-	    core.config.pickSelectDelay = 50;
 	    const { inputManager } = core;
-	    inputManager.pickAxesGridCallback = ({ divisionX, divisionY, divisionZ, manipulator }) => {
-	        clearClickTimeout();
-	        const { altKey, button, shiftKey } = manipulator;
-	        const me = { altKey, shiftKey, button };
-	        const e = me;
-	        pickGridCallback([divisionX, divisionY, divisionZ], e);
-	    };
 	    inputManager.pickLassoCallback = result => {
 	        options.onLasso(result.ids[0], result.manipulator.event);
 	    };
-	    const rightButton = 2;
 	    inputManager.singleTouchAction = manipulator => {
 	        if (manipulator.button == rightButton || manipulator.shiftKey || manipulator.ctrlKey) {
 	            return SingleTouchAction.rotate;
@@ -18042,7 +18032,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	            return SingleTouchAction.translate;
 	        }
 	    };
-	    //synthesize a hover event
+	    inputManager.pickAxesGridCallback = ({ divisionX, divisionY, divisionZ, manipulator }) => {
+	        clearClickTimeout();
+	        const { altKey, button, shiftKey } = manipulator;
+	        const me = { altKey, shiftKey, button };
+	        const e = me;
+	        pickGridCallback([divisionX, divisionY, divisionZ], e);
+	    };
 	    const canvas = container.getElementsByTagName('canvas')[0];
 	    let pickedId;
 	    const hover = (e) => {
@@ -18062,7 +18058,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    canvas.addEventListener('mouseout', hover);
 	    canvas.addEventListener('mouseover', hover);
 	    let mousedown;
-	    canvas.addEventListener('mousedown', (e) => {
+	    canvas.addEventListener('mousedown', () => {
 	        mousedown = true;
 	    });
 	    canvas.addEventListener('mouseup', (e) => {
@@ -18083,6 +18079,18 @@ f 5/6/6 1/12/6 8/11/6`;
 	        const ordinal = core.renderer.transitionBuffers[0].pickIdLookup[pickedId];
 	        options.onCubeClick(manipulator.event, ordinal);
 	    };
+	}
+
+	/*!
+	* Copyright (c) Microsoft Corporation.
+	* Licensed under the MIT License.
+	*/
+	function init(options, mcRendererOptions) {
+	    const { container } = options;
+	    const core = new Core({ container });
+	    getRenderer(mcRendererOptions, core);
+	    listenCanvasEvents(core, options);
+	    core.config.pickSelectDelay = 50;
 	    const ref = {
 	        supportedRenders: {
 	            advanced: rendererEnabled(true),
@@ -18110,9 +18118,10 @@ f 5/6/6 1/12/6 8/11/6`;
 	        isCameraMovement: false,
 	        isTransitioning: false,
 	        transitionTime: 0,
-	        setMcRendererOptions(mcRendererOptions) {
-	            if (shouldChangeRenderer(ref.lastMcRendererOptions, mcRendererOptions)) {
+	        setMorphChartsRendererOptions(mcRendererOptions) {
+	            if (shouldChangeRenderer(ref.lastMorphChartsRendererOptions, mcRendererOptions)) {
 	                getRenderer(mcRendererOptions, core);
+	                listenCanvasEvents(core, options);
 	            }
 	            else {
 	                if (mcRendererOptions.advanced) {
@@ -18120,9 +18129,9 @@ f 5/6/6 1/12/6 8/11/6`;
 	                    setRendererOptions(core.renderer, mcRendererOptions);
 	                }
 	            }
-	            ref.lastMcRendererOptions = mcRendererOptions;
+	            ref.lastMorphChartsRendererOptions = mcRendererOptions;
 	        },
-	        lastMcRendererOptions: mcRendererOptions,
+	        lastMorphChartsRendererOptions: mcRendererOptions,
 	    };
 	    const cam = (t) => {
 	        slerp(ref.qCameraRotationCurrent, ref.qCameraRotationFrom, ref.qCameraRotationTo, t);
@@ -18130,7 +18139,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        core.camera.setOrbit(ref.qCameraRotationCurrent, false);
 	        core.camera.setPosition(ref.vCameraPositionCurrent, false);
 	        // disable picking during transitions, as the performance degradation could reduce the framerate
-	        inputManager.isPickingEnabled = false;
+	        core.inputManager.isPickingEnabled = false;
 	    };
 	    core.updateCallback = (elapsedTime) => {
 	        if (ref.isTransitioning) {
@@ -18159,7 +18168,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	            cam(t);
 	        }
 	        else {
-	            inputManager.isPickingEnabled = true;
+	            core.inputManager.isPickingEnabled = true;
 	        }
 	    };
 	    return ref;
@@ -18175,7 +18184,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	// Azimuth (yaw around global up axis)
 	setAxisAngle(qAngle, Constants.VECTOR3_UNITY, AngleHelper.degreesToRadians(-25));
 	multiply(qCameraRotation3d, qCameraRotation3d, qAngle);
-	function mcRender(ref, prevStage, stage, height, width, preStage, colors, config) {
+	function morphChartsRender(ref, prevStage, stage, height, width, preStage, colors, config) {
 	    const cameraTo = config.getCameraTo && config.getCameraTo();
 	    if (prevStage && (prevStage.view !== stage.view)) {
 	        ref.transitionModel = true;
@@ -18439,7 +18448,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        }
 	        const c = deepMerge(defaultPresenterConfig, config);
 	        if (!this.morphchartsref) {
-	            this._mcOptions = {
+	            this._morphChartsOptions = {
 	                container: this.getElement(exports.PresenterElement.gl),
 	                pickGridCallback: c.axisPickGridCallback,
 	                onCubeHover: (e, ordinal) => {
@@ -18451,7 +18460,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	                onCanvasClick: config === null || config === void 0 ? void 0 : config.onLayerClick,
 	                onLasso: config === null || config === void 0 ? void 0 : config.onLasso,
 	            };
-	            this.morphchartsref = init(this._mcOptions, c.initialMcRendererOptions || defaultPresenterConfig.initialMcRendererOptions);
+	            this.morphchartsref = init(this._morphChartsOptions, c.initialMorphChartsRendererOptions || defaultPresenterConfig.initialMorphChartsRendererOptions);
 	        }
 	        let cubeCount = Math.max(this._last.cubeCount, stage.cubeData.length);
 	        if (options.maxOrdinal) {
@@ -18462,7 +18471,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	            stage.cubeData = patchCubeArray(cubeCount, empty, stage.cubeData);
 	        }
 	        config.preLayer && config.preLayer(stage);
-	        this.mcRenderResult = mcRender(this.morphchartsref, this._last.stage, stage, height, width, config && config.preStage, config && config.mcColors, c);
+	        this.morphChartsRenderResult = morphChartsRender(this.morphchartsref, this._last.stage, stage, height, width, config && config.preStage, config && config.mophChartsColors, c);
 	        delete stage.cubeData;
 	        delete stage.redraw;
 	        this._last = {

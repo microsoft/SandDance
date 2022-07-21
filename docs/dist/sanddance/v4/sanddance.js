@@ -22140,7 +22140,7 @@ f 5/6/6 1/12/6 8/11/6`;
             stagger: 600,
             view: 600,
         },
-        initialMcRendererOptions: {
+        initialMorphChartsRendererOptions: {
             advanced: false,
             advancedOptions: {},
             basicOptions: {
@@ -23445,23 +23445,13 @@ f 5/6/6 1/12/6 8/11/6`;
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
-    function init(options, mcRendererOptions) {
+    const rightButton = 2;
+    function listenCanvasEvents(core, options) {
         const { container, pickGridCallback } = options;
-        const core = new Core({ container });
-        getRenderer(mcRendererOptions, core);
-        core.config.pickSelectDelay = 50;
         const { inputManager } = core;
-        inputManager.pickAxesGridCallback = ({ divisionX, divisionY, divisionZ, manipulator }) => {
-            clearClickTimeout();
-            const { altKey, button, shiftKey } = manipulator;
-            const me = { altKey, shiftKey, button };
-            const e = me;
-            pickGridCallback([divisionX, divisionY, divisionZ], e);
-        };
         inputManager.pickLassoCallback = result => {
             options.onLasso(result.ids[0], result.manipulator.event);
         };
-        const rightButton = 2;
         inputManager.singleTouchAction = manipulator => {
             if (manipulator.button == rightButton || manipulator.shiftKey || manipulator.ctrlKey) {
                 return SingleTouchAction.rotate;
@@ -23473,7 +23463,13 @@ f 5/6/6 1/12/6 8/11/6`;
                 return SingleTouchAction.translate;
             }
         };
-        //synthesize a hover event
+        inputManager.pickAxesGridCallback = ({ divisionX, divisionY, divisionZ, manipulator }) => {
+            clearClickTimeout();
+            const { altKey, button, shiftKey } = manipulator;
+            const me = { altKey, shiftKey, button };
+            const e = me;
+            pickGridCallback([divisionX, divisionY, divisionZ], e);
+        };
         const canvas = container.getElementsByTagName('canvas')[0];
         let pickedId;
         const hover = (e) => {
@@ -23493,7 +23489,7 @@ f 5/6/6 1/12/6 8/11/6`;
         canvas.addEventListener('mouseout', hover);
         canvas.addEventListener('mouseover', hover);
         let mousedown;
-        canvas.addEventListener('mousedown', (e) => {
+        canvas.addEventListener('mousedown', () => {
             mousedown = true;
         });
         canvas.addEventListener('mouseup', (e) => {
@@ -23514,6 +23510,18 @@ f 5/6/6 1/12/6 8/11/6`;
             const ordinal = core.renderer.transitionBuffers[0].pickIdLookup[pickedId];
             options.onCubeClick(manipulator.event, ordinal);
         };
+    }
+
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
+    function init(options, mcRendererOptions) {
+        const { container } = options;
+        const core = new Core({ container });
+        getRenderer(mcRendererOptions, core);
+        listenCanvasEvents(core, options);
+        core.config.pickSelectDelay = 50;
         const ref = {
             supportedRenders: {
                 advanced: rendererEnabled(true),
@@ -23541,9 +23549,10 @@ f 5/6/6 1/12/6 8/11/6`;
             isCameraMovement: false,
             isTransitioning: false,
             transitionTime: 0,
-            setMcRendererOptions(mcRendererOptions) {
-                if (shouldChangeRenderer(ref.lastMcRendererOptions, mcRendererOptions)) {
+            setMorphChartsRendererOptions(mcRendererOptions) {
+                if (shouldChangeRenderer(ref.lastMorphChartsRendererOptions, mcRendererOptions)) {
                     getRenderer(mcRendererOptions, core);
+                    listenCanvasEvents(core, options);
                 }
                 else {
                     if (mcRendererOptions.advanced) {
@@ -23551,9 +23560,9 @@ f 5/6/6 1/12/6 8/11/6`;
                         setRendererOptions(core.renderer, mcRendererOptions);
                     }
                 }
-                ref.lastMcRendererOptions = mcRendererOptions;
+                ref.lastMorphChartsRendererOptions = mcRendererOptions;
             },
-            lastMcRendererOptions: mcRendererOptions,
+            lastMorphChartsRendererOptions: mcRendererOptions,
         };
         const cam = (t) => {
             slerp(ref.qCameraRotationCurrent, ref.qCameraRotationFrom, ref.qCameraRotationTo, t);
@@ -23561,7 +23570,7 @@ f 5/6/6 1/12/6 8/11/6`;
             core.camera.setOrbit(ref.qCameraRotationCurrent, false);
             core.camera.setPosition(ref.vCameraPositionCurrent, false);
             // disable picking during transitions, as the performance degradation could reduce the framerate
-            inputManager.isPickingEnabled = false;
+            core.inputManager.isPickingEnabled = false;
         };
         core.updateCallback = (elapsedTime) => {
             if (ref.isTransitioning) {
@@ -23590,7 +23599,7 @@ f 5/6/6 1/12/6 8/11/6`;
                 cam(t);
             }
             else {
-                inputManager.isPickingEnabled = true;
+                core.inputManager.isPickingEnabled = true;
             }
         };
         return ref;
@@ -23606,7 +23615,7 @@ f 5/6/6 1/12/6 8/11/6`;
     // Azimuth (yaw around global up axis)
     setAxisAngle(qAngle, Constants.VECTOR3_UNITY, AngleHelper.degreesToRadians(-25));
     multiply(qCameraRotation3d, qCameraRotation3d, qAngle);
-    function mcRender(ref, prevStage, stage, height, width, preStage, colors, config) {
+    function morphChartsRender(ref, prevStage, stage, height, width, preStage, colors, config) {
         const cameraTo = config.getCameraTo && config.getCameraTo();
         if (prevStage && (prevStage.view !== stage.view)) {
             ref.transitionModel = true;
@@ -23870,7 +23879,7 @@ f 5/6/6 1/12/6 8/11/6`;
             }
             const c = deepMerge(defaultPresenterConfig$1, config);
             if (!this.morphchartsref) {
-                this._mcOptions = {
+                this._morphChartsOptions = {
                     container: this.getElement(PresenterElement.gl),
                     pickGridCallback: c.axisPickGridCallback,
                     onCubeHover: (e, ordinal) => {
@@ -23882,7 +23891,7 @@ f 5/6/6 1/12/6 8/11/6`;
                     onCanvasClick: config === null || config === void 0 ? void 0 : config.onLayerClick,
                     onLasso: config === null || config === void 0 ? void 0 : config.onLasso,
                 };
-                this.morphchartsref = init(this._mcOptions, c.initialMcRendererOptions || defaultPresenterConfig$1.initialMcRendererOptions);
+                this.morphchartsref = init(this._morphChartsOptions, c.initialMorphChartsRendererOptions || defaultPresenterConfig$1.initialMorphChartsRendererOptions);
             }
             let cubeCount = Math.max(this._last.cubeCount, stage.cubeData.length);
             if (options.maxOrdinal) {
@@ -23893,7 +23902,7 @@ f 5/6/6 1/12/6 8/11/6`;
                 stage.cubeData = patchCubeArray(cubeCount, empty, stage.cubeData);
             }
             config.preLayer && config.preLayer(stage);
-            this.mcRenderResult = mcRender(this.morphchartsref, this._last.stage, stage, height, width, config && config.preStage, config && config.mcColors, c);
+            this.morphChartsRenderResult = morphChartsRender(this.morphchartsref, this._last.stage, stage, height, width, config && config.preStage, config && config.mophChartsColors, c);
             delete stage.cubeData;
             delete stage.redraw;
             this._last = {
@@ -24504,7 +24513,7 @@ f 5/6/6 1/12/6 8/11/6`;
     */
     function populateColorContext(colorContext, presenter) {
         if (!colorContext.colorMap) {
-            colorContext.colorMap = presenter.mcRenderResult.getCubeUnitColorMap();
+            colorContext.colorMap = presenter.morphChartsRenderResult.getCubeUnitColorMap();
         }
         colorContext.legend = clone(presenter.stage.legend);
         colorContext.legendElement = presenter.getElement(PresenterElement.legend).children[0];
@@ -25042,9 +25051,9 @@ f 5/6/6 1/12/6 8/11/6`;
             this.props = props;
             const renderProps = {
                 cssPrefix: props.cssPrefix,
-                rows: getRows(props.item, props.options),
+                rows: getRows(props.dataItem),
             };
-            this.finalizeHandler = () => this.finalize();
+            this.finalizeHandler = () => this.destroy();
             this.element = renderTooltip(renderProps);
             if (this.element) {
                 this.element.style.position = 'absolute';
@@ -25062,12 +25071,21 @@ f 5/6/6 1/12/6 8/11/6`;
                     }
                     m = outerSize(this.child);
                 }
-                if (props.position.clientX + m.width >= document.documentElement.clientWidth) {
+                let position;
+                const te = props.event;
+                if (te.touches) {
+                    position = te[0];
+                }
+                else {
+                    const pme = props.event;
+                    position = pme;
+                }
+                if (position.clientX + m.width >= document.documentElement.clientWidth) {
                     this.child.style.right = '0';
                 }
                 let moveTop = true;
-                if (props.position.clientY + m.height >= document.documentElement.clientHeight) {
-                    if (props.position.clientY - m.height > 0) {
+                if (position.clientY + m.height >= document.documentElement.clientHeight) {
+                    if (position.clientY - m.height > 0) {
                         this.child.style.bottom = '0';
                     }
                     else {
@@ -25075,15 +25093,15 @@ f 5/6/6 1/12/6 8/11/6`;
                     }
                 }
                 if (moveTop) {
-                    this.element.style.top = `${props.position.clientY}px`;
+                    this.element.style.top = `${position.clientY}px`;
                 }
-                this.element.style.left = `${props.position.clientX}px`;
+                this.element.style.left = `${position.clientX}px`;
                 this.child.addEventListener('mouseenter', this.finalizeHandler);
                 this.child.addEventListener('mousemove', this.finalizeHandler);
                 this.child.addEventListener('mouseover', this.finalizeHandler);
             }
         }
-        finalize() {
+        destroy() {
             this.child.removeEventListener('mouseenter', this.finalizeHandler);
             this.child.removeEventListener('mousemove', this.finalizeHandler);
             this.child.removeEventListener('mouseover', this.finalizeHandler);
@@ -25091,11 +25109,10 @@ f 5/6/6 1/12/6 8/11/6`;
                 document.body.removeChild(this.element);
             }
             this.element = null;
-            this.props.finalized();
         }
     }
-    function getRows(item, options) {
-        const rows = [];
+    function cleanDataItem(item) {
+        const ret = {};
         for (const columnName in item) {
             if (columnName === GL_ORDINAL) {
                 continue;
@@ -25103,28 +25120,26 @@ f 5/6/6 1/12/6 8/11/6`;
             if (isInternalFieldName(columnName)) {
                 continue;
             }
-            if (options && options.exclude) {
-                if (options.exclude(columnName)) {
-                    continue;
-                }
-            }
+            ret[columnName] = item[columnName];
+        }
+        return ret;
+    }
+    function getRows(item) {
+        const rows = [];
+        for (const columnName in item) {
             const value = item[columnName];
             let content;
-            if (options && options.displayValue) {
-                content = options.displayValue(value);
+            switch (value) {
+                case null:
+                    content = createElement("i", null, "null");
+                    break;
+                case undefined:
+                    content = createElement("i", null, "undefined");
+                    break;
+                default:
+                    content = value.toString();
             }
-            else {
-                switch (value) {
-                    case null:
-                        content = createElement("i", null, "null");
-                        break;
-                    case undefined:
-                        content = createElement("i", null, "undefined");
-                        break;
-                    default:
-                        content = value.toString();
-                }
-            }
+            //}
             rows.push({
                 cells: [
                     { content: columnName + ':' },
@@ -25321,10 +25336,10 @@ f 5/6/6 1/12/6 8/11/6`;
                         const hasSelectedData = this._dataScope.hasSelectedData();
                         const hasActive = !!this._dataScope.active;
                         if (hasSelectedData || hasActive) {
-                            this.presenter.mcRenderResult.update({ cubes: this.convertSearchToSet() });
+                            this.presenter.morphChartsRenderResult.update({ cubes: this.convertSearchToSet() });
                         }
                         else {
-                            this.presenter.mcRenderResult.update({ cubes: null });
+                            this.presenter.morphChartsRenderResult.update({ cubes: null });
                         }
                         break;
                     }
@@ -25332,7 +25347,7 @@ f 5/6/6 1/12/6 8/11/6`;
                         //save cube colors
                         const oldColorContext = this.colorContexts[this.currentColorContext];
                         let colorMap;
-                        this.presenter.mcRenderResult.update({ cubes: null });
+                        this.presenter.morphChartsRenderResult.update({ cubes: null });
                         yield this.renderNewLayout({}, {
                             preStage: (stage, colorMapper) => {
                                 //save off the spec colors
@@ -25369,7 +25384,7 @@ f 5/6/6 1/12/6 8/11/6`;
                             legendElement: null,
                         };
                         this.changeColorContexts([colorContext]);
-                        this.presenter.mcRenderResult.update({ cubes: null });
+                        this.presenter.morphChartsRenderResult.update({ cubes: null });
                         yield this.renderNewLayout({}, {
                             onPresent: () => {
                                 //color needs to change instantly
@@ -25498,13 +25513,13 @@ f 5/6/6 1/12/6 8/11/6`;
             if (newViewerOptions) {
                 if (newViewerOptions.colors) {
                     //set theme colors PresenterConfig
-                    this.presenter.configColors(this.getMcColors());
+                    this.presenter.configColors(this.getMorphChartsColors());
                     this._lastColorOptions = clone(newViewerOptions.colors);
                 }
                 this.options = deepMerge(this.options, newViewerOptions);
             }
-            this.presenter.mcRenderResult.setCubeUnitColorMap(colorContext.colorMap);
-            this.presenter.mcRenderResult.update({ cubes: this.convertSearchToSet() });
+            this.presenter.morphChartsRenderResult.setCubeUnitColorMap(colorContext.colorMap);
+            this.presenter.morphChartsRenderResult.update({ cubes: this.convertSearchToSet() });
         }
         getView(view) {
             if (view === undefined) {
@@ -25610,7 +25625,8 @@ f 5/6/6 1/12/6 8/11/6`;
         _render(insight, data, renderOptions, forceNewCharacterSet) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (this._tooltip) {
-                    this._tooltip.finalize();
+                    this._tooltip.destroy();
+                    this._tooltip = null;
                 }
                 if (this._dataScope.setData(data, renderOptions.columns)) {
                     //apply transform to the data
@@ -25655,7 +25671,7 @@ f 5/6/6 1/12/6 8/11/6`;
                         }
                         this.options.onPresent && this.options.onPresent();
                     },
-                    initialMcRendererOptions: renderOptions.initialMcRendererOptions,
+                    initialMorphChartsRendererOptions: renderOptions.initialMorphChartsRendererOptions,
                     shouldViewstateTransition: () => this.shouldViewstateTransition(insight, this.insight),
                 }, this.getView(insight.view));
                 //future signal changes should save the color context
@@ -25724,9 +25740,11 @@ f 5/6/6 1/12/6 8/11/6`;
             };
             this.select(search);
         }
-        onCubeHover(e, cube) {
+        onCubeHover(event, cube) {
+            var _a, _b;
             if (this._tooltip) {
-                this._tooltip.finalize();
+                this._tooltip.destroy();
+                this._tooltip = null;
             }
             if (!cube) {
                 return;
@@ -25734,13 +25752,17 @@ f 5/6/6 1/12/6 8/11/6`;
             const currentData = this._dataScope.currentData();
             const index = getDataIndexOfCube(cube, currentData);
             if (index >= 0) {
-                this._tooltip = new Tooltip({
-                    options: this.options.tooltipOptions,
-                    item: currentData[index],
-                    position: e,
-                    cssPrefix: this.presenter.style.cssPrefix,
-                    finalized: () => this._tooltip = null,
-                });
+                const dataItem = cleanDataItem(((_a = this.options.tooltipOptions) === null || _a === void 0 ? void 0 : _a.prepareDataItem(currentData[index])) || currentData[index]);
+                const tooltipCreateOptions = {
+                    dataItem,
+                    event,
+                };
+                if ((_b = this.options.tooltipOptions) === null || _b === void 0 ? void 0 : _b.create) {
+                    this._tooltip = this.options.tooltipOptions.create(tooltipCreateOptions);
+                }
+                else {
+                    this._tooltip = new Tooltip(Object.assign(Object.assign({}, tooltipCreateOptions), { cssPrefix: this.presenter.style.cssPrefix }));
+                }
             }
         }
         onTextHover(e, t) {
@@ -25749,7 +25771,7 @@ f 5/6/6 1/12/6 8/11/6`;
                 return false;
             return !colorIsEqual(this.options.getTextColor(t), this.options.getTextHighlightColor(t));
         }
-        getMcColors() {
+        getMorphChartsColors() {
             const { colors } = this.options;
             return {
                 activeItemColor: colors.activeCube,
@@ -25769,7 +25791,7 @@ f 5/6/6 1/12/6 8/11/6`;
         createConfig(c) {
             const { getTextColor, getTextHighlightColor, onTextClick } = this.options;
             const defaultPresenterConfig = {
-                mcColors: this.getMcColors(),
+                mophChartsColors: this.getMorphChartsColors(),
                 zAxisZindex,
                 getCharacterSet: stage => this._characterSet.getCharacterSet(stage),
                 getTextColor,
@@ -25947,7 +25969,7 @@ f 5/6/6 1/12/6 8/11/6`;
         activate(datum) {
             return new Promise((resolve, reject) => {
                 this._animator.activate(datum).then(() => {
-                    this.presenter.mcRenderResult.activate(datum[GL_ORDINAL]);
+                    this.presenter.morphChartsRenderResult.activate(datum[GL_ORDINAL]);
                     this._details.render();
                     resolve();
                 });
@@ -25960,7 +25982,7 @@ f 5/6/6 1/12/6 8/11/6`;
             return new Promise((resolve, reject) => {
                 if (this._dataScope && this._dataScope.active) {
                     this._animator.deactivate().then(() => {
-                        this.presenter.mcRenderResult.activate(-1);
+                        this.presenter.morphChartsRenderResult.activate(-1);
                         this._details.render();
                         resolve();
                     });
@@ -25997,7 +26019,7 @@ f 5/6/6 1/12/6 8/11/6`;
          */
         setCamera(camera) {
             var _a, _b;
-            (_b = (_a = this.presenter) === null || _a === void 0 ? void 0 : _a.mcRenderResult) === null || _b === void 0 ? void 0 : _b.moveCamera(camera.position, camera.rotation);
+            (_b = (_a = this.presenter) === null || _a === void 0 ? void 0 : _a.morphChartsRenderResult) === null || _b === void 0 ? void 0 : _b.moveCamera(camera.position, camera.rotation);
         }
         /**
          * Gets the current insight with signal values.
@@ -26026,7 +26048,7 @@ f 5/6/6 1/12/6 8/11/6`;
             if (this._details)
                 this._details.finalize();
             if (this._tooltip)
-                this._tooltip.finalize();
+                this._tooltip.destroy();
             if (this.vegaViewGl)
                 this.vegaViewGl.finalize();
             if (this.presenter)
