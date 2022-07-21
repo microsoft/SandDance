@@ -6,7 +6,7 @@
 import { Constants, Core, Helpers } from 'morphcharts';
 import { colorFromString } from '../color';
 import { MorphChartsColorMapper, UnitColorMap } from '../exports/types';
-import { IBounds, ILayerProps, MorphChartsRendering, MorphChartsRef, PreStage, Stage, MorphChartsColor, MorphChartsColors, PresenterConfig, MorphChartsRendererOptions, LayerSelection, ILayer, ImageBounds, MorphChartsOptions } from '../interfaces';
+import { IBounds, ILayerProps, MorphChartsRenderResult, MorphChartsRef, PreStage, Stage, MorphChartsColor, MorphChartsColors, PresenterConfig, MorphChartsRendererOptions, LayerSelection, ILayer, ImageBounds, MorphChartsOptions } from '../interfaces';
 import { createAxesLayer } from './axes';
 import { outerBounds } from './bounds';
 import { createCubeLayer } from './cubes';
@@ -127,7 +127,7 @@ quat.setAxisAngle(qAngle, Constants.VECTOR3_UNITY, Helpers.AngleHelper.degreesTo
 quat.multiply(qCameraRotation3d, qCameraRotation3d, qAngle);
 
 
-export function mcRender(ref: MorphChartsRef, prevStage: Stage, stage: Stage, height: number, width: number, preStage: PreStage, colors: MorphChartsColors, config: PresenterConfig): MorphChartsRendering {
+export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: Stage, height: number, width: number, preStage: PreStage, colors: MorphChartsColors, config: PresenterConfig): MorphChartsRenderResult {
     const cameraTo = config.getCameraTo && config.getCameraTo();
     if (prevStage && (prevStage.view !== stage.view)) {
         ref.transitionModel = true;

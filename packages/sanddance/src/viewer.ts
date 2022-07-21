@@ -206,9 +206,9 @@ export class Viewer {
                 const hasActive = !!this._dataScope.active;
 
                 if (hasSelectedData || hasActive) {
-                    this.presenter.mcRenderResult.update({ cubes: this.convertSearchToSet() });
+                    this.presenter.morphChartsRenderResult.update({ cubes: this.convertSearchToSet() });
                 } else {
-                    this.presenter.mcRenderResult.update({ cubes: null });
+                    this.presenter.morphChartsRenderResult.update({ cubes: null });
                 }
                 break;
             }
@@ -216,7 +216,7 @@ export class Viewer {
                 //save cube colors
                 const oldColorContext = this.colorContexts[this.currentColorContext];
                 let colorMap: VegaMorphCharts.types.UnitColorMap;
-                this.presenter.mcRenderResult.update({ cubes: null });
+                this.presenter.morphChartsRenderResult.update({ cubes: null });
                 await this.renderNewLayout({}, {
                     preStage: (stage, colorMapper) => {
                         //save off the spec colors
@@ -254,7 +254,7 @@ export class Viewer {
                     legendElement: null,
                 };
                 this.changeColorContexts([colorContext]);
-                this.presenter.mcRenderResult.update({ cubes: null });
+                this.presenter.morphChartsRenderResult.update({ cubes: null });
                 await this.renderNewLayout({}, {
                     onPresent: () => {
                         //color needs to change instantly
@@ -401,8 +401,8 @@ export class Viewer {
             this.options = VegaMorphCharts.util.deepMerge(this.options, newViewerOptions as ViewerOptions);
         }
 
-        this.presenter.mcRenderResult.setCubeUnitColorMap(colorContext.colorMap);
-        this.presenter.mcRenderResult.update({ cubes: this.convertSearchToSet() });
+        this.presenter.morphChartsRenderResult.setCubeUnitColorMap(colorContext.colorMap);
+        this.presenter.morphChartsRenderResult.update({ cubes: this.convertSearchToSet() });
     }
 
     private getView(view: View) {
@@ -862,7 +862,7 @@ export class Viewer {
     activate(datum: object) {
         return new Promise<void>((resolve, reject) => {
             this._animator.activate(datum).then(() => {
-                this.presenter.mcRenderResult.activate(datum[GL_ORDINAL]);
+                this.presenter.morphChartsRenderResult.activate(datum[GL_ORDINAL]);
                 this._details.render();
                 resolve();
             });
@@ -876,7 +876,7 @@ export class Viewer {
         return new Promise<void>((resolve, reject) => {
             if (this._dataScope && this._dataScope.active) {
                 this._animator.deactivate().then(() => {
-                    this.presenter.mcRenderResult.activate(-1);
+                    this.presenter.morphChartsRenderResult.activate(-1);
                     this._details.render();
                     resolve();
                 });
@@ -911,7 +911,7 @@ export class Viewer {
      * @param camera Camera to set.
      */
     setCamera(camera: Camera) {
-        this.presenter?.mcRenderResult?.moveCamera(camera.position, camera.rotation);
+        this.presenter?.morphChartsRenderResult?.moveCamera(camera.position, camera.rotation);
     }
 
     /**

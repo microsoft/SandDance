@@ -316,7 +316,7 @@ export interface MorphChartsColorMapper {
     setCubeUnitColorMap: (unitColorMap: UnitColorMap) => void;
 }
 
-export interface MorphChartsRendering extends MorphChartsColorMapper {
+export interface MorphChartsRenderResult extends MorphChartsColorMapper {
     activate(id: number),
     update: (layerSelection: LayerSelection) => void;
     moveCamera: (position: vec3, rotation: quat) => void;
