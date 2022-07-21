@@ -41,8 +41,8 @@ title: 'TooltipOptions | @msrvida/sanddance-react'
 					<section class="tsd-index-section ">
 						<h3>Methods</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="SandDance.types.TooltipOptions.html#displayValue" class="tsd-kind-icon">display<wbr>Value</a></li>
-							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="SandDance.types.TooltipOptions.html#exclude" class="tsd-kind-icon">exclude</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="SandDance.types.TooltipOptions.html#create" class="tsd-kind-icon">create</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="SandDance.types.TooltipOptions.html#prepareDataItem" class="tsd-kind-icon">prepare<wbr>Data<wbr>Item</a></li>
 						</ul>
 					</section>
 				</div>
@@ -51,48 +51,48 @@ title: 'TooltipOptions | @msrvida/sanddance-react'
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Methods</h2>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-				<a name="displayValue" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagOptional">Optional</span> display<wbr>Value</h3>
+				<a name="create" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> create</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">display<wbr>Value<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					<li class="tsd-signature tsd-kind-icon">create<span class="tsd-signature-symbol">(</span>props<span class="tsd-signature-symbol">: </span><a href="SandDance.types.TooltipCreateOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">TooltipCreateOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="SandDance.types.TooltipDestroyable.html" class="tsd-signature-type" data-tsd-kind="Interface">TooltipDestroyable</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in sanddance/dist/es6/types.d.ts:283</li>
+								<li>Defined in sanddance/dist/es6/types.d.ts:290</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>value: <span class="tsd-signature-type">any</span></h5>
+								<h5>props: <a href="SandDance.types.TooltipCreateOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">TooltipCreateOptions</a></h5>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						<h4 class="tsd-returns-title">Returns <a href="SandDance.types.TooltipDestroyable.html" class="tsd-signature-type" data-tsd-kind="Interface">TooltipDestroyable</a></h4>
 					</li>
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-				<a name="exclude" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagOptional">Optional</span> exclude</h3>
+				<a name="prepareDataItem" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> prepare<wbr>Data<wbr>Item</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">exclude<span class="tsd-signature-symbol">(</span>columnName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					<li class="tsd-signature tsd-kind-icon">prepare<wbr>Data<wbr>Item<span class="tsd-signature-symbol">(</span>dataItem<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in sanddance/dist/es6/types.d.ts:282</li>
+								<li>Defined in sanddance/dist/es6/types.d.ts:289</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>columnName: <span class="tsd-signature-type">string</span></h5>
+								<h5>dataItem: <span class="tsd-signature-type">object</span></h5>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -185,16 +185,22 @@ title: 'TooltipOptions | @msrvida/sanddance-react'
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="SandDance.types.Snapshot.html" class="tsd-kind-icon">Snapshot</a>
 				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="SandDance.types.TooltipCreateOptions.html" class="tsd-kind-icon">Tooltip<wbr>Create<wbr>Options</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="SandDance.types.TooltipDestroyable.html" class="tsd-kind-icon">Tooltip<wbr>Destroyable</a>
+				</li>
 			</ul>
 			<ul class="current">
 				<li class="current tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="SandDance.types.TooltipOptions.html" class="tsd-kind-icon">Tooltip<wbr>Options</a>
 					<ul>
 						<li class=" tsd-kind-method tsd-parent-kind-interface">
-							<a href="SandDance.types.TooltipOptions.html#displayValue" class="tsd-kind-icon">display<wbr>Value</a>
+							<a href="SandDance.types.TooltipOptions.html#create" class="tsd-kind-icon">create</a>
 						</li>
 						<li class=" tsd-kind-method tsd-parent-kind-interface">
-							<a href="SandDance.types.TooltipOptions.html#exclude" class="tsd-kind-icon">exclude</a>
+							<a href="SandDance.types.TooltipOptions.html#prepareDataItem" class="tsd-kind-icon">prepare<wbr>Data<wbr>Item</a>
 						</li>
 					</ul>
 				</li>

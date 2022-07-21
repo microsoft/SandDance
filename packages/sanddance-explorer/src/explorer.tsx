@@ -114,7 +114,7 @@ export interface UIState {
     note: string;
     historyIndex: number;
     historyItems: HistoryItem[];
-    mcRendererOptions?: SandDance.VegaMorphCharts.MorphChartsRendererOptions;
+    morphChartsRendererOptions?: SandDance.VegaMorphCharts.MorphChartsRendererOptions;
 }
 
 export interface HistoricInsight extends SandDance.specs.Insight {
