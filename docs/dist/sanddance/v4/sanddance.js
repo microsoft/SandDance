@@ -21448,6 +21448,484 @@ f 5/6/6 1/12/6 8/11/6`;
     }
 
     /*!
+     * Copyright (c) Microsoft Corporation.
+     * Licensed under the MIT License.
+     */
+    class HittableBufferData extends Float32Array {
+        constructor(count) {
+            super(count * HittableBufferData.SIZE);
+            this.CENTER_OFFSET = 0 / 4;
+            this.TYPE_OFFSET = 12 / 4;
+            this.SIZE_OFFSET = 16 / 4;
+            this.MATERIAL_ID_OFFSET = 28 / 4;
+            this.ROTATION_OFFSET = 32 / 4;
+            this.TEXCOORD0_OFFSET = 48 / 4;
+            this.TEXCOORD1_OFFSET = 56 / 4;
+            this.RADIUS_OFFSET = 64 / 4;
+        }
+        getType(index) {
+            return this[HittableBufferData.SIZE * index + this.TYPE_OFFSET];
+        }
+        setType(index, value) {
+            this[HittableBufferData.SIZE * index + this.TYPE_OFFSET] = value;
+        }
+        getCenter(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.CENTER_OFFSET;
+            set$3(value, this[offset], this[offset + 1], this[offset + 2]);
+        }
+        setCenter(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.CENTER_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+            this[offset + 2] = value[2];
+        }
+        getSize(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.SIZE_OFFSET;
+            set$3(value, this[offset], this[offset + 1], this[offset + 2]);
+        }
+        setSize(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.SIZE_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+            this[offset + 2] = value[2];
+        }
+        getMaterialId(index) {
+            return this[HittableBufferData.SIZE * index + this.MATERIAL_ID_OFFSET];
+        }
+        setMaterialId(index, value) {
+            this[HittableBufferData.SIZE * index + this.MATERIAL_ID_OFFSET] = value;
+        }
+        getRotation(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.ROTATION_OFFSET;
+            set$1(value, this[offset], this[offset + 1], this[offset + 2], this[offset + 3]);
+        }
+        setRotation(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.ROTATION_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+            this[offset + 2] = value[2];
+            this[offset + 3] = value[3];
+        }
+        getTexCoord0(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.TEXCOORD0_OFFSET;
+            set(value, this[offset], this[offset + 1]);
+        }
+        setTexCoord0(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.TEXCOORD0_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+        }
+        getTexCoord1(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.TEXCOORD1_OFFSET;
+            set(value, this[offset], this[offset + 1]);
+        }
+        setTexCoord1(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.TEXCOORD1_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+        }
+        getRadius(index) {
+            return this[HittableBufferData.SIZE * index + this.RADIUS_OFFSET];
+        }
+        setRadius(index, value) {
+            this[HittableBufferData.SIZE * index + this.RADIUS_OFFSET] = value;
+        }
+    }
+    HittableBufferData.SIZE = 80 / 4;
+
+    /*!
+     * Copyright (c) Microsoft Corporation.
+     * Licensed under the MIT License.
+     */
+    class MaterialBufferData extends Float32Array {
+        constructor(count) {
+            super(count * MaterialBufferData.SIZE);
+            this.TYPE_OFFSET = 0 / 4;
+            this.FUZZ_OFFSET = 4 / 4;
+            this.REFRACTIVE_INDEX_OFFSET = 8 / 4;
+            this.TEXTURE_ID_OFFSET = 12 / 4;
+            this.COLOR_OFFSET = 16 / 4;
+            this.GLOSSINESS_OFFSET = 28 / 4;
+        }
+        getType(index) {
+            return this[MaterialBufferData.SIZE * index + this.TYPE_OFFSET];
+        }
+        setType(index, value) {
+            this[MaterialBufferData.SIZE * index + this.TYPE_OFFSET] = value;
+        }
+        getFuzz(index) {
+            return this[MaterialBufferData.SIZE * index + this.FUZZ_OFFSET];
+        }
+        setFuzz(index, value) {
+            this[MaterialBufferData.SIZE * index + this.FUZZ_OFFSET] = value;
+        }
+        getRefractiveIndex(index) {
+            return this[MaterialBufferData.SIZE * index + this.REFRACTIVE_INDEX_OFFSET];
+        }
+        setRefractiveIndex(index, value) {
+            this[MaterialBufferData.SIZE * index + this.REFRACTIVE_INDEX_OFFSET] = value;
+        }
+        getTextureId(index) {
+            return this[MaterialBufferData.SIZE * index + this.TEXTURE_ID_OFFSET];
+        }
+        setTextureId(index, value) {
+            this[MaterialBufferData.SIZE * index + this.TEXTURE_ID_OFFSET] = value;
+        }
+        getColor(index, value) {
+            const offset = MaterialBufferData.SIZE * index + this.COLOR_OFFSET;
+            set$3(value, this[offset], this[offset + 1], this[offset + 2]);
+        }
+        setColor(index, value) {
+            const offset = MaterialBufferData.SIZE * index + this.COLOR_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+            this[offset + 2] = value[2];
+        }
+        getGlossiness(index) {
+            return this[MaterialBufferData.SIZE * index + this.GLOSSINESS_OFFSET];
+        }
+        setGlossiness(index, value) {
+            this[MaterialBufferData.SIZE * index + this.GLOSSINESS_OFFSET] = value;
+        }
+    }
+    MaterialBufferData.SIZE = 32 / 4;
+
+    /*!
+     * Copyright (c) Microsoft Corporation.
+     * Licensed under the MIT License.
+     */
+    class ComputeUniformBufferData extends Float32Array {
+        constructor() {
+            super(ComputeUniformBufferData.SIZE);
+            this.POSITION_OFFSET = 0 / 4;
+            this.WIDTH_OFFSET = 12 / 4;
+            this.RIGHT_OFFSET = 16 / 4;
+            this.HEIGHT_OFFSET = 28 / 4;
+            this.UP_OFFSET = 32 / 4;
+            this.SEED_OFFSET = 44 / 4;
+            this.FORWARD_OFFSET = 48 / 4;
+            this.FOV_OFFSET = 60 / 4;
+            this.LOOKAT_OFFSET = 64 / 4;
+            this.APERTURE_OFFSET = 76 / 4;
+        }
+        getWidth() {
+            return this[this.WIDTH_OFFSET];
+        }
+        setWidth(value) {
+            this[this.WIDTH_OFFSET] = value;
+        }
+        getHeight() {
+            return this[this.HEIGHT_OFFSET];
+        }
+        setHeight(value) {
+            this[this.HEIGHT_OFFSET] = value;
+        }
+        getSeed() {
+            return this[this.SEED_OFFSET];
+        }
+        setSeed(value) {
+            this[this.SEED_OFFSET] = value;
+        }
+        getFieldOfView() {
+            return this[this.FOV_OFFSET];
+        }
+        setFieldOfView(value) {
+            this[this.FOV_OFFSET] = value;
+        }
+        getAperture() {
+            return this[this.APERTURE_OFFSET];
+        }
+        setAperture(value) {
+            this[this.APERTURE_OFFSET] = value;
+        }
+        getPosition(value) {
+            set$3(value, this[this.POSITION_OFFSET], this[this.POSITION_OFFSET + 1], this[this.POSITION_OFFSET + 2]);
+        }
+        setPosition(value) {
+            this[this.POSITION_OFFSET] = value[0];
+            this[this.POSITION_OFFSET + 1] = value[1];
+            this[this.POSITION_OFFSET + 2] = value[2];
+        }
+        getRight(value) {
+            set$3(value, this[this.RIGHT_OFFSET], this[this.RIGHT_OFFSET + 1], this[this.RIGHT_OFFSET + 2]);
+        }
+        setRight(value) {
+            this[this.RIGHT_OFFSET] = value[0];
+            this[this.RIGHT_OFFSET + 1] = value[1];
+            this[this.RIGHT_OFFSET + 2] = value[2];
+        }
+        getUp(value) {
+            set$3(value, this[this.UP_OFFSET], this[this.UP_OFFSET + 1], this[this.UP_OFFSET + 2]);
+        }
+        setUp(value) {
+            this[this.UP_OFFSET] = value[0];
+            this[this.UP_OFFSET + 1] = value[1];
+            this[this.UP_OFFSET + 2] = value[2];
+        }
+        getForward(value) {
+            set$3(value, this[this.FORWARD_OFFSET], this[this.FORWARD_OFFSET + 1], this[this.FORWARD_OFFSET + 2]);
+        }
+        setForward(value) {
+            this[this.FORWARD_OFFSET] = value[0];
+            this[this.FORWARD_OFFSET + 1] = value[1];
+            this[this.FORWARD_OFFSET + 2] = value[2];
+        }
+        getLookAt(value) {
+            set$3(value, this[this.LOOKAT_OFFSET], this[this.LOOKAT_OFFSET + 1], this[this.LOOKAT_OFFSET + 2]);
+        }
+        setLookAt(value) {
+            this[this.LOOKAT_OFFSET] = value[0];
+            this[this.LOOKAT_OFFSET + 1] = value[1];
+            this[this.LOOKAT_OFFSET + 2] = value[2];
+        }
+    }
+    ComputeUniformBufferData.SIZE = 80 / 4;
+
+    /*!
+     * Copyright (c) Microsoft Corporation.
+     * Licensed under the MIT License.
+     */
+    class FullscreenQuadUniformBufferData extends Float32Array {
+        constructor() {
+            super(FullscreenQuadUniformBufferData.SIZE);
+            this.WIDTH_OFFSET = 0 / 4;
+            this.HEIGHT_OFFSET = 4 / 4;
+            this.SPP_OFFSET = 8 / 4;
+        }
+        getWidth() {
+            return this[this.WIDTH_OFFSET];
+        }
+        setWidth(value) {
+            this[this.WIDTH_OFFSET] = value;
+        }
+        getHeight() {
+            return this[this.HEIGHT_OFFSET];
+        }
+        setHeight(value) {
+            this[this.HEIGHT_OFFSET] = value;
+        }
+        getSamplesPerPixel() {
+            return this[this.SPP_OFFSET];
+        }
+        setSamplesPerPixel(value) {
+            this[this.SPP_OFFSET] = value;
+        }
+    }
+    FullscreenQuadUniformBufferData.SIZE = 12 / 4;
+
+    /*!
+     * Copyright (c) Microsoft Corporation.
+     * Licensed under the MIT License.
+     */
+    class LinearBVHNodeBufferData extends Float32Array {
+        constructor(count) {
+            super(count * LinearBVHNodeBufferData.SIZE);
+            this.CENTER_OFFSET = 0 / 4;
+            this.SIZE_OFFSET = 16 / 4;
+            this.PRIMITIVES_OFFSET_OFFSET = 12 / 4;
+            this.SECOND_CHILD_OFFSET_OFFSET = 28 / 4;
+            this.N_PRIMITIVES_OFFSET = 32 / 4;
+            this.AXIS_OFFSET = 36 / 4;
+        }
+        getCenter(index, value) {
+            const offset = LinearBVHNodeBufferData.SIZE * index + this.CENTER_OFFSET;
+            set$3(value, this[offset], this[offset + 1], this[offset + 2]);
+        }
+        setCenter(index, value) {
+            const offset = LinearBVHNodeBufferData.SIZE * index + this.CENTER_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+            this[offset + 2] = value[2];
+        }
+        getSize(index, value) {
+            const offset = LinearBVHNodeBufferData.SIZE * index + this.SIZE_OFFSET;
+            set$3(value, this[offset], this[offset + 1], this[offset + 2]);
+        }
+        setSize(index, value) {
+            const offset = LinearBVHNodeBufferData.SIZE * index + this.SIZE_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+            this[offset + 2] = value[2];
+        }
+        getPrimitivesOffset(index) {
+            return this[LinearBVHNodeBufferData.SIZE * index + this.PRIMITIVES_OFFSET_OFFSET];
+        }
+        setPrimitivesOffset(index, value) {
+            this[LinearBVHNodeBufferData.SIZE * index + this.PRIMITIVES_OFFSET_OFFSET] = value;
+        }
+        getSecondChildOffset(index) {
+            return this[LinearBVHNodeBufferData.SIZE * index + this.SECOND_CHILD_OFFSET_OFFSET];
+        }
+        setSecondChildOffset(index, value) {
+            this[LinearBVHNodeBufferData.SIZE * index + this.SECOND_CHILD_OFFSET_OFFSET] = value;
+        }
+        getNPrimitives(index) {
+            return this[LinearBVHNodeBufferData.SIZE * index + this.N_PRIMITIVES_OFFSET];
+        }
+        setNPrimitives(index, value) {
+            this[LinearBVHNodeBufferData.SIZE * index + this.N_PRIMITIVES_OFFSET] = value;
+        }
+        getAxis(index) {
+            return this[LinearBVHNodeBufferData.SIZE * index + this.AXIS_OFFSET];
+        }
+        setAxis(index, value) {
+            this[LinearBVHNodeBufferData.SIZE * index + this.AXIS_OFFSET] = value;
+        }
+    }
+    LinearBVHNodeBufferData.SIZE = 48 / 4;
+
+    /*!
+     * Copyright (c) Microsoft Corporation.
+     * Licensed under the MIT License.
+     */
+    class TextureBufferData extends Float32Array {
+        constructor(count) {
+            super(count * TextureBufferData.SIZE);
+            this.COLOR0_OFFSET = 0 / 4;
+            this.TYPE_OFFSET = 12 / 4;
+            this.COLOR1_OFFSET = 16 / 4;
+            this.SIZE0_OFFSET = 32 / 4;
+            this.SIZE1_OFFSET = 48 / 4;
+            this.OFFSET_OFFSET = 64 / 4;
+        }
+        getType(index) {
+            return this[TextureBufferData.SIZE * index + this.TYPE_OFFSET];
+        }
+        setType(index, value) {
+            this[TextureBufferData.SIZE * index + this.TYPE_OFFSET] = value;
+        }
+        getColor0(index, value) {
+            const offset = TextureBufferData.SIZE * index + this.COLOR0_OFFSET;
+            set$3(value, this[offset], this[offset + 1], this[offset + 2]);
+        }
+        setColor0(index, value) {
+            const offset = TextureBufferData.SIZE * index + this.COLOR0_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+            this[offset + 2] = value[2];
+        }
+        getColor1(index, value) {
+            const offset = TextureBufferData.SIZE * index + this.COLOR1_OFFSET;
+            set$3(value, this[offset], this[offset + 1], this[offset + 2]);
+        }
+        setColor1(index, value) {
+            const offset = TextureBufferData.SIZE * index + this.COLOR1_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+            this[offset + 2] = value[2];
+        }
+        getSize0(index, value) {
+            const offset = TextureBufferData.SIZE * index + this.SIZE0_OFFSET;
+            set$2(value, this[offset], this[offset + 1], this[offset + 2], this[offset + 3]);
+        }
+        setSize0(index, value) {
+            const offset = TextureBufferData.SIZE * index + this.SIZE0_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+            this[offset + 2] = value[2];
+            this[offset + 3] = value[3];
+        }
+        getSize1(index, value) {
+            const offset = TextureBufferData.SIZE * index + this.SIZE1_OFFSET;
+            set$2(value, this[offset], this[offset + 1], this[offset + 2], this[offset + 3]);
+        }
+        setSize1(index, value) {
+            const offset = TextureBufferData.SIZE * index + this.SIZE1_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+            this[offset + 2] = value[2];
+            this[offset + 3] = value[3];
+        }
+        getOffset(index, value) {
+            const offset = TextureBufferData.SIZE * index + this.OFFSET_OFFSET;
+            set(value, this[offset], this[offset + 1]);
+        }
+        setOffset(index, value) {
+            const offset = TextureBufferData.SIZE * index + this.OFFSET_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+        }
+    }
+    TextureBufferData.SIZE = 80 / 4;
+
+    /*!
+     * Copyright (c) Microsoft Corporation.
+     * Licensed under the MIT License.
+     */
+    class LightBufferData extends Float32Array {
+        constructor(count) {
+            super(count * LightBufferData.SIZE);
+            this.ROTATION_OFFSET = 0 / 4;
+            this.CENTER_OFFSET = 16 / 4;
+            this.TYPE_OFFSET = 28 / 4;
+            this.SIZE_OFFSET = 32 / 4;
+            this.COLOR_OFFSET = 48 / 4;
+        }
+        getType(index) {
+            return this[LightBufferData.SIZE * index + this.TYPE_OFFSET];
+        }
+        setType(index, value) {
+            this[LightBufferData.SIZE * index + this.TYPE_OFFSET] = value;
+        }
+        getCenter(index, value) {
+            const offset = LightBufferData.SIZE * index + this.CENTER_OFFSET;
+            set$3(value, this[offset], this[offset + 1], this[offset + 2]);
+        }
+        setCenter(index, value) {
+            const offset = LightBufferData.SIZE * index + this.CENTER_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+            this[offset + 2] = value[2];
+        }
+        getSize(index, value) {
+            const offset = LightBufferData.SIZE * index + this.SIZE_OFFSET;
+            set$3(value, this[offset], this[offset + 1], this[offset + 2]);
+        }
+        setSize(index, value) {
+            const offset = LightBufferData.SIZE * index + this.SIZE_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+            this[offset + 2] = value[2];
+        }
+        getColor(index, value) {
+            const offset = LightBufferData.SIZE * index + this.COLOR_OFFSET;
+            set$3(value, this[offset], this[offset + 1], this[offset + 2]);
+        }
+        setColor(index, value) {
+            const offset = LightBufferData.SIZE * index + this.COLOR_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+            this[offset + 2] = value[2];
+        }
+        getRotation(index, value) {
+            const offset = LightBufferData.SIZE * index + this.ROTATION_OFFSET;
+            set$1(value, this[offset], this[offset + 1], this[offset + 2], this[offset + 3]);
+        }
+        setRotation(index, value) {
+            const offset = LightBufferData.SIZE * index + this.ROTATION_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+            this[offset + 2] = value[2];
+            this[offset + 3] = value[3];
+        }
+    }
+    LightBufferData.SIZE = 64 / 4;
+
+    /*!
+     * Copyright (c) Microsoft Corporation.
+     * Licensed under the MIT License.
+     */
+    (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+        function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+        return new (P || (P = Promise))(function (resolve, reject) {
+            function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+            function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+            step((generator = generator.apply(thisArg, _arguments || [])).next());
+        });
+    };
+
+    /*!
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
