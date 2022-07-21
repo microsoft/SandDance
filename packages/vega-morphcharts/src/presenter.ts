@@ -14,7 +14,7 @@ import {
     Scene3d,
     Stage,
     MorphChartsRendering,
-    McColors,
+    MorphChartsColors,
 } from './interfaces';
 import { LegendView } from './legend';
 import { MarkStagerOptions } from './marks/interfaces';
@@ -179,7 +179,7 @@ export class Presenter {
                 onCanvasClick: config?.onLayerClick,
                 onLasso: config?.onLasso,
             };
-            this.morphchartsref = init(this._mcOptions, c.initialMcRendererOptions || defaultPresenterConfig.initialMcRendererOptions);
+            this.morphchartsref = init(this._mcOptions, c.initialMorphChartsRendererOptions || defaultPresenterConfig.initialMorphChartsRendererOptions);
         }
         let cubeCount = Math.max(this._last.cubeCount, stage.cubeData.length);
         if (options.maxOrdinal) {
@@ -192,7 +192,7 @@ export class Presenter {
 
         config.preLayer && config.preLayer(stage);
 
-        this.mcRenderResult = mcRender(this.morphchartsref, this._last.stage, stage, height, width, config && config.preStage, config && config.mcColors, c);
+        this.mcRenderResult = mcRender(this.morphchartsref, this._last.stage, stage, height, width, config && config.preStage, config && config.mophChartsColors, c);
 
         delete stage.cubeData;
         delete stage.redraw;
@@ -225,7 +225,7 @@ export class Presenter {
         });
     }
 
-    public configColors(mcColors: McColors) {
+    public configColors(mcColors: MorphChartsColors) {
         colorConfig(this.morphchartsref, mcColors);
     }
 

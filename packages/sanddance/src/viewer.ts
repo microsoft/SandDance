@@ -394,7 +394,7 @@ export class Viewer {
         if (newViewerOptions) {
             if (newViewerOptions.colors) {
                 //set theme colors PresenterConfig
-                this.presenter.configColors(this.getMcColors());
+                this.presenter.configColors(this.getMorphChartsColors());
 
                 this._lastColorOptions = VegaMorphCharts.util.clone(newViewerOptions.colors);
             }
@@ -554,7 +554,7 @@ export class Viewer {
                     }
                     this.options.onPresent && this.options.onPresent();
                 },
-                initialMcRendererOptions: renderOptions.initialMcRendererOptions,
+                initialMorphChartsRendererOptions: renderOptions.initialMorphChartsRendererOptions,
                 shouldViewstateTransition: () => this.shouldViewstateTransition(insight, this.insight),
             },
             this.getView(insight.view),
@@ -663,7 +663,7 @@ export class Viewer {
         return !VegaMorphCharts.util.colorIsEqual(this.options.getTextColor(t), this.options.getTextHighlightColor(t));
     }
 
-    private getMcColors(): VegaMorphCharts.types.McColors {
+    private getMorphChartsColors(): VegaMorphCharts.types.MorphChartsColors {
         const { colors } = this.options;
         return {
             activeItemColor: colors.activeCube,
@@ -684,7 +684,7 @@ export class Viewer {
     private createConfig(c?: VegaMorphCharts.types.PresenterConfig): VegaMorphCharts.types.ViewGlConfig {
         const { getTextColor, getTextHighlightColor, onTextClick } = this.options;
         const defaultPresenterConfig: VegaMorphCharts.types.PresenterConfig = {
-            mcColors: this.getMcColors(),
+            mophChartsColors: this.getMorphChartsColors(),
             zAxisZindex,
             getCharacterSet: stage => this._characterSet.getCharacterSet(stage),
             getTextColor,

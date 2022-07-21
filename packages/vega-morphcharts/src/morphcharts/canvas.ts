@@ -4,11 +4,11 @@
 */
 
 import { Core, SingleTouchAction } from 'morphcharts';
-import { McOptions } from './index';
+import { MorphChartsOptions } from '../interfaces';
 
 const rightButton = 2;
 
-export function listenCanvasEvents(core: Core, options: McOptions) {
+export function listenCanvasEvents(core: Core, options: MorphChartsOptions) {
     const { container, pickGridCallback } = options;
     const { inputManager } = core;
 

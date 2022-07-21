@@ -6,7 +6,7 @@
 import { Constants, Core, Helpers } from 'morphcharts';
 import { colorFromString } from '../color';
 import { MorphChartsColorMapper, UnitColorMap } from '../exports/types';
-import { IBounds, ILayerProps, MorphChartsRendering, MorphChartsRef, PreStage, Stage, McColor, McColors, PresenterConfig, McRendererOptions, LayerSelection, ILayer, ImageBounds } from '../interfaces';
+import { IBounds, ILayerProps, MorphChartsRendering, MorphChartsRef, PreStage, Stage, MorphChartsColor, MorphChartsColors, PresenterConfig, MorphChartsRendererOptions, LayerSelection, ILayer, ImageBounds, MorphChartsOptions } from '../interfaces';
 import { createAxesLayer } from './axes';
 import { outerBounds } from './bounds';
 import { createCubeLayer } from './cubes';
@@ -22,16 +22,7 @@ import { listenCanvasEvents } from './canvas';
 
 export { MorphChartsRef };
 
-export interface McOptions {
-    container: HTMLElement;
-    pickGridCallback: (divisions: number[], e: MouseEvent | PointerEvent | TouchEvent) => void;
-    onCubeHover: (e: MouseEvent, id: number) => void;
-    onCubeClick: (e: MouseEvent, id: number) => void;
-    onCanvasClick: (e: MouseEvent) => void;
-    onLasso: (ids: Set<number>, e: MouseEvent | PointerEvent | TouchEvent) => void;
-}
-
-export function init(options: McOptions, mcRendererOptions: McRendererOptions) {
+export function init(options: MorphChartsOptions, mcRendererOptions: MorphChartsRendererOptions) {
     const { container } = options;
     const core = new Core({ container });
 
@@ -67,8 +58,8 @@ export function init(options: McOptions, mcRendererOptions: McRendererOptions) {
         isCameraMovement: false,
         isTransitioning: false,
         transitionTime: 0,
-        setMcRendererOptions(mcRendererOptions: McRendererOptions) {
-            if (shouldChangeRenderer(ref.lastMcRendererOptions, mcRendererOptions)) {
+        setMorphChartsRendererOptions(mcRendererOptions: MorphChartsRendererOptions) {
+            if (shouldChangeRenderer(ref.lastMorphChartsRendererOptions, mcRendererOptions)) {
                 getRenderer(mcRendererOptions, core);
                 listenCanvasEvents(core, options);
             } else {
@@ -77,9 +68,9 @@ export function init(options: McOptions, mcRendererOptions: McRendererOptions) {
                     setRendererOptions(core.renderer, mcRendererOptions);
                 }
             }
-            ref.lastMcRendererOptions = mcRendererOptions;
+            ref.lastMorphChartsRendererOptions = mcRendererOptions;
         },
-        lastMcRendererOptions: mcRendererOptions,
+        lastMorphChartsRendererOptions: mcRendererOptions,
     };
     const cam = (t: number) => {
         quat.slerp(ref.qCameraRotationCurrent, ref.qCameraRotationFrom, ref.qCameraRotationTo, t);
@@ -136,7 +127,7 @@ quat.setAxisAngle(qAngle, Constants.VECTOR3_UNITY, Helpers.AngleHelper.degreesTo
 quat.multiply(qCameraRotation3d, qCameraRotation3d, qAngle);
 
 
-export function mcRender(ref: MorphChartsRef, prevStage: Stage, stage: Stage, height: number, width: number, preStage: PreStage, colors: McColors, config: PresenterConfig): MorphChartsRendering {
+export function mcRender(ref: MorphChartsRef, prevStage: Stage, stage: Stage, height: number, width: number, preStage: PreStage, colors: MorphChartsColors, config: PresenterConfig): MorphChartsRendering {
     const cameraTo = config.getCameraTo && config.getCameraTo();
     if (prevStage && (prevStage.view !== stage.view)) {
         ref.transitionModel = true;
@@ -282,12 +273,12 @@ function layersWithSelection(cubeLayer: ILayer, lineLayer: ILayer, textLayer: IL
     layers.forEach(x => x.layer?.update(bounds, x.selection));
 }
 
-function convert(newColor: string): McColor {
+function convert(newColor: string): MorphChartsColor {
     const c = colorFromString(newColor).slice(0, 3);
-    return c.map(v => v / 255) as McColor;
+    return c.map(v => v / 255) as MorphChartsColor;
 }
 
-export function colorConfig(ref: MorphChartsRef, colors: McColors) {
+export function colorConfig(ref: MorphChartsRef, colors: MorphChartsColors) {
     if (!colors) return;
     const { config } = ref.core;
     config.activeColor = convert(colors.activeItemColor);

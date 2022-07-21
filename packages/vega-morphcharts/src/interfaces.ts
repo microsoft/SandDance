@@ -168,8 +168,8 @@ export interface TransitionDurations {
 export interface PresenterConfig {
     getCameraTo?: () => Camera;
     transitionDurations?: TransitionDurations;
-    mcColors?: McColors;
-    initialMcRendererOptions?: McRendererOptions;
+    mophChartsColors?: MorphChartsColors;
+    initialMorphChartsRendererOptions?: MorphChartsRendererOptions;
     preStage?: PreStage;
     getCharacterSet?: (stage: Stage) => string[];
     redraw?: () => void;
@@ -239,7 +239,16 @@ export interface UnitColorMap {
 export interface AdvancedRendererOptions extends Partial<Config> { }
 export interface BasicRendererOptions extends Renderers.Basic.IRendererOptions { }
 
-export interface McRendererOptions {
+export interface MorphChartsOptions {
+    container: HTMLElement;
+    pickGridCallback: (divisions: number[], e: MouseEvent | PointerEvent | TouchEvent) => void;
+    onCubeHover: (e: MouseEvent, id: number) => void;
+    onCubeClick: (e: MouseEvent, id: number) => void;
+    onCanvasClick: (e: MouseEvent) => void;
+    onLasso: (ids: Set<number>, e: MouseEvent | PointerEvent | TouchEvent) => void;
+}
+
+export interface MorphChartsRendererOptions {
     advanced: boolean;
     advancedOptions: AdvancedRendererOptions;
     basicOptions: BasicRendererOptions;
@@ -253,8 +262,8 @@ export interface MorphChartsRef {
     cameraTime: number;
     transitionTime: number;
     transitionModel: boolean;
-    setMcRendererOptions: (value: McRendererOptions) => void;
-    lastMcRendererOptions: McRendererOptions;
+    setMorphChartsRendererOptions: (value: MorphChartsRendererOptions) => void;
+    lastMorphChartsRendererOptions: MorphChartsRendererOptions;
     qModelFrom: quat;
     qModelTo: quat;
     qModelCurrent: quat;
@@ -313,9 +322,9 @@ export interface MorphChartsRendering extends MorphChartsColorMapper {
     moveCamera: (position: vec3, rotation: quat) => void;
 }
 
-export type McColor = [number, number, number];
+export type MorphChartsColor = [number, number, number];
 
-export interface McColors {
+export interface MorphChartsColors {
     activeItemColor: string;
     backgroundColor: string;
     textColor: string;
