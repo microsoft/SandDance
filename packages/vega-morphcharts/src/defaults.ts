@@ -35,7 +35,7 @@ export const defaultPresenterConfig: PresenterConfig = {
         stagger: 600,
         view: 600,
     },
-    initialMcRendererOptions: {
+    initialMorphChartsRendererOptions: {
         advanced: false,
         advancedOptions: {},
         basicOptions: {

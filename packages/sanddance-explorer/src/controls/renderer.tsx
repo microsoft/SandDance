@@ -78,7 +78,7 @@ function _Renderer(_props: Props) {
         sync(advanced: boolean) {
             const { state } = this;
             const { antialias, bloomIntensity, dofFocusRange, isBloomEnabled, isDofEnabled, isFxaaEnabled, isShadowEnabled, isSsaoEnabled } = state;
-            state.viewer.presenter.morphchartsref.setMcRendererOptions({
+            state.viewer.presenter.morphchartsref.setMorphChartsRendererOptions({
                 advanced,
                 advancedOptions: {
                     bloomIntensity,
@@ -135,7 +135,7 @@ function _Renderer(_props: Props) {
                     this.needsSync = null;
                 }
 
-                const { advanced } = morphchartsref.lastMcRendererOptions;
+                const { advanced } = morphchartsref.lastMorphChartsRendererOptions;
 
                 return (
                     <div>

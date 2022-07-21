@@ -15,6 +15,6 @@ export { ViewGl } from './vega-classes/viewGl';
 export * from './enums';
 export { controls, defaults, types, util };
 
-export { McRendererOptions, RGBAColor } from './interfaces';
+export { MorphChartsRendererOptions, RGBAColor } from './interfaces';
 
 export { version } from './version';

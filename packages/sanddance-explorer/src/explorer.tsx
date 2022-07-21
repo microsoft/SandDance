@@ -89,7 +89,7 @@ export interface Props {
     onTooltipExclusionsChanged?: (tooltipExclusions: string[]) => void;
     additionalSettings?: SettingsGroup[];
     systemInfoChildren?: React.ReactNode;
-    initialMcRendererOptions?: SandDance.VegaMorphCharts.McRendererOptions;
+    initialMorphChartsRendererOptions?: SandDance.VegaMorphCharts.MorphChartsRendererOptions;
     renderOptions?: SandDance.types.RenderOptions;
 }
 
@@ -114,7 +114,7 @@ export interface UIState {
     note: string;
     historyIndex: number;
     historyItems: HistoryItem[];
-    mcRendererOptions?: SandDance.VegaMorphCharts.McRendererOptions;
+    mcRendererOptions?: SandDance.VegaMorphCharts.MorphChartsRendererOptions;
 }
 
 export interface HistoricInsight extends SandDance.specs.Insight {
@@ -1091,7 +1091,7 @@ function _Explorer(_props: Props) {
                     rebaseFilter: () => this.rebaseFilter,
                     initialColorContext: this.getColorContext && this.getColorContext(this.viewer.insight, insight),
                     discardColorContextUpdates: () => this.discardColorContextUpdates,
-                    initialMcRendererOptions: this.props.initialMcRendererOptions,
+                    initialMorphChartsRendererOptions: this.props.initialMorphChartsRendererOptions,
                 };
                 if (this.cameraTo) {
                     renderOptions.getCameraTo = () => this.cameraTo;

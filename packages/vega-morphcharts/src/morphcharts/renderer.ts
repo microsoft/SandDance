@@ -5,9 +5,9 @@
 
 import { Core, Renderers } from 'morphcharts';
 import { RendererBase } from 'morphcharts/dist/renderers/renderer';
-import { McRendererOptions } from '../interfaces';
+import { MorphChartsRendererOptions } from '../interfaces';
 
-export function shouldChangeRenderer(prev: McRendererOptions, next: McRendererOptions) {
+export function shouldChangeRenderer(prev: MorphChartsRendererOptions, next: MorphChartsRendererOptions) {
     if (!prev || !next) return true;
     if (prev.advanced !== next.advanced) return true;
     if (!prev.advanced) {
@@ -15,7 +15,7 @@ export function shouldChangeRenderer(prev: McRendererOptions, next: McRendererOp
     }
 }
 
-export function getRenderer(mcRendererOptions: McRendererOptions, core: Core) {
+export function getRenderer(mcRendererOptions: MorphChartsRendererOptions, core: Core) {
     const advanced = mcRendererOptions?.advanced;
     const r = advanced ?
         new Renderers.Advanced.Main()
@@ -28,7 +28,7 @@ export function getRenderer(mcRendererOptions: McRendererOptions, core: Core) {
     return r;
 }
 
-export function setRendererOptions(renderer: RendererBase, mcRendererOptions: McRendererOptions) {
+export function setRendererOptions(renderer: RendererBase, mcRendererOptions: MorphChartsRendererOptions) {
     const o = mcRendererOptions?.advancedOptions;
     if (mcRendererOptions?.advanced && o) {
         for (const key in o) {

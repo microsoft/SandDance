@@ -13,8 +13,9 @@ import {
     QueuedAnimationOptions,
     Scene3d,
     Stage,
-    MorphChartsRendering,
-    McColors,
+    MorphChartsRenderResult,
+    MorphChartsColors,
+    MorphChartsOptions,
 } from './interfaces';
 import { LegendView } from './legend';
 import { MarkStagerOptions } from './marks/interfaces';
@@ -23,7 +24,7 @@ import { patchCubeArray } from './patchedCubeArray';
 import { sceneToStage } from './stagers';
 import { View } from '@msrvida/chart-types';
 import { getActiveElementInfo, mount, setActiveElement } from 'tsx-create-element';
-import { colorConfig, init, McOptions, mcRender, MorphChartsRef } from './morphcharts';
+import { colorConfig, init, morphChartsRender, MorphChartsRef } from './morphcharts';
 
 interface IBounds {
     view: View;
@@ -50,7 +51,7 @@ export class Presenter {
     /**
      * Handle to recent MorphCharts rendering result.
      */
-    public mcRenderResult: MorphChartsRendering;
+    public morphChartsRenderResult: MorphChartsRenderResult;
 
     /**
      * Logger, such as console.log
@@ -78,7 +79,7 @@ export class Presenter {
 
     private queuedAnimationOptions: QueuedAnimationOptions;
 
-    private _mcOptions: McOptions;
+    private _morphChartsOptions: MorphChartsOptions;
 
     private _last: IBounds & { stage: Stage };
 
@@ -167,7 +168,7 @@ export class Presenter {
         }
         const c = deepMerge(defaultPresenterConfig, config);
         if (!this.morphchartsref) {
-            this._mcOptions = {
+            this._morphChartsOptions = {
                 container: this.getElement(PresenterElement.gl),
                 pickGridCallback: c.axisPickGridCallback,
                 onCubeHover: (e, ordinal) => {
@@ -179,7 +180,7 @@ export class Presenter {
                 onCanvasClick: config?.onLayerClick,
                 onLasso: config?.onLasso,
             };
-            this.morphchartsref = init(this._mcOptions, c.initialMcRendererOptions || defaultPresenterConfig.initialMcRendererOptions);
+            this.morphchartsref = init(this._morphChartsOptions, c.initialMorphChartsRendererOptions || defaultPresenterConfig.initialMorphChartsRendererOptions);
         }
         let cubeCount = Math.max(this._last.cubeCount, stage.cubeData.length);
         if (options.maxOrdinal) {
@@ -192,7 +193,7 @@ export class Presenter {
 
         config.preLayer && config.preLayer(stage);
 
-        this.mcRenderResult = mcRender(this.morphchartsref, this._last.stage, stage, height, width, config && config.preStage, config && config.mcColors, c);
+        this.morphChartsRenderResult = morphChartsRender(this.morphchartsref, this._last.stage, stage, height, width, config && config.preStage, config && config.mophChartsColors, c);
 
         delete stage.cubeData;
         delete stage.redraw;
@@ -225,7 +226,7 @@ export class Presenter {
         });
     }
 
-    public configColors(mcColors: McColors) {
+    public configColors(mcColors: MorphChartsColors) {
         colorConfig(this.morphchartsref, mcColors);
     }
 
