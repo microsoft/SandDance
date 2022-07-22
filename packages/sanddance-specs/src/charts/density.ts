@@ -24,7 +24,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         z: { title: specColumns.z?.name },
     };
     const backgroundImage =  specColumns.x?.quantitative && specColumns.y?.quantitative && insight.backgroundImage?.extents && insight.backgroundImage;
-    const showAxes = !backgroundImage;
+    const showAxes = !(backgroundImage || insight.hideAxes);
     const hBandProps: BandProps = {
         excludeEncodingRuleMap: true,
         orientation: 'horizontal',

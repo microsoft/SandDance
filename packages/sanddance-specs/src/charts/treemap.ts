@@ -12,14 +12,14 @@ import { LayoutPair } from '../layouts/layout';
 import { AggregateContainerProps } from '../layouts/aggregateContainer';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
-    const { specColumns, specViewOptions } = specContext;
+    const { insight, specColumns, specViewOptions } = specContext;
     const treemapProps: TreemapProps = {
         corner: 'top-left',
         group: specColumns.group,
         size: specColumns.size,
         treeMapMethod: specViewOptions.language.treeMapMethod,
         z: specColumns.z,
-        showAxes: true,
+        showAxes: !insight.hideAxes,
     };
     const axisScales: AxisScales = {
         z: { title: specColumns.z && specColumns.z.name },

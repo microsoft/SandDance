@@ -16,7 +16,7 @@ import { ensureHeaders } from './headers';
 import { finalizeLegend } from './legend';
 import { assignOrdinals, getDataIndexOfCube } from './ordinal';
 import { getSearchGroupFromVegaValue } from './search';
-import { applySignalValues, extractSignalValuesFromView } from './signals';
+import { applySignalValues, extractSignalValuesFromView, unbindSignalUI } from './signals';
 import { cleanDataItem, Tooltip } from './tooltip';
 import {
     ColorContext,
@@ -333,6 +333,7 @@ export class Viewer {
         if (!specResult.errors) {
             const uiValues = extractSignalValuesFromView(this.vegaViewGl, this.vegaSpec);
             applySignalValues({ ...uiValues, ...signalValues }, specResult.vegaSpec);
+            unbindSignalUI(specResult.vegaSpec);
             this.vegaSpec = specResult.vegaSpec;
             this.options.onVegaSpec && this.options.onVegaSpec(this.vegaSpec);
             this.specCapabilities = specResult.specCapabilities;

@@ -20,7 +20,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         scatterPointScaleDisplay: specViewOptions.language.scatterPointScale,
         zGrounded: specViewOptions.language.zGrounded,
         backgroundImageExtents,
-        showAxes: !backgroundImageExtents,
+        showAxes: !(backgroundImageExtents || insight.hideAxes),
     };
     const axisScales: AxisScales = {
         x: { title: specColumns.x?.name },

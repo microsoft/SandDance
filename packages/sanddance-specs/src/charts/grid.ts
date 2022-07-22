@@ -10,13 +10,13 @@ import { SpecContext } from '../types';
 import { SquareProps } from '../layouts/square';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
-    const { specColumns } = specContext;
+    const { insight, specColumns } = specContext;
     const squareProps: SquareProps = {
         sortBy: specColumns.sort,
         fillDirection: 'right-down',
         z: specColumns.z,
         collapseYHeight: true,
-        showAxes: true,
+        showAxes: !insight.hideAxes,
     };
     const axisScales: AxisScales = {
         z: { title: specColumns.z && specColumns.z.name },

@@ -19,7 +19,7 @@ import { SpecContext } from '../types';
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns, specViewOptions } = specContext;
     const { language } = specViewOptions;
-    const showAxes = true;
+    const showAxes = !insight.hideAxes;
     const bandProps: BandProps = {
         orientation: 'horizontal',
         groupby: {
