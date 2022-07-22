@@ -19,7 +19,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         z: { title: specViewOptions.language.count },
     };
     const backgroundImage =  specColumns.x?.quantitative && specColumns.y?.quantitative && insight.backgroundImage?.extents && insight.backgroundImage;
-    const showAxes = !backgroundImage;
+    const showAxes = !(backgroundImage || insight.hideAxes);
     const hBandProps: BandProps = {
         excludeEncodingRuleMap: true,
         orientation: 'horizontal',

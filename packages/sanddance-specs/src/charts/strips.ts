@@ -12,14 +12,14 @@ import { SpecContext } from '../types';
 import { StripProps } from '../layouts/strip';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
-    const { specColumns } = specContext;
+    const { insight, specColumns } = specContext;
     const stripProps: StripProps = {
         sortOrder: 'ascending',
         orientation: 'vertical',
         size: specColumns.size,
         sort: specColumns.sort,
         z: specColumns.z,
-        showAxes: true,
+        showAxes: !insight.hideAxes,
     };
     const axisScales: AxisScales = {
         z: { title: specColumns.z && specColumns.z.name },
