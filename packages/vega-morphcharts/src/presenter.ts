@@ -193,7 +193,7 @@ export class Presenter {
 
         config.preLayer && config.preLayer(stage);
 
-        this.morphChartsRenderResult = morphChartsRender(this.morphchartsref, this._last.stage, stage, height, width, config && config.preStage, config && config.mophChartsColors, c);
+        this.morphChartsRenderResult = morphChartsRender(this.morphchartsref, this._last.stage, stage, height, width, config && config.preStage, config && config.morphChartsColors, c);
 
         delete stage.cubeData;
         delete stage.redraw;

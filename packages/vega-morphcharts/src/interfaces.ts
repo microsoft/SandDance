@@ -168,7 +168,7 @@ export interface TransitionDurations {
 export interface PresenterConfig {
     getCameraTo?: () => Camera;
     transitionDurations?: TransitionDurations;
-    mophChartsColors?: MorphChartsColors;
+    morphChartsColors?: MorphChartsColors;
     initialMorphChartsRendererOptions?: MorphChartsRendererOptions;
     preStage?: PreStage;
     getCharacterSet?: (stage: Stage) => string[];

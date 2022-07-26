@@ -114,7 +114,7 @@ export class Viewer {
     private _details: Details;
     private _tooltip: TooltipDestroyable;
     private _shouldSaveColorContext: () => boolean;
-    private _lastColorOptions: ColorSettings;
+    private _lastPresenterConfig: VegaMorphCharts.types.PresenterConfig;
     private _characterSet: CharacterSet;
 
     /**
@@ -338,6 +338,7 @@ export class Viewer {
             this.options.onVegaSpec && this.options.onVegaSpec(this.vegaSpec);
             this.specCapabilities = specResult.specCapabilities;
             const config = this.createConfig(presenterConfig);
+            this._lastPresenterConfig = config.presenterConfig;
             if (view) {
                 config.getView = () => view;
             }
@@ -395,9 +396,10 @@ export class Viewer {
         if (newViewerOptions) {
             if (newViewerOptions.colors) {
                 //set theme colors PresenterConfig
-                this.presenter.configColors(this.getMorphChartsColors());
+                const mcColors = this.getMorphChartsColors();
+                this.presenter.configColors(mcColors);
 
-                this._lastColorOptions = VegaMorphCharts.util.clone(newViewerOptions.colors);
+                this._lastPresenterConfig.morphChartsColors = mcColors;
             }
             this.options = VegaMorphCharts.util.deepMerge(this.options, newViewerOptions as ViewerOptions);
         }
@@ -517,7 +519,6 @@ export class Viewer {
         this._characterSet.resetCharacterSet(forceNewCharacterSet, this.insight, insight);
 
         this.insight = VegaMorphCharts.util.clone(insight);
-        this._lastColorOptions = VegaMorphCharts.util.clone(this.options.colors);
         this._shouldSaveColorContext = () => !renderOptions.initialColorContext;
         const colorContext = renderOptions.initialColorContext || {
             colorMap: null,
@@ -685,7 +686,7 @@ export class Viewer {
     private createConfig(c?: VegaMorphCharts.types.PresenterConfig): VegaMorphCharts.types.ViewGlConfig {
         const { getTextColor, getTextHighlightColor, onTextClick } = this.options;
         const defaultPresenterConfig: VegaMorphCharts.types.PresenterConfig = {
-            mophChartsColors: this.getMorphChartsColors(),
+            morphChartsColors: this.getMorphChartsColors(),
             zAxisZindex,
             getCharacterSet: stage => this._characterSet.getCharacterSet(stage),
             getTextColor,
