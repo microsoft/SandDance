@@ -68,6 +68,8 @@ export class Visual implements IVisual {
     public persistViewChange: boolean;
     public persistSelectionChange: boolean;
     public ignoreSelectionUpdate: boolean;
+    public ignorePersistUpdate: boolean;
+    public ignorePersistTimer: number;
     public sanddanceRenderOptions: SandDance.types.RenderOptions;
     public afterView: (() => void)[];
     public search: SandDance.searchExpression.Search;
@@ -75,6 +77,7 @@ export class Visual implements IVisual {
     public lastCameraJSON: string;
 
     public static fetchMoreTimeout = 5000;
+    public static ignorePersistTimeout = 200;
 
     constructor(options: VisualConstructorOptions) {
         // console.log('Visual constructor', options);
@@ -83,6 +86,7 @@ export class Visual implements IVisual {
         this.selectionManager = this.host.createSelectionManager();
         this.afterView = [];
         this.sanddanceRenderOptions = {};
+        this.persistSelectionChange = true;
 
         if (document) {
             options.element.style.position = 'relative';
@@ -196,6 +200,10 @@ export class Visual implements IVisual {
             };
             // console.log(`persist`, config);
             this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties: config, selector: null }] });
+            this.ignorePersistUpdate = true;
+            this.ignorePersistTimer = window.setTimeout(() => {
+                this.ignorePersistUpdate = false;
+            }, Visual.ignorePersistTimeout);
         }
     }
 
@@ -236,6 +244,13 @@ export class Visual implements IVisual {
 
         if (!capabilities.webgl) {
             this.app.unload();
+            return;
+        }
+
+        if (this.ignorePersistUpdate) {
+            this.ignorePersistUpdate = false;
+            clearTimeout(this.ignorePersistTimer);
+            this.events.renderingFinished(this.renderingOptions);
             return;
         }
 
@@ -444,7 +459,7 @@ export class Visual implements IVisual {
 
         const diff = !SandDance.searchExpression.compare(existingSelection, search);
         if (diff) {
-            // console.log('sync selection', selectionQueryJSON)
+            // console.log('sync selection', selectionQueryJSON, existingSelection)
             this.persistSelectionChange = false;
             if (afterView || !this.app?.explorer?.viewer) {
                 this.afterView.push(() => this.app.explorer.viewer.select(search));

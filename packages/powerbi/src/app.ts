@@ -105,6 +105,7 @@ export class App extends React.Component<Props, State> {
             onVegaSpec: () => {
                 this.endCameraListener();
             },
+            disableLasso: true,
         };
     }
 

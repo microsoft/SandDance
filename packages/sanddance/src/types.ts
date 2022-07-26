@@ -184,6 +184,11 @@ export interface ViewerOptions extends SpecViewOptions {
      * Z value of selection polygons.
      */
     selectionPolygonZ: number;
+
+    /**
+     * Disable lasso selection.
+     */
+     disableLasso?: boolean;
 }
 
 export interface RenderOptions {

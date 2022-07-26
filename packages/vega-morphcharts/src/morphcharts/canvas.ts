@@ -12,9 +12,11 @@ export function listenCanvasEvents(core: Core, options: MorphChartsOptions) {
     const { container, pickGridCallback } = options;
     const { inputManager } = core;
 
-    inputManager.pickLassoCallback = result => {
-        options.onLasso(result.ids[0], result.manipulator.event as MouseEvent);
-    };
+    if (options.onLasso) {
+        inputManager.pickLassoCallback = result => {
+            options.onLasso(result.ids[0], result.manipulator.event as MouseEvent);
+        };
+    }
 
     inputManager.singleTouchAction = manipulator => {
         if (manipulator.button == rightButton || manipulator.shiftKey || manipulator.ctrlKey) {
