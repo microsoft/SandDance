@@ -13,7 +13,7 @@ export function convertFilter(searchFilter: SandDance.searchExpression.Search, c
         group.expressions.forEach(ex => {
             if (!ex) return;
             if (ex.name === SandDance.constants.GL_ORDINAL) {
-                // it would be ideal to filter to a single row identity, but the PoerBI API currently does not let us do that.
+                // it would be ideal to filter to a single row identity, but the PowerBI API currently does not let us do that.
                 // so, we will filter to data points that have the same values
                 const dataPoint = getDataPoint(<number>ex.value, data);
                 if (dataPoint) {
