@@ -735,11 +735,6 @@ export class Viewer {
                     this.select(search);
                 }
             },
-            onLasso: (ids, e) => {
-                this.deselect();
-                const search = this.convertSetToSearch(ids);
-                this.select(search);
-            },
             onLayerClick: (e: MouseEvent) => {
                 this.deselect();
             },
@@ -773,6 +768,13 @@ export class Viewer {
             },
             preserveDrawingBuffer: this.options.preserveDrawingBuffer,
         };
+        if (!this.options.disableLasso) {
+            defaultPresenterConfig.onLasso = (ids, e) => {
+                this.deselect();
+                const search = this.convertSetToSearch(ids);
+                this.select(search);
+            };
+        }
         if (this.options.onBeforeCreateLayers) {
             defaultPresenterConfig.preLayer = stage => {
                 this.preLayer(stage);
