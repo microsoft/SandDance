@@ -380,7 +380,7 @@ exports.default = function(specContext) {
     var _a, _b, _c, _d;
     const { insight , specColumns , specViewOptions  } = specContext;
     const { language  } = specViewOptions;
-    const showAxes = true;
+    const showAxes = !insight.hideAxes;
     const bandProps = {
         orientation: "horizontal",
         groupby: {
@@ -755,7 +755,7 @@ exports.default = function(specContext) {
     var _a, _b;
     const { insight , specColumns , specViewOptions  } = specContext;
     const { language  } = specViewOptions;
-    const showAxes = true;
+    const showAxes = !insight.hideAxes;
     const bandProps = {
         orientation: "vertical",
         groupby: {
@@ -968,7 +968,7 @@ exports.default = function(specContext) {
         }
     };
     const backgroundImage = ((_d = specColumns.x) === null || _d === void 0 ? void 0 : _d.quantitative) && ((_e = specColumns.y) === null || _e === void 0 ? void 0 : _e.quantitative) && ((_f = insight.backgroundImage) === null || _f === void 0 ? void 0 : _f.extents) && insight.backgroundImage;
-    const showAxes = !backgroundImage;
+    const showAxes = !(backgroundImage || insight.hideAxes);
     const hBandProps = {
         excludeEncodingRuleMap: true,
         orientation: "horizontal",
@@ -1168,13 +1168,13 @@ parcelHelpers.defineInteropFlag(exports);
 */ var _constants = require("../constants");
 exports.default = function(specContext) {
     var _a;
-    const { specColumns  } = specContext;
+    const { insight , specColumns  } = specContext;
     const squareProps = {
         sortBy: specColumns.sort,
         fillDirection: "right-down",
         z: specColumns.z,
         collapseYHeight: true,
-        showAxes: true
+        showAxes: !insight.hideAxes
     };
     const axisScales = {
         z: {
@@ -1243,7 +1243,7 @@ exports.default = function(specContext) {
         scatterPointScaleDisplay: specViewOptions.language.scatterPointScale,
         zGrounded: specViewOptions.language.zGrounded,
         backgroundImageExtents,
-        showAxes: !backgroundImageExtents
+        showAxes: !(backgroundImageExtents || insight.hideAxes)
     };
     const axisScales = {
         x: {
@@ -1336,7 +1336,7 @@ exports.default = function(specContext) {
         }
     };
     const backgroundImage = ((_c = specColumns.x) === null || _c === void 0 ? void 0 : _c.quantitative) && ((_d = specColumns.y) === null || _d === void 0 ? void 0 : _d.quantitative) && ((_e = insight.backgroundImage) === null || _e === void 0 ? void 0 : _e.extents) && insight.backgroundImage;
-    const showAxes = !backgroundImage;
+    const showAxes = !(backgroundImage || insight.hideAxes);
     const hBandProps = {
         excludeEncodingRuleMap: true,
         orientation: "horizontal",
@@ -1450,14 +1450,14 @@ parcelHelpers.defineInteropFlag(exports);
 */ var _constants = require("../constants");
 exports.default = function(specContext) {
     var _a;
-    const { specColumns  } = specContext;
+    const { insight , specColumns  } = specContext;
     const stripProps = {
         sortOrder: "ascending",
         orientation: "vertical",
         size: specColumns.size,
         sort: specColumns.sort,
         z: specColumns.z,
-        showAxes: true
+        showAxes: !insight.hideAxes
     };
     const axisScales = {
         z: {
@@ -1541,14 +1541,14 @@ parcelHelpers.defineInteropFlag(exports);
 */ var _constants = require("../constants");
 exports.default = function(specContext) {
     var _a;
-    const { specColumns , specViewOptions  } = specContext;
+    const { insight , specColumns , specViewOptions  } = specContext;
     const treemapProps = {
         corner: "top-left",
         group: specColumns.group,
         size: specColumns.size,
         treeMapMethod: specViewOptions.language.treeMapMethod,
         z: specColumns.z,
-        showAxes: true
+        showAxes: !insight.hideAxes
     };
     const axisScales = {
         z: {

@@ -18496,9 +18496,11 @@ f 5/6/6 1/12/6 8/11/6`;
 	function listenCanvasEvents(core, options) {
 	    const { container, pickGridCallback } = options;
 	    const { inputManager } = core;
-	    inputManager.pickLassoCallback = result => {
-	        options.onLasso(result.ids[0], result.manipulator.event);
-	    };
+	    if (options.onLasso) {
+	        inputManager.pickLassoCallback = result => {
+	            options.onLasso(result.ids[0], result.manipulator.event);
+	        };
+	    }
 	    inputManager.singleTouchAction = manipulator => {
 	        if (manipulator.button == rightButton || manipulator.shiftKey || manipulator.ctrlKey) {
 	            return SingleTouchAction.rotate;
