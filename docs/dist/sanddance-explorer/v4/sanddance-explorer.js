@@ -38539,6 +38539,7 @@ function $4805700d8b417596$var$filterSignals(signal) {
         case $4805700d8b417596$var$SandDance.constants.SignalNames.ColorReverse:
         case $4805700d8b417596$var$SandDance.constants.SignalNames.PointScale:
         case $4805700d8b417596$var$SandDance.constants.SignalNames.TreeMapMethod:
+        case $4805700d8b417596$var$SandDance.constants.SignalNames.ZGrounded:
             return false;
         default:
             return !!signal.bind;

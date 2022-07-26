@@ -146,7 +146,7 @@
         var _a, _b, _c, _d;
         const { insight, specColumns, specViewOptions } = specContext;
         const { language } = specViewOptions;
-        const showAxes = true;
+        const showAxes = !insight.hideAxes;
         const bandProps = {
             orientation: 'horizontal',
             groupby: {
@@ -325,7 +325,7 @@
         var _a, _b;
         const { insight, specColumns, specViewOptions } = specContext;
         const { language } = specViewOptions;
-        const showAxes = true;
+        const showAxes = !insight.hideAxes;
         const bandProps = {
             orientation: 'vertical',
             groupby: {
@@ -508,7 +508,7 @@
             z: { title: (_c = specColumns.z) === null || _c === void 0 ? void 0 : _c.name },
         };
         const backgroundImage = ((_d = specColumns.x) === null || _d === void 0 ? void 0 : _d.quantitative) && ((_e = specColumns.y) === null || _e === void 0 ? void 0 : _e.quantitative) && ((_f = insight.backgroundImage) === null || _f === void 0 ? void 0 : _f.extents) && insight.backgroundImage;
-        const showAxes = !backgroundImage;
+        const showAxes = !(backgroundImage || insight.hideAxes);
         const hBandProps = {
             excludeEncodingRuleMap: true,
             orientation: 'horizontal',
@@ -685,13 +685,13 @@
     */
     function grid (specContext) {
         var _a;
-        const { specColumns } = specContext;
+        const { insight, specColumns } = specContext;
         const squareProps = {
             sortBy: specColumns.sort,
             fillDirection: 'right-down',
             z: specColumns.z,
             collapseYHeight: true,
-            showAxes: true,
+            showAxes: !insight.hideAxes,
         };
         const axisScales = {
             z: { title: specColumns.z && specColumns.z.name },
@@ -751,7 +751,7 @@
             scatterPointScaleDisplay: specViewOptions.language.scatterPointScale,
             zGrounded: specViewOptions.language.zGrounded,
             backgroundImageExtents,
-            showAxes: !backgroundImageExtents,
+            showAxes: !(backgroundImageExtents || insight.hideAxes),
         };
         const axisScales = {
             x: { title: (_d = specColumns.x) === null || _d === void 0 ? void 0 : _d.name },
@@ -821,7 +821,7 @@
             z: { title: specViewOptions.language.count },
         };
         const backgroundImage = ((_c = specColumns.x) === null || _c === void 0 ? void 0 : _c.quantitative) && ((_d = specColumns.y) === null || _d === void 0 ? void 0 : _d.quantitative) && ((_e = insight.backgroundImage) === null || _e === void 0 ? void 0 : _e.extents) && insight.backgroundImage;
-        const showAxes = !backgroundImage;
+        const showAxes = !(backgroundImage || insight.hideAxes);
         const hBandProps = {
             excludeEncodingRuleMap: true,
             orientation: 'horizontal',
@@ -918,14 +918,14 @@
     */
     function strips (specContext) {
         var _a;
-        const { specColumns } = specContext;
+        const { insight, specColumns } = specContext;
         const stripProps = {
             sortOrder: 'ascending',
             orientation: 'vertical',
             size: specColumns.size,
             sort: specColumns.sort,
             z: specColumns.z,
-            showAxes: true,
+            showAxes: !insight.hideAxes,
         };
         const axisScales = {
             z: { title: specColumns.z && specColumns.z.name },
@@ -1000,14 +1000,14 @@
     */
     function treemap (specContext) {
         var _a;
-        const { specColumns, specViewOptions } = specContext;
+        const { insight, specColumns, specViewOptions } = specContext;
         const treemapProps = {
             corner: 'top-left',
             group: specColumns.group,
             size: specColumns.size,
             treeMapMethod: specViewOptions.language.treeMapMethod,
             z: specColumns.z,
-            showAxes: true,
+            showAxes: !insight.hideAxes,
         };
         const axisScales = {
             z: { title: specColumns.z && specColumns.z.name },
@@ -23927,9 +23927,11 @@ f 5/6/6 1/12/6 8/11/6`;
     function listenCanvasEvents(core, options) {
         const { container, pickGridCallback } = options;
         const { inputManager } = core;
-        inputManager.pickLassoCallback = result => {
-            options.onLasso(result.ids[0], result.manipulator.event);
-        };
+        if (options.onLasso) {
+            inputManager.pickLassoCallback = result => {
+                options.onLasso(result.ids[0], result.manipulator.event);
+            };
+        }
         inputManager.singleTouchAction = manipulator => {
             if (manipulator.button == rightButton || manipulator.shiftKey || manipulator.ctrlKey) {
                 return SingleTouchAction.rotate;
@@ -25517,6 +25519,19 @@ f 5/6/6 1/12/6 8/11/6`;
         });
         return result;
     }
+    //signals not capable of handling with MorphCharts
+    const hideSignalUI = [
+        SignalNames.MarkOpacity,
+        SignalNames.TextAngleX,
+        SignalNames.TextAngleY,
+    ];
+    function unbindSignalUI(spec) {
+        spec.signals.forEach((signal) => {
+            if (hideSignalUI.indexOf(signal.name) >= 0) {
+                delete signal.bind;
+            }
+        });
+    }
 
     /*!
     * Copyright (c) Microsoft Corporation.
@@ -25934,6 +25949,7 @@ f 5/6/6 1/12/6 8/11/6`;
                 if (!specResult.errors) {
                     const uiValues = extractSignalValuesFromView(this.vegaViewGl, this.vegaSpec);
                     applySignalValues(Object.assign(Object.assign({}, uiValues), signalValues), specResult.vegaSpec);
+                    unbindSignalUI(specResult.vegaSpec);
                     this.vegaSpec = specResult.vegaSpec;
                     this.options.onVegaSpec && this.options.onVegaSpec(this.vegaSpec);
                     this.specCapabilities = specResult.specCapabilities;
@@ -26322,11 +26338,6 @@ f 5/6/6 1/12/6 8/11/6`;
                         this.select(search);
                     }
                 },
-                onLasso: (ids, e) => {
-                    this.deselect();
-                    const search = this.convertSetToSearch(ids);
-                    this.select(search);
-                },
                 onLayerClick: (e) => {
                     this.deselect();
                 },
@@ -26362,6 +26373,13 @@ f 5/6/6 1/12/6 8/11/6`;
                 },
                 preserveDrawingBuffer: this.options.preserveDrawingBuffer,
             };
+            if (!this.options.disableLasso) {
+                defaultPresenterConfig.onLasso = (ids, e) => {
+                    this.deselect();
+                    const search = this.convertSetToSearch(ids);
+                    this.select(search);
+                };
+            }
             if (this.options.onBeforeCreateLayers) {
                 defaultPresenterConfig.preLayer = stage => {
                     this.preLayer(stage);
