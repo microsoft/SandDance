@@ -12,16 +12,12 @@ export const createTextLayer: ILayerCreator = (props: ILayerProps): ILayer => {
     const { ref, stage } = props;
     const { core } = ref;
     const {
-        ids,
-        colors,
         positionsX,
         positionsY,
         positionsZ,
         sizes,
         bounds,
-        maxColor,
         maxGlyphs,
-        palette,
         text,
     } = convert(stage);
 
