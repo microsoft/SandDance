@@ -151,7 +151,7 @@ export function sceneToStage(options: MarkStagerOptions, stage: Stage, scene: Sc
     mainStager(options, stage, scene, 0, 0, null);
     sortAxis(stage.axes.x, 0);
     sortAxis(stage.axes.y, 1);
-    sortAxis(stage.axes.z, 2);
+    sortAxis(stage.axes.z, 1);
 }
 
 function sortAxis(axes: Axis[], dim: number) {
