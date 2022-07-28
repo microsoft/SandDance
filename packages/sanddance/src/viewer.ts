@@ -716,7 +716,7 @@ export class Viewer {
                 const role = this.specCapabilities.roles.filter(r => r.role === axis.axisRole)[0];
                 if (role?.axisSelection) {
                     cartesian.isDivisionPickingEnabled[dim3d] = true;
-                    cartesian.arePickDivisionsVisible[dim3d] = true;
+                    cartesian.arePickDivisionsVisible[dim3d] = axis.tickText.length > 0;
                     cartesian.isLabelPickingEnabled[dim3d] = true;
                     cartesian.isTitlePickingEnabled[dim3d] = true;
                     cartesian.isHeadingPickingEnabled[dim3d] = true;
