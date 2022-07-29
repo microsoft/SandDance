@@ -12,16 +12,12 @@ export const createTextLayer: ILayerCreator = (props: ILayerProps): ILayer => {
     const { ref, stage } = props;
     const { core } = ref;
     const {
-        ids,
-        colors,
         positionsX,
         positionsY,
         positionsZ,
         sizes,
         bounds,
-        maxColor,
         maxGlyphs,
-        palette,
         text,
     } = convert(stage);
 
@@ -92,7 +88,7 @@ function convert(stage: Stage) {
         positionsX[i] = t.position[0];
         positionsY[i] = t.position[1];
         positionsZ[i] = t.position[2];
-        sizes[i] = t.size;
+        sizes[i] = 1.5 * t.size;    //scale similar to axes
 
         bounds = increment(bounds,
             t.position[0],

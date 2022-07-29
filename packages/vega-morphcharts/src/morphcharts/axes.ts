@@ -74,8 +74,8 @@ export const createAxesLayer: ILayerCreator = (props: ILayerProps): ILayer => {
 
         if (is3d) {
             const zBounds = getDomainBounds(1, axesSet.z);
-            axesSetBounds.minBoundsZ = -zBounds.minBounds;
-            axesSetBounds.maxBoundsZ = -zBounds.maxBounds;
+            axesSetBounds.minBoundsZ = -zBounds.maxBounds;
+            axesSetBounds.maxBoundsZ = -zBounds.minBounds;
         }
 
         const yBounds = getDomainBounds(1, axesSet.y);
