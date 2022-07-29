@@ -17688,7 +17688,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    mainStager(options, stage, scene, 0, 0, null);
 	    sortAxis(stage.axes.x, 0);
 	    sortAxis(stage.axes.y, 1);
-	    sortAxis(stage.axes.z, 2);
+	    sortAxis(stage.axes.z, 1);
 	}
 	function sortAxis(axes, dim) {
 	    axes.forEach(axis => {
@@ -17812,8 +17812,8 @@ f 5/6/6 1/12/6 8/11/6`;
 	        };
 	        if (is3d) {
 	            const zBounds = getDomainBounds(1, axesSet.z);
-	            axesSetBounds.minBoundsZ = -zBounds.minBounds;
-	            axesSetBounds.maxBoundsZ = -zBounds.maxBounds;
+	            axesSetBounds.minBoundsZ = -zBounds.maxBounds;
+	            axesSetBounds.maxBoundsZ = -zBounds.minBounds;
 	        }
 	        const yBounds = getDomainBounds(1, axesSet.y);
 	        axesSetBounds.minBoundsY = yBounds.minBounds;
@@ -18366,7 +18366,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	const createTextLayer = (props) => {
 	    const { ref, stage } = props;
 	    const { core } = ref;
-	    const { ids, colors, positionsX, positionsY, positionsZ, sizes, bounds, maxColor, maxGlyphs, palette, text, } = convert$1(stage);
+	    const { positionsX, positionsY, positionsZ, sizes, bounds, maxGlyphs, text, } = convert$1(stage);
 	    if (text.length === 0) {
 	        core.renderer.labelSets = [];
 	        return;
@@ -18418,7 +18418,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        positionsX[i] = t.position[0];
 	        positionsY[i] = t.position[1];
 	        positionsZ[i] = t.position[2];
-	        sizes[i] = t.size;
+	        sizes[i] = 1.5 * t.size; //scale similar to axes
 	        bounds = increment(bounds, t.position[0], t.position[1], t.position[2], t.position[0], t.position[1], t.position[2]);
 	        colors[i] = colorMap.registerColor(t.color);
 	    });
@@ -18951,7 +18951,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	            stage.cubeData = patchCubeArray(cubeCount, empty, stage.cubeData);
 	        }
 	        config.preLayer && config.preLayer(stage);
-	        this.morphChartsRenderResult = morphChartsRender(this.morphchartsref, this._last.stage, stage, height, width, config && config.preStage, config && config.mophChartsColors, c);
+	        this.morphChartsRenderResult = morphChartsRender(this.morphchartsref, this._last.stage, stage, height, width, config && config.preStage, config && config.morphChartsColors, c);
 	        delete stage.cubeData;
 	        delete stage.redraw;
 	        this._last = {

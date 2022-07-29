@@ -490,7 +490,7 @@ function $9d0255b0e2eb5a6d$export$2e2bcd8739ae039(specContext) {
     var _a, _b, _c, _d;
     const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
     const { language: language  } = specViewOptions;
-    const showAxes = true;
+    const showAxes = !insight.hideAxes;
     const bandProps = {
         orientation: "horizontal",
         groupby: {
@@ -688,7 +688,7 @@ function $89432af83262137a$export$2e2bcd8739ae039(specContext) {
     var _a, _b;
     const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
     const { language: language  } = specViewOptions;
-    const showAxes = true;
+    const showAxes = !insight.hideAxes;
     const bandProps = {
         orientation: "vertical",
         groupby: {
@@ -896,7 +896,7 @@ function $e99549e32deab63c$export$2e2bcd8739ae039(specContext) {
         }
     };
     const backgroundImage = ((_d = specColumns.x) === null || _d === void 0 ? void 0 : _d.quantitative) && ((_e = specColumns.y) === null || _e === void 0 ? void 0 : _e.quantitative) && ((_f = insight.backgroundImage) === null || _f === void 0 ? void 0 : _f.extents) && insight.backgroundImage;
-    const showAxes = !backgroundImage;
+    const showAxes = !(backgroundImage || insight.hideAxes);
     const hBandProps = {
         excludeEncodingRuleMap: true,
         orientation: "horizontal",
@@ -1091,13 +1091,13 @@ function $e99549e32deab63c$export$2e2bcd8739ae039(specContext) {
 
 function $0e5537dc1b4c969f$export$2e2bcd8739ae039(specContext) {
     var _a;
-    const { specColumns: specColumns  } = specContext;
+    const { insight: insight , specColumns: specColumns  } = specContext;
     const squareProps = {
         sortBy: specColumns.sort,
         fillDirection: "right-down",
         z: specColumns.z,
         collapseYHeight: true,
-        showAxes: true
+        showAxes: !insight.hideAxes
     };
     const axisScales = {
         z: {
@@ -1161,7 +1161,7 @@ function $cabbea1bb44c3af8$export$2e2bcd8739ae039(specContext) {
         scatterPointScaleDisplay: specViewOptions.language.scatterPointScale,
         zGrounded: specViewOptions.language.zGrounded,
         backgroundImageExtents: backgroundImageExtents,
-        showAxes: !backgroundImageExtents
+        showAxes: !(backgroundImageExtents || insight.hideAxes)
     };
     const axisScales = {
         x: {
@@ -1249,7 +1249,7 @@ function $ad60c0d5f2be70b9$export$2e2bcd8739ae039(specContext) {
         }
     };
     const backgroundImage = ((_c = specColumns.x) === null || _c === void 0 ? void 0 : _c.quantitative) && ((_d = specColumns.y) === null || _d === void 0 ? void 0 : _d.quantitative) && ((_e = insight.backgroundImage) === null || _e === void 0 ? void 0 : _e.extents) && insight.backgroundImage;
-    const showAxes = !backgroundImage;
+    const showAxes = !(backgroundImage || insight.hideAxes);
     const hBandProps = {
         excludeEncodingRuleMap: true,
         orientation: "horizontal",
@@ -1358,14 +1358,14 @@ function $ad60c0d5f2be70b9$export$2e2bcd8739ae039(specContext) {
 
 function $484a23b50e74118e$export$2e2bcd8739ae039(specContext) {
     var _a;
-    const { specColumns: specColumns  } = specContext;
+    const { insight: insight , specColumns: specColumns  } = specContext;
     const stripProps = {
         sortOrder: "ascending",
         orientation: "vertical",
         size: specColumns.size,
         sort: specColumns.sort,
         z: specColumns.z,
-        showAxes: true
+        showAxes: !insight.hideAxes
     };
     const axisScales = {
         z: {
@@ -1444,14 +1444,14 @@ function $484a23b50e74118e$export$2e2bcd8739ae039(specContext) {
 
 function $248901cc968463fe$export$2e2bcd8739ae039(specContext) {
     var _a;
-    const { specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
+    const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
     const treemapProps = {
         corner: "top-left",
         group: specColumns.group,
         size: specColumns.size,
         treeMapMethod: specViewOptions.language.treeMapMethod,
         z: specColumns.z,
-        showAxes: true
+        showAxes: !insight.hideAxes
     };
     const axisScales = {
         z: {
@@ -33011,7 +33011,7 @@ function $bb91810db7b118fc$export$d78988dba6734aaa(options, stage, scene) {
     $bb91810db7b118fc$var$mainStager(options, stage, scene, 0, 0, null);
     $bb91810db7b118fc$var$sortAxis(stage.axes.x, 0);
     $bb91810db7b118fc$var$sortAxis(stage.axes.y, 1);
-    $bb91810db7b118fc$var$sortAxis(stage.axes.z, 2);
+    $bb91810db7b118fc$var$sortAxis(stage.axes.z, 1);
 }
 function $bb91810db7b118fc$var$sortAxis(axes, dim) {
     axes.forEach((axis)=>{
@@ -33131,8 +33131,8 @@ const $b29bcea612a8cd83$export$b820fac18d588132 = (props)=>{
         };
         if (is3d) {
             const zBounds = $b29bcea612a8cd83$var$getDomainBounds(1, axesSet.z);
-            axesSetBounds.minBoundsZ = -zBounds.minBounds;
-            axesSetBounds.maxBoundsZ = -zBounds.maxBounds;
+            axesSetBounds.minBoundsZ = -zBounds.maxBounds;
+            axesSetBounds.maxBoundsZ = -zBounds.minBounds;
         }
         const yBounds = $b29bcea612a8cd83$var$getDomainBounds(1, axesSet.y);
         axesSetBounds.minBoundsY = yBounds.minBounds;
@@ -33660,7 +33660,7 @@ function $eed32355f965d77a$export$12cca049a4826e61(advanced) {
 const $3fd62b3715bd2081$export$bbc48f7bb3ba03ac = (props)=>{
     const { ref: ref , stage: stage  } = props;
     const { core: core  } = ref;
-    const { ids: ids , colors: colors , positionsX: positionsX , positionsY: positionsY , positionsZ: positionsZ , sizes: sizes , bounds: bounds1 , maxColor: maxColor , maxGlyphs: maxGlyphs , palette: palette , text: text ,  } = $3fd62b3715bd2081$var$convert(stage);
+    const { positionsX: positionsX , positionsY: positionsY , positionsZ: positionsZ , sizes: sizes , bounds: bounds1 , maxGlyphs: maxGlyphs , text: text ,  } = $3fd62b3715bd2081$var$convert(stage);
     if (text.length === 0) {
         core.renderer.labelSets = [];
         return;
@@ -33714,7 +33714,7 @@ function $3fd62b3715bd2081$var$convert(stage) {
         positionsX[i] = t.position[0];
         positionsY[i] = t.position[1];
         positionsZ[i] = t.position[2];
-        sizes[i] = t.size;
+        sizes[i] = 1.5 * t.size; //scale similar to axes
         bounds = (0, $517d92450a535487$export$a2647aa13413c947)(bounds, t.position[0], t.position[1], t.position[2], t.position[0], t.position[1], t.position[2]);
         colors[i] = colorMap.registerColor(t.color);
     });
@@ -33795,7 +33795,7 @@ const $59dd6522201d03c1$var$rightButton = 2;
 function $59dd6522201d03c1$export$63db8d52413993da(core, options) {
     const { container: container , pickGridCallback: pickGridCallback  } = options;
     const { inputManager: inputManager  } = core;
-    inputManager.pickLassoCallback = (result)=>{
+    if (options.onLasso) inputManager.pickLassoCallback = (result)=>{
         options.onLasso(result.ids[0], result.manipulator.event);
     };
     inputManager.singleTouchAction = (manipulator)=>{
@@ -34230,7 +34230,7 @@ class $1d6d9863c8523f0b$export$893c88c42e3630f9 {
             stage.cubeData = (0, $174640c8df0e6f7c$export$9a79ca9001afcc6d)(cubeCount, empty, stage.cubeData);
         }
         config.preLayer && config.preLayer(stage);
-        this.morphChartsRenderResult = (0, $129c4fedfb092cf6$export$bd1c7209c525d9d0)(this.morphchartsref, this._last.stage, stage, height, width, config && config.preStage, config && config.mophChartsColors, c);
+        this.morphChartsRenderResult = (0, $129c4fedfb092cf6$export$bd1c7209c525d9d0)(this.morphchartsref, this._last.stage, stage, height, width, config && config.preStage, config && config.morphChartsColors, c);
         delete stage.cubeData;
         delete stage.redraw;
         this._last = {
@@ -35250,6 +35250,7 @@ function $2041f36649939dda$export$cb06c97de370398d(search) {
 }
 
 
+
 function $7f509bc53ab5b2b2$export$385a06e733eab4de(sv, b) {
     if (!sv || !b || !b.signals || !b.signals.length) return;
     for(const key in sv){
@@ -35270,6 +35271,17 @@ function $7f509bc53ab5b2b2$export$764590c093441ac7(view, spec) {
         }
     });
     return result;
+}
+//signals not capable of handling with MorphCharts
+const $7f509bc53ab5b2b2$var$hideSignalUI = [
+    (0, $ec270fbe8d9983b4$export$809e371dee643808).MarkOpacity,
+    (0, $ec270fbe8d9983b4$export$809e371dee643808).TextAngleX,
+    (0, $ec270fbe8d9983b4$export$809e371dee643808).TextAngleY, 
+];
+function $7f509bc53ab5b2b2$export$dc91f38fb87dcbc8(spec) {
+    spec.signals.forEach((signal)=>{
+        if ($7f509bc53ab5b2b2$var$hideSignalUI.indexOf(signal.name) >= 0) delete signal.bind;
+    });
 }
 
 
@@ -35686,10 +35698,12 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
             if (!specResult.errors) {
                 const uiValues = (0, $7f509bc53ab5b2b2$export$764590c093441ac7)(this.vegaViewGl, this.vegaSpec);
                 (0, $7f509bc53ab5b2b2$export$385a06e733eab4de)(Object.assign(Object.assign({}, uiValues), signalValues), specResult.vegaSpec);
+                (0, $7f509bc53ab5b2b2$export$dc91f38fb87dcbc8)(specResult.vegaSpec);
                 this.vegaSpec = specResult.vegaSpec;
                 this.options.onVegaSpec && this.options.onVegaSpec(this.vegaSpec);
                 this.specCapabilities = specResult.specCapabilities;
                 const config = this.createConfig(presenterConfig);
+                this._lastPresenterConfig = config.presenterConfig;
                 if (view) config.getView = ()=>view;
                 if (!$0000a41cc7b5918f$var$didRegisterColorSchemes) {
                     (0, $c9f2c41a3f8ee485$export$3030070885af9365)($94c0add5c61b9a48$export$e2253033e6e1df16.vega);
@@ -35731,8 +35745,9 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
         if (newViewerOptions) {
             if (newViewerOptions.colors) {
                 //set theme colors PresenterConfig
-                this.presenter.configColors(this.getMorphChartsColors());
-                this._lastColorOptions = $74bd06e68a152316$exports.clone(newViewerOptions.colors);
+                const mcColors = this.getMorphChartsColors();
+                this.presenter.configColors(mcColors);
+                this._lastPresenterConfig.morphChartsColors = mcColors;
             }
             this.options = $74bd06e68a152316$exports.deepMerge(this.options, newViewerOptions);
         }
@@ -35844,7 +35859,6 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
             const ordinalMap = (0, $2de8589006f21d6f$export$f03cc77b21b3a2b2)(this._specColumns, data, renderOptions.ordinalMap);
             this._characterSet.resetCharacterSet(forceNewCharacterSet, this.insight, insight);
             this.insight = $74bd06e68a152316$exports.clone(insight);
-            this._lastColorOptions = $74bd06e68a152316$exports.clone(this.options.colors);
             this._shouldSaveColorContext = ()=>!renderOptions.initialColorContext;
             const colorContext = renderOptions.initialColorContext || {
                 colorMap: null,
@@ -35987,7 +36001,7 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
     createConfig(c) {
         const { getTextColor: getTextColor , getTextHighlightColor: getTextHighlightColor , onTextClick: onTextClick  } = this.options;
         const defaultPresenterConfig = {
-            mophChartsColors: this.getMorphChartsColors(),
+            morphChartsColors: this.getMorphChartsColors(),
             zAxisZindex: $0000a41cc7b5918f$var$zAxisZindex,
             getCharacterSet: (stage)=>this._characterSet.getCharacterSet(stage),
             getTextColor: getTextColor,
@@ -36012,25 +36026,18 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
                 const role = this.specCapabilities.roles.filter((r)=>r.role === axis.axisRole)[0];
                 if (role === null || role === void 0 ? void 0 : role.axisSelection) {
                     cartesian.isDivisionPickingEnabled[dim3d] = true;
-                    cartesian.arePickDivisionsVisible[dim3d] = true;
+                    cartesian.arePickDivisionsVisible[dim3d] = axis.tickText.length > 0;
                     cartesian.isLabelPickingEnabled[dim3d] = true;
                     cartesian.isTitlePickingEnabled[dim3d] = true;
                     cartesian.isHeadingPickingEnabled[dim3d] = true;
+                    cartesian.isGridPickingEnabled = true;
                 }
             },
-            onAxesComplete: (cartesian)=>{
-                //enable grid picking when both x & y enable it
-                if (cartesian.arePickDivisionsVisible[0] && cartesian.arePickDivisionsVisible[1]) cartesian.isGridPickingEnabled = true;
-            },
+            onAxesComplete: (cartesian)=>{},
             axisPickGridCallback: (divisions, e)=>{
                 const search = this._axisSelection.convert(divisions);
                 if (this.options.onAxisClick) this.options.onAxisClick(e, search); //TODO change onAxisClick to accept Search
                 else this.select(search);
-            },
-            onLasso: (ids, e)=>{
-                this.deselect();
-                const search = this.convertSetToSearch(ids);
-                this.select(search);
             },
             onLayerClick: (e)=>{
                 this.deselect();
@@ -36061,6 +36068,11 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
                 cubes: this.convertSearchToSet()
             },
             preserveDrawingBuffer: this.options.preserveDrawingBuffer
+        };
+        if (!this.options.disableLasso) defaultPresenterConfig.onLasso = (ids, e)=>{
+            this.deselect();
+            const search = this.convertSetToSearch(ids);
+            this.select(search);
         };
         if (this.options.onBeforeCreateLayers) defaultPresenterConfig.preLayer = (stage)=>{
             this.preLayer(stage);
