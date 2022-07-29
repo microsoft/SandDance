@@ -720,13 +720,10 @@ export class Viewer {
                     cartesian.isLabelPickingEnabled[dim3d] = true;
                     cartesian.isTitlePickingEnabled[dim3d] = true;
                     cartesian.isHeadingPickingEnabled[dim3d] = true;
+                    cartesian.isGridPickingEnabled = true;
                 }
             },
             onAxesComplete: (cartesian) => {
-                //enable grid picking when both x & y enable it
-                if (cartesian.arePickDivisionsVisible[0] && cartesian.arePickDivisionsVisible[1]) {
-                    cartesian.isGridPickingEnabled = true;
-                }
             },
             axisPickGridCallback: (divisions: number[], e: MouseEvent | PointerEvent | TouchEvent) => {
                 const search = this._axisSelection.convert(divisions);
