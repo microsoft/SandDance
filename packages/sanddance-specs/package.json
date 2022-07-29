@@ -20,6 +20,7 @@
     "build-typescript": "tsc -p .",
     "build:sanddance-core": "npm run build-typescript && npm run bundle",
     "bundle": "rollup -c",
+    "predeploy": "rimraf .parcel-cache",
     "deploy": "parcel build ./uitest/sanddance-specs.ts",
     "deploy-watch": "parcel watch ./uitest/sanddance-specs.ts --target umd",
     "test2": "node -r esm ./test/perf.js"

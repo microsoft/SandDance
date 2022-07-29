@@ -19,6 +19,7 @@
     "watch-typescript": "tsc -p . -w",
     "build-css": "sass ./src/css/sanddance-explorer.scss ./dist/css/sanddance-explorer.css",
     "watch-css": "sass ./src/css/sanddance-explorer.scss ./dist/css/sanddance-explorer.css --watch",
+    "prebundle": "rimraf .parcel-cache",
     "bundle": "parcel build ./bundle/umd.js",
     "deploy": "node ./scripts/deploy.js",
     "prebuild:sanddance-core": "node ./scripts/prebuild.js",
