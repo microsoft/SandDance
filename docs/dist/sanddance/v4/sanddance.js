@@ -23119,7 +23119,7 @@ f 5/6/6 1/12/6 8/11/6`;
         mainStager(options, stage, scene, 0, 0, null);
         sortAxis(stage.axes.x, 0);
         sortAxis(stage.axes.y, 1);
-        sortAxis(stage.axes.z, 2);
+        sortAxis(stage.axes.z, 1);
     }
     function sortAxis(axes, dim) {
         axes.forEach(axis => {
@@ -23243,8 +23243,8 @@ f 5/6/6 1/12/6 8/11/6`;
             };
             if (is3d) {
                 const zBounds = getDomainBounds(1, axesSet.z);
-                axesSetBounds.minBoundsZ = -zBounds.minBounds;
-                axesSetBounds.maxBoundsZ = -zBounds.maxBounds;
+                axesSetBounds.minBoundsZ = -zBounds.maxBounds;
+                axesSetBounds.maxBoundsZ = -zBounds.minBounds;
             }
             const yBounds = getDomainBounds(1, axesSet.y);
             axesSetBounds.minBoundsY = yBounds.minBounds;
@@ -23797,7 +23797,7 @@ f 5/6/6 1/12/6 8/11/6`;
     const createTextLayer = (props) => {
         const { ref, stage } = props;
         const { core } = ref;
-        const { ids, colors, positionsX, positionsY, positionsZ, sizes, bounds, maxColor, maxGlyphs, palette, text, } = convert$1(stage);
+        const { positionsX, positionsY, positionsZ, sizes, bounds, maxGlyphs, text, } = convert$1(stage);
         if (text.length === 0) {
             core.renderer.labelSets = [];
             return;
@@ -23849,7 +23849,7 @@ f 5/6/6 1/12/6 8/11/6`;
             positionsX[i] = t.position[0];
             positionsY[i] = t.position[1];
             positionsZ[i] = t.position[2];
-            sizes[i] = t.size;
+            sizes[i] = 1.5 * t.size; //scale similar to axes
             bounds = increment(bounds, t.position[0], t.position[1], t.position[2], t.position[0], t.position[1], t.position[2]);
             colors[i] = colorMap.registerColor(t.color);
         });
@@ -24382,7 +24382,7 @@ f 5/6/6 1/12/6 8/11/6`;
                 stage.cubeData = patchCubeArray(cubeCount, empty, stage.cubeData);
             }
             config.preLayer && config.preLayer(stage);
-            this.morphChartsRenderResult = morphChartsRender(this.morphchartsref, this._last.stage, stage, height, width, config && config.preStage, config && config.mophChartsColors, c);
+            this.morphChartsRenderResult = morphChartsRender(this.morphchartsref, this._last.stage, stage, height, width, config && config.preStage, config && config.morphChartsColors, c);
             delete stage.cubeData;
             delete stage.redraw;
             this._last = {
@@ -25954,6 +25954,7 @@ f 5/6/6 1/12/6 8/11/6`;
                     this.options.onVegaSpec && this.options.onVegaSpec(this.vegaSpec);
                     this.specCapabilities = specResult.specCapabilities;
                     const config = this.createConfig(presenterConfig);
+                    this._lastPresenterConfig = config.presenterConfig;
                     if (view) {
                         config.getView = () => view;
                     }
@@ -26007,8 +26008,9 @@ f 5/6/6 1/12/6 8/11/6`;
             if (newViewerOptions) {
                 if (newViewerOptions.colors) {
                     //set theme colors PresenterConfig
-                    this.presenter.configColors(this.getMorphChartsColors());
-                    this._lastColorOptions = clone(newViewerOptions.colors);
+                    const mcColors = this.getMorphChartsColors();
+                    this.presenter.configColors(mcColors);
+                    this._lastPresenterConfig.morphChartsColors = mcColors;
                 }
                 this.options = deepMerge(this.options, newViewerOptions);
             }
@@ -26130,7 +26132,6 @@ f 5/6/6 1/12/6 8/11/6`;
                 const ordinalMap = assignOrdinals(this._specColumns, data, renderOptions.ordinalMap);
                 this._characterSet.resetCharacterSet(forceNewCharacterSet, this.insight, insight);
                 this.insight = clone(insight);
-                this._lastColorOptions = clone(this.options.colors);
                 this._shouldSaveColorContext = () => !renderOptions.initialColorContext;
                 const colorContext = renderOptions.initialColorContext || {
                     colorMap: null,
@@ -26285,7 +26286,7 @@ f 5/6/6 1/12/6 8/11/6`;
         createConfig(c) {
             const { getTextColor, getTextHighlightColor, onTextClick } = this.options;
             const defaultPresenterConfig = {
-                mophChartsColors: this.getMorphChartsColors(),
+                morphChartsColors: this.getMorphChartsColors(),
                 zAxisZindex,
                 getCharacterSet: stage => this._characterSet.getCharacterSet(stage),
                 getTextColor,
@@ -26317,17 +26318,14 @@ f 5/6/6 1/12/6 8/11/6`;
                     const role = this.specCapabilities.roles.filter(r => r.role === axis.axisRole)[0];
                     if (role === null || role === void 0 ? void 0 : role.axisSelection) {
                         cartesian.isDivisionPickingEnabled[dim3d] = true;
-                        cartesian.arePickDivisionsVisible[dim3d] = true;
+                        cartesian.arePickDivisionsVisible[dim3d] = axis.tickText.length > 0;
                         cartesian.isLabelPickingEnabled[dim3d] = true;
                         cartesian.isTitlePickingEnabled[dim3d] = true;
                         cartesian.isHeadingPickingEnabled[dim3d] = true;
+                        cartesian.isGridPickingEnabled = true;
                     }
                 },
                 onAxesComplete: (cartesian) => {
-                    //enable grid picking when both x & y enable it
-                    if (cartesian.arePickDivisionsVisible[0] && cartesian.arePickDivisionsVisible[1]) {
-                        cartesian.isGridPickingEnabled = true;
-                    }
                 },
                 axisPickGridCallback: (divisions, e) => {
                     const search = this._axisSelection.convert(divisions);
