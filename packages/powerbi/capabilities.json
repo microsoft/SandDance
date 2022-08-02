@@ -32,12 +32,36 @@
                     "type": {
                         "bool": true
                     }
+                },
+                "showdebug": {
+                    "displayName": "Show debug",
+                    "type": {
+                        "bool": true
+                    }
                 }
             }
         },
         "sandDanceConfig": {
             "properties": {
+                "imageHolderJSON": {
+                    "type": {
+                        "text": true
+                    }
+                },
+                "cameraJSON": {
+                    "filterState": true,
+                    "type": {
+                        "text": true
+                    }
+                },
                 "insightJSON": {
+                    "filterState": true,
+                    "type": {
+                        "text": true
+                    }
+                },
+                "selectionQueryJSON": {
+                    "filterState": true,
                     "type": {
                         "text": true
                     }
