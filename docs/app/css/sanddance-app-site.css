@@ -7,7 +7,7 @@ body {
 body {
     display: grid;
     font-family: 'Segoe UI', sans-serif;
-    grid-template-rows: auto 0fr;
+    grid-template-rows: 0fr auto 0fr;
 }
 select,
 button,
@@ -15,8 +15,14 @@ input {
     font-family: 'Segoe UI', sans-serif;
 }
 
+header {
+    border-bottom: 1px solid #ccc;
+    font-size: smaller;
+    padding: 5px 1em;
+}
+
 footer {
     border-top: 1px solid #ccc;
     font-size: smaller;
-    padding: 6px 1em;
+    padding: 5px 1em;
 }
