@@ -2,7 +2,7 @@
     "name": "vscode-sanddance",
     "displayName": "SandDance for VSCode",
     "description": "Visually explore, understand, and present your data.",
-    "version": "4.0.0",
+    "version": "4.0.0-beta.0",
     "icon": "sanddance-logo.png",
     "publisher": "msrvida",
     "license": "MIT",
@@ -86,6 +86,7 @@
         "compile": "tsc -p ./",
         "build:sanddance-integration": "npm run compile && npm run resources",
         "x-test": "npm run compile && node ./out/test/runTest.js",
+        "deploy": "node ./scripts/deploy.js",
         "package": "vsce package"
     },
     "devDependencies": {
