@@ -22,7 +22,10 @@ export function getWebviewContent(webView: vscode.Webview, extensionPath: string
     ${link(resourceUrl('app.css'))}
 </head>
 <body>
-    <div id="app"></div>
+    <header>
+        Try our <a href="https://microsoft.github.io/SandDance/examples/#apps">beta of SandDance 4</a> to preview the upcoming version!
+    </header>
+    <main id="app"></main>
     ${script(resourceUrl('dist.min.js'))}
     ${script(resourceUrl('vega.js'))}
     ${script(resourceUrl('react.production.min.js'))}

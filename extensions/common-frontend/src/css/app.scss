@@ -7,20 +7,22 @@ body {
 }
 
 body {
+    display: grid;
     font-family: 'Segoe UI', sans-serif;
+    grid-template-rows: 0fr auto;
 }
 select,
 button,
 input {
     font-family: 'Segoe UI', sans-serif;
 }
+header {
+    border-bottom: 1px solid #ccc;
+    font-size: smaller;
+    padding: 5px 1em;
+}
 #app {
     display: grid;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
 }
 
 @import "../../node_modules/@msrvida/sanddance-explorer/dist/css/sanddance-explorer";
