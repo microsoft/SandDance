@@ -14,7 +14,14 @@
         "vscode": "^1.53.0"
     },
     "categories": [
-        "Other"
+        "Data Science",
+        "Other",
+        "Visualization"
+    ],
+    "keywords": [
+        "data exploration",
+        "data visualization",
+        "dataviz"
     ],
     "activationEvents": [
         "onCommand:sanddance.view"

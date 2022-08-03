@@ -16,7 +16,14 @@
         "azdata": "*"
     },
     "categories": [
-        "Other"
+        "Data Science",
+        "Other",
+        "Visualization"
+    ],
+    "keywords": [
+        "data exploration",
+        "data visualization",
+        "dataviz"
     ],
     "activationEvents": [
         "*"
