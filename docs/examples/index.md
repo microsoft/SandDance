@@ -15,7 +15,7 @@ title: Examples
 * [vega spec test](../tests/v4/es6/vega-morphcharts-test-es6.html) using bundled es6
 * [transition between vega specs](../tests/v4/umd/transition.html) using UMD/CDN
 
-## SandDance component v4 Beta
+## <a name="component"></a>SandDance component v4 Beta
 * [simple scatterplot](../tests/v4/umd/test.html) using UMD/CDN
 * [scatterplot fetch + transform](../tests/v4/umd/transforms.html) using UMD/CDN
 * [scatterplot](../tests/v4/es6/sanddance-test-es6.html) using bundled ES6
@@ -24,9 +24,10 @@ title: Examples
 * [quantitative barchart](../tests/v4/umd/quanBarChartTest.html) using UMD/CDN
 * [titanic treemap](../tests/v4/umd/treeMapTest.html) using UMD/CDN
 
-## SandDance apps v4 Beta
+## <a name="apps"></a>SandDance apps v4 Beta
 * [Web app](../tests/v4/es6/app)
 * [Power BI custom visual](../dist/powerbi/v4/SandDance2019beta4.4.0.3.pbiviz) SandDance 2019 beta4 4.0.3
+* [VSCode extension](../dist/vscode/v4/vscode-sanddance-4.0.0-beta.0.vsix) SandDance 4.0.0-beta.0
 
 ## Previous versions
 

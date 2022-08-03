@@ -1,2 +1,4 @@
 const fs = require('fs');
-fs.copyFileSync('./dist/SandDance2019beta4.4.0.3.pbiviz', '../../docs/dist/powerbi/v4/SandDance2019beta4.4.0.3.pbiviz');
+const pbiviz = require('../pbiviz.json');
+const filename = `${pbiviz.visual.name}.${pbiviz.visual.version}.pbiviz`;
+fs.copyFileSync(`./dist/${filename}`, `../../docs/dist/powerbi/v4/${filename}`);
