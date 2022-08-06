@@ -21,8 +21,9 @@ const markStager: MarkStager = (options: MarkStagerOptions, stage: Stage, scene:
 
     base.vega.sceneVisit(scene, function (item: SceneCube) {
 
-        const z = stage.view === '2d' ? 0 : (item.z || 0) + minZ;
-        const depth = (stage.view === '2d' ? 0 : (item.depth || 0)) + min3dDepth;
+        const noZ = item.z === undefined;
+        const z = noZ ? 0 : (item.z || 0) + minZ;
+        const depth = (noZ ? 0 : (item.depth || 0)) + min3dDepth;
 
         //change direction of y from SVG to GL
         const ty = -1;

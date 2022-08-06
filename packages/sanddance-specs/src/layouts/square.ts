@@ -15,7 +15,7 @@ import {
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { addZScale } from '../zBase';
-import { Column } from '@msrvida/chart-types';
+import { Column, View } from '@msrvida/chart-types';
 import { FormulaTransform, RectMark } from 'vega-typings';
 
 export interface SquareProps extends LayoutProps {
@@ -26,6 +26,7 @@ export interface SquareProps extends LayoutProps {
     maxGroupedFillSize?: string;
     collapseYHeight?: boolean;
     showAxes: boolean;
+    view: View;
 }
 
 export class Square extends Layout {
@@ -35,7 +36,7 @@ export class Square extends Layout {
         maxGroupSignal: string,
         stack0: string,
         stack1: string,
-        zScale: string
+        zScale: string,
     };
 
     constructor(public props: SquareProps & LayoutBuildProps) {
@@ -53,7 +54,7 @@ export class Square extends Layout {
 
     public build(): InnerScope {
         const { names, prefix, props } = this;
-        const { fillDirection, globalScope, groupings, parentScope, collapseYHeight, showAxes, sortBy, z } = props;
+        const { fillDirection, globalScope, groupings, parentScope, collapseYHeight, showAxes, sortBy, view, z } = props;
         const zScale = addZScale(z, globalScope.zSize, globalScope.data.name, names.zScale);
 
         addTransforms(globalScope.data, {
@@ -102,10 +103,16 @@ export class Square extends Layout {
                                 test: testForCollapseSelection(),
                                 value: 0,
                             },
-                            {
-                                scale: names.zScale,
-                                field: safeFieldName(z.name),
-                            },
+                            view === '3d'
+                                ?
+                                {
+                                    scale: names.zScale,
+                                    field: safeFieldName(z.name),
+                                }
+                                :
+                                {
+                                    value: 0
+                                },
                         ],
                     },
                 },

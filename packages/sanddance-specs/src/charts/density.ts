@@ -72,7 +72,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             props: aggProps,
         },
     ];
-    switch (insight.totalStyle) {
+    const { totalStyle, view } = insight;
+    switch (totalStyle) {
         case 'sum-treemap': {
             aggProps.aggregation = 'sum';
             const treemapProps: TreemapProps = {
@@ -81,6 +82,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 treeMapMethod: specViewOptions.language.treeMapMethod,
                 z: specColumns.z,
                 showAxes,
+                view,
             };
             layouts.push({
                 layoutType: 'Treemap',
@@ -97,6 +99,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 sort: specColumns.sort,
                 z: specColumns.z,
                 showAxes,
+                view,
             };
             layouts.push({
                 layoutType: 'Strip',
@@ -112,6 +115,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 sort: specColumns.sort,
                 z: specColumns.z,
                 showAxes,
+                view,
             };
             layouts.push({
                 layoutType: 'Strip',
@@ -128,6 +132,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                 maxGroupedUnits: null,
                 maxGroupedFillSize: null,
                 showAxes,
+                view,
             };
             aggProps.onBuild = (aggMaxExtent, aggMaxExtentScaled) => {
                 squareProps.maxGroupedUnits = aggMaxExtent;
@@ -165,7 +170,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     role: 'z',
                     axisSelection: specColumns.z?.quantitative ? 'range' : 'exact',
                     allowNone: true,
-                    disabled: insight.view === '2d',
+                    disabled: view === '2d',
                 },
                 {
                     role: 'color',

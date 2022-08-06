@@ -13,6 +13,7 @@ import { AggregateContainerProps } from '../layouts/aggregateContainer';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns, specViewOptions } = specContext;
+    const { view } = insight;
     const treemapProps: TreemapProps = {
         corner: 'top-left',
         group: specColumns.group,
@@ -20,6 +21,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         treeMapMethod: specViewOptions.language.treeMapMethod,
         z: specColumns.z,
         showAxes: !insight.hideAxes,
+        view,
     };
     const axisScales: AxisScales = {
         z: { title: specColumns.z && specColumns.z.name },
@@ -67,7 +69,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     role: 'z',
                     axisSelection: specColumns.z?.quantitative ? 'range' : 'exact',
                     allowNone: true,
-                    disabled: insight.view === '2d',
+                    disabled: view === '2d',
                 },
                 {
                     role: 'color',

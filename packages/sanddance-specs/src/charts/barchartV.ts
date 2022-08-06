@@ -42,7 +42,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         layoutType: 'Band',
         props: bandProps,
     }];
-    if (insight.totalStyle === 'sum-strip-percent') {
+    const { totalStyle, view } = insight;
+    if (totalStyle === 'sum-strip-percent') {
         y.aggregate = 'percent';
         y.title = language.percent;
         const stripProps: StripProps = {
@@ -53,6 +54,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             sort: specColumns.sort,
             z: specColumns.z,
             showAxes,
+            view,
         };
         layouts.push({
             layoutType: 'Strip',
@@ -71,7 +73,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
             layoutType: 'AggregateContainer',
             props: aggProps,
         });
-        switch (insight.totalStyle) {
+        switch (totalStyle) {
             case 'sum-treemap': {
                 y.aggregate = 'sum';
                 y.title = language.sum;
@@ -81,6 +83,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     treeMapMethod: specViewOptions.language.treeMapMethod,
                     z: specColumns.z,
                     showAxes,
+                    view,
                 };
                 layouts.push({
                     layoutType: 'Treemap',
@@ -98,6 +101,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     sort: specColumns.sort,
                     z: specColumns.z,
                     showAxes,
+                    view,
                 };
                 layouts.push({
                     layoutType: 'Strip',
@@ -114,6 +118,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     sort: specColumns.sort,
                     z: specColumns.z,
                     showAxes,
+                    view,
                 };
                 layouts.push({
                     layoutType: 'Strip',
@@ -131,6 +136,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
                     maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal,
                     showAxes,
+                    view,
                 };
                 layouts.push({
                     layoutType: 'Square',
@@ -158,7 +164,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     role: 'z',
                     axisSelection: specColumns.z?.quantitative ? 'range' : 'exact',
                     allowNone: true,
-                    disabled: insight.view === '2d',
+                    disabled: view === '2d',
                 },
                 {
                     role: 'color',

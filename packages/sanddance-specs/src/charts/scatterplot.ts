@@ -21,6 +21,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         zGrounded: specViewOptions.language.zGrounded,
         backgroundImageExtents,
         showAxes: !(backgroundImageExtents || insight.hideAxes),
+        view: insight.view,
     };
     const axisScales: AxisScales = {
         x: { title: specColumns.x?.name },

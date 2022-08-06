@@ -13,6 +13,7 @@ import { StripProps } from '../layouts/strip';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns } = specContext;
+    const { view } = insight;
     const stripProps: StripProps = {
         sortOrder: 'ascending',
         orientation: 'vertical',
@@ -20,6 +21,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         sort: specColumns.sort,
         z: specColumns.z,
         showAxes: !insight.hideAxes,
+        view,
     };
     const axisScales: AxisScales = {
         z: { title: specColumns.z && specColumns.z.name },
@@ -64,7 +66,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     role: 'z',
                     axisSelection: specColumns.z?.quantitative ? 'range' : 'exact',
                     allowNone: true,
-                    disabled: insight.view === '2d',
+                    disabled: view === '2d',
                 },
                 {
                     role: 'color',

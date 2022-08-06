@@ -18,7 +18,7 @@ import {
     addTransforms,
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
-import { Column } from '@msrvida/chart-types';
+import { Column, View } from '@msrvida/chart-types';
 import {
     RectEncodeEntry,
     RectMark,
@@ -40,6 +40,7 @@ export interface ScatterProps extends LayoutProps {
     zGrounded: string;
     showAxes: boolean;
     backgroundImageExtents: Extents;
+    view: View;
 }
 
 export class Scatter extends Layout {
@@ -55,7 +56,7 @@ export class Scatter extends Layout {
         sizeScale: string,
         xScale: string,
         yScale: string,
-        zScale: string
+        zScale: string,
     };
 
     constructor(public props: ScatterProps & LayoutBuildProps) {
@@ -79,7 +80,7 @@ export class Scatter extends Layout {
 
     public build(): InnerScope {
         const { names, prefix, props } = this;
-        const { backgroundImageExtents, globalScope, parentScope, scatterPointScaleDisplay, showAxes, size, x, y, z, zGrounded } = props;
+        const { backgroundImageExtents, globalScope, parentScope, scatterPointScaleDisplay, showAxes, size, view, x, y, z, zGrounded } = props;
         const qsize = size && size.quantitative && size;
 
         addSignals(globalScope.scope,
@@ -188,7 +189,9 @@ export class Scatter extends Layout {
                         value: 0,
                     },
                     {
-                        signal: `${SignalNames.ZGrounded} ? ${zValue} : ${sizeValueSignal}`,
+                        signal: view === '3d'
+                            ? `${SignalNames.ZGrounded} ? ${zValue} : ${sizeValueSignal}`
+                            : '0',
                     },
                 ],
             },
@@ -243,7 +246,9 @@ export class Scatter extends Layout {
                     field: z ? safeFieldName(z.name) : null,
                 },
                 reverse: false,
-                signal: `(${globalScope.zSize}) * ${SignalNames.ZProportion}`,
+                signal: view === '3d'
+                    ? `(${globalScope.zSize}) * ${SignalNames.ZProportion}`
+                    : `10 * ${SignalNames.ZProportion}`,
             },
         ];
         columnSignals.forEach(cs => {

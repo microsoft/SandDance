@@ -17,7 +17,7 @@ import {
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { addZScale } from '../zBase';
-import { Column } from '@msrvida/chart-types';
+import { Column, View } from '@msrvida/chart-types';
 import {
     Data,
     GroupMark,
@@ -32,6 +32,7 @@ export interface TreemapProps extends LayoutProps {
     treeMapMethod: string;
     z: Column;
     showAxes: boolean;
+    view: View;
 }
 
 export class Treemap extends Layout {
@@ -200,7 +201,7 @@ export class Treemap extends Layout {
 
     private addMark(offsets: LayoutOffsets, markParent: Scope, markDataName: string) {
         const { names, prefix, props } = this;
-        const { z } = props;
+        const { view, z } = props;
         const mark: RectMark = {
             name: prefix,
             type: 'rect',
@@ -220,10 +221,16 @@ export class Treemap extends Layout {
                                 test: testForCollapseSelection(),
                                 value: 0,
                             },
-                            {
-                                scale: names.zScale,
-                                field: safeFieldName(z.name),
-                            },
+                            view === '3d'
+                                ?
+                                {
+                                    scale: names.zScale,
+                                    field: safeFieldName(z.name),
+                                }
+                                :
+                                {
+                                    value: 0
+                                },
                         ],
                     },
                 },
