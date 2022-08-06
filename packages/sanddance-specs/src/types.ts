@@ -134,6 +134,7 @@ export interface SpecRoleCapabilities {
     binnable?: boolean;
     axisSelection?: AxisSelectionType;
     axisSelectionBetweenTicks?: boolean;
+    disabled?: boolean;
 
     /**
      * Signals associated with this spec role.

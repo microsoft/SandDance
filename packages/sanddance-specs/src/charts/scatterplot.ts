@@ -51,6 +51,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     role: 'z',
                     axisSelection: specColumns.z?.quantitative ? 'range' : 'exact',
                     allowNone: true,
+                    disabled: false,
                 },
                 {
                     role: 'color',

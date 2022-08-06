@@ -159,6 +159,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     role: 'z',
                     axisSelection: specColumns.z?.quantitative ? 'range' : 'exact',
                     allowNone: true,
+                    disabled: insight.view === '2d',
                 },
                 {
                     role: 'color',
