@@ -183,6 +183,11 @@ export class Scatter extends Layout {
                         signal: `${SignalNames.ZGrounded} ? 0 : ${zValue}`,
                     },
                 ],
+                zindex: [
+                    {
+                        signal: `${SignalNames.ZGrounded} ? 0 : ${zValue}`,
+                    },
+                ],
                 depth: [
                     {
                         test: testForCollapseSelection(),
@@ -205,52 +210,52 @@ export class Scatter extends Layout {
             reverse: boolean,
             signal: string
         }[] = [
-            {
-                column: x,
-                xyz: 'x',
-                scaleName: names.xScale,
-                domain: backgroundImageExtents ?
-                    {
-                        signal: names.xExtent,
-                    }
-                    :
-                    {
-                        data: globalScope.data.name,
-                        field: safeFieldName(x.name),
-                    },
-                reverse: false,
-                signal: parentScope.sizeSignals.layoutWidth,
-            },
-            {
-                column: y,
-                xyz: 'y',
-                scaleName: names.yScale,
-                domain: backgroundImageExtents ?
-                    {
-                        signal: names.yExtent,
-                    }
-                    :
-                    {
-                        data: globalScope.data.name,
-                        field: safeFieldName(y.name),
-                    },
-                reverse: true,
-                signal: parentScope.sizeSignals.layoutHeight,
-            },
-            {
-                column: z,
-                xyz: 'z',
-                scaleName: names.zScale,
-                domain: {
-                    data: globalScope.data.name,
-                    field: z ? safeFieldName(z.name) : null,
+                {
+                    column: x,
+                    xyz: 'x',
+                    scaleName: names.xScale,
+                    domain: backgroundImageExtents ?
+                        {
+                            signal: names.xExtent,
+                        }
+                        :
+                        {
+                            data: globalScope.data.name,
+                            field: safeFieldName(x.name),
+                        },
+                    reverse: false,
+                    signal: parentScope.sizeSignals.layoutWidth,
                 },
-                reverse: false,
-                signal: view === '3d'
-                    ? `(${globalScope.zSize}) * ${SignalNames.ZProportion}`
-                    : `10 * ${SignalNames.ZProportion}`,
-            },
-        ];
+                {
+                    column: y,
+                    xyz: 'y',
+                    scaleName: names.yScale,
+                    domain: backgroundImageExtents ?
+                        {
+                            signal: names.yExtent,
+                        }
+                        :
+                        {
+                            data: globalScope.data.name,
+                            field: safeFieldName(y.name),
+                        },
+                    reverse: true,
+                    signal: parentScope.sizeSignals.layoutHeight,
+                },
+                {
+                    column: z,
+                    xyz: 'z',
+                    scaleName: names.zScale,
+                    domain: {
+                        data: globalScope.data.name,
+                        field: z ? safeFieldName(z.name) : null,
+                    },
+                    reverse: false,
+                    signal: view === '3d'
+                        ? `(${globalScope.zSize}) * ${SignalNames.ZProportion}`
+                        : `10 * ${SignalNames.ZProportion}`,
+                },
+            ];
         columnSignals.forEach(cs => {
             const { column, domain, reverse, scaleName, signal, xyz } = cs;
             if (!column) return;
