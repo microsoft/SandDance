@@ -2,14 +2,14 @@
     "columns": {
         "x": "Longitude",
         "y": "Latitude",
-        "color": "Obama",
-        "z": "Education"
+        "color": "Income",
+        "z": "Income"
     },
-    "scheme": "redblue",
+    "scheme": "redyellowgreen",
     "size": {
         "height": 600,
         "width": 800
     },
     "chart": "scatterplot",
-    "view": "3d"
+    "view": "2d"
 }
