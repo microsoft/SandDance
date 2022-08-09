@@ -411,7 +411,8 @@ exports.default = function(specContext) {
             props: bandProps
         }
     ];
-    if (insight.totalStyle === "sum-strip-percent") {
+    const { totalStyle , view  } = insight;
+    if (totalStyle === "sum-strip-percent") {
         x.aggregate = "percent";
         x.title = language.percent;
         const stripProps = {
@@ -421,7 +422,8 @@ exports.default = function(specContext) {
             size: specColumns.size,
             sort: specColumns.sort,
             z: specColumns.z,
-            showAxes
+            showAxes,
+            view
         };
         layouts.push({
             layoutType: "Strip",
@@ -440,7 +442,7 @@ exports.default = function(specContext) {
             layoutType: "AggregateContainer",
             props: aggProps
         });
-        switch(insight.totalStyle){
+        switch(totalStyle){
             case "sum-treemap":
                 {
                     x.aggregate = "sum";
@@ -450,7 +452,8 @@ exports.default = function(specContext) {
                         size: specColumns.size,
                         treeMapMethod: specViewOptions.language.treeMapMethod,
                         z: specColumns.z,
-                        showAxes
+                        showAxes,
+                        view
                     };
                     layouts.push({
                         layoutType: "Treemap",
@@ -468,7 +471,8 @@ exports.default = function(specContext) {
                         size: specColumns.size,
                         sort: specColumns.sort,
                         z: specColumns.z,
-                        showAxes
+                        showAxes,
+                        view
                     };
                     layouts.push({
                         layoutType: "Strip",
@@ -486,7 +490,8 @@ exports.default = function(specContext) {
                         size: specColumns.size,
                         sort: specColumns.sort,
                         z: specColumns.z,
-                        showAxes
+                        showAxes,
+                        view
                     };
                     layouts.push({
                         layoutType: "Strip",
@@ -504,7 +509,8 @@ exports.default = function(specContext) {
                         z: specColumns.z,
                         maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
                         maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal,
-                        showAxes
+                        showAxes,
+                        view
                     };
                     layouts.push({
                         layoutType: "Square",
@@ -533,7 +539,8 @@ exports.default = function(specContext) {
                 {
                     role: "z",
                     axisSelection: ((_d = specColumns.z) === null || _d === void 0 ? void 0 : _d.quantitative) ? "range" : "exact",
-                    allowNone: true
+                    allowNone: true,
+                    disabled: view === "2d"
                 },
                 {
                     role: "color",
@@ -786,7 +793,8 @@ exports.default = function(specContext) {
             props: bandProps
         }
     ];
-    if (insight.totalStyle === "sum-strip-percent") {
+    const { totalStyle , view  } = insight;
+    if (totalStyle === "sum-strip-percent") {
         y.aggregate = "percent";
         y.title = language.percent;
         const stripProps = {
@@ -796,7 +804,8 @@ exports.default = function(specContext) {
             size: specColumns.size,
             sort: specColumns.sort,
             z: specColumns.z,
-            showAxes
+            showAxes,
+            view
         };
         layouts.push({
             layoutType: "Strip",
@@ -815,7 +824,7 @@ exports.default = function(specContext) {
             layoutType: "AggregateContainer",
             props: aggProps
         });
-        switch(insight.totalStyle){
+        switch(totalStyle){
             case "sum-treemap":
                 {
                     y.aggregate = "sum";
@@ -825,7 +834,8 @@ exports.default = function(specContext) {
                         size: specColumns.size,
                         treeMapMethod: specViewOptions.language.treeMapMethod,
                         z: specColumns.z,
-                        showAxes
+                        showAxes,
+                        view
                     };
                     layouts.push({
                         layoutType: "Treemap",
@@ -843,7 +853,8 @@ exports.default = function(specContext) {
                         size: specColumns.size,
                         sort: specColumns.sort,
                         z: specColumns.z,
-                        showAxes
+                        showAxes,
+                        view
                     };
                     layouts.push({
                         layoutType: "Strip",
@@ -860,7 +871,8 @@ exports.default = function(specContext) {
                         orientation: "vertical",
                         sort: specColumns.sort,
                         z: specColumns.z,
-                        showAxes
+                        showAxes,
+                        view
                     };
                     layouts.push({
                         layoutType: "Strip",
@@ -878,7 +890,8 @@ exports.default = function(specContext) {
                         z: specColumns.z,
                         maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
                         maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal,
-                        showAxes
+                        showAxes,
+                        view
                     };
                     layouts.push({
                         layoutType: "Square",
@@ -907,7 +920,8 @@ exports.default = function(specContext) {
                 {
                     role: "z",
                     axisSelection: ((_b = specColumns.z) === null || _b === void 0 ? void 0 : _b.quantitative) ? "range" : "exact",
-                    allowNone: true
+                    allowNone: true,
+                    disabled: view === "2d"
                 },
                 {
                     role: "color",
@@ -1022,7 +1036,8 @@ exports.default = function(specContext) {
             props: aggProps
         }, 
     ];
-    switch(insight.totalStyle){
+    const { totalStyle , view  } = insight;
+    switch(totalStyle){
         case "sum-treemap":
             {
                 aggProps.aggregation = "sum";
@@ -1031,7 +1046,8 @@ exports.default = function(specContext) {
                     size: specColumns.size,
                     treeMapMethod: specViewOptions.language.treeMapMethod,
                     z: specColumns.z,
-                    showAxes
+                    showAxes,
+                    view
                 };
                 layouts.push({
                     layoutType: "Treemap",
@@ -1048,7 +1064,8 @@ exports.default = function(specContext) {
                     size: specColumns.size,
                     sort: specColumns.sort,
                     z: specColumns.z,
-                    showAxes
+                    showAxes,
+                    view
                 };
                 layouts.push({
                     layoutType: "Strip",
@@ -1064,7 +1081,8 @@ exports.default = function(specContext) {
                     orientation: "vertical",
                     sort: specColumns.sort,
                     z: specColumns.z,
-                    showAxes
+                    showAxes,
+                    view
                 };
                 layouts.push({
                     layoutType: "Strip",
@@ -1081,7 +1099,8 @@ exports.default = function(specContext) {
                     z: specColumns.z,
                     maxGroupedUnits: null,
                     maxGroupedFillSize: null,
-                    showAxes
+                    showAxes,
+                    view
                 };
                 aggProps.onBuild = (aggMaxExtent, aggMaxExtentScaled)=>{
                     squareProps.maxGroupedUnits = aggMaxExtent;
@@ -1122,7 +1141,8 @@ exports.default = function(specContext) {
                 {
                     role: "z",
                     axisSelection: ((_j = specColumns.z) === null || _j === void 0 ? void 0 : _j.quantitative) ? "range" : "exact",
-                    allowNone: true
+                    allowNone: true,
+                    disabled: view === "2d"
                 },
                 {
                     role: "color",
@@ -1169,12 +1189,14 @@ parcelHelpers.defineInteropFlag(exports);
 exports.default = function(specContext) {
     var _a;
     const { insight , specColumns  } = specContext;
+    const { view  } = insight;
     const squareProps = {
         sortBy: specColumns.sort,
         fillDirection: "right-down",
         z: specColumns.z,
         collapseYHeight: true,
-        showAxes: !insight.hideAxes
+        showAxes: !insight.hideAxes,
+        view
     };
     const axisScales = {
         z: {
@@ -1195,7 +1217,8 @@ exports.default = function(specContext) {
                 {
                     role: "z",
                     axisSelection: ((_a = specColumns.z) === null || _a === void 0 ? void 0 : _a.quantitative) ? "range" : "exact",
-                    allowNone: true
+                    allowNone: true,
+                    disabled: view === "2d"
                 },
                 {
                     role: "color",
@@ -1243,7 +1266,8 @@ exports.default = function(specContext) {
         scatterPointScaleDisplay: specViewOptions.language.scatterPointScale,
         zGrounded: specViewOptions.language.zGrounded,
         backgroundImageExtents,
-        showAxes: !(backgroundImageExtents || insight.hideAxes)
+        showAxes: !(backgroundImageExtents || insight.hideAxes),
+        view: insight.view
     };
     const axisScales = {
         x: {
@@ -1279,7 +1303,8 @@ exports.default = function(specContext) {
                 {
                     role: "z",
                     axisSelection: ((_j = specColumns.z) === null || _j === void 0 ? void 0 : _j.quantitative) ? "range" : "exact",
-                    allowNone: true
+                    allowNone: true,
+                    disabled: false
                 },
                 {
                     role: "color",
@@ -1451,13 +1476,15 @@ parcelHelpers.defineInteropFlag(exports);
 exports.default = function(specContext) {
     var _a;
     const { insight , specColumns  } = specContext;
+    const { view  } = insight;
     const stripProps = {
         sortOrder: "ascending",
         orientation: "vertical",
         size: specColumns.size,
         sort: specColumns.sort,
         z: specColumns.z,
-        showAxes: !insight.hideAxes
+        showAxes: !insight.hideAxes,
+        view
     };
     const axisScales = {
         z: {
@@ -1503,7 +1530,8 @@ exports.default = function(specContext) {
                 {
                     role: "z",
                     axisSelection: ((_a = specColumns.z) === null || _a === void 0 ? void 0 : _a.quantitative) ? "range" : "exact",
-                    allowNone: true
+                    allowNone: true,
+                    disabled: view === "2d"
                 },
                 {
                     role: "color",
@@ -1542,13 +1570,15 @@ parcelHelpers.defineInteropFlag(exports);
 exports.default = function(specContext) {
     var _a;
     const { insight , specColumns , specViewOptions  } = specContext;
+    const { view  } = insight;
     const treemapProps = {
         corner: "top-left",
         group: specColumns.group,
         size: specColumns.size,
         treeMapMethod: specViewOptions.language.treeMapMethod,
         z: specColumns.z,
-        showAxes: !insight.hideAxes
+        showAxes: !insight.hideAxes,
+        view
     };
     const axisScales = {
         z: {
@@ -1597,7 +1627,8 @@ exports.default = function(specContext) {
                 {
                     role: "z",
                     axisSelection: ((_a = specColumns.z) === null || _a === void 0 ? void 0 : _a.quantitative) ? "range" : "exact",
-                    allowNone: true
+                    allowNone: true,
+                    disabled: view === "2d"
                 },
                 {
                     role: "color",
@@ -4523,7 +4554,7 @@ class Scatter extends (0, _layout.Layout) {
     }
     build() {
         const { names , prefix , props  } = this;
-        const { backgroundImageExtents , globalScope , parentScope , scatterPointScaleDisplay , showAxes , size , x , y , z , zGrounded  } = props;
+        const { backgroundImageExtents , globalScope , parentScope , scatterPointScaleDisplay , showAxes , size , view , x , y , z , zGrounded  } = props;
         const qsize = size && size.quantitative && size;
         (0, _scope.addSignals)(globalScope.scope, {
             name: (0, _constants.SignalNames).PointScale,
@@ -4623,13 +4654,18 @@ class Scatter extends (0, _layout.Layout) {
                     signal: `${(0, _constants.SignalNames).ZGrounded} ? 0 : ${zValue}`
                 }, 
             ],
+            zindex: [
+                {
+                    signal: `${(0, _constants.SignalNames).ZGrounded} ? 0 : ${zValue}`
+                }, 
+            ],
             depth: [
                 {
                     test: (0, _selection.testForCollapseSelection)(),
                     value: 0
                 },
                 {
-                    signal: `${(0, _constants.SignalNames).ZGrounded} ? ${zValue} : ${sizeValueSignal}`
+                    signal: view === "3d" ? `${(0, _constants.SignalNames).ZGrounded} ? ${zValue} : ${sizeValueSignal}` : "0"
                 }, 
             ]
         });
@@ -4669,7 +4705,7 @@ class Scatter extends (0, _layout.Layout) {
                     field: z ? (0, _expr.safeFieldName)(z.name) : null
                 },
                 reverse: false,
-                signal: `(${globalScope.zSize}) * ${(0, _constants.SignalNames).ZProportion}`
+                signal: view === "3d" ? `(${globalScope.zSize}) * ${(0, _constants.SignalNames).ZProportion}` : `10 * ${(0, _constants.SignalNames).ZProportion}`
             }, 
         ];
         columnSignals.forEach((cs)=>{
@@ -4757,7 +4793,7 @@ class Square extends (0, _layout.Layout) {
     }
     build() {
         const { names , prefix , props  } = this;
-        const { fillDirection , globalScope , groupings , parentScope , collapseYHeight , showAxes , sortBy , z  } = props;
+        const { fillDirection , globalScope , groupings , parentScope , collapseYHeight , showAxes , sortBy , view , z  } = props;
         const zScale = (0, _zBase.addZScale)(z, globalScope.zSize, globalScope.data.name, names.zScale);
         (0, _scope.addTransforms)(globalScope.data, Object.assign({
             type: "stack",
@@ -4803,9 +4839,11 @@ class Square extends (0, _layout.Layout) {
                             test: (0, _selection.testForCollapseSelection)(),
                             value: 0
                         },
-                        {
+                        view === "3d" ? {
                             scale: names.zScale,
                             field: (0, _expr.safeFieldName)(z.name)
+                        } : {
+                            value: 0
                         }, 
                     ]
                 })
@@ -5215,7 +5253,7 @@ class Strip extends (0, _layout.Layout) {
     }
     build() {
         const { names , prefix , props  } = this;
-        const { addPercentageScale , globalScope , groupings , orientation , showAxes , size , sort , sortOrder , parentScope , z  } = props;
+        const { addPercentageScale , globalScope , groupings , orientation , showAxes , size , sort , sortOrder , parentScope , view , z  } = props;
         const zScale = (0, _zBase.addZScale)(z, globalScope.zSize, globalScope.data.name, names.zScale);
         const horizontal = orientation === "horizontal";
         const transform = [];
@@ -5286,9 +5324,11 @@ class Strip extends (0, _layout.Layout) {
                             test: (0, _selection.testForCollapseSelection)(),
                             value: 0
                         },
-                        {
+                        view === "3d" ? {
                             scale: names.zScale,
                             field: (0, _expr.safeFieldName)(z.name)
+                        } : {
+                            value: 0
                         }, 
                     ]
                 })
@@ -5483,7 +5523,7 @@ class Treemap extends (0, _layout.Layout) {
     }
     addMark(offsets, markParent, markDataName) {
         const { names , prefix , props  } = this;
-        const { z  } = props;
+        const { view , z  } = props;
         const mark = {
             name: prefix,
             type: "rect",
@@ -5507,9 +5547,11 @@ class Treemap extends (0, _layout.Layout) {
                             test: (0, _selection.testForCollapseSelection)(),
                             value: 0
                         },
-                        {
+                        view === "3d" ? {
                             scale: names.zScale,
                             field: (0, _expr.safeFieldName)(z.name)
+                        } : {
+                            value: 0
                         }, 
                     ]
                 })
