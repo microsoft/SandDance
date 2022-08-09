@@ -271,7 +271,7 @@ function _Chart(_props: Props) {
                                     }
                                 }
                                 const disabled = props.disabled
-                                    || (props.view === '2d' && specRole.role === 'z')
+                                    || specRole.disabled
                                     || (specRole.role === 'size' && !(!specCapabilities.countsAndSums || totalStyle.indexOf('sum-') === 0))
                                     || (specRole.role === 'sort' && specCapabilities.countsAndSums && totalStyle === 'sum-treemap');
                                 return (

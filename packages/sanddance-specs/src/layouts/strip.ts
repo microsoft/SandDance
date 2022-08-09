@@ -15,7 +15,7 @@ import {
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { addZScale } from '../zBase';
-import { Column } from '@msrvida/chart-types';
+import { Column, View } from '@msrvida/chart-types';
 import {
     LinearScale,
     RectMark,
@@ -32,6 +32,7 @@ export interface StripProps extends LayoutProps {
     sort: Column;
     z: Column;
     showAxes: boolean;
+    view: View;
 }
 
 export class Strip extends Layout {
@@ -57,7 +58,7 @@ export class Strip extends Layout {
 
     public build(): InnerScope {
         const { names, prefix, props } = this;
-        const { addPercentageScale, globalScope, groupings, orientation, showAxes, size, sort, sortOrder, parentScope, z } = props;
+        const { addPercentageScale, globalScope, groupings, orientation, showAxes, size, sort, sortOrder, parentScope, view, z } = props;
 
         const zScale = addZScale(z, globalScope.zSize, globalScope.data.name, names.zScale);
 
@@ -146,10 +147,16 @@ export class Strip extends Layout {
                                 test: testForCollapseSelection(),
                                 value: 0,
                             },
-                            {
-                                scale: names.zScale,
-                                field: safeFieldName(z.name),
-                            },
+                            view === '3d'
+                                ?
+                                {
+                                    scale: names.zScale,
+                                    field: safeFieldName(z.name),
+                                }
+                                :
+                                {
+                                    value: 0
+                                },
                         ],
                     },
                 },

@@ -18,7 +18,7 @@ import {
     addTransforms,
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
-import { Column } from '@msrvida/chart-types';
+import { Column, View } from '@msrvida/chart-types';
 import {
     RectEncodeEntry,
     RectMark,
@@ -40,6 +40,7 @@ export interface ScatterProps extends LayoutProps {
     zGrounded: string;
     showAxes: boolean;
     backgroundImageExtents: Extents;
+    view: View;
 }
 
 export class Scatter extends Layout {
@@ -55,7 +56,7 @@ export class Scatter extends Layout {
         sizeScale: string,
         xScale: string,
         yScale: string,
-        zScale: string
+        zScale: string,
     };
 
     constructor(public props: ScatterProps & LayoutBuildProps) {
@@ -79,7 +80,7 @@ export class Scatter extends Layout {
 
     public build(): InnerScope {
         const { names, prefix, props } = this;
-        const { backgroundImageExtents, globalScope, parentScope, scatterPointScaleDisplay, showAxes, size, x, y, z, zGrounded } = props;
+        const { backgroundImageExtents, globalScope, parentScope, scatterPointScaleDisplay, showAxes, size, view, x, y, z, zGrounded } = props;
         const qsize = size && size.quantitative && size;
 
         addSignals(globalScope.scope,
@@ -182,13 +183,20 @@ export class Scatter extends Layout {
                         signal: `${SignalNames.ZGrounded} ? 0 : ${zValue}`,
                     },
                 ],
+                zindex: [
+                    {
+                        signal: `${SignalNames.ZGrounded} ? 0 : ${zValue}`,
+                    },
+                ],
                 depth: [
                     {
                         test: testForCollapseSelection(),
                         value: 0,
                     },
                     {
-                        signal: `${SignalNames.ZGrounded} ? ${zValue} : ${sizeValueSignal}`,
+                        signal: view === '3d'
+                            ? `${SignalNames.ZGrounded} ? ${zValue} : ${sizeValueSignal}`
+                            : '0',
                     },
                 ],
             },
@@ -202,50 +210,52 @@ export class Scatter extends Layout {
             reverse: boolean,
             signal: string
         }[] = [
-            {
-                column: x,
-                xyz: 'x',
-                scaleName: names.xScale,
-                domain: backgroundImageExtents ?
-                    {
-                        signal: names.xExtent,
-                    }
-                    :
-                    {
-                        data: globalScope.data.name,
-                        field: safeFieldName(x.name),
-                    },
-                reverse: false,
-                signal: parentScope.sizeSignals.layoutWidth,
-            },
-            {
-                column: y,
-                xyz: 'y',
-                scaleName: names.yScale,
-                domain: backgroundImageExtents ?
-                    {
-                        signal: names.yExtent,
-                    }
-                    :
-                    {
-                        data: globalScope.data.name,
-                        field: safeFieldName(y.name),
-                    },
-                reverse: true,
-                signal: parentScope.sizeSignals.layoutHeight,
-            },
-            {
-                column: z,
-                xyz: 'z',
-                scaleName: names.zScale,
-                domain: {
-                    data: globalScope.data.name,
-                    field: z ? safeFieldName(z.name) : null,
+                {
+                    column: x,
+                    xyz: 'x',
+                    scaleName: names.xScale,
+                    domain: backgroundImageExtents ?
+                        {
+                            signal: names.xExtent,
+                        }
+                        :
+                        {
+                            data: globalScope.data.name,
+                            field: safeFieldName(x.name),
+                        },
+                    reverse: false,
+                    signal: parentScope.sizeSignals.layoutWidth,
                 },
-                reverse: false,
-                signal: `(${globalScope.zSize}) * ${SignalNames.ZProportion}`,
-            },
-        ];
+                {
+                    column: y,
+                    xyz: 'y',
+                    scaleName: names.yScale,
+                    domain: backgroundImageExtents ?
+                        {
+                            signal: names.yExtent,
+                        }
+                        :
+                        {
+                            data: globalScope.data.name,
+                            field: safeFieldName(y.name),
+                        },
+                    reverse: true,
+                    signal: parentScope.sizeSignals.layoutHeight,
+                },
+                {
+                    column: z,
+                    xyz: 'z',
+                    scaleName: names.zScale,
+                    domain: {
+                        data: globalScope.data.name,
+                        field: z ? safeFieldName(z.name) : null,
+                    },
+                    reverse: false,
+                    signal: view === '3d'
+                        ? `(${globalScope.zSize}) * ${SignalNames.ZProportion}`
+                        : `10 * ${SignalNames.ZProportion}`,
+                },
+            ];
         columnSignals.forEach(cs => {
             const { column, domain, reverse, scaleName, signal, xyz } = cs;
             if (!column) return;

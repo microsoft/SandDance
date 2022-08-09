@@ -21,6 +21,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         zGrounded: specViewOptions.language.zGrounded,
         backgroundImageExtents,
         showAxes: !(backgroundImageExtents || insight.hideAxes),
+        view: insight.view,
     };
     const axisScales: AxisScales = {
         x: { title: specColumns.x?.name },
@@ -51,6 +52,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
                     role: 'z',
                     axisSelection: specColumns.z?.quantitative ? 'range' : 'exact',
                     allowNone: true,
+                    disabled: false,
                 },
                 {
                     role: 'color',
