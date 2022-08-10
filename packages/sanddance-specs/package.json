@@ -20,20 +20,8 @@
     "build-typescript": "tsc -p .",
     "build:sanddance-core": "npm run build-typescript && npm run bundle",
     "bundle": "rollup -c",
-    "deploy": "parcel build ./uitest/sanddance-specs.ts --no-autoinstall --no-cache",
-    "postdeploy": "npm run build-typescript && echo this is here because 'parcel build' has side effects which truncates .d.ts files in dist/es6",
-    "deploy-watch": "parcel watch ./uitest/sanddance-specs.ts --target umd",
+    "deploy": "tsc -p ./uitest/ && node ./scripts/deploy.js",
     "test2": "node -r esm ./test/perf.js"
-  },
-  "umd": "../../docs/tests/sanddance-specs/v1/js/sanddance-specs.js",
-  "targets": {
-    "umd": {
-      "distDir": "../../docs/tests/sanddance-specs/v1/js",
-      "includeNodeModules": {},
-      "optimize": false,
-      "scopeHoist": false,
-      "sourceMap": false
-    }
   },
   "author": "",
   "license": "MIT",

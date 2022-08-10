@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { build, getColumnsFromData, getSpecColumns, Insight, SpecContext, SpecViewOptions } from '../dist/es6';
-import { Column } from '@msrvida/chart-types';
-import * as Vega from 'vega-typings';
+///<reference path='../dist/umd/sanddance-specs.d.ts' />
+///<reference path='chart-types.d.ts' />
+///<reference path='vega.d.ts' />
 
 declare const vega: {
     inferTypes: typeof Vega.inferTypes;
@@ -13,7 +13,7 @@ declare const vega: {
 };
 
 const dataUrl = '/SandDance/sample-data/demovote.tsv';
-const specViewOptions: SpecViewOptions = {
+const specViewOptions: SandDanceSpecs.SpecViewOptions = {
     colors: {
         defaultCube: "steelblue",
         axisLine: "#000",
@@ -26,7 +26,7 @@ const specViewOptions: SpecViewOptions = {
     tickSize: 10,
 };
 let data: object[];
-let columns: Column[];
+let columns: ChartTypes.Column[];
 const container = document.getElementById('vis')!;
 const select = document.getElementById('select-spec') as HTMLSelectElement;
 const insightTextarea = document.getElementById('insight-json') as HTMLTextAreaElement;
@@ -62,11 +62,11 @@ function fetchInsight(specFilename: string) {
         .catch(error => container.innerText = error);
 }
 
-function render(insight: Insight) {
+function render(insight: SandDanceSpecs.Insight) {
     insightTextarea.value = JSON.stringify(insight, null, 2);
-    const specColumns = getSpecColumns(insight, columns);
-    const context: SpecContext = { specColumns, insight, specViewOptions };
-    const specResult = build(context, data);
+    const specColumns = SandDanceSpecs.getSpecColumns(insight, columns);
+    const context: SandDanceSpecs.SpecContext = { specColumns, insight, specViewOptions };
+    const specResult = SandDanceSpecs.build(context, data);
     if (specResult.errors) {
         container.innerText = specResult.errors.map(error => error).join('\n');
     } else {
@@ -95,6 +95,6 @@ function renderVegaSpec(vegaSpec: Vega.Spec) {
 container.innerHTML = `loading ${dataUrl}...`;
 vega.loader().load(dataUrl).then(tsv_data => {
     data = vega.read(tsv_data, { type: 'tsv', parse: 'auto' });
-    columns = getColumnsFromData(vega.inferTypes, data);
+    columns = SandDanceSpecs.getColumnsFromData(vega.inferTypes, data);
     selected(0);
 });
