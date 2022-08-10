@@ -5,7 +5,7 @@
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "build:sanddance-core": "tsc -p .",
-    "deploy": "parcel build ./src/vega-morphcharts-test-es6.ts"
+    "deploy": "parcel build ./src/vega-morphcharts-test-es6.ts --no-autoinstall --no-cache"
   },
   "umd": "../../docs/tests/v3/es6/js/vega-morphcharts-test-es6.js",
   "targets": {

@@ -20,20 +20,11 @@
     "build-typescript": "tsc -p .",
     "build:sanddance-core": "npm run build-typescript && npm run bundle",
     "bundle": "rollup -c",
-    "predeploy": "rimraf .parcel-cache",
-    "deploy": "parcel build ./uitest/sanddance-specs.ts",
-    "deploy-watch": "parcel watch ./uitest/sanddance-specs.ts --target umd",
+    "bundle-watch": "rollup -c -w -o ../../docs/tests/sanddance-specs/v1/js/sanddance-specs.js",
+    "deploy": "tsc -p ./uitest/ && node ./scripts/deploy.js",
+    "uitest-watch": "tsc -p ./uitest/ -w",
+    "deploy-watch": "npm-run-all --parallel bundle-watch uitest-watch",
     "test2": "node -r esm ./test/perf.js"
-  },
-  "umd": "../../docs/tests/sanddance-specs/v1/js/sanddance-specs.js",
-  "targets": {
-    "umd": {
-      "distDir": "../../docs/tests/sanddance-specs/v1/js",
-      "includeNodeModules": {},
-      "optimize": false,
-      "scopeHoist": false,
-      "sourceMap": false
-    }
   },
   "author": "",
   "license": "MIT",

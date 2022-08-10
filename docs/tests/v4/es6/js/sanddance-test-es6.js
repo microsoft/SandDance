@@ -420,8 +420,8 @@ function accessorFields(fn) {
 function getter(path) {
     return path.length === 1 ? get1(path[0]) : getN(path);
 }
-const get1 = (field1)=>function(obj) {
-        return obj[field1];
+const get1 = (field)=>function(obj) {
+        return obj[field];
     };
 const getN = (path)=>{
     const len = path.length;
@@ -480,12 +480,12 @@ function splitAccessPath(p) {
     }
     return path;
 }
-function field(field2, name, opt) {
-    const path = splitAccessPath(field2);
-    field2 = path.length === 1 ? path[0] : field2;
+function field(field, name, opt) {
+    const path = splitAccessPath(field);
+    field = path.length === 1 ? path[0] : field;
     return accessor((opt && opt.get || getter)(path), [
-        field2
-    ], name || field2);
+        field
+    ], name || field);
 }
 const id = field("id");
 const identity = accessor((_)=>_, [], "identity");
@@ -504,8 +504,8 @@ const Error$1 = 1;
 const Warn = 2;
 const Info = 3;
 const Debug = 4;
-function logger(_1, method) {
-    let level = _1 || None;
+function logger(_, method) {
+    let level = _ || None;
     return {
         level (_) {
             if (arguments.length) {
@@ -535,10 +535,10 @@ var isArray = Array.isArray;
 function isObject(_) {
     return _ === Object(_);
 }
-const isLegalKey = (key1)=>key1 !== "__proto__";
+const isLegalKey = (key)=>key !== "__proto__";
 function mergeConfig(...configs) {
     return configs.reduce((out, source)=>{
-        for(const key2 in source)if (key2 === "signals") // for signals, we merge the signals arrays
+        for(const key in source)if (key === "signals") // for signals, we merge the signals arrays
         // source signals take precedence over
         // existing signals with the same name
         out.signals = mergeNamed(out.signals, source.signals);
@@ -547,24 +547,24 @@ function mergeConfig(...configs) {
             // for legend block, recurse for the layout entry only
             // for style block, recurse for all properties
             // otherwise, no recursion: objects overwrite, no merging
-            const r = key2 === "legend" ? {
+            const r = key === "legend" ? {
                 layout: 1
-            } : key2 === "style" ? true : null;
-            writeConfig(out, key2, source[key2], r);
+            } : key === "style" ? true : null;
+            writeConfig(out, key, source[key], r);
         }
         return out;
     }, {});
 }
-function writeConfig(output, key3, value, recurse) {
-    if (!isLegalKey(key3)) return;
+function writeConfig(output, key, value, recurse) {
+    if (!isLegalKey(key)) return;
     let k, o;
     if (isObject(value) && !isArray(value)) {
-        o = isObject(output[key3]) ? output[key3] : output[key3] = {};
+        o = isObject(output[key]) ? output[key] : output[key] = {};
         for(k in value){
             if (recurse && (recurse === true || recurse[k])) writeConfig(o, k, value[k]);
             else if (isLegalKey(k)) o[k] = value[k];
         }
-    } else output[key3] = value;
+    } else output[key] = value;
 }
 function mergeNamed(a, b) {
     if (a == null) return b;
@@ -579,8 +579,8 @@ function mergeNamed(a, b) {
     a.forEach(add);
     return out;
 }
-function peek(array1) {
-    return array1[array1.length - 1];
+function peek(array) {
+    return array[array.length - 1];
 }
 function toNumber(_) {
     return _ == null || _ === "" ? null : +_;
@@ -607,8 +607,8 @@ function panLog(domain, delta) {
 function panPow(domain, delta, exponent) {
     return pan(domain, delta, pow(exponent), pow(1 / exponent));
 }
-function panSymlog(domain, delta, constant1) {
-    return pan(domain, delta, symlog(constant1), symexp(constant1));
+function panSymlog(domain, delta, constant) {
+    return pan(domain, delta, symlog(constant), symexp(constant));
 }
 function zoom(domain, anchor, scale, lift, ground) {
     const d0 = lift(domain[0]), d1 = lift(peek(domain)), da = anchor != null ? lift(anchor) : (d0 + d1) / 2;
@@ -627,8 +627,8 @@ function zoomLog(domain, anchor, scale) {
 function zoomPow(domain, anchor, scale, exponent) {
     return zoom(domain, anchor, scale, pow(exponent), pow(1 / exponent));
 }
-function zoomSymlog(domain, anchor, scale, constant2) {
-    return zoom(domain, anchor, scale, symlog(constant2), symexp(constant2));
+function zoomSymlog(domain, anchor, scale, constant) {
+    return zoom(domain, anchor, scale, symlog(constant), symexp(constant));
 }
 function quarter(date) {
     return 1 + ~~(new Date(date).getMonth() / 3);
@@ -648,19 +648,19 @@ function array(_) {
  * endpoint touches the boundary of the min/max range.
  * If the span exceeds (max - min), the range [min, max] is returned.
  */ function clampRange(range, min, max) {
-    let lo = range[0], hi = range[1], span1;
+    let lo = range[0], hi = range[1], span;
     if (hi < lo) {
-        span1 = hi;
+        span = hi;
         hi = lo;
-        lo = span1;
+        lo = span;
     }
-    span1 = hi - lo;
-    return span1 >= max - min ? [
+    span = hi - lo;
+    return span >= max - min ? [
         min,
         max
     ] : [
-        lo = Math.min(Math.max(lo, min), max - span1),
-        lo + span1
+        lo = Math.min(Math.max(lo, min), max - span),
+        lo + span
     ];
 }
 function isFunction(_) {
@@ -681,8 +681,8 @@ function compare(fields, orders, opt) {
 }
 const ascending = (u, v)=>(u < v || u == null) && v != null ? -1 : (u > v || v == null) && u != null ? 1 : (v = v instanceof Date ? +v : v, u = u instanceof Date ? +u : u) !== u && v === v ? -1 : v !== v && u === u ? 1 : 0;
 const comparator = (fields, orders)=>fields.length === 1 ? compare1(fields[0], orders[0]) : compareN(fields, orders, fields.length);
-const compare1 = (field3, order)=>function(a, b) {
-        return ascending(field3(a), field3(b)) * order;
+const compare1 = (field, order)=>function(a, b) {
+        return ascending(field(a), field(b)) * order;
     };
 const compareN = (fields, orders, n)=>{
     orders.push(0); // pad zero for convenient lookup
@@ -715,15 +715,15 @@ function extend(_) {
 /**
  * Return an array with minimum and maximum values, in the
  * form [min, max]. Ignores null, undefined, and NaN values.
- */ function extent(array2, f) {
+ */ function extent(array, f) {
     let i = 0, n, v, min, max;
-    if (array2 && (n = array2.length)) {
+    if (array && (n = array.length)) {
         if (f == null) {
             // find first valid value
-            for(v = array2[i]; i < n && (v == null || v !== v); v = array2[++i]);
+            for(v = array[i]; i < n && (v == null || v !== v); v = array[++i]);
             min = max = v; // visit all other values
             for(; i < n; ++i){
-                v = array2[i]; // skip null/undefined; NaN will fail all comparisons
+                v = array[i]; // skip null/undefined; NaN will fail all comparisons
                 if (v != null) {
                     if (v < min) min = v;
                     if (v > max) max = v;
@@ -731,10 +731,10 @@ function extend(_) {
             }
         } else {
             // find first valid value
-            for(v = f(array2[i]); i < n && (v == null || v !== v); v = f(array2[++i]));
+            for(v = f(array[i]); i < n && (v == null || v !== v); v = f(array[++i]));
             min = max = v; // visit all other values
             for(; i < n; ++i){
-                v = f(array2[i]); // skip null/undefined; NaN will fail all comparisons
+                v = f(array[i]); // skip null/undefined; NaN will fail all comparisons
                 if (v != null) {
                     if (v < min) min = v;
                     if (v > max) max = v;
@@ -747,12 +747,12 @@ function extend(_) {
         max
     ];
 }
-function extentIndex(array3, f) {
-    const n = array3.length;
+function extentIndex(array, f) {
+    const n = array.length;
     let i = -1, a, b, c, u, v;
     if (f == null) {
         while(++i < n){
-            b = array3[i];
+            b = array[i];
             if (b != null && b >= b) {
                 a = c = b;
                 break;
@@ -764,7 +764,7 @@ function extentIndex(array3, f) {
         ];
         u = v = i;
         while(++i < n){
-            b = array3[i];
+            b = array[i];
             if (b != null) {
                 if (a > b) {
                     a = b;
@@ -778,7 +778,7 @@ function extentIndex(array3, f) {
         }
     } else {
         while(++i < n){
-            b = f(array3[i], i, array3);
+            b = f(array[i], i, array);
             if (b != null && b >= b) {
                 a = c = b;
                 break;
@@ -790,7 +790,7 @@ function extentIndex(array3, f) {
         ];
         u = v = i;
         while(++i < n){
-            b = f(array3[i], i, array3);
+            b = f(array[i], i, array);
             if (b != null) {
                 if (a > b) {
                     a = b;
@@ -815,30 +815,30 @@ function has(object, property) {
 const NULL = {};
 function fastmap(input) {
     let obj = {}, test;
-    function has$1(key4) {
-        return has(obj, key4) && obj[key4] !== NULL;
+    function has$1(key) {
+        return has(obj, key) && obj[key] !== NULL;
     }
     const map = {
         size: 0,
         empty: 0,
         object: obj,
         has: has$1,
-        get (key5) {
-            return has$1(key5) ? obj[key5] : undefined;
+        get (key) {
+            return has$1(key) ? obj[key] : undefined;
         },
-        set (key6, value) {
-            if (!has$1(key6)) {
+        set (key, value) {
+            if (!has$1(key)) {
                 ++map.size;
-                if (obj[key6] === NULL) --map.empty;
+                if (obj[key] === NULL) --map.empty;
             }
-            obj[key6] = value;
+            obj[key] = value;
             return this;
         },
-        delete (key7) {
-            if (has$1(key7)) {
+        delete (key) {
+            if (has$1(key)) {
                 --map.size;
                 ++map.empty;
-                obj[key7] = NULL;
+                obj[key] = NULL;
             }
             return this;
         },
@@ -855,10 +855,10 @@ function fastmap(input) {
         clean () {
             const next = {};
             let size = 0;
-            for(const key8 in obj){
-                const value = obj[key8];
+            for(const key in obj){
+                const value = obj[key];
                 if (value !== NULL && (!test || !test(value))) {
-                    next[key8] = value;
+                    next[key] = value;
                     ++size;
                 }
             }
@@ -867,8 +867,8 @@ function fastmap(input) {
             map.object = obj = next;
         }
     };
-    if (input) Object.keys(input).forEach((key9)=>{
-        map.set(key9, input[key9]);
+    if (input) Object.keys(input).forEach((key)=>{
+        map.set(key, input[key]);
     });
     return map;
 }
@@ -943,17 +943,17 @@ function key(fields, flat, opt) {
             return "" + get(_);
         };
     } else {
-        const get = fields.map(map);
+        const get1 = fields.map(map);
         fn = function(_) {
-            let s = "" + get[0](_), i = 0;
-            while(++i < len)s += "|" + get[i](_);
+            let s = "" + get1[0](_), i = 0;
+            while(++i < len)s += "|" + get1[i](_);
             return s;
         };
     }
     return accessor(fn, fields, "key");
 }
-function lerp(array4, frac) {
-    const lo = array4[0], hi = peek(array4), f = +frac;
+function lerp(array, frac) {
+    const lo = array[0], hi = peek(array), f = +frac;
     return !f ? lo : f === 1 ? hi : lo + f * (hi - lo);
 }
 const DEFAULT_MAX_SIZE = 10000; // adapted from https://github.com/dominictarr/hashlru/ (MIT License)
@@ -965,29 +965,29 @@ function lruCache(maxsize) {
         prev = {};
         size = 0;
     };
-    const update = (key10, value)=>{
+    const update = (key, value)=>{
         if (++size > maxsize) {
             prev = curr;
             curr = {};
             size = 1;
         }
-        return curr[key10] = value;
+        return curr[key] = value;
     };
     clear();
     return {
         clear,
-        has: (key11)=>has(curr, key11) || has(prev, key11),
-        get: (key12)=>has(curr, key12) ? curr[key12] : has(prev, key12) ? update(key12, prev[key12]) : undefined,
-        set: (key13, value)=>has(curr, key13) ? curr[key13] = value : update(key13, value)
+        has: (key)=>has(curr, key) || has(prev, key),
+        get: (key)=>has(curr, key) ? curr[key] : has(prev, key) ? update(key, prev[key]) : undefined,
+        set: (key, value)=>has(curr, key) ? curr[key] = value : update(key, value)
     };
 }
-function merge(compare2, array0, array1, output) {
+function merge(compare, array0, array1, output) {
     const n0 = array0.length, n1 = array1.length;
     if (!n1) return array0;
     if (!n0) return array1;
     const merged = output || new array0.constructor(n0 + n1);
     let i0 = 0, i1 = 0, i = 0;
-    for(; i0 < n0 && i1 < n1; ++i)merged[i] = compare2(array0[i0], array1[i1]) > 0 ? array1[i1++] : array0[i0++];
+    for(; i0 < n0 && i1 < n1; ++i)merged[i] = compare(array0[i0], array1[i1]) > 0 ? array1[i1++] : array0[i0++];
     for(; i0 < n0; ++i0, ++i)merged[i] = array0[i0];
     for(; i1 < n1; ++i1, ++i)merged[i] = array1[i1];
     return merged;
@@ -1004,8 +1004,8 @@ function pad(str, length, padchar, align) {
 /**
  * Return the numerical span of an array: the difference between
  * the last and first values.
- */ function span(array5) {
-    return array5 && peek(array5) - array5[0] || 0;
+ */ function span(array) {
+    return array && peek(array) - array[0] || 0;
 }
 function $(x) {
     return isArray(x) ? "[" + x.map($) + "]" : isObject(x) || isString(x) ? // See http://timelessrepo.com/json-isnt-a-javascript-subset
@@ -1028,18 +1028,18 @@ function toSet(_) {
     return s;
 }
 function truncate(str, length, align, ellipsis) {
-    const e = ellipsis != null ? ellipsis : "\u2026", s = str + "", n = s.length, l = Math.max(0, length - e.length);
+    const e = ellipsis != null ? ellipsis : "…", s = str + "", n = s.length, l = Math.max(0, length - e.length);
     return n <= length ? s : align === "left" ? e + s.slice(n - l) : align === "center" ? s.slice(0, Math.ceil(l / 2)) + e + s.slice(n - ~~(l / 2)) : s.slice(0, l) + e;
 }
-function visitArray(array6, filter, visitor) {
-    if (array6) {
+function visitArray(array, filter, visitor) {
+    if (array) {
         if (filter) {
-            const n = array6.length;
+            const n = array.length;
             for(let i = 0; i < n; ++i){
-                const t = filter(array6[i]);
-                if (t) visitor(t, i, array6);
+                const t = filter(array[i]);
+                if (t) visitor(t, i, array);
             }
-        } else array6.forEach(visitor);
+        } else array.forEach(visitor);
     }
 }
 
@@ -1211,7 +1211,7 @@ function isChangeSet(v) {
     return v && v.constructor === changeset;
 }
 function changeset() {
-    const add1 = [], // insert tuples
+    const add = [], // insert tuples
     rem = [], // remove tuples
     mod = [], // modify tuples
     remp = [], // remove by predicate
@@ -1221,7 +1221,7 @@ function changeset() {
         constructor: changeset,
         insert (t) {
             const d = (0, _vegaUtil.array)(t), n = d.length;
-            for(let i = 0; i < n; ++i)add1.push(d[i]);
+            for(let i = 0; i < n; ++i)add.push(d[i]);
             return this;
         },
         remove (t) {
@@ -1262,63 +1262,63 @@ function changeset() {
             reflow = true;
             return this;
         },
-        pulse (pulse1, tuples) {
+        pulse (pulse, tuples) {
             const cur = {}, out = {};
-            let i, n, m, f1, t1, id; // build lookup table of current tuples
+            let i, n, m, f, t, id; // build lookup table of current tuples
             for(i = 0, n = tuples.length; i < n; ++i)cur[tupleid(tuples[i])] = 1;
              // process individual tuples to remove
             for(i = 0, n = rem.length; i < n; ++i){
-                t1 = rem[i];
-                cur[tupleid(t1)] = -1;
+                t = rem[i];
+                cur[tupleid(t)] = -1;
             } // process predicate-based removals
             for(i = 0, n = remp.length; i < n; ++i){
-                f1 = remp[i];
+                f = remp[i];
                 tuples.forEach((t)=>{
-                    if (f1(t)) cur[tupleid(t)] = -1;
+                    if (f(t)) cur[tupleid(t)] = -1;
                 });
             } // process all add tuples
-            for(i = 0, n = add1.length; i < n; ++i){
-                t1 = add1[i];
-                id = tupleid(t1);
+            for(i = 0, n = add.length; i < n; ++i){
+                t = add[i];
+                id = tupleid(t);
                 if (cur[id]) // tuple already resides in dataset
                 // if flagged for both add and remove, cancel
                 cur[id] = 1;
                 else // tuple does not reside in dataset, add
-                pulse1.add.push(ingest$1(add1[i]));
+                pulse.add.push(ingest$1(add[i]));
             } // populate pulse rem list
             for(i = 0, n = tuples.length; i < n; ++i){
-                t1 = tuples[i];
-                if (cur[tupleid(t1)] < 0) pulse1.rem.push(t1);
+                t = tuples[i];
+                if (cur[tupleid(t)] < 0) pulse.rem.push(t);
             } // modify helper method
             function modify(t, f, v) {
                 if (v) t[f] = v(t);
-                else pulse1.encode = f;
+                else pulse.encode = f;
                 if (!reflow) out[tupleid(t)] = t;
             } // process individual tuples to modify
             for(i = 0, n = mod.length; i < n; ++i){
                 m = mod[i];
-                t1 = m.tuple;
-                f1 = m.field;
-                id = cur[tupleid(t1)];
+                t = m.tuple;
+                f = m.field;
+                id = cur[tupleid(t)];
                 if (id > 0) {
-                    modify(t1, f1, m.value);
-                    pulse1.modifies(f1);
+                    modify(t, f, m.value);
+                    pulse.modifies(f);
                 }
             } // process predicate-based modifications
             for(i = 0, n = modp.length; i < n; ++i){
                 m = modp[i];
-                f1 = m.filter;
+                f = m.filter;
                 tuples.forEach((t)=>{
-                    if (f1(t) && cur[tupleid(t)] > 0) modify(t, m.field, m.value);
+                    if (f(t) && cur[tupleid(t)] > 0) modify(t, m.field, m.value);
                 });
-                pulse1.modifies(m.field);
+                pulse.modifies(m.field);
             } // upon reflow request, populate mod with all non-removed tuples
             // otherwise, populate mod with modified tuples only
-            if (reflow) pulse1.mod = rem.length || remp.length ? tuples.filter((t)=>cur[tupleid(t)] > 0) : tuples.slice();
-            else for(id in out)pulse1.mod.push(out[id]);
+            if (reflow) pulse.mod = rem.length || remp.length ? tuples.filter((t)=>cur[tupleid(t)] > 0) : tuples.slice();
+            else for(id in out)pulse.mod.push(out[id]);
              // set pulse garbage collection request
-            if (clean || clean == null && (rem.length || remp.length)) pulse1.clean(true);
-            return pulse1;
+            if (clean || clean == null && (rem.length || remp.length)) pulse.clean(true);
+            return pulse;
         }
     };
 }
@@ -1374,8 +1374,8 @@ Parameters.prototype = {
             }
             return false;
         } else if ((0, _vegaUtil.isArray)(name)) {
-            for(let k = 0; k < name.length; ++k){
-                if (mod[name[k]]) return true;
+            for(let k1 = 0; k1 < name.length; ++k1){
+                if (mod[name[k1]]) return true;
             }
             return false;
         }
@@ -1408,14 +1408,14 @@ const SKIP$1 = 1, MODIFIED = 2;
  * @param {boolean} [react=true] - Flag indicating if this operator should
  *   listen for changes to upstream operators included as parameters.
  * @see parameters
- */ function Operator(init, update1, params, react) {
+ */ function Operator(init, update, params, react) {
     this.id = ++OP_ID;
     this.value = init;
     this.stamp = -1;
     this.rank = -1;
     this.qrank = -1;
     this.flags = 0;
-    if (update1) this._update = update1;
+    if (update) this._update = update;
     if (params) this.parameters(params, react);
 }
 function flag(bit) {
@@ -1478,8 +1478,8 @@ Operator.prototype = {
    */ parameters (params, react, initonly) {
         react = react !== false;
         const argval = this._argval = this._argval || new Parameters(), argops = this._argops = this._argops || [], deps = [];
-        let name1, value1, n, i;
-        const add2 = (name, index, value)=>{
+        let name, value, n, i;
+        const add = (name, index, value)=>{
             if (value instanceof Operator) {
                 if (value !== this) {
                     if (react) value.targets().add(this);
@@ -1492,21 +1492,21 @@ Operator.prototype = {
                 });
             } else argval.set(name, index, value);
         };
-        for(name1 in params){
-            value1 = params[name1];
-            if (name1 === PULSE) {
-                (0, _vegaUtil.array)(value1).forEach((op)=>{
+        for(name in params){
+            value = params[name];
+            if (name === PULSE) {
+                (0, _vegaUtil.array)(value).forEach((op)=>{
                     if (!(op instanceof Operator)) (0, _vegaUtil.error)("Pulse parameters must be operator instances.");
                     else if (op !== this) {
                         op.targets().add(this);
                         deps.push(op);
                     }
                 });
-                this.source = value1;
-            } else if ((0, _vegaUtil.isArray)(value1)) {
-                argval.set(name1, -1, Array(n = value1.length));
-                for(i = 0; i < n; ++i)add2(name1, i, value1[i]);
-            } else add2(name1, -1, value1);
+                this.source = value;
+            } else if ((0, _vegaUtil.isArray)(value)) {
+                argval.set(name, -1, Array(n = value.length));
+                for(i = 0; i < n; ++i)add(name, i, value[i]);
+            } else add(name, -1, value);
         }
         this.marshall().clear(); // initialize values
         if (initonly) argops.initonly = true;
@@ -1564,13 +1564,13 @@ Operator.prototype = {
    * @param {Pulse} pulse - the current dataflow pulse.
    * @return The output pulse or StopPropagation. A falsy return value
    *   (including undefined) will let the input pulse pass through.
-   */ evaluate (pulse2) {
-        const update2 = this._update;
-        if (update2) {
-            const params = this.marshall(pulse2.stamp), v = update2.call(this, params, pulse2);
+   */ evaluate (pulse) {
+        const update = this._update;
+        if (update) {
+            const params = this.marshall(pulse.stamp), v = update.call(this, params, pulse);
             params.clear();
             if (v !== this.value) this.value = v;
-            else if (!this.modified()) return pulse2.StopPropagation;
+            else if (!this.modified()) return pulse.StopPropagation;
         }
     },
     /**
@@ -1581,14 +1581,14 @@ Operator.prototype = {
    * This method should NOT be overridden, instead overrride {@link evaluate}.
    * @param {Pulse} pulse - the current dataflow pulse.
    * @return the output pulse for this operator (or StopPropagation)
-   */ run (pulse3) {
-        if (pulse3.stamp < this.stamp) return pulse3.StopPropagation;
+   */ run (pulse) {
+        if (pulse.stamp < this.stamp) return pulse.StopPropagation;
         let rv;
         if (this.skip()) {
             this.skip(false);
             rv = 0;
-        } else rv = this.evaluate(pulse3);
-        return this.pulse = rv || pulse3;
+        } else rv = this.evaluate(pulse);
+        return this.pulse = rv || pulse;
     }
 };
 /**
@@ -1606,19 +1606,19 @@ Operator.prototype = {
  * @param {boolean} [react=true] - Flag indicating if this operator should
  *   listen for changes to upstream operators included as parameters.
  * @return {Operator} - The added operator.
- */ function add(init, update3, params, react) {
+ */ function add(init, update, params, react) {
     let shift = 1, op;
     if (init instanceof Operator) op = init;
     else if (init && init.prototype instanceof Operator) op = new init();
     else if ((0, _vegaUtil.isFunction)(init)) op = new Operator(null, init);
     else {
         shift = 0;
-        op = new Operator(init, update3);
+        op = new Operator(init, update);
     }
     this.rank(op);
     if (shift) {
         react = params;
-        params = update3;
+        params = update;
     }
     if (params) this.connect(op, op.parameters(params, react));
     this.touch(op);
@@ -1648,11 +1648,11 @@ let STREAM_ID = 0;
  *   new event values.
  * @param {function(Object)} [receive] - Event callback function to invoke
  *   upon receipt of a new event. Use to override standard event processing.
- */ function EventStream(filter1, apply, receive) {
+ */ function EventStream(filter, apply, receive) {
     this.id = ++STREAM_ID;
     this.value = null;
     if (receive) this.receive = receive;
-    if (filter1) this._filter = filter1;
+    if (filter) this._filter = filter;
     if (apply) this._apply = apply;
 }
 /**
@@ -1663,8 +1663,8 @@ let STREAM_ID = 0;
  * @param {function(Object): *} [apply] - Applied to input events to produce
  *   new event values.
  * @see EventStream
- */ function stream(filter2, apply, receive) {
-    return new EventStream(filter2, apply, receive);
+ */ function stream(filter, apply, receive) {
+    return new EventStream(filter, apply, receive);
 }
 EventStream.prototype = {
     _filter: (0, _vegaUtil.truthy),
@@ -1687,8 +1687,8 @@ EventStream.prototype = {
             }
         }
     },
-    filter (filter3) {
-        const s = stream(filter3);
+    filter (filter) {
+        const s = stream(filter);
         this.targets().add(s);
         return s;
     },
@@ -1746,8 +1746,8 @@ EventStream.prototype = {
  *   If provided, this function will be invoked and the result will be
  *   used as the downstream event value.
  * @return {EventStream}
- */ function events(source, type, filter4, apply) {
-    const df = this, s = stream(filter4, apply), send = function(e) {
+ */ function events(source, type, filter, apply) {
+    const df = this, s = stream(filter, apply), send = function(e) {
         e.dataflow = df;
         try {
             s.receive(e);
@@ -1806,9 +1806,9 @@ function parse(data, format) {
             status = -2;
             df.warn("Data ingestion failed", url, err);
         }
-    } catch (err) {
+    } catch (err1) {
         status = -1;
-        df.warn("Loading failed", url, err);
+        df.warn("Loading failed", url, err1);
     }
     return {
         data,
@@ -1863,30 +1863,30 @@ const SKIP = {
  * @param {boolean} [options.force] - If true, the operator will
  *   be re-evaluated even if its value has not changed.
  * @return {Dataflow}
- */ function on(source, target, update4, params, options) {
+ */ function on(source, target, update, params, options) {
     const fn = source instanceof Operator ? onOperator : onStream;
-    fn(this, source, target, update4, params, options);
+    fn(this, source, target, update, params, options);
     return this;
 }
-function onStream(df, stream1, target, update5, params, options) {
+function onStream(df, stream, target, update, params, options) {
     const opt = (0, _vegaUtil.extend)({}, options, SKIP);
     let func, op;
     if (!(0, _vegaUtil.isFunction)(target)) target = (0, _vegaUtil.constant)(target);
-    if (update5 === undefined) func = (e)=>df.touch(target(e));
-    else if ((0, _vegaUtil.isFunction)(update5)) {
-        op = new Operator(null, update5, params, false);
+    if (update === undefined) func = (e)=>df.touch(target(e));
+    else if ((0, _vegaUtil.isFunction)(update)) {
+        op = new Operator(null, update, params, false);
         func = (e)=>{
             op.evaluate(e);
             const t = target(e), v = op.value;
             isChangeSet(v) ? df.pulse(t, v, options) : df.update(t, v, opt);
         };
-    } else func = (e)=>df.update(target(e), update5, opt);
-    stream1.apply(func);
+    } else func = (e)=>df.update(target(e), update, opt);
+    stream.apply(func);
 }
-function onOperator(df, source, target, update6, params, options) {
-    if (update6 === undefined) source.targets().add(target);
+function onOperator(df, source, target, update, params, options) {
+    if (update === undefined) source.targets().add(target);
     else {
-        const opt = options || {}, op = new Operator(null, updater(target, update6), params, false);
+        const opt = options || {}, op = new Operator(null, updater(target, update), params, false);
         op.modified(opt.force);
         op.rank = source.rank; // immediately follow source
         source.targets().add(op); // add dependency
@@ -1900,13 +1900,13 @@ function onOperator(df, source, target, update6, params, options) {
         }
     }
 }
-function updater(target, update7) {
-    update7 = (0, _vegaUtil.isFunction)(update7) ? update7 : (0, _vegaUtil.constant)(update7);
-    return target ? function(_, pulse4) {
-        const value = update7(_, pulse4);
+function updater(target, update) {
+    update = (0, _vegaUtil.isFunction)(update) ? update : (0, _vegaUtil.constant)(update);
+    return target ? function(_, pulse) {
+        const value = update(_, pulse);
         if (!target.skip()) target.skip(value !== this.value).value = value;
         return value;
-    } : update7;
+    } : update;
 }
 /**
  * Assigns a rank to an operator. Ranks are assigned in increasing order
@@ -1968,14 +1968,14 @@ const ADD = 1, REM = 2, MOD = 4, ADD_REM = ADD | REM, ADD_MOD = ADD | MOD, ALL =
     this.fields = null;
     this.encode = encode || null;
 }
-function materialize(data, filter5) {
+function materialize(data, filter) {
     const out = [];
-    (0, _vegaUtil.visitArray)(data, filter5, (_)=>out.push(_));
+    (0, _vegaUtil.visitArray)(data, filter, (_)=>out.push(_));
     return out;
 }
-function filter(pulse5, flags) {
+function filter(pulse, flags) {
     const map = {};
-    pulse5.visit(flags, (t)=>{
+    pulse.visit(flags, (t)=>{
         map[tupleid(t)] = 1;
     });
     return (t)=>map[tupleid(t)] ? null : t;
@@ -2194,12 +2194,12 @@ Pulse.prototype = {
    *   to the tuple set array, and should return a data tuple if the value
    *   should be included in the tuple set, and falsy (or null) otherwise.
    * @return {Pulse} - Returns this pulse instance.
-   */ filter (flags, filter6) {
+   */ filter (flags, filter) {
         const p = this;
-        if (flags & ADD) p.addF = addFilter(p.addF, filter6);
-        if (flags & REM) p.remF = addFilter(p.remF, filter6);
-        if (flags & MOD) p.modF = addFilter(p.modF, filter6);
-        if (flags & SOURCE) p.srcF = addFilter(p.srcF, filter6);
+        if (flags & ADD) p.addF = addFilter(p.addF, filter);
+        if (flags & REM) p.remF = addFilter(p.remF, filter);
+        if (flags & MOD) p.modF = addFilter(p.modF, filter);
+        if (flags & SOURCE) p.srcF = addFilter(p.srcF, filter);
         return p;
     },
     /**
@@ -2276,15 +2276,15 @@ Pulse.prototype = {
     this.encode = encode || null;
     this.pulses = pulses;
     for(let i = 0; i < n; ++i){
-        const pulse6 = pulses[i];
-        if (pulse6.stamp !== stamp) continue;
-        if (pulse6.fields) {
+        const pulse = pulses[i];
+        if (pulse.stamp !== stamp) continue;
+        if (pulse.fields) {
             const hash = p.fields || (p.fields = {});
-            for(const f in pulse6.fields)hash[f] = 1;
+            for(const f in pulse.fields)hash[f] = 1;
         }
-        if (pulse6.changed(p.ADD)) c |= p.ADD;
-        if (pulse6.changed(p.REM)) c |= p.REM;
-        if (pulse6.changed(p.MOD)) c |= p.MOD;
+        if (pulse.changed(p.ADD)) c |= p.ADD;
+        if (pulse.changed(p.REM)) c |= p.REM;
+        if (pulse.changed(p.MOD)) c |= p.MOD;
     }
     this.changes = c;
 }
@@ -2357,16 +2357,16 @@ Pulse.prototype = {
     df._pulse = new Pulse(df, stamp, encode); // initialize priority queue, reset touched operators
     df._touched.forEach((op)=>df._enqueue(op, true));
     df._touched = UniqueList((0, _vegaUtil.id));
-    let count = 0, op1, next, error;
+    let count = 0, op, next, error;
     try {
         while(df._heap.size() > 0){
             // dequeue operator with highest priority
-            op1 = df._heap.pop(); // re-queue if rank changed
-            if (op1.rank !== op1.qrank) {
-                df._enqueue(op1, true);
+            op = df._heap.pop(); // re-queue if rank changed
+            if (op.rank !== op.qrank) {
+                df._enqueue(op, true);
                 continue;
             } // otherwise, evaluate the operator
-            next = op1.run(df._getPulse(op1, encode));
+            next = op.run(df._getPulse(op, encode));
             if (next.then) // await if operator returns a promise directly
             next = await next;
             else if (next.async) {
@@ -2375,13 +2375,13 @@ Pulse.prototype = {
                 next = StopPropagation;
             } // propagate evaluation, enqueue dependent operators
             if (next !== StopPropagation) {
-                if (op1._targets) op1._targets.forEach((op)=>df._enqueue(op));
+                if (op._targets) op._targets.forEach((op)=>df._enqueue(op));
             } // increment visit counter
             ++count;
         }
-    } catch (err1) {
+    } catch (err) {
         df._heap.clear();
-        error = err1;
+        error = err;
     } // reset pulse map
     df._input = {};
     df._pulse = null;
@@ -2472,8 +2472,8 @@ Pulse.prototype = {
  * @param {number} [priority] - A priority value used to sort registered
  *   callbacks to determine execution order. This argument is intended
  *   for internal Vega use only.
- */ function runAfter(callback, enqueue1, priority) {
-    if (this._pulse || enqueue1) // pulse propagation is currently running, queue to run after
+ */ function runAfter(callback, enqueue, priority) {
+    if (this._pulse || enqueue) // pulse propagation is currently running, queue to run after
     this._postrun.push({
         priority: priority || 0,
         callback: callback
@@ -2582,11 +2582,11 @@ const NO_OPT = {
  * @param {boolean} [options.skip] - If true, the operator will
  *   be skipped: it will not be evaluated, but its dependents will be.
  * @return {Dataflow}
- */ function pulse(op, changeset1, options) {
+ */ function pulse(op, changeset, options) {
     this.touch(op, options || NO_OPT);
     const p = new Pulse(this, this._clock + (this._pulse ? 0 : 1)), t = op.pulse && op.pulse.source || [];
     p.target = op;
-    this._input[op.id] = changeset1.pulse(p, t);
+    this._input[op.id] = changeset.pulse(p, t);
     return this;
 }
 function Heap(cmp) {
@@ -2791,14 +2791,14 @@ Dataflow.prototype = {
    * This method should NOT be overridden, instead overrride {@link evaluate}.
    * @param {Pulse} pulse - the current dataflow pulse.
    * @return the output pulse for this operator (or StopPropagation)
-   */ run (pulse7) {
-        if (pulse7.stamp < this.stamp) return pulse7.StopPropagation;
+   */ run (pulse) {
+        if (pulse.stamp < this.stamp) return pulse.StopPropagation;
         let rv;
         if (this.skip()) this.skip(false);
-        else rv = this.evaluate(pulse7);
-        rv = rv || pulse7;
+        else rv = this.evaluate(pulse);
+        rv = rv || pulse;
         if (rv.then) rv = rv.then((_)=>this.pulse = _);
-        else if (rv !== pulse7.StopPropagation) this.pulse = rv;
+        else if (rv !== pulse.StopPropagation) this.pulse = rv;
         return rv;
     },
     /**
@@ -2807,8 +2807,8 @@ Dataflow.prototype = {
    * @param {Pulse} pulse - the current dataflow pulse.
    * @return {Pulse} The output pulse (or StopPropagation). A falsy return
        value (including undefined) will let the input pulse pass through.
-  */ evaluate (pulse8) {
-        const params = this.marshall(pulse8.stamp), out = this.transform(params, pulse8);
+  */ evaluate (pulse) {
+        const params = this.marshall(pulse.stamp), out = this.transform(params, pulse);
         params.clear();
         return out;
     },
@@ -2863,14 +2863,14 @@ const fileProtocol = "file://";
  * @return {function} A loader constructor with the following signature:
  *   param {object} [options] - Optional default loading options to use.
  *   return {object} - A new loader instance.
- */ function loaderFactory(fetch, fs) {
+ */ function loaderFactory(fetch1, fs) {
     return (options)=>({
             options: options || {},
             sanitize: sanitize,
             load: load,
             fileAccess: !!fs,
             file: fileLoader(fs),
-            http: httpLoader(fetch)
+            http: httpLoader(fetch1)
         });
 }
 /**
@@ -2960,9 +2960,9 @@ const fileProtocol = "file://";
  *   param {string} url - The url to request.
  *   param {object} options - An options hash.
  *   return {Promise} - A promise that resolves to the file contents.
- */ function httpLoader(fetch) {
-    return fetch ? async function(url, options) {
-        const opt = (0, _vegaUtil.extend)({}, this.options.http, options), type = options && options.response, response = await fetch(url, opt);
+ */ function httpLoader(fetch1) {
+    return fetch1 ? async function(url, options) {
+        const opt = (0, _vegaUtil.extend)({}, this.options.http, options), type = options && options.response, response = await fetch1(url, opt);
         return !response.ok ? (0, _vegaUtil.error)(response.status + "" + response.statusText) : (0, _vegaUtil.isFunction)(response[type]) ? response[type]() : response.text();
     } : httpReject;
 }
@@ -2999,8 +2999,8 @@ const typeList = [
 function inferType(values, field) {
     if (!values || !values.length) return "unknown";
     const n = values.length, m = typeTests.length, a = typeTests.map((_, i)=>i + 1);
-    for(let i1 = 0, t = 0, j, value; i1 < n; ++i1){
-        value = field ? values[i1][field] : values[i1];
+    for(let i = 0, t = 0, j, value; i < n; ++i){
+        value = field ? values[i][field] : values[i];
         for(j = 0; j < m; ++j)if (a[j] && isValid(value) && !typeTests[j](value)) {
             a[j] = 0;
             ++t;
@@ -3016,48 +3016,48 @@ function inferTypes(data, fields) {
     }, {});
 }
 function delimitedFormat(delimiter) {
-    const parse1 = function(data, format1) {
+    const parse = function(data, format) {
         const delim = {
             delimiter: delimiter
         };
-        return dsv(data, format1 ? (0, _vegaUtil.extend)(format1, delim) : delim);
+        return dsv(data, format ? (0, _vegaUtil.extend)(format, delim) : delim);
     };
-    parse1.responseType = "text";
-    return parse1;
+    parse.responseType = "text";
+    return parse;
 }
-function dsv(data, format2) {
-    if (format2.header) data = format2.header.map((0, _vegaUtil.stringValue)).join(format2.delimiter) + "\n" + data;
-    return (0, _d3Dsv.dsvFormat)(format2.delimiter).parse(data + "");
+function dsv(data, format) {
+    if (format.header) data = format.header.map((0, _vegaUtil.stringValue)).join(format.delimiter) + "\n" + data;
+    return (0, _d3Dsv.dsvFormat)(format.delimiter).parse(data + "");
 }
 dsv.responseType = "text";
 function isBuffer(_) {
     return typeof Buffer === "function" && (0, _vegaUtil.isFunction)(Buffer.isBuffer) ? Buffer.isBuffer(_) : false;
 }
-function json(data, format3) {
-    const prop = format3 && format3.property ? (0, _vegaUtil.field)(format3.property) : (0, _vegaUtil.identity);
-    return (0, _vegaUtil.isObject)(data) && !isBuffer(data) ? parseJSON(prop(data), format3) : prop(JSON.parse(data));
+function json(data, format) {
+    const prop = format && format.property ? (0, _vegaUtil.field)(format.property) : (0, _vegaUtil.identity);
+    return (0, _vegaUtil.isObject)(data) && !isBuffer(data) ? parseJSON(prop(data), format) : prop(JSON.parse(data));
 }
 json.responseType = "json";
-function parseJSON(data, format4) {
+function parseJSON(data, format) {
     if (!(0, _vegaUtil.isArray)(data) && (0, _vegaUtil.isIterable)(data)) data = [
         ...data
     ];
-    return format4 && format4.copy ? JSON.parse(JSON.stringify(data)) : data;
+    return format && format.copy ? JSON.parse(JSON.stringify(data)) : data;
 }
 const filters = {
     interior: (a, b)=>a !== b,
     exterior: (a, b)=>a === b
 };
-function topojson(data, format5) {
+function topojson(data, format) {
     let method, object, property, filter;
-    data = json(data, format5);
-    if (format5 && format5.feature) {
+    data = json(data, format);
+    if (format && format.feature) {
         method = (0, _topojsonClient.feature);
-        property = format5.feature;
-    } else if (format5 && format5.mesh) {
+        property = format.feature;
+    } else if (format && format.mesh) {
         method = (0, _topojsonClient.mesh);
-        property = format5.mesh;
-        filter = filters[format5.filter];
+        property = format.mesh;
+        filter = filters[format.filter];
     } else (0, _vegaUtil.error)("Missing TopoJSON feature or mesh parameter.");
     object = (object = data.objects[property]) ? method(data, object, filter) : (0, _vegaUtil.error)("Invalid TopoJSON object: " + property);
     return object && object.features || [
@@ -3096,7 +3096,7 @@ function parse(data, types, timeParser, utcParser) {
     const locale = (0, _vegaFormat.timeFormatDefaultLocale)();
     timeParser = timeParser || locale.timeParse;
     utcParser = utcParser || locale.utcParse;
-    let fields = data.columns || Object.keys(data[0]), datum, field1, i, j, n, m;
+    let fields = data.columns || Object.keys(data[0]), datum, field, i, j, n, m;
     if (types === "auto") types = inferTypes(data, fields);
     fields = Object.keys(types);
     const parsers = fields.map((field)=>{
@@ -3106,8 +3106,8 @@ function parse(data, types, timeParser, utcParser) {
             parts = type.split(/:(.+)?/, 2); // split on first :
             pattern = parts[1];
             if (pattern[0] === "'" && pattern[pattern.length - 1] === "'" || pattern[0] === '"' && pattern[pattern.length - 1] === '"') pattern = pattern.slice(1, -1);
-            const parse2 = parts[0] === "utc" ? utcParser : timeParser;
-            return parse2(pattern);
+            const parse = parts[0] === "utc" ? utcParser : timeParser;
+            return parse(pattern);
         }
         if (!typeParsers[type]) throw Error("Illegal format pattern: " + field + ":" + type);
         return typeParsers[type];
@@ -3115,8 +3115,8 @@ function parse(data, types, timeParser, utcParser) {
     for(i = 0, n = data.length, m = fields.length; i < n; ++i){
         datum = data[i];
         for(j = 0; j < m; ++j){
-            field1 = fields[j];
-            datum[field1] = parsers[j](datum[field1]);
+            field = fields[j];
+            datum[field] = parsers[j](datum[field]);
         }
     }
 }
@@ -3379,14 +3379,14 @@ var _reverseJs = require("./reverse.js");
 var _reverseJsDefault = parcelHelpers.interopDefault(_reverseJs);
 var _transformJs = require("./transform.js");
 var _transformJsDefault = parcelHelpers.interopDefault(_transformJs);
-exports.default = function(topology, o1) {
-    if (typeof o1 === "string") o1 = topology.objects[o1];
-    return o1.type === "GeometryCollection" ? {
+exports.default = function(topology, o) {
+    if (typeof o === "string") o = topology.objects[o];
+    return o.type === "GeometryCollection" ? {
         type: "FeatureCollection",
-        features: o1.geometries.map(function(o) {
+        features: o.geometries.map(function(o) {
             return feature(topology, o);
         })
-    } : feature(topology, o1);
+    } : feature(topology, o);
 };
 function feature(topology, o) {
     var id = o.id, bbox = o.bbox, properties = o.properties == null ? {} : o.properties, geometry = object(topology, o);
@@ -3407,11 +3407,11 @@ function feature(topology, o) {
         geometry: geometry
     };
 }
-function object(topology, o2) {
-    var transformPoint = (0, _transformJsDefault.default)(topology.transform), arcs1 = topology.arcs;
+function object(topology, o) {
+    var transformPoint = (0, _transformJsDefault.default)(topology.transform), arcs = topology.arcs;
     function arc(i, points) {
         if (points.length) points.pop();
-        for(var a = arcs1[i < 0 ? ~i : i], k = 0, n = a.length; k < n; ++k)points.push(transformPoint(a[k], k));
+        for(var a = arcs[i < 0 ? ~i : i], k = 0, n = a.length; k < n; ++k)points.push(transformPoint(a[k], k));
         if (i < 0) (0, _reverseJsDefault.default)(points, n);
     }
     function point(p) {
@@ -3465,7 +3465,7 @@ function object(topology, o2) {
             coordinates: coordinates
         };
     }
-    return geometry(o2);
+    return geometry(o);
 }
 
 },{"./reverse.js":"7nB9v","./transform.js":"ToH0M","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7nB9v":[function(require,module,exports) {
@@ -3496,7 +3496,7 @@ function meshArcs(topology, object, filter) {
     };
 }
 function extractArcs(topology, object, filter) {
-    var arcs1 = [], geomsByArc = [], geom;
+    var arcs = [], geomsByArc = [], geom;
     function extract0(i) {
         var j = i < 0 ? ~i : i;
         (geomsByArc[j] || (geomsByArc[j] = [])).push({
@@ -3532,18 +3532,18 @@ function extractArcs(topology, object, filter) {
     }
     geometry(object);
     geomsByArc.forEach(filter == null ? function(geoms) {
-        arcs1.push(geoms[0].i);
+        arcs.push(geoms[0].i);
     } : function(geoms) {
-        if (filter(geoms[0].g, geoms[geoms.length - 1].g)) arcs1.push(geoms[0].i);
+        if (filter(geoms[0].g, geoms[geoms.length - 1].g)) arcs.push(geoms[0].i);
     });
-    return arcs1;
+    return arcs;
 }
 
 },{"./feature.js":"6K0pm","./stitch.js":"26mb3","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"26mb3":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 exports.default = function(topology, arcs) {
-    var stitchedArcs = {}, fragmentByStart1 = {}, fragmentByEnd1 = {}, fragments = [], emptyIndex = -1;
+    var stitchedArcs = {}, fragmentByStart = {}, fragmentByEnd = {}, fragments = [], emptyIndex = -1;
     // Stitch empty arcs first, since they may be subsumed by other arcs.
     arcs.forEach(function(i, j) {
         var arc = topology.arcs[i < 0 ? ~i : i], t;
@@ -3551,29 +3551,29 @@ exports.default = function(topology, arcs) {
     });
     arcs.forEach(function(i) {
         var e = ends(i), start = e[0], end = e[1], f, g;
-        if (f = fragmentByEnd1[start]) {
-            delete fragmentByEnd1[f.end];
+        if (f = fragmentByEnd[start]) {
+            delete fragmentByEnd[f.end];
             f.push(i);
             f.end = end;
-            if (g = fragmentByStart1[end]) {
-                delete fragmentByStart1[g.start];
+            if (g = fragmentByStart[end]) {
+                delete fragmentByStart[g.start];
                 var fg = g === f ? f : f.concat(g);
-                fragmentByStart1[fg.start = f.start] = fragmentByEnd1[fg.end = g.end] = fg;
-            } else fragmentByStart1[f.start] = fragmentByEnd1[f.end] = f;
-        } else if (f = fragmentByStart1[end]) {
-            delete fragmentByStart1[f.start];
+                fragmentByStart[fg.start = f.start] = fragmentByEnd[fg.end = g.end] = fg;
+            } else fragmentByStart[f.start] = fragmentByEnd[f.end] = f;
+        } else if (f = fragmentByStart[end]) {
+            delete fragmentByStart[f.start];
             f.unshift(i);
             f.start = start;
-            if (g = fragmentByEnd1[start]) {
-                delete fragmentByEnd1[g.end];
+            if (g = fragmentByEnd[start]) {
+                delete fragmentByEnd[g.end];
                 var gf = g === f ? f : g.concat(f);
-                fragmentByStart1[gf.start = g.start] = fragmentByEnd1[gf.end = f.end] = gf;
-            } else fragmentByStart1[f.start] = fragmentByEnd1[f.end] = f;
+                fragmentByStart[gf.start = g.start] = fragmentByEnd[gf.end = f.end] = gf;
+            } else fragmentByStart[f.start] = fragmentByEnd[f.end] = f;
         } else {
             f = [
                 i
             ];
-            fragmentByStart1[f.start = start] = fragmentByEnd1[f.end = end] = f;
+            fragmentByStart[f.start = start] = fragmentByEnd[f.end = end] = f;
         }
     });
     function ends(i) {
@@ -3605,8 +3605,8 @@ exports.default = function(topology, arcs) {
             fragments.push(f);
         }
     }
-    flush(fragmentByEnd1, fragmentByStart1);
-    flush(fragmentByStart1, fragmentByEnd1);
+    flush(fragmentByEnd, fragmentByStart);
+    flush(fragmentByStart, fragmentByEnd);
     arcs.forEach(function(i) {
         if (!stitchedArcs[i < 0 ? ~i : i]) fragments.push([
             i
@@ -3631,7 +3631,7 @@ exports.default = function(topology) {
     return (0, _featureJs.object)(topology, mergeArcs.apply(this, arguments));
 };
 function mergeArcs(topology, objects) {
-    var polygonsByArc = {}, polygons1 = [], groups = [];
+    var polygonsByArc = {}, polygons = [], groups = [];
     objects.forEach(geometry);
     function geometry(o) {
         switch(o.type){
@@ -3652,7 +3652,7 @@ function mergeArcs(topology, objects) {
                 (polygonsByArc[arc = arc < 0 ? ~arc : arc] || (polygonsByArc[arc] = [])).push(polygon);
             });
         });
-        polygons1.push(polygon);
+        polygons.push(polygon);
     }
     function area(ring) {
         return planarRingArea((0, _featureJs.object)(topology, {
@@ -3662,16 +3662,16 @@ function mergeArcs(topology, objects) {
             ]
         }).coordinates[0]);
     }
-    polygons1.forEach(function(polygon1) {
-        if (!polygon1._) {
+    polygons.forEach(function(polygon) {
+        if (!polygon._) {
             var group = [], neighbors = [
-                polygon1
+                polygon
             ];
-            polygon1._ = 1;
+            polygon._ = 1;
             groups.push(group);
-            while(polygon1 = neighbors.pop()){
-                group.push(polygon1);
-                polygon1.forEach(function(ring) {
+            while(polygon = neighbors.pop()){
+                group.push(polygon);
+                polygon.forEach(function(ring) {
                     ring.forEach(function(arc) {
                         polygonsByArc[arc < 0 ? ~arc : arc].forEach(function(polygon) {
                             if (!polygon._) {
@@ -3684,7 +3684,7 @@ function mergeArcs(topology, objects) {
             }
         }
     });
-    polygons1.forEach(function(polygon) {
+    polygons.forEach(function(polygon) {
         delete polygon._;
     });
     return {
@@ -3738,11 +3738,11 @@ exports.default = function(objects) {
             line(arc, i);
         });
     }
-    function geometry(o1, i) {
-        if (o1.type === "GeometryCollection") o1.geometries.forEach(function(o) {
+    function geometry(o, i) {
+        if (o.type === "GeometryCollection") o.geometries.forEach(function(o) {
             geometry(o, i);
         });
-        else if (o1.type in geometryType) geometryType[o1.type](o1.arcs, i);
+        else if (o.type in geometryType) geometryType[o.type](o.arcs, i);
     }
     var geometryType = {
         LineString: line,
@@ -3755,11 +3755,11 @@ exports.default = function(objects) {
         }
     };
     objects.forEach(geometry);
-    for(var i1 in indexesByArc){
-        for(var indexes = indexesByArc[i1], m = indexes.length, j = 0; j < m; ++j)for(var k = j + 1; k < m; ++k){
+    for(var i in indexesByArc){
+        for(var indexes = indexesByArc[i], m = indexes.length, j = 0; j < m; ++j)for(var k = j + 1; k < m; ++k){
             var ij = indexes[j], ik = indexes[k], n;
-            if ((n = neighbors[ij])[i1 = (0, _bisectJsDefault.default)(n, ik)] !== ik) n.splice(i1, 0, ik);
-            if ((n = neighbors[ik])[i1 = (0, _bisectJsDefault.default)(n, ij)] !== ij) n.splice(i1, 0, ij);
+            if ((n = neighbors[ij])[i = (0, _bisectJsDefault.default)(n, ik)] !== ik) n.splice(i, 0, ik);
+            if ((n = neighbors[ik])[i = (0, _bisectJsDefault.default)(n, ij)] !== ij) n.splice(i, 0, ij);
         }
     }
     return neighbors;
@@ -3788,7 +3788,7 @@ var _untransformJsDefault = parcelHelpers.interopDefault(_untransformJs);
 exports.default = function(topology, transform) {
     if (topology.transform) throw new Error("already quantized");
     if (!transform || !transform.scale) {
-        if (!((n = Math.floor(transform)) >= 2)) throw new Error("n must be \u22652");
+        if (!((n = Math.floor(transform)) >= 2)) throw new Error("n must be ≥2");
         box = topology.bbox || (0, _bboxJsDefault.default)(topology);
         var x0 = box[0], y0 = box[1], x1 = box[2], y1 = box[3], n;
         transform = {
@@ -3916,8 +3916,8 @@ function rightmostDigit(str, dec) {
         if (c >= 48 && c <= 57) return i + 1; // is digit
     }
 }
-function numberLocale(locale1) {
-    const format = memoize(locale1.format), formatPrefix = locale1.formatPrefix;
+function numberLocale(locale) {
+    const format = memoize(locale.format), formatPrefix = locale.formatPrefix;
     return {
         format,
         formatPrefix,
@@ -3981,13 +3981,13 @@ function timeMultiFormat(format, interval, spec) {
     const second = interval((0, _vegaTime.SECONDS)), minute = interval((0, _vegaTime.MINUTES)), hour = interval((0, _vegaTime.HOURS)), day = interval((0, _vegaTime.DATE)), week = interval((0, _vegaTime.WEEK)), month = interval((0, _vegaTime.MONTH)), quarter = interval((0, _vegaTime.QUARTER)), year = interval((0, _vegaTime.YEAR)), L = format(spec[0, _vegaTime.MILLISECONDS] || ".%L"), S = format(spec[0, _vegaTime.SECONDS] || ":%S"), M = format(spec[0, _vegaTime.MINUTES] || "%I:%M"), H = format(spec[0, _vegaTime.HOURS] || "%I %p"), d = format(spec[0, _vegaTime.DATE] || spec[0, _vegaTime.DAY] || "%a %d"), w = format(spec[0, _vegaTime.WEEK] || "%b %d"), m = format(spec[0, _vegaTime.MONTH] || "%B"), q = format(spec[0, _vegaTime.QUARTER] || "%B"), y = format(spec[0, _vegaTime.YEAR] || "%Y");
     return (date)=>(second(date) < date ? L : minute(date) < date ? S : hour(date) < date ? M : day(date) < date ? H : month(date) < date ? week(date) < date ? d : w : year(date) < date ? quarter(date) < date ? m : q : y)(date);
 }
-function timeLocale(locale2) {
-    const timeFormat = memoize(locale2.format), utcFormat = memoize(locale2.utcFormat);
+function timeLocale(locale) {
+    const timeFormat = memoize(locale.format), utcFormat = memoize(locale.utcFormat);
     return {
         timeFormat: (spec)=>(0, _vegaUtil.isString)(spec) ? timeFormat(spec) : timeMultiFormat(timeFormat, (0, _vegaTime.timeInterval), spec),
         utcFormat: (spec)=>(0, _vegaUtil.isString)(spec) ? utcFormat(spec) : timeMultiFormat(utcFormat, (0, _vegaTime.utcInterval), spec),
-        timeParse: memoize(locale2.parse),
-        utcParse: memoize(locale2.utcParse)
+        timeParse: memoize(locale.parse),
+        utcParse: memoize(locale.utcParse)
     };
 }
 let defaultTimeLocale;
@@ -4290,7 +4290,7 @@ function* numbers(values, valueof) {
         for (let value of values)if (value != null && (value = +value) >= value) yield value;
     } else {
         let index = -1;
-        for (let value of values)if ((value = valueof(value, ++index, values)) != null && (value = +value) >= value) yield value;
+        for (let value1 of values)if ((value1 = valueof(value1, ++index, values)) != null && (value1 = +value1) >= value1) yield value1;
     }
 }
 
@@ -4321,10 +4321,10 @@ function variance(values, valueof) {
         }
     } else {
         let index = -1;
-        for (let value of values)if ((value = valueof(value, ++index, values)) != null && (value = +value) >= value) {
-            delta = value - mean;
+        for (let value1 of values)if ((value1 = valueof(value1, ++index, values)) != null && (value1 = +value1) >= value1) {
+            delta = value1 - mean;
             mean += delta / ++count;
-            sum += delta * (value - mean);
+            sum += delta * (value1 - mean);
         }
     }
     if (count > 1) return sum / (count - 1);
@@ -4382,7 +4382,7 @@ function fsum(values, valueof) {
         for (let value of values)if (value = +value) adder.add(value);
     } else {
         let index = -1;
-        for (let value of values)if (value = +valueof(value, ++index, values)) adder.add(value);
+        for (let value1 of values)if (value1 = +valueof(value1, ++index, values)) adder.add(value1);
     }
     return +adder;
 }
@@ -4396,14 +4396,14 @@ function fcumsum(values, valueof) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 function max(values, valueof) {
-    let max1;
+    let max;
     if (valueof === undefined) {
-        for (const value of values)if (value != null && (max1 < value || max1 === undefined && value >= value)) max1 = value;
+        for (const value of values)if (value != null && (max < value || max === undefined && value >= value)) max = value;
     } else {
         let index = -1;
-        for (let value of values)if ((value = valueof(value, ++index, values)) != null && (max1 < value || max1 === undefined && value >= value)) max1 = value;
+        for (let value1 of values)if ((value1 = valueof(value1, ++index, values)) != null && (max < value1 || max === undefined && value1 >= value1)) max = value1;
     }
-    return max1;
+    return max;
 }
 exports.default = max;
 
@@ -4417,7 +4417,7 @@ function mean(values, valueof) {
         for (let value of values)if (value != null && (value = +value) >= value) ++count, sum += value;
     } else {
         let index = -1;
-        for (let value of values)if ((value = valueof(value, ++index, values)) != null && (value = +value) >= value) ++count, sum += value;
+        for (let value1 of values)if ((value1 = valueof(value1, ++index, values)) != null && (value1 = +value1) >= value1) ++count, sum += value1;
     }
     if (count) return sum / count;
 }
@@ -4465,14 +4465,14 @@ function quantileSorted(values, p, valueof = (0, _numberJsDefault.default)) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 function min(values, valueof) {
-    let min1;
+    let min;
     if (valueof === undefined) {
-        for (const value of values)if (value != null && (min1 > value || min1 === undefined && value >= value)) min1 = value;
+        for (const value of values)if (value != null && (min > value || min === undefined && value >= value)) min = value;
     } else {
         let index = -1;
-        for (let value of values)if ((value = valueof(value, ++index, values)) != null && (min1 > value || min1 === undefined && value >= value)) min1 = value;
+        for (let value1 of values)if ((value1 = valueof(value1, ++index, values)) != null && (min > value1 || min === undefined && value1 >= value1)) min = value1;
     }
-    return min1;
+    return min;
 }
 exports.default = min;
 
@@ -4549,14 +4549,14 @@ exports.default = function(start, stop, step) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 function sum(values, valueof) {
-    let sum1 = 0;
+    let sum = 0;
     if (valueof === undefined) {
-        for (let value of values)if (value = +value) sum1 += value;
+        for (let value of values)if (value = +value) sum += value;
     } else {
         let index = -1;
-        for (let value of values)if (value = +valueof(value, ++index, values)) sum1 += value;
+        for (let value1 of values)if (value1 = +valueof(value1, ++index, values)) sum += value1;
     }
-    return sum1;
+    return sum;
 }
 exports.default = sum;
 
@@ -4582,11 +4582,11 @@ exports.default = function(start, stop, count) {
         while(++i < n)ticks[i] = (r0 + i) * step;
     } else {
         step = -step;
-        let r0 = Math.round(start * step), r1 = Math.round(stop * step);
-        if (r0 / step < start) ++r0;
-        if (r1 / step > stop) --r1;
-        ticks = new Array(n = r1 - r0 + 1);
-        while(++i < n)ticks[i] = (r0 + i) / step;
+        let r01 = Math.round(start * step), r11 = Math.round(stop * step);
+        if (r01 / step < start) ++r01;
+        if (r11 / step > stop) --r11;
+        ticks = new Array(n = r11 - r01 + 1);
+        while(++i < n)ticks[i] = (r01 + i) / step;
     }
     if (reverse) ticks.reverse();
     return ticks;
@@ -4770,7 +4770,7 @@ var map = Array.prototype.map, prefixes = [
     "Y"
 ];
 exports.default = function(locale) {
-    var group = locale.grouping === undefined || locale.thousands === undefined ? (0, _identityJsDefault.default) : (0, _formatGroupJsDefault.default)(map.call(locale.grouping, Number), locale.thousands + ""), currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "", currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "", decimal = locale.decimal === undefined ? "." : locale.decimal + "", numerals = locale.numerals === undefined ? (0, _identityJsDefault.default) : (0, _formatNumeralsJsDefault.default)(map.call(locale.numerals, String)), percent = locale.percent === undefined ? "%" : locale.percent + "", minus = locale.minus === undefined ? "\u2212" : locale.minus + "", nan = locale.nan === undefined ? "NaN" : locale.nan + "";
+    var group = locale.grouping === undefined || locale.thousands === undefined ? (0, _identityJsDefault.default) : (0, _formatGroupJsDefault.default)(map.call(locale.grouping, Number), locale.thousands + ""), currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "", currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "", decimal = locale.decimal === undefined ? "." : locale.decimal + "", numerals = locale.numerals === undefined ? (0, _identityJsDefault.default) : (0, _formatNumeralsJsDefault.default)(map.call(locale.numerals, String)), percent = locale.percent === undefined ? "%" : locale.percent + "", minus = locale.minus === undefined ? "−" : locale.minus + "", nan = locale.nan === undefined ? "NaN" : locale.nan + "";
     function newFormat(specifier) {
         specifier = (0, _formatSpecifierJsDefault.default)(specifier);
         var fill = specifier.fill, align = specifier.align, sign = specifier.sign, symbol = specifier.symbol, zero = specifier.zero, width = specifier.width, comma = specifier.comma, precision = specifier.precision, trim = specifier.trim, type = specifier.type;
@@ -4848,8 +4848,8 @@ exports.default = function(locale) {
         };
         return format;
     }
-    function formatPrefix(specifier, value1) {
-        var f = newFormat((specifier = (0, _formatSpecifierJsDefault.default)(specifier), specifier.type = "f", specifier)), e = Math.max(-8, Math.min(8, Math.floor((0, _exponentJsDefault.default)(value1) / 3))) * 3, k = Math.pow(10, -e), prefix = prefixes[8 + e / 3];
+    function formatPrefix(specifier, value) {
+        var f = newFormat((specifier = (0, _formatSpecifierJsDefault.default)(specifier), specifier.type = "f", specifier)), e = Math.max(-8, Math.min(8, Math.floor((0, _exponentJsDefault.default)(value) / 3))) * 3, k = Math.pow(10, -e), prefix = prefixes[8 + e / 3];
         return function(value) {
             return f(k * value) + prefix;
         };
@@ -5235,8 +5235,8 @@ function getUnit(f, inv, step, phase) {
     return inv ? (d, y)=>inv(u(d, y), y) : u;
 } // returns the day of the year based on week number, day of week,
 // and the day of the week for the first day of the year
-function weekday(week1, day, firstDay) {
-    return day + week1 * 7 - (firstDay + 6) % 7;
+function weekday(week, day, firstDay) {
+    return day + week * 7 - (firstDay + 6) % 7;
 } // -- LOCAL TIME --
 const localGet = {
     [YEAR]: (d)=>d.getFullYear(),
@@ -5437,12 +5437,12 @@ const intervals = [
 ];
 function bin(opt) {
     const ext = opt.extent, max = opt.maxbins || 40, target = Math.abs((0, _vegaUtil.span)(ext)) / max;
-    let i1 = (0, _d3Array.bisector)((i)=>i[2]).right(intervals, target), units, step;
-    if (i1 === intervals.length) units = Year, step = (0, _d3Array.tickStep)(ext[0] / durationYear, ext[1] / durationYear, max);
-    else if (i1) {
-        i1 = intervals[target / intervals[i1 - 1][2] < intervals[i1][2] / target ? i1 - 1 : i1];
-        units = i1[0];
-        step = i1[1];
+    let i = (0, _d3Array.bisector)((i)=>i[2]).right(intervals, target), units, step;
+    if (i === intervals.length) units = Year, step = (0, _d3Array.tickStep)(ext[0] / durationYear, ext[1] / durationYear, max);
+    else if (i) {
+        i = intervals[target / intervals[i - 1][2] < intervals[i][2] / target ? i - 1 : i];
+        units = i[0];
+        step = i[1];
     } else {
         units = Milli;
         step = Math.max((0, _d3Array.tickStep)(ext[0], ext[1], max), 1);
@@ -6100,7 +6100,7 @@ function ticker(year, month, week, day, hour, minute) {
             (0, _durationJs.durationYear)
         ]
     ];
-    function ticks1(start, stop, count) {
+    function ticks(start, stop, count) {
         const reverse = stop < start;
         if (reverse) [start, stop] = [
             stop,
@@ -6115,11 +6115,11 @@ function ticker(year, month, week, day, hour, minute) {
         const i = (0, _d3Array.bisector)(([, , step])=>step).right(tickIntervals, target);
         if (i === tickIntervals.length) return year.every((0, _d3Array.tickStep)(start / (0, _durationJs.durationYear), stop / (0, _durationJs.durationYear), count));
         if (i === 0) return (0, _millisecondJsDefault.default).every(Math.max((0, _d3Array.tickStep)(start, stop, count), 1));
-        const [t, step1] = tickIntervals[target / tickIntervals[i - 1][2] < tickIntervals[i][2] / target ? i - 1 : i];
-        return t.every(step1);
+        const [t, step] = tickIntervals[target / tickIntervals[i - 1][2] < tickIntervals[i][2] / target ? i - 1 : i];
+        return t.every(step);
     }
     return [
-        ticks1,
+        ticks,
         tickInterval
     ];
 }
@@ -6259,7 +6259,7 @@ function newDate(y, m, d) {
 function formatLocale(locale) {
     var locale_dateTime = locale.dateTime, locale_date = locale.date, locale_time = locale.time, locale_periods = locale.periods, locale_weekdays = locale.days, locale_shortWeekdays = locale.shortDays, locale_months = locale.months, locale_shortMonths = locale.shortMonths;
     var periodRe = formatRe(locale_periods), periodLookup = formatLookup(locale_periods), weekdayRe = formatRe(locale_weekdays), weekdayLookup = formatLookup(locale_weekdays), shortWeekdayRe = formatRe(locale_shortWeekdays), shortWeekdayLookup = formatLookup(locale_shortWeekdays), monthRe = formatRe(locale_months), monthLookup = formatLookup(locale_months), shortMonthRe = formatRe(locale_shortMonths), shortMonthLookup = formatLookup(locale_shortMonths);
-    var formats1 = {
+    var formats = {
         "a": formatShortWeekday,
         "A": formatWeekday,
         "b": formatShortMonth,
@@ -6362,21 +6362,21 @@ function formatLocale(locale) {
         "%": parseLiteralPercent
     };
     // These recursive directive definitions must be deferred.
-    formats1.x = newFormat(locale_date, formats1);
-    formats1.X = newFormat(locale_time, formats1);
-    formats1.c = newFormat(locale_dateTime, formats1);
+    formats.x = newFormat(locale_date, formats);
+    formats.X = newFormat(locale_time, formats);
+    formats.c = newFormat(locale_dateTime, formats);
     utcFormats.x = newFormat(locale_date, utcFormats);
     utcFormats.X = newFormat(locale_time, utcFormats);
     utcFormats.c = newFormat(locale_dateTime, utcFormats);
     function newFormat(specifier, formats) {
         return function(date) {
-            var string = [], i = -1, j = 0, n = specifier.length, c, pad1, format;
+            var string = [], i = -1, j = 0, n = specifier.length, c, pad, format;
             if (!(date instanceof Date)) date = new Date(+date);
             while(++i < n)if (specifier.charCodeAt(i) === 37) {
                 string.push(specifier.slice(j, i));
-                if ((pad1 = pads[c = specifier.charAt(++i)]) != null) c = specifier.charAt(++i);
-                else pad1 = c === "e" ? " " : "0";
-                if (format = formats[c]) c = format(date, pad1);
+                if ((pad = pads[c = specifier.charAt(++i)]) != null) c = specifier.charAt(++i);
+                else pad = c === "e" ? " " : "0";
+                if (format = formats[c]) c = format(date, pad);
                 string.push(c);
                 j = i + 1;
             }
@@ -6513,7 +6513,7 @@ function formatLocale(locale) {
     }
     return {
         format: function(specifier) {
-            var f = newFormat(specifier += "", formats1);
+            var f = newFormat(specifier += "", formats);
             f.toString = function() {
                 return specifier;
             };
@@ -7288,25 +7288,25 @@ function arrayIndexOf(arr, val, byteOffset, encoding, dir) {
         if (indexSize === 1) return buf[i];
         else return buf.readUInt16BE(i * indexSize);
     }
-    var i1;
+    var i;
     if (dir) {
         var foundIndex = -1;
-        for(i1 = byteOffset; i1 < arrLength; i1++)if (read(arr, i1) === read(val, foundIndex === -1 ? 0 : i1 - foundIndex)) {
-            if (foundIndex === -1) foundIndex = i1;
-            if (i1 - foundIndex + 1 === valLength) return foundIndex * indexSize;
+        for(i = byteOffset; i < arrLength; i++)if (read(arr, i) === read(val, foundIndex === -1 ? 0 : i - foundIndex)) {
+            if (foundIndex === -1) foundIndex = i;
+            if (i - foundIndex + 1 === valLength) return foundIndex * indexSize;
         } else {
-            if (foundIndex !== -1) i1 -= i1 - foundIndex;
+            if (foundIndex !== -1) i -= i - foundIndex;
             foundIndex = -1;
         }
     } else {
         if (byteOffset + valLength > arrLength) byteOffset = arrLength - valLength;
-        for(i1 = byteOffset; i1 >= 0; i1--){
+        for(i = byteOffset; i >= 0; i--){
             var found = true;
-            for(var j = 0; j < valLength; j++)if (read(arr, i1 + j) !== read(val, j)) {
+            for(var j = 0; j < valLength; j++)if (read(arr, i + j) !== read(val, j)) {
                 found = false;
                 break;
             }
-            if (found) return i1;
+            if (found) return i;
         }
     }
     return -1;
@@ -7530,23 +7530,23 @@ Buffer.prototype.slice = function slice(start, end) {
     if (offset % 1 !== 0 || offset < 0) throw new RangeError("offset is not uint");
     if (offset + ext > length) throw new RangeError("Trying to access beyond buffer length");
 }
-Buffer.prototype.readUintLE = Buffer.prototype.readUIntLE = function readUIntLE(offset, byteLength1, noAssert) {
+Buffer.prototype.readUintLE = Buffer.prototype.readUIntLE = function readUIntLE(offset, byteLength, noAssert) {
     offset = offset >>> 0;
-    byteLength1 = byteLength1 >>> 0;
-    if (!noAssert) checkOffset(offset, byteLength1, this.length);
+    byteLength = byteLength >>> 0;
+    if (!noAssert) checkOffset(offset, byteLength, this.length);
     var val = this[offset];
     var mul = 1;
     var i = 0;
-    while(++i < byteLength1 && (mul *= 0x100))val += this[offset + i] * mul;
+    while(++i < byteLength && (mul *= 0x100))val += this[offset + i] * mul;
     return val;
 };
-Buffer.prototype.readUintBE = Buffer.prototype.readUIntBE = function readUIntBE(offset, byteLength2, noAssert) {
+Buffer.prototype.readUintBE = Buffer.prototype.readUIntBE = function readUIntBE(offset, byteLength, noAssert) {
     offset = offset >>> 0;
-    byteLength2 = byteLength2 >>> 0;
-    if (!noAssert) checkOffset(offset, byteLength2, this.length);
-    var val = this[offset + --byteLength2];
+    byteLength = byteLength >>> 0;
+    if (!noAssert) checkOffset(offset, byteLength, this.length);
+    var val = this[offset + --byteLength];
     var mul = 1;
-    while(byteLength2 > 0 && (mul *= 0x100))val += this[offset + --byteLength2] * mul;
+    while(byteLength > 0 && (mul *= 0x100))val += this[offset + --byteLength] * mul;
     return val;
 };
 Buffer.prototype.readUint8 = Buffer.prototype.readUInt8 = function readUInt8(offset, noAssert) {
@@ -7574,28 +7574,28 @@ Buffer.prototype.readUint32BE = Buffer.prototype.readUInt32BE = function readUIn
     if (!noAssert) checkOffset(offset, 4, this.length);
     return this[offset] * 0x1000000 + (this[offset + 1] << 16 | this[offset + 2] << 8 | this[offset + 3]);
 };
-Buffer.prototype.readIntLE = function readIntLE(offset, byteLength3, noAssert) {
+Buffer.prototype.readIntLE = function readIntLE(offset, byteLength, noAssert) {
     offset = offset >>> 0;
-    byteLength3 = byteLength3 >>> 0;
-    if (!noAssert) checkOffset(offset, byteLength3, this.length);
+    byteLength = byteLength >>> 0;
+    if (!noAssert) checkOffset(offset, byteLength, this.length);
     var val = this[offset];
     var mul = 1;
     var i = 0;
-    while(++i < byteLength3 && (mul *= 0x100))val += this[offset + i] * mul;
+    while(++i < byteLength && (mul *= 0x100))val += this[offset + i] * mul;
     mul *= 0x80;
-    if (val >= mul) val -= Math.pow(2, 8 * byteLength3);
+    if (val >= mul) val -= Math.pow(2, 8 * byteLength);
     return val;
 };
-Buffer.prototype.readIntBE = function readIntBE(offset, byteLength4, noAssert) {
+Buffer.prototype.readIntBE = function readIntBE(offset, byteLength, noAssert) {
     offset = offset >>> 0;
-    byteLength4 = byteLength4 >>> 0;
-    if (!noAssert) checkOffset(offset, byteLength4, this.length);
-    var i = byteLength4;
+    byteLength = byteLength >>> 0;
+    if (!noAssert) checkOffset(offset, byteLength, this.length);
+    var i = byteLength;
     var mul = 1;
     var val = this[offset + --i];
     while(i > 0 && (mul *= 0x100))val += this[offset + --i] * mul;
     mul *= 0x80;
-    if (val >= mul) val -= Math.pow(2, 8 * byteLength4);
+    if (val >= mul) val -= Math.pow(2, 8 * byteLength);
     return val;
 };
 Buffer.prototype.readInt8 = function readInt8(offset, noAssert) {
@@ -7651,33 +7651,33 @@ function checkInt(buf, value, offset, ext, max, min) {
     if (value > max || value < min) throw new RangeError('"value" argument is out of bounds');
     if (offset + ext > buf.length) throw new RangeError("Index out of range");
 }
-Buffer.prototype.writeUintLE = Buffer.prototype.writeUIntLE = function writeUIntLE(value, offset, byteLength5, noAssert) {
+Buffer.prototype.writeUintLE = Buffer.prototype.writeUIntLE = function writeUIntLE(value, offset, byteLength, noAssert) {
     value = +value;
     offset = offset >>> 0;
-    byteLength5 = byteLength5 >>> 0;
+    byteLength = byteLength >>> 0;
     if (!noAssert) {
-        var maxBytes = Math.pow(2, 8 * byteLength5) - 1;
-        checkInt(this, value, offset, byteLength5, maxBytes, 0);
+        var maxBytes = Math.pow(2, 8 * byteLength) - 1;
+        checkInt(this, value, offset, byteLength, maxBytes, 0);
     }
     var mul = 1;
     var i = 0;
     this[offset] = value & 0xFF;
-    while(++i < byteLength5 && (mul *= 0x100))this[offset + i] = value / mul & 0xFF;
-    return offset + byteLength5;
+    while(++i < byteLength && (mul *= 0x100))this[offset + i] = value / mul & 0xFF;
+    return offset + byteLength;
 };
-Buffer.prototype.writeUintBE = Buffer.prototype.writeUIntBE = function writeUIntBE(value, offset, byteLength6, noAssert) {
+Buffer.prototype.writeUintBE = Buffer.prototype.writeUIntBE = function writeUIntBE(value, offset, byteLength, noAssert) {
     value = +value;
     offset = offset >>> 0;
-    byteLength6 = byteLength6 >>> 0;
+    byteLength = byteLength >>> 0;
     if (!noAssert) {
-        var maxBytes = Math.pow(2, 8 * byteLength6) - 1;
-        checkInt(this, value, offset, byteLength6, maxBytes, 0);
+        var maxBytes = Math.pow(2, 8 * byteLength) - 1;
+        checkInt(this, value, offset, byteLength, maxBytes, 0);
     }
-    var i = byteLength6 - 1;
+    var i = byteLength - 1;
     var mul = 1;
     this[offset + i] = value & 0xFF;
     while(--i >= 0 && (mul *= 0x100))this[offset + i] = value / mul & 0xFF;
-    return offset + byteLength6;
+    return offset + byteLength;
 };
 Buffer.prototype.writeUint8 = Buffer.prototype.writeUInt8 = function writeUInt8(value, offset, noAssert) {
     value = +value;
@@ -7722,31 +7722,31 @@ Buffer.prototype.writeUint32BE = Buffer.prototype.writeUInt32BE = function write
     this[offset + 3] = value & 0xff;
     return offset + 4;
 };
-Buffer.prototype.writeIntLE = function writeIntLE(value, offset, byteLength7, noAssert) {
+Buffer.prototype.writeIntLE = function writeIntLE(value, offset, byteLength, noAssert) {
     value = +value;
     offset = offset >>> 0;
     if (!noAssert) {
-        var limit = Math.pow(2, 8 * byteLength7 - 1);
-        checkInt(this, value, offset, byteLength7, limit - 1, -limit);
+        var limit = Math.pow(2, 8 * byteLength - 1);
+        checkInt(this, value, offset, byteLength, limit - 1, -limit);
     }
     var i = 0;
     var mul = 1;
     var sub = 0;
     this[offset] = value & 0xFF;
-    while(++i < byteLength7 && (mul *= 0x100)){
+    while(++i < byteLength && (mul *= 0x100)){
         if (value < 0 && sub === 0 && this[offset + i - 1] !== 0) sub = 1;
         this[offset + i] = (value / mul >> 0) - sub & 0xFF;
     }
-    return offset + byteLength7;
+    return offset + byteLength;
 };
-Buffer.prototype.writeIntBE = function writeIntBE(value, offset, byteLength8, noAssert) {
+Buffer.prototype.writeIntBE = function writeIntBE(value, offset, byteLength, noAssert) {
     value = +value;
     offset = offset >>> 0;
     if (!noAssert) {
-        var limit = Math.pow(2, 8 * byteLength8 - 1);
-        checkInt(this, value, offset, byteLength8, limit - 1, -limit);
+        var limit = Math.pow(2, 8 * byteLength - 1);
+        checkInt(this, value, offset, byteLength, limit - 1, -limit);
     }
-    var i = byteLength8 - 1;
+    var i = byteLength - 1;
     var mul = 1;
     var sub = 0;
     this[offset + i] = value & 0xFF;
@@ -7754,7 +7754,7 @@ Buffer.prototype.writeIntBE = function writeIntBE(value, offset, byteLength8, no
         if (value < 0 && sub === 0 && this[offset + i + 1] !== 0) sub = 1;
         this[offset + i] = (value / mul >> 0) - sub & 0xFF;
     }
-    return offset + byteLength8;
+    return offset + byteLength;
 };
 Buffer.prototype.writeInt8 = function writeInt8(value, offset, noAssert) {
     value = +value;
@@ -8035,13 +8035,13 @@ for(var i = 0, len = code.length; i < len; ++i){
 revLookup["-".charCodeAt(0)] = 62;
 revLookup["_".charCodeAt(0)] = 63;
 function getLens(b64) {
-    var len1 = b64.length;
-    if (len1 % 4 > 0) throw new Error("Invalid string. Length must be a multiple of 4");
+    var len = b64.length;
+    if (len % 4 > 0) throw new Error("Invalid string. Length must be a multiple of 4");
     // Trim off extra bytes after placeholder bytes are found
     // See: https://github.com/beatgammit/base64-js/issues/42
     var validLen = b64.indexOf("=");
-    if (validLen === -1) validLen = len1;
-    var placeHoldersLen = validLen === len1 ? 0 : 4 - validLen % 4;
+    if (validLen === -1) validLen = len;
+    var placeHoldersLen = validLen === len ? 0 : 4 - validLen % 4;
     return [
         validLen,
         placeHoldersLen
@@ -8065,20 +8065,20 @@ function toByteArray(b64) {
     var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen));
     var curByte = 0;
     // if there are placeholders, only get up to the last complete 4 chars
-    var len2 = placeHoldersLen > 0 ? validLen - 4 : validLen;
-    var i1;
-    for(i1 = 0; i1 < len2; i1 += 4){
-        tmp = revLookup[b64.charCodeAt(i1)] << 18 | revLookup[b64.charCodeAt(i1 + 1)] << 12 | revLookup[b64.charCodeAt(i1 + 2)] << 6 | revLookup[b64.charCodeAt(i1 + 3)];
+    var len = placeHoldersLen > 0 ? validLen - 4 : validLen;
+    var i;
+    for(i = 0; i < len; i += 4){
+        tmp = revLookup[b64.charCodeAt(i)] << 18 | revLookup[b64.charCodeAt(i + 1)] << 12 | revLookup[b64.charCodeAt(i + 2)] << 6 | revLookup[b64.charCodeAt(i + 3)];
         arr[curByte++] = tmp >> 16 & 0xFF;
         arr[curByte++] = tmp >> 8 & 0xFF;
         arr[curByte++] = tmp & 0xFF;
     }
     if (placeHoldersLen === 2) {
-        tmp = revLookup[b64.charCodeAt(i1)] << 2 | revLookup[b64.charCodeAt(i1 + 1)] >> 4;
+        tmp = revLookup[b64.charCodeAt(i)] << 2 | revLookup[b64.charCodeAt(i + 1)] >> 4;
         arr[curByte++] = tmp & 0xFF;
     }
     if (placeHoldersLen === 1) {
-        tmp = revLookup[b64.charCodeAt(i1)] << 10 | revLookup[b64.charCodeAt(i1 + 1)] << 4 | revLookup[b64.charCodeAt(i1 + 2)] >> 2;
+        tmp = revLookup[b64.charCodeAt(i)] << 10 | revLookup[b64.charCodeAt(i + 1)] << 4 | revLookup[b64.charCodeAt(i + 2)] >> 2;
         arr[curByte++] = tmp >> 8 & 0xFF;
         arr[curByte++] = tmp & 0xFF;
     }
@@ -8090,28 +8090,28 @@ function tripletToBase64(num) {
 function encodeChunk(uint8, start, end) {
     var tmp;
     var output = [];
-    for(var i2 = start; i2 < end; i2 += 3){
-        tmp = (uint8[i2] << 16 & 0xFF0000) + (uint8[i2 + 1] << 8 & 0xFF00) + (uint8[i2 + 2] & 0xFF);
+    for(var i = start; i < end; i += 3){
+        tmp = (uint8[i] << 16 & 0xFF0000) + (uint8[i + 1] << 8 & 0xFF00) + (uint8[i + 2] & 0xFF);
         output.push(tripletToBase64(tmp));
     }
     return output.join("");
 }
 function fromByteArray(uint8) {
     var tmp;
-    var len3 = uint8.length;
-    var extraBytes = len3 % 3 // if we have 1 byte left, pad 2 bytes
+    var len = uint8.length;
+    var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
     ;
     var parts = [];
     var maxChunkLength = 16383 // must be multiple of 3
     ;
     // go through the array every three bytes, we'll deal with trailing stuff later
-    for(var i3 = 0, len2 = len3 - extraBytes; i3 < len2; i3 += maxChunkLength)parts.push(encodeChunk(uint8, i3, i3 + maxChunkLength > len2 ? len2 : i3 + maxChunkLength));
+    for(var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength)parts.push(encodeChunk(uint8, i, i + maxChunkLength > len2 ? len2 : i + maxChunkLength));
     // pad the end with zeros, but make sure to not forget the extra bytes
     if (extraBytes === 1) {
-        tmp = uint8[len3 - 1];
+        tmp = uint8[len - 1];
         parts.push(lookup[tmp >> 2] + lookup[tmp << 4 & 0x3F] + "==");
     } else if (extraBytes === 2) {
-        tmp = (uint8[len3 - 2] << 8) + uint8[len3 - 1];
+        tmp = (uint8[len - 2] << 8) + uint8[len - 1];
         parts.push(lookup[tmp >> 10] + lookup[tmp >> 4 & 0x3F] + lookup[tmp << 2 & 0x3F] + "=");
     }
     return parts.join("");
@@ -8688,25 +8688,25 @@ function arrayIndexOf(arr, val, byteOffset, encoding, dir) {
         if (indexSize === 1) return buf[i];
         else return buf.readUInt16BE(i * indexSize);
     }
-    var i1;
+    var i;
     if (dir) {
         var foundIndex = -1;
-        for(i1 = byteOffset; i1 < arrLength; i1++)if (read(arr, i1) === read(val, foundIndex === -1 ? 0 : i1 - foundIndex)) {
-            if (foundIndex === -1) foundIndex = i1;
-            if (i1 - foundIndex + 1 === valLength) return foundIndex * indexSize;
+        for(i = byteOffset; i < arrLength; i++)if (read(arr, i) === read(val, foundIndex === -1 ? 0 : i - foundIndex)) {
+            if (foundIndex === -1) foundIndex = i;
+            if (i - foundIndex + 1 === valLength) return foundIndex * indexSize;
         } else {
-            if (foundIndex !== -1) i1 -= i1 - foundIndex;
+            if (foundIndex !== -1) i -= i - foundIndex;
             foundIndex = -1;
         }
     } else {
         if (byteOffset + valLength > arrLength) byteOffset = arrLength - valLength;
-        for(i1 = byteOffset; i1 >= 0; i1--){
+        for(i = byteOffset; i >= 0; i--){
             var found = true;
-            for(var j = 0; j < valLength; j++)if (read(arr, i1 + j) !== read(val, j)) {
+            for(var j = 0; j < valLength; j++)if (read(arr, i + j) !== read(val, j)) {
                 found = false;
                 break;
             }
-            if (found) return i1;
+            if (found) return i;
         }
     }
     return -1;
@@ -8930,23 +8930,23 @@ Buffer.prototype.slice = function slice(start, end) {
     if (offset % 1 !== 0 || offset < 0) throw new RangeError("offset is not uint");
     if (offset + ext > length) throw new RangeError("Trying to access beyond buffer length");
 }
-Buffer.prototype.readUintLE = Buffer.prototype.readUIntLE = function readUIntLE(offset, byteLength1, noAssert) {
+Buffer.prototype.readUintLE = Buffer.prototype.readUIntLE = function readUIntLE(offset, byteLength, noAssert) {
     offset = offset >>> 0;
-    byteLength1 = byteLength1 >>> 0;
-    if (!noAssert) checkOffset(offset, byteLength1, this.length);
+    byteLength = byteLength >>> 0;
+    if (!noAssert) checkOffset(offset, byteLength, this.length);
     var val = this[offset];
     var mul = 1;
     var i = 0;
-    while(++i < byteLength1 && (mul *= 0x100))val += this[offset + i] * mul;
+    while(++i < byteLength && (mul *= 0x100))val += this[offset + i] * mul;
     return val;
 };
-Buffer.prototype.readUintBE = Buffer.prototype.readUIntBE = function readUIntBE(offset, byteLength2, noAssert) {
+Buffer.prototype.readUintBE = Buffer.prototype.readUIntBE = function readUIntBE(offset, byteLength, noAssert) {
     offset = offset >>> 0;
-    byteLength2 = byteLength2 >>> 0;
-    if (!noAssert) checkOffset(offset, byteLength2, this.length);
-    var val = this[offset + --byteLength2];
+    byteLength = byteLength >>> 0;
+    if (!noAssert) checkOffset(offset, byteLength, this.length);
+    var val = this[offset + --byteLength];
     var mul = 1;
-    while(byteLength2 > 0 && (mul *= 0x100))val += this[offset + --byteLength2] * mul;
+    while(byteLength > 0 && (mul *= 0x100))val += this[offset + --byteLength] * mul;
     return val;
 };
 Buffer.prototype.readUint8 = Buffer.prototype.readUInt8 = function readUInt8(offset, noAssert) {
@@ -8974,28 +8974,28 @@ Buffer.prototype.readUint32BE = Buffer.prototype.readUInt32BE = function readUIn
     if (!noAssert) checkOffset(offset, 4, this.length);
     return this[offset] * 0x1000000 + (this[offset + 1] << 16 | this[offset + 2] << 8 | this[offset + 3]);
 };
-Buffer.prototype.readIntLE = function readIntLE(offset, byteLength3, noAssert) {
+Buffer.prototype.readIntLE = function readIntLE(offset, byteLength, noAssert) {
     offset = offset >>> 0;
-    byteLength3 = byteLength3 >>> 0;
-    if (!noAssert) checkOffset(offset, byteLength3, this.length);
+    byteLength = byteLength >>> 0;
+    if (!noAssert) checkOffset(offset, byteLength, this.length);
     var val = this[offset];
     var mul = 1;
     var i = 0;
-    while(++i < byteLength3 && (mul *= 0x100))val += this[offset + i] * mul;
+    while(++i < byteLength && (mul *= 0x100))val += this[offset + i] * mul;
     mul *= 0x80;
-    if (val >= mul) val -= Math.pow(2, 8 * byteLength3);
+    if (val >= mul) val -= Math.pow(2, 8 * byteLength);
     return val;
 };
-Buffer.prototype.readIntBE = function readIntBE(offset, byteLength4, noAssert) {
+Buffer.prototype.readIntBE = function readIntBE(offset, byteLength, noAssert) {
     offset = offset >>> 0;
-    byteLength4 = byteLength4 >>> 0;
-    if (!noAssert) checkOffset(offset, byteLength4, this.length);
-    var i = byteLength4;
+    byteLength = byteLength >>> 0;
+    if (!noAssert) checkOffset(offset, byteLength, this.length);
+    var i = byteLength;
     var mul = 1;
     var val = this[offset + --i];
     while(i > 0 && (mul *= 0x100))val += this[offset + --i] * mul;
     mul *= 0x80;
-    if (val >= mul) val -= Math.pow(2, 8 * byteLength4);
+    if (val >= mul) val -= Math.pow(2, 8 * byteLength);
     return val;
 };
 Buffer.prototype.readInt8 = function readInt8(offset, noAssert) {
@@ -9051,33 +9051,33 @@ function checkInt(buf, value, offset, ext, max, min) {
     if (value > max || value < min) throw new RangeError('"value" argument is out of bounds');
     if (offset + ext > buf.length) throw new RangeError("Index out of range");
 }
-Buffer.prototype.writeUintLE = Buffer.prototype.writeUIntLE = function writeUIntLE(value, offset, byteLength5, noAssert) {
+Buffer.prototype.writeUintLE = Buffer.prototype.writeUIntLE = function writeUIntLE(value, offset, byteLength, noAssert) {
     value = +value;
     offset = offset >>> 0;
-    byteLength5 = byteLength5 >>> 0;
+    byteLength = byteLength >>> 0;
     if (!noAssert) {
-        var maxBytes = Math.pow(2, 8 * byteLength5) - 1;
-        checkInt(this, value, offset, byteLength5, maxBytes, 0);
+        var maxBytes = Math.pow(2, 8 * byteLength) - 1;
+        checkInt(this, value, offset, byteLength, maxBytes, 0);
     }
     var mul = 1;
     var i = 0;
     this[offset] = value & 0xFF;
-    while(++i < byteLength5 && (mul *= 0x100))this[offset + i] = value / mul & 0xFF;
-    return offset + byteLength5;
+    while(++i < byteLength && (mul *= 0x100))this[offset + i] = value / mul & 0xFF;
+    return offset + byteLength;
 };
-Buffer.prototype.writeUintBE = Buffer.prototype.writeUIntBE = function writeUIntBE(value, offset, byteLength6, noAssert) {
+Buffer.prototype.writeUintBE = Buffer.prototype.writeUIntBE = function writeUIntBE(value, offset, byteLength, noAssert) {
     value = +value;
     offset = offset >>> 0;
-    byteLength6 = byteLength6 >>> 0;
+    byteLength = byteLength >>> 0;
     if (!noAssert) {
-        var maxBytes = Math.pow(2, 8 * byteLength6) - 1;
-        checkInt(this, value, offset, byteLength6, maxBytes, 0);
+        var maxBytes = Math.pow(2, 8 * byteLength) - 1;
+        checkInt(this, value, offset, byteLength, maxBytes, 0);
     }
-    var i = byteLength6 - 1;
+    var i = byteLength - 1;
     var mul = 1;
     this[offset + i] = value & 0xFF;
     while(--i >= 0 && (mul *= 0x100))this[offset + i] = value / mul & 0xFF;
-    return offset + byteLength6;
+    return offset + byteLength;
 };
 Buffer.prototype.writeUint8 = Buffer.prototype.writeUInt8 = function writeUInt8(value, offset, noAssert) {
     value = +value;
@@ -9122,31 +9122,31 @@ Buffer.prototype.writeUint32BE = Buffer.prototype.writeUInt32BE = function write
     this[offset + 3] = value & 0xff;
     return offset + 4;
 };
-Buffer.prototype.writeIntLE = function writeIntLE(value, offset, byteLength7, noAssert) {
+Buffer.prototype.writeIntLE = function writeIntLE(value, offset, byteLength, noAssert) {
     value = +value;
     offset = offset >>> 0;
     if (!noAssert) {
-        var limit = Math.pow(2, 8 * byteLength7 - 1);
-        checkInt(this, value, offset, byteLength7, limit - 1, -limit);
+        var limit = Math.pow(2, 8 * byteLength - 1);
+        checkInt(this, value, offset, byteLength, limit - 1, -limit);
     }
     var i = 0;
     var mul = 1;
     var sub = 0;
     this[offset] = value & 0xFF;
-    while(++i < byteLength7 && (mul *= 0x100)){
+    while(++i < byteLength && (mul *= 0x100)){
         if (value < 0 && sub === 0 && this[offset + i - 1] !== 0) sub = 1;
         this[offset + i] = (value / mul >> 0) - sub & 0xFF;
     }
-    return offset + byteLength7;
+    return offset + byteLength;
 };
-Buffer.prototype.writeIntBE = function writeIntBE(value, offset, byteLength8, noAssert) {
+Buffer.prototype.writeIntBE = function writeIntBE(value, offset, byteLength, noAssert) {
     value = +value;
     offset = offset >>> 0;
     if (!noAssert) {
-        var limit = Math.pow(2, 8 * byteLength8 - 1);
-        checkInt(this, value, offset, byteLength8, limit - 1, -limit);
+        var limit = Math.pow(2, 8 * byteLength - 1);
+        checkInt(this, value, offset, byteLength, limit - 1, -limit);
     }
-    var i = byteLength8 - 1;
+    var i = byteLength - 1;
     var mul = 1;
     var sub = 0;
     this[offset + i] = value & 0xFF;
@@ -9154,7 +9154,7 @@ Buffer.prototype.writeIntBE = function writeIntBE(value, offset, byteLength8, no
         if (value < 0 && sub === 0 && this[offset + i + 1] !== 0) sub = 1;
         this[offset + i] = (value / mul >> 0) - sub & 0xFF;
     }
-    return offset + byteLength8;
+    return offset + byteLength;
 };
 Buffer.prototype.writeInt8 = function writeInt8(value, offset, noAssert) {
     value = +value;
@@ -9435,13 +9435,13 @@ for(var i = 0, len = code.length; i < len; ++i){
 revLookup["-".charCodeAt(0)] = 62;
 revLookup["_".charCodeAt(0)] = 63;
 function getLens(b64) {
-    var len1 = b64.length;
-    if (len1 % 4 > 0) throw new Error("Invalid string. Length must be a multiple of 4");
+    var len = b64.length;
+    if (len % 4 > 0) throw new Error("Invalid string. Length must be a multiple of 4");
     // Trim off extra bytes after placeholder bytes are found
     // See: https://github.com/beatgammit/base64-js/issues/42
     var validLen = b64.indexOf("=");
-    if (validLen === -1) validLen = len1;
-    var placeHoldersLen = validLen === len1 ? 0 : 4 - validLen % 4;
+    if (validLen === -1) validLen = len;
+    var placeHoldersLen = validLen === len ? 0 : 4 - validLen % 4;
     return [
         validLen,
         placeHoldersLen
@@ -9465,20 +9465,20 @@ function toByteArray(b64) {
     var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen));
     var curByte = 0;
     // if there are placeholders, only get up to the last complete 4 chars
-    var len2 = placeHoldersLen > 0 ? validLen - 4 : validLen;
-    var i1;
-    for(i1 = 0; i1 < len2; i1 += 4){
-        tmp = revLookup[b64.charCodeAt(i1)] << 18 | revLookup[b64.charCodeAt(i1 + 1)] << 12 | revLookup[b64.charCodeAt(i1 + 2)] << 6 | revLookup[b64.charCodeAt(i1 + 3)];
+    var len = placeHoldersLen > 0 ? validLen - 4 : validLen;
+    var i;
+    for(i = 0; i < len; i += 4){
+        tmp = revLookup[b64.charCodeAt(i)] << 18 | revLookup[b64.charCodeAt(i + 1)] << 12 | revLookup[b64.charCodeAt(i + 2)] << 6 | revLookup[b64.charCodeAt(i + 3)];
         arr[curByte++] = tmp >> 16 & 0xFF;
         arr[curByte++] = tmp >> 8 & 0xFF;
         arr[curByte++] = tmp & 0xFF;
     }
     if (placeHoldersLen === 2) {
-        tmp = revLookup[b64.charCodeAt(i1)] << 2 | revLookup[b64.charCodeAt(i1 + 1)] >> 4;
+        tmp = revLookup[b64.charCodeAt(i)] << 2 | revLookup[b64.charCodeAt(i + 1)] >> 4;
         arr[curByte++] = tmp & 0xFF;
     }
     if (placeHoldersLen === 1) {
-        tmp = revLookup[b64.charCodeAt(i1)] << 10 | revLookup[b64.charCodeAt(i1 + 1)] << 4 | revLookup[b64.charCodeAt(i1 + 2)] >> 2;
+        tmp = revLookup[b64.charCodeAt(i)] << 10 | revLookup[b64.charCodeAt(i + 1)] << 4 | revLookup[b64.charCodeAt(i + 2)] >> 2;
         arr[curByte++] = tmp >> 8 & 0xFF;
         arr[curByte++] = tmp & 0xFF;
     }
@@ -9490,28 +9490,28 @@ function tripletToBase64(num) {
 function encodeChunk(uint8, start, end) {
     var tmp;
     var output = [];
-    for(var i2 = start; i2 < end; i2 += 3){
-        tmp = (uint8[i2] << 16 & 0xFF0000) + (uint8[i2 + 1] << 8 & 0xFF00) + (uint8[i2 + 2] & 0xFF);
+    for(var i = start; i < end; i += 3){
+        tmp = (uint8[i] << 16 & 0xFF0000) + (uint8[i + 1] << 8 & 0xFF00) + (uint8[i + 2] & 0xFF);
         output.push(tripletToBase64(tmp));
     }
     return output.join("");
 }
 function fromByteArray(uint8) {
     var tmp;
-    var len3 = uint8.length;
-    var extraBytes = len3 % 3 // if we have 1 byte left, pad 2 bytes
+    var len = uint8.length;
+    var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
     ;
     var parts = [];
     var maxChunkLength = 16383 // must be multiple of 3
     ;
     // go through the array every three bytes, we'll deal with trailing stuff later
-    for(var i3 = 0, len2 = len3 - extraBytes; i3 < len2; i3 += maxChunkLength)parts.push(encodeChunk(uint8, i3, i3 + maxChunkLength > len2 ? len2 : i3 + maxChunkLength));
+    for(var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength)parts.push(encodeChunk(uint8, i, i + maxChunkLength > len2 ? len2 : i + maxChunkLength));
     // pad the end with zeros, but make sure to not forget the extra bytes
     if (extraBytes === 1) {
-        tmp = uint8[len3 - 1];
+        tmp = uint8[len - 1];
         parts.push(lookup[tmp >> 2] + lookup[tmp << 4 & 0x3F] + "==");
     } else if (extraBytes === 2) {
-        tmp = (uint8[len3 - 2] << 8) + uint8[len3 - 1];
+        tmp = (uint8[len - 2] << 8) + uint8[len - 1];
         parts.push(lookup[tmp >> 10] + lookup[tmp >> 4 & 0x3F] + lookup[tmp << 2 & 0x3F] + "=");
     }
     return parts.join("");
@@ -9896,18 +9896,18 @@ function set(t) {
     return t;
 }
 function compileMeasures(agg, field) {
-    const get1 = field || (0, _vegaUtil.identity), ops = resolve(agg), out = agg.slice().sort(compareIndex);
-    function ctr(cell1) {
+    const get = field || (0, _vegaUtil.identity), ops = resolve(agg), out = agg.slice().sort(compareIndex);
+    function ctr(cell) {
         this._ops = ops;
         this._out = out;
-        this.cell = cell1;
+        this.cell = cell;
         this.init();
     }
     ctr.prototype.init = init;
     ctr.prototype.add = add;
     ctr.prototype.rem = rem;
     ctr.prototype.set = set;
-    ctr.prototype.get = get1;
+    ctr.prototype.get = get;
     ctr.fields = agg.map((op)=>op.out);
     return ctr;
 }
@@ -9940,11 +9940,11 @@ prototype$1.values = function() {
     this._rem = [];
     return this._add = x;
 }; // memoizing statistics methods
-prototype$1.distinct = function(get2) {
+prototype$1.distinct = function(get) {
     const v = this.values(), map = {};
     let n = v.length, count = 0, s;
     while(--n >= 0){
-        s = get2(v[n]) + "";
+        s = get(v[n]) + "";
         if (!(0, _vegaUtil.hasOwnProperty)(map, s)) {
             map[s] = 1;
             ++count;
@@ -9952,59 +9952,59 @@ prototype$1.distinct = function(get2) {
     }
     return count;
 };
-prototype$1.extent = function(get3) {
-    if (this._get !== get3 || !this._ext) {
-        const v = this.values(), i = (0, _vegaUtil.extentIndex)(v, get3);
+prototype$1.extent = function(get) {
+    if (this._get !== get || !this._ext) {
+        const v = this.values(), i = (0, _vegaUtil.extentIndex)(v, get);
         this._ext = [
             v[i[0]],
             v[i[1]]
         ];
-        this._get = get3;
+        this._get = get;
     }
     return this._ext;
 };
-prototype$1.argmin = function(get4) {
-    return this.extent(get4)[0] || {};
+prototype$1.argmin = function(get) {
+    return this.extent(get)[0] || {};
 };
-prototype$1.argmax = function(get5) {
-    return this.extent(get5)[1] || {};
+prototype$1.argmax = function(get) {
+    return this.extent(get)[1] || {};
 };
-prototype$1.min = function(get6) {
-    const m = this.extent(get6)[0];
-    return m != null ? get6(m) : undefined;
+prototype$1.min = function(get) {
+    const m = this.extent(get)[0];
+    return m != null ? get(m) : undefined;
 };
-prototype$1.max = function(get7) {
-    const m = this.extent(get7)[1];
-    return m != null ? get7(m) : undefined;
+prototype$1.max = function(get) {
+    const m = this.extent(get)[1];
+    return m != null ? get(m) : undefined;
 };
-prototype$1.quartile = function(get8) {
-    if (this._get !== get8 || !this._q) {
-        this._q = (0, _vegaStatistics.quartiles)(this.values(), get8);
-        this._get = get8;
+prototype$1.quartile = function(get) {
+    if (this._get !== get || !this._q) {
+        this._q = (0, _vegaStatistics.quartiles)(this.values(), get);
+        this._get = get;
     }
     return this._q;
 };
-prototype$1.q1 = function(get9) {
-    return this.quartile(get9)[0];
+prototype$1.q1 = function(get) {
+    return this.quartile(get)[0];
 };
-prototype$1.q2 = function(get10) {
-    return this.quartile(get10)[1];
+prototype$1.q2 = function(get) {
+    return this.quartile(get)[1];
 };
-prototype$1.q3 = function(get11) {
-    return this.quartile(get11)[2];
+prototype$1.q3 = function(get) {
+    return this.quartile(get)[2];
 };
-prototype$1.ci = function(get12) {
-    if (this._get !== get12 || !this._ci) {
-        this._ci = (0, _vegaStatistics.bootstrapCI)(this.values(), 1000, 0.05, get12);
-        this._get = get12;
+prototype$1.ci = function(get) {
+    if (this._get !== get || !this._ci) {
+        this._ci = (0, _vegaStatistics.bootstrapCI)(this.values(), 1000, 0.05, get);
+        this._get = get;
     }
     return this._ci;
 };
-prototype$1.ci0 = function(get13) {
-    return this.ci(get13)[0];
+prototype$1.ci0 = function(get) {
+    return this.ci(get)[0];
 };
-prototype$1.ci1 = function(get14) {
-    return this.ci(get14)[1];
+prototype$1.ci1 = function(get) {
+    return this.ci(get)[1];
 };
 /**
  * Group-by aggregation operator.
@@ -10129,8 +10129,8 @@ Aggregate.Definition = {
     init (_) {
         // initialize input and output fields
         const inputs = this._inputs = [], outputs = this._outputs = [], inputMap = {};
-        function inputVisit(get15) {
-            const fields = (0, _vegaUtil.array)((0, _vegaUtil.accessorFields)(get15)), n = fields.length;
+        function inputVisit(get) {
+            const fields = (0, _vegaUtil.array)((0, _vegaUtil.accessorFields)(get)), n = fields.length;
             let i = 0, f;
             for(; i < n; ++i)if (!inputMap[f = fields[i]]) {
                 inputMap[f] = 1;
@@ -10148,33 +10148,33 @@ Aggregate.Definition = {
         this._countOnly = true;
         this._counts = [];
         this._measures = [];
-        const fields1 = _.fields || [
+        const fields = _.fields || [
             null
         ], ops = _.ops || [
             "count"
-        ], as = _.as || [], n1 = fields1.length, map = {};
-        let field, op, m1, mname, outname, i1;
-        if (n1 !== ops.length) (0, _vegaUtil.error)("Unmatched number of fields and aggregate ops.");
-        for(i1 = 0; i1 < n1; ++i1){
-            field = fields1[i1];
-            op = ops[i1];
+        ], as = _.as || [], n = fields.length, map = {};
+        let field, op, m, mname, outname, i;
+        if (n !== ops.length) (0, _vegaUtil.error)("Unmatched number of fields and aggregate ops.");
+        for(i = 0; i < n; ++i){
+            field = fields[i];
+            op = ops[i];
             if (field == null && op !== "count") (0, _vegaUtil.error)("Null aggregate field specified.");
             mname = (0, _vegaUtil.accessorName)(field);
-            outname = measureName(op, mname, as[i1]);
+            outname = measureName(op, mname, as[i]);
             outputs.push(outname);
             if (op === "count") {
                 this._counts.push(outname);
                 continue;
             }
-            m1 = map[mname];
-            if (!m1) {
+            m = map[mname];
+            if (!m) {
                 inputVisit(field);
-                m1 = map[mname] = [];
-                m1.field = field;
-                this._measures.push(m1);
+                m = map[mname] = [];
+                m.field = field;
+                this._measures.push(m);
             }
             if (op !== "count") this._countOnly = false;
-            m1.push(createMeasure(op, outname));
+            m.push(createMeasure(op, outname));
         }
         this._measures = this._measures.map((m)=>compileMeasures(m, m.field));
         return {}; // aggregation cells (this.value)
@@ -10182,21 +10182,21 @@ Aggregate.Definition = {
     // -- Cell Management -----
     cellkey: groupkey(),
     cell (key, t) {
-        let cell2 = this.value[key];
-        if (!cell2) {
-            cell2 = this.value[key] = this.newcell(key, t);
-            this._adds[this._alen++] = cell2;
-        } else if (cell2.num === 0 && this._drop && cell2.stamp < this.stamp) {
-            cell2.stamp = this.stamp;
-            this._adds[this._alen++] = cell2;
-        } else if (cell2.stamp < this.stamp) {
-            cell2.stamp = this.stamp;
-            this._mods[this._mlen++] = cell2;
+        let cell = this.value[key];
+        if (!cell) {
+            cell = this.value[key] = this.newcell(key, t);
+            this._adds[this._alen++] = cell;
+        } else if (cell.num === 0 && this._drop && cell.stamp < this.stamp) {
+            cell.stamp = this.stamp;
+            this._adds[this._alen++] = cell;
+        } else if (cell.stamp < this.stamp) {
+            cell.stamp = this.stamp;
+            this._mods[this._mlen++] = cell;
         }
-        return cell2;
+        return cell;
     },
     newcell (key, t) {
-        const cell3 = {
+        const cell = {
             key: key,
             num: 0,
             agg: null,
@@ -10206,11 +10206,11 @@ Aggregate.Definition = {
         };
         if (!this._countOnly) {
             const measures = this._measures, n = measures.length;
-            cell3.agg = Array(n);
-            for(let i = 0; i < n; ++i)cell3.agg[i] = new measures[i](cell3);
+            cell.agg = Array(n);
+            for(let i = 0; i < n; ++i)cell.agg[i] = new measures[i](cell);
         }
-        if (cell3.store) cell3.data = new TupleStore();
-        return cell3;
+        if (cell.store) cell.data = new TupleStore();
+        return cell;
     },
     newtuple (t, p) {
         const names = this._dnames, dims = this._dims, n = dims.length, x = {};
@@ -10223,46 +10223,46 @@ Aggregate.Definition = {
     },
     // -- Process Tuples -----
     add (t) {
-        const key = this.cellkey(t), cell4 = this.cell(key, t);
-        cell4.num += 1;
+        const key = this.cellkey(t), cell = this.cell(key, t);
+        cell.num += 1;
         if (this._countOnly) return;
-        if (cell4.store) cell4.data.add(t);
-        const agg = cell4.agg;
+        if (cell.store) cell.data.add(t);
+        const agg = cell.agg;
         for(let i = 0, n = agg.length; i < n; ++i)agg[i].add(agg[i].get(t), t);
     },
     rem (t) {
-        const key = this.cellkey(t), cell5 = this.cell(key, t);
-        cell5.num -= 1;
+        const key = this.cellkey(t), cell = this.cell(key, t);
+        cell.num -= 1;
         if (this._countOnly) return;
-        if (cell5.store) cell5.data.rem(t);
-        const agg = cell5.agg;
+        if (cell.store) cell.data.rem(t);
+        const agg = cell.agg;
         for(let i = 0, n = agg.length; i < n; ++i)agg[i].rem(agg[i].get(t), t);
     },
-    celltuple (cell6) {
-        const tuple = cell6.tuple, counts = this._counts; // consolidate stored values
-        if (cell6.store) cell6.data.values();
+    celltuple (cell) {
+        const tuple = cell.tuple, counts = this._counts; // consolidate stored values
+        if (cell.store) cell.data.values();
          // update tuple properties
-        for(let i = 0, n = counts.length; i < n; ++i)tuple[counts[i]] = cell6.num;
+        for(let i = 0, n = counts.length; i < n; ++i)tuple[counts[i]] = cell.num;
         if (!this._countOnly) {
-            const agg = cell6.agg;
-            for(let i = 0, n = agg.length; i < n; ++i)agg[i].set(tuple);
+            const agg = cell.agg;
+            for(let i1 = 0, n1 = agg.length; i1 < n1; ++i1)agg[i1].set(tuple);
         }
         return tuple;
     },
     changes (out) {
-        const adds = this._adds, mods = this._mods, prev = this._prev, drop = this._drop, add1 = out.add, rem1 = out.rem, mod = out.mod;
-        let cell7, key, i, n;
+        const adds = this._adds, mods = this._mods, prev = this._prev, drop = this._drop, add = out.add, rem = out.rem, mod = out.mod;
+        let cell, key, i, n;
         if (prev) for(key in prev){
-            cell7 = prev[key];
-            if (!drop || cell7.num) rem1.push(cell7.tuple);
+            cell = prev[key];
+            if (!drop || cell.num) rem.push(cell.tuple);
         }
         for(i = 0, n = this._alen; i < n; ++i){
-            add1.push(this.celltuple(adds[i]));
+            add.push(this.celltuple(adds[i]));
             adds[i] = null; // for garbage collection
         }
         for(i = 0, n = this._mlen; i < n; ++i){
-            cell7 = mods[i];
-            (cell7.num === 0 && drop ? rem1 : mod).push(this.celltuple(cell7));
+            cell = mods[i];
+            (cell.num === 0 && drop ? rem : mod).push(this.celltuple(cell));
             mods[i] = null; // for garbage collection
         }
         this._alen = this._mlen = 0; // reset list of active cells
@@ -10389,15 +10389,15 @@ Bin.Definition = {
     _bins (_) {
         if (this.value && !_.modified()) return this.value;
         const field = _.field, bins = (0, _vegaStatistics.bin)(_), step = bins.step;
-        let start = bins.start, stop1 = start + Math.ceil((bins.stop - start) / step) * step, a, d;
+        let start = bins.start, stop = start + Math.ceil((bins.stop - start) / step) * step, a, d;
         if ((a = _.anchor) != null) {
             d = a - (start + step * Math.floor((a - start) / step));
             start += d;
-            stop1 += d;
+            stop += d;
         }
         const f = function(t) {
             let v = (0, _vegaUtil.toNumber)(field(t));
-            return v == null ? null : v < start ? -Infinity : v > stop1 ? Infinity : (v = Math.max(start, Math.min(v, stop1 - step)), start + step * Math.floor(EPSILON$1 + (v - start) / step));
+            return v == null ? null : v < start ? -Infinity : v > stop ? Infinity : (v = Math.max(start, Math.min(v, stop - step)), start + step * Math.floor(EPSILON$1 + (v - start) / step));
         };
         f.start = start;
         f.stop = bins.stop;
@@ -10405,23 +10405,23 @@ Bin.Definition = {
         return this.value = (0, _vegaUtil.accessor)(f, (0, _vegaUtil.accessorFields)(field), _.name || "bin_" + (0, _vegaUtil.accessorName)(field));
     }
 });
-function SortedList(idFunc, source1, input) {
+function SortedList(idFunc, source, input) {
     const $ = idFunc;
-    let data = source1 || [], add2 = input || [], rem2 = {}, cnt = 0;
+    let data = source || [], add = input || [], rem = {}, cnt = 0;
     return {
-        add: (t)=>add2.push(t),
-        remove: (t)=>rem2[$(t)] = ++cnt,
+        add: (t)=>add.push(t),
+        remove: (t)=>rem[$(t)] = ++cnt,
         size: ()=>data.length,
         data: (compare, resort)=>{
             if (cnt) {
-                data = data.filter((t)=>!rem2[$(t)]);
-                rem2 = {};
+                data = data.filter((t)=>!rem[$(t)]);
+                rem = {};
                 cnt = 0;
             }
             if (resort && compare) data.sort(compare);
-            if (add2.length) {
-                data = compare ? (0, _vegaUtil.merge)(compare, data, add2.sort(compare)) : data.concat(add2);
-                add2 = [];
+            if (add.length) {
+                data = compare ? (0, _vegaUtil.merge)(compare, data, add.sort(compare)) : data.concat(add);
+                add = [];
             }
             return data;
         }
@@ -10540,34 +10540,34 @@ function tokenize(text, tcase, match) {
 }
 (0, _vegaUtil.inherits)(CountPattern, (0, _vegaDataflow.Transform), {
     transform (_, pulse) {
-        const process = (update1)=>(tuple)=>{
-                var tokens = tokenize(get16(tuple), _.case, match) || [], t;
-                for(var i = 0, n = tokens.length; i < n; ++i)if (!stop2.test(t = tokens[i])) update1(t);
+        const process = (update)=>(tuple)=>{
+                var tokens = tokenize(get(tuple), _.case, match) || [], t;
+                for(var i = 0, n = tokens.length; i < n; ++i)if (!stop.test(t = tokens[i])) update(t);
             };
-        const init1 = this._parameterCheck(_, pulse), counts = this._counts, match = this._match, stop2 = this._stop, get16 = _.field, as = _.as || [
+        const init = this._parameterCheck(_, pulse), counts = this._counts, match = this._match, stop = this._stop, get = _.field, as = _.as || [
             "text",
             "count"
-        ], add3 = process((t)=>counts[t] = 1 + (counts[t] || 0)), rem3 = process((t)=>counts[t] -= 1);
-        if (init1) pulse.visit(pulse.SOURCE, add3);
+        ], add = process((t)=>counts[t] = 1 + (counts[t] || 0)), rem = process((t)=>counts[t] -= 1);
+        if (init) pulse.visit(pulse.SOURCE, add);
         else {
-            pulse.visit(pulse.ADD, add3);
-            pulse.visit(pulse.REM, rem3);
+            pulse.visit(pulse.ADD, add);
+            pulse.visit(pulse.REM, rem);
         }
         return this._finish(pulse, as); // generate output tuples
     },
     _parameterCheck (_, pulse) {
-        let init2 = false;
+        let init = false;
         if (_.modified("stopwords") || !this._stop) {
             this._stop = new RegExp("^" + (_.stopwords || "") + "$", "i");
-            init2 = true;
+            init = true;
         }
         if (_.modified("pattern") || !this._match) {
             this._match = new RegExp(_.pattern || "[\\w']+", "g");
-            init2 = true;
+            init = true;
         }
-        if (_.modified("field") || pulse.modified(_.field.fields)) init2 = true;
-        if (init2) this._counts = {};
-        return init2;
+        if (_.modified("field") || pulse.modified(_.field.fields)) init = true;
+        if (init) this._counts = {};
+        return init;
     },
     _finish (pulse, as) {
         const counts = this._counts, tuples = this._tuples || (this._tuples = {}), text = as[0], count = as[1], out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS);
@@ -10886,12 +10886,12 @@ function fieldNames(fields, as) {
     return fields.map((f, i)=>as[i] || (0, _vegaUtil.accessorName)(f));
 }
 function partition$1(data, groupby, field) {
-    const groups = [], get17 = (f)=>f(t);
+    const groups = [], get = (f)=>f(t);
     let map, i, n, t, k, g; // partition data points into groups
     if (groupby == null) groups.push(data.map(field));
     else for(map = {}, i = 0, n = data.length; i < n; ++i){
         t = data[i];
-        k = groupby.map(get17);
+        k = groupby.map(get);
         g = map[k];
         if (!g) {
             map[k] = g = [];
@@ -10954,7 +10954,7 @@ const autostep = (data, field)=>(0, _vegaUtil.span)((0, _vegaUtil.extent)(data, 
 (0, _vegaUtil.inherits)(DotBin, (0, _vegaDataflow.Transform), {
     transform (_, pulse) {
         if (this.value && !(_.modified() || pulse.changed())) return pulse; // early exit
-        const source2 = pulse.materialize(pulse.SOURCE).source, groups = partition$1(pulse.source, _.groupby, (0, _vegaUtil.identity)), smooth = _.smooth || false, field = _.field, step = _.step || autostep(source2, field), sort = (0, _vegaDataflow.stableCompare)((a, b)=>field(a) - field(b)), as = _.as || Output, n = groups.length; // compute dotplot bins per group
+        const source = pulse.materialize(pulse.SOURCE).source, groups = partition$1(pulse.source, _.groupby, (0, _vegaUtil.identity)), smooth = _.smooth || false, field = _.field, step = _.step || autostep(source, field), sort = (0, _vegaDataflow.stableCompare)((a, b)=>field(a) - field(b)), as = _.as || Output, n = groups.length; // compute dotplot bins per group
         let min = Infinity, max = -Infinity, i = 0, j;
         for(; i < n; ++i){
             const g = groups[i].sort(sort);
@@ -11158,7 +11158,7 @@ Extent.Definition = {
         a.active = m;
     },
     transform (_, pulse) {
-        const df = pulse.dataflow, key1 = _.key, flow = _.subflow, cache = this._keys, rekey = _.modified("key"), subflow = (key)=>this.subflow(key, flow, pulse);
+        const df = pulse.dataflow, key = _.key, flow = _.subflow, cache = this._keys, rekey = _.modified("key"), subflow = (key)=>this.subflow(key, flow, pulse);
         this._group = _.group || {};
         this.initTargets(); // reset list of active subflows
         pulse.visit(pulse.REM, (t)=>{
@@ -11169,12 +11169,12 @@ Extent.Definition = {
             }
         });
         pulse.visit(pulse.ADD, (t)=>{
-            const k = key1(t);
+            const k = key(t);
             cache.set((0, _vegaDataflow.tupleid)(t), k);
             subflow(k).add(t);
         });
-        if (rekey || pulse.modified(key1.fields)) pulse.visit(pulse.MOD, (t)=>{
-            const id = (0, _vegaDataflow.tupleid)(t), k0 = cache.get(id), k1 = key1(t);
+        if (rekey || pulse.modified(key.fields)) pulse.visit(pulse.MOD, (t)=>{
+            const id = (0, _vegaDataflow.tupleid)(t), k0 = cache.get(id), k1 = key(t);
             if (k0 === k1) subflow(k1).mod(t);
             else {
                 cache.set(id, k1);
@@ -11186,7 +11186,7 @@ Extent.Definition = {
             subflow(cache.get((0, _vegaDataflow.tupleid)(t))).mod(t);
         });
         if (rekey) pulse.visit(pulse.REFLOW, (t)=>{
-            const id = (0, _vegaDataflow.tupleid)(t), k0 = cache.get(id), k1 = key1(t);
+            const id = (0, _vegaDataflow.tupleid)(t), k0 = cache.get(id), k1 = key(t);
             if (k0 !== k1) {
                 cache.set(id, k1);
                 subflow(k0).rem(t);
@@ -11241,25 +11241,25 @@ Filter.Definition = {
 (0, _vegaUtil.inherits)(Filter, (0, _vegaDataflow.Transform), {
     transform (_, pulse) {
         const df = pulse.dataflow, cache = this.value, // cache ids of filtered tuples
-        output1 = pulse.fork(), add4 = output1.add, rem4 = output1.rem, mod = output1.mod, test = _.expr;
+        output = pulse.fork(), add = output.add, rem = output.rem, mod = output.mod, test = _.expr;
         let isMod = true;
         pulse.visit(pulse.REM, (t)=>{
             const id = (0, _vegaDataflow.tupleid)(t);
-            if (!cache.has(id)) rem4.push(t);
+            if (!cache.has(id)) rem.push(t);
             else cache.delete(id);
         });
         pulse.visit(pulse.ADD, (t)=>{
-            if (test(t, _)) add4.push(t);
+            if (test(t, _)) add.push(t);
             else cache.set((0, _vegaDataflow.tupleid)(t), 1);
         });
         function revisit(t) {
             const id = (0, _vegaDataflow.tupleid)(t), b = test(t, _), s = cache.get(id);
             if (b && s) {
                 cache.delete(id);
-                add4.push(t);
+                add.push(t);
             } else if (!b && !s) {
                 cache.set(id, 1);
-                rem4.push(t);
+                rem.push(t);
             } else if (isMod && b && !s) mod.push(t);
         }
         pulse.visit(pulse.MOD, revisit);
@@ -11268,7 +11268,7 @@ Filter.Definition = {
             pulse.visit(pulse.REFLOW, revisit);
         }
         if (cache.empty > df.cleanThreshold) df.runAfter(cache.clean);
-        return output1;
+        return output;
     }
 });
 /**
@@ -11441,18 +11441,18 @@ Formula.Definition = {
 (0, _vegaUtil.inherits)(Generate, (0, _vegaDataflow.Transform), {
     transform (_, pulse) {
         const out = pulse.fork(pulse.ALL), gen = _.generator;
-        let data = this.value, num = _.size - data.length, add5, rem5, t;
+        let data = this.value, num = _.size - data.length, add, rem, t;
         if (num > 0) {
             // need more tuples, generate and add
-            for(add5 = []; --num >= 0;){
-                add5.push(t = (0, _vegaDataflow.ingest)(gen(_)));
+            for(add = []; --num >= 0;){
+                add.push(t = (0, _vegaDataflow.ingest)(gen(_)));
                 data.push(t);
             }
-            out.add = out.add.length ? out.materialize(out.ADD).add.concat(add5) : add5;
+            out.add = out.add.length ? out.materialize(out.ADD).add.concat(add) : add;
         } else {
             // need fewer tuples, remove
-            rem5 = data.slice(0, -num);
-            out.rem = out.rem.length ? out.materialize(out.REM).rem.concat(rem5) : rem5;
+            rem = data.slice(0, -num);
+            out.rem = out.rem.length ? out.materialize(out.REM).rem.concat(rem) : rem;
             data = data.slice(-num);
         }
         out.source = this.value = data;
@@ -11569,13 +11569,13 @@ function getField(_) {
     }
 });
 function partition(data, groupby, key, keyvals) {
-    var get18 = (f)=>f(t), groups = [], domain = keyvals ? keyvals.slice() : [], kMap = {}, gMap = {}, gVals, gKey, group, i2, j, k2, n, t;
+    var get = (f)=>f(t), groups = [], domain = keyvals ? keyvals.slice() : [], kMap = {}, gMap = {}, gVals, gKey, group, i, j, k, n, t;
     domain.forEach((k, i)=>kMap[k] = i + 1);
-    for(i2 = 0, n = data.length; i2 < n; ++i2){
-        t = data[i2];
-        k2 = key(t);
-        j = kMap[k2] || (kMap[k2] = domain.push(k2));
-        gKey = (gVals = groupby ? groupby.map(get18) : Empty) + "";
+    for(i = 0, n = data.length; i < n; ++i){
+        t = data[i];
+        k = key(t);
+        j = kMap[k] || (kMap[k] = domain.push(k));
+        gKey = (gVals = groupby ? groupby.map(get) : Empty) + "";
         if (!(group = gMap[gKey])) {
             group = gMap[gKey] = [];
             groups.push(group);
@@ -11768,14 +11768,14 @@ KDE.Definition = {
     transform (_, pulse) {
         const out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS);
         if (!this.value || pulse.changed() || _.modified()) {
-            const source3 = pulse.materialize(pulse.SOURCE).source, groups = partition$1(source3, _.groupby, _.field), names = (_.groupby || []).map((0, _vegaUtil.accessorName)), bandwidth = _.bandwidth, method = _.cumulative ? "cdf" : "pdf", as = _.as || [
+            const source = pulse.materialize(pulse.SOURCE).source, groups = partition$1(source, _.groupby, _.field), names = (_.groupby || []).map((0, _vegaUtil.accessorName)), bandwidth = _.bandwidth, method = _.cumulative ? "cdf" : "pdf", as = _.as || [
                 "value",
                 "density"
             ], values = [];
             let domain = _.extent, minsteps = _.steps || _.minsteps || 25, maxsteps = _.steps || _.maxsteps || 200;
             if (method !== "pdf" && method !== "cdf") (0, _vegaUtil.error)("Invalid density method: " + method);
             if (_.resolve === "shared") {
-                if (!domain) domain = (0, _vegaUtil.extent)(source3, _.field);
+                if (!domain) domain = (0, _vegaUtil.extent)(source, _.field);
                 minsteps = maxsteps = _.steps || maxsteps;
             }
             groups.forEach((g)=>{
@@ -11822,15 +11822,15 @@ function update$2(_) {
 }
 (0, _vegaUtil.inherits)(Load, (0, _vegaDataflow.Transform), {
     transform (_, pulse) {
-        const df1 = pulse.dataflow;
+        const df = pulse.dataflow;
         if (this._pending) // update state and return pulse
         return output(this, pulse, this._pending);
         if (stop(_)) return pulse.StopPropagation;
         if (_.values) // parse and ingest values, return output pulse
-        return output(this, pulse, df1.parse(_.values, _.format));
+        return output(this, pulse, df.parse(_.values, _.format));
         else if (_.async) {
             // return promise for non-blocking async loading
-            const p = df1.request(_.url, _.format).then((res)=>{
+            const p = df.request(_.url, _.format).then((res)=>{
                 this._pending = (0, _vegaUtil.array)(res.data);
                 return (df)=>df.touch(this);
             });
@@ -11838,7 +11838,7 @@ function update$2(_) {
                 async: p
             };
         } else // return promise for synchronous loading
-        return df1.request(_.url, _.format).then((res)=>output(this, pulse, (0, _vegaUtil.array)(res.data)));
+        return df.request(_.url, _.format).then((res)=>output(this, pulse, (0, _vegaUtil.array)(res.data)));
     }
 });
 function stop(_) {
@@ -11911,13 +11911,13 @@ Lookup.Definition = {
 (0, _vegaUtil.inherits)(Lookup, (0, _vegaDataflow.Transform), {
     transform (_, pulse) {
         const keys = _.fields, index = _.index, values = _.values, defaultValue = _.default == null ? null : _.default, reset = _.modified(), n = keys.length;
-        let flag = reset ? pulse.SOURCE : pulse.ADD, out = pulse, as = _.as, set1, m, mods;
+        let flag = reset ? pulse.SOURCE : pulse.ADD, out = pulse, as = _.as, set, m, mods;
         if (values) {
             m = values.length;
             if (n > 1 && !as) (0, _vegaUtil.error)('Multi-field lookup requires explicit "as" parameter.');
             if (as && as.length !== n * m) (0, _vegaUtil.error)('The "as" parameter has too few output field names.');
             as = as || values.map((0, _vegaUtil.accessorName));
-            set1 = function(t) {
+            set = function(t) {
                 for(var i = 0, k = 0, j, v; i < n; ++i){
                     v = index.get(keys[i](t));
                     if (v == null) for(j = 0; j < m; ++j, ++k)t[as[k]] = defaultValue;
@@ -11926,7 +11926,7 @@ Lookup.Definition = {
             };
         } else {
             if (!as) (0, _vegaUtil.error)("Missing output field names.");
-            set1 = function(t) {
+            set = function(t) {
                 for(var i = 0, v; i < n; ++i){
                     v = index.get(keys[i](t));
                     t[as[i]] = v == null ? defaultValue : v;
@@ -11938,7 +11938,7 @@ Lookup.Definition = {
             mods = keys.some((k)=>pulse.modified(k.fields));
             flag |= mods ? pulse.MOD : 0;
         }
-        pulse.visit(flag, set1);
+        pulse.visit(flag, set);
         return out.modifies(as);
     }
 });
@@ -11974,8 +11974,8 @@ function update$1(_) {
     (0, _vegaDataflow.Operator).call(this, null, update, params);
 }
 (0, _vegaUtil.inherits)(MultiValues, (0, _vegaDataflow.Operator));
-function update(_1) {
-    return this.value && !_1.modified() ? this.value : _1.values.reduce((data, _)=>data.concat(_), []);
+function update(_) {
+    return this.value && !_.modified() ? this.value : _.values.reduce((data, _)=>data.concat(_), []);
 }
 /**
  * Operator whose value is simply its parameter hash. This operator is
@@ -12098,9 +12098,9 @@ function pivotKeys(key, limit, pulse) {
     Facet.call(this, params);
 }
 (0, _vegaUtil.inherits)(PreFacet, Facet, {
-    transform (_2, pulse) {
-        const flow = _2.subflow, field = _2.field, subflow = (t)=>this.subflow((0, _vegaDataflow.tupleid)(t), flow, pulse, t);
-        if (_2.modified("field") || field && pulse.modified((0, _vegaUtil.accessorFields)(field))) (0, _vegaUtil.error)("PreFacet does not support field modification.");
+    transform (_, pulse) {
+        const flow = _.subflow, field = _.field, subflow = (t)=>this.subflow((0, _vegaDataflow.tupleid)(t), flow, pulse, t);
+        if (_.modified("field") || field && pulse.modified((0, _vegaUtil.accessorFields)(field))) (0, _vegaUtil.error)("PreFacet does not support field modification.");
         this.initTargets(); // reset list of active subflows
         if (field) {
             pulse.visit(pulse.MOD, (t)=>{
@@ -12269,12 +12269,12 @@ const EPSILON = 1e-14;
             out.source = this.value;
             return out;
         }
-        const source4 = pulse.materialize(pulse.SOURCE).source, groups = partition$1(source4, _.groupby, _.field), names = (_.groupby || []).map((0, _vegaUtil.accessorName)), values = [], step = _.step || 0.01, p = _.probs || (0, _d3Array.range)(step / 2, 1 - EPSILON, step), n = p.length;
+        const source = pulse.materialize(pulse.SOURCE).source, groups = partition$1(source, _.groupby, _.field), names = (_.groupby || []).map((0, _vegaUtil.accessorName)), values = [], step = _.step || 0.01, p = _.probs || (0, _d3Array.range)(step / 2, 1 - EPSILON, step), n = p.length;
         groups.forEach((g)=>{
             const q = (0, _vegaStatistics.quantiles)(g, p);
             for(let i = 0; i < n; ++i){
                 const t = {};
-                for(let i3 = 0; i3 < names.length; ++i3)t[names[i3]] = g.dims[i3];
+                for(let i1 = 0; i1 < names.length; ++i1)t[names[i1]] = g.dims[i1];
                 t[as[0]] = p[i];
                 t[as[1]] = q[i];
                 values.push((0, _vegaDataflow.ingest)(t));
@@ -12355,7 +12355,7 @@ Sample.Definition = {
     transform (_, pulse) {
         const out = pulse.fork(pulse.NO_SOURCE), mod = _.modified("size"), num = _.size, map = this.value.reduce((m, t)=>(m[(0, _vegaDataflow.tupleid)(t)] = 1, m), {});
         let res = this.value, cnt = this.count, cap = 0; // sample reservoir update function
-        function update2(t) {
+        function update(t) {
             let p, idx;
             if (res.length < num) res.push(t);
             else {
@@ -12385,7 +12385,7 @@ Sample.Definition = {
             cap = cnt = res.length;
             pulse.visit(pulse.SOURCE, (t)=>{
                 // update, but skip previously sampled tuples
-                if (!map[(0, _vegaDataflow.tupleid)(t)]) update2(t);
+                if (!map[(0, _vegaDataflow.tupleid)(t)]) update(t);
             });
             cap = -1;
         }
@@ -12402,7 +12402,7 @@ Sample.Definition = {
             if (map[(0, _vegaDataflow.tupleid)(t)]) out.mod.push(t);
         });
         if (pulse.add.length) // update sample reservoir
-        pulse.visit(pulse.ADD, update2);
+        pulse.visit(pulse.ADD, update);
         if (pulse.add.length || cap < 0) // output newly added tuples
         out.add = res.filter((t)=>!map[(0, _vegaDataflow.tupleid)(t)]);
         this.count = cnt;
@@ -12601,14 +12601,14 @@ TimeUnit.Definition = {
 }
 (0, _vegaUtil.inherits)(TupleIndex, (0, _vegaDataflow.Transform), {
     transform (_, pulse) {
-        const df = pulse.dataflow, field = _.field, index = this.value, set2 = (t)=>index.set(field(t), t);
+        const df = pulse.dataflow, field = _.field, index = this.value, set = (t)=>index.set(field(t), t);
         let mod = true;
         if (_.modified("field") || pulse.modified(field.fields)) {
             index.clear();
-            pulse.visit(pulse.SOURCE, set2);
+            pulse.visit(pulse.SOURCE, set);
         } else if (pulse.changed()) {
             pulse.visit(pulse.REM, (t)=>index.delete(field(t)));
-            pulse.visit(pulse.ADD, set2);
+            pulse.visit(pulse.ADD, set);
         } else mod = false;
         this.modified(mod);
         if (index.empty > df.cleanThreshold) df.runAfter(index.clean);
@@ -12766,13 +12766,13 @@ function find(field, data, index) {
     return -1;
 }
 const ValidWindowOps = Object.keys(WindowOps);
-function WindowState(_3) {
-    const ops = (0, _vegaUtil.array)(_3.ops), fields = (0, _vegaUtil.array)(_3.fields), params = (0, _vegaUtil.array)(_3.params), as = (0, _vegaUtil.array)(_3.as), outputs = this.outputs = [], windows = this.windows = [], inputs = {}, map = {}, counts = [], measures = [];
+function WindowState(_) {
+    const ops = (0, _vegaUtil.array)(_.ops), fields = (0, _vegaUtil.array)(_.fields), params = (0, _vegaUtil.array)(_.params), as = (0, _vegaUtil.array)(_.as), outputs = this.outputs = [], windows = this.windows = [], inputs = {}, map = {}, counts = [], measures = [];
     let countOnly = true;
     function visitInputs(f) {
         (0, _vegaUtil.array)((0, _vegaUtil.accessorFields)(f)).forEach((_)=>inputs[_] = 1);
     }
-    visitInputs(_3.sort);
+    visitInputs(_.sort);
     ops.forEach((op, i)=>{
         const field = fields[i], mname = (0, _vegaUtil.accessorName)(field), name = measureName(op, mname, as[i]);
         visitInputs(field);
@@ -12803,52 +12803,52 @@ prototype.init = function() {
     if (this.cell) this.cell.init();
 };
 prototype.update = function(w, t) {
-    const cell8 = this.cell, wind = this.windows, data = w.data, m = wind && wind.length;
+    const cell = this.cell, wind = this.windows, data = w.data, m = wind && wind.length;
     let j;
-    if (cell8) {
-        for(j = w.p0; j < w.i0; ++j)cell8.rem(data[j]);
-        for(j = w.p1; j < w.i1; ++j)cell8.add(data[j]);
-        cell8.set(t);
+    if (cell) {
+        for(j = w.p0; j < w.i0; ++j)cell.rem(data[j]);
+        for(j = w.p1; j < w.i1; ++j)cell.add(data[j]);
+        cell.set(t);
     }
     for(j = 0; j < m; ++j)wind[j].update(w, t);
 };
 function cell(measures, counts, countOnly) {
     measures = measures.map((m)=>compileMeasures(m, m.field));
-    const cell9 = {
+    const cell = {
         num: 0,
         agg: null,
         store: false,
         count: counts
     };
     if (!countOnly) {
-        var n = measures.length, a = cell9.agg = Array(n), i = 0;
-        for(; i < n; ++i)a[i] = new measures[i](cell9);
+        var n = measures.length, a = cell.agg = Array(n), i = 0;
+        for(; i < n; ++i)a[i] = new measures[i](cell);
     }
-    if (cell9.store) var store = cell9.data = new TupleStore();
-    cell9.add = function(t) {
-        cell9.num += 1;
+    if (cell.store) var store = cell.data = new TupleStore();
+    cell.add = function(t) {
+        cell.num += 1;
         if (countOnly) return;
         if (store) store.add(t);
         for(let i = 0; i < n; ++i)a[i].add(a[i].get(t), t);
     };
-    cell9.rem = function(t) {
-        cell9.num -= 1;
+    cell.rem = function(t) {
+        cell.num -= 1;
         if (countOnly) return;
         if (store) store.rem(t);
         for(let i = 0; i < n; ++i)a[i].rem(a[i].get(t), t);
     };
-    cell9.set = function(t) {
+    cell.set = function(t) {
         let i, n; // consolidate stored values
         if (store) store.values(); // update tuple properties
-        for(i = 0, n = counts.length; i < n; ++i)t[counts[i]] = cell9.num;
+        for(i = 0, n = counts.length; i < n; ++i)t[counts[i]] = cell.num;
         if (!countOnly) for(i = 0, n = a.length; i < n; ++i)a[i].set(t);
     };
-    cell9.init = function() {
-        cell9.num = 0;
+    cell.init = function() {
+        cell.num = 0;
         if (store) store.reset();
         for(let i = 0; i < n; ++i)a[i].init();
     };
-    return cell9;
+    return cell;
 }
 /**
  * Perform window calculations and write results to the input stream.
@@ -13037,9 +13037,9 @@ function* numbers(values, valueof) {
         for (let value of values)if (value != null && value !== "" && (value = +value) >= value) yield value;
     } else {
         let index = -1;
-        for (let value of values){
-            value = valueof(value, ++index, values);
-            if (value != null && value !== "" && (value = +value) >= value) yield value;
+        for (let value1 of values){
+            value1 = valueof(value1, ++index, values);
+            if (value1 != null && value1 !== "" && (value1 = +value1) >= value1) yield value1;
         }
     }
 }
@@ -13244,7 +13244,7 @@ function cumulativeNormal(value, mean, stdev) {
     let cd;
     if (Z > 37) cd = 0;
     else {
-        const exp1 = Math.exp(-Z * Z / 2);
+        const exp = Math.exp(-Z * Z / 2);
         let sum;
         if (Z < 7.07106781186547) {
             sum = 3.52624965998911e-02 * Z + 0.700383064443688;
@@ -13253,7 +13253,7 @@ function cumulativeNormal(value, mean, stdev) {
             sum = sum * Z + 112.079291497871;
             sum = sum * Z + 221.213596169931;
             sum = sum * Z + 220.206867912376;
-            cd = exp1 * sum;
+            cd = exp * sum;
             sum = 8.83883476483184e-02 * Z + 1.75566716318264;
             sum = sum * Z + 16.064177579207;
             sum = sum * Z + 86.7807322029461;
@@ -13268,7 +13268,7 @@ function cumulativeNormal(value, mean, stdev) {
             sum = Z + 3 / sum;
             sum = Z + 2 / sum;
             sum = Z + 1 / sum;
-            cd = exp1 / sum / 2.506628274631;
+            cd = exp / sum / 2.506628274631;
         }
     }
     return z > 0 ? 1 - cd : cd;
@@ -13452,7 +13452,7 @@ function lognormal(mean, stdev) {
     return dist.mean(mean).stdev(stdev);
 }
 function mixture(dists, weights) {
-    let m = 0, w1;
+    let m = 0, w;
     function normalize(x) {
         const w = [];
         let sum = 0, i;
@@ -13463,7 +13463,7 @@ function mixture(dists, weights) {
     const dist = {
         weights (_) {
             if (arguments.length) {
-                w1 = normalize(weights = _ || []);
+                w = normalize(weights = _ || []);
                 return dist;
             }
             return weights;
@@ -13483,8 +13483,8 @@ function mixture(dists, weights) {
         },
         sample () {
             const r = random();
-            let d = dists[m - 1], v = w1[0], i = 0; // first select distribution
-            for(; i < m - 1; v += w1[++i])if (r < v) {
+            let d = dists[m - 1], v = w[0], i = 0; // first select distribution
+            for(; i < m - 1; v += w[++i])if (r < v) {
                 d = dists[i];
                 break;
             }
@@ -13493,12 +13493,12 @@ function mixture(dists, weights) {
         },
         pdf (x) {
             let p = 0, i = 0;
-            for(; i < m; ++i)p += w1[i] * dists[i].pdf(x);
+            for(; i < m; ++i)p += w[i] * dists[i].pdf(x);
             return p;
         },
         cdf (x) {
             let p = 0, i = 0;
-            for(; i < m; ++i)p += w1[i] * dists[i].cdf(x);
+            for(; i < m; ++i)p += w[i] * dists[i].cdf(x);
             return p;
         },
         icdf () {
@@ -13576,10 +13576,10 @@ function points(data, x, y, sort) {
     });
     if (sort) data.sort((a, b)=>x(a) - x(b));
     const n = data.length, X = new Float64Array(n), Y = new Float64Array(n); // extract values, calculate means
-    let i = 0, ux = 0, uy = 0, xv, yv, d1;
-    for (d1 of data){
-        X[i] = xv = +x(d1);
-        Y[i] = yv = +y(d1);
+    let i = 0, ux = 0, uy = 0, xv, yv, d;
+    for (d of data){
+        X[i] = xv = +x(d);
+        Y[i] = yv = +y(d);
         ++i;
         ux += (xv - ux) / i;
         uy += (yv - uy) / i;
@@ -13614,9 +13614,9 @@ function rSquared(data, x, y, uY, predict) {
     return 1 - SSE / SST;
 }
 // License: https://github.com/HarryStevens/d3-regression/blob/master/LICENSE
-function linear(data, x1, y) {
+function linear(data, x, y) {
     let X = 0, Y = 0, XY = 0, X2 = 0, n = 0;
-    visitPoints(data, x1, y, (dx, dy)=>{
+    visitPoints(data, x, y, (dx, dy)=>{
         ++n;
         X += (dx - X) / n;
         Y += (dy - Y) / n;
@@ -13627,13 +13627,13 @@ function linear(data, x1, y) {
     return {
         coef: coef,
         predict: predict,
-        rSquared: rSquared(data, x1, y, Y, predict)
+        rSquared: rSquared(data, x, y, Y, predict)
     };
 }
 // License: https://github.com/HarryStevens/d3-regression/blob/master/LICENSE
-function log(data, x2, y) {
+function log(data, x, y) {
     let X = 0, Y = 0, XY = 0, X2 = 0, n = 0;
-    visitPoints(data, x2, y, (dx, dy)=>{
+    visitPoints(data, x, y, (dx, dy)=>{
         ++n;
         dx = Math.log(dx);
         X += (dx - X) / n;
@@ -13645,14 +13645,14 @@ function log(data, x2, y) {
     return {
         coef: coef,
         predict: predict,
-        rSquared: rSquared(data, x2, y, Y, predict)
+        rSquared: rSquared(data, x, y, Y, predict)
     };
 }
-function exp(data, x3, y) {
+function exp(data, x, y) {
     // eslint-disable-next-line no-unused-vars
-    const [xv, yv, ux, uy] = points(data, x3, y);
+    const [xv, yv, ux, uy] = points(data, x, y);
     let YL = 0, XY = 0, XYL = 0, X2Y = 0, n = 0, dx, ly, xy;
-    visitPoints(data, x3, y, (_, dy)=>{
+    visitPoints(data, x, y, (_, dy)=>{
         dx = xv[n++];
         ly = Math.log(dy);
         xy = dx * dy;
@@ -13668,13 +13668,13 @@ function exp(data, x3, y) {
             c1
         ],
         predict: predict,
-        rSquared: rSquared(data, x3, y, uy, predict)
+        rSquared: rSquared(data, x, y, uy, predict)
     };
 }
 // License: https://github.com/HarryStevens/d3-regression/blob/master/LICENSE
-function pow(data, x4, y) {
+function pow(data, x, y) {
     let X = 0, Y = 0, XY = 0, X2 = 0, YS = 0, n = 0;
-    visitPoints(data, x4, y, (dx, dy)=>{
+    visitPoints(data, x, y, (dx, dy)=>{
         const lx = Math.log(dx), ly = Math.log(dy);
         ++n;
         X += (lx - X) / n;
@@ -13688,11 +13688,11 @@ function pow(data, x4, y) {
     return {
         coef: coef,
         predict: predict,
-        rSquared: rSquared(data, x4, y, YS, predict)
+        rSquared: rSquared(data, x, y, YS, predict)
     };
 }
-function quad(data, x5, y) {
-    const [xv, yv, ux, uy] = points(data, x5, y), n = xv.length;
+function quad(data, x, y) {
+    const [xv, yv, ux, uy] = points(data, x, y), n = xv.length;
     let X2 = 0, X3 = 0, X4 = 0, XY = 0, X2Y = 0, i, dx, dy, x2;
     for(i = 0; i < n;){
         dx = xv[i];
@@ -13715,18 +13715,18 @@ function quad(data, x5, y) {
             a
         ],
         predict: predict,
-        rSquared: rSquared(data, x5, y, uy, predict)
+        rSquared: rSquared(data, x, y, uy, predict)
     };
 }
 // License: https://github.com/HarryStevens/d3-regression/blob/master/LICENSE
 // ... which was adapted from regression-js by Tom Alexander
 // Source: https://github.com/Tom-Alexander/regression-js/blob/master/src/regression.js#L246
 // License: https://github.com/Tom-Alexander/regression-js/blob/master/LICENSE
-function poly(data, x6, y1, order) {
+function poly(data, x, y, order) {
     // use more efficient methods for lower orders
-    if (order === 1) return linear(data, x6, y1);
-    if (order === 2) return quad(data, x6, y1);
-    const [xv, yv, ux, uy] = points(data, x6, y1), n = xv.length, lhs = [], rhs = [], k = order + 1;
+    if (order === 1) return linear(data, x, y);
+    if (order === 2) return quad(data, x, y);
+    const [xv, yv, ux, uy] = points(data, x, y), n = xv.length, lhs = [], rhs = [], k = order + 1;
     let i, j, l, v, c;
     for(i = 0; i < k; ++i){
         for(l = 0, v = 0; l < n; ++l)v += Math.pow(xv[l], i) * yv[l];
@@ -13748,7 +13748,7 @@ function poly(data, x6, y1, order) {
     return {
         coef: uncenter(k, coef, -ux, uy),
         predict: predict,
-        rSquared: rSquared(data, x6, y1, uy, predict)
+        rSquared: rSquared(data, x, y, uy, predict)
     };
 }
 function uncenter(k, a, x, y) {
@@ -13819,10 +13819,10 @@ function loess(data, x, y, bandwidth) {
         if (iter === maxiters) break;
         const medianResidual = (0, _d3Array.median)(residuals);
         if (Math.abs(medianResidual) < epsilon) break;
-        for(let i1 = 0, arg, w; i1 < n; ++i1){
-            arg = residuals[i1] / (6 * medianResidual); // default to epsilon (rather than zero) for large deviations
+        for(let i2 = 0, arg, w1; i2 < n; ++i2){
+            arg = residuals[i2] / (6 * medianResidual); // default to epsilon (rather than zero) for large deviations
             // keeping weights tiny but non-zero prevents singularites
-            robustWeights[i1] = arg >= 1 ? epsilon : (w = 1 - arg * arg) * w;
+            robustWeights[i2] = arg >= 1 ? epsilon : (w1 = 1 - arg * arg) * w1;
         }
     }
     return output(xv, yhat, ux, uy);
@@ -13883,7 +13883,7 @@ function sampleCurve(f, extent, minSteps, maxSteps) {
         // sample minimum points on uniform grid
         // then move on to perform adaptive refinement
         next.push(point(maxX));
-        for(let i = minSteps; --i > 0;)next.push(point(minX + i / minSteps * span));
+        for(let i1 = minSteps; --i1 > 0;)next.push(point(minX + i1 / minSteps * span));
     }
     let p0 = prev[0];
     let p1 = next[next.length - 1];
@@ -13908,12 +13908,12 @@ function sampleCurve(f, extent, minSteps, maxSteps) {
     }
     return prev;
 }
-function scaleY(init, points1) {
+function scaleY(init, points) {
     let ymin = init;
     let ymax = init;
-    const n = points1.length;
+    const n = points.length;
     for(let i = 0; i < n; ++i){
-        const y = points1[i][1];
+        const y = points[i][1];
         if (y < ymin) ymin = y;
         if (y > ymax) ymax = y;
     }
@@ -14279,13 +14279,13 @@ function axisLayout(view, axis, width, height) {
     }
     return item.mark.bounds.clear().union(bounds);
 }
-function axisTitleLayout(view, title, offset, pad, dl, isYAxis1, sign, bounds) {
+function axisTitleLayout(view, title, offset, pad, dl, isYAxis, sign, bounds) {
     const b = title.bounds;
     if (title.auto) {
         const v = sign * (offset + dl + pad);
         let dx = 0, dy = 0;
         view.dirty(title);
-        isYAxis1 ? dx = (title.x || 0) - (title.x = v) : dy = (title.y || 0) - (title.y = v);
+        isYAxis ? dx = (title.x || 0) - (title.x = v) : dy = (title.y || 0) - (title.y = v);
         title.mark.bounds.clear().union(b.translate(-dx, -dy));
         view.dirty(title);
     }
@@ -14540,11 +14540,11 @@ function lookup$1(config, orient) {
     return (key, d)=>opt[key] != null ? opt[key] : config[key] != null ? config[key] : d;
 } // if legends specify offset directly, use the maximum specified value
 function offsets(legends, value) {
-    let max1 = -Infinity;
+    let max = -Infinity;
     legends.forEach((item)=>{
-        if (item.offset != null) max1 = Math.max(max1, item.offset);
+        if (item.offset != null) max = Math.max(max, item.offset);
     });
-    return max1 > -Infinity ? max1 : value;
+    return max > -Infinity ? max : value;
 }
 function legendParams(g, orient, config, xb, yb, w, h) {
     const _ = lookup$1(config, orient), offset = offsets(g, _("offset", 0)), anchor = _("anchor", Start), mult = anchor === End ? 1 : anchor === Middle ? 0.5 : 0;
@@ -14797,13 +14797,13 @@ function shouldReflow(group) {
     return group && group.mark.role !== "legend-entry";
 }
 function layoutGroup(view, group, _) {
-    var items = group.items, width = Math.max(0, group.width || 0), height = Math.max(0, group.height || 0), viewBounds = new (0, _vegaScenegraph.Bounds)().set(0, 0, width, height), xBounds = viewBounds.clone(), yBounds = viewBounds.clone(), legends = [], title, mark, orient, b1, i, n; // layout axes, gather legends, collect bounds
+    var items = group.items, width = Math.max(0, group.width || 0), height = Math.max(0, group.height || 0), viewBounds = new (0, _vegaScenegraph.Bounds)().set(0, 0, width, height), xBounds = viewBounds.clone(), yBounds = viewBounds.clone(), legends = [], title, mark, orient, b, i, n; // layout axes, gather legends, collect bounds
     for(i = 0, n = items.length; i < n; ++i){
         mark = items[i];
         switch(mark.role){
             case AxisRole:
-                b1 = isYAxis(mark) ? xBounds : yBounds;
-                b1.union(axisLayout(view, mark, width, height));
+                b = isYAxis(mark) ? xBounds : yBounds;
+                b.union(axisLayout(view, mark, width, height));
                 break;
             case TitleRole:
                 title = mark;
@@ -14969,15 +14969,15 @@ function resetSVGGradientId() {
     gradient_id = 0;
 }
 const patternPrefix = "p_";
-function isGradient(value1) {
-    return value1 && value1.gradient;
+function isGradient(value) {
+    return value && value.gradient;
 }
-function gradientRef(g, defs, base1) {
-    const type1 = g.gradient;
-    let id = g.id, prefix = type1 === "radial" ? patternPrefix : ""; // check id, assign default values as needed
+function gradientRef(g, defs, base) {
+    const type = g.gradient;
+    let id = g.id, prefix = type === "radial" ? patternPrefix : ""; // check id, assign default values as needed
     if (!id) {
         id = g.id = "gradient_" + gradient_id++;
-        if (type1 === "radial") {
+        if (type === "radial") {
             g.x1 = get(g.x1, 0.5);
             g.y1 = get(g.y1, 0.5);
             g.r1 = get(g.r1, 0);
@@ -14993,26 +14993,26 @@ function gradientRef(g, defs, base1) {
         }
     } // register definition
     defs[id] = g; // return url reference
-    return "url(" + (base1 || "") + "#" + prefix + id + ")";
+    return "url(" + (base || "") + "#" + prefix + id + ")";
 }
-function get(val, def1) {
-    return val != null ? val : def1;
+function get(val, def) {
+    return val != null ? val : def;
 }
 function Gradient(p0, p1) {
-    var stops = [], gradient1;
-    return gradient1 = {
+    var stops = [], gradient;
+    return gradient = {
         gradient: "linear",
         x1: p0 ? p0[0] : 0,
         y1: p0 ? p0[1] : 0,
         x2: p1 ? p1[0] : 1,
         y2: p1 ? p1[1] : 0,
         stops: stops,
-        stop: function(offset1, color1) {
+        stop: function(offset, color) {
             stops.push({
-                offset: offset1,
-                color: color1
+                offset: offset,
+                color: color
             });
-            return gradient1;
+            return gradient;
         }
     };
 }
@@ -15084,8 +15084,8 @@ const lookup = {
         curve: (0, _d3Shape.curveStepBefore)
     }
 };
-function curves(type2, orientation, tension) {
-    var entry = (0, _vegaUtil.hasOwnProperty)(lookup, type2) && lookup[type2], curve = null;
+function curves(type, orientation, tension) {
+    var entry = (0, _vegaUtil.hasOwnProperty)(lookup, type) && lookup[type], curve = null;
     if (entry) {
         curve = entry.curve || entry[orientation || "vertical"];
         if (entry.tension && tension != null) curve = curve[entry.tension](tension);
@@ -15113,9 +15113,9 @@ const cmdlen = {
 function pathParse(pathstr) {
     const result = [];
     let curr, chunks, parsed, param, cmd, len, i, j, n, m; // First, break path into command sequence
-    const path1 = pathstr.slice().replace(regexp[0], "###$1").split(regexp[1]).slice(1); // Next, parse each command in turn
-    for(i = 0, n = path1.length; i < n; ++i){
-        curr = path1[i];
+    const path = pathstr.slice().replace(regexp[0], "###$1").split(regexp[1]).slice(1); // Next, parse each command in turn
+    for(i = 0, n = path.length; i < n; ++i){
+        curr = path[i];
         chunks = curr.slice(1).trim().replace(regexp[2], "$1###$2").replace(regexp[3], "$1###$2").split(regexp[4]);
         cmd = curr.charAt(0);
         parsed = [
@@ -15125,13 +15125,13 @@ function pathParse(pathstr) {
         parsed.push(param);
         len = cmdlen[cmd.toLowerCase()];
         if (parsed.length - 1 > len) {
-            const m = parsed.length;
+            const m1 = parsed.length;
             j = 1;
             result.push([
                 cmd
             ].concat(parsed.slice(j, j += len))); // handle implicit lineTo (#2803)
             cmd = cmd === "M" ? "L" : cmd === "m" ? "l" : cmd;
-            for(; j < m; j += len)result.push([
+            for(; j < m1; j += len)result.push([
                 cmd
             ].concat(parsed.slice(j, j + len)));
         } else result.push(parsed);
@@ -15146,7 +15146,7 @@ const HalfSqrt3 = Math.sqrt(3) / 2;
 var segmentCache = {};
 var bezierCache = {};
 var join = [].join; // Copied from Inkscape svgtopdf, thanks!
-function segments(x2, y2, rx, ry, large, sweep, rotateX, ox, oy) {
+function segments(x, y, rx, ry, large, sweep, rotateX, ox, oy) {
     const key = join.call(arguments);
     if (segmentCache[key]) return segmentCache[key];
     const th = rotateX * DegToRad;
@@ -15154,9 +15154,9 @@ function segments(x2, y2, rx, ry, large, sweep, rotateX, ox, oy) {
     const cos_th = Math.cos(th);
     rx = Math.abs(rx);
     ry = Math.abs(ry);
-    const px1 = cos_th * (ox - x2) * 0.5 + sin_th * (oy - y2) * 0.5;
-    const py1 = cos_th * (oy - y2) * 0.5 - sin_th * (ox - x2) * 0.5;
-    let pl = px1 * px1 / (rx * rx) + py1 * py1 / (ry * ry);
+    const px = cos_th * (ox - x) * 0.5 + sin_th * (oy - y) * 0.5;
+    const py = cos_th * (oy - y) * 0.5 - sin_th * (ox - x) * 0.5;
+    let pl = px * px / (rx * rx) + py * py / (ry * ry);
     if (pl > 1) {
         pl = Math.sqrt(pl);
         rx *= pl;
@@ -15168,8 +15168,8 @@ function segments(x2, y2, rx, ry, large, sweep, rotateX, ox, oy) {
     const a11 = cos_th / ry;
     const x0 = a00 * ox + a01 * oy;
     const y0 = a10 * ox + a11 * oy;
-    const x1 = a00 * x2 + a01 * y2;
-    const y1 = a10 * x2 + a11 * y2;
+    const x1 = a00 * x + a01 * y;
+    const y1 = a10 * x + a11 * y;
     const d = (x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0);
     let sfactor_sq = 1 / d - 0.25;
     if (sfactor_sq < 0) sfactor_sq = 0;
@@ -15255,10 +15255,10 @@ function scale$1(current, sX, sY) {
     else for(var i = 1, n = current.length; i < n; ++i)temp[i] = (i % 2 == 1 ? sX : sY) * current[i];
     return temp;
 }
-function pathRender(context1, path2, l, t, sX, sY) {
+function pathRender(context, path, l, t, sX, sY) {
     var current, // current instruction
-    previous = null, x4 = 0, // current x
-    y4 = 0, // current y
+    previous = null, x = 0, // current x
+    y = 0, // current y
     controlX = 0, // current control point x
     controlY = 0, // current control point y
     tempX, tempY, tempControlX, tempControlY;
@@ -15266,99 +15266,99 @@ function pathRender(context1, path2, l, t, sX, sY) {
     if (t == null) t = 0;
     if (sX == null) sX = 1;
     if (sY == null) sY = sX;
-    if (context1.beginPath) context1.beginPath();
-    for(var i = 0, len = path2.length; i < len; ++i){
-        current = path2[i];
+    if (context.beginPath) context.beginPath();
+    for(var i = 0, len = path.length; i < len; ++i){
+        current = path[i];
         if (sX !== 1 || sY !== 1) current = scale$1(current, sX, sY);
         switch(current[0]){
             // first letter
             case "l":
                 // lineto, relative
-                x4 += current[1];
-                y4 += current[2];
-                context1.lineTo(x4 + l, y4 + t);
+                x += current[1];
+                y += current[2];
+                context.lineTo(x + l, y + t);
                 break;
             case "L":
                 // lineto, absolute
-                x4 = current[1];
-                y4 = current[2];
-                context1.lineTo(x4 + l, y4 + t);
+                x = current[1];
+                y = current[2];
+                context.lineTo(x + l, y + t);
                 break;
             case "h":
                 // horizontal lineto, relative
-                x4 += current[1];
-                context1.lineTo(x4 + l, y4 + t);
+                x += current[1];
+                context.lineTo(x + l, y + t);
                 break;
             case "H":
                 // horizontal lineto, absolute
-                x4 = current[1];
-                context1.lineTo(x4 + l, y4 + t);
+                x = current[1];
+                context.lineTo(x + l, y + t);
                 break;
             case "v":
                 // vertical lineto, relative
-                y4 += current[1];
-                context1.lineTo(x4 + l, y4 + t);
+                y += current[1];
+                context.lineTo(x + l, y + t);
                 break;
             case "V":
                 // verical lineto, absolute
-                y4 = current[1];
-                context1.lineTo(x4 + l, y4 + t);
+                y = current[1];
+                context.lineTo(x + l, y + t);
                 break;
             case "m":
                 // moveTo, relative
-                x4 += current[1];
-                y4 += current[2];
-                context1.moveTo(x4 + l, y4 + t);
+                x += current[1];
+                y += current[2];
+                context.moveTo(x + l, y + t);
                 break;
             case "M":
                 // moveTo, absolute
-                x4 = current[1];
-                y4 = current[2];
-                context1.moveTo(x4 + l, y4 + t);
+                x = current[1];
+                y = current[2];
+                context.moveTo(x + l, y + t);
                 break;
             case "c":
                 // bezierCurveTo, relative
-                tempX = x4 + current[5];
-                tempY = y4 + current[6];
-                controlX = x4 + current[3];
-                controlY = y4 + current[4];
-                context1.bezierCurveTo(x4 + current[1] + l, y4 + current[2] + t, controlX + l, controlY + t, tempX + l, tempY + t);
-                x4 = tempX;
-                y4 = tempY;
+                tempX = x + current[5];
+                tempY = y + current[6];
+                controlX = x + current[3];
+                controlY = y + current[4];
+                context.bezierCurveTo(x + current[1] + l, y + current[2] + t, controlX + l, controlY + t, tempX + l, tempY + t);
+                x = tempX;
+                y = tempY;
                 break;
             case "C":
                 // bezierCurveTo, absolute
-                x4 = current[5];
-                y4 = current[6];
+                x = current[5];
+                y = current[6];
                 controlX = current[3];
                 controlY = current[4];
-                context1.bezierCurveTo(current[1] + l, current[2] + t, controlX + l, controlY + t, x4 + l, y4 + t);
+                context.bezierCurveTo(current[1] + l, current[2] + t, controlX + l, controlY + t, x + l, y + t);
                 break;
             case "s":
                 // shorthand cubic bezierCurveTo, relative
                 // transform to absolute x,y
-                tempX = x4 + current[3];
-                tempY = y4 + current[4]; // calculate reflection of previous control points
-                controlX = 2 * x4 - controlX;
-                controlY = 2 * y4 - controlY;
-                context1.bezierCurveTo(controlX + l, controlY + t, x4 + current[1] + l, y4 + current[2] + t, tempX + l, tempY + t); // set control point to 2nd one of this command
+                tempX = x + current[3];
+                tempY = y + current[4]; // calculate reflection of previous control points
+                controlX = 2 * x - controlX;
+                controlY = 2 * y - controlY;
+                context.bezierCurveTo(controlX + l, controlY + t, x + current[1] + l, y + current[2] + t, tempX + l, tempY + t); // set control point to 2nd one of this command
                 // the first control point is assumed to be the reflection of
                 // the second control point on the previous command relative
                 // to the current point.
-                controlX = x4 + current[1];
-                controlY = y4 + current[2];
-                x4 = tempX;
-                y4 = tempY;
+                controlX = x + current[1];
+                controlY = y + current[2];
+                x = tempX;
+                y = tempY;
                 break;
             case "S":
                 // shorthand cubic bezierCurveTo, absolute
                 tempX = current[3];
                 tempY = current[4]; // calculate reflection of previous control points
-                controlX = 2 * x4 - controlX;
-                controlY = 2 * y4 - controlY;
-                context1.bezierCurveTo(controlX + l, controlY + t, current[1] + l, current[2] + t, tempX + l, tempY + t);
-                x4 = tempX;
-                y4 = tempY; // set control point to 2nd one of this command
+                controlX = 2 * x - controlX;
+                controlY = 2 * y - controlY;
+                context.bezierCurveTo(controlX + l, controlY + t, current[1] + l, current[2] + t, tempX + l, tempY + t);
+                x = tempX;
+                y = tempY; // set control point to 2nd one of this command
                 // the first control point is assumed to be the reflection of
                 // the second control point on the previous command relative
                 // to the current point.
@@ -15368,75 +15368,75 @@ function pathRender(context1, path2, l, t, sX, sY) {
             case "q":
                 // quadraticCurveTo, relative
                 // transform to absolute x,y
-                tempX = x4 + current[3];
-                tempY = y4 + current[4];
-                controlX = x4 + current[1];
-                controlY = y4 + current[2];
-                context1.quadraticCurveTo(controlX + l, controlY + t, tempX + l, tempY + t);
-                x4 = tempX;
-                y4 = tempY;
+                tempX = x + current[3];
+                tempY = y + current[4];
+                controlX = x + current[1];
+                controlY = y + current[2];
+                context.quadraticCurveTo(controlX + l, controlY + t, tempX + l, tempY + t);
+                x = tempX;
+                y = tempY;
                 break;
             case "Q":
                 // quadraticCurveTo, absolute
                 tempX = current[3];
                 tempY = current[4];
-                context1.quadraticCurveTo(current[1] + l, current[2] + t, tempX + l, tempY + t);
-                x4 = tempX;
-                y4 = tempY;
+                context.quadraticCurveTo(current[1] + l, current[2] + t, tempX + l, tempY + t);
+                x = tempX;
+                y = tempY;
                 controlX = current[1];
                 controlY = current[2];
                 break;
             case "t":
                 // shorthand quadraticCurveTo, relative
                 // transform to absolute x,y
-                tempX = x4 + current[1];
-                tempY = y4 + current[2];
+                tempX = x + current[1];
+                tempY = y + current[2];
                 if (previous[0].match(/[QqTt]/) === null) {
                     // If there is no previous command or if the previous command was not a Q, q, T or t,
                     // assume the control point is coincident with the current point
-                    controlX = x4;
-                    controlY = y4;
+                    controlX = x;
+                    controlY = y;
                 } else if (previous[0] === "t") {
                     // calculate reflection of previous control points for t
-                    controlX = 2 * x4 - tempControlX;
-                    controlY = 2 * y4 - tempControlY;
+                    controlX = 2 * x - tempControlX;
+                    controlY = 2 * y - tempControlY;
                 } else if (previous[0] === "q") {
                     // calculate reflection of previous control points for q
-                    controlX = 2 * x4 - controlX;
-                    controlY = 2 * y4 - controlY;
+                    controlX = 2 * x - controlX;
+                    controlY = 2 * y - controlY;
                 }
                 tempControlX = controlX;
                 tempControlY = controlY;
-                context1.quadraticCurveTo(controlX + l, controlY + t, tempX + l, tempY + t);
-                x4 = tempX;
-                y4 = tempY;
-                controlX = x4 + current[1];
-                controlY = y4 + current[2];
+                context.quadraticCurveTo(controlX + l, controlY + t, tempX + l, tempY + t);
+                x = tempX;
+                y = tempY;
+                controlX = x + current[1];
+                controlY = y + current[2];
                 break;
             case "T":
                 tempX = current[1];
                 tempY = current[2]; // calculate reflection of previous control points
-                controlX = 2 * x4 - controlX;
-                controlY = 2 * y4 - controlY;
-                context1.quadraticCurveTo(controlX + l, controlY + t, tempX + l, tempY + t);
-                x4 = tempX;
-                y4 = tempY;
+                controlX = 2 * x - controlX;
+                controlY = 2 * y - controlY;
+                context.quadraticCurveTo(controlX + l, controlY + t, tempX + l, tempY + t);
+                x = tempX;
+                y = tempY;
                 break;
             case "a":
-                drawArc(context1, x4 + l, y4 + t, [
+                drawArc(context, x + l, y + t, [
                     current[1],
                     current[2],
                     current[3],
                     current[4],
                     current[5],
-                    current[6] + x4 + l,
-                    current[7] + y4 + t
+                    current[6] + x + l,
+                    current[7] + y + t
                 ]);
-                x4 += current[6];
-                y4 += current[7];
+                x += current[6];
+                y += current[7];
                 break;
             case "A":
-                drawArc(context1, x4 + l, y4 + t, [
+                drawArc(context, x + l, y + t, [
                     current[1],
                     current[2],
                     current[3],
@@ -15445,139 +15445,139 @@ function pathRender(context1, path2, l, t, sX, sY) {
                     current[6] + l,
                     current[7] + t
                 ]);
-                x4 = current[6];
-                y4 = current[7];
+                x = current[6];
+                y = current[7];
                 break;
             case "z":
             case "Z":
-                context1.closePath();
+                context.closePath();
                 break;
         }
         previous = current;
     }
 }
-function drawArc(context2, x5, y5, coords) {
-    const seg = segments(coords[5], coords[6], coords[0], coords[1], coords[3], coords[4], coords[2], x5, y5);
+function drawArc(context, x, y, coords) {
+    const seg = segments(coords[5], coords[6], coords[0], coords[1], coords[3], coords[4], coords[2], x, y);
     for(let i = 0; i < seg.length; ++i){
         const bez = bezier(seg[i]);
-        context2.bezierCurveTo(bez[0], bez[1], bez[2], bez[3], bez[4], bez[5]);
+        context.bezierCurveTo(bez[0], bez[1], bez[2], bez[3], bez[4], bez[5]);
     }
 }
 const Tan30 = 0.5773502691896257;
 const builtins = {
     "circle": {
-        draw: function(context3, size) {
+        draw: function(context, size) {
             const r = Math.sqrt(size) / 2;
-            context3.moveTo(r, 0);
-            context3.arc(0, 0, r, 0, Tau);
+            context.moveTo(r, 0);
+            context.arc(0, 0, r, 0, Tau);
         }
     },
     "cross": {
-        draw: function(context4, size) {
+        draw: function(context, size) {
             var r = Math.sqrt(size) / 2, s = r / 2.5;
-            context4.moveTo(-r, -s);
-            context4.lineTo(-r, s);
-            context4.lineTo(-s, s);
-            context4.lineTo(-s, r);
-            context4.lineTo(s, r);
-            context4.lineTo(s, s);
-            context4.lineTo(r, s);
-            context4.lineTo(r, -s);
-            context4.lineTo(s, -s);
-            context4.lineTo(s, -r);
-            context4.lineTo(-s, -r);
-            context4.lineTo(-s, -s);
-            context4.closePath();
+            context.moveTo(-r, -s);
+            context.lineTo(-r, s);
+            context.lineTo(-s, s);
+            context.lineTo(-s, r);
+            context.lineTo(s, r);
+            context.lineTo(s, s);
+            context.lineTo(r, s);
+            context.lineTo(r, -s);
+            context.lineTo(s, -s);
+            context.lineTo(s, -r);
+            context.lineTo(-s, -r);
+            context.lineTo(-s, -s);
+            context.closePath();
         }
     },
     "diamond": {
-        draw: function(context5, size) {
+        draw: function(context, size) {
             const r = Math.sqrt(size) / 2;
-            context5.moveTo(-r, 0);
-            context5.lineTo(0, -r);
-            context5.lineTo(r, 0);
-            context5.lineTo(0, r);
-            context5.closePath();
+            context.moveTo(-r, 0);
+            context.lineTo(0, -r);
+            context.lineTo(r, 0);
+            context.lineTo(0, r);
+            context.closePath();
         }
     },
     "square": {
-        draw: function(context6, size) {
-            var w1 = Math.sqrt(size), x6 = -w1 / 2;
-            context6.rect(x6, x6, w1, w1);
+        draw: function(context, size) {
+            var w = Math.sqrt(size), x = -w / 2;
+            context.rect(x, x, w, w);
         }
     },
     "arrow": {
-        draw: function(context7, size) {
+        draw: function(context, size) {
             var r = Math.sqrt(size) / 2, s = r / 7, t = r / 2.5, v = r / 8;
-            context7.moveTo(-s, r);
-            context7.lineTo(s, r);
-            context7.lineTo(s, -v);
-            context7.lineTo(t, -v);
-            context7.lineTo(0, -r);
-            context7.lineTo(-t, -v);
-            context7.lineTo(-s, -v);
-            context7.closePath();
+            context.moveTo(-s, r);
+            context.lineTo(s, r);
+            context.lineTo(s, -v);
+            context.lineTo(t, -v);
+            context.lineTo(0, -r);
+            context.lineTo(-t, -v);
+            context.lineTo(-s, -v);
+            context.closePath();
         }
     },
     "wedge": {
-        draw: function(context8, size) {
-            var r = Math.sqrt(size) / 2, h1 = HalfSqrt3 * r, o = h1 - r * Tan30, b1 = r / 4;
-            context8.moveTo(0, -h1 - o);
-            context8.lineTo(-b1, h1 - o);
-            context8.lineTo(b1, h1 - o);
-            context8.closePath();
+        draw: function(context, size) {
+            var r = Math.sqrt(size) / 2, h = HalfSqrt3 * r, o = h - r * Tan30, b = r / 4;
+            context.moveTo(0, -h - o);
+            context.lineTo(-b, h - o);
+            context.lineTo(b, h - o);
+            context.closePath();
         }
     },
     "triangle": {
-        draw: function(context9, size) {
-            var r = Math.sqrt(size) / 2, h2 = HalfSqrt3 * r, o = h2 - r * Tan30;
-            context9.moveTo(0, -h2 - o);
-            context9.lineTo(-r, h2 - o);
-            context9.lineTo(r, h2 - o);
-            context9.closePath();
+        draw: function(context, size) {
+            var r = Math.sqrt(size) / 2, h = HalfSqrt3 * r, o = h - r * Tan30;
+            context.moveTo(0, -h - o);
+            context.lineTo(-r, h - o);
+            context.lineTo(r, h - o);
+            context.closePath();
         }
     },
     "triangle-up": {
-        draw: function(context10, size) {
-            var r = Math.sqrt(size) / 2, h3 = HalfSqrt3 * r;
-            context10.moveTo(0, -h3);
-            context10.lineTo(-r, h3);
-            context10.lineTo(r, h3);
-            context10.closePath();
+        draw: function(context, size) {
+            var r = Math.sqrt(size) / 2, h = HalfSqrt3 * r;
+            context.moveTo(0, -h);
+            context.lineTo(-r, h);
+            context.lineTo(r, h);
+            context.closePath();
         }
     },
     "triangle-down": {
-        draw: function(context11, size) {
-            var r = Math.sqrt(size) / 2, h4 = HalfSqrt3 * r;
-            context11.moveTo(0, h4);
-            context11.lineTo(-r, -h4);
-            context11.lineTo(r, -h4);
-            context11.closePath();
+        draw: function(context, size) {
+            var r = Math.sqrt(size) / 2, h = HalfSqrt3 * r;
+            context.moveTo(0, h);
+            context.lineTo(-r, -h);
+            context.lineTo(r, -h);
+            context.closePath();
         }
     },
     "triangle-right": {
-        draw: function(context12, size) {
-            var r = Math.sqrt(size) / 2, h5 = HalfSqrt3 * r;
-            context12.moveTo(h5, 0);
-            context12.lineTo(-h5, -r);
-            context12.lineTo(-h5, r);
-            context12.closePath();
+        draw: function(context, size) {
+            var r = Math.sqrt(size) / 2, h = HalfSqrt3 * r;
+            context.moveTo(h, 0);
+            context.lineTo(-h, -r);
+            context.lineTo(-h, r);
+            context.closePath();
         }
     },
     "triangle-left": {
-        draw: function(context13, size) {
-            var r = Math.sqrt(size) / 2, h6 = HalfSqrt3 * r;
-            context13.moveTo(-h6, 0);
-            context13.lineTo(h6, -r);
-            context13.lineTo(h6, r);
-            context13.closePath();
+        draw: function(context, size) {
+            var r = Math.sqrt(size) / 2, h = HalfSqrt3 * r;
+            context.moveTo(-h, 0);
+            context.lineTo(h, -r);
+            context.lineTo(h, r);
+            context.closePath();
         }
     },
     "stroke": {
-        draw: function(context14, size) {
+        draw: function(context, size) {
             const r = Math.sqrt(size) / 2;
-            context14.moveTo(-r, 0);
-            context14.lineTo(r, 0);
+            context.moveTo(-r, 0);
+            context.lineTo(r, 0);
         }
     }
 };
@@ -15585,16 +15585,16 @@ function symbols(_) {
     return (0, _vegaUtil.hasOwnProperty)(builtins, _) ? builtins[_] : customSymbol(_);
 }
 var custom = {};
-function customSymbol(path3) {
-    if (!(0, _vegaUtil.hasOwnProperty)(custom, path3)) {
-        const parsed = pathParse(path3);
-        custom[path3] = {
-            draw: function(context15, size) {
-                pathRender(context15, parsed, 0, 0, Math.sqrt(size) / 2);
+function customSymbol(path) {
+    if (!(0, _vegaUtil.hasOwnProperty)(custom, path)) {
+        const parsed = pathParse(path);
+        custom[path] = {
+            draw: function(context, size) {
+                pathRender(context, parsed, 0, 0, Math.sqrt(size) / 2);
             }
         };
     }
-    return custom[path3];
+    return custom[path];
 }
 const C = 0.448084975506; // C = 1 - c
 function rectangleX(d) {
@@ -15612,182 +15612,182 @@ function rectangleHeight(d) {
 function number(_) {
     return typeof _ === "function" ? _ : ()=>+_;
 }
-function clamp(value2, min, max) {
-    return Math.max(min, Math.min(value2, max));
+function clamp(value, min, max) {
+    return Math.max(min, Math.min(value, max));
 }
 function vg_rect() {
-    var x7 = rectangleX, y6 = rectangleY, width = rectangleWidth, height = rectangleHeight, crTL = number(0), crTR = crTL, crBL = crTL, crBR = crTL, context16 = null;
-    function rectangle1(_, x0, y0) {
-        var buffer, x1 = x0 != null ? x0 : +x7.call(this, _), y1 = y0 != null ? y0 : +y6.call(this, _), w2 = +width.call(this, _), h7 = +height.call(this, _), s = Math.min(w2, h7) / 2, tl1 = clamp(+crTL.call(this, _), 0, s), tr1 = clamp(+crTR.call(this, _), 0, s), bl1 = clamp(+crBL.call(this, _), 0, s), br1 = clamp(+crBR.call(this, _), 0, s);
-        if (!context16) context16 = buffer = (0, _d3Path.path)();
-        if (tl1 <= 0 && tr1 <= 0 && bl1 <= 0 && br1 <= 0) context16.rect(x1, y1, w2, h7);
+    var x = rectangleX, y = rectangleY, width = rectangleWidth, height = rectangleHeight, crTL = number(0), crTR = crTL, crBL = crTL, crBR = crTL, context = null;
+    function rectangle(_, x0, y0) {
+        var buffer, x1 = x0 != null ? x0 : +x.call(this, _), y1 = y0 != null ? y0 : +y.call(this, _), w = +width.call(this, _), h = +height.call(this, _), s = Math.min(w, h) / 2, tl = clamp(+crTL.call(this, _), 0, s), tr = clamp(+crTR.call(this, _), 0, s), bl = clamp(+crBL.call(this, _), 0, s), br = clamp(+crBR.call(this, _), 0, s);
+        if (!context) context = buffer = (0, _d3Path.path)();
+        if (tl <= 0 && tr <= 0 && bl <= 0 && br <= 0) context.rect(x1, y1, w, h);
         else {
-            var x2 = x1 + w2, y2 = y1 + h7;
-            context16.moveTo(x1 + tl1, y1);
-            context16.lineTo(x2 - tr1, y1);
-            context16.bezierCurveTo(x2 - C * tr1, y1, x2, y1 + C * tr1, x2, y1 + tr1);
-            context16.lineTo(x2, y2 - br1);
-            context16.bezierCurveTo(x2, y2 - C * br1, x2 - C * br1, y2, x2 - br1, y2);
-            context16.lineTo(x1 + bl1, y2);
-            context16.bezierCurveTo(x1 + C * bl1, y2, x1, y2 - C * bl1, x1, y2 - bl1);
-            context16.lineTo(x1, y1 + tl1);
-            context16.bezierCurveTo(x1, y1 + C * tl1, x1 + C * tl1, y1, x1 + tl1, y1);
-            context16.closePath();
+            var x2 = x1 + w, y2 = y1 + h;
+            context.moveTo(x1 + tl, y1);
+            context.lineTo(x2 - tr, y1);
+            context.bezierCurveTo(x2 - C * tr, y1, x2, y1 + C * tr, x2, y1 + tr);
+            context.lineTo(x2, y2 - br);
+            context.bezierCurveTo(x2, y2 - C * br, x2 - C * br, y2, x2 - br, y2);
+            context.lineTo(x1 + bl, y2);
+            context.bezierCurveTo(x1 + C * bl, y2, x1, y2 - C * bl, x1, y2 - bl);
+            context.lineTo(x1, y1 + tl);
+            context.bezierCurveTo(x1, y1 + C * tl, x1 + C * tl, y1, x1 + tl, y1);
+            context.closePath();
         }
         if (buffer) {
-            context16 = null;
+            context = null;
             return buffer + "" || null;
         }
     }
-    rectangle1.x = function(_) {
+    rectangle.x = function(_) {
         if (arguments.length) {
-            x7 = number(_);
-            return rectangle1;
-        } else return x7;
+            x = number(_);
+            return rectangle;
+        } else return x;
     };
-    rectangle1.y = function(_) {
+    rectangle.y = function(_) {
         if (arguments.length) {
-            y6 = number(_);
-            return rectangle1;
-        } else return y6;
+            y = number(_);
+            return rectangle;
+        } else return y;
     };
-    rectangle1.width = function(_) {
+    rectangle.width = function(_) {
         if (arguments.length) {
             width = number(_);
-            return rectangle1;
+            return rectangle;
         } else return width;
     };
-    rectangle1.height = function(_) {
+    rectangle.height = function(_) {
         if (arguments.length) {
             height = number(_);
-            return rectangle1;
+            return rectangle;
         } else return height;
     };
-    rectangle1.cornerRadius = function(tl2, tr2, br2, bl2) {
+    rectangle.cornerRadius = function(tl, tr, br, bl) {
         if (arguments.length) {
-            crTL = number(tl2);
-            crTR = tr2 != null ? number(tr2) : crTL;
-            crBR = br2 != null ? number(br2) : crTL;
-            crBL = bl2 != null ? number(bl2) : crTR;
-            return rectangle1;
+            crTL = number(tl);
+            crTR = tr != null ? number(tr) : crTL;
+            crBR = br != null ? number(br) : crTL;
+            crBL = bl != null ? number(bl) : crTR;
+            return rectangle;
         } else return crTL;
     };
-    rectangle1.context = function(_) {
+    rectangle.context = function(_) {
         if (arguments.length) {
-            context16 = _ == null ? null : _;
-            return rectangle1;
-        } else return context16;
+            context = _ == null ? null : _;
+            return rectangle;
+        } else return context;
     };
-    return rectangle1;
+    return rectangle;
 }
 function vg_trail() {
-    var x8, y7, size, defined, context17 = null, ready, x1, y1, r1;
-    function point1(x2, y2, w2) {
+    var x, y, size, defined, context = null, ready, x1, y1, r1;
+    function point(x2, y2, w2) {
         const r2 = w2 / 2;
         if (ready) {
             var ux = y1 - y2, uy = x2 - x1;
             if (ux || uy) {
                 // get normal vector
                 var ud = Math.sqrt(ux * ux + uy * uy), rx = (ux /= ud) * r1, ry = (uy /= ud) * r1, t = Math.atan2(uy, ux); // draw segment
-                context17.moveTo(x1 - rx, y1 - ry);
-                context17.lineTo(x2 - ux * r2, y2 - uy * r2);
-                context17.arc(x2, y2, r2, t - Math.PI, t);
-                context17.lineTo(x1 + rx, y1 + ry);
-                context17.arc(x1, y1, r1, t, t + Math.PI);
-            } else context17.arc(x2, y2, r2, 0, Tau);
-            context17.closePath();
+                context.moveTo(x1 - rx, y1 - ry);
+                context.lineTo(x2 - ux * r2, y2 - uy * r2);
+                context.arc(x2, y2, r2, t - Math.PI, t);
+                context.lineTo(x1 + rx, y1 + ry);
+                context.arc(x1, y1, r1, t, t + Math.PI);
+            } else context.arc(x2, y2, r2, 0, Tau);
+            context.closePath();
         } else ready = 1;
         x1 = x2;
         y1 = y2;
         r1 = r2;
     }
-    function trail1(data) {
+    function trail(data) {
         var i, n = data.length, d, defined0 = false, buffer;
-        if (context17 == null) context17 = buffer = (0, _d3Path.path)();
+        if (context == null) context = buffer = (0, _d3Path.path)();
         for(i = 0; i <= n; ++i){
             if (!(i < n && defined(d = data[i], i, data)) === defined0) {
                 if (defined0 = !defined0) ready = 0;
             }
-            if (defined0) point1(+x8(d, i, data), +y7(d, i, data), +size(d, i, data));
+            if (defined0) point(+x(d, i, data), +y(d, i, data), +size(d, i, data));
         }
         if (buffer) {
-            context17 = null;
+            context = null;
             return buffer + "" || null;
         }
     }
-    trail1.x = function(_) {
+    trail.x = function(_) {
         if (arguments.length) {
-            x8 = _;
-            return trail1;
-        } else return x8;
+            x = _;
+            return trail;
+        } else return x;
     };
-    trail1.y = function(_) {
+    trail.y = function(_) {
         if (arguments.length) {
-            y7 = _;
-            return trail1;
-        } else return y7;
+            y = _;
+            return trail;
+        } else return y;
     };
-    trail1.size = function(_) {
+    trail.size = function(_) {
         if (arguments.length) {
             size = _;
-            return trail1;
+            return trail;
         } else return size;
     };
-    trail1.defined = function(_) {
+    trail.defined = function(_) {
         if (arguments.length) {
             defined = _;
-            return trail1;
+            return trail;
         } else return defined;
     };
-    trail1.context = function(_) {
+    trail.context = function(_) {
         if (arguments.length) {
-            if (_ == null) context17 = null;
-            else context17 = _;
-            return trail1;
-        } else return context17;
+            if (_ == null) context = null;
+            else context = _;
+            return trail;
+        } else return context;
     };
-    return trail1;
+    return trail;
 }
-function value$1(a, b2) {
-    return a != null ? a : b2;
+function value$1(a, b) {
+    return a != null ? a : b;
 }
 const x = (item)=>item.x || 0, y = (item)=>item.y || 0, w = (item)=>item.width || 0, h = (item)=>item.height || 0, xw = (item)=>(item.x || 0) + (item.width || 0), yh = (item)=>(item.y || 0) + (item.height || 0), sa = (item)=>item.startAngle || 0, ea = (item)=>item.endAngle || 0, pa = (item)=>item.padAngle || 0, ir = (item)=>item.innerRadius || 0, or = (item)=>item.outerRadius || 0, cr = (item)=>item.cornerRadius || 0, tl = (item)=>value$1(item.cornerRadiusTopLeft, item.cornerRadius) || 0, tr = (item)=>value$1(item.cornerRadiusTopRight, item.cornerRadius) || 0, br = (item)=>value$1(item.cornerRadiusBottomRight, item.cornerRadius) || 0, bl = (item)=>value$1(item.cornerRadiusBottomLeft, item.cornerRadius) || 0, sz = (item)=>value$1(item.size, 64), ts = (item)=>item.size || 1, def = (item)=>!(item.defined === false), type = (item)=>symbols(item.shape || "circle");
 const arcShape = (0, _d3Shape.arc)().startAngle(sa).endAngle(ea).padAngle(pa).innerRadius(ir).outerRadius(or).cornerRadius(cr), areavShape = (0, _d3Shape.area)().x(x).y1(y).y0(yh).defined(def), areahShape = (0, _d3Shape.area)().y(y).x1(x).x0(xw).defined(def), lineShape = (0, _d3Shape.line)().x(x).y(y).defined(def), rectShape = vg_rect().x(x).y(y).width(w).height(h).cornerRadius(tl, tr, br, bl), symbolShape = (0, _d3Shape.symbol)().type(type).size(sz), trailShape = vg_trail().x(x).y(y).defined(def).size(ts);
 function hasCornerRadius(item) {
     return item.cornerRadius || item.cornerRadiusTopLeft || item.cornerRadiusTopRight || item.cornerRadiusBottomRight || item.cornerRadiusBottomLeft;
 }
-function arc$1(context18, item) {
-    return arcShape.context(context18)(item);
+function arc$1(context, item) {
+    return arcShape.context(context)(item);
 }
-function area$1(context19, items) {
+function area$1(context, items) {
     const item = items[0], interp = item.interpolate || "linear";
-    return (item.orient === "horizontal" ? areahShape : areavShape).curve(curves(interp, item.orient, item.tension)).context(context19)(items);
+    return (item.orient === "horizontal" ? areahShape : areavShape).curve(curves(interp, item.orient, item.tension)).context(context)(items);
 }
-function line$1(context20, items) {
+function line$1(context, items) {
     const item = items[0], interp = item.interpolate || "linear";
-    return lineShape.curve(curves(interp, item.orient, item.tension)).context(context20)(items);
+    return lineShape.curve(curves(interp, item.orient, item.tension)).context(context)(items);
 }
-function rectangle(context21, item, x9, y8) {
-    return rectShape.context(context21)(item, x9, y8);
+function rectangle(context, item, x, y) {
+    return rectShape.context(context)(item, x, y);
 }
-function shape$1(context22, item) {
-    return (item.mark.shape || item.shape).context(context22)(item);
+function shape$1(context, item) {
+    return (item.mark.shape || item.shape).context(context)(item);
 }
-function symbol$1(context23, item) {
-    return symbolShape.context(context23)(item);
+function symbol$1(context, item) {
+    return symbolShape.context(context)(item);
 }
-function trail$1(context24, items) {
-    return trailShape.context(context24)(items);
+function trail$1(context, items) {
+    return trailShape.context(context)(items);
 }
 var clip_id = 1;
 function resetSVGClipId() {
     clip_id = 1;
 }
 function clip$1(renderer, item, size) {
-    var clip1 = item.clip, defs = renderer._defs, id = item.clip_id || (item.clip_id = "clip" + clip_id++), c = defs.clipping[id] || (defs.clipping[id] = {
+    var clip = item.clip, defs = renderer._defs, id = item.clip_id || (item.clip_id = "clip" + clip_id++), c = defs.clipping[id] || (defs.clipping[id] = {
         id: id
     });
-    if ((0, _vegaUtil.isFunction)(clip1)) c.path = clip1(null);
+    if ((0, _vegaUtil.isFunction)(clip)) c.path = clip(null);
     else if (hasCornerRadius(size)) c.path = rectangle(null, size, 0, 0);
     else {
         c.width = size.width || 0;
@@ -15795,9 +15795,9 @@ function clip$1(renderer, item, size) {
     }
     return "url(#" + id + ")";
 }
-function Bounds(b3) {
+function Bounds(b) {
     this.clear();
-    if (b3) this.union(b3);
+    if (b) this.union(b);
 }
 Bounds.prototype = {
     clone () {
@@ -15813,8 +15813,8 @@ Bounds.prototype = {
     empty () {
         return this.x1 === +Number.MAX_VALUE && this.y1 === +Number.MAX_VALUE && this.x2 === -Number.MAX_VALUE && this.y2 === -Number.MAX_VALUE;
     },
-    equals (b4) {
-        return this.x1 === b4.x1 && this.y1 === b4.y1 && this.x2 === b4.x2 && this.y2 === b4.y2;
+    equals (b) {
+        return this.x1 === b.x1 && this.y1 === b.y1 && this.x2 === b.x2 && this.y2 === b.y2;
     },
     set (x1, y1, x2, y2) {
         if (x2 < x1) {
@@ -15833,11 +15833,11 @@ Bounds.prototype = {
         }
         return this;
     },
-    add (x10, y9) {
-        if (x10 < this.x1) this.x1 = x10;
-        if (y9 < this.y1) this.y1 = y9;
-        if (x10 > this.x2) this.x2 = x10;
-        if (y9 > this.y2) this.y2 = y9;
+    add (x, y) {
+        if (x < this.x1) this.x1 = x;
+        if (y < this.y1) this.y1 = y;
+        if (x > this.x2) this.x2 = x;
+        if (y > this.y2) this.y2 = y;
         return this;
     },
     expand (d) {
@@ -15868,12 +15868,12 @@ Bounds.prototype = {
         this.y2 += dy;
         return this;
     },
-    rotate (angle, x11, y10) {
-        const p = this.rotatedPoints(angle, x11, y10);
+    rotate (angle, x, y) {
+        const p = this.rotatedPoints(angle, x, y);
         return this.clear().add(p[0], p[1]).add(p[2], p[3]).add(p[4], p[5]).add(p[6], p[7]);
     },
-    rotatedPoints (angle, x12, y11) {
-        var { x1 , y1 , x2 , y2  } = this, cos = Math.cos(angle), sin = Math.sin(angle), cx = x12 - x12 * cos + y11 * sin, cy = y11 - x12 * sin - y11 * cos;
+    rotatedPoints (angle, x, y) {
+        var { x1 , y1 , x2 , y2  } = this, cos = Math.cos(angle), sin = Math.sin(angle), cx = x - x * cos + y * sin, cy = y - x * sin - y * cos;
         return [
             cos * x1 - sin * y1 + cx,
             sin * x1 + cos * y1 + cy,
@@ -15885,31 +15885,31 @@ Bounds.prototype = {
             sin * x2 + cos * y2 + cy
         ];
     },
-    union (b5) {
-        if (b5.x1 < this.x1) this.x1 = b5.x1;
-        if (b5.y1 < this.y1) this.y1 = b5.y1;
-        if (b5.x2 > this.x2) this.x2 = b5.x2;
-        if (b5.y2 > this.y2) this.y2 = b5.y2;
+    union (b) {
+        if (b.x1 < this.x1) this.x1 = b.x1;
+        if (b.y1 < this.y1) this.y1 = b.y1;
+        if (b.x2 > this.x2) this.x2 = b.x2;
+        if (b.y2 > this.y2) this.y2 = b.y2;
         return this;
     },
-    intersect (b6) {
-        if (b6.x1 > this.x1) this.x1 = b6.x1;
-        if (b6.y1 > this.y1) this.y1 = b6.y1;
-        if (b6.x2 < this.x2) this.x2 = b6.x2;
-        if (b6.y2 < this.y2) this.y2 = b6.y2;
+    intersect (b) {
+        if (b.x1 > this.x1) this.x1 = b.x1;
+        if (b.y1 > this.y1) this.y1 = b.y1;
+        if (b.x2 < this.x2) this.x2 = b.x2;
+        if (b.y2 < this.y2) this.y2 = b.y2;
         return this;
     },
-    encloses (b7) {
-        return b7 && this.x1 <= b7.x1 && this.x2 >= b7.x2 && this.y1 <= b7.y1 && this.y2 >= b7.y2;
+    encloses (b) {
+        return b && this.x1 <= b.x1 && this.x2 >= b.x2 && this.y1 <= b.y1 && this.y2 >= b.y2;
     },
-    alignsWith (b8) {
-        return b8 && (this.x1 == b8.x1 || this.x2 == b8.x2 || this.y1 == b8.y1 || this.y2 == b8.y2);
+    alignsWith (b) {
+        return b && (this.x1 == b.x1 || this.x2 == b.x2 || this.y1 == b.y1 || this.y2 == b.y2);
     },
-    intersects (b9) {
-        return b9 && !(this.x2 < b9.x1 || this.x1 > b9.x2 || this.y2 < b9.y1 || this.y1 > b9.y2);
+    intersects (b) {
+        return b && !(this.x2 < b.x1 || this.x1 > b.x2 || this.y2 < b.y1 || this.y1 > b.y2);
     },
-    contains (x13, y12) {
-        return !(x13 < this.x1 || x13 > this.x2 || y12 < this.y1 || y12 > this.y2);
+    contains (x, y) {
+        return !(x < this.x1 || x > this.x2 || y < this.y1 || y > this.y2);
     },
     width () {
         return this.x2 - this.x1;
@@ -15985,8 +15985,8 @@ ResourceLoader.prototype = {
     ready () {
         const loader = this;
         return new Promise((accept)=>{
-            function poll(value3) {
-                if (!loader.pending()) accept(value3);
+            function poll(value) {
+                if (!loader.pending()) accept(value);
                 else setTimeout(()=>{
                     poll(true);
                 }, 10);
@@ -15995,12 +15995,12 @@ ResourceLoader.prototype = {
         });
     }
 };
-function boundStroke(bounds1, item, miter) {
+function boundStroke(bounds, item, miter) {
     if (item.stroke && item.opacity !== 0 && item.strokeOpacity !== 0) {
         const sw = item.strokeWidth != null ? +item.strokeWidth : 1;
-        bounds1.expand(sw + (miter ? miterAdjustment(item, sw) : 0));
+        bounds.expand(sw + (miter ? miterAdjustment(item, sw) : 0));
     }
-    return bounds1;
+    return bounds;
 }
 function miterAdjustment(item, strokeWidth) {
     // TODO: more sophisticated adjustment? Or miter support in boundContext?
@@ -16008,14 +16008,14 @@ function miterAdjustment(item, strokeWidth) {
 }
 const circleThreshold = Tau - 1e-8;
 let bounds, lx, ly, rot, ma, mb, mc, md;
-const add = (x14, y13)=>bounds.add(x14, y13);
-const addL = (x15, y14)=>add(lx = x15, ly = y14);
-const addX = (x16)=>add(x16, bounds.y1);
-const addY = (y15)=>add(bounds.x1, y15);
-const px = (x17, y16)=>ma * x17 + mc * y16;
-const py = (x18, y17)=>mb * x18 + md * y17;
-const addp = (x19, y18)=>add(px(x19, y18), py(x19, y18));
-const addpL = (x20, y19)=>addL(px(x20, y19), py(x20, y19));
+const add = (x, y)=>bounds.add(x, y);
+const addL = (x, y)=>add(lx = x, ly = y);
+const addX = (x)=>add(x, bounds.y1);
+const addY = (y)=>add(bounds.x1, y);
+const px = (x, y)=>ma * x + mc * y;
+const py = (x, y)=>mb * x + md * y;
+const addp = (x, y)=>add(px(x, y), py(x, y));
+const addpL = (x, y)=>addL(px(x, y), py(x, y));
 function boundContext(_, deg) {
     bounds = _;
     if (deg) {
@@ -16034,15 +16034,15 @@ const context$1 = {
     closePath () {},
     moveTo: addpL,
     lineTo: addpL,
-    rect (x21, y20, w3, h8) {
+    rect (x, y, w, h) {
         if (rot) {
-            addp(x21 + w3, y20);
-            addp(x21 + w3, y20 + h8);
-            addp(x21, y20 + h8);
-            addpL(x21, y20);
+            addp(x + w, y);
+            addp(x + w, y + h);
+            addp(x, y + h);
+            addpL(x, y);
         } else {
-            add(x21 + w3, y20 + h8);
-            addL(x21, y20);
+            add(x + w, y + h);
+            addL(x, y);
         }
     },
     quadraticCurveTo (x1, y1, x2, y2) {
@@ -16057,38 +16057,38 @@ const context$1 = {
         cubicExtrema(ly, py1, py2, py3, addY);
         addL(px3, py3);
     },
-    arc (cx, cy, r, sa1, ea1, ccw) {
-        sa1 += rot;
-        ea1 += rot; // store last point on path
-        lx = r * Math.cos(ea1) + cx;
-        ly = r * Math.sin(ea1) + cy;
-        if (Math.abs(ea1 - sa1) > circleThreshold) {
+    arc (cx, cy, r, sa, ea, ccw) {
+        sa += rot;
+        ea += rot; // store last point on path
+        lx = r * Math.cos(ea) + cx;
+        ly = r * Math.sin(ea) + cy;
+        if (Math.abs(ea - sa) > circleThreshold) {
             // treat as full circle
             add(cx - r, cy - r);
             add(cx + r, cy + r);
         } else {
             const update = (a)=>add(r * Math.cos(a) + cx, r * Math.sin(a) + cy);
             let s, i; // sample end points
-            update(sa1);
-            update(ea1); // sample interior points aligned with 90 degrees
-            if (ea1 !== sa1) {
-                sa1 = sa1 % Tau;
-                if (sa1 < 0) sa1 += Tau;
-                ea1 = ea1 % Tau;
-                if (ea1 < 0) ea1 += Tau;
-                if (ea1 < sa1) {
+            update(sa);
+            update(ea); // sample interior points aligned with 90 degrees
+            if (ea !== sa) {
+                sa = sa % Tau;
+                if (sa < 0) sa += Tau;
+                ea = ea % Tau;
+                if (ea < 0) ea += Tau;
+                if (ea < sa) {
                     ccw = !ccw; // flip direction
-                    s = sa1;
-                    sa1 = ea1;
-                    ea1 = s; // swap end-points
+                    s = sa;
+                    sa = ea;
+                    ea = s; // swap end-points
                 }
                 if (ccw) {
-                    ea1 -= Tau;
-                    s = sa1 - sa1 % HalfPi;
-                    for(i = 0; i < 4 && s > ea1; ++i, s -= HalfPi)update(s);
+                    ea -= Tau;
+                    s = sa - sa % HalfPi;
+                    for(i = 0; i < 4 && s > ea; ++i, s -= HalfPi)update(s);
                 } else {
-                    s = sa1 - sa1 % HalfPi + HalfPi;
-                    for(i = 0; i < 4 && s < ea1; ++i, s = s + HalfPi)update(s);
+                    s = sa - sa % HalfPi + HalfPi;
+                    for(i = 0; i < 4 && s < ea; ++i, s = s + HalfPi)update(s);
                 }
             }
         }
@@ -16099,18 +16099,18 @@ function quadExtrema(x0, x1, x2, cb) {
     if (0 < t && t < 1) cb(x0 + (x1 - x0) * t);
 }
 function cubicExtrema(x0, x1, x2, x3, cb) {
-    const a = x3 - x0 + 3 * x1 - 3 * x2, b10 = x0 + x2 - 2 * x1, c = x0 - x1;
+    const a = x3 - x0 + 3 * x1 - 3 * x2, b = x0 + x2 - 2 * x1, c = x0 - x1;
     let t0 = 0, t1 = 0, r; // solve for parameter t
     if (Math.abs(a) > Epsilon) {
         // quadratic equation
-        r = b10 * b10 + c * a;
+        r = b * b + c * a;
         if (r >= 0) {
             r = Math.sqrt(r);
-            t0 = (-b10 + r) / a;
-            t1 = (-b10 - r) / a;
+            t0 = (-b + r) / a;
+            t1 = (-b - r) / a;
         }
     } else // linear equation
-    t0 = 0.5 * c / b10;
+    t0 = 0.5 * c / b;
      // calculate position
     if (0 < t0 && t0 < 1) cb(cubic(t0, x0, x1, x2, x3));
     if (0 < t1 && t1 < 1) cb(cubic(t1, x0, x1, x2, x3));
@@ -16121,16 +16121,16 @@ function cubic(t, x0, x1, x2, x3) {
 }
 var context = (context = (0, _vegaCanvas.canvas)(1, 1)) ? context.getContext("2d") : null;
 const b = new Bounds();
-function intersectPath(draw1) {
+function intersectPath(draw) {
     return function(item, brush) {
         // rely on (inaccurate) bounds intersection if no context
         if (!context) return true; // add path to offscreen graphics context
-        draw1(context, item); // get bounds intersection region
+        draw(context, item); // get bounds intersection region
         b.clear().union(item.bounds).intersect(brush).round();
         const { x1 , y1 , x2 , y2  } = b; // iterate over intersection region
         // perform fine grained inclusion test
-        for(let y21 = y1; y21 <= y2; ++y21)for(let x22 = x1; x22 <= x2; ++x22){
-            if (context.isPointInPath(x22, y21)) return true;
+        for(let y = y1; y <= y2; ++y)for(let x = x1; x <= x2; ++x){
+            if (context.isPointInPath(x, y)) return true;
         }
          // false if no hits in intersection region
         return false;
@@ -16140,32 +16140,32 @@ function intersectPoint(item, box) {
     return box.contains(item.x || 0, item.y || 0);
 }
 function intersectRect(item, box) {
-    const x23 = item.x || 0, y22 = item.y || 0, w4 = item.width || 0, h9 = item.height || 0;
-    return box.intersects(b.set(x23, y22, x23 + w4, y22 + h9));
+    const x = item.x || 0, y = item.y || 0, w = item.width || 0, h = item.height || 0;
+    return box.intersects(b.set(x, y, x + w, y + h));
 }
 function intersectRule(item, box) {
-    const x24 = item.x || 0, y23 = item.y || 0, x2 = item.x2 != null ? item.x2 : x24, y2 = item.y2 != null ? item.y2 : y23;
-    return intersectBoxLine(box, x24, y23, x2, y2);
+    const x = item.x || 0, y = item.y || 0, x2 = item.x2 != null ? item.x2 : x, y2 = item.y2 != null ? item.y2 : y;
+    return intersectBoxLine(box, x, y, x2, y2);
 }
-function intersectBoxLine(box, x25, y24, u, v) {
-    const { x1 , y1 , x2 , y2  } = box, dx = u - x25, dy = v - y24;
+function intersectBoxLine(box, x, y, u, v) {
+    const { x1 , y1 , x2 , y2  } = box, dx = u - x, dy = v - y;
     let t0 = 0, t1 = 1, p, q, r, e;
     for(e = 0; e < 4; ++e){
         if (e === 0) {
             p = -dx;
-            q = -(x1 - x25);
+            q = -(x1 - x);
         }
         if (e === 1) {
             p = dx;
-            q = x2 - x25;
+            q = x2 - x;
         }
         if (e === 2) {
             p = -dy;
-            q = -(y1 - y24);
+            q = -(y1 - y);
         }
         if (e === 3) {
             p = dy;
-            q = y2 - y24;
+            q = y2 - y;
         }
         if (Math.abs(p) < 1e-10 && q < 0) return false;
         r = q / p;
@@ -16179,70 +16179,70 @@ function intersectBoxLine(box, x25, y24, u, v) {
     }
     return true;
 }
-function blend(context25, item) {
-    context25.globalCompositeOperation = item.blend || "source-over";
+function blend(context, item) {
+    context.globalCompositeOperation = item.blend || "source-over";
 }
-function value(value4, dflt) {
-    return value4 == null ? dflt : value4;
+function value(value, dflt) {
+    return value == null ? dflt : value;
 }
-function addStops(gradient2, stops) {
+function addStops(gradient, stops) {
     const n = stops.length;
-    for(let i = 0; i < n; ++i)gradient2.addColorStop(stops[i].offset, stops[i].color);
-    return gradient2;
+    for(let i = 0; i < n; ++i)gradient.addColorStop(stops[i].offset, stops[i].color);
+    return gradient;
 }
-function gradient(context26, spec, bounds2) {
-    const w5 = bounds2.width(), h10 = bounds2.height();
-    let gradient3;
-    if (spec.gradient === "radial") gradient3 = context26.createRadialGradient(bounds2.x1 + value(spec.x1, 0.5) * w5, bounds2.y1 + value(spec.y1, 0.5) * h10, Math.max(w5, h10) * value(spec.r1, 0), bounds2.x1 + value(spec.x2, 0.5) * w5, bounds2.y1 + value(spec.y2, 0.5) * h10, Math.max(w5, h10) * value(spec.r2, 0.5));
+function gradient(context, spec, bounds) {
+    const w = bounds.width(), h = bounds.height();
+    let gradient;
+    if (spec.gradient === "radial") gradient = context.createRadialGradient(bounds.x1 + value(spec.x1, 0.5) * w, bounds.y1 + value(spec.y1, 0.5) * h, Math.max(w, h) * value(spec.r1, 0), bounds.x1 + value(spec.x2, 0.5) * w, bounds.y1 + value(spec.y2, 0.5) * h, Math.max(w, h) * value(spec.r2, 0.5));
     else {
         // linear gradient
         const x1 = value(spec.x1, 0), y1 = value(spec.y1, 0), x2 = value(spec.x2, 1), y2 = value(spec.y2, 0);
-        if (x1 === x2 || y1 === y2 || w5 === h10) // axis aligned: use normal gradient
-        gradient3 = context26.createLinearGradient(bounds2.x1 + x1 * w5, bounds2.y1 + y1 * h10, bounds2.x1 + x2 * w5, bounds2.y1 + y2 * h10);
+        if (x1 === x2 || y1 === y2 || w === h) // axis aligned: use normal gradient
+        gradient = context.createLinearGradient(bounds.x1 + x1 * w, bounds.y1 + y1 * h, bounds.x1 + x2 * w, bounds.y1 + y2 * h);
         else {
             // not axis aligned: render gradient into a pattern (#2365)
             // this allows us to use normalized bounding box coordinates
-            const image1 = (0, _vegaCanvas.canvas)(Math.ceil(w5), Math.ceil(h10)), ictx = image1.getContext("2d");
-            ictx.scale(w5, h10);
+            const image = (0, _vegaCanvas.canvas)(Math.ceil(w), Math.ceil(h)), ictx = image.getContext("2d");
+            ictx.scale(w, h);
             ictx.fillStyle = addStops(ictx.createLinearGradient(x1, y1, x2, y2), spec.stops);
-            ictx.fillRect(0, 0, w5, h10);
-            return context26.createPattern(image1, "no-repeat");
+            ictx.fillRect(0, 0, w, h);
+            return context.createPattern(image, "no-repeat");
         }
     }
-    return addStops(gradient3, spec.stops);
+    return addStops(gradient, spec.stops);
 }
-function color(context27, item, value5) {
-    return isGradient(value5) ? gradient(context27, value5, item.bounds) : value5;
+function color(context, item, value) {
+    return isGradient(value) ? gradient(context, value, item.bounds) : value;
 }
-function fill(context28, item, opacity) {
+function fill(context, item, opacity) {
     opacity *= item.fillOpacity == null ? 1 : item.fillOpacity;
     if (opacity > 0) {
-        context28.globalAlpha = opacity;
-        context28.fillStyle = color(context28, item, item.fill);
+        context.globalAlpha = opacity;
+        context.fillStyle = color(context, item, item.fill);
         return true;
     } else return false;
 }
 var Empty = [];
-function stroke(context29, item, opacity) {
+function stroke(context, item, opacity) {
     var lw = (lw = item.strokeWidth) != null ? lw : 1;
     if (lw <= 0) return false;
     opacity *= item.strokeOpacity == null ? 1 : item.strokeOpacity;
     if (opacity > 0) {
-        context29.globalAlpha = opacity;
-        context29.strokeStyle = color(context29, item, item.stroke);
-        context29.lineWidth = lw;
-        context29.lineCap = item.strokeCap || "butt";
-        context29.lineJoin = item.strokeJoin || "miter";
-        context29.miterLimit = item.strokeMiterLimit || 10;
-        if (context29.setLineDash) {
-            context29.setLineDash(item.strokeDash || Empty);
-            context29.lineDashOffset = item.strokeDashOffset || 0;
+        context.globalAlpha = opacity;
+        context.strokeStyle = color(context, item, item.stroke);
+        context.lineWidth = lw;
+        context.lineCap = item.strokeCap || "butt";
+        context.lineJoin = item.strokeJoin || "miter";
+        context.miterLimit = item.strokeMiterLimit || 10;
+        if (context.setLineDash) {
+            context.setLineDash(item.strokeDash || Empty);
+            context.lineDashOffset = item.strokeDashOffset || 0;
         }
         return true;
     } else return false;
 }
-function compare(a, b11) {
-    return a.zindex - b11.zindex || a.index - b11.index;
+function compare(a, b) {
+    return a.zindex - b.zindex || a.index - b.index;
 }
 function zorder(scene) {
     if (!scene.zdirty) return scene.zitems;
@@ -16266,69 +16266,69 @@ function visit(scene, visitor) {
     for(i = 0, n = items.length; i < n; ++i)visitor(items[i]);
 }
 function pickVisit(scene, visitor) {
-    var items = scene.items, hit1, i;
+    var items = scene.items, hit, i;
     if (!items || !items.length) return null;
     const zitems = zorder(scene);
     if (zitems && zitems.length) items = zitems;
     for(i = items.length; --i >= 0;){
-        if (hit1 = visitor(items[i])) return hit1;
+        if (hit = visitor(items[i])) return hit;
     }
     if (items === zitems) {
         for(items = scene.items, i = items.length; --i >= 0;)if (!items[i].zindex) {
-            if (hit1 = visitor(items[i])) return hit1;
+            if (hit = visitor(items[i])) return hit;
         }
     }
     return null;
 }
-function drawAll(path4) {
-    return function(context30, scene, bounds3) {
+function drawAll(path) {
+    return function(context, scene, bounds) {
         visit(scene, (item)=>{
-            if (!bounds3 || bounds3.intersects(item.bounds)) drawPath(path4, context30, item, item);
+            if (!bounds || bounds.intersects(item.bounds)) drawPath(path, context, item, item);
         });
     };
 }
-function drawOne(path5) {
-    return function(context31, scene, bounds4) {
-        if (scene.items.length && (!bounds4 || bounds4.intersects(scene.bounds))) drawPath(path5, context31, scene.items[0], scene.items);
+function drawOne(path) {
+    return function(context, scene, bounds) {
+        if (scene.items.length && (!bounds || bounds.intersects(scene.bounds))) drawPath(path, context, scene.items[0], scene.items);
     };
 }
-function drawPath(path6, context32, item, items) {
+function drawPath(path, context, item, items) {
     var opacity = item.opacity == null ? 1 : item.opacity;
     if (opacity === 0) return;
-    if (path6(context32, items)) return;
-    blend(context32, item);
-    if (item.fill && fill(context32, item, opacity)) context32.fill();
-    if (item.stroke && stroke(context32, item, opacity)) context32.stroke();
+    if (path(context, items)) return;
+    blend(context, item);
+    if (item.fill && fill(context, item, opacity)) context.fill();
+    if (item.stroke && stroke(context, item, opacity)) context.stroke();
 }
 function pick$1(test) {
     test = test || (0, _vegaUtil.truthy);
-    return function(context33, scene, x26, y25, gx, gy) {
-        x26 *= context33.pixelRatio;
-        y25 *= context33.pixelRatio;
+    return function(context, scene, x, y, gx, gy) {
+        x *= context.pixelRatio;
+        y *= context.pixelRatio;
         return pickVisit(scene, (item)=>{
-            const b12 = item.bounds; // first hit test against bounding box
-            if (b12 && !b12.contains(gx, gy) || !b12) return; // if in bounding box, perform more careful test
-            if (test(context33, item, x26, y25, gx, gy)) return item;
+            const b = item.bounds; // first hit test against bounding box
+            if (b && !b.contains(gx, gy) || !b) return; // if in bounding box, perform more careful test
+            if (test(context, item, x, y, gx, gy)) return item;
         });
     };
 }
-function hitPath(path7, filled) {
-    return function(context34, o, x27, y26) {
-        var item = Array.isArray(o) ? o[0] : o, fill1 = filled == null ? item.fill : filled, stroke1 = item.stroke && context34.isPointInStroke, lw, lc;
-        if (stroke1) {
+function hitPath(path, filled) {
+    return function(context, o, x, y) {
+        var item = Array.isArray(o) ? o[0] : o, fill = filled == null ? item.fill : filled, stroke = item.stroke && context.isPointInStroke, lw, lc;
+        if (stroke) {
             lw = item.strokeWidth;
             lc = item.strokeCap;
-            context34.lineWidth = lw != null ? lw : 1;
-            context34.lineCap = lc != null ? lc : "butt";
+            context.lineWidth = lw != null ? lw : 1;
+            context.lineCap = lc != null ? lc : "butt";
         }
-        return path7(context34, o) ? false : fill1 && context34.isPointInPath(x27, y26) || stroke1 && context34.isPointInStroke(x27, y26);
+        return path(context, o) ? false : fill && context.isPointInPath(x, y) || stroke && context.isPointInStroke(x, y);
     };
 }
-function pickPath(path8) {
-    return pick$1(hitPath(path8));
+function pickPath(path) {
+    return pick$1(hitPath(path));
 }
-function translate(x28, y27) {
-    return "translate(" + x28 + "," + y27 + ")";
+function translate(x, y) {
+    return "translate(" + x + "," + y + ")";
 }
 function rotate(a) {
     return "rotate(" + a + ")";
@@ -16345,47 +16345,47 @@ function rotateItem(item) {
 function transformItem(item) {
     return translate(item.x || 0, item.y || 0) + (item.angle ? " " + rotate(item.angle) : "") + (item.scaleX || item.scaleY ? " " + scale(item.scaleX || 1, item.scaleY || 1) : "");
 }
-function markItemPath(type3, shape1, isect) {
-    function attr1(emit1, item) {
-        emit1("transform", rotateItem(item));
-        emit1("d", shape1(null, item));
+function markItemPath(type, shape, isect) {
+    function attr(emit, item) {
+        emit("transform", rotateItem(item));
+        emit("d", shape(null, item));
     }
-    function bound1(bounds5, item) {
-        shape1(boundContext(bounds5, item.angle), item);
-        return boundStroke(bounds5, item).translate(item.x || 0, item.y || 0);
+    function bound(bounds, item) {
+        shape(boundContext(bounds, item.angle), item);
+        return boundStroke(bounds, item).translate(item.x || 0, item.y || 0);
     }
-    function draw2(context35, item) {
-        var x29 = item.x || 0, y28 = item.y || 0, a = item.angle || 0;
-        context35.translate(x29, y28);
-        if (a) context35.rotate(a *= DegToRad);
-        context35.beginPath();
-        shape1(context35, item);
-        if (a) context35.rotate(-a);
-        context35.translate(-x29, -y28);
+    function draw(context, item) {
+        var x = item.x || 0, y = item.y || 0, a = item.angle || 0;
+        context.translate(x, y);
+        if (a) context.rotate(a *= DegToRad);
+        context.beginPath();
+        shape(context, item);
+        if (a) context.rotate(-a);
+        context.translate(-x, -y);
     }
     return {
-        type: type3,
+        type: type,
         tag: "path",
         nested: false,
-        attr: attr1,
-        bound: bound1,
-        draw: drawAll(draw2),
-        pick: pickPath(draw2),
-        isect: isect || intersectPath(draw2)
+        attr: attr,
+        bound: bound,
+        draw: drawAll(draw),
+        pick: pickPath(draw),
+        isect: isect || intersectPath(draw)
     };
 }
 var arc = markItemPath("arc", arc$1);
 function pickArea(a, p) {
-    var v = a[0].orient === "horizontal" ? p[1] : p[0], z = a[0].orient === "horizontal" ? "y" : "x", i = a.length, min = Infinity, hit2, d;
+    var v = a[0].orient === "horizontal" ? p[1] : p[0], z = a[0].orient === "horizontal" ? "y" : "x", i = a.length, min = Infinity, hit, d;
     while(--i >= 0){
         if (a[i].defined === false) continue;
         d = Math.abs(a[i][z] - v);
         if (d < min) {
             min = d;
-            hit2 = a[i];
+            hit = a[i];
         }
     }
-    return hit2;
+    return hit;
 }
 function pickLine(a, p) {
     var t = Math.pow(a[0].strokeWidth || 1, 2), i = a.length, dx, dy, dd;
@@ -16410,159 +16410,159 @@ function pickTrail(a, p) {
     }
     return null;
 }
-function markMultiItemPath(type4, shape2, tip) {
-    function attr2(emit2, item) {
+function markMultiItemPath(type, shape, tip) {
+    function attr(emit, item) {
         var items = item.mark.items;
-        if (items.length) emit2("d", shape2(null, items));
+        if (items.length) emit("d", shape(null, items));
     }
-    function bound2(bounds6, mark) {
+    function bound(bounds, mark) {
         var items = mark.items;
-        if (items.length === 0) return bounds6;
+        if (items.length === 0) return bounds;
         else {
-            shape2(boundContext(bounds6), items);
-            return boundStroke(bounds6, items[0]);
+            shape(boundContext(bounds), items);
+            return boundStroke(bounds, items[0]);
         }
     }
-    function draw3(context36, items) {
-        context36.beginPath();
-        shape2(context36, items);
+    function draw(context, items) {
+        context.beginPath();
+        shape(context, items);
     }
-    const hit3 = hitPath(draw3);
-    function pick1(context37, scene, x30, y29, gx, gy) {
-        var items = scene.items, b13 = scene.bounds;
-        if (!items || !items.length || b13 && !b13.contains(gx, gy)) return null;
-        x30 *= context37.pixelRatio;
-        y29 *= context37.pixelRatio;
-        return hit3(context37, items, x30, y29) ? items[0] : null;
+    const hit = hitPath(draw);
+    function pick(context, scene, x, y, gx, gy) {
+        var items = scene.items, b = scene.bounds;
+        if (!items || !items.length || b && !b.contains(gx, gy)) return null;
+        x *= context.pixelRatio;
+        y *= context.pixelRatio;
+        return hit(context, items, x, y) ? items[0] : null;
     }
     return {
-        type: type4,
+        type: type,
         tag: "path",
         nested: true,
-        attr: attr2,
-        bound: bound2,
-        draw: drawOne(draw3),
-        pick: pick1,
+        attr: attr,
+        bound: bound,
+        draw: drawOne(draw),
+        pick: pick,
         isect: intersectPoint,
         tip: tip
     };
 }
 var area = markMultiItemPath("area", area$1, pickArea);
-function clip(context38, scene) {
-    var clip2 = scene.clip;
-    context38.save();
-    if ((0, _vegaUtil.isFunction)(clip2)) {
-        context38.beginPath();
-        clip2(context38);
-        context38.clip();
-    } else clipGroup(context38, scene.group);
+function clip(context, scene) {
+    var clip = scene.clip;
+    context.save();
+    if ((0, _vegaUtil.isFunction)(clip)) {
+        context.beginPath();
+        clip(context);
+        context.clip();
+    } else clipGroup(context, scene.group);
 }
-function clipGroup(context39, group1) {
-    context39.beginPath();
-    hasCornerRadius(group1) ? rectangle(context39, group1, 0, 0) : context39.rect(0, 0, group1.width || 0, group1.height || 0);
-    context39.clip();
+function clipGroup(context, group) {
+    context.beginPath();
+    hasCornerRadius(group) ? rectangle(context, group, 0, 0) : context.rect(0, 0, group.width || 0, group.height || 0);
+    context.clip();
 }
 function offset$1(item) {
     const sw = value(item.strokeWidth, 1);
     return item.strokeOffset != null ? item.strokeOffset : item.stroke && sw > 0.5 && sw < 1.5 ? 0.5 - Math.abs(sw - 1) : 0;
 }
-function attr$5(emit3, item) {
-    emit3("transform", translateItem(item));
+function attr$5(emit, item) {
+    emit("transform", translateItem(item));
 }
-function emitRectangle(emit4, item) {
+function emitRectangle(emit, item) {
     const off = offset$1(item);
-    emit4("d", rectangle(null, item, off, off));
+    emit("d", rectangle(null, item, off, off));
 }
-function background(emit5, item) {
-    emit5("class", "background");
-    emit5("aria-hidden", true);
-    emitRectangle(emit5, item);
+function background(emit, item) {
+    emit("class", "background");
+    emit("aria-hidden", true);
+    emitRectangle(emit, item);
 }
-function foreground(emit6, item) {
-    emit6("class", "foreground");
-    emit6("aria-hidden", true);
-    if (item.strokeForeground) emitRectangle(emit6, item);
-    else emit6("d", "");
+function foreground(emit, item) {
+    emit("class", "foreground");
+    emit("aria-hidden", true);
+    if (item.strokeForeground) emitRectangle(emit, item);
+    else emit("d", "");
 }
-function content(emit7, item, renderer) {
+function content(emit, item, renderer) {
     const url = item.clip ? clip$1(renderer, item, item) : null;
-    emit7("clip-path", url);
+    emit("clip-path", url);
 }
-function bound$5(bounds7, group2) {
-    if (!group2.clip && group2.items) {
-        const items = group2.items, m = items.length;
-        for(let j = 0; j < m; ++j)bounds7.union(items[j].bounds);
+function bound$5(bounds, group) {
+    if (!group.clip && group.items) {
+        const items = group.items, m = items.length;
+        for(let j = 0; j < m; ++j)bounds.union(items[j].bounds);
     }
-    if ((group2.clip || group2.width || group2.height) && !group2.noBound) bounds7.add(0, 0).add(group2.width || 0, group2.height || 0);
-    boundStroke(bounds7, group2);
-    return bounds7.translate(group2.x || 0, group2.y || 0);
+    if ((group.clip || group.width || group.height) && !group.noBound) bounds.add(0, 0).add(group.width || 0, group.height || 0);
+    boundStroke(bounds, group);
+    return bounds.translate(group.x || 0, group.y || 0);
 }
-function rectanglePath(context40, group3, x31, y30) {
-    const off = offset$1(group3);
-    context40.beginPath();
-    rectangle(context40, group3, (x31 || 0) + off, (y30 || 0) + off);
+function rectanglePath(context, group, x, y) {
+    const off = offset$1(group);
+    context.beginPath();
+    rectangle(context, group, (x || 0) + off, (y || 0) + off);
 }
 const hitBackground = hitPath(rectanglePath);
 const hitForeground = hitPath(rectanglePath, false);
 const hitCorner = hitPath(rectanglePath, true);
-function draw$4(context41, scene, bounds8) {
-    visit(scene, (group4)=>{
-        const gx = group4.x || 0, gy = group4.y || 0, fore = group4.strokeForeground, opacity = group4.opacity == null ? 1 : group4.opacity; // draw group background
-        if ((group4.stroke || group4.fill) && opacity) {
-            rectanglePath(context41, group4, gx, gy);
-            blend(context41, group4);
-            if (group4.fill && fill(context41, group4, opacity)) context41.fill();
-            if (group4.stroke && !fore && stroke(context41, group4, opacity)) context41.stroke();
+function draw$4(context, scene, bounds) {
+    visit(scene, (group)=>{
+        const gx = group.x || 0, gy = group.y || 0, fore = group.strokeForeground, opacity = group.opacity == null ? 1 : group.opacity; // draw group background
+        if ((group.stroke || group.fill) && opacity) {
+            rectanglePath(context, group, gx, gy);
+            blend(context, group);
+            if (group.fill && fill(context, group, opacity)) context.fill();
+            if (group.stroke && !fore && stroke(context, group, opacity)) context.stroke();
         } // setup graphics context, set clip and bounds
-        context41.save();
-        context41.translate(gx, gy);
-        if (group4.clip) clipGroup(context41, group4);
-        if (bounds8) bounds8.translate(-gx, -gy); // draw group contents
-        visit(group4, (item)=>{
-            this.draw(context41, item, bounds8);
+        context.save();
+        context.translate(gx, gy);
+        if (group.clip) clipGroup(context, group);
+        if (bounds) bounds.translate(-gx, -gy); // draw group contents
+        visit(group, (item)=>{
+            this.draw(context, item, bounds);
         }); // restore graphics context
-        if (bounds8) bounds8.translate(gx, gy);
-        context41.restore(); // draw group foreground
-        if (fore && group4.stroke && opacity) {
-            rectanglePath(context41, group4, gx, gy);
-            blend(context41, group4);
-            if (stroke(context41, group4, opacity)) context41.stroke();
+        if (bounds) bounds.translate(gx, gy);
+        context.restore(); // draw group foreground
+        if (fore && group.stroke && opacity) {
+            rectanglePath(context, group, gx, gy);
+            blend(context, group);
+            if (stroke(context, group, opacity)) context.stroke();
         }
     });
 }
-function pick(context42, scene, x32, y31, gx, gy) {
+function pick(context, scene, x, y, gx, gy) {
     if (scene.bounds && !scene.bounds.contains(gx, gy) || !scene.items) return null;
-    const cx = x32 * context42.pixelRatio, cy = y31 * context42.pixelRatio;
-    return pickVisit(scene, (group5)=>{
-        let hit4, dx, dy; // first hit test bounding box
-        const b14 = group5.bounds;
-        if (b14 && !b14.contains(gx, gy)) return; // passed bounds check, test rectangular clip
-        dx = group5.x || 0;
-        dy = group5.y || 0;
-        const dw = dx + (group5.width || 0), dh = dy + (group5.height || 0), c = group5.clip;
+    const cx = x * context.pixelRatio, cy = y * context.pixelRatio;
+    return pickVisit(scene, (group)=>{
+        let hit, dx, dy; // first hit test bounding box
+        const b = group.bounds;
+        if (b && !b.contains(gx, gy)) return; // passed bounds check, test rectangular clip
+        dx = group.x || 0;
+        dy = group.y || 0;
+        const dw = dx + (group.width || 0), dh = dy + (group.height || 0), c = group.clip;
         if (c && (gx < dx || gx > dw || gy < dy || gy > dh)) return; // adjust coordinate system
-        context42.save();
-        context42.translate(dx, dy);
+        context.save();
+        context.translate(dx, dy);
         dx = gx - dx;
         dy = gy - dy; // test background for rounded corner clip
-        if (c && hasCornerRadius(group5) && !hitCorner(context42, group5, cx, cy)) {
-            context42.restore();
+        if (c && hasCornerRadius(group) && !hitCorner(context, group, cx, cy)) {
+            context.restore();
             return null;
         }
-        const fore = group5.strokeForeground, ix = scene.interactive !== false; // hit test against group foreground
-        if (ix && fore && group5.stroke && hitForeground(context42, group5, cx, cy)) {
-            context42.restore();
-            return group5;
+        const fore = group.strokeForeground, ix = scene.interactive !== false; // hit test against group foreground
+        if (ix && fore && group.stroke && hitForeground(context, group, cx, cy)) {
+            context.restore();
+            return group;
         } // hit test against contained marks
-        hit4 = pickVisit(group5, (mark)=>pickMark(mark, dx, dy) ? this.pick(mark, x32, y31, dx, dy) : null); // hit test against group background
-        if (!hit4 && ix && (group5.fill || !fore && group5.stroke) && hitBackground(context42, group5, cx, cy)) hit4 = group5;
+        hit = pickVisit(group, (mark)=>pickMark(mark, dx, dy) ? this.pick(mark, x, y, dx, dy) : null); // hit test against group background
+        if (!hit && ix && (group.fill || !fore && group.stroke) && hitBackground(context, group, cx, cy)) hit = group;
          // restore state and return
-        context42.restore();
-        return hit4 || null;
+        context.restore();
+        return hit || null;
     });
 }
-function pickMark(mark, x33, y32) {
-    return (mark.interactive !== false || mark.marktype === "group") && mark.bounds && mark.bounds.contains(x33, y32);
+function pickMark(mark, x, y) {
+    return (mark.interactive !== false || mark.marktype === "group") && mark.bounds && mark.bounds.contains(x, y);
 }
 var group = {
     type: "group",
@@ -16583,72 +16583,72 @@ var metadata = {
     "version": "1.1"
 };
 function getImage(item, renderer) {
-    var image2 = item.image;
-    if (!image2 || item.url && item.url !== image2.url) {
-        image2 = {
+    var image = item.image;
+    if (!image || item.url && item.url !== image.url) {
+        image = {
             complete: false,
             width: 0,
             height: 0
         };
-        renderer.loadImage(item.url).then((image3)=>{
-            item.image = image3;
+        renderer.loadImage(item.url).then((image)=>{
+            item.image = image;
             item.image.url = item.url;
         });
     }
-    return image2;
+    return image;
 }
-function imageWidth(item, image4) {
-    return item.width != null ? item.width : !image4 || !image4.width ? 0 : item.aspect !== false && item.height ? item.height * image4.width / image4.height : image4.width;
+function imageWidth(item, image) {
+    return item.width != null ? item.width : !image || !image.width ? 0 : item.aspect !== false && item.height ? item.height * image.width / image.height : image.width;
 }
-function imageHeight(item, image5) {
-    return item.height != null ? item.height : !image5 || !image5.height ? 0 : item.aspect !== false && item.width ? item.width * image5.height / image5.width : image5.height;
+function imageHeight(item, image) {
+    return item.height != null ? item.height : !image || !image.height ? 0 : item.aspect !== false && item.width ? item.width * image.height / image.width : image.height;
 }
-function imageXOffset(align, w6) {
-    return align === "center" ? w6 / 2 : align === "right" ? w6 : 0;
+function imageXOffset(align, w) {
+    return align === "center" ? w / 2 : align === "right" ? w : 0;
 }
-function imageYOffset(baseline, h11) {
-    return baseline === "middle" ? h11 / 2 : baseline === "bottom" ? h11 : 0;
+function imageYOffset(baseline, h) {
+    return baseline === "middle" ? h / 2 : baseline === "bottom" ? h : 0;
 }
-function attr$4(emit8, item, renderer) {
-    const img = getImage(item, renderer), w7 = imageWidth(item, img), h12 = imageHeight(item, img), x34 = (item.x || 0) - imageXOffset(item.align, w7), y33 = (item.y || 0) - imageYOffset(item.baseline, h12), i = !img.src && img.toDataURL ? img.toDataURL() : img.src || "";
-    emit8("href", i, metadata["xmlns:xlink"], "xlink:href");
-    emit8("transform", translate(x34, y33));
-    emit8("width", w7);
-    emit8("height", h12);
-    emit8("preserveAspectRatio", item.aspect === false ? "none" : "xMidYMid");
+function attr$4(emit, item, renderer) {
+    const img = getImage(item, renderer), w = imageWidth(item, img), h = imageHeight(item, img), x = (item.x || 0) - imageXOffset(item.align, w), y = (item.y || 0) - imageYOffset(item.baseline, h), i = !img.src && img.toDataURL ? img.toDataURL() : img.src || "";
+    emit("href", i, metadata["xmlns:xlink"], "xlink:href");
+    emit("transform", translate(x, y));
+    emit("width", w);
+    emit("height", h);
+    emit("preserveAspectRatio", item.aspect === false ? "none" : "xMidYMid");
 }
-function bound$4(bounds9, item) {
-    const img = item.image, w8 = imageWidth(item, img), h13 = imageHeight(item, img), x35 = (item.x || 0) - imageXOffset(item.align, w8), y34 = (item.y || 0) - imageYOffset(item.baseline, h13);
-    return bounds9.set(x35, y34, x35 + w8, y34 + h13);
+function bound$4(bounds, item) {
+    const img = item.image, w = imageWidth(item, img), h = imageHeight(item, img), x = (item.x || 0) - imageXOffset(item.align, w), y = (item.y || 0) - imageYOffset(item.baseline, h);
+    return bounds.set(x, y, x + w, y + h);
 }
-function draw$3(context43, scene, bounds10) {
+function draw$3(context, scene, bounds) {
     visit(scene, (item)=>{
-        if (bounds10 && !bounds10.intersects(item.bounds)) return; // bounds check
+        if (bounds && !bounds.intersects(item.bounds)) return; // bounds check
         const img = getImage(item, this);
-        let w9 = imageWidth(item, img);
-        let h14 = imageHeight(item, img);
-        if (w9 === 0 || h14 === 0) return; // early exit
-        let x36 = (item.x || 0) - imageXOffset(item.align, w9), y35 = (item.y || 0) - imageYOffset(item.baseline, h14), opacity, ar0, ar1, t;
+        let w = imageWidth(item, img);
+        let h = imageHeight(item, img);
+        if (w === 0 || h === 0) return; // early exit
+        let x = (item.x || 0) - imageXOffset(item.align, w), y = (item.y || 0) - imageYOffset(item.baseline, h), opacity, ar0, ar1, t;
         if (item.aspect !== false) {
             ar0 = img.width / img.height;
             ar1 = item.width / item.height;
             if (ar0 === ar0 && ar1 === ar1 && ar0 !== ar1) {
                 if (ar1 < ar0) {
-                    t = w9 / ar0;
-                    y35 += (h14 - t) / 2;
-                    h14 = t;
+                    t = w / ar0;
+                    y += (h - t) / 2;
+                    h = t;
                 } else {
-                    t = h14 * ar0;
-                    x36 += (w9 - t) / 2;
-                    w9 = t;
+                    t = h * ar0;
+                    x += (w - t) / 2;
+                    w = t;
                 }
             }
         }
         if (img.complete || img.toDataURL) {
-            blend(context43, item);
-            context43.globalAlpha = (opacity = item.opacity) != null ? opacity : 1;
-            context43.imageSmoothingEnabled = item.smooth !== false;
-            context43.drawImage(img, x36, y35, w9, h14);
+            blend(context, item);
+            context.globalAlpha = (opacity = item.opacity) != null ? opacity : 1;
+            context.imageSmoothingEnabled = item.smooth !== false;
+            context.drawImage(img, x, y, w, h);
         }
     });
 }
@@ -16667,27 +16667,27 @@ var image = {
     yOffset: imageYOffset
 };
 var line = markMultiItemPath("line", line$1, pickLine);
-function attr$3(emit9, item) {
+function attr$3(emit, item) {
     var sx = item.scaleX || 1, sy = item.scaleY || 1;
-    if (sx !== 1 || sy !== 1) emit9("vector-effect", "non-scaling-stroke");
-    emit9("transform", transformItem(item));
-    emit9("d", item.path);
+    if (sx !== 1 || sy !== 1) emit("vector-effect", "non-scaling-stroke");
+    emit("transform", transformItem(item));
+    emit("d", item.path);
 }
-function path$1(context44, item) {
-    var path9 = item.path;
-    if (path9 == null) return true;
-    var x37 = item.x || 0, y36 = item.y || 0, sx = item.scaleX || 1, sy = item.scaleY || 1, a = (item.angle || 0) * DegToRad, cache = item.pathCache;
-    if (!cache || cache.path !== path9) (item.pathCache = cache = pathParse(path9)).path = path9;
-    if (a && context44.rotate && context44.translate) {
-        context44.translate(x37, y36);
-        context44.rotate(a);
-        pathRender(context44, cache, 0, 0, sx, sy);
-        context44.rotate(-a);
-        context44.translate(-x37, -y36);
-    } else pathRender(context44, cache, x37, y36, sx, sy);
+function path$1(context, item) {
+    var path = item.path;
+    if (path == null) return true;
+    var x = item.x || 0, y = item.y || 0, sx = item.scaleX || 1, sy = item.scaleY || 1, a = (item.angle || 0) * DegToRad, cache = item.pathCache;
+    if (!cache || cache.path !== path) (item.pathCache = cache = pathParse(path)).path = path;
+    if (a && context.rotate && context.translate) {
+        context.translate(x, y);
+        context.rotate(a);
+        pathRender(context, cache, 0, 0, sx, sy);
+        context.rotate(-a);
+        context.translate(-x, -y);
+    } else pathRender(context, cache, x, y, sx, sy);
 }
-function bound$3(bounds11, item) {
-    return path$1(boundContext(bounds11, item.angle), item) ? bounds11.set(0, 0, 0, 0) : boundStroke(bounds11, item, true);
+function bound$3(bounds, item) {
+    return path$1(boundContext(bounds, item.angle), item) ? bounds.set(0, 0, 0, 0) : boundStroke(bounds, item, true);
 }
 var path$2 = {
     type: "path",
@@ -16699,16 +16699,16 @@ var path$2 = {
     pick: pickPath(path$1),
     isect: intersectPath(path$1)
 };
-function attr$2(emit10, item) {
-    emit10("d", rectangle(null, item));
+function attr$2(emit, item) {
+    emit("d", rectangle(null, item));
 }
-function bound$2(bounds12, item) {
-    var x38, y37;
-    return boundStroke(bounds12.set(x38 = item.x || 0, y37 = item.y || 0, x38 + item.width || 0, y37 + item.height || 0), item);
+function bound$2(bounds, item) {
+    var x, y;
+    return boundStroke(bounds.set(x = item.x || 0, y = item.y || 0, x + item.width || 0, y + item.height || 0), item);
 }
-function draw$2(context45, item) {
-    context45.beginPath();
-    rectangle(context45, item);
+function draw$2(context, item) {
+    context.beginPath();
+    rectangle(context, item);
 }
 var rect = {
     type: "rect",
@@ -16720,42 +16720,42 @@ var rect = {
     pick: pickPath(draw$2),
     isect: intersectRect
 };
-function attr$1(emit11, item) {
-    emit11("transform", translateItem(item));
-    emit11("x2", item.x2 != null ? item.x2 - (item.x || 0) : 0);
-    emit11("y2", item.y2 != null ? item.y2 - (item.y || 0) : 0);
+function attr$1(emit, item) {
+    emit("transform", translateItem(item));
+    emit("x2", item.x2 != null ? item.x2 - (item.x || 0) : 0);
+    emit("y2", item.y2 != null ? item.y2 - (item.y || 0) : 0);
 }
-function bound$1(bounds13, item) {
+function bound$1(bounds, item) {
     var x1, y1;
-    return boundStroke(bounds13.set(x1 = item.x || 0, y1 = item.y || 0, item.x2 != null ? item.x2 : x1, item.y2 != null ? item.y2 : y1), item);
+    return boundStroke(bounds.set(x1 = item.x || 0, y1 = item.y || 0, item.x2 != null ? item.x2 : x1, item.y2 != null ? item.y2 : y1), item);
 }
-function path(context46, item, opacity) {
+function path(context, item, opacity) {
     var x1, y1, x2, y2;
-    if (item.stroke && stroke(context46, item, opacity)) {
+    if (item.stroke && stroke(context, item, opacity)) {
         x1 = item.x || 0;
         y1 = item.y || 0;
         x2 = item.x2 != null ? item.x2 : x1;
         y2 = item.y2 != null ? item.y2 : y1;
-        context46.beginPath();
-        context46.moveTo(x1, y1);
-        context46.lineTo(x2, y2);
+        context.beginPath();
+        context.moveTo(x1, y1);
+        context.lineTo(x2, y2);
         return true;
     }
     return false;
 }
-function draw$1(context47, scene, bounds14) {
+function draw$1(context, scene, bounds) {
     visit(scene, (item)=>{
-        if (bounds14 && !bounds14.intersects(item.bounds)) return; // bounds check
+        if (bounds && !bounds.intersects(item.bounds)) return; // bounds check
         var opacity = item.opacity == null ? 1 : item.opacity;
-        if (opacity && path(context47, item, opacity)) {
-            blend(context47, item);
-            context47.stroke();
+        if (opacity && path(context, item, opacity)) {
+            blend(context, item);
+            context.stroke();
         }
     });
 }
-function hit$1(context48, item, x39, y38) {
-    if (!context48.isPointInStroke) return false;
-    return path(context48, item, 1) && context48.isPointInStroke(x39, y38);
+function hit$1(context, item, x, y) {
+    if (!context.isPointInStroke) return false;
+    return path(context, item, 1) && context.isPointInStroke(x, y);
 }
 var rule = {
     type: "rule",
@@ -16781,21 +16781,21 @@ useCanvas(true);
 function useCanvas(use) {
     textMetrics.width = use && context ? measureWidth : estimateWidth;
 } // make simple estimate if no canvas is available
-function estimateWidth(item, text1) {
-    return _estimateWidth(textValue(item, text1), fontSize(item));
+function estimateWidth(item, text) {
+    return _estimateWidth(textValue(item, text), fontSize(item));
 }
-function _estimateWidth(text2, currentFontHeight) {
-    return ~~(0.8 * text2.length * currentFontHeight);
+function _estimateWidth(text, currentFontHeight) {
+    return ~~(0.8 * text.length * currentFontHeight);
 } // measure text width if canvas is available
-function measureWidth(item, text3) {
-    return fontSize(item) <= 0 || !(text3 = textValue(item, text3)) ? 0 : _measureWidth(text3, font(item));
+function measureWidth(item, text) {
+    return fontSize(item) <= 0 || !(text = textValue(item, text)) ? 0 : _measureWidth(text, font(item));
 }
-function _measureWidth(text4, currentFont) {
-    const key = `(${currentFont}) ${text4}`;
+function _measureWidth(text, currentFont) {
+    const key = `(${currentFont}) ${text}`;
     let width = widthCache.get(key);
     if (width === undefined) {
         context.font = currentFont;
-        width = context.measureText(text4).width;
+        width = context.measureText(text).width;
         widthCache.set(key, width);
     }
     return width;
@@ -16813,48 +16813,48 @@ function textLines(item) {
     return lineArray(item.lineBreak && item.text && !(0, _vegaUtil.isArray)(item.text) ? item.text.split(item.lineBreak) : item.text);
 }
 function multiLineOffset(item) {
-    const tl3 = textLines(item);
-    return ((0, _vegaUtil.isArray)(tl3) ? tl3.length - 1 : 0) * lineHeight(item);
+    const tl = textLines(item);
+    return ((0, _vegaUtil.isArray)(tl) ? tl.length - 1 : 0) * lineHeight(item);
 }
-function textValue(item, line1) {
-    const text5 = line1 == null ? "" : (line1 + "").trim();
-    return item.limit > 0 && text5.length ? truncate(item, text5) : text5;
+function textValue(item, line) {
+    const text = line == null ? "" : (line + "").trim();
+    return item.limit > 0 && text.length ? truncate(item, text) : text;
 }
 function widthGetter(item) {
     if (textMetrics.width === measureWidth) {
         // we are using canvas
         const currentFont = font(item);
-        return (text6)=>_measureWidth(text6, currentFont);
+        return (text)=>_measureWidth(text, currentFont);
     } else {
         // we are relying on estimates
         const currentFontHeight = fontSize(item);
-        return (text7)=>_estimateWidth(text7, currentFontHeight);
+        return (text)=>_estimateWidth(text, currentFontHeight);
     }
 }
-function truncate(item, text8) {
+function truncate(item, text) {
     var limit = +item.limit, width = widthGetter(item);
-    if (width(text8) < limit) return text8;
-    var ellipsis = item.ellipsis || "\u2026", rtl = item.dir === "rtl", lo = 0, hi = text8.length, mid;
+    if (width(text) < limit) return text;
+    var ellipsis = item.ellipsis || "…", rtl = item.dir === "rtl", lo = 0, hi = text.length, mid;
     limit -= width(ellipsis);
     if (rtl) {
         while(lo < hi){
             mid = lo + hi >>> 1;
-            if (width(text8.slice(mid)) > limit) lo = mid + 1;
+            if (width(text.slice(mid)) > limit) lo = mid + 1;
             else hi = mid;
         }
-        return ellipsis + text8.slice(lo);
+        return ellipsis + text.slice(lo);
     } else {
         while(lo < hi){
             mid = 1 + (lo + hi >>> 1);
-            if (width(text8.slice(0, mid)) < limit) lo = mid;
+            if (width(text.slice(0, mid)) < limit) lo = mid;
             else hi = mid - 1;
         }
-        return text8.slice(0, lo) + ellipsis;
+        return text.slice(0, lo) + ellipsis;
     }
 }
 function fontFamily(item, quote) {
-    var font1 = item.font;
-    return (quote && font1 ? String(font1).replace(/"/g, "'") : font1) || "sans-serif";
+    var font = item.font;
+    return (quote && font ? String(font).replace(/"/g, "'") : font) || "sans-serif";
 }
 function font(item, quote) {
     return "" + (item.fontStyle ? item.fontStyle + " " : "") + (item.fontVariant ? item.fontVariant + " " : "") + (item.fontWeight ? item.fontWeight + " " : "") + fontSize(item) + "px " + fontFamily(item, quote);
@@ -16863,8 +16863,8 @@ function offset(item) {
     // perform our own font baseline calculation
     // why? not all browsers support SVG 1.1 'alignment-baseline' :(
     // this also ensures consistent layout across renderers
-    var baseline = item.baseline, h15 = fontSize(item);
-    return Math.round(baseline === "top" ? 0.79 * h15 : baseline === "middle" ? 0.30 * h15 : baseline === "bottom" ? -0.21 * h15 : baseline === "line-top" ? 0.29 * h15 + 0.5 * lineHeight(item) : baseline === "line-bottom" ? 0.29 * h15 - 0.5 * lineHeight(item) : 0);
+    var baseline = item.baseline, h = fontSize(item);
+    return Math.round(baseline === "top" ? 0.79 * h : baseline === "middle" ? 0.30 * h : baseline === "bottom" ? -0.21 * h : baseline === "line-top" ? 0.29 * h + 0.5 * lineHeight(item) : baseline === "line-bottom" ? 0.29 * h - 0.5 * lineHeight(item) : 0);
 }
 const textAlign = {
     "left": "start",
@@ -16873,82 +16873,82 @@ const textAlign = {
 };
 const tempBounds = new Bounds();
 function anchorPoint(item) {
-    var x40 = item.x || 0, y39 = item.y || 0, r = item.radius || 0, t;
+    var x = item.x || 0, y = item.y || 0, r = item.radius || 0, t;
     if (r) {
         t = (item.theta || 0) - HalfPi;
-        x40 += r * Math.cos(t);
-        y39 += r * Math.sin(t);
+        x += r * Math.cos(t);
+        y += r * Math.sin(t);
     }
-    tempBounds.x1 = x40;
-    tempBounds.y1 = y39;
+    tempBounds.x1 = x;
+    tempBounds.y1 = y;
     return tempBounds;
 }
-function attr(emit12, item) {
-    var dx = item.dx || 0, dy = (item.dy || 0) + offset(item), p = anchorPoint(item), x41 = p.x1, y40 = p.y1, a = item.angle || 0, t;
-    emit12("text-anchor", textAlign[item.align] || "start");
+function attr(emit, item) {
+    var dx = item.dx || 0, dy = (item.dy || 0) + offset(item), p = anchorPoint(item), x = p.x1, y = p.y1, a = item.angle || 0, t;
+    emit("text-anchor", textAlign[item.align] || "start");
     if (a) {
-        t = translate(x41, y40) + " " + rotate(a);
+        t = translate(x, y) + " " + rotate(a);
         if (dx || dy) t += " " + translate(dx, dy);
-    } else t = translate(x41 + dx, y40 + dy);
-    emit12("transform", t);
+    } else t = translate(x + dx, y + dy);
+    emit("transform", t);
 }
-function bound(bounds15, item, mode) {
-    var h16 = textMetrics.height(item), a = item.align, p = anchorPoint(item), x42 = p.x1, y41 = p.y1, dx = item.dx || 0, dy = (item.dy || 0) + offset(item) - Math.round(0.8 * h16), // use 4/5 offset
-    tl4 = textLines(item), w10; // get dimensions
-    if ((0, _vegaUtil.isArray)(tl4)) {
+function bound(bounds, item, mode) {
+    var h = textMetrics.height(item), a = item.align, p = anchorPoint(item), x = p.x1, y = p.y1, dx = item.dx || 0, dy = (item.dy || 0) + offset(item) - Math.round(0.8 * h), // use 4/5 offset
+    tl = textLines(item), w; // get dimensions
+    if ((0, _vegaUtil.isArray)(tl)) {
         // multi-line text
-        h16 += lineHeight(item) * (tl4.length - 1);
-        w10 = tl4.reduce((w11, t)=>Math.max(w11, textMetrics.width(item, t)), 0);
+        h += lineHeight(item) * (tl.length - 1);
+        w = tl.reduce((w, t)=>Math.max(w, textMetrics.width(item, t)), 0);
     } else // single-line text
-    w10 = textMetrics.width(item, tl4);
+    w = textMetrics.width(item, tl);
      // horizontal alignment
-    if (a === "center") dx -= w10 / 2;
-    else if (a === "right") dx -= w10;
-    bounds15.set(dx += x42, dy += y41, dx + w10, dy + h16);
-    if (item.angle && !mode) bounds15.rotate(item.angle * DegToRad, x42, y41);
-    else if (mode === 2) return bounds15.rotatedPoints(item.angle * DegToRad, x42, y41);
-    return bounds15;
+    if (a === "center") dx -= w / 2;
+    else if (a === "right") dx -= w;
+    bounds.set(dx += x, dy += y, dx + w, dy + h);
+    if (item.angle && !mode) bounds.rotate(item.angle * DegToRad, x, y);
+    else if (mode === 2) return bounds.rotatedPoints(item.angle * DegToRad, x, y);
+    return bounds;
 }
-function draw(context49, scene, bounds16) {
+function draw(context, scene, bounds) {
     visit(scene, (item)=>{
-        var opacity = item.opacity == null ? 1 : item.opacity, p, x43, y42, i, lh, tl5, str;
-        if (bounds16 && !bounds16.intersects(item.bounds) || opacity === 0 || item.fontSize <= 0 || item.text == null || item.text.length === 0) return;
-        context49.font = font(item);
-        context49.textAlign = item.align || "left";
+        var opacity = item.opacity == null ? 1 : item.opacity, p, x, y, i, lh, tl, str;
+        if (bounds && !bounds.intersects(item.bounds) || opacity === 0 || item.fontSize <= 0 || item.text == null || item.text.length === 0) return;
+        context.font = font(item);
+        context.textAlign = item.align || "left";
         p = anchorPoint(item);
-        x43 = p.x1, y42 = p.y1;
+        x = p.x1, y = p.y1;
         if (item.angle) {
-            context49.save();
-            context49.translate(x43, y42);
-            context49.rotate(item.angle * DegToRad);
-            x43 = y42 = 0; // reset x, y
+            context.save();
+            context.translate(x, y);
+            context.rotate(item.angle * DegToRad);
+            x = y = 0; // reset x, y
         }
-        x43 += item.dx || 0;
-        y42 += (item.dy || 0) + offset(item);
-        tl5 = textLines(item);
-        blend(context49, item);
-        if ((0, _vegaUtil.isArray)(tl5)) {
+        x += item.dx || 0;
+        y += (item.dy || 0) + offset(item);
+        tl = textLines(item);
+        blend(context, item);
+        if ((0, _vegaUtil.isArray)(tl)) {
             lh = lineHeight(item);
-            for(i = 0; i < tl5.length; ++i){
-                str = textValue(item, tl5[i]);
-                if (item.fill && fill(context49, item, opacity)) context49.fillText(str, x43, y42);
-                if (item.stroke && stroke(context49, item, opacity)) context49.strokeText(str, x43, y42);
-                y42 += lh;
+            for(i = 0; i < tl.length; ++i){
+                str = textValue(item, tl[i]);
+                if (item.fill && fill(context, item, opacity)) context.fillText(str, x, y);
+                if (item.stroke && stroke(context, item, opacity)) context.strokeText(str, x, y);
+                y += lh;
             }
         } else {
-            str = textValue(item, tl5);
-            if (item.fill && fill(context49, item, opacity)) context49.fillText(str, x43, y42);
-            if (item.stroke && stroke(context49, item, opacity)) context49.strokeText(str, x43, y42);
+            str = textValue(item, tl);
+            if (item.fill && fill(context, item, opacity)) context.fillText(str, x, y);
+            if (item.stroke && stroke(context, item, opacity)) context.strokeText(str, x, y);
         }
-        if (item.angle) context49.restore();
+        if (item.angle) context.restore();
     });
 }
 function hit(context, item, x, y, gx, gy) {
     if (item.fontSize <= 0) return false;
     if (!item.angle) return true; // bounds sufficient if no rotation
     // project point into space of unrotated bounds
-    var p = anchorPoint(item), ax = p.x1, ay = p.y1, b15 = bound(tempBounds, item, 1), a = -item.angle * DegToRad, cos = Math.cos(a), sin = Math.sin(a), px4 = cos * gx - sin * gy + (ax - cos * ax + sin * ay), py4 = sin * gx + cos * gy + (ay - sin * ax - cos * ay);
-    return b15.contains(px4, py4);
+    var p = anchorPoint(item), ax = p.x1, ay = p.y1, b = bound(tempBounds, item, 1), a = -item.angle * DegToRad, cos = Math.cos(a), sin = Math.sin(a), px = cos * gx - sin * gy + (ax - cos * ax + sin * ay), py = sin * gx + cos * gy + (ay - sin * ax - cos * ay);
+    return b.contains(px, py);
 }
 function intersectText(item, box) {
     const p = bound(tempBounds, item, 2);
@@ -16980,29 +16980,29 @@ var Marks = {
     trail: trail
 };
 function boundItem(item, func, opt) {
-    var type5 = Marks[item.mark.marktype], bound3 = func || type5.bound;
-    if (type5.nested) item = item.mark;
-    return bound3(item.bounds || (item.bounds = new Bounds()), item, opt);
+    var type = Marks[item.mark.marktype], bound = func || type.bound;
+    if (type.nested) item = item.mark;
+    return bound(item.bounds || (item.bounds = new Bounds()), item, opt);
 }
 var DUMMY = {
     mark: null
 };
-function boundMark(mark, bounds17, opt) {
-    var type6 = Marks[mark.marktype], bound4 = type6.bound, items = mark.items, hasItems = items && items.length, i, n, item, b16;
-    if (type6.nested) {
+function boundMark(mark, bounds, opt) {
+    var type = Marks[mark.marktype], bound = type.bound, items = mark.items, hasItems = items && items.length, i, n, item, b;
+    if (type.nested) {
         if (hasItems) item = items[0];
         else {
             // no items, fake it
             DUMMY.mark = mark;
             item = DUMMY;
         }
-        b16 = boundItem(item, bound4, opt);
-        bounds17 = bounds17 && bounds17.union(b16) || b16;
-        return bounds17;
+        b = boundItem(item, bound, opt);
+        bounds = bounds && bounds.union(b) || b;
+        return bounds;
     }
-    bounds17 = bounds17 || mark.bounds && mark.bounds.clear() || new Bounds();
-    if (hasItems) for(i = 0, n = items.length; i < n; ++i)bounds17.union(boundItem(items[i], bound4, opt));
-    return mark.bounds = bounds17;
+    bounds = bounds || mark.bounds && mark.bounds.clear() || new Bounds();
+    if (hasItems) for(i = 0, n = items.length; i < n; ++i)bounds.union(boundItem(items[i], bound, opt));
+    return mark.bounds = bounds;
 }
 const keys = [
     "marktype",
@@ -17083,14 +17083,14 @@ function sceneFromJSON(json) {
     return initialize(scene);
 }
 function initialize(scene) {
-    var type7 = scene.marktype, items = scene.items, parent, i, n;
+    var type = scene.marktype, items = scene.items, parent, i, n;
     if (items) for(i = 0, n = items.length; i < n; ++i){
-        parent = type7 ? "mark" : "group";
+        parent = type ? "mark" : "group";
         items[i][parent] = scene;
         if (items[i].zindex) items[i][parent].zdirty = true;
-        if ("group" === (type7 || parent)) initialize(items[i]);
+        if ("group" === (type || parent)) initialize(items[i]);
     }
-    if (type7) boundMark(scene);
+    if (type) boundMark(scene);
     return scene;
 }
 function Scenegraph(scene) {
@@ -17110,28 +17110,28 @@ Scenegraph.prototype = {
     toJSON (indent) {
         return sceneToJSON(this.root, indent || 0);
     },
-    mark (markdef, group6, index) {
-        group6 = group6 || this.root.items[0];
-        const mark = createMark(markdef, group6);
-        group6.items[index] = mark;
+    mark (markdef, group, index) {
+        group = group || this.root.items[0];
+        const mark = createMark(markdef, group);
+        group.items[index] = mark;
         if (mark.zindex) mark.group.zdirty = true;
         return mark;
     }
 };
-function createMark(def2, group7) {
+function createMark(def, group) {
     const mark = {
         bounds: new Bounds(),
-        clip: !!def2.clip,
-        group: group7,
-        interactive: def2.interactive === false ? false : true,
+        clip: !!def.clip,
+        group: group,
+        interactive: def.interactive === false ? false : true,
         items: [],
-        marktype: def2.marktype,
-        name: def2.name || undefined,
-        role: def2.role || undefined,
-        zindex: def2.zindex || 0
+        marktype: def.marktype,
+        name: def.name || undefined,
+        role: def.role || undefined,
+        zindex: def.zindex || 0
     }; // add accessibility properties if defined
-    if (def2.aria != null) mark.aria = def2.aria;
-    if (def2.description) mark.description = def2.description;
+    if (def.aria != null) mark.aria = def.aria;
+    if (def.description) mark.description = def.description;
     return mark;
 }
 // create a new DOM element
@@ -17146,11 +17146,11 @@ function domFind(el, tag) {
 } // retrieve child element at given index
 // create & insert if doesn't exist or if tags do not match
 function domChild(el, index, tag, ns) {
-    var a = el.childNodes[index], b17;
+    var a = el.childNodes[index], b;
     if (!a || a.tagName.toLowerCase() !== tag.toLowerCase()) {
-        b17 = a || null;
+        b = a || null;
         a = domCreate(el.ownerDocument, tag, ns);
-        el.insertBefore(a, b17);
+        el.insertBefore(a, b);
     }
     return a;
 } // remove all child elements at or above the given index
@@ -17163,10 +17163,10 @@ function cssClass(mark) {
     return "mark-" + mark.marktype + (mark.role ? " role-" + mark.role : "") + (mark.name ? " " + mark.name : "");
 }
 function point(event, el) {
-    const rect1 = el.getBoundingClientRect();
+    const rect = el.getBoundingClientRect();
     return [
-        event.clientX - rect1.left - (el.clientLeft || 0),
-        event.clientY - rect1.top - (el.clientTop || 0)
+        event.clientX - rect.left - (el.clientLeft || 0),
+        event.clientY - rect.top - (el.clientTop || 0)
     ];
 }
 function resolveItem(item, event, el, origin) {
@@ -17198,8 +17198,8 @@ function resolveItem(item, event, el, origin) {
     this._tooltip = customTooltip || defaultTooltip;
 } // The default tooltip display handler.
 // Sets the HTML title attribute on the visualization container.
-function defaultTooltip(handler, event, item, value6) {
-    handler.element().setAttribute("title", value6 || "");
+function defaultTooltip(handler, event, item, value) {
+    handler.element().setAttribute("title", value || "");
 }
 Handler.prototype = {
     /**
@@ -17258,9 +17258,9 @@ Handler.prototype = {
    * @param {string} type - The event type.
    * @param {function} handler - The event handler instance to find.
    * @return {number} - The handler's array index or -1 if not registered.
-   */ _handlerIndex (h17, type8, handler) {
-        for(let i = h17 ? h17.length : 0; --i >= 0;){
-            if (h17[i].type === type8 && (!handler || h17[i].handler === handler)) return i;
+   */ _handlerIndex (h, type, handler) {
+        for(let i = h ? h.length : 0; --i >= 0;){
+            if (h[i].type === type && (!handler || h[i].handler === handler)) return i;
         }
         return -1;
     },
@@ -17271,10 +17271,10 @@ Handler.prototype = {
    *   be ignored and the method returns all "click" handlers. If type is
    *   null or unspecified, this method returns handlers for all types.
    * @return {Array} - A new array containing all registered event handlers.
-   */ handlers (type9) {
-        const h18 = this._handlers, a = [];
-        if (type9) a.push(...h18[this.eventName(type9)]);
-        else for(const k in h18)a.push(...h18[k]);
+   */ handlers (type) {
+        const h = this._handlers, a = [];
+        if (type) a.push(...h[this.eventName(type)]);
+        else for(const k in h)a.push(...h[k]);
         return a;
     },
     /**
@@ -17291,8 +17291,8 @@ Handler.prototype = {
    * @param {Event} event - The event triggering hyperlink navigation.
    * @param {Item} item - The scenegraph item.
    * @param {string} href - The URL to navigate to.
-   */ handleHref (event, item, href1) {
-        this._loader.sanitize(href1, {
+   */ handleHref (event, item, href) {
+        this._loader.sanitize(href, {
             context: "href"
         }).then((opt)=>{
             const e = new MouseEvent(event.type, event), a = domCreate(null, "a");
@@ -17310,8 +17310,8 @@ Handler.prototype = {
    */ handleTooltip (event, item, show) {
         if (item && item.tooltip != null) {
             item = resolveItem(item, event, this.canvas(), this._origin);
-            const value7 = show && item && item.tooltip || null;
-            this._tooltip.call(this._obj, this, event, item, value7);
+            const value = show && item && item.tooltip || null;
+            this._tooltip.call(this._obj, this, event, item, value);
         }
     },
     /**
@@ -17324,21 +17324,21 @@ Handler.prototype = {
    */ getItemBoundingClientRect (item) {
         const el = this.canvas();
         if (!el) return;
-        const rect2 = el.getBoundingClientRect(), origin = this._origin, bounds18 = item.bounds, width = bounds18.width(), height = bounds18.height();
-        let x44 = bounds18.x1 + origin[0] + rect2.left, y43 = bounds18.y1 + origin[1] + rect2.top; // translate coordinate for each parent group
+        const rect = el.getBoundingClientRect(), origin = this._origin, bounds = item.bounds, width = bounds.width(), height = bounds.height();
+        let x = bounds.x1 + origin[0] + rect.left, y = bounds.y1 + origin[1] + rect.top; // translate coordinate for each parent group
         while(item.mark && (item = item.mark.group)){
-            x44 += item.x || 0;
-            y43 += item.y || 0;
+            x += item.x || 0;
+            y += item.y || 0;
         } // return DOMRect-compatible bounding box
         return {
-            x: x44,
-            y: y43,
+            x,
+            y,
             width,
             height,
-            left: x44,
-            top: y43,
-            right: x44 + width,
-            bottom: y43 + height
+            left: x,
+            top: y,
+            right: x + width,
+            bottom: y + height
         };
     }
 };
@@ -17535,21 +17535,21 @@ function CanvasHandler(loader, tooltip) {
     this._first = true;
     this._events = {};
 }
-const eventBundle = (type10)=>type10 === TouchStartEvent || type10 === TouchMoveEvent || type10 === TouchEndEvent ? [
+const eventBundle = (type)=>type === TouchStartEvent || type === TouchMoveEvent || type === TouchEndEvent ? [
         TouchStartEvent,
         TouchMoveEvent,
         TouchEndEvent
     ] : [
-        type10
+        type
     ]; // lazily add listeners to the canvas as needed
-function eventListenerCheck(handler, type11) {
-    eventBundle(type11).forEach((_)=>addEventListener(handler, _));
+function eventListenerCheck(handler, type) {
+    eventBundle(type).forEach((_)=>addEventListener(handler, _));
 }
-function addEventListener(handler, type12) {
+function addEventListener(handler, type) {
     const canvas = handler.canvas();
-    if (canvas && !handler._events[type12]) {
-        handler._events[type12] = 1;
-        canvas.addEventListener(type12, handler[type12] ? (evt)=>handler[type12](evt) : (evt)=>handler.fire(type12, evt));
+    if (canvas && !handler._events[type]) {
+        handler._events[type] = 1;
+        canvas.addEventListener(type, handler[type] ? (evt)=>handler[type](evt) : (evt)=>handler.fire(type, evt));
     }
 }
 function move(moveEvent, overEvent, outEvent) {
@@ -17568,9 +17568,9 @@ function move(moveEvent, overEvent, outEvent) {
         }
     };
 }
-function inactive(type13) {
+function inactive(type) {
     return function(evt) {
-        this.fire(type13, evt);
+        this.fire(type, evt);
         this._active = null;
     };
 }
@@ -17583,7 +17583,7 @@ function inactive(type13) {
             MouseMoveEvent,
             MouseOutEvent,
             DragLeaveEvent
-        ].forEach((type14)=>eventListenerCheck(this, type14));
+        ].forEach((type)=>eventListenerCheck(this, type));
         return Handler.prototype.initialize.call(this, el, origin, obj);
     },
     // return the backing canvas instance
@@ -17630,30 +17630,30 @@ function inactive(type13) {
         this._touch = null;
     },
     // fire an event
-    fire (type15, evt, touch) {
-        const a = touch ? this._touch : this._active, h19 = this._handlers[type15]; // set event type relative to scenegraph items
-        evt.vegaType = type15; // handle hyperlinks and tooltips first
-        if (type15 === HrefEvent && a && a.href) this.handleHref(evt, a, a.href);
-        else if (type15 === TooltipShowEvent || type15 === TooltipHideEvent) this.handleTooltip(evt, a, type15 !== TooltipHideEvent);
+    fire (type, evt, touch) {
+        const a = touch ? this._touch : this._active, h = this._handlers[type]; // set event type relative to scenegraph items
+        evt.vegaType = type; // handle hyperlinks and tooltips first
+        if (type === HrefEvent && a && a.href) this.handleHref(evt, a, a.href);
+        else if (type === TooltipShowEvent || type === TooltipHideEvent) this.handleTooltip(evt, a, type !== TooltipHideEvent);
          // invoke all registered handlers
-        if (h19) for(let i = 0, len = h19.length; i < len; ++i)h19[i].handler.call(this._obj, evt, a);
+        if (h) for(let i = 0, len = h.length; i < len; ++i)h[i].handler.call(this._obj, evt, a);
     },
     // add an event handler
-    on (type16, handler) {
-        const name = this.eventName(type16), h20 = this._handlers, i = this._handlerIndex(h20[name], type16, handler);
+    on (type, handler) {
+        const name = this.eventName(type), h = this._handlers, i = this._handlerIndex(h[name], type, handler);
         if (i < 0) {
-            eventListenerCheck(this, type16);
-            (h20[name] || (h20[name] = [])).push({
-                type: type16,
+            eventListenerCheck(this, type);
+            (h[name] || (h[name] = [])).push({
+                type: type,
                 handler: handler
             });
         }
         return this;
     },
     // remove an event handler
-    off (type17, handler) {
-        const name = this.eventName(type17), h21 = this._handlers[name], i = this._handlerIndex(h21, type17, handler);
-        if (i >= 0) h21.splice(i, 1);
+    off (type, handler) {
+        const name = this.eventName(type), h = this._handlers[name], i = this._handlerIndex(h, type, handler);
+        if (i >= 0) h.splice(i, 1);
         return this;
     },
     pickEvent (evt) {
@@ -17663,9 +17663,9 @@ function inactive(type13) {
     // find the scenegraph item at the current mouse position
     // x, y -- the absolute x, y mouse coordinates on the canvas element
     // gx, gy -- the relative coordinates within the current group
-    pick (scene, x45, y44, gx, gy) {
+    pick (scene, x, y, gx, gy) {
         const g = this.context(), mark = Marks[scene.marktype];
-        return mark.pick.call(this, g, scene, x45, y44, gx, gy);
+        return mark.pick.call(this, g, scene, x, y, gx, gy);
     }
 });
 function devicePixelRatio() {
@@ -17673,16 +17673,16 @@ function devicePixelRatio() {
 }
 var pixelRatio = devicePixelRatio();
 function resize(canvas, width, height, origin, scaleFactor, opt) {
-    const inDOM = typeof HTMLElement !== "undefined" && canvas instanceof HTMLElement && canvas.parentNode != null, context50 = canvas.getContext("2d"), ratio = inDOM ? pixelRatio : scaleFactor;
+    const inDOM = typeof HTMLElement !== "undefined" && canvas instanceof HTMLElement && canvas.parentNode != null, context = canvas.getContext("2d"), ratio = inDOM ? pixelRatio : scaleFactor;
     canvas.width = width * ratio;
     canvas.height = height * ratio;
-    for(const key in opt)context50[key] = opt[key];
+    for(const key in opt)context[key] = opt[key];
     if (inDOM && ratio !== 1) {
         canvas.style.width = width + "px";
         canvas.style.height = height + "px";
     }
-    context50.pixelRatio = ratio;
-    context50.setTransform(ratio, 0, 0, ratio, ratio * origin[0], ratio * origin[1]);
+    context.pixelRatio = ratio;
+    context.setTransform(ratio, 0, 0, ratio, ratio * origin[0], ratio * origin[1]);
     return canvas;
 }
 function CanvasRenderer(loader) {
@@ -17694,16 +17694,16 @@ function CanvasRenderer(loader) {
 }
 const base$1 = Renderer.prototype;
 const viewBounds = (origin, width, height)=>new Bounds().set(0, 0, width, height).translate(-origin[0], -origin[1]);
-function clipToBounds(g, b18, origin) {
+function clipToBounds(g, b, origin) {
     // expand bounds by 1 pixel, then round to pixel boundaries
-    b18.expand(1).round(); // align to base pixel grid in case of non-integer scaling (#2425)
-    if (g.pixelRatio % 1) b18.scale(g.pixelRatio).round().scale(1 / g.pixelRatio);
+    b.expand(1).round(); // align to base pixel grid in case of non-integer scaling (#2425)
+    if (g.pixelRatio % 1) b.scale(g.pixelRatio).round().scale(1 / g.pixelRatio);
      // to avoid artifacts translate if origin has fractional pixels
-    b18.translate(-(origin[0] % 1), -(origin[1] % 1)); // set clip path
+    b.translate(-(origin[0] % 1), -(origin[1] % 1)); // set clip path
     g.beginPath();
-    g.rect(b18.x1, b18.y1, b18.width(), b18.height());
+    g.rect(b.x1, b.y1, b.width(), b.height());
     g.clip();
-    return b18;
+    return b;
 }
 (0, _vegaUtil.inherits)(CanvasRenderer, Renderer, {
     initialize (el, width, height, origin, scaleFactor, options) {
@@ -17736,56 +17736,56 @@ function clipToBounds(g, b18, origin) {
         return this._options.externalContext || (this._canvas ? this._canvas.getContext("2d") : null);
     },
     dirty (item) {
-        const b19 = this._tempb.clear().union(item.bounds);
+        const b = this._tempb.clear().union(item.bounds);
         let g = item.mark.group;
         while(g){
-            b19.translate(g.x || 0, g.y || 0);
+            b.translate(g.x || 0, g.y || 0);
             g = g.mark.group;
         }
-        this._dirty.union(b19);
+        this._dirty.union(b);
     },
     _render (scene) {
-        const g = this.context(), o = this._origin, w12 = this._width, h22 = this._height, db = this._dirty, vb = viewBounds(o, w12, h22); // setup
+        const g = this.context(), o = this._origin, w = this._width, h = this._height, db = this._dirty, vb = viewBounds(o, w, h); // setup
         g.save();
-        const b20 = this._redraw || db.empty() ? (this._redraw = false, vb.expand(1)) : clipToBounds(g, vb.intersect(db), o);
-        this.clear(-o[0], -o[1], w12, h22); // render
-        this.draw(g, scene, b20); // takedown
+        const b = this._redraw || db.empty() ? (this._redraw = false, vb.expand(1)) : clipToBounds(g, vb.intersect(db), o);
+        this.clear(-o[0], -o[1], w, h); // render
+        this.draw(g, scene, b); // takedown
         g.restore();
         db.clear();
         return this;
     },
-    draw (ctx, scene, bounds19) {
+    draw (ctx, scene, bounds) {
         const mark = Marks[scene.marktype];
         if (scene.clip) clip(ctx, scene);
-        mark.draw.call(this, ctx, scene, bounds19);
+        mark.draw.call(this, ctx, scene, bounds);
         if (scene.clip) ctx.restore();
     },
-    clear (x46, y45, w13, h23) {
+    clear (x, y, w, h) {
         const opt = this._options, g = this.context();
         if (opt.type !== "pdf" && !opt.externalContext) // calling clear rect voids vector output in pdf mode
         // and could remove external context content (#2615)
-        g.clearRect(x46, y45, w13, h23);
+        g.clearRect(x, y, w, h);
         if (this._bgcolor != null) {
             g.fillStyle = this._bgcolor;
-            g.fillRect(x46, y45, w13, h23);
+            g.fillRect(x, y, w, h);
         }
     }
 });
 function SVGHandler(loader, tooltip) {
     Handler.call(this, loader, tooltip);
-    const h24 = this;
-    h24._hrefHandler = listener(h24, (evt, item)=>{
-        if (item && item.href) h24.handleHref(evt, item, item.href);
+    const h = this;
+    h._hrefHandler = listener(h, (evt, item)=>{
+        if (item && item.href) h.handleHref(evt, item, item.href);
     });
-    h24._tooltipHandler = listener(h24, (evt, item)=>{
-        h24.handleTooltip(evt, item, evt.type !== TooltipHideEvent);
+    h._tooltipHandler = listener(h, (evt, item)=>{
+        h.handleTooltip(evt, item, evt.type !== TooltipHideEvent);
     });
 } // wrap an event listener for the SVG DOM
-const listener = (context51, handler)=>(evt)=>{
+const listener = (context, handler)=>(evt)=>{
         let item = evt.target.__data__;
         item = Array.isArray(item) ? item[0] : item;
         evt.vegaType = evt.type;
-        handler.call(context51._obj, evt, item);
+        handler.call(context._obj, evt, item);
     };
 (0, _vegaUtil.inherits)(SVGHandler, Handler, {
     initialize (el, origin, obj) {
@@ -17807,25 +17807,25 @@ const listener = (context51, handler)=>(evt)=>{
         return this._svg;
     },
     // add an event handler
-    on (type18, handler) {
-        const name = this.eventName(type18), h25 = this._handlers, i = this._handlerIndex(h25[name], type18, handler);
+    on (type, handler) {
+        const name = this.eventName(type), h = this._handlers, i = this._handlerIndex(h[name], type, handler);
         if (i < 0) {
-            const x47 = {
-                type: type18,
+            const x = {
+                type,
                 handler,
                 listener: listener(this, handler)
             };
-            (h25[name] || (h25[name] = [])).push(x47);
-            if (this._svg) this._svg.addEventListener(name, x47.listener);
+            (h[name] || (h[name] = [])).push(x);
+            if (this._svg) this._svg.addEventListener(name, x.listener);
         }
         return this;
     },
     // remove an event handler
-    off (type19, handler) {
-        const name = this.eventName(type19), h26 = this._handlers[name], i = this._handlerIndex(h26, type19, handler);
+    off (type, handler) {
+        const name = this.eventName(type), h = this._handlers[name], i = this._handlerIndex(h, type, handler);
         if (i >= 0) {
-            if (this._svg) this._svg.removeEventListener(name, h26[i].listener);
-            h26.splice(i, 1);
+            if (this._svg) this._svg.removeEventListener(name, h[i].listener);
+            h.splice(i, 1);
         }
         return this;
     }
@@ -17879,15 +17879,15 @@ const AriaEncode = {
     ariaRoleDescription: ARIA_ROLEDESCRIPTION,
     description: ARIA_LABEL
 };
-function ariaItemAttributes(emit13, item) {
+function ariaItemAttributes(emit, item) {
     const hide = item.aria === false;
-    emit13(ARIA_HIDDEN, hide || undefined);
-    if (hide || item.description == null) for(const prop in AriaEncode)emit13(AriaEncode[prop], undefined);
+    emit(ARIA_HIDDEN, hide || undefined);
+    if (hide || item.description == null) for(const prop in AriaEncode)emit(AriaEncode[prop], undefined);
     else {
-        const type20 = item.mark.marktype;
-        emit13(ARIA_LABEL, item.description);
-        emit13(ARIA_ROLE, item.ariaRole || (type20 === "group" ? GRAPHICS_OBJECT : GRAPHICS_SYMBOL));
-        emit13(ARIA_ROLEDESCRIPTION, item.ariaRoleDescription || `${type20} mark`);
+        const type = item.mark.marktype;
+        emit(ARIA_LABEL, item.description);
+        emit(ARIA_ROLE, item.ariaRole || (type === "group" ? GRAPHICS_OBJECT : GRAPHICS_SYMBOL));
+        emit(ARIA_ROLEDESCRIPTION, item.ariaRoleDescription || `${type} mark`);
     }
 }
 function ariaMarkAttributes(mark) {
@@ -17896,9 +17896,9 @@ function ariaMarkAttributes(mark) {
     } : AriaIgnore[mark.role] ? null : AriaGuides[mark.role] ? ariaGuide(mark, AriaGuides[mark.role]) : ariaMark(mark);
 }
 function ariaMark(mark) {
-    const type21 = mark.marktype;
-    const recurse1 = type21 === "group" || type21 === "text" || mark.items.some((_)=>_.description != null && _.aria !== false);
-    return bundle(recurse1 ? GRAPHICS_OBJECT : GRAPHICS_SYMBOL, `${type21} mark container`, mark.description);
+    const type = mark.marktype;
+    const recurse = type === "group" || type === "text" || mark.items.some((_)=>_.description != null && _.aria !== false);
+    return bundle(recurse ? GRAPHICS_OBJECT : GRAPHICS_SYMBOL, `${type} mark container`, mark.description);
 }
 function ariaGuide(mark, opt) {
     try {
@@ -17912,12 +17912,12 @@ function titleCaption(item) {
     return (0, _vegaUtil.array)(item.text).join(" ");
 }
 function axisCaption(item) {
-    const datum = item.datum, orient = item.orient, title = datum.title ? extractTitle(item) : null, ctx = item.context, scale1 = ctx.scales[datum.scale].value, locale = ctx.dataflow.locale(), type22 = scale1.type, xy = orient === "left" || orient === "right" ? "Y" : "X";
-    return `${xy}-axis` + (title ? ` titled '${title}'` : "") + ` for a ${(0, _vegaScale.isDiscrete)(type22) ? "discrete" : type22} scale` + ` with ${(0, _vegaScale.domainCaption)(locale, scale1, item)}`;
+    const datum = item.datum, orient = item.orient, title = datum.title ? extractTitle(item) : null, ctx = item.context, scale = ctx.scales[datum.scale].value, locale = ctx.dataflow.locale(), type = scale.type, xy = orient === "left" || orient === "right" ? "Y" : "X";
+    return `${xy}-axis` + (title ? ` titled '${title}'` : "") + ` for a ${(0, _vegaScale.isDiscrete)(type) ? "discrete" : type} scale` + ` with ${(0, _vegaScale.domainCaption)(locale, scale, item)}`;
 }
 function legendCaption(item) {
-    const datum = item.datum, title = datum.title ? extractTitle(item) : null, type23 = `${datum.type || ""} legend`.trim(), scales = datum.scales, props = Object.keys(scales), ctx = item.context, scale2 = ctx.scales[scales[props[0]]].value, locale = ctx.dataflow.locale();
-    return capitalize(type23) + (title ? ` titled '${title}'` : "") + ` for ${channelCaption(props)}` + ` with ${(0, _vegaScale.domainCaption)(locale, scale2, item)}`;
+    const datum = item.datum, title = datum.title ? extractTitle(item) : null, type = `${datum.type || ""} legend`.trim(), scales = datum.scales, props = Object.keys(scales), ctx = item.context, scale = ctx.scales[scales[props[0]]].value, locale = ctx.dataflow.locale();
+    return capitalize(type) + (title ? ` titled '${title}'` : "") + ` for ${channelCaption(props)}` + ` with ${(0, _vegaScale.domainCaption)(locale, scale, item)}`;
 }
 function extractTitle(item) {
     try {
@@ -17943,14 +17943,14 @@ function markup() {
             clear();
         }
         stack.push(tag);
-    }, attr3 = (name, value8)=>{
-        if (value8 != null) outer += ` ${name}="${attrText(value8)}"`;
+    }, attr = (name, value)=>{
+        if (value != null) outer += ` ${name}="${attrText(value)}"`;
         return m;
     }, m = {
         open (tag, ...attrs) {
             push(tag);
             outer = "<" + tag;
-            for (const set of attrs)for(const key in set)attr3(key, set[key]);
+            for (const set of attrs)for(const key in set)attr(key, set[key]);
             return m;
         },
         close () {
@@ -17960,7 +17960,7 @@ function markup() {
             clear();
             return m;
         },
-        attr: attr3,
+        attr,
         text: (t)=>(inner += innerText(t), m),
         toString: ()=>buf
     };
@@ -17974,9 +17974,9 @@ function _serialize(m, node) {
         for(let i = 0; i < n; ++i)m.attr(attrs[i].name, attrs[i].value);
     }
     if (node.hasChildNodes()) {
-        const children = node.childNodes, n = children.length;
-        for(let i = 0; i < n; i++){
-            const child = children[i];
+        const children = node.childNodes, n1 = children.length;
+        for(let i1 = 0; i1 < n1; i1++){
+            const child = children[i1];
             child.nodeType === 3 // text node
              ? m.text(child.nodeValue) : _serialize(m, child);
         }
@@ -18090,12 +18090,12 @@ const base = Renderer.prototype;
                 fill: bg
             });
         }
-        const text9 = serializeXML(svg);
+        const text = serializeXML(svg);
         if (bg) {
             svg.removeChild(node);
             this._svg.style.setProperty("background-color", bg);
         }
-        return text9;
+        return text;
     },
     /**
    * Internal rendering method.
@@ -18136,14 +18136,14 @@ const base = Renderer.prototype;
         const items = this._dirty;
         if (!items.length || !this._dirtyID) return true;
         const id = ++this._dirtyID;
-        let item, mark, type24, mdef, i1, n, o;
-        for(i1 = 0, n = items.length; i1 < n; ++i1){
-            item = items[i1];
+        let item, mark, type, mdef, i, n, o;
+        for(i = 0, n = items.length; i < n; ++i){
+            item = items[i];
             mark = item.mark;
-            if (mark.marktype !== type24) {
+            if (mark.marktype !== type) {
                 // memoize mark instance lookup
-                type24 = mark.marktype;
-                mdef = Marks[type24];
+                type = mark.marktype;
+                mdef = Marks[type];
             }
             if (mark.zdirty && mark.dirty !== id) {
                 this._dirtyAll = false;
@@ -18234,15 +18234,15 @@ const base = Renderer.prototype;
    */ style (el, item) {
         if (item == null) return;
         for(const prop in styles){
-            let value9 = prop === "font" ? fontFamily(item) : item[prop];
-            if (value9 === values[prop]) continue;
+            let value = prop === "font" ? fontFamily(item) : item[prop];
+            if (value === values[prop]) continue;
             const name = styles[prop];
-            if (value9 == null) el.removeAttribute(name);
+            if (value == null) el.removeAttribute(name);
             else {
-                if (isGradient(value9)) value9 = gradientRef(value9, this._defs.gradient, href());
-                el.setAttribute(name, value9 + "");
+                if (isGradient(value)) value = gradientRef(value, this._defs.gradient, href());
+                el.setAttribute(name, value + "");
             }
-            values[prop] = value9;
+            values[prop] = value;
         }
     },
     /**
@@ -18265,9 +18265,9 @@ const base = Renderer.prototype;
     /**
    * Clear defs caches.
    */ _clearDefs () {
-        const def3 = this._defs;
-        def3.gradient = {};
-        def3.clipping = {};
+        const def = this._defs;
+        def.gradient = {};
+        def.clipping = {};
     }
 }); // mark ancestor chain with a dirty id
 function dirtyParents(item, id) {
@@ -18326,29 +18326,29 @@ function updateGradient(el, grad, index) {
     domClear(el, i);
     return index;
 } // update clipping path definitions
-function updateClipping(el, clip3, index) {
+function updateClipping(el, clip, index) {
     let mask;
     el = domChild(el, index, "clipPath", svgns);
-    el.setAttribute("id", clip3.id);
-    if (clip3.path) {
+    el.setAttribute("id", clip.id);
+    if (clip.path) {
         mask = domChild(el, 0, "path", svgns);
-        mask.setAttribute("d", clip3.path);
+        mask.setAttribute("d", clip.path);
     } else {
         mask = domChild(el, 0, "rect", svgns);
         setAttributes(mask, {
             x: 0,
             y: 0,
-            width: clip3.width,
-            height: clip3.height
+            width: clip.width,
+            height: clip.height
         });
     }
     domClear(el, 1);
     return index + 1;
 } // Recursively process group contents.
-function recurse(renderer, el, group8) {
+function recurse(renderer, el, group) {
     el = el.lastChild.previousSibling;
     let prev, idx = 0;
-    visit(group8, (item)=>{
+    visit(group, (item)=>{
         prev = renderer.mark(el, item, prev);
         ++idx;
     }); // remove any extraneous DOM elements
@@ -18401,21 +18401,21 @@ const mark_extras = {
         mdef.content(emit, item, this);
         const bg = element = el.childNodes[0];
         mdef.background(emit, item, this);
-        const value10 = item.mark.interactive === false ? "none" : null;
-        if (value10 !== values.events) {
-            setAttribute(fg, "pointer-events", value10);
-            setAttribute(bg, "pointer-events", value10);
-            values.events = value10;
+        const value = item.mark.interactive === false ? "none" : null;
+        if (value !== values.events) {
+            setAttribute(fg, "pointer-events", value);
+            setAttribute(bg, "pointer-events", value);
+            values.events = value;
         }
         if (item.strokeForeground && item.stroke) {
-            const fill2 = item.fill;
+            const fill = item.fill;
             setAttribute(fg, "display", null); // set style of background
             this.style(bg, item);
             setAttribute(bg, "stroke", null); // set style of foreground
-            if (fill2) item.fill = null;
+            if (fill) item.fill = null;
             values = fg.__values__;
             this.style(fg, item);
-            if (fill2) item.fill = fill2; // leave element null to prevent downstream styling
+            if (fill) item.fill = fill; // leave element null to prevent downstream styling
             element = null;
         } else // ensure foreground is ignored
         setAttribute(fg, "display", "none");
@@ -18427,34 +18427,34 @@ const mark_extras = {
         } else setStyle(el, "image-rendering", null);
     },
     text (mdef, el, item) {
-        const tl6 = textLines(item);
-        let key, value11, doc, lh;
-        if ((0, _vegaUtil.isArray)(tl6)) {
+        const tl = textLines(item);
+        let key, value, doc, lh;
+        if ((0, _vegaUtil.isArray)(tl)) {
             // multi-line text
-            value11 = tl6.map((_)=>textValue(item, _));
-            key = value11.join("\n"); // content cache key
+            value = tl.map((_)=>textValue(item, _));
+            key = value.join("\n"); // content cache key
             if (key !== values.text) {
                 domClear(el, 0);
                 doc = el.ownerDocument;
                 lh = lineHeight(item);
-                value11.forEach((t, i)=>{
-                    const ts1 = domCreate(doc, "tspan", svgns);
-                    ts1.__data__ = item; // data binding
-                    ts1.textContent = t;
+                value.forEach((t, i)=>{
+                    const ts = domCreate(doc, "tspan", svgns);
+                    ts.__data__ = item; // data binding
+                    ts.textContent = t;
                     if (i) {
-                        ts1.setAttribute("x", 0);
-                        ts1.setAttribute("dy", lh);
+                        ts.setAttribute("x", 0);
+                        ts.setAttribute("dy", lh);
                     }
-                    el.appendChild(ts1);
+                    el.appendChild(ts);
                 });
                 values.text = key;
             }
         } else {
             // single-line text
-            value11 = textValue(item, tl6);
-            if (value11 !== values.text) {
-                el.textContent = value11;
-                values.text = value11;
+            value = textValue(item, tl);
+            if (value !== values.text) {
+                el.textContent = value;
+                values.text = value;
             }
         }
         setAttribute(el, "font-family", fontFamily(item));
@@ -18464,33 +18464,33 @@ const mark_extras = {
         setAttribute(el, "font-weight", item.fontWeight);
     }
 };
-function emit(name, value12, ns) {
+function emit(name, value, ns) {
     // early exit if value is unchanged
-    if (value12 === values[name]) return; // use appropriate method given namespace (ns)
-    if (ns) setAttributeNS(element, name, value12, ns);
-    else setAttribute(element, name, value12);
+    if (value === values[name]) return; // use appropriate method given namespace (ns)
+    if (ns) setAttributeNS(element, name, value, ns);
+    else setAttribute(element, name, value);
      // note current value for future comparison
-    values[name] = value12;
+    values[name] = value;
 }
-function setStyle(el, name, value13) {
-    if (value13 !== values[name]) {
-        if (value13 == null) el.style.removeProperty(name);
-        else el.style.setProperty(name, value13 + "");
-        values[name] = value13;
+function setStyle(el, name, value) {
+    if (value !== values[name]) {
+        if (value == null) el.style.removeProperty(name);
+        else el.style.setProperty(name, value + "");
+        values[name] = value;
     }
 }
 function setAttributes(el, attrs) {
     for(const key in attrs)setAttribute(el, key, attrs[key]);
 }
-function setAttribute(el, name, value14) {
-    if (value14 != null) // if value is provided, update DOM attribute
-    el.setAttribute(name, value14);
+function setAttribute(el, name, value) {
+    if (value != null) // if value is provided, update DOM attribute
+    el.setAttribute(name, value);
     else // else remove DOM attribute
     el.removeAttribute(name);
 }
-function setAttributeNS(el, name, value15, ns) {
-    if (value15 != null) // if value is provided, update DOM attribute
-    el.setAttributeNS(ns, name, value15);
+function setAttributeNS(el, name, value, ns) {
+    if (value != null) // if value is provided, update DOM attribute
+    el.setAttributeNS(ns, name, value);
     else // else remove DOM attribute
     el.removeAttributeNS(ns, name);
 }
@@ -18545,52 +18545,52 @@ function SVGStringRenderer(loader) {
    * Render a set of mark items.
    * @param {object} m - The markup context.
    * @param {object} scene - The mark parent to render.
-   */ mark (m, scene1) {
-        const mdef = Marks[scene1.marktype], tag = mdef.tag, attrList = [
+   */ mark (m, scene) {
+        const mdef = Marks[scene.marktype], tag = mdef.tag, attrList = [
             ariaItemAttributes,
             mdef.attr
         ]; // render opening group tag
         m.open("g", {
-            "class": cssClass(scene1),
-            "clip-path": scene1.clip ? clip$1(this, scene1, scene1.group) : null
-        }, ariaMarkAttributes(scene1), {
-            "pointer-events": tag !== "g" && scene1.interactive === false ? "none" : null
+            "class": cssClass(scene),
+            "clip-path": scene.clip ? clip$1(this, scene, scene.group) : null
+        }, ariaMarkAttributes(scene), {
+            "pointer-events": tag !== "g" && scene.interactive === false ? "none" : null
         }); // render contained elements
         const process = (item)=>{
-            const href2 = this.href(item);
-            if (href2) m.open("a", href2);
-            m.open(tag, this.attr(scene1, item, attrList, tag !== "g" ? tag : null));
+            const href = this.href(item);
+            if (href) m.open("a", href);
+            m.open(tag, this.attr(scene, item, attrList, tag !== "g" ? tag : null));
             if (tag === "text") {
-                const tl7 = textLines(item);
-                if ((0, _vegaUtil.isArray)(tl7)) {
+                const tl = textLines(item);
+                if ((0, _vegaUtil.isArray)(tl)) {
                     // multi-line text
                     const attrs = {
                         x: 0,
                         dy: lineHeight(item)
                     };
-                    for(let i = 0; i < tl7.length; ++i)m.open("tspan", i ? attrs : null).text(textValue(item, tl7[i])).close();
+                    for(let i = 0; i < tl.length; ++i)m.open("tspan", i ? attrs : null).text(textValue(item, tl[i])).close();
                 } else // single-line text
-                m.text(textValue(item, tl7));
+                m.text(textValue(item, tl));
             } else if (tag === "g") {
-                const fore = item.strokeForeground, fill3 = item.fill, stroke2 = item.stroke;
-                if (fore && stroke2) item.stroke = null;
-                m.open("path", this.attr(scene1, item, mdef.background, "bgrect")).close(); // recurse for group content
-                m.open("g", this.attr(scene1, item, mdef.content));
+                const fore = item.strokeForeground, fill = item.fill, stroke = item.stroke;
+                if (fore && stroke) item.stroke = null;
+                m.open("path", this.attr(scene, item, mdef.background, "bgrect")).close(); // recurse for group content
+                m.open("g", this.attr(scene, item, mdef.content));
                 visit(item, (scene)=>this.mark(m, scene));
                 m.close();
-                if (fore && stroke2) {
-                    if (fill3) item.fill = null;
-                    item.stroke = stroke2;
-                    m.open("path", this.attr(scene1, item, mdef.foreground, "bgrect")).close();
-                    if (fill3) item.fill = fill3;
-                } else m.open("path", this.attr(scene1, item, mdef.foreground, "bgfore")).close();
+                if (fore && stroke) {
+                    if (fill) item.fill = null;
+                    item.stroke = stroke;
+                    m.open("path", this.attr(scene, item, mdef.foreground, "bgrect")).close();
+                    if (fill) item.fill = fill;
+                } else m.open("path", this.attr(scene, item, mdef.foreground, "bgfore")).close();
             }
             m.close(); // </tag>
-            if (href2) m.close(); // </a>
+            if (href) m.close(); // </a>
         };
         if (mdef.nested) {
-            if (scene1.items && scene1.items.length) process(scene1.items[0]);
-        } else visit(scene1, process);
+            if (scene.items && scene.items.length) process(scene.items[0]);
+        } else visit(scene, process);
          // render closing group tag
         return m.close(); // </g>
     },
@@ -18598,15 +18598,15 @@ function SVGStringRenderer(loader) {
    * Get href attributes for a hyperlinked mark item.
    * @param {Item} item - The mark item.
    */ href (item) {
-        const href3 = item.href;
-        let attr4;
-        if (href3) {
-            if (attr4 = this._hrefs && this._hrefs[href3]) return attr4;
-            else this.sanitizeURL(href3).then((attr5)=>{
+        const href = item.href;
+        let attr;
+        if (href) {
+            if (attr = this._hrefs && this._hrefs[href]) return attr;
+            else this.sanitizeURL(href).then((attr)=>{
                 // rewrite to use xlink namespace
-                attr5["xlink:href"] = attr5.href;
-                attr5.href = null;
-                (this._hrefs || (this._hrefs = {}))[href3] = attr5;
+                attr["xlink:href"] = attr.href;
+                attr.href = null;
+                (this._hrefs || (this._hrefs = {}))[href] = attr;
             });
         }
         return null;
@@ -18618,11 +18618,11 @@ function SVGStringRenderer(loader) {
    * @param {array|function} attrs - One or more attribute emitters.
    * @param {string} tag - The tag being rendered.
    */ attr (scene, item, attrs, tag) {
-        const object = {}, emit14 = (name, value16, ns, prefixed)=>{
-            object[prefixed || name] = value16;
+        const object = {}, emit = (name, value, ns, prefixed)=>{
+            object[prefixed || name] = value;
         }; // apply mark specific attributes
-        if (Array.isArray(attrs)) attrs.forEach((fn)=>fn(emit14, item, this));
-        else attrs(emit14, item, this);
+        if (Array.isArray(attrs)) attrs.forEach((fn)=>fn(emit, item, this));
+        else attrs(emit, item, this);
          // apply style attributes
         if (tag) style(object, item, scene, tag, this._defs);
         return object;
@@ -18633,12 +18633,12 @@ function SVGStringRenderer(loader) {
    * collected state is current and accurate.
    * @param {object} m - The markup context.
    */ defs (m) {
-        const gradient4 = this._defs.gradient, clipping = this._defs.clipping, count = Object.keys(gradient4).length + Object.keys(clipping).length;
+        const gradient = this._defs.gradient, clipping = this._defs.clipping, count = Object.keys(gradient).length + Object.keys(clipping).length;
         if (count === 0) return; // nothing to do
         m.open("defs");
-        for(const id in gradient4){
-            const def4 = gradient4[id], stops = def4.stops;
-            if (def4.gradient === "radial") {
+        for(const id in gradient){
+            const def = gradient[id], stops = def.stops;
+            if (def.gradient === "radial") {
                 // SVG radial gradients automatically transform to normalized bbox
                 // coordinates, in a way that is cumbersome to replicate in canvas.
                 // We wrap the radial gradient in a pattern element, allowing us to
@@ -18658,19 +18658,19 @@ function SVGStringRenderer(loader) {
                 m.close(); // </pattern>
                 m.open("radialGradient", {
                     id: id,
-                    fx: def4.x1,
-                    fy: def4.y1,
-                    fr: def4.r1,
-                    cx: def4.x2,
-                    cy: def4.y2,
-                    r: def4.r2
+                    fx: def.x1,
+                    fy: def.y1,
+                    fr: def.r1,
+                    cx: def.x2,
+                    cy: def.y2,
+                    r: def.r2
                 });
             } else m.open("linearGradient", {
                 id: id,
-                x1: def4.x1,
-                x2: def4.x2,
-                y1: def4.y1,
-                y2: def4.y2
+                x1: def.x1,
+                x2: def.x2,
+                y1: def.y1,
+                y2: def.y2
             });
             for(let i = 0; i < stops.length; ++i)m.open("stop", {
                 offset: stops[i].offset,
@@ -18678,19 +18678,19 @@ function SVGStringRenderer(loader) {
             }).close();
             m.close();
         }
-        for(const id2 in clipping){
-            const def5 = clipping[id2];
+        for(const id1 in clipping){
+            const def1 = clipping[id1];
             m.open("clipPath", {
-                id: id2
+                id: id1
             });
-            if (def5.path) m.open("path", {
-                d: def5.path
+            if (def1.path) m.open("path", {
+                d: def1.path
             }).close();
             else m.open("rect", {
                 x: 0,
                 y: 0,
-                width: def5.width,
-                height: def5.height
+                width: def1.width,
+                height: def1.height
             }).close();
             m.close();
         }
@@ -18714,12 +18714,12 @@ function style(s, item, scene, tag, defs) {
         s["font-weight"] = item.fontWeight;
     }
     for(const prop in styles){
-        let value17 = item[prop];
+        let value = item[prop];
         const name = styles[prop];
-        if (value17 === "transparent" && (name === "fill" || name === "stroke")) ;
-        else if (value17 != null) {
-            if (isGradient(value17)) value17 = gradientRef(value17, defs.gradient, "");
-            s[name] = value17;
+        if (value === "transparent" && (name === "fill" || name === "stroke")) ;
+        else if (value != null) {
+            if (isGradient(value)) value = gradientRef(value, defs.gradient, "");
+            s[name] = value;
         }
     }
     return s;
@@ -18753,18 +18753,18 @@ function renderModule(name, _) {
         return this;
     } else return modules[name];
 }
-function intersect(scene, bounds20, filter) {
+function intersect(scene, bounds, filter) {
     const hits = [], // intersection results
-    box = new Bounds().union(bounds20), // defensive copy
-    type25 = scene.marktype;
-    return type25 ? intersectMark(scene, box, filter, hits) : type25 === "group" ? intersectGroup(scene, box, filter, hits) : (0, _vegaUtil.error)("Intersect scene must be mark node or group item.");
+    box = new Bounds().union(bounds), // defensive copy
+    type = scene.marktype;
+    return type ? intersectMark(scene, box, filter, hits) : type === "group" ? intersectGroup(scene, box, filter, hits) : (0, _vegaUtil.error)("Intersect scene must be mark node or group item.");
 }
 function intersectMark(mark, box, filter, hits) {
     if (visitMark(mark, box, filter)) {
-        const items = mark.items, type26 = mark.marktype, n = items.length;
+        const items = mark.items, type = mark.marktype, n = items.length;
         let i = 0;
-        if (type26 === "group") for(; i < n; ++i)intersectGroup(items[i], box, filter, hits);
-        else for(const test = Marks[type26].isect; i < n; ++i){
+        if (type === "group") for(; i < n; ++i)intersectGroup(items[i], box, filter, hits);
+        else for(const test = Marks[type].isect; i < n; ++i){
             const item = items[i];
             if (intersectItem(item, box, test)) hits.push(item);
         }
@@ -18777,43 +18777,43 @@ function visitMark(mark, box, filter) {
     // (2) mark is interactive and passes filter
     return mark.bounds && box.intersects(mark.bounds) && (mark.marktype === "group" || mark.interactive !== false && (!filter || filter(mark)));
 }
-function intersectGroup(group9, box, filter, hits) {
+function intersectGroup(group, box, filter, hits) {
     // test intersect against group
     // skip groups by default unless filter says otherwise
-    if (filter && filter(group9.mark) && intersectItem(group9, box, Marks.group.isect)) hits.push(group9);
+    if (filter && filter(group.mark) && intersectItem(group, box, Marks.group.isect)) hits.push(group);
      // recursively test children marks
     // translate box to group coordinate space
-    const marks = group9.items, n = marks && marks.length;
+    const marks = group.items, n = marks && marks.length;
     if (n) {
-        const x48 = group9.x || 0, y46 = group9.y || 0;
-        box.translate(-x48, -y46);
+        const x = group.x || 0, y = group.y || 0;
+        box.translate(-x, -y);
         for(let i = 0; i < n; ++i)intersectMark(marks[i], box, filter, hits);
-        box.translate(x48, y46);
+        box.translate(x, y);
     }
     return hits;
 }
 function intersectItem(item, box, test) {
     // test bounds enclosure, bounds intersection, then detailed test
-    const bounds21 = item.bounds;
-    return box.encloses(bounds21) || box.intersects(bounds21) && test(item, box);
+    const bounds = item.bounds;
+    return box.encloses(bounds) || box.intersects(bounds) && test(item, box);
 }
 const clipBounds = new Bounds();
 function boundClip(mark) {
-    const clip4 = mark.clip;
-    if ((0, _vegaUtil.isFunction)(clip4)) clip4(boundContext(clipBounds.clear()));
-    else if (clip4) clipBounds.set(0, 0, mark.group.width, mark.group.height);
+    const clip = mark.clip;
+    if ((0, _vegaUtil.isFunction)(clip)) clip(boundContext(clipBounds.clear()));
+    else if (clip) clipBounds.set(0, 0, mark.group.width, mark.group.height);
     else return;
     mark.bounds.intersect(clipBounds);
 }
 const TOLERANCE = 1e-9;
-function sceneEqual(a, b21, key) {
-    return a === b21 ? true : key === "path" ? pathEqual(a, b21) : a instanceof Date && b21 instanceof Date ? +a === +b21 : (0, _vegaUtil.isNumber)(a) && (0, _vegaUtil.isNumber)(b21) ? Math.abs(a - b21) <= TOLERANCE : !a || !b21 || !(0, _vegaUtil.isObject)(a) && !(0, _vegaUtil.isObject)(b21) ? a == b21 : objectEqual(a, b21);
+function sceneEqual(a, b, key) {
+    return a === b ? true : key === "path" ? pathEqual(a, b) : a instanceof Date && b instanceof Date ? +a === +b : (0, _vegaUtil.isNumber)(a) && (0, _vegaUtil.isNumber)(b) ? Math.abs(a - b) <= TOLERANCE : !a || !b || !(0, _vegaUtil.isObject)(a) && !(0, _vegaUtil.isObject)(b) ? a == b : objectEqual(a, b);
 }
-function pathEqual(a, b22) {
-    return sceneEqual(pathParse(a), pathParse(b22));
+function pathEqual(a, b) {
+    return sceneEqual(pathParse(a), pathParse(b));
 }
-function objectEqual(a, b23) {
-    var ka = Object.keys(a), kb = Object.keys(b23), key, i;
+function objectEqual(a, b) {
+    var ka = Object.keys(a), kb = Object.keys(b), key, i;
     if (ka.length !== kb.length) return false;
     ka.sort();
     kb.sort();
@@ -18822,9 +18822,9 @@ function objectEqual(a, b23) {
     }
     for(i = ka.length - 1; i >= 0; i--){
         key = ka[i];
-        if (!sceneEqual(a[key], b23[key], key)) return false;
+        if (!sceneEqual(a[key], b[key], key)) return false;
     }
-    return typeof a === typeof b23;
+    return typeof a === typeof b;
 }
 function resetSVGDefIds() {
     resetSVGClipId();
@@ -19808,9 +19808,9 @@ Bundle.prototype = {
         this._y.push(+y);
     }
 };
-exports.default = function custom(beta1) {
+exports.default = function custom(beta) {
     function bundle(context) {
-        return beta1 === 1 ? new (0, _basisJs.Basis)(context) : new Bundle(context, beta1);
+        return beta === 1 ? new (0, _basisJs.Basis)(context) : new Bundle(context, beta);
     }
     bundle.beta = function(beta) {
         return custom(+beta);
@@ -19876,9 +19876,9 @@ CardinalClosed.prototype = {
         this._y0 = this._y1, this._y1 = this._y2, this._y2 = y;
     }
 };
-exports.default = function custom(tension1) {
+exports.default = function custom(tension) {
     function cardinal(context) {
-        return new CardinalClosed(context, tension1);
+        return new CardinalClosed(context, tension);
     }
     cardinal.tension = function(tension) {
         return custom(+tension);
@@ -19942,9 +19942,9 @@ Cardinal.prototype = {
         this._y0 = this._y1, this._y1 = this._y2, this._y2 = y;
     }
 };
-exports.default = function custom(tension1) {
+exports.default = function custom(tension) {
     function cardinal(context) {
-        return new Cardinal(context, tension1);
+        return new Cardinal(context, tension);
     }
     cardinal.tension = function(tension) {
         return custom(+tension);
@@ -19999,9 +19999,9 @@ CardinalOpen.prototype = {
         this._y0 = this._y1, this._y1 = this._y2, this._y2 = y;
     }
 };
-exports.default = function custom(tension1) {
+exports.default = function custom(tension) {
     function cardinal(context) {
-        return new CardinalOpen(context, tension1);
+        return new CardinalOpen(context, tension);
     }
     cardinal.tension = function(tension) {
         return custom(+tension);
@@ -20073,9 +20073,9 @@ CatmullRomClosed.prototype = {
         this._y0 = this._y1, this._y1 = this._y2, this._y2 = y;
     }
 };
-exports.default = function custom(alpha1) {
+exports.default = function custom(alpha) {
     function catmullRom(context) {
-        return alpha1 ? new CatmullRomClosed(context, alpha1) : new (0, _cardinalClosedJs.CardinalClosed)(context, 0);
+        return alpha ? new CatmullRomClosed(context, alpha) : new (0, _cardinalClosedJs.CardinalClosed)(context, 0);
     }
     catmullRom.alpha = function(alpha) {
         return custom(+alpha);
@@ -20156,9 +20156,9 @@ CatmullRom.prototype = {
         this._y0 = this._y1, this._y1 = this._y2, this._y2 = y;
     }
 };
-exports.default = function custom(alpha1) {
+exports.default = function custom(alpha) {
     function catmullRom(context) {
-        return alpha1 ? new CatmullRom(context, alpha1) : new (0, _cardinalJs.Cardinal)(context, 0);
+        return alpha ? new CatmullRom(context, alpha) : new (0, _cardinalJs.Cardinal)(context, 0);
     }
     catmullRom.alpha = function(alpha) {
         return custom(+alpha);
@@ -20219,9 +20219,9 @@ CatmullRomOpen.prototype = {
         this._y0 = this._y1, this._y1 = this._y2, this._y2 = y;
     }
 };
-exports.default = function custom(alpha1) {
+exports.default = function custom(alpha) {
     function catmullRom(context) {
-        return alpha1 ? new CatmullRomOpen(context, alpha1) : new (0, _cardinalOpenJs.CardinalOpen)(context, 0);
+        return alpha ? new CatmullRomOpen(context, alpha) : new (0, _cardinalOpenJs.CardinalOpen)(context, 0);
     }
     catmullRom.alpha = function(alpha) {
         return custom(+alpha);
@@ -20585,7 +20585,7 @@ const Discrete = "discrete";
 const Discretizing = "discretizing";
 const Interpolating = "interpolating";
 const Temporal = "temporal";
-function invertRange(scale1) {
+function invertRange(scale) {
     return function(_) {
         let lo = _[0], hi = _[1], t;
         if (hi < lo) {
@@ -20594,14 +20594,14 @@ function invertRange(scale1) {
             hi = t;
         }
         return [
-            scale1.invert(lo),
-            scale1.invert(hi)
+            scale.invert(lo),
+            scale.invert(hi)
         ];
     };
 }
-function invertRangeExtent(scale2) {
+function invertRangeExtent(scale) {
     return function(_) {
-        const range = scale2.range();
+        const range = scale.range();
         let lo = _[0], hi = _[1], min = -1, max, t, i, n;
         if (hi < lo) {
             t = lo;
@@ -20613,8 +20613,8 @@ function invertRangeExtent(scale2) {
             max = i;
         }
         if (min < 0) return undefined;
-        lo = scale2.invertExtent(range[min]);
-        hi = scale2.invertExtent(range[max]);
+        lo = scale.invertExtent(range[min]);
+        hi = scale.invertExtent(range[max]);
         return [
             lo[0] === undefined ? lo[1] : lo[0],
             hi[1] === undefined ? hi[0] : hi[1]
@@ -20622,12 +20622,12 @@ function invertRangeExtent(scale2) {
     };
 }
 function band() {
-    const scale3 = (0, _d3Scale.scaleOrdinal)().unknown(undefined), domain = scale3.domain, ordinalRange = scale3.range;
+    const scale = (0, _d3Scale.scaleOrdinal)().unknown(undefined), domain = scale.domain, ordinalRange = scale.range;
     let range$1 = [
         0,
         1
     ], step, bandwidth, round = false, paddingInner = 0, paddingOuter = 0, align = 0.5;
-    delete scale3.unknown;
+    delete scale.unknown;
     function rescale() {
         const n = domain().length, reverse = range$1[1] < range$1[0], stop = range$1[1 - reverse], space = bandSpace(n, paddingInner, paddingOuter);
         let start = range$1[reverse - 0];
@@ -20642,13 +20642,13 @@ function band() {
         const values = (0, _d3Array.range)(n).map((i)=>start + step * i);
         return ordinalRange(reverse ? values.reverse() : values);
     }
-    scale3.domain = function(_) {
+    scale.domain = function(_) {
         if (arguments.length) {
             domain(_);
             return rescale();
         } else return domain();
     };
-    scale3.range = function(_) {
+    scale.range = function(_) {
         if (arguments.length) {
             range$1 = [
                 +_[0],
@@ -20657,7 +20657,7 @@ function band() {
             return rescale();
         } else return range$1.slice();
     };
-    scale3.rangeRound = function(_) {
+    scale.rangeRound = function(_) {
         range$1 = [
             +_[0],
             +_[1]
@@ -20665,44 +20665,44 @@ function band() {
         round = true;
         return rescale();
     };
-    scale3.bandwidth = function() {
+    scale.bandwidth = function() {
         return bandwidth;
     };
-    scale3.step = function() {
+    scale.step = function() {
         return step;
     };
-    scale3.round = function(_) {
+    scale.round = function(_) {
         if (arguments.length) {
             round = !!_;
             return rescale();
         } else return round;
     };
-    scale3.padding = function(_) {
+    scale.padding = function(_) {
         if (arguments.length) {
             paddingOuter = Math.max(0, Math.min(1, _));
             paddingInner = paddingOuter;
             return rescale();
         } else return paddingInner;
     };
-    scale3.paddingInner = function(_) {
+    scale.paddingInner = function(_) {
         if (arguments.length) {
             paddingInner = Math.max(0, Math.min(1, _));
             return rescale();
         } else return paddingInner;
     };
-    scale3.paddingOuter = function(_) {
+    scale.paddingOuter = function(_) {
         if (arguments.length) {
             paddingOuter = Math.max(0, Math.min(1, _));
             return rescale();
         } else return paddingOuter;
     };
-    scale3.align = function(_) {
+    scale.align = function(_) {
         if (arguments.length) {
             align = Math.max(0, Math.min(1, _));
             return rescale();
         } else return align;
     };
-    scale3.invertRange = function(_) {
+    scale.invertRange = function(_) {
         // bail if range has null or undefined values
         if (_[0] == null || _[1] == null) return;
         const reverse = range$1[1] < range$1[0], values = reverse ? ordinalRange().reverse() : ordinalRange(), n = values.length - 1;
@@ -20725,26 +20725,26 @@ function band() {
         }
         return a > b ? undefined : domain().slice(a, b + 1);
     };
-    scale3.invert = function(_) {
-        const value = scale3.invertRange([
+    scale.invert = function(_) {
+        const value = scale.invertRange([
             _,
             _
         ]);
         return value ? value[0] : value;
     };
-    scale3.copy = function() {
+    scale.copy = function() {
         return band().domain(domain()).range(range$1).round(round).paddingInner(paddingInner).paddingOuter(paddingOuter).align(align);
     };
     return rescale();
 }
-function pointish(scale4) {
-    const copy = scale4.copy;
-    scale4.padding = scale4.paddingOuter;
-    delete scale4.paddingInner;
-    scale4.copy = function() {
+function pointish(scale) {
+    const copy = scale.copy;
+    scale.padding = scale.paddingOuter;
+    delete scale.paddingInner;
+    scale.copy = function() {
         return pointish(copy());
     };
-    return scale4;
+    return scale;
 }
 function point() {
     return pointish(band().paddingInner(1));
@@ -20756,28 +20756,28 @@ function numbers(_) {
 const slice = Array.prototype.slice;
 function scaleBinOrdinal() {
     let domain = [], range = [];
-    function scale5(x) {
+    function scale(x) {
         return x == null || x !== x ? undefined : range[((0, _d3Array.bisect)(domain, x) - 1) % range.length];
     }
-    scale5.domain = function(_) {
+    scale.domain = function(_) {
         if (arguments.length) {
             domain = numbers(_);
-            return scale5;
+            return scale;
         } else return domain.slice();
     };
-    scale5.range = function(_) {
+    scale.range = function(_) {
         if (arguments.length) {
             range = slice.call(_);
-            return scale5;
+            return scale;
         } else return range.slice();
     };
-    scale5.tickFormat = function(count, specifier) {
+    scale.tickFormat = function(count, specifier) {
         return (0, _d3Scale.tickFormat)(domain[0], (0, _vegaUtil.peek)(domain), count == null ? 10 : count, specifier);
     };
-    scale5.copy = function() {
-        return scaleBinOrdinal().domain(scale5.domain()).range(scale5.range());
+    scale.copy = function() {
+        return scaleBinOrdinal().domain(scale.domain()).range(scale.range());
     };
-    return scale5;
+    return scale;
 }
 const scales = {};
 /**
@@ -20792,9 +20792,9 @@ const scales = {};
     ctr.metadata = (0, _vegaUtil.toSet)((0, _vegaUtil.array)(metadata));
     return ctr;
 }
-function scale(type, scale6, metadata) {
+function scale(type, scale, metadata) {
     if (arguments.length > 1) {
-        scales[type] = create(type, scale6, metadata);
+        scales[type] = create(type, scale, metadata);
         return this;
     } else return isValidScaleType(type) ? scales[type] : undefined;
 } // identity scale
@@ -20914,16 +20914,16 @@ function interpolateRange(interpolator, range) {
         return interpolator(start + i * span);
     };
 }
-function interpolateColors(colors1, type, gamma) {
-    return (0, _d3Interpolate.piecewise)(interpolate(type || "rgb", gamma), colors1);
+function interpolateColors(colors, type, gamma) {
+    return (0, _d3Interpolate.piecewise)(interpolate(type || "rgb", gamma), colors);
 }
 function quantizeInterpolator(interpolator, count) {
     const samples = new Array(count), n = count + 1;
     for(let i = 0; i < count;)samples[i] = interpolator(++i / n);
     return samples;
 }
-function scaleCopy(scale7) {
-    const t = scale7.type, s = scale7.copy();
+function scaleCopy(scale) {
+    const t = scale.type, s = scale.copy();
     s.type = t;
     return s;
 }
@@ -21034,10 +21034,10 @@ function apply(_, f) {
 const schemes = {};
 apply(discrete, colors);
 apply(continuous, (_)=>interpolateColors(colors(_)));
-function scheme(name, scheme1) {
+function scheme(name, scheme) {
     name = name && name.toLowerCase();
     if (arguments.length > 1) {
-        schemes[name] = scheme1;
+        schemes[name] = scheme;
         return this;
     } else return schemes[name];
 }
@@ -21053,18 +21053,18 @@ const descending = (a, b)=>b[1] - a[1];
  * @param {*} count - The desired tick count or interval specifier.
  * @param {number} minStep - The desired minimum step between tick values.
  * @return {*} - The tick count or interval function.
- */ function tickCount(scale8, count, minStep) {
+ */ function tickCount(scale, count, minStep) {
     let step;
     if ((0, _vegaUtil.isNumber)(count)) {
-        if (scale8.bins) count = Math.max(count, scale8.bins.length);
-        if (minStep != null) count = Math.min(count, Math.floor((0, _vegaUtil.span)(scale8.domain()) / minStep || 1));
+        if (scale.bins) count = Math.max(count, scale.bins.length);
+        if (minStep != null) count = Math.min(count, Math.floor((0, _vegaUtil.span)(scale.domain()) / minStep || 1));
     }
     if ((0, _vegaUtil.isObject)(count)) {
         step = count.step;
         count = count.interval;
     }
     if ((0, _vegaUtil.isString)(count)) {
-        count = scale8.type === Time ? (0, _vegaTime.timeInterval)(count) : scale8.type == UTC ? (0, _vegaTime.utcInterval)(count) : (0, _vegaUtil.error)("Only time and utc scales accept interval strings.");
+        count = scale.type === Time ? (0, _vegaTime.timeInterval)(count) : scale.type == UTC ? (0, _vegaTime.utcInterval)(count) : (0, _vegaUtil.error)("Only time and utc scales accept interval strings.");
         if (step) count = count.every(step);
     }
     return count;
@@ -21076,8 +21076,8 @@ const descending = (a, b)=>b[1] - a[1];
  * @param {Array<*>} ticks - The candidate tick values.
  * @param {*} count - The tick count or interval function.
  * @return {Array<*>} - The filtered tick values.
- */ function validTicks(scale9, ticks, count) {
-    let range = scale9.range(), lo = range[0], hi = (0, _vegaUtil.peek)(range), cmp = ascending;
+ */ function validTicks(scale, ticks, count) {
+    let range = scale.range(), lo = range[0], hi = (0, _vegaUtil.peek)(range), cmp = ascending;
     if (lo > hi) {
         range = hi;
         hi = lo;
@@ -21089,7 +21089,7 @@ const descending = (a, b)=>b[1] - a[1];
     // additionally sort ticks in range order (#2579)
     ticks = ticks.map((v)=>[
             v,
-            scale9(v)
+            scale(v)
         ]).filter((_)=>lo <= _[1] && _[1] <= hi).sort(cmp).map((_)=>_[0]);
     if (count > 0 && ticks.length > 1) {
         const endpoints = [
@@ -21109,8 +21109,8 @@ const descending = (a, b)=>b[1] - a[1];
  * @param {Scale} scale - The scale for which to generate tick values.
  * @param {*} [count] - The approximate number of desired ticks.
  * @return {Array<*>} - The generated tick values.
- */ function tickValues(scale10, count) {
-    return scale10.bins ? validTicks(scale10, scale10.bins) : scale10.ticks ? scale10.ticks(count) : scale10.domain();
+ */ function tickValues(scale, count) {
+    return scale.bins ? validTicks(scale, scale.bins) : scale.ticks ? scale.ticks(count) : scale.domain();
 }
 /**
  * Generate a label format function for a scale. If the scale has a
@@ -21126,27 +21126,27 @@ const descending = (a, b)=>b[1] - a[1];
  *   specifier string (see https://github.com/d3/d3-format#formatSpecifier) or
  *   time multi-format specifier object.
  * @return {function(*):string} - The generated label formatter.
- */ function tickFormat(locale, scale11, count, specifier, formatType, noSkip) {
-    const type = scale11.type;
-    let format1 = defaultFormatter;
-    if (type === Time || formatType === Time) format1 = locale.timeFormat(specifier);
-    else if (type === UTC || formatType === UTC) format1 = locale.utcFormat(specifier);
+ */ function tickFormat(locale, scale, count, specifier, formatType, noSkip) {
+    const type = scale.type;
+    let format = defaultFormatter;
+    if (type === Time || formatType === Time) format = locale.timeFormat(specifier);
+    else if (type === UTC || formatType === UTC) format = locale.utcFormat(specifier);
     else if (isLogarithmic(type)) {
         const varfmt = locale.formatFloat(specifier);
-        if (noSkip || scale11.bins) format1 = varfmt;
+        if (noSkip || scale.bins) format = varfmt;
         else {
-            const test = tickLog(scale11, count, false);
-            format1 = (_)=>test(_) ? varfmt(_) : "";
+            const test = tickLog(scale, count, false);
+            format = (_)=>test(_) ? varfmt(_) : "";
         }
-    } else if (scale11.tickFormat) {
+    } else if (scale.tickFormat) {
         // if d3 scale has tickFormat, it must be continuous
-        const d = scale11.domain();
-        format1 = locale.formatSpan(d[0], d[d.length - 1], count, specifier);
-    } else if (specifier) format1 = locale.format(specifier);
-    return format1;
+        const d = scale.domain();
+        format = locale.formatSpan(d[0], d[d.length - 1], count, specifier);
+    } else if (specifier) format = locale.format(specifier);
+    return format;
 }
-function tickLog(scale12, count, values) {
-    const ticks = tickValues(scale12, count), base = scale12.base(), logb = Math.log(base), k = Math.max(1, base * count / ticks.length); // apply d3-scale's log format filter criteria
+function tickLog(scale, count, values) {
+    const ticks = tickValues(scale, count), base = scale.base(), logb = Math.log(base), k = Math.max(1, base * count / ticks.length); // apply d3-scale's log format filter criteria
     const test = (d)=>{
         let i = d / Math.pow(base, Math.round(Math.log(d) / logb));
         if (i * base < base - 0.5) i *= base;
@@ -21163,11 +21163,11 @@ const formats = {
     [Quantile]: "quantiles",
     [Quantize]: "domain"
 };
-function labelValues(scale13, count) {
-    return scale13.bins ? binValues(scale13.bins) : scale13.type === Log ? tickLog(scale13, count, true) : symbols[scale13.type] ? thresholdValues(scale13[symbols[scale13.type]]()) : tickValues(scale13, count);
+function labelValues(scale, count) {
+    return scale.bins ? binValues(scale.bins) : scale.type === Log ? tickLog(scale, count, true) : symbols[scale.type] ? thresholdValues(scale[symbols[scale.type]]()) : tickValues(scale, count);
 }
-function thresholdFormat(locale, scale14, specifier) {
-    const _ = scale14[formats[scale14.type]](), n = _.length;
+function thresholdFormat(locale, scale, specifier) {
+    const _ = scale[formats[scale.type]](), n = _.length;
     let d = n > 1 ? _[1] - _[0] : _[0], i;
     for(i = 1; i < n; ++i)d = Math.min(d, _[i] - _[i - 1]);
      // tickCount = 3 ticks times 10 for increased resolution
@@ -21185,23 +21185,23 @@ function binValues(bins) {
     values.max = (0, _vegaUtil.peek)(bins);
     return values;
 }
-const isDiscreteRange = (scale15)=>symbols[scale15.type] || scale15.bins;
-function labelFormat(locale, scale16, count, type, specifier, formatType, noSkip) {
-    const format2 = formats[scale16.type] && formatType !== Time && formatType !== UTC ? thresholdFormat(locale, scale16, specifier) : tickFormat(locale, scale16, count, specifier, formatType, noSkip);
-    return type === SymbolLegend && isDiscreteRange(scale16) ? formatRange(format2) : type === DiscreteLegend ? formatDiscrete(format2) : formatPoint(format2);
+const isDiscreteRange = (scale)=>symbols[scale.type] || scale.bins;
+function labelFormat(locale, scale, count, type, specifier, formatType, noSkip) {
+    const format = formats[scale.type] && formatType !== Time && formatType !== UTC ? thresholdFormat(locale, scale, specifier) : tickFormat(locale, scale, count, specifier, formatType, noSkip);
+    return type === SymbolLegend && isDiscreteRange(scale) ? formatRange(format) : type === DiscreteLegend ? formatDiscrete(format) : formatPoint(format);
 }
-const formatRange = (format3)=>(value, index, array)=>{
-        const limit = get(array[index + 1], get(array.max, Infinity)), lo = formatValue(value, format3), hi = formatValue(limit, format3);
-        return lo && hi ? lo + " \u2013 " + hi : hi ? "< " + hi : "\u2265 " + lo;
+const formatRange = (format)=>(value, index, array)=>{
+        const limit = get(array[index + 1], get(array.max, Infinity)), lo = formatValue(value, format), hi = formatValue(limit, format);
+        return lo && hi ? lo + " – " + hi : hi ? "< " + hi : "≥ " + lo;
     };
 const get = (value, dflt)=>value != null ? value : dflt;
-const formatDiscrete = (format4)=>(value, index)=>index ? format4(value) : null;
-const formatPoint = (format5)=>(value)=>format5(value);
-const formatValue = (value, format6)=>Number.isFinite(value) ? format6(value) : null;
-function labelFraction(scale17) {
-    const domain = scale17.domain(), count = domain.length - 1;
+const formatDiscrete = (format)=>(value, index)=>index ? format(value) : null;
+const formatPoint = (format)=>(value)=>format(value);
+const formatValue = (value, format)=>Number.isFinite(value) ? format(value) : null;
+function labelFraction(scale) {
+    const domain = scale.domain(), count = domain.length - 1;
     let lo = +domain[0], hi = +(0, _vegaUtil.peek)(domain), span = hi - lo;
-    if (scale17.type === Threshold) {
+    if (scale.type === Threshold) {
         const adjust = count ? span / count : 0.1;
         lo -= adjust;
         hi += adjust;
@@ -21209,23 +21209,23 @@ function labelFraction(scale17) {
     }
     return (value)=>(value - lo) / span;
 }
-function format(locale, scale18, specifier, formatType) {
-    const type = formatType || scale18.type; // replace abbreviated time specifiers to improve screen reader experience
+function format(locale, scale, specifier, formatType) {
+    const type = formatType || scale.type; // replace abbreviated time specifiers to improve screen reader experience
     if ((0, _vegaUtil.isString)(specifier) && isTemporal(type)) specifier = specifier.replace(/%a/g, "%A").replace(/%b/g, "%B");
-    return !specifier && type === Time ? locale.timeFormat("%A, %d %B %Y, %X") : !specifier && type === UTC ? locale.utcFormat("%A, %d %B %Y, %X UTC") : labelFormat(locale, scale18, 5, null, specifier, formatType, true);
+    return !specifier && type === Time ? locale.timeFormat("%A, %d %B %Y, %X") : !specifier && type === UTC ? locale.utcFormat("%A, %d %B %Y, %X UTC") : labelFormat(locale, scale, 5, null, specifier, formatType, true);
 }
-function domainCaption(locale, scale19, opt) {
+function domainCaption(locale, scale, opt) {
     opt = opt || {};
-    const max = Math.max(3, opt.maxlen || 7), fmt = format(locale, scale19, opt.format, opt.formatType); // if scale breaks domain into bins, describe boundaries
-    if (isDiscretizing(scale19.type)) {
-        const v = labelValues(scale19).slice(1).map(fmt), n = v.length;
+    const max = Math.max(3, opt.maxlen || 7), fmt = format(locale, scale, opt.format, opt.formatType); // if scale breaks domain into bins, describe boundaries
+    if (isDiscretizing(scale.type)) {
+        const v = labelValues(scale).slice(1).map(fmt), n = v.length;
         return "".concat(n, " boundar").concat(n === 1 ? "y" : "ies", ": ").concat(v.join(", "));
-    } else if (isDiscrete(scale19.type)) {
-        const d = scale19.domain(), n = d.length, v = n > max ? d.slice(0, max - 2).map(fmt).join(", ") + ", ending with " + d.slice(-1).map(fmt) : d.map(fmt).join(", ");
-        return "".concat(n, " value").concat(n === 1 ? "" : "s", ": ").concat(v);
+    } else if (isDiscrete(scale.type)) {
+        const d = scale.domain(), n1 = d.length, v1 = n1 > max ? d.slice(0, max - 2).map(fmt).join(", ") + ", ending with " + d.slice(-1).map(fmt) : d.map(fmt).join(", ");
+        return "".concat(n1, " value").concat(n1 === 1 ? "" : "s", ": ").concat(v1);
     } else {
-        const d = scale19.domain();
-        return "values from ".concat(fmt(d[0]), " to ").concat(fmt((0, _vegaUtil.peek)(d)));
+        const d1 = scale.domain();
+        return "values from ".concat(fmt(d1[0]), " to ").concat(fmt((0, _vegaUtil.peek)(d1)));
     }
 }
 
@@ -21429,15 +21429,15 @@ function bimap(domain, range, interpolate) {
     };
 }
 function polymap(domain, range, interpolate) {
-    var j = Math.min(domain.length, range.length) - 1, d = new Array(j), r = new Array(j), i1 = -1;
+    var j = Math.min(domain.length, range.length) - 1, d = new Array(j), r = new Array(j), i = -1;
     // Reverse descending domains.
     if (domain[j] < domain[0]) {
         domain = domain.slice().reverse();
         range = range.slice().reverse();
     }
-    while(++i1 < j){
-        d[i1] = normalize(domain[i1], domain[i1 + 1]);
-        r[i1] = interpolate(range[i1], range[i1 + 1]);
+    while(++i < j){
+        d[i] = normalize(domain[i], domain[i + 1]);
+        r[i] = interpolate(range[i], range[i + 1]);
     }
     return function(x) {
         var i = (0, _d3Array.bisect)(domain, x, 1, j) - 1;
@@ -22319,23 +22319,23 @@ function one(b) {
     };
 }
 exports.default = function(a, b) {
-    var bi = reA.lastIndex = reB.lastIndex = 0, am, bm, bs, i1 = -1, s = [], q = []; // number interpolators
+    var bi = reA.lastIndex = reB.lastIndex = 0, am, bm, bs, i = -1, s = [], q = []; // number interpolators
     // Coerce inputs to strings.
     a = a + "", b = b + "";
     // Interpolate pairs of numbers in a & b.
     while((am = reA.exec(a)) && (bm = reB.exec(b))){
         if ((bs = bm.index) > bi) {
             bs = b.slice(bi, bs);
-            if (s[i1]) s[i1] += bs; // coalesce with previous string
-            else s[++i1] = bs;
+            if (s[i]) s[i] += bs; // coalesce with previous string
+            else s[++i] = bs;
         }
         if ((am = am[0]) === (bm = bm[0])) {
-            if (s[i1]) s[i1] += bm; // coalesce with previous string
-            else s[++i1] = bm;
+            if (s[i]) s[i] += bm; // coalesce with previous string
+            else s[++i] = bm;
         } else {
-            s[++i1] = null;
+            s[++i] = null;
             q.push({
-                i: i1,
+                i: i,
                 x: (0, _numberJsDefault.default)(am, bm)
             });
         }
@@ -22344,8 +22344,8 @@ exports.default = function(a, b) {
     // Add remains of b.
     if (bi < b.length) {
         bs = b.slice(bi);
-        if (s[i1]) s[i1] += bs; // coalesce with previous string
-        else s[++i1] = bs;
+        if (s[i]) s[i] += bs; // coalesce with previous string
+        else s[++i] = bs;
     }
     // Special optimization for only a single match.
     // Otherwise, interpolate each of the numbers and rejoin the string.
@@ -22629,7 +22629,7 @@ var _colorJsDefault = parcelHelpers.interopDefault(_colorJs);
 function cubehelix(hue) {
     return function cubehelixGamma(y) {
         y = +y;
-        function cubehelix1(start, end) {
+        function cubehelix(start, end) {
             var h = hue((start = (0, _d3Color.cubehelix)(start)).h, (end = (0, _d3Color.cubehelix)(end)).h), s = (0, _colorJsDefault.default)(start.s, end.s), l = (0, _colorJsDefault.default)(start.l, end.l), opacity = (0, _colorJsDefault.default)(start.opacity, end.opacity);
             return function(t) {
                 start.h = h(t);
@@ -22639,8 +22639,8 @@ function cubehelix(hue) {
                 return start + "";
             };
         }
-        cubehelix1.gamma = cubehelixGamma;
-        return cubehelix1;
+        cubehelix.gamma = cubehelixGamma;
+        return cubehelix;
     }(1);
 }
 exports.default = cubehelix((0, _colorJs.hue));
@@ -22653,8 +22653,8 @@ var _valueJs = require("./value.js");
 var _valueJsDefault = parcelHelpers.interopDefault(_valueJs);
 function piecewise(interpolate, values) {
     if (values === undefined) values = interpolate, interpolate = (0, _valueJsDefault.default);
-    var i1 = 0, n = values.length - 1, v = values[0], I = new Array(n < 0 ? 0 : n);
-    while(i1 < n)I[i1] = interpolate(v, v = values[++i1]);
+    var i = 0, n = values.length - 1, v = values[0], I = new Array(n < 0 ? 0 : n);
+    while(i < n)I[i] = interpolate(v, v = values[++i]);
     return function(t) {
         var i = Math.max(0, Math.min(n - 1, Math.floor(t *= n)));
         return I[i](t - i);
@@ -23169,8 +23169,8 @@ function number(t) {
 function calendar(ticks, tickInterval, year, month, week, day, hour, minute, second, format) {
     var scale = (0, _continuousJsDefault.default)(), invert = scale.invert, domain = scale.domain;
     var formatMillisecond = format(".%L"), formatSecond = format(":%S"), formatMinute = format("%I:%M"), formatHour = format("%I %p"), formatDay = format("%a %d"), formatWeek = format("%b %d"), formatMonth = format("%B"), formatYear = format("%Y");
-    function tickFormat(date1) {
-        return (second(date1) < date1 ? formatMillisecond : minute(date1) < date1 ? formatSecond : hour(date1) < date1 ? formatMinute : day(date1) < date1 ? formatHour : month(date1) < date1 ? week(date1) < date1 ? formatDay : formatWeek : year(date1) < date1 ? formatMonth : formatYear)(date1);
+    function tickFormat(date) {
+        return (second(date) < date ? formatMillisecond : minute(date) < date ? formatSecond : hour(date) < date ? formatMinute : day(date) < date ? formatHour : month(date) < date ? week(date) < date ? formatDay : formatWeek : year(date) < date ? formatMonth : formatYear)(date);
     }
     scale.invert = function(y) {
         return new Date(invert(y));
@@ -23635,7 +23635,7 @@ function newMap(key) {
                 ellipsis = values[items.length];
                 items.push((0, _vegaDataflow.ingest)({
                     index: items.length,
-                    label: "\u2026".concat(values.length - items.length, " entries"),
+                    label: "…".concat(values.length - items.length, " entries"),
                     value: ellipsis,
                     offset: offset,
                     size: size(ellipsis, _)
@@ -23848,13 +23848,13 @@ Pie.Definition = {
         var as = _.as || [
             "startAngle",
             "endAngle"
-        ], startAngle = as[0], endAngle = as[1], field = _.field || (0, _vegaUtil.one), start = _.startAngle || 0, stop = _.endAngle != null ? _.endAngle : 2 * Math.PI, data = pulse.source, values = data.map(field), n = values.length, a1 = start, k = (stop - start) / (0, _d3Array.sum)(values), index = (0, _d3Array.range)(n), i, t, v;
+        ], startAngle = as[0], endAngle = as[1], field = _.field || (0, _vegaUtil.one), start = _.startAngle || 0, stop = _.endAngle != null ? _.endAngle : 2 * Math.PI, data = pulse.source, values = data.map(field), n = values.length, a = start, k = (stop - start) / (0, _d3Array.sum)(values), index = (0, _d3Array.range)(n), i, t, v;
         if (_.sort) index.sort((a, b)=>values[a] - values[b]);
         for(i = 0; i < n; ++i){
             v = values[index[i]];
             t = data[index[i]];
-            t[startAngle] = a1;
-            t[endAngle] = a1 += v * k;
+            t[startAngle] = a;
+            t[endAngle] = a += v * k;
         }
         this.value = values;
         return pulse.reflow(_.modified()).modifies(as);
@@ -23974,8 +23974,8 @@ function domainCheck(type, domain, df) {
     if ((0, _vegaScale.isLogarithmic)(type)) {
         // sum signs of domain values
         // if all pos or all neg, abs(sum) === domain.length
-        var s1 = Math.abs(domain.reduce((s, v)=>s + (v < 0 ? -1 : v > 0 ? 1 : 0), 0));
-        if (s1 !== domain.length) df.warn("Log scale domain includes zero: " + (0, _vegaUtil.stringValue)(domain));
+        var s = Math.abs(domain.reduce((s, v)=>s + (v < 0 ? -1 : v > 0 ? 1 : 0), 0));
+        if (s !== domain.length) df.warn("Log scale domain includes zero: " + (0, _vegaUtil.stringValue)(domain));
     }
     return domain;
 }
@@ -24401,7 +24401,7 @@ const cases = [
 ]; // Implementation adapted from d3/d3-contour. Thanks!
 function contours() {
     var dx = 1, dy = 1, smooth = smoothLinear;
-    function contours1(values, tz) {
+    function contours(values, tz) {
         return tz.map((value)=>contour(values, value));
     } // Accumulate, smooth contour rings, assign holes to exterior rings.
     // Based on https://github.com/mbostock/shapefile/blob/v0.6.2/shp/polygon.js
@@ -24525,25 +24525,25 @@ function contours() {
             }
         });
     }
-    contours1.contour = contour;
-    contours1.size = function(_) {
+    contours.contour = contour;
+    contours.size = function(_) {
         if (!arguments.length) return [
             dx,
             dy
         ];
         var _0 = Math.floor(_[0]), _1 = Math.floor(_[1]);
         if (!(_0 >= 0 && _1 >= 0)) (0, _vegaUtil.error)("invalid size");
-        return dx = _0, dy = _1, contours1;
+        return dx = _0, dy = _1, contours;
     };
-    contours1.smooth = function(_) {
-        return arguments.length ? (smooth = _ ? smoothLinear : noop, contours1) : smooth === smoothLinear;
+    contours.smooth = function(_) {
+        return arguments.length ? (smooth = _ ? smoothLinear : noop, contours) : smooth === smoothLinear;
     };
-    return contours1;
+    return contours;
 }
 function area(ring) {
-    var i = 0, n = ring.length, area1 = ring[n - 1][1] * ring[0][0] - ring[n - 1][0] * ring[0][1];
-    while(++i < n)area1 += ring[i - 1][1] * ring[i][0] - ring[i - 1][0] * ring[i][1];
-    return area1;
+    var i = 0, n = ring.length, area = ring[n - 1][1] * ring[0][0] - ring[n - 1][0] * ring[0][1];
+    while(++i < n)area += ring[i - 1][1] * ring[i][0] - ring[i - 1][0] * ring[i][1];
+    return area;
 }
 function contains(ring, hole) {
     var i = -1, n = hole.length, c;
@@ -24551,13 +24551,13 @@ function contains(ring, hole) {
     return 0;
 }
 function ringContains(ring, point) {
-    var x = point[0], y = point[1], contains1 = -1;
+    var x = point[0], y = point[1], contains = -1;
     for(var i = 0, n = ring.length, j = n - 1; i < n; j = i++){
         var pi = ring[i], xi = pi[0], yi = pi[1], pj = ring[j], xj = pj[0], yj = pj[1];
         if (segmentContains(pi, pj, point)) return 0;
-        if (yi > y !== yj > y && x < (xj - xi) * (y - yi) / (yj - yi) + xi) contains1 = -contains1;
+        if (yi > y !== yj > y && x < (xj - xi) * (y - yi) / (yj - yi) + xi) contains = -contains;
     }
-    return contains1;
+    return contains;
 }
 function segmentContains(a, b, c) {
     var i;
@@ -24602,8 +24602,8 @@ function quantize(k, nice, zero) {
  *   to scale the contours to match a desired output resolution.
  * @param {string} [params.as='contour'] - The output field in which to store
  *   the generated isocontour data (default 'contour').
- */ function Isocontour(params1) {
-    (0, _vegaDataflow.Transform).call(this, null, params1);
+ */ function Isocontour(params) {
+    (0, _vegaDataflow.Transform).call(this, null, params);
 }
 Isocontour.Definition = {
     "type": "Isocontour",
@@ -24858,8 +24858,8 @@ function blurY(n, m, source, target, r) {
  *   smoothed counts (true).
  * @param {string} [params.as='grid'] - The output field in which to store
  *   the generated raster grid (default 'grid').
- */ function KDE2D(params2) {
-    (0, _vegaDataflow.Transform).call(this, null, params2);
+ */ function KDE2D(params) {
+    (0, _vegaDataflow.Transform).call(this, null, params);
 }
 KDE2D.Definition = {
     "type": "KDE2D",
@@ -24931,11 +24931,11 @@ function params(obj, _) {
     transform (_, pulse) {
         if (this.value && !pulse.changed() && !_.modified()) return pulse.StopPropagation;
         var out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS), source = pulse.materialize(pulse.SOURCE).source, groups = partition(source, _.groupby), names = (_.groupby || []).map((0, _vegaUtil.accessorName)), kde = params(density2D(), _), as = _.as || "grid", values = [];
-        function set1(t, vals) {
+        function set(t, vals) {
             for(let i = 0; i < names.length; ++i)t[names[i]] = vals[i];
             return t;
         } // generate density raster grids
-        values = groups.map((g)=>(0, _vegaDataflow.ingest)(set1({
+        values = groups.map((g)=>(0, _vegaDataflow.ingest)(set({
                 [as]: kde(g, _.counts)
             }, g.dims)));
         if (this.value) out.rem = this.value;
@@ -24985,8 +24985,8 @@ function partition(data, groupby) {
  * @param {boolean} [params.smooth] - Boolean flag indicating if the contour
  *   polygons should be smoothed using linear interpolation. The default is
  *   true. The parameter is ignored when using density estimation.
- */ function Contour(params3) {
-    (0, _vegaDataflow.Transform).call(this, null, params3);
+ */ function Contour(params) {
+    (0, _vegaDataflow.Transform).call(this, null, params);
 }
 Contour.Definition = {
     "type": "Contour",
@@ -25083,8 +25083,8 @@ const MultiPoint = "MultiPoint";
  *   of field accessors for the longitude and latitude values.
  * @param {function(object): *} params.geojson - A field accessor for
  *   retrieving GeoJSON feature data.
- */ function GeoJSON(params4) {
-    (0, _vegaDataflow.Transform).call(this, null, params4);
+ */ function GeoJSON(params) {
+    (0, _vegaDataflow.Transform).call(this, null, params);
 }
 GeoJSON.Definition = {
     "type": "GeoJSON",
@@ -25144,8 +25144,8 @@ GeoJSON.Definition = {
  *   or null if the tuple itself is a GeoJSON feature.
  * @param {string} [params.as='path'] - The output field in which to store
  *   the generated path data (default 'path').
- */ function GeoPath(params5) {
-    (0, _vegaDataflow.Transform).call(this, null, params5);
+ */ function GeoPath(params) {
+    (0, _vegaDataflow.Transform).call(this, null, params);
 }
 GeoPath.Definition = {
     "type": "GeoPath",
@@ -25203,8 +25203,8 @@ function initPath(path, pointRadius) {
  *   field accessors for the longitude and latitude values.
  * @param {Array<string>} [params.as] - A two-element array of field names
  *   under which to store the result. Defaults to ['x','y'].
- */ function GeoPoint(params6) {
-    (0, _vegaDataflow.Transform).call(this, null, params6);
+ */ function GeoPoint(params) {
+    (0, _vegaDataflow.Transform).call(this, null, params);
 }
 GeoPoint.Definition = {
     "type": "GeoPoint",
@@ -25242,7 +25242,7 @@ GeoPoint.Definition = {
             "x",
             "y"
         ], x = as[0], y = as[1], mod;
-        function set2(t) {
+        function set(t) {
             const xy = proj([
                 lon(t),
                 lat(t)
@@ -25256,10 +25256,10 @@ GeoPoint.Definition = {
             }
         }
         if (_.modified()) // parameters updated, reflow
-        pulse = pulse.materialize().reflow(true).visit(pulse.SOURCE, set2);
+        pulse = pulse.materialize().reflow(true).visit(pulse.SOURCE, set);
         else {
             mod = pulse.modified(lon.fields) || pulse.modified(lat.fields);
-            pulse.visit(mod ? pulse.ADD_MOD : pulse.ADD, set2);
+            pulse.visit(mod ? pulse.ADD_MOD : pulse.ADD, set);
         }
         return pulse.modifies(as);
     }
@@ -25274,8 +25274,8 @@ GeoPoint.Definition = {
  *   or null if the tuple itself is a GeoJSON feature.
  * @param {string} [params.as='shape'] - The output field in which to store
  *   the generated path data (default 'shape').
- */ function GeoShape(params7) {
-    (0, _vegaDataflow.Transform).call(this, null, params7);
+ */ function GeoShape(params) {
+    (0, _vegaDataflow.Transform).call(this, null, params);
 }
 GeoShape.Definition = {
     "type": "GeoShape",
@@ -25333,8 +25333,8 @@ function shapeGenerator(path, field, pointRadius) {
 /**
  * GeoJSON feature generator for creating graticules.
  * @constructor
- */ function Graticule(params8) {
-    (0, _vegaDataflow.Transform).call(this, [], params8);
+ */ function Graticule(params) {
+    (0, _vegaDataflow.Transform).call(this, [], params);
     this.generator = (0, _d3Geo.geoGraticule)();
 }
 Graticule.Definition = {
@@ -25441,8 +25441,8 @@ Graticule.Definition = {
  *   a single global maximum will be used for all input grids.
  * @param {string} [params.as='image'] - The output field in which to store
  *   the generated bitmap canvas images (default 'image').
- */ function Heatmap(params9) {
-    (0, _vegaDataflow.Transform).call(this, null, params9);
+ */ function Heatmap(params) {
+    (0, _vegaDataflow.Transform).call(this, null, params);
 }
 Heatmap.Definition = {
     "type": "heatmap",
@@ -25523,8 +25523,8 @@ function opacity_(opacity, _) {
 } // check if function depends on individual pixel data
 function dependency(f) {
     if (!(0, _vegaUtil.isFunction)(f)) return false;
-    const set3 = (0, _vegaUtil.toSet)((0, _vegaUtil.accessorFields)(f));
-    return set3.$x || set3.$y || set3.$value || set3.$max;
+    const set = (0, _vegaUtil.toSet)((0, _vegaUtil.accessorFields)(f));
+    return set.$x || set.$y || set.$value || set.$max;
 } // render raster grid to canvas
 function toCanvas(grid, obj, color, opacity) {
     const n = grid.width, m = grid.height, x1 = grid.x1 || 0, y1 = grid.y1 || 0, x2 = grid.x2 || n, y2 = grid.y2 || m, val = grid.values, value = val ? (i)=>val[i] : (0, _vegaUtil.zero), can = (0, _vegaCanvas.canvas)(x2 - x1, y2 - y1), ctx = can.getContext("2d"), img = ctx.getImageData(0, 0, x2 - x1, y2 - y1), pix = img.data;
@@ -25547,8 +25547,8 @@ function toCanvas(grid, obj, color, opacity) {
  * Maintains a cartographic projection.
  * @constructor
  * @param {object} params - The parameters for this operator.
- */ function Projection(params10) {
-    (0, _vegaDataflow.Transform).call(this, null, params10);
+ */ function Projection(params) {
+    (0, _vegaDataflow.Transform).call(this, null, params);
     this.modified(true); // always treat as modified
 }
 (0, _vegaUtil.inherits)(Projection, (0, _vegaDataflow.Transform), {
@@ -25626,12 +25626,12 @@ const projectionProperties = [
 /**
  * Augment projections with their type and a copy method.
  */ function create(type, constructor) {
-    return function projection1() {
+    return function projection() {
         const p = constructor();
         p.type = type;
         p.path = (0, _d3Geo.geoPath)().projection(p);
         p.copy = p.copy || function() {
-            const c = projection1();
+            const c = projection();
             projectionProperties.forEach((prop)=>{
                 if (p[prop]) c[prop](p[prop]());
             });
@@ -26104,14 +26104,14 @@ function boundsRingEnd() {
 // Finds the left-right distance between two longitudes.
 // This is almost the same as (lambda1 - lambda0 + 360°) % 360°, except that we want
 // the distance between ±180° to be 360°.
-function angle(lambda01, lambda11) {
-    return (lambda11 -= lambda01) < 0 ? lambda11 + 360 : lambda11;
+function angle(lambda0, lambda1) {
+    return (lambda1 -= lambda0) < 0 ? lambda1 + 360 : lambda1;
 }
 function rangeCompare(a, b) {
     return a[0] - b[0];
 }
-function rangeContains(range1, x) {
-    return range1[0] <= range1[1] ? range1[0] <= x && x <= range1[1] : x < range1[0] || range1[1] < x;
+function rangeContains(range, x) {
+    return range[0] <= range[1] ? range[0] <= x && x <= range[1] : x < range[0] || range[1] < x;
 }
 exports.default = function(feature) {
     var i, n, a, b, merged, deltaMax, delta;
@@ -26173,14 +26173,14 @@ parcelHelpers.export(exports, "cartesianScale", ()=>cartesianScale);
 // TODO return d
 parcelHelpers.export(exports, "cartesianNormalizeInPlace", ()=>cartesianNormalizeInPlace);
 var _mathJs = require("./math.js");
-function spherical(cartesian1) {
+function spherical(cartesian) {
     return [
-        (0, _mathJs.atan2)(cartesian1[1], cartesian1[0]),
-        (0, _mathJs.asin)(cartesian1[2])
+        (0, _mathJs.atan2)(cartesian[1], cartesian[0]),
+        (0, _mathJs.asin)(cartesian[2])
     ];
 }
-function cartesian(spherical1) {
-    var lambda = spherical1[0], phi = spherical1[1], cosPhi = (0, _mathJs.cos)(phi);
+function cartesian(spherical) {
+    var lambda = spherical[0], phi = spherical[1], cosPhi = (0, _mathJs.cos)(phi);
     return [
         cosPhi * (0, _mathJs.cos)(lambda),
         cosPhi * (0, _mathJs.sin)(lambda),
@@ -26583,7 +26583,7 @@ exports.default = function(pointVisible, clipLine, interpolate, start) {
     return function(sink) {
         var line = clipLine(sink), ringBuffer = (0, _bufferJsDefault.default)(), ringSink = clipLine(ringBuffer), polygonStarted = false, polygon, segments, ring;
         var clip = {
-            point: point1,
+            point: point,
             lineStart: lineStart,
             lineEnd: lineEnd,
             polygonStart: function() {
@@ -26594,7 +26594,7 @@ exports.default = function(pointVisible, clipLine, interpolate, start) {
                 polygon = [];
             },
             polygonEnd: function() {
-                clip.point = point1;
+                clip.point = point;
                 clip.lineStart = lineStart;
                 clip.lineEnd = lineEnd;
                 segments = (0, _d3Array.merge)(segments);
@@ -26619,7 +26619,7 @@ exports.default = function(pointVisible, clipLine, interpolate, start) {
                 sink.polygonEnd();
             }
         };
-        function point1(lambda, phi) {
+        function point(lambda, phi) {
             if (pointVisible(lambda, phi)) sink.point(lambda, phi);
         }
         function pointLine(lambda, phi) {
@@ -26630,7 +26630,7 @@ exports.default = function(pointVisible, clipLine, interpolate, start) {
             line.lineStart();
         }
         function lineEnd() {
-            clip.point = point1;
+            clip.point = point;
             line.lineEnd();
         }
         function pointRing(lambda, phi) {
@@ -26729,7 +26729,7 @@ function Intersection(point, points, other, entry) {
 // into its visible line segments, and rejoins the segments by interpolating
 // along the clip edge.
 exports.default = function(segments, compareIntersection, startInside, interpolate, stream) {
-    var subject = [], clip = [], i, n1;
+    var subject = [], clip = [], i, n;
     segments.forEach(function(segment) {
         if ((n = segment.length - 1) <= 0) return;
         var n, p0 = segment[0], p1 = segment[n], x;
@@ -26752,7 +26752,7 @@ exports.default = function(segments, compareIntersection, startInside, interpola
     clip.sort(compareIntersection);
     link(subject);
     link(clip);
-    for(i = 0, n1 = clip.length; i < n1; ++i)clip[i].e = startInside = !startInside;
+    for(i = 0, n = clip.length; i < n; ++i)clip[i].e = startInside = !startInside;
     var start = subject[0], points, point;
     while(true){
         // Find first unvisited intersection.
@@ -26763,7 +26763,7 @@ exports.default = function(segments, compareIntersection, startInside, interpola
         do {
             current.v = current.o.v = true;
             if (current.e) {
-                if (isSubject) for(i = 0, n1 = points.length; i < n1; ++i)stream.point((point = points[i])[0], point[1]);
+                if (isSubject) for(i = 0, n = points.length; i < n; ++i)stream.point((point = points[i])[0], point[1]);
                 else interpolate(current.x, current.n.x, 1, stream);
                 current = current.n;
             } else {
@@ -26862,9 +26862,9 @@ var _pointEqualJsDefault = parcelHelpers.interopDefault(_pointEqualJs);
 var _indexJs = require("./index.js");
 var _indexJsDefault = parcelHelpers.interopDefault(_indexJs);
 exports.default = function(radius) {
-    var cr = (0, _mathJs.cos)(radius), delta1 = 6 * (0, _mathJs.radians), smallRadius = cr > 0, notHemisphere = (0, _mathJs.abs)(cr) > (0, _mathJs.epsilon); // TODO optimise for this common case
+    var cr = (0, _mathJs.cos)(radius), delta = 6 * (0, _mathJs.radians), smallRadius = cr > 0, notHemisphere = (0, _mathJs.abs)(cr) > (0, _mathJs.epsilon); // TODO optimise for this common case
     function interpolate(from, to, direction, stream) {
-        (0, _circleJs.circleStream)(stream, radius, delta1, direction, from, to);
+        (0, _circleJs.circleStream)(stream, radius, delta, direction, from, to);
     }
     function visible(lambda, phi) {
         return (0, _mathJs.cos)(lambda) * (0, _mathJs.cos)(phi) > cr;
@@ -26884,7 +26884,7 @@ exports.default = function(radius) {
                 var point1 = [
                     lambda,
                     phi
-                ], point2, v = visible(lambda, phi), c = smallRadius ? v ? 0 : code1(lambda, phi) : v ? code1(lambda + (lambda < 0 ? (0, _mathJs.pi) : -(0, _mathJs.pi)), phi) : 0;
+                ], point2, v = visible(lambda, phi), c = smallRadius ? v ? 0 : code(lambda, phi) : v ? code(lambda + (lambda < 0 ? (0, _mathJs.pi) : -(0, _mathJs.pi)), phi) : 0;
                 if (!point0 && (v00 = v0 = v)) stream.lineStart();
                 if (v !== v0) {
                     point2 = intersect(point0, point1);
@@ -26975,7 +26975,7 @@ exports.default = function(radius) {
     }
     // Generates a 4-bit vector representing the location of a point relative to
     // the small circle's bounding box.
-    function code1(lambda, phi) {
+    function code(lambda, phi) {
         var r = smallRadius ? radius : (0, _mathJs.pi) - radius, code = 0;
         if (lambda < -r) code |= 1; // left
         else if (lambda > r) code |= 2; // right
@@ -27005,7 +27005,7 @@ var _rejoinJsDefault = parcelHelpers.interopDefault(_rejoinJs);
 var _d3Array = require("d3-array");
 var clipMax = 1e9, clipMin = -clipMax;
 function clipRectangle(x0, y0, x1, y1) {
-    function visible1(x, y) {
+    function visible(x, y) {
         return x0 <= x && x <= x1 && y0 <= y && y <= y1;
     }
     function interpolate(from, to, direction, stream) {
@@ -27025,16 +27025,16 @@ function clipRectangle(x0, y0, x1, y1) {
         return ca !== cb ? ca - cb : ca === 0 ? b[1] - a[1] : ca === 1 ? a[0] - b[0] : ca === 2 ? a[1] - b[1] : b[0] - a[0];
     }
     return function(stream) {
-        var activeStream = stream, bufferStream = (0, _bufferJsDefault.default)(), segments, polygon, ring1, x__, y__, v__, x_, y_, v_, first, clean;
+        var activeStream = stream, bufferStream = (0, _bufferJsDefault.default)(), segments, polygon, ring, x__, y__, v__, x_, y_, v_, first, clean;
         var clipStream = {
-            point: point1,
+            point: point,
             lineStart: lineStart,
             lineEnd: lineEnd,
             polygonStart: polygonStart,
             polygonEnd: polygonEnd
         };
-        function point1(x, y) {
-            if (visible1(x, y)) activeStream.point(x, y);
+        function point(x, y) {
+            if (visible(x, y)) activeStream.point(x, y);
         }
         function polygonInside() {
             var winding = 0;
@@ -27062,11 +27062,11 @@ function clipRectangle(x0, y0, x1, y1) {
                 if (visible) (0, _rejoinJsDefault.default)(segments, compareIntersection, startInside, interpolate, stream);
                 stream.polygonEnd();
             }
-            activeStream = stream, segments = polygon = ring1 = null;
+            activeStream = stream, segments = polygon = ring = null;
         }
         function lineStart() {
             clipStream.point = linePoint;
-            if (polygon) polygon.push(ring1 = []);
+            if (polygon) polygon.push(ring = []);
             first = true;
             v_ = false;
             x_ = y_ = NaN;
@@ -27080,12 +27080,12 @@ function clipRectangle(x0, y0, x1, y1) {
                 if (v__ && v_) bufferStream.rejoin();
                 segments.push(bufferStream.result());
             }
-            clipStream.point = point1;
+            clipStream.point = point;
             if (v_) activeStream.lineEnd();
         }
         function linePoint(x, y) {
-            var v = visible1(x, y);
-            if (polygon) ring1.push([
+            var v = visible(x, y);
+            if (polygon) ring.push([
                 x,
                 y
             ]);
@@ -27183,9 +27183,9 @@ parcelHelpers.export(exports, "graticule10", ()=>graticule10);
 var _d3Array = require("d3-array");
 var _mathJs = require("./math.js");
 function graticuleX(y0, y1, dy) {
-    var y2 = (0, _d3Array.range)(y0, y1 - (0, _mathJs.epsilon), dy).concat(y1);
+    var y = (0, _d3Array.range)(y0, y1 - (0, _mathJs.epsilon), dy).concat(y1);
     return function(x) {
-        return y2.map(function(y) {
+        return y.map(function(y) {
             return [
                 x,
                 y
@@ -27194,9 +27194,9 @@ function graticuleX(y0, y1, dy) {
     };
 }
 function graticuleY(x0, x1, dx) {
-    var x2 = (0, _d3Array.range)(x0, x1 - (0, _mathJs.epsilon), dx).concat(x1);
+    var x = (0, _d3Array.range)(x0, x1 - (0, _mathJs.epsilon), dx).concat(x1);
     return function(y) {
-        return x2.map(function(x) {
+        return x.map(function(x) {
             return [
                 x,
                 y
@@ -27205,8 +27205,8 @@ function graticuleY(x0, x1, dx) {
     };
 }
 function graticule() {
-    var x1, x0, X1, X0, y1, y0, Y1, Y0, dx = 10, dy = dx, DX = 90, DY = 360, x3, y3, X, Y, precision = 2.5;
-    function graticule1() {
+    var x1, x0, X1, X0, y1, y0, Y1, Y0, dx = 10, dy = dx, DX = 90, DY = 360, x, y, X, Y, precision = 2.5;
+    function graticule() {
         return {
             type: "MultiLineString",
             coordinates: lines()
@@ -27215,11 +27215,11 @@ function graticule() {
     function lines() {
         return (0, _d3Array.range)((0, _mathJs.ceil)(X0 / DX) * DX, X1, DX).map(X).concat((0, _d3Array.range)((0, _mathJs.ceil)(Y0 / DY) * DY, Y1, DY).map(Y)).concat((0, _d3Array.range)((0, _mathJs.ceil)(x0 / dx) * dx, x1, dx).filter(function(x) {
             return (0, _mathJs.abs)(x % DX) > (0, _mathJs.epsilon);
-        }).map(x3)).concat((0, _d3Array.range)((0, _mathJs.ceil)(y0 / dy) * dy, y1, dy).filter(function(y) {
+        }).map(x)).concat((0, _d3Array.range)((0, _mathJs.ceil)(y0 / dy) * dy, y1, dy).filter(function(y) {
             return (0, _mathJs.abs)(y % DY) > (0, _mathJs.epsilon);
-        }).map(y3));
+        }).map(y));
     }
-    graticule1.lines = function() {
+    graticule.lines = function() {
         return lines().map(function(coordinates) {
             return {
                 type: "LineString",
@@ -27227,7 +27227,7 @@ function graticule() {
             };
         });
     };
-    graticule1.outline = function() {
+    graticule.outline = function() {
         return {
             type: "Polygon",
             coordinates: [
@@ -27235,11 +27235,11 @@ function graticule() {
             ]
         };
     };
-    graticule1.extent = function(_) {
-        if (!arguments.length) return graticule1.extentMinor();
-        return graticule1.extentMajor(_).extentMinor(_);
+    graticule.extent = function(_) {
+        if (!arguments.length) return graticule.extentMinor();
+        return graticule.extentMajor(_).extentMinor(_);
     };
-    graticule1.extentMajor = function(_) {
+    graticule.extentMajor = function(_) {
         if (!arguments.length) return [
             [
                 X0,
@@ -27254,9 +27254,9 @@ function graticule() {
         Y0 = +_[0][1], Y1 = +_[1][1];
         if (X0 > X1) _ = X0, X0 = X1, X1 = _;
         if (Y0 > Y1) _ = Y0, Y0 = Y1, Y1 = _;
-        return graticule1.precision(precision);
+        return graticule.precision(precision);
     };
-    graticule1.extentMinor = function(_) {
+    graticule.extentMinor = function(_) {
         if (!arguments.length) return [
             [
                 x0,
@@ -27271,38 +27271,38 @@ function graticule() {
         y0 = +_[0][1], y1 = +_[1][1];
         if (x0 > x1) _ = x0, x0 = x1, x1 = _;
         if (y0 > y1) _ = y0, y0 = y1, y1 = _;
-        return graticule1.precision(precision);
+        return graticule.precision(precision);
     };
-    graticule1.step = function(_) {
-        if (!arguments.length) return graticule1.stepMinor();
-        return graticule1.stepMajor(_).stepMinor(_);
+    graticule.step = function(_) {
+        if (!arguments.length) return graticule.stepMinor();
+        return graticule.stepMajor(_).stepMinor(_);
     };
-    graticule1.stepMajor = function(_) {
+    graticule.stepMajor = function(_) {
         if (!arguments.length) return [
             DX,
             DY
         ];
         DX = +_[0], DY = +_[1];
-        return graticule1;
+        return graticule;
     };
-    graticule1.stepMinor = function(_) {
+    graticule.stepMinor = function(_) {
         if (!arguments.length) return [
             dx,
             dy
         ];
         dx = +_[0], dy = +_[1];
-        return graticule1;
+        return graticule;
     };
-    graticule1.precision = function(_) {
+    graticule.precision = function(_) {
         if (!arguments.length) return precision;
         precision = +_;
-        x3 = graticuleX(y0, y1, 90);
-        y3 = graticuleY(x0, x1, precision);
+        x = graticuleX(y0, y1, 90);
+        y = graticuleY(x0, x1, precision);
         X = graticuleX(Y0, Y1, 90);
         Y = graticuleY(X0, X1, precision);
-        return graticule1;
+        return graticule;
     };
-    return graticule1.extentMajor([
+    return graticule.extentMajor([
         [
             -180,
             -90 + (0, _mathJs.epsilon)
@@ -27844,7 +27844,7 @@ function projection(project) {
 exports.default = projection;
 function projectionMutator(projectAt) {
     var project, k = 150, x = 480, y = 250, lambda = 0, phi = 0, deltaLambda = 0, deltaPhi = 0, deltaGamma = 0, rotate, alpha = 0, sx = 1, sy = 1, theta = null, preclip = (0, _antimeridianJsDefault.default), x0 = null, y0, x1, y1, postclip = (0, _identityJsDefault.default), delta2 = 0.5, projectResample, projectTransform, projectRotateTransform, cache, cacheStream;
-    function projection1(point) {
+    function projection(point) {
         return projectRotateTransform(point[0] * (0, _mathJs.radians), point[1] * (0, _mathJs.radians));
     }
     function invert(point) {
@@ -27854,19 +27854,19 @@ function projectionMutator(projectAt) {
             point[1] * (0, _mathJs.degrees)
         ];
     }
-    projection1.stream = function(stream) {
+    projection.stream = function(stream) {
         return cache && cacheStream === stream ? cache : cache = transformRadians(transformRotate(rotate)(preclip(projectResample(postclip(cacheStream = stream)))));
     };
-    projection1.preclip = function(_) {
+    projection.preclip = function(_) {
         return arguments.length ? (preclip = _, theta = undefined, reset()) : preclip;
     };
-    projection1.postclip = function(_) {
+    projection.postclip = function(_) {
         return arguments.length ? (postclip = _, x0 = y0 = x1 = y1 = null, reset()) : postclip;
     };
-    projection1.clipAngle = function(_) {
+    projection.clipAngle = function(_) {
         return arguments.length ? (preclip = +_ ? (0, _circleJsDefault.default)(theta = _ * (0, _mathJs.radians)) : (theta = null, _antimeridianJsDefault.default), reset()) : theta * (0, _mathJs.degrees);
     };
-    projection1.clipExtent = function(_) {
+    projection.clipExtent = function(_) {
         return arguments.length ? (postclip = _ == null ? (x0 = y0 = x1 = y1 = null, _identityJsDefault.default) : (0, _rectangleJsDefault.default)(x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1]), reset()) : x0 == null ? null : [
             [
                 x0,
@@ -27878,51 +27878,51 @@ function projectionMutator(projectAt) {
             ]
         ];
     };
-    projection1.scale = function(_) {
+    projection.scale = function(_) {
         return arguments.length ? (k = +_, recenter()) : k;
     };
-    projection1.translate = function(_) {
+    projection.translate = function(_) {
         return arguments.length ? (x = +_[0], y = +_[1], recenter()) : [
             x,
             y
         ];
     };
-    projection1.center = function(_) {
+    projection.center = function(_) {
         return arguments.length ? (lambda = _[0] % 360 * (0, _mathJs.radians), phi = _[1] % 360 * (0, _mathJs.radians), recenter()) : [
             lambda * (0, _mathJs.degrees),
             phi * (0, _mathJs.degrees)
         ];
     };
-    projection1.rotate = function(_) {
+    projection.rotate = function(_) {
         return arguments.length ? (deltaLambda = _[0] % 360 * (0, _mathJs.radians), deltaPhi = _[1] % 360 * (0, _mathJs.radians), deltaGamma = _.length > 2 ? _[2] % 360 * (0, _mathJs.radians) : 0, recenter()) : [
             deltaLambda * (0, _mathJs.degrees),
             deltaPhi * (0, _mathJs.degrees),
             deltaGamma * (0, _mathJs.degrees)
         ];
     };
-    projection1.angle = function(_) {
+    projection.angle = function(_) {
         return arguments.length ? (alpha = _ % 360 * (0, _mathJs.radians), recenter()) : alpha * (0, _mathJs.degrees);
     };
-    projection1.reflectX = function(_) {
+    projection.reflectX = function(_) {
         return arguments.length ? (sx = _ ? -1 : 1, recenter()) : sx < 0;
     };
-    projection1.reflectY = function(_) {
+    projection.reflectY = function(_) {
         return arguments.length ? (sy = _ ? -1 : 1, recenter()) : sy < 0;
     };
-    projection1.precision = function(_) {
+    projection.precision = function(_) {
         return arguments.length ? (projectResample = (0, _resampleJsDefault.default)(projectTransform, delta2 = _ * _), reset()) : (0, _mathJs.sqrt)(delta2);
     };
-    projection1.fitExtent = function(extent, object) {
-        return (0, _fitJs.fitExtent)(projection1, extent, object);
+    projection.fitExtent = function(extent, object) {
+        return (0, _fitJs.fitExtent)(projection, extent, object);
     };
-    projection1.fitSize = function(size, object) {
-        return (0, _fitJs.fitSize)(projection1, size, object);
+    projection.fitSize = function(size, object) {
+        return (0, _fitJs.fitSize)(projection, size, object);
     };
-    projection1.fitWidth = function(width, object) {
-        return (0, _fitJs.fitWidth)(projection1, width, object);
+    projection.fitWidth = function(width, object) {
+        return (0, _fitJs.fitWidth)(projection, width, object);
     };
-    projection1.fitHeight = function(height, object) {
-        return (0, _fitJs.fitHeight)(projection1, height, object);
+    projection.fitHeight = function(height, object) {
+        return (0, _fitJs.fitHeight)(projection, height, object);
     };
     function recenter() {
         var center = scaleTranslateRotate(k, 0, 0, sx, sy, alpha).apply(null, project(lambda, phi)), transform = scaleTranslateRotate(k, x - center[0], y - center[1], sx, sy, alpha);
@@ -27934,11 +27934,11 @@ function projectionMutator(projectAt) {
     }
     function reset() {
         cache = cacheStream = null;
-        return projection1;
+        return projection;
     }
     return function() {
         project = projectAt.apply(this, arguments);
-        projection1.invert = project.invert && invert;
+        projection.invert = project.invert && invert;
         return recenter();
     };
 }
@@ -29718,15 +29718,15 @@ exports.default = function(radius) {
             var data = quad.data, rj = quad.r, r = ri + rj;
             if (data) {
                 if (data.index > node.index) {
-                    var x2 = xi - data.x - data.vx, y2 = yi - data.y - data.vy, l = x2 * x2 + y2 * y2;
+                    var x = xi - data.x - data.vx, y = yi - data.y - data.vy, l = x * x + y * y;
                     if (l < r * r) {
-                        if (x2 === 0) x2 = (0, _jiggleJsDefault.default)(random), l += x2 * x2;
-                        if (y2 === 0) y2 = (0, _jiggleJsDefault.default)(random), l += y2 * y2;
+                        if (x === 0) x = (0, _jiggleJsDefault.default)(random), l += x * x;
+                        if (y === 0) y = (0, _jiggleJsDefault.default)(random), l += y * y;
                         l = (r - (l = Math.sqrt(l))) / l * strength;
-                        node.vx += (x2 *= l) * (r = (rj *= rj) / (ri2 + rj));
-                        node.vy += (y2 *= l) * r;
-                        data.vx -= x2 * (r = 1 - r);
-                        data.vy -= y2 * r;
+                        node.vx += (x *= l) * (r = (rj *= rj) / (ri2 + rj));
+                        node.vy += (y *= l) * r;
+                        data.vx -= x * (r = 1 - r);
+                        data.vy -= y * r;
                     }
                 }
                 return;
@@ -30209,18 +30209,18 @@ exports.default = function(links) {
     }
     function initialize() {
         if (!nodes) return;
-        var i1, n = nodes.length, m = links.length, nodeById = new Map(nodes.map((d, i)=>[
+        var i, n = nodes.length, m = links.length, nodeById = new Map(nodes.map((d, i)=>[
                 id(d, i, nodes),
                 d
             ])), link;
-        for(i1 = 0, count = new Array(n); i1 < m; ++i1){
-            link = links[i1], link.index = i1;
+        for(i = 0, count = new Array(n); i < m; ++i){
+            link = links[i], link.index = i;
             if (typeof link.source !== "object") link.source = find(nodeById, link.source);
             if (typeof link.target !== "object") link.target = find(nodeById, link.target);
             count[link.source.index] = (count[link.source.index] || 0) + 1;
             count[link.target.index] = (count[link.target.index] || 0) + 1;
         }
-        for(i1 = 0, bias = new Array(m); i1 < m; ++i1)link = links[i1], bias[i1] = count[link.source.index] / (count[link.source.index] + count[link.target.index]);
+        for(i = 0, bias = new Array(m); i < m; ++i)link = links[i], bias[i] = count[link.source.index] / (count[link.source.index] + count[link.target.index]);
         strengths = new Array(m), initializeStrength();
         distances = new Array(m), initializeDistance();
     }
@@ -30265,16 +30265,16 @@ var _jiggleJs = require("./jiggle.js");
 var _jiggleJsDefault = parcelHelpers.interopDefault(_jiggleJs);
 var _simulationJs = require("./simulation.js");
 exports.default = function() {
-    var nodes, node1, random, alpha, strength1 = (0, _constantJsDefault.default)(-30), strengths, distanceMin2 = 1, distanceMax2 = Infinity, theta2 = 0.81;
+    var nodes, node, random, alpha, strength = (0, _constantJsDefault.default)(-30), strengths, distanceMin2 = 1, distanceMax2 = Infinity, theta2 = 0.81;
     function force(_) {
         var i, n = nodes.length, tree = (0, _d3Quadtree.quadtree)(nodes, (0, _simulationJs.x), (0, _simulationJs.y)).visitAfter(accumulate);
-        for(alpha = _, i = 0; i < n; ++i)node1 = nodes[i], tree.visit(apply);
+        for(alpha = _, i = 0; i < n; ++i)node = nodes[i], tree.visit(apply);
     }
     function initialize() {
         if (!nodes) return;
         var i, n = nodes.length, node;
         strengths = new Array(n);
-        for(i = 0; i < n; ++i)node = nodes[i], strengths[node.index] = +strength1(node, i, nodes);
+        for(i = 0; i < n; ++i)node = nodes[i], strengths[node.index] = +strength(node, i, nodes);
     }
     function accumulate(quad) {
         var strength = 0, q, c, weight = 0, x, y, i;
@@ -30294,7 +30294,7 @@ exports.default = function() {
     }
     function apply(quad, x1, _, x2) {
         if (!quad.value) return true;
-        var x = quad.x - node1.x, y = quad.y - node1.y, w = x2 - x1, l = x * x + y * y;
+        var x = quad.x - node.x, y = quad.y - node.y, w = x2 - x1, l = x * x + y * y;
         // Apply the Barnes-Hut approximation if possible.
         // Limit forces for very close nodes; randomize direction if coincident.
         if (w * w / theta2 < l) {
@@ -30302,21 +30302,21 @@ exports.default = function() {
                 if (x === 0) x = (0, _jiggleJsDefault.default)(random), l += x * x;
                 if (y === 0) y = (0, _jiggleJsDefault.default)(random), l += y * y;
                 if (l < distanceMin2) l = Math.sqrt(distanceMin2 * l);
-                node1.vx += x * quad.value * alpha / l;
-                node1.vy += y * quad.value * alpha / l;
+                node.vx += x * quad.value * alpha / l;
+                node.vy += y * quad.value * alpha / l;
             }
             return true;
         } else if (quad.length || l >= distanceMax2) return;
         // Limit forces for very close nodes; randomize direction if coincident.
-        if (quad.data !== node1 || quad.next) {
+        if (quad.data !== node || quad.next) {
             if (x === 0) x = (0, _jiggleJsDefault.default)(random), l += x * x;
             if (y === 0) y = (0, _jiggleJsDefault.default)(random), l += y * y;
             if (l < distanceMin2) l = Math.sqrt(distanceMin2 * l);
         }
-        do if (quad.data !== node1) {
+        do if (quad.data !== node) {
             w = strengths[quad.data.index] * alpha / l;
-            node1.vx += x * w;
-            node1.vy += y * w;
+            node.vx += x * w;
+            node.vy += y * w;
         }
         while (quad = quad.next);
     }
@@ -30326,7 +30326,7 @@ exports.default = function() {
         initialize();
     };
     force.strength = function(_) {
-        return arguments.length ? (strength1 = typeof _ === "function" ? _ : (0, _constantJsDefault.default)(+_), initialize(), force) : strength1;
+        return arguments.length ? (strength = typeof _ === "function" ? _ : (0, _constantJsDefault.default)(+_), initialize(), force) : strength;
     };
     force.distanceMin = function(_) {
         return arguments.length ? (distanceMin2 = _ * _, force) : Math.sqrt(distanceMin2);
@@ -30435,14 +30435,14 @@ exports.default = function(nodes) {
         force: function(name, _) {
             return arguments.length > 1 ? (_ == null ? forces.delete(name) : forces.set(name, initializeForce(_)), simulation) : forces.get(name);
         },
-        find: function(x1, y1, radius) {
+        find: function(x, y, radius) {
             var i = 0, n = nodes.length, dx, dy, d2, node, closest;
             if (radius == null) radius = Infinity;
             else radius *= radius;
             for(i = 0; i < n; ++i){
                 node = nodes[i];
-                dx = x1 - node.x;
-                dy = y1 - node.y;
+                dx = x - node.x;
+                dy = y - node.y;
                 d2 = dx * dx + dy * dy;
                 if (d2 < radius) closest = node, radius = d2;
             }
@@ -30621,8 +30621,8 @@ function wake() {
     }
 }
 function poke() {
-    var now1 = clock.now(), delay = now1 - clockLast;
-    if (delay > pokeDelay) clockSkew -= delay, clockLast = now1;
+    var now = clock.now(), delay = now - clockLast;
+    if (delay > pokeDelay) clockSkew -= delay, clockLast = now;
 }
 function nap() {
     var t0, t1 = taskHead, t2, time = Infinity;
@@ -30653,9 +30653,9 @@ function sleep(time) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _timerJs = require("./timer.js");
-exports.default = function(callback1, delay1, time1) {
-    var t = new (0, _timerJs.Timer), total = delay1;
-    if (delay1 == null) return t.restart(callback1, delay1, time1), t;
+exports.default = function(callback, delay, time) {
+    var t = new (0, _timerJs.Timer), total = delay;
+    if (delay == null) return t.restart(callback, delay, time), t;
     t._restart = t.restart;
     t.restart = function(callback, delay, time) {
         delay = +delay, time = time == null ? (0, _timerJs.now)() : +time;
@@ -30665,7 +30665,7 @@ exports.default = function(callback1, delay1, time1) {
             callback(elapsed);
         }, delay, time);
     };
-    t.restart(callback1, delay1, time1);
+    t.restart(callback, delay, time);
     return t;
 };
 
@@ -30828,9 +30828,9 @@ const children = (n)=>n.values;
     }
 });
 function nest() {
-    const keys = [], nest1 = {
+    const keys = [], nest = {
         entries: (array)=>entries(apply(array, 0), 0),
-        key: (d)=>(keys.push(d), nest1)
+        key: (d)=>(keys.push(d), nest)
     };
     function apply(array, depth) {
         if (depth >= keys.length) return array;
@@ -30855,7 +30855,7 @@ function nest() {
         });
         return array;
     }
-    return nest1;
+    return nest;
 }
 /**
  * Abstract class for tree layout.
@@ -32017,13 +32017,13 @@ var _roundJsDefault = parcelHelpers.interopDefault(_roundJs);
 var _diceJs = require("./treemap/dice.js");
 var _diceJsDefault = parcelHelpers.interopDefault(_diceJs);
 exports.default = function() {
-    var dx = 1, dy1 = 1, padding = 0, round = false;
+    var dx = 1, dy = 1, padding = 0, round = false;
     function partition(root) {
         var n = root.height + 1;
         root.x0 = root.y0 = padding;
         root.x1 = dx;
-        root.y1 = dy1 / n;
-        root.eachBefore(positionNode(dy1, n));
+        root.y1 = dy / n;
+        root.eachBefore(positionNode(dy, n));
         if (round) root.eachBefore((0, _roundJsDefault.default));
         return root;
     }
@@ -32043,9 +32043,9 @@ exports.default = function() {
         return arguments.length ? (round = !!x, partition) : round;
     };
     partition.size = function(x) {
-        return arguments.length ? (dx = +x[0], dy1 = +x[1], partition) : [
+        return arguments.length ? (dx = +x[0], dy = +x[1], partition) : [
             dx,
-            dy1
+            dy
         ];
     };
     partition.padding = function(x) {
@@ -32092,29 +32092,29 @@ function defaultParentId(d) {
 exports.default = function() {
     var id = defaultId, parentId = defaultParentId;
     function stratify(data) {
-        var nodes = Array.from(data), n = nodes.length, d, i, root, parent, node1, nodeId, nodeKey, nodeByKey = new Map;
+        var nodes = Array.from(data), n = nodes.length, d, i, root, parent, node, nodeId, nodeKey, nodeByKey = new Map;
         for(i = 0; i < n; ++i){
-            d = nodes[i], node1 = nodes[i] = new (0, _indexJs.Node)(d);
+            d = nodes[i], node = nodes[i] = new (0, _indexJs.Node)(d);
             if ((nodeId = id(d, i, data)) != null && (nodeId += "")) {
-                nodeKey = node1.id = nodeId;
-                nodeByKey.set(nodeKey, nodeByKey.has(nodeKey) ? ambiguous : node1);
+                nodeKey = node.id = nodeId;
+                nodeByKey.set(nodeKey, nodeByKey.has(nodeKey) ? ambiguous : node);
             }
-            if ((nodeId = parentId(d, i, data)) != null && (nodeId += "")) node1.parent = nodeId;
+            if ((nodeId = parentId(d, i, data)) != null && (nodeId += "")) node.parent = nodeId;
         }
         for(i = 0; i < n; ++i){
-            node1 = nodes[i];
-            if (nodeId = node1.parent) {
+            node = nodes[i];
+            if (nodeId = node.parent) {
                 parent = nodeByKey.get(nodeId);
                 if (!parent) throw new Error("missing: " + nodeId);
                 if (parent === ambiguous) throw new Error("ambiguous: " + nodeId);
-                if (parent.children) parent.children.push(node1);
+                if (parent.children) parent.children.push(node);
                 else parent.children = [
-                    node1
+                    node
                 ];
-                node1.parent = parent;
+                node.parent = parent;
             } else {
                 if (root) throw new Error("multiple roots");
-                root = node1;
+                root = node;
             }
         }
         if (!root) throw new Error("no root");
@@ -32475,10 +32475,10 @@ exports.default = function(parent, x0, y0, x1, y1) {
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8vqlk":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-exports.default = function(parent, x01, y01, x11, y11) {
-    var nodes = parent.children, i1, n = nodes.length, sum, sums = new Array(n + 1);
-    for(sums[0] = sum = i1 = 0; i1 < n; ++i1)sums[i1 + 1] = sum += nodes[i1].value;
-    partition(0, n, parent.value, x01, y01, x11, y11);
+exports.default = function(parent, x0, y0, x1, y1) {
+    var nodes = parent.children, i, n = nodes.length, sum, sums = new Array(n + 1);
+    for(sums[0] = sum = i = 0; i < n; ++i)sums[i + 1] = sum += nodes[i].value;
+    partition(0, n, parent.value, x0, y0, x1, y1);
     function partition(i, j, value, x0, y0, x1, y1) {
         if (i >= j - 1) {
             var node = nodes[i];
@@ -32656,15 +32656,15 @@ function Bitmap(w, h) {
                 } else {
                     if (array[indexStart] & RIGHT0[start & MOD]) return true;
                     if (array[indexEnd] & RIGHT1[(end & MOD) + 1]) return true;
-                    for(let i1 = indexStart + 1; i1 < indexEnd; ++i1){
-                        if (array[i1]) return true;
+                    for(let i = indexStart + 1; i < indexEnd; ++i){
+                        if (array[i]) return true;
                     }
                 }
             }
             return false;
         },
         setRange: (x, y, x2, y2)=>{
-            let start, end, indexStart, indexEnd, i2;
+            let start, end, indexStart, indexEnd, i;
             for(; y <= y2; ++y){
                 start = y * w + x;
                 end = y * w + x2;
@@ -32674,12 +32674,12 @@ function Bitmap(w, h) {
                 else {
                     _set(indexStart, RIGHT0[start & MOD]);
                     _set(indexEnd, RIGHT1[(end & MOD) + 1]);
-                    for(i2 = indexStart + 1; i2 < indexEnd; ++i2)_set(i2, 0xffffffff);
+                    for(i = indexStart + 1; i < indexEnd; ++i)_set(i, 0xffffffff);
                 }
             }
         },
         clearRange: (x, y, x2, y2)=>{
-            let start, end, indexStart, indexEnd, i3;
+            let start, end, indexStart, indexEnd, i;
             for(; y <= y2; ++y){
                 start = y * w + x;
                 end = y * w + x2;
@@ -32689,7 +32689,7 @@ function Bitmap(w, h) {
                 else {
                     _clear(indexStart, RIGHT1[start & MOD]);
                     _clear(indexEnd, RIGHT0[(end & MOD) + 1]);
-                    for(i3 = indexStart + 1; i3 < indexEnd; ++i3)_clear(i3, 0);
+                    for(i = indexStart + 1; i < indexEnd; ++i)_clear(i, 0);
                 }
             }
         },
@@ -32714,11 +32714,11 @@ function placeAreaLabelNaive($, bitmaps, avoidBaseMark, markIndex) {
         textHeight = d.datum.fontSize, // label width
         textWidth = (0, _vegaScenegraph.textMetrics).width(d.datum, d.datum.text); // label height
         let maxAreaWidth = 0, x1, x2, y1, y2, x, y, areaWidth; // for each area sample point
-        for(let i4 = 0; i4 < n; ++i4){
-            x1 = items[i4].x;
-            y1 = items[i4].y;
-            x2 = items[i4].x2 === undefined ? x1 : items[i4].x2;
-            y2 = items[i4].y2 === undefined ? y1 : items[i4].y2;
+        for(let i = 0; i < n; ++i){
+            x1 = items[i].x;
+            y1 = items[i].y;
+            x2 = items[i].x2 === undefined ? x1 : items[i].x2;
+            y2 = items[i].y2 === undefined ? y1 : items[i].y2;
             x = (x1 + x2) / 2;
             y = (y1 + y2) / 2;
             areaWidth = Math.abs(x2 - x1 + y2 - y1);
@@ -32779,11 +32779,11 @@ function placeAreaLabelReducedSearch($, bitmaps, avoidBaseMark, markIndex) {
         textHeight = d.datum.fontSize, // label width
         textWidth = (0, _vegaScenegraph.textMetrics).width(d.datum, d.datum.text); // label height
         let maxSize = avoidBaseMark ? textHeight : 0, labelPlaced = false, labelPlaced2 = false, maxAreaWidth = 0, x1, x2, y1, y2, x, y, _x, _y, _x1, _xMid, _x2, _y1, _yMid, _y2, areaWidth, result, swapTmp; // for each area sample point
-        for(let i5 = 0; i5 < n; ++i5){
-            x1 = items[i5].x;
-            y1 = items[i5].y;
-            x2 = items[i5].x2 === undefined ? x1 : items[i5].x2;
-            y2 = items[i5].y2 === undefined ? y1 : items[i5].y2;
+        for(let i = 0; i < n; ++i){
+            x1 = items[i].x;
+            y1 = items[i].y;
+            x2 = items[i].x2 === undefined ? x1 : items[i].x2;
+            y2 = items[i].y2 === undefined ? y1 : items[i].y2;
             if (x1 > x2) {
                 swapTmp = x1;
                 x1 = x2;
@@ -32858,11 +32858,11 @@ function placeAreaLabelFloodFill($, bitmaps, avoidBaseMark, markIndex) {
         textWidth = (0, _vegaScenegraph.textMetrics).width(d.datum, d.datum.text), // label height
         stack = []; // flood fill stack
         let maxSize = avoidBaseMark ? textHeight : 0, labelPlaced = false, labelPlaced2 = false, maxAreaWidth = 0, x1, x2, y1, y2, x, y, _x, _y, lo, hi, mid, areaWidth; // for each area sample point
-        for(let i6 = 0; i6 < n; ++i6){
-            x1 = items[i6].x;
-            y1 = items[i6].y;
-            x2 = items[i6].x2 === undefined ? x1 : items[i6].x2;
-            y2 = items[i6].y2 === undefined ? y1 : items[i6].y2; // add scaled center point to stack
+        for(let i = 0; i < n; ++i){
+            x1 = items[i].x;
+            y1 = items[i].y;
+            x2 = items[i].x2 === undefined ? x1 : items[i].x2;
+            y2 = items[i].y2 === undefined ? y1 : items[i].y2; // add scaled center point to stack
             stack.push([
                 $((x1 + x2) / 2),
                 $((y1 + y2) / 2)
@@ -32939,14 +32939,14 @@ function placeMarkLabel($, bitmaps, anchors, offsets) {
         const boundary = d.boundary, textHeight = d.datum.fontSize; // can not be placed if the mark is not visible in the graph bound
         if (boundary[2] < 0 || boundary[5] < 0 || boundary[0] > width || boundary[3] > height) return false;
         let textWidth = 0, dx, dy, isInside, sizeFactor, insideFactor, x1, x2, y1, y2, xc, yc, _x1, _x2, _y1, _y2; // for each anchor and offset
-        for(let i7 = 0; i7 < n; ++i7){
-            dx = (anchors[i7] & 0x3) - 1;
-            dy = (anchors[i7] >>> 0x2 & 0x3) - 1;
-            isInside = dx === 0 && dy === 0 || offsets[i7] < 0;
+        for(let i = 0; i < n; ++i){
+            dx = (anchors[i] & 0x3) - 1;
+            dy = (anchors[i] >>> 0x2 & 0x3) - 1;
+            isInside = dx === 0 && dy === 0 || offsets[i] < 0;
             sizeFactor = dx && dy ? Math.SQRT1_2 : 1;
-            insideFactor = offsets[i7] < 0 ? -1 : 1;
-            x1 = boundary[1 + dx] + offsets[i7] * dx * sizeFactor;
-            yc = boundary[4 + dy] + insideFactor * textHeight * dy / 2 + offsets[i7] * dy * sizeFactor;
+            insideFactor = offsets[i] < 0 ? -1 : 1;
+            x1 = boundary[1 + dx] + offsets[i] * dx * sizeFactor;
+            yc = boundary[4 + dy] + insideFactor * textHeight * dy / 2 + offsets[i] * dy * sizeFactor;
             y1 = yc - textHeight / 2;
             y2 = yc + textHeight / 2;
             _x1 = $(x1);
@@ -33018,9 +33018,9 @@ function labelLayout(texts, size, compare, offset, anchor, avoidMarks, avoidBase
         if (compare) data.sort((a, b)=>compare(a.datum, b.datum));
          // flag indicating if label can be placed inside its base mark
         let labelInside = false;
-        for(let i8 = 0; i8 < anchors.length && !labelInside; ++i8)// label inside if anchor is at center
+        for(let i = 0; i < anchors.length && !labelInside; ++i)// label inside if anchor is at center
         // label inside if offset to be inside the mark bound
-        labelInside = anchors[i8] === 0x5 || offsets[i8] < 0;
+        labelInside = anchors[i] === 0x5 || offsets[i] < 0;
          // extract data information from base mark when base mark is to be avoided
         // base mark is implicitly avoided if it is a group area
         if (marktype && (avoidBaseMark || isGroupArea)) avoidMarks = [
@@ -33035,14 +33035,14 @@ function labelLayout(texts, size, compare, offset, anchor, avoidMarks, avoidBase
 }
 function getOffsets(_, count) {
     const offsets = new Float64Array(count), n = _.length;
-    for(let i10 = 0; i10 < n; ++i10)offsets[i10] = _[i10] || 0;
-    for(let i9 = n; i9 < count; ++i9)offsets[i9] = offsets[n - 1];
+    for(let i = 0; i < n; ++i)offsets[i] = _[i] || 0;
+    for(let i1 = n; i1 < count; ++i1)offsets[i1] = offsets[n - 1];
     return offsets;
 }
 function getAnchors(_, count) {
     const anchors = new Int8Array(count), n = _.length;
-    for(let i12 = 0; i12 < n; ++i12)anchors[i12] |= anchorCode[_[i12]];
-    for(let i11 = n; i11 < count; ++i11)anchors[i11] = anchors[n - 1];
+    for(let i = 0; i < n; ++i)anchors[i] |= anchorCode[_[i]];
+    for(let i1 = n; i1 < count; ++i1)anchors[i1] = anchors[n - 1];
     return anchors;
 }
 function markType(item) {
@@ -33614,10 +33614,10 @@ class Delaunay {
                 points[2 * f],
                 points[2 * f + 1]
             ], r = 1e-8 * Math.hypot(bounds[3] - bounds[1], bounds[2] - bounds[0]);
-            for(let i1 = 0, n = points.length / 2; i1 < n; ++i1){
-                const p = jitter(points[2 * i1], points[2 * i1 + 1], r);
-                points[2 * i1] = p[0];
-                points[2 * i1 + 1] = p[1];
+            for(let i = 0, n = points.length / 2; i < n; ++i){
+                const p = jitter(points[2 * i], points[2 * i + 1], r);
+                points[2 * i] = p[0];
+                points[2 * i + 1] = p[1];
             }
             this._delaunator = new (0, _delaunatorDefault.default)(points);
         } else delete this.collinear;
@@ -33629,11 +33629,11 @@ class Delaunay {
         // Compute an index from each point to an (arbitrary) incoming halfedge
         // Used to give the first neighbor of each point; for this reason,
         // on the hull we give priority to exterior halfedges
-        for(let e = 0, n = halfedges.length; e < n; ++e){
-            const p = triangles[e % 3 === 2 ? e - 2 : e + 1];
-            if (halfedges[e] === -1 || inedges[p] === -1) inedges[p] = e;
+        for(let e1 = 0, n1 = halfedges.length; e1 < n1; ++e1){
+            const p1 = triangles[e1 % 3 === 2 ? e1 - 2 : e1 + 1];
+            if (halfedges[e1] === -1 || inedges[p1] === -1) inedges[p1] = e1;
         }
-        for(let i2 = 0, n1 = hull.length; i2 < n1; ++i2)hullIndex[hull[i2]] = i2;
+        for(let i1 = 0, n2 = hull.length; i1 < n2; ++i1)hullIndex[hull[i1]] = i1;
         // degenerate case: 1 or 2 (distinct) points
         if (hull.length <= 2 && hull.length > 0) {
             this.triangles = new Int32Array(3).fill(-1);
@@ -33649,12 +33649,12 @@ class Delaunay {
         return new (0, _voronoiJsDefault.default)(this, bounds);
     }
     *neighbors(i) {
-        const { inedges , hull , _hullIndex , halfedges , triangles , collinear: collinear1  } = this;
+        const { inedges , hull , _hullIndex , halfedges , triangles , collinear  } = this;
         // degenerate case with several collinear points
-        if (collinear1) {
-            const l = collinear1.indexOf(i);
-            if (l > 0) yield collinear1[l - 1];
-            if (l < collinear1.length - 1) yield collinear1[l + 1];
+        if (collinear) {
+            const l = collinear.indexOf(i);
+            if (l > 0) yield collinear[l - 1];
+            if (l < collinear.length - 1) yield collinear[l + 1];
             return;
         }
         const e0 = inedges[i];
@@ -33733,8 +33733,8 @@ class Delaunay {
         const h = hull[0] * 2, n = hull.length;
         context.moveTo(points[h], points[h + 1]);
         for(let i = 1; i < n; ++i){
-            const h = 2 * hull[i];
-            context.lineTo(points[h], points[h + 1]);
+            const h1 = 2 * hull[i];
+            context.lineTo(points[h1], points[h1 + 1]);
         }
         context.closePath();
         return buffer && buffer.value();
@@ -33856,10 +33856,10 @@ class Delaunator {
         // find the point closest to the seed
         for(let i4 = 0; i4 < n; i4++){
             if (i4 === i0) continue;
-            const d = dist(i0x, i0y, coords[2 * i4], coords[2 * i4 + 1]);
-            if (d < minDist && d > 0) {
+            const d1 = dist(i0x, i0y, coords[2 * i4], coords[2 * i4 + 1]);
+            if (d1 < minDist && d1 > 0) {
                 i1 = i4;
-                minDist = d;
+                minDist = d1;
             }
         }
         let i1x = coords[2 * i1];
@@ -33879,12 +33879,12 @@ class Delaunator {
         if (minRadius === Infinity) {
             // order collinear points by dx (or dy if all x are identical)
             // and return the list as a hull
-            for(let i = 0; i < n; i++)this._dists[i] = coords[2 * i] - coords[0] || coords[2 * i + 1] - coords[1];
+            for(let i6 = 0; i6 < n; i6++)this._dists[i6] = coords[2 * i6] - coords[0] || coords[2 * i6 + 1] - coords[1];
             quicksort(this._ids, this._dists, 0, n - 1);
             const hull = new Uint32Array(n);
             let j = 0;
-            for(let i8 = 0, d0 = -Infinity; i8 < n; i8++){
-                const id = this._ids[i8];
+            for(let i7 = 0, d0 = -Infinity; i7 < n; i7++){
+                const id = this._ids[i7];
                 if (this._dists[id] > d0) {
                     hull[j++] = id;
                     d0 = this._dists[id];
@@ -33897,20 +33897,20 @@ class Delaunator {
         }
         // swap the order of the seed points for counter-clockwise orientation
         if (orient(i0x, i0y, i1x, i1y, i2x, i2y)) {
-            const i = i1;
-            const x = i1x;
-            const y = i1y;
+            const i8 = i1;
+            const x1 = i1x;
+            const y1 = i1y;
             i1 = i2;
             i1x = i2x;
             i1y = i2y;
-            i2 = i;
-            i2x = x;
-            i2y = y;
+            i2 = i8;
+            i2x = x1;
+            i2y = y1;
         }
         const center = circumcenter(i0x, i0y, i1x, i1y, i2x, i2y);
         this._cx = center.x;
         this._cy = center.y;
-        for(let i6 = 0; i6 < n; i6++)this._dists[i6] = dist(coords[2 * i6], coords[2 * i6 + 1], center.x, center.y);
+        for(let i9 = 0; i9 < n; i9++)this._dists[i9] = dist(coords[2 * i9], coords[2 * i9 + 1], center.x, center.y);
         // sort the points by distance from the seed triangle circumcenter
         quicksort(this._ids, this._dists, 0, n - 1);
         // set up the seed triangle as the starting hull
@@ -33929,24 +33929,24 @@ class Delaunator {
         this.trianglesLen = 0;
         this._addTriangle(i0, i1, i2, -1, -1, -1);
         for(let k = 0, xp, yp; k < this._ids.length; k++){
-            const i = this._ids[k];
-            const x = coords[2 * i];
-            const y = coords[2 * i + 1];
+            const i10 = this._ids[k];
+            const x2 = coords[2 * i10];
+            const y2 = coords[2 * i10 + 1];
             // skip near-duplicate points
-            if (k > 0 && Math.abs(x - xp) <= EPSILON && Math.abs(y - yp) <= EPSILON) continue;
-            xp = x;
-            yp = y;
+            if (k > 0 && Math.abs(x2 - xp) <= EPSILON && Math.abs(y2 - yp) <= EPSILON) continue;
+            xp = x2;
+            yp = y2;
             // skip seed triangle points
-            if (i === i0 || i === i1 || i === i2) continue;
+            if (i10 === i0 || i10 === i1 || i10 === i2) continue;
             // find a visible edge on the convex hull using edge hash
             let start = 0;
-            for(let j = 0, key = this._hashKey(x, y); j < this._hashSize; j++){
-                start = hullHash[(key + j) % this._hashSize];
+            for(let j1 = 0, key = this._hashKey(x2, y2); j1 < this._hashSize; j1++){
+                start = hullHash[(key + j1) % this._hashSize];
                 if (start !== -1 && start !== hullNext[start]) break;
             }
             start = hullPrev[start];
             let e = start, q;
-            while(q = hullNext[e], !orient(x, y, coords[2 * e], coords[2 * e + 1], coords[2 * q], coords[2 * q + 1])){
+            while(q = hullNext[e], !orient(x2, y2, coords[2 * e], coords[2 * e + 1], coords[2 * q], coords[2 * q + 1])){
                 e = q;
                 if (e === start) {
                     e = -1;
@@ -33955,23 +33955,23 @@ class Delaunator {
             }
             if (e === -1) continue; // likely a near-duplicate point; skip it
             // add the first triangle from the point
-            let t = this._addTriangle(e, i, hullNext[e], -1, -1, hullTri[e]);
+            let t = this._addTriangle(e, i10, hullNext[e], -1, -1, hullTri[e]);
             // recursively flip triangles from the point until they satisfy the Delaunay condition
-            hullTri[i] = this._legalize(t + 2);
+            hullTri[i10] = this._legalize(t + 2);
             hullTri[e] = t; // keep track of boundary triangles on the hull
             hullSize++;
             // walk forward through the hull, adding more triangles and flipping recursively
-            let n = hullNext[e];
-            while(q = hullNext[n], orient(x, y, coords[2 * n], coords[2 * n + 1], coords[2 * q], coords[2 * q + 1])){
-                t = this._addTriangle(n, i, q, hullTri[i], -1, hullTri[n]);
-                hullTri[i] = this._legalize(t + 2);
-                hullNext[n] = n; // mark as removed
+            let n1 = hullNext[e];
+            while(q = hullNext[n1], orient(x2, y2, coords[2 * n1], coords[2 * n1 + 1], coords[2 * q], coords[2 * q + 1])){
+                t = this._addTriangle(n1, i10, q, hullTri[i10], -1, hullTri[n1]);
+                hullTri[i10] = this._legalize(t + 2);
+                hullNext[n1] = n1; // mark as removed
                 hullSize--;
-                n = q;
+                n1 = q;
             }
             // walk backward from the other side, adding more triangles and flipping
-            if (e === start) while(q = hullPrev[e], orient(x, y, coords[2 * q], coords[2 * q + 1], coords[2 * e], coords[2 * e + 1])){
-                t = this._addTriangle(q, i, e, -1, hullTri[e], hullTri[q]);
+            if (e === start) while(q = hullPrev[e], orient(x2, y2, coords[2 * q], coords[2 * q + 1], coords[2 * e], coords[2 * e + 1])){
+                t = this._addTriangle(q, i10, e, -1, hullTri[e], hullTri[q]);
                 this._legalize(t + 2);
                 hullTri[q] = t;
                 hullNext[e] = e; // mark as removed
@@ -33979,17 +33979,17 @@ class Delaunator {
                 e = q;
             }
             // update the hull indices
-            this._hullStart = hullPrev[i] = e;
-            hullNext[e] = hullPrev[n] = i;
-            hullNext[i] = n;
+            this._hullStart = hullPrev[i10] = e;
+            hullNext[e] = hullPrev[n1] = i10;
+            hullNext[i10] = n1;
             // save the two new edges in the hash table
-            hullHash[this._hashKey(x, y)] = i;
+            hullHash[this._hashKey(x2, y2)] = i10;
             hullHash[this._hashKey(coords[2 * e], coords[2 * e + 1])] = e;
         }
         this.hull = new Uint32Array(hullSize);
-        for(let i7 = 0, e = this._hullStart; i7 < hullSize; i7++){
-            this.hull[i7] = e;
-            e = hullNext[e];
+        for(let i11 = 0, e1 = this._hullStart; i11 < hullSize; i11++){
+            this.hull[i11] = e1;
+            e1 = hullNext[e1];
         }
         // trim typed triangle mesh arrays
         this.triangles = this._triangles.subarray(0, this.trianglesLen);
@@ -34150,30 +34150,30 @@ function quicksort(ids, dists, left, right) {
     }
     else {
         const median = left + right >> 1;
-        let i = left + 1;
-        let j = right;
-        swap(ids, median, i);
+        let i1 = left + 1;
+        let j1 = right;
+        swap(ids, median, i1);
         if (dists[ids[left]] > dists[ids[right]]) swap(ids, left, right);
-        if (dists[ids[i]] > dists[ids[right]]) swap(ids, i, right);
-        if (dists[ids[left]] > dists[ids[i]]) swap(ids, left, i);
-        const temp = ids[i];
-        const tempDist = dists[temp];
+        if (dists[ids[i1]] > dists[ids[right]]) swap(ids, i1, right);
+        if (dists[ids[left]] > dists[ids[i1]]) swap(ids, left, i1);
+        const temp1 = ids[i1];
+        const tempDist1 = dists[temp1];
         while(true){
-            do i++;
-            while (dists[ids[i]] < tempDist);
-            do j--;
-            while (dists[ids[j]] > tempDist);
-            if (j < i) break;
-            swap(ids, i, j);
+            do i1++;
+            while (dists[ids[i1]] < tempDist1);
+            do j1--;
+            while (dists[ids[j1]] > tempDist1);
+            if (j1 < i1) break;
+            swap(ids, i1, j1);
         }
-        ids[left + 1] = ids[j];
-        ids[j] = temp;
-        if (right - i + 1 >= j - left) {
-            quicksort(ids, dists, i, right);
-            quicksort(ids, dists, left, j - 1);
+        ids[left + 1] = ids[j1];
+        ids[j1] = temp1;
+        if (right - i1 + 1 >= j1 - left) {
+            quicksort(ids, dists, i1, right);
+            quicksort(ids, dists, left, j1 - 1);
         } else {
-            quicksort(ids, dists, left, j - 1);
-            quicksort(ids, dists, i, right);
+            quicksort(ids, dists, left, j1 - 1);
+            quicksort(ids, dists, i1, right);
         }
     }
 }
@@ -34324,15 +34324,15 @@ class Voronoi {
         // Compute exterior cell rays.
         let h = hull[hull.length - 1];
         let p0, p1 = h * 4;
-        let x0, x1 = points[2 * h];
-        let y0, y1 = points[2 * h + 1];
+        let x0, x11 = points[2 * h];
+        let y0, y11 = points[2 * h + 1];
         vectors.fill(0);
         for(let i1 = 0; i1 < hull.length; ++i1){
             h = hull[i1];
-            p0 = p1, x0 = x1, y0 = y1;
-            p1 = h * 4, x1 = points[2 * h], y1 = points[2 * h + 1];
-            vectors[p0 + 2] = vectors[p1] = y0 - y1;
-            vectors[p0 + 3] = vectors[p1 + 1] = x1 - x0;
+            p0 = p1, x0 = x11, y0 = y11;
+            p1 = h * 4, x11 = points[2 * h], y11 = points[2 * h + 1];
+            vectors[p0 + 2] = vectors[p1] = y0 - y11;
+            vectors[p0 + 3] = vectors[p1 + 1] = x11 - x0;
         }
     }
     render(context) {
@@ -34351,8 +34351,8 @@ class Voronoi {
             this._renderSegment(xi, yi, xj, yj, context);
         }
         let h0, h1 = hull[hull.length - 1];
-        for(let i2 = 0; i2 < hull.length; ++i2){
-            h0 = h1, h1 = hull[i2];
+        for(let i1 = 0; i1 < hull.length; ++i1){
+            h0 = h1, h1 = hull[i1];
             const t = Math.floor(inedges[h1] / 3) * 2;
             const x = circumcenters[t];
             const y = circumcenters[t + 1];
@@ -34374,7 +34374,7 @@ class Voronoi {
         context.moveTo(points[0], points[1]);
         let n = points.length;
         while(points[0] === points[n - 2] && points[1] === points[n - 1] && n > 1)n -= 2;
-        for(let i3 = 2; i3 < n; i3 += 2)if (points[i3] !== points[i3 - 2] || points[i3 + 1] !== points[i3 - 1]) context.lineTo(points[i3], points[i3 + 1]);
+        for(let i1 = 2; i1 < n; i1 += 2)if (points[i1] !== points[i1 - 2] || points[i1 + 1] !== points[i1 - 1]) context.lineTo(points[i1], points[i1 + 1]);
         context.closePath();
         return buffer && buffer.value();
     }
@@ -34518,9 +34518,9 @@ class Voronoi {
             ];
             if (c0 & c1) return null;
             let x, y, c = c0 || c1;
-            if (c & 0b1000) x = x0 + (x1 - x0) * (this.ymax - y0) / (y1 - y0), y = this.ymax;
-            else if (c & 0b0100) x = x0 + (x1 - x0) * (this.ymin - y0) / (y1 - y0), y = this.ymin;
-            else if (c & 0b0010) y = y0 + (y1 - y0) * (this.xmax - x0) / (x1 - x0), x = this.xmax;
+            if (c & 8) x = x0 + (x1 - x0) * (this.ymax - y0) / (y1 - y0), y = this.ymax;
+            else if (c & 4) x = x0 + (x1 - x0) * (this.ymin - y0) / (y1 - y0), y = this.ymin;
+            else if (c & 2) y = y0 + (y1 - y0) * (this.xmax - x0) / (x1 - x0), x = this.xmax;
             else y = y0 + (y1 - y0) * (this.xmin - x0) / (x1 - x0), x = this.xmin;
             if (c0) x0 = x, y0 = y, c0 = this._regioncode(x0, y0);
             else x1 = x, y1 = y, c1 = this._regioncode(x1, y1);
@@ -34550,36 +34550,36 @@ class Voronoi {
         while(e0 !== e1){
             let x, y;
             switch(e0){
-                case 0b0101:
-                    e0 = 0b0100;
+                case 5:
+                    e0 = 4;
                     continue; // top-left
-                case 0b0100:
-                    e0 = 0b0110, x = this.xmax, y = this.ymin;
+                case 4:
+                    e0 = 6, x = this.xmax, y = this.ymin;
                     break; // top
-                case 0b0110:
-                    e0 = 0b0010;
+                case 6:
+                    e0 = 2;
                     continue; // top-right
-                case 0b0010:
-                    e0 = 0b1010, x = this.xmax, y = this.ymax;
+                case 2:
+                    e0 = 10, x = this.xmax, y = this.ymax;
                     break; // right
-                case 0b1010:
-                    e0 = 0b1000;
+                case 10:
+                    e0 = 8;
                     continue; // bottom-right
-                case 0b1000:
-                    e0 = 0b1001, x = this.xmin, y = this.ymax;
+                case 8:
+                    e0 = 9, x = this.xmin, y = this.ymax;
                     break; // bottom
-                case 0b1001:
-                    e0 = 0b0001;
+                case 9:
+                    e0 = 1;
                     continue; // bottom-left
-                case 0b0001:
-                    e0 = 0b0101, x = this.xmin, y = this.ymin;
+                case 1:
+                    e0 = 5, x = this.xmin, y = this.ymin;
                     break; // left
             }
             if ((P[j] !== x || P[j + 1] !== y) && this.contains(i, x, y)) P.splice(j, 0, x, y), j += 2;
         }
-        if (P.length > 4) for(let i4 = 0; i4 < P.length; i4 += 2){
-            const j = (i4 + 2) % P.length, k = (i4 + 4) % P.length;
-            if (P[i4] === P[j] && P[j] === P[k] || P[i4 + 1] === P[j + 1] && P[j + 1] === P[k + 1]) P.splice(j, 2), i4 -= 2;
+        if (P.length > 4) for(let i1 = 0; i1 < P.length; i1 += 2){
+            const j1 = (i1 + 2) % P.length, k = (i1 + 4) % P.length;
+            if (P[i1] === P[j1] && P[j1] === P[k] || P[i1 + 1] === P[j1 + 1] && P[j1 + 1] === P[k + 1]) P.splice(j1, 2), i1 -= 2;
         }
         return j;
     }
@@ -34605,10 +34605,10 @@ class Voronoi {
         ];
     }
     _edgecode(x, y) {
-        return (x === this.xmin ? 0b0001 : x === this.xmax ? 0b0010 : 0b0000) | (y === this.ymin ? 0b0100 : y === this.ymax ? 0b1000 : 0b0000);
+        return (x === this.xmin ? 1 : x === this.xmax ? 2 : 0) | (y === this.ymin ? 4 : y === this.ymax ? 8 : 0);
     }
     _regioncode(x, y) {
-        return (x < this.xmin ? 0b0001 : x > this.xmax ? 0b0010 : 0b0000) | (y < this.ymin ? 0b0100 : y > this.ymax ? 0b1000 : 0b0000);
+        return (x < this.xmin ? 1 : x > this.xmax ? 2 : 0) | (y < this.ymin ? 4 : y > this.ymax ? 8 : 0);
     }
 }
 exports.default = Voronoi;
@@ -34656,8 +34656,8 @@ function cloud() {
     var size = [
         256,
         256
-    ], text, font, fontSize, fontStyle, fontWeight, rotate, padding, spiral = archimedeanSpiral, words = [], random = Math.random, cloud1 = {};
-    cloud1.layout = function() {
+    ], text, font, fontSize, fontStyle, fontWeight, rotate, padding, spiral = archimedeanSpiral, words = [], random = Math.random, cloud = {};
+    cloud.layout = function() {
         var contextAndRatio = getContext((0, _vegaCanvas.canvas)()), board = zeroArray((size[0] >> 5) * size[1]), bounds = null, n = words.length, i = -1, tags = [], data = words.map((d)=>({
                 text: text(d),
                 font: font(d),
@@ -34677,25 +34677,25 @@ function cloud() {
                 datum: d
             })).sort((a, b)=>b.size - a.size);
         while(++i < n){
-            var d1 = data[i];
-            d1.x = size[0] * (random() + .5) >> 1;
-            d1.y = size[1] * (random() + .5) >> 1;
-            cloudSprite(contextAndRatio, d1, data, i);
-            if (d1.hasText && place(board, d1, bounds)) {
-                tags.push(d1);
-                if (bounds) cloudBounds(bounds, d1);
+            var d = data[i];
+            d.x = size[0] * (random() + .5) >> 1;
+            d.y = size[1] * (random() + .5) >> 1;
+            cloudSprite(contextAndRatio, d, data, i);
+            if (d.hasText && place(board, d, bounds)) {
+                tags.push(d);
+                if (bounds) cloudBounds(bounds, d);
                 else bounds = [
                     {
-                        x: d1.x + d1.x0,
-                        y: d1.y + d1.y0
+                        x: d.x + d.x0,
+                        y: d.y + d.y0
                     },
                     {
-                        x: d1.x + d1.x1,
-                        y: d1.y + d1.y1
+                        x: d.x + d.x1,
+                        y: d.y + d.y1
                     }
                 ]; // Temporary hack
-                d1.x -= size[0] >> 1;
-                d1.y -= size[1] >> 1;
+                d.x -= size[0] >> 1;
+                d.y -= size[1] >> 1;
             }
         }
         return tags;
@@ -34737,76 +34737,76 @@ function cloud() {
         }
         return false;
     }
-    cloud1.words = function(_) {
+    cloud.words = function(_) {
         if (arguments.length) {
             words = _;
-            return cloud1;
+            return cloud;
         } else return words;
     };
-    cloud1.size = function(_) {
+    cloud.size = function(_) {
         if (arguments.length) {
             size = [
                 +_[0],
                 +_[1]
             ];
-            return cloud1;
+            return cloud;
         } else return size;
     };
-    cloud1.font = function(_) {
+    cloud.font = function(_) {
         if (arguments.length) {
             font = functor(_);
-            return cloud1;
+            return cloud;
         } else return font;
     };
-    cloud1.fontStyle = function(_) {
+    cloud.fontStyle = function(_) {
         if (arguments.length) {
             fontStyle = functor(_);
-            return cloud1;
+            return cloud;
         } else return fontStyle;
     };
-    cloud1.fontWeight = function(_) {
+    cloud.fontWeight = function(_) {
         if (arguments.length) {
             fontWeight = functor(_);
-            return cloud1;
+            return cloud;
         } else return fontWeight;
     };
-    cloud1.rotate = function(_) {
+    cloud.rotate = function(_) {
         if (arguments.length) {
             rotate = functor(_);
-            return cloud1;
+            return cloud;
         } else return rotate;
     };
-    cloud1.text = function(_) {
+    cloud.text = function(_) {
         if (arguments.length) {
             text = functor(_);
-            return cloud1;
+            return cloud;
         } else return text;
     };
-    cloud1.spiral = function(_) {
+    cloud.spiral = function(_) {
         if (arguments.length) {
             spiral = spirals[_] || _;
-            return cloud1;
+            return cloud;
         } else return spiral;
     };
-    cloud1.fontSize = function(_) {
+    cloud.fontSize = function(_) {
         if (arguments.length) {
             fontSize = functor(_);
-            return cloud1;
+            return cloud;
         } else return fontSize;
     };
-    cloud1.padding = function(_) {
+    cloud.padding = function(_) {
         if (arguments.length) {
             padding = functor(_);
-            return cloud1;
+            return cloud;
         } else return padding;
     };
-    cloud1.random = function(_) {
+    cloud.random = function(_) {
         if (arguments.length) {
             random = _;
-            return cloud1;
+            return cloud;
         } else return random;
     };
-    return cloud1;
+    return cloud;
 } // Fetches a monochrome sprite bitmap for the specified text.
 // Load in batches for speed.
 function cloudSprite(contextAndRatio, d, data, di) {
@@ -35074,16 +35074,16 @@ Wordcloud.Definition = {
             500
         ]).padding(_.padding || 1).spiral(_.spiral || "archimedean").rotate(_.rotate || 0).font(_.font || "sans-serif").fontStyle(_.fontStyle || "normal").fontWeight(_.fontWeight || "normal").fontSize(fontSize).random((0, _vegaStatistics.random)).layout();
         const size = layout.size(), dx = size[0] >> 1, dy = size[1] >> 1, n = words.length;
-        for(let i = 0, w, t1; i < n; ++i){
+        for(let i = 0, w, t; i < n; ++i){
             w = words[i];
-            t1 = w.datum;
-            t1[as[0]] = w.x + dx;
-            t1[as[1]] = w.y + dy;
-            t1[as[2]] = w.font;
-            t1[as[3]] = w.size;
-            t1[as[4]] = w.style;
-            t1[as[5]] = w.weight;
-            t1[as[6]] = w.rotate;
+            t = w.datum;
+            t[as[0]] = w.x + dx;
+            t[as[1]] = w.y + dy;
+            t[as[2]] = w.font;
+            t[as[3]] = w.size;
+            t[as[4]] = w.style;
+            t[as[5]] = w.weight;
+            t[as[6]] = w.rotate;
         }
         return pulse.reflow(mod).modifies(as);
     }
@@ -35107,9 +35107,9 @@ const array32 = (n)=>new Uint32Array(n);
     return {
         data: ()=>data,
         seen: ()=>seen = lengthen(seen, data.length),
-        add (array1) {
-            for(let i = 0, j = data.length, n = array1.length, t; i < n; ++i){
-                t = array1[i];
+        add (array) {
+            for(let i = 0, j = data.length, n = array.length, t; i < n; ++i){
+                t = array[i];
                 t._index = j++;
                 data.push(t);
             }
@@ -35157,19 +35157,19 @@ const array32 = (n)=>new Uint32Array(n);
         }
     };
 }
-function lengthen(array2, length, copy) {
-    if (array2.length >= length) return array2;
-    copy = copy || new array2.constructor(length);
-    copy.set(array2);
+function lengthen(array, length, copy) {
+    if (array.length >= length) return array;
+    copy = copy || new array.constructor(length);
+    copy.set(array);
     return copy;
 }
-function array(n, m, array3) {
+function array(n, m, array) {
     const copy = (m < 0x101 ? array8 : m < 0x10001 ? array16 : array32)(n);
-    if (array3) copy.set(array3);
+    if (array) copy.set(array);
     return copy;
 }
-function Dimension(index, i1, query) {
-    const bit = 1 << i1;
+function Dimension(index, i, query) {
+    const bit = 1 << i;
     return {
         one: bit,
         zero: ~bit,
@@ -35231,16 +35231,16 @@ function Dimension(index, i1, query) {
     function reindex(map) {
         for(let i = 0, n = size; i < n; ++i)index[i] = map[index[i]];
     }
-    function bisect(range, array4) {
+    function bisect(range, array) {
         let n;
-        if (array4) n = array4.length;
+        if (array) n = array.length;
         else {
-            array4 = value;
+            array = value;
             n = size;
         }
         return [
-            (0, _d3Array.bisectLeft)(array4, range[0], 0, n),
-            (0, _d3Array.bisectRight)(array4, range[1], 0, n)
+            (0, _d3Array.bisectLeft)(array, range[0], 0, n),
+            (0, _d3Array.bisectRight)(array, range[1], 0, n)
         ];
     }
     return {
@@ -35613,12 +35613,12 @@ function background(view) {
 const Default = "default";
 function cursor(view) {
     // get cursor signal, add to dataflow if needed
-    const cursor1 = view._signals.cursor || (view._signals.cursor = view.add({
+    const cursor = view._signals.cursor || (view._signals.cursor = view.add({
         user: Default,
         item: null
     })); // evaluate cursor on each mousemove event
-    view.on(view.events("view", "mousemove"), cursor1, (_, event1)=>{
-        const value = cursor1.value, user = value ? (0, _vegaUtil.isString)(value) ? value : value.user : Default, item = event1.item && event1.item.cursor || null;
+    view.on(view.events("view", "mousemove"), cursor, (_, event)=>{
+        const value = cursor.value, user = value ? (0, _vegaUtil.isString)(value) ? value : value.user : Default, item = event.item && event.item.cursor || null;
         return value && user === value.user && item == value.item ? value : {
             user: user,
             item: item
@@ -35633,17 +35633,17 @@ function cursor(view) {
         setCursor(view, user && user !== Default ? user : item || user);
         return item;
     }, {
-        cursor: cursor1
+        cursor: cursor
     });
 }
-function setCursor(view, cursor2) {
+function setCursor(view, cursor) {
     const el = view.globalCursor() ? typeof document !== "undefined" && document.body : view.container();
-    if (el) return cursor2 == null ? el.style.removeProperty("cursor") : el.style.cursor = cursor2;
+    if (el) return cursor == null ? el.style.removeProperty("cursor") : el.style.cursor = cursor;
 }
 function dataref(view, name) {
-    var data1 = view._runtime.data;
-    if (!(0, _vegaUtil.hasOwnProperty)(data1, name)) (0, _vegaUtil.error)("Unrecognized data set: " + name);
-    return data1[name];
+    var data = view._runtime.data;
+    if (!(0, _vegaUtil.hasOwnProperty)(data, name)) (0, _vegaUtil.error)("Unrecognized data set: " + name);
+    return data[name];
 }
 function data(name, values) {
     return arguments.length < 2 ? dataref(this, name).values.value : change.call(this, name, (0, _vegaDataflow.changeset)().remove((0, _vegaUtil.truthy)).insert(values));
@@ -35661,18 +35661,18 @@ function remove(name, _) {
     return change.call(this, name, (0, _vegaDataflow.changeset)().remove(_));
 }
 function width(view) {
-    var padding1 = view.padding();
-    return Math.max(0, view._viewWidth + padding1.left + padding1.right);
+    var padding = view.padding();
+    return Math.max(0, view._viewWidth + padding.left + padding.right);
 }
 function height(view) {
-    var padding2 = view.padding();
-    return Math.max(0, view._viewHeight + padding2.top + padding2.bottom);
+    var padding = view.padding();
+    return Math.max(0, view._viewHeight + padding.top + padding.bottom);
 }
 function offset(view) {
-    var padding3 = view.padding(), origin = view._origin;
+    var padding = view.padding(), origin = view._origin;
     return [
-        padding3.left + origin[0],
-        padding3.top + origin[1]
+        padding.left + origin[0],
+        padding.top + origin[1]
     ];
 }
 function resizeRenderer(view) {
@@ -35713,26 +35713,26 @@ function resizeRenderer(view) {
  * @param {Event} event - The input event to extend.
  * @param {Item} item - The currently active scenegraph item (if any).
  * @return {Event} - The extended input event.
- */ function eventExtend(view, event2, item) {
+ */ function eventExtend(view, event, item) {
     var r = view._renderer, el = r && r.canvas(), p, e, translate;
     if (el) {
         translate = offset(view);
-        e = event2.changedTouches ? event2.changedTouches[0] : event2;
+        e = event.changedTouches ? event.changedTouches[0] : event;
         p = (0, _vegaScenegraph.point)(e, el);
         p[0] -= translate[0];
         p[1] -= translate[1];
     }
-    event2.dataflow = view;
-    event2.item = item;
-    event2.vega = extension(view, item, p);
-    return event2;
+    event.dataflow = view;
+    event.item = item;
+    event.vega = extension(view, item, p);
+    return event;
 }
-function extension(view, item1, point) {
-    const itemGroup = item1 ? item1.mark.marktype === "group" ? item1 : item1.mark.group : null;
+function extension(view, item, point) {
+    const itemGroup = item ? item.mark.marktype === "group" ? item : item.mark.group : null;
     function group(name) {
         var g = itemGroup, i;
         if (name) {
-            for(i = item1; i; i = i.mark.group)if (i.mark.name === name) {
+            for(i = item; i; i = i.mark.group)if (i.mark.name === name) {
                 g = i;
                 break;
             }
@@ -35752,7 +35752,7 @@ function extension(view, item1, point) {
     }
     return {
         view: (0, _vegaUtil.constant)(view),
-        item: (0, _vegaUtil.constant)(item1 || {}),
+        item: (0, _vegaUtil.constant)(item || {}),
         group: group,
         xy: xy,
         x: (item)=>xy(item)[0],
@@ -35767,7 +35767,7 @@ const VIEW = "view", TIMER = "timer", WINDOW = "window", NO_TRAP = {
  * @param {object} config - The configuration settings.
  * @return {object}
  */ function initializeEventConfig(config) {
-    const events1 = (0, _vegaUtil.extend)({
+    const events = (0, _vegaUtil.extend)({
         defaults: {}
     }, config);
     const unpack = (obj, keys)=>{
@@ -35775,16 +35775,16 @@ const VIEW = "view", TIMER = "timer", WINDOW = "window", NO_TRAP = {
             if ((0, _vegaUtil.isArray)(obj[k])) obj[k] = (0, _vegaUtil.toSet)(obj[k]);
         });
     };
-    unpack(events1.defaults, [
+    unpack(events.defaults, [
         "prevent",
         "allow"
     ]);
-    unpack(events1, [
+    unpack(events, [
         "view",
         "window",
         "selector"
     ]);
-    return events1;
+    return events;
 }
 function trackEventListener(view, sources, type, handler) {
     view._eventListeners.push({
@@ -35794,8 +35794,8 @@ function trackEventListener(view, sources, type, handler) {
     });
 }
 function prevent(view, type) {
-    var def = view._eventConfig.defaults, prevent1 = def.prevent, allow = def.allow;
-    return prevent1 === false || allow === true ? false : prevent1 === true || allow === false ? true : prevent1 ? prevent1[type] : allow ? !allow[type] : view.preventDefault();
+    var def = view._eventConfig.defaults, prevent = def.prevent, allow = def.allow;
+    return prevent === false || allow === true ? false : prevent === true || allow === false ? true : prevent ? prevent[type] : allow ? !allow[type] : view.preventDefault();
 }
 function permit(view, key, type) {
     const rule = view._eventConfig && view._eventConfig[key];
@@ -35839,16 +35839,16 @@ function permit(view, key, type) {
     }
     return s;
 }
-function itemFilter(event3) {
-    return event3.item;
+function itemFilter(event) {
+    return event.item;
 }
-function markTarget(event4) {
+function markTarget(event) {
     // grab upstream collector feeding the mark operator
-    return event4.item.mark.source;
+    return event.item.mark.source;
 }
 function invoke(name) {
-    return function(_, event5) {
-        return event5.vega.view().changeset().encode(event5.item, name);
+    return function(_, event) {
+        return event.vega.view().changeset().encode(event.item, name);
     };
 }
 function hover(hoverSet, leaveSet) {
@@ -35903,40 +35903,40 @@ const BindClass = "vega-bind", NameClass = "vega-bind-name", RadioClass = "vega-
  */ function bind(view, el, binding) {
     if (!el) return;
     const param = binding.param;
-    let bind1 = binding.state;
-    if (!bind1) {
-        bind1 = binding.state = {
+    let bind = binding.state;
+    if (!bind) {
+        bind = binding.state = {
             elements: null,
             active: false,
             set: null,
             update: (value)=>{
                 if (value != view.signal(param.signal)) view.runAsync(null, ()=>{
-                    bind1.source = true;
+                    bind.source = true;
                     view.signal(param.signal, value);
                 });
             }
         };
-        if (param.debounce) bind1.update = (0, _vegaUtil.debounce)(param.debounce, bind1.update);
+        if (param.debounce) bind.update = (0, _vegaUtil.debounce)(param.debounce, bind.update);
     }
     const create = param.input == null && param.element ? target : generate;
-    create(bind1, el, param, view);
-    if (!bind1.active) {
+    create(bind, el, param, view);
+    if (!bind.active) {
         view.on(view._signals[param.signal], null, ()=>{
-            bind1.source ? bind1.source = false : bind1.set(view.signal(param.signal));
+            bind.source ? bind.source = false : bind.set(view.signal(param.signal));
         });
-        bind1.active = true;
+        bind.active = true;
     }
-    return bind1;
+    return bind;
 }
 /**
  * Bind the signal to an external EventTarget.
- */ function target(bind2, node, param, view) {
+ */ function target(bind, node, param, view) {
     const type = param.event || "input";
-    const handler = ()=>bind2.update(node.value); // initialize signal value to external input value
+    const handler = ()=>bind.update(node.value); // initialize signal value to external input value
     view.signal(param.signal, node.value); // listen for changes on the element
     node.addEventListener(type, handler); // register with view, so we can remove it upon finalization
     trackEventListener(view, node, type, handler); // propagate change to element
-    bind2.set = (value)=>{
+    bind.set = (value)=>{
         node.value = value;
         node.dispatchEvent(event(type));
     };
@@ -35948,7 +35948,7 @@ function event(type) {
 }
 /**
  * Generate an HTML input form element and bind it to a signal.
- */ function generate(bind3, el, param, view) {
+ */ function generate(bind, el, param, view) {
     const value = view.signal(param.signal);
     const div = element("div", {
         "class": BindClass
@@ -35973,42 +35973,42 @@ function event(type) {
             input = range;
             break;
     }
-    input(bind3, wrapper, param, value);
+    input(bind, wrapper, param, value);
 }
 /**
  * Generates an arbitrary input form element.
  * The input type is controlled via user-provided parameters.
- */ function form(bind4, el, param, value1) {
+ */ function form(bind, el, param, value) {
     const node = element("input");
     for(const key in param)if (key !== "signal" && key !== "element") node.setAttribute(key === "input" ? "type" : key, param[key]);
     node.setAttribute("name", param.signal);
-    node.value = value1;
+    node.value = value;
     el.appendChild(node);
-    node.addEventListener("input", ()=>bind4.update(node.value));
-    bind4.elements = [
+    node.addEventListener("input", ()=>bind.update(node.value));
+    bind.elements = [
         node
     ];
-    bind4.set = (value)=>node.value = value;
+    bind.set = (value)=>node.value = value;
 }
 /**
  * Generates a checkbox input element.
- */ function checkbox(bind5, el, param, value2) {
+ */ function checkbox(bind, el, param, value) {
     const attr = {
         type: "checkbox",
         name: param.signal
     };
-    if (value2) attr.checked = true;
+    if (value) attr.checked = true;
     const node = element("input", attr);
     el.appendChild(node);
-    node.addEventListener("change", ()=>bind5.update(node.checked));
-    bind5.elements = [
+    node.addEventListener("change", ()=>bind.update(node.checked));
+    bind.elements = [
         node
     ];
-    bind5.set = (value)=>node.checked = !!value || null;
+    bind.set = (value)=>node.checked = !!value || null;
 }
 /**
  * Generates a selection list input element.
- */ function select(bind6, el, param, value3) {
+ */ function select(bind, el, param, value) {
     const node = element("select", {
         name: param.signal
     }), labels = param.labels || [];
@@ -36016,17 +36016,17 @@ function event(type) {
         const attr = {
             value: option
         };
-        if (valuesEqual(option, value3)) attr.selected = true;
+        if (valuesEqual(option, value)) attr.selected = true;
         node.appendChild(element("option", attr, (labels[i] || option) + ""));
     });
     el.appendChild(node);
     node.addEventListener("change", ()=>{
-        bind6.update(param.options[node.selectedIndex]);
+        bind.update(param.options[node.selectedIndex]);
     });
-    bind6.elements = [
+    bind.elements = [
         node
     ];
-    bind6.set = (value)=>{
+    bind.set = (value)=>{
         for(let i = 0, n = param.options.length; i < n; ++i)if (valuesEqual(param.options[i], value)) {
             node.selectedIndex = i;
             return;
@@ -36035,35 +36035,35 @@ function event(type) {
 }
 /**
  * Generates a radio button group.
- */ function radio(bind7, el, param, value4) {
+ */ function radio(bind, el, param, value) {
     const group = element("span", {
         "class": RadioClass
     }), labels = param.labels || [];
     el.appendChild(group);
-    bind7.elements = param.options.map((option, i)=>{
+    bind.elements = param.options.map((option, i)=>{
         const attr = {
             type: "radio",
             name: param.signal,
             value: option
         };
-        if (valuesEqual(option, value4)) attr.checked = true;
+        if (valuesEqual(option, value)) attr.checked = true;
         const input = element("input", attr);
-        input.addEventListener("change", ()=>bind7.update(option));
+        input.addEventListener("change", ()=>bind.update(option));
         const label = element("label", {}, (labels[i] || option) + "");
         label.prepend(input);
         group.appendChild(label);
         return input;
     });
-    bind7.set = (value)=>{
-        const nodes = bind7.elements, n = nodes.length;
+    bind.set = (value)=>{
+        const nodes = bind.elements, n = nodes.length;
         for(let i = 0; i < n; ++i)if (valuesEqual(nodes[i].value, value)) nodes[i].checked = true;
     };
 }
 /**
  * Generates a slider input element.
- */ function range(bind8, el, param, value5) {
-    value5 = value5 !== undefined ? value5 : (+param.max + +param.min) / 2;
-    const max = param.max != null ? param.max : Math.max(100, +value5) || 100, min = param.min || Math.min(0, max, +value5) || 0, step = param.step || (0, _d3Array.tickStep)(min, max, 100);
+ */ function range(bind, el, param, value) {
+    value = value !== undefined ? value : (+param.max + +param.min) / 2;
+    const max = param.max != null ? param.max : Math.max(100, +value) || 100, min = param.min || Math.min(0, max, +value) || 0, step = param.step || (0, _d3Array.tickStep)(min, max, 100);
     const node = element("input", {
         type: "range",
         name: param.signal,
@@ -36071,20 +36071,20 @@ function event(type) {
         max: max,
         step: step
     });
-    node.value = value5;
-    const span = element("span", {}, +value5);
+    node.value = value;
+    const span = element("span", {}, +value);
     el.appendChild(node);
     el.appendChild(span);
     const update = ()=>{
         span.textContent = node.value;
-        bind8.update(+node.value);
+        bind.update(+node.value);
     }; // subscribe to both input and change
     node.addEventListener("input", update);
     node.addEventListener("change", update);
-    bind8.elements = [
+    bind.elements = [
         node
     ];
-    bind8.set = (value)=>{
+    bind.set = (value)=>{
         node.value = value;
         span.textContent = value;
     };
@@ -36194,9 +36194,9 @@ function padding(_) {
     const r = await renderHeadless(this, type, scaleFactor);
     return type === (0, _vegaScenegraph.RenderType).SVG ? toBlobURL(r.svg(), "image/svg+xml") : r.canvas().toDataURL("image/png");
 }
-function toBlobURL(data2, mime) {
+function toBlobURL(data, mime) {
     const blob = new Blob([
-        data2
+        data
     ], {
         type: mime
     });
@@ -36229,13 +36229,13 @@ function scale(name) {
 var Width = "width", Height = "height", Padding = "padding", Skip = {
     skip: true
 };
-function viewWidth(view, width1) {
+function viewWidth(view, width) {
     var a = view.autosize(), p = view.padding();
-    return width1 - (a && a.contains === Padding ? p.left + p.right : 0);
+    return width - (a && a.contains === Padding ? p.left + p.right : 0);
 }
-function viewHeight(view, height1) {
+function viewHeight(view, height) {
     var a = view.autosize(), p = view.padding();
-    return height1 - (a && a.contains === Padding ? p.top + p.bottom : 0);
+    return height - (a && a.contains === Padding ? p.top + p.bottom : 0);
 }
 function initializeResize(view) {
     var s = view._signals, w = s[Width], h = s[Height], p = s[Padding];
@@ -36263,27 +36263,27 @@ function initializeResize(view) {
     view._resizeHeight.rank = h.rank + 1;
     resizePadding.rank = p.rank + 1;
 }
-function resizeView(viewWidth1, viewHeight1, width2, height2, origin, auto) {
+function resizeView(viewWidth, viewHeight, width, height, origin, auto) {
     this.runAfter((view)=>{
         let rerun = 0; // reset autosize flag
         view._autosize = 0; // width value changed: update signal, skip resize op
-        if (view.width() !== width2) {
+        if (view.width() !== width) {
             rerun = 1;
-            view.signal(Width, width2, Skip); // set width, skip update calc
+            view.signal(Width, width, Skip); // set width, skip update calc
             view._resizeWidth.skip(true); // skip width resize handler
         } // height value changed: update signal, skip resize op
-        if (view.height() !== height2) {
+        if (view.height() !== height) {
             rerun = 1;
-            view.signal(Height, height2, Skip); // set height, skip update calc
+            view.signal(Height, height, Skip); // set height, skip update calc
             view._resizeHeight.skip(true); // skip height resize handler
         } // view width changed: update view property, set resize flag
-        if (view._viewWidth !== viewWidth1) {
+        if (view._viewWidth !== viewWidth) {
             view._resize = 1;
-            view._viewWidth = viewWidth1;
+            view._viewWidth = viewWidth;
         } // view height changed: update view property, set resize flag
-        if (view._viewHeight !== viewHeight1) {
+        if (view._viewHeight !== viewHeight) {
             view._resize = 1;
-            view._viewHeight = viewHeight1;
+            view._viewHeight = viewHeight;
         } // origin changed: update view property, set resize flag
         if (view._origin[0] !== origin[0] || view._origin[1] !== origin[1]) {
             view._resize = 1;
@@ -36315,8 +36315,8 @@ function resizeView(viewWidth1, viewHeight1, width2, height2, origin, auto) {
         recurse: true
     });
 }
-function dataTest(name, data3) {
-    return data3.modified && (0, _vegaUtil.isArray)(data3.input.value) && name.indexOf("_:vega:_");
+function dataTest(name, data) {
+    return data.modified && (0, _vegaUtil.isArray)(data.input.value) && name.indexOf("_:vega:_");
 }
 function signalTest(name, op) {
     return !(name === "parent" || op instanceof (0, _vegaDataflow.transforms).proxy);
@@ -36361,7 +36361,7 @@ function formatArray(value) {
     return "[" + value.map(formatValue).join(", ") + "]";
 }
 function formatValue(value) {
-    return (0, _vegaUtil.isArray)(value) ? "[\u2026]" : (0, _vegaUtil.isObject)(value) && !(0, _vegaUtil.isDate)(value) ? "{\u2026}" : value;
+    return (0, _vegaUtil.isArray)(value) ? "[…]" : (0, _vegaUtil.isObject)(value) && !(0, _vegaUtil.isDate)(value) ? "{…}" : value;
 }
 /**
  * Create a new View instance from a Vega dataflow runtime specification.
@@ -36428,8 +36428,8 @@ function formatValue(value) {
 function lookupSignal(view, name) {
     return (0, _vegaUtil.hasOwnProperty)(view._signals, name) ? view._signals[name] : (0, _vegaUtil.error)("Unrecognized signal name: " + (0, _vegaUtil.stringValue)(name));
 }
-function findOperatorHandler(op1, handler) {
-    const h = (op1._targets || []).filter((op)=>op._update && op._update.handler === handler);
+function findOperatorHandler(op, handler) {
+    const h = (op._targets || []).filter((op)=>op._update && op._update.handler === handler);
     return h.length ? h[0] : null;
 }
 function addOperatorListener(view, name, op, handler) {
@@ -36707,15 +36707,15 @@ var _vegaStatistics = require("vega-statistics");
 var _vegaTime = require("vega-time");
 var _d3Array = require("d3-array");
 function data(name) {
-    const data1 = this.context.data[name];
-    return data1 ? data1.values.value : [];
+    const data = this.context.data[name];
+    return data ? data.values.value : [];
 }
 function indata(name, field, value) {
     const index = this.context.data[name]["index:" + field], entry = index ? index.value.get(value) : undefined;
     return entry ? entry.count : entry;
 }
 function setdata(name, tuples) {
-    const df = this.context.dataflow, data2 = this.context.data[name], input = data2.input;
+    const df = this.context.dataflow, data = this.context.data[name], input = data.input;
     df.pulse(input, df.changeset().remove((0, _vegaUtil.truthy)).insert(tuples));
     return 1;
 }
@@ -36761,16 +36761,16 @@ const ScalePrefix = "%";
 const SignalPrefix = "$";
 function dataVisitor(name, args, scope, params) {
     if (args[0].type !== (0, _vegaExpression.Literal)) (0, _vegaUtil.error)("First argument to data functions must be a string literal.");
-    const data3 = args[0].value, dataName = DataPrefix + data3;
+    const data = args[0].value, dataName = DataPrefix + data;
     if (!(0, _vegaUtil.hasOwnProperty)(dataName, params)) try {
-        params[dataName] = scope.getData(data3).tuplesRef();
+        params[dataName] = scope.getData(data).tuplesRef();
     } catch (err) {}
 }
 function indataVisitor(name, args, scope, params) {
     if (args[0].type !== (0, _vegaExpression.Literal)) (0, _vegaUtil.error)("First argument to indata must be a string literal.");
     if (args[1].type !== (0, _vegaExpression.Literal)) (0, _vegaUtil.error)("Second argument to indata must be a string literal.");
-    const data4 = args[0].value, field = args[1].value, indexName = IndexPrefix + field;
-    if (!(0, _vegaUtil.hasOwnProperty)(indexName, params)) params[indexName] = scope.getData(data4).indataRef(scope, field);
+    const data = args[0].value, field = args[1].value, indexName = IndexPrefix + field;
+    if (!(0, _vegaUtil.hasOwnProperty)(indexName, params)) params[indexName] = scope.getData(data).indataRef(scope, field);
 }
 function scaleVisitor(name, args, scope, params) {
     if (args[0].type === (0, _vegaExpression.Literal)) // add scale dependency
@@ -36882,16 +36882,16 @@ function equalObject(a, b) {
 function removePredicate(props) {
     return (_)=>equalObject(props, _);
 }
-function modify(name, insert, remove, toggle, modify1, values) {
-    const df = this.context.dataflow, data5 = this.context.data[name], input = data5.input, stamp = df.stamp();
-    let changes = data5.changes, predicate, key;
+function modify(name, insert, remove, toggle, modify, values) {
+    const df = this.context.dataflow, data = this.context.data[name], input = data.input, stamp = df.stamp();
+    let changes = data.changes, predicate, key;
     if (df._trigger === false || !(input.value.length || insert || toggle)) // nothing to do!
     return 0;
     if (!changes || changes.stamp < stamp) {
-        data5.changes = changes = df.changeset();
+        data.changes = changes = df.changeset();
         changes.stamp = stamp;
         df.runAfter(()=>{
-            data5.modified = true;
+            data.modified = true;
             df.pulse(input, changes).run();
         }, true, 1);
     }
@@ -36905,7 +36905,7 @@ function modify(name, insert, remove, toggle, modify1, values) {
         if (input.value.some(predicate)) changes.remove(predicate);
         else changes.insert(toggle);
     }
-    if (modify1) for(key in values)changes.modify(modify1, key, values[key]);
+    if (modify) for(key in values)changes.modify(modify, key, values[key]);
     return 1;
 }
 function pinchDistance(event) {
@@ -36917,9 +36917,9 @@ function pinchAngle(event) {
     return Math.atan2(t[0].clientY - t[1].clientY, t[0].clientX - t[1].clientX);
 }
 const accessors = {};
-function pluck(data6, name) {
+function pluck(data, name) {
     const accessor = accessors[name] || (accessors[name] = (0, _vegaUtil.field)(name));
-    return (0, _vegaUtil.isArray)(data6) ? data6.map(accessor) : accessor(data6);
+    return (0, _vegaUtil.isArray)(data) ? data.map(accessor) : accessor(data);
 }
 function array(seq) {
     return (0, _vegaUtil.isArray)(seq) || ArrayBuffer.isView(seq) ? seq : null;
@@ -36961,9 +36961,9 @@ function domain(name, group) {
     const s = getScale(name, (group || this).context);
     return s ? s.domain() : [];
 }
-function invert(name, range1, group) {
+function invert(name, range, group) {
     const s = getScale(name, (group || this).context);
-    return !s ? undefined : (0, _vegaUtil.isArray)(range1) ? (s.invertRange || s.invert)(range1) : (s.invert || s.invertExtent)(range1);
+    return !s ? undefined : (0, _vegaUtil.isArray)(range) ? (s.invertRange || s.invert)(range) : (s.invert || s.invertExtent)(range);
 }
 function range(name, group) {
     const s = getScale(name, (group || this).context);
@@ -36973,22 +36973,22 @@ function scale(name, value, group) {
     const s = getScale(name, (group || this).context);
     return s ? s(value) : undefined;
 }
-function scaleGradient(scale1, p0, p1, count, group) {
-    scale1 = getScale(scale1, (group || this).context);
+function scaleGradient(scale, p0, p1, count, group) {
+    scale = getScale(scale, (group || this).context);
     const gradient = (0, _vegaScenegraph.Gradient)(p0, p1);
-    let stops = scale1.domain(), min = stops[0], max = (0, _vegaUtil.peek)(stops), fraction = (0, _vegaUtil.identity);
+    let stops = scale.domain(), min = stops[0], max = (0, _vegaUtil.peek)(stops), fraction = (0, _vegaUtil.identity);
     if (!(max - min)) // expand scale if domain has zero span, fix #1479
-    scale1 = (scale1.interpolator ? (0, _vegaScale.scale)("sequential")().interpolator(scale1.interpolator()) : (0, _vegaScale.scale)("linear")().interpolate(scale1.interpolate()).range(scale1.range())).domain([
+    scale = (scale.interpolator ? (0, _vegaScale.scale)("sequential")().interpolator(scale.interpolator()) : (0, _vegaScale.scale)("linear")().interpolate(scale.interpolate()).range(scale.range())).domain([
         min = 0,
         max = 1
     ]);
-    else fraction = (0, _vegaScale.scaleFraction)(scale1, min, max);
-    if (scale1.ticks) {
-        stops = scale1.ticks(+count || 15);
+    else fraction = (0, _vegaScale.scaleFraction)(scale, min, max);
+    if (scale.ticks) {
+        stops = scale.ticks(+count || 15);
         if (min !== stops[0]) stops.unshift(min);
         if (max !== (0, _vegaUtil.peek)(stops)) stops.push(max);
     }
-    stops.forEach((_)=>gradient.stop(fraction(_), scale1(_)));
+    stops.forEach((_)=>gradient.stop(fraction(_), scale(_)));
     return gradient;
 }
 function geoShape(projection, geojson, group) {
@@ -37188,7 +37188,7 @@ const codeGenerator = (0, _vegaExpression.codegenExpression)(codegenParams); // 
 function buildFunctions(codegen) {
     const fn = (0, _vegaExpression.functions)(codegen);
     eventFunctions.forEach((name)=>fn[name] = eventPrefix + name);
-    for(const name1 in functionContext)fn[name1] = thisPrefix + name1;
+    for(const name in functionContext)fn[name] = thisPrefix + name;
     (0, _vegaUtil.extend)(fn, internalScaleFunctions(codegen, functionContext, astVisitors));
     return fn;
 } // Register an expression function
@@ -38012,9 +38012,9 @@ function finishUnaryExpression(operator, argument) {
     return node;
 } // Throw an exception
 function throwError(token, messageFormat) {
-    var error, args = Array.prototype.slice.call(arguments, 2), msg = messageFormat.replace(/%(\d)/g, (whole, index1)=>{
-        assert(index1 < args.length, "Message reference must be in range");
-        return args[index1];
+    var error, args = Array.prototype.slice.call(arguments, 2), msg = messageFormat.replace(/%(\d)/g, (whole, index)=>{
+        assert(index < args.length, "Message reference must be in range");
+        return args[index];
     });
     error = new Error(msg);
     error.index = index;
@@ -38340,14 +38340,14 @@ var Constants = {
     MIN_VALUE: "Number.MIN_VALUE",
     MAX_VALUE: "Number.MAX_VALUE"
 };
-function Functions(codegen1) {
+function Functions(codegen) {
     function fncall(name, args, cast, type) {
-        let obj = codegen1(args[0]);
+        let obj = codegen(args[0]);
         if (cast) {
             obj = cast + "(" + obj + ")";
             if (cast.lastIndexOf("new ", 0) === 0) obj = "(" + obj + ")";
         }
-        return obj + "." + name + (type < 0 ? "" : type === 0 ? "()" : "(" + args.slice(1).map(codegen1).join(",") + ")");
+        return obj + "." + name + (type < 0 ? "" : type === 0 ? "()" : "(" + args.slice(1).map(codegen).join(",") + ")");
     }
     function fn(name, cast, type) {
         return (args)=>fncall(name, args, cast, type);
@@ -38378,7 +38378,7 @@ function Functions(codegen1) {
         clamp: function(args) {
             if (args.length < 3) (0, _vegaUtil.error)("Missing arguments to clamp function.");
             if (args.length > 3) (0, _vegaUtil.error)("Too many arguments to clamp function.");
-            const a = args.map(codegen1);
+            const a = args.map(codegen);
             return "Math.max(" + a[1] + ", Math.min(" + a[2] + "," + a[0] + "))";
         },
         // DATE functions
@@ -38420,7 +38420,7 @@ function Functions(codegen1) {
         if: function(args) {
             if (args.length < 3) (0, _vegaUtil.error)("Missing arguments to if function.");
             if (args.length > 3) (0, _vegaUtil.error)("Too many arguments to if function.");
-            const a = args.map(codegen1);
+            const a = args.map(codegen);
             return "(" + a[0] + "?" + a[1] + ":" + a[2] + ")";
         }
     };
@@ -38480,7 +38480,7 @@ function codegen(opt) {
             return k + ":" + visit(n.value);
         }
     };
-    function codegen2(ast) {
+    function codegen(ast) {
         const result = {
             code: visit(ast),
             globals: Object.keys(globals),
@@ -38490,9 +38490,9 @@ function codegen(opt) {
         fields = {};
         return result;
     }
-    codegen2.functions = functions;
-    codegen2.constants = constants;
-    return codegen2;
+    codegen.functions = functions;
+    codegen.constants = constants;
+    return codegen;
 }
 
 },{"vega-util":"bApja","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"674qo":[function(require,module,exports) {
@@ -38618,21 +38618,21 @@ function selectionIdTest(name, datum, op) {
  *                 a major version bump for Vega.
  * @returns {object} An object of selected fields and values.
  */ function selectionResolve(name, op, isMulti, vl5) {
-    var data = this.context.data[name], entries = data ? data.values.value : [], resolved = {}, multiRes = {}, types = {}, entry, fields, values, unit1, field1, value, res, resUnit, type, union, n = entries.length, i = 0, j1, m; // First union all entries within the same unit.
+    var data = this.context.data[name], entries = data ? data.values.value : [], resolved = {}, multiRes = {}, types = {}, entry, fields, values, unit, field, value, res, resUnit, type, union, n = entries.length, i = 0, j, m; // First union all entries within the same unit.
     for(; i < n; ++i){
         entry = entries[i];
-        unit1 = entry.unit;
+        unit = entry.unit;
         fields = entry.fields;
         values = entry.values;
         if (fields && values) {
             // Intentional selection stores
-            for(j1 = 0, m = fields.length; j1 < m; ++j1){
-                field1 = fields[j1];
-                res = resolved[field1.field] || (resolved[field1.field] = {});
-                resUnit = res[unit1] || (res[unit1] = []);
-                types[field1.field] = type = field1.type.charAt(0);
+            for(j = 0, m = fields.length; j < m; ++j){
+                field = fields[j];
+                res = resolved[field.field] || (resolved[field.field] = {});
+                resUnit = res[unit] || (res[unit] = []);
+                types[field.field] = type = field.type.charAt(0);
                 union = ops["".concat(type, "_union")];
-                res[unit1] = union(resUnit, (0, _vegaUtil.array)(values[j1]));
+                res[unit] = union(resUnit, (0, _vegaUtil.array)(values[j]));
             } // If the same multi-selection is repeated over views and projected over
             // an encoding, it may operate over different fields making it especially
             // tricky to reliably resolve it. At best, we can de-dupe identical entries
@@ -38640,18 +38640,18 @@ function selectionIdTest(name, datum, op) {
             // Instead, for now, we simply transform our store representation into
             // a more human-friendly one.
             if (isMulti) {
-                resUnit = multiRes[unit1] || (multiRes[unit1] = []);
+                resUnit = multiRes[unit] || (multiRes[unit] = []);
                 resUnit.push((0, _vegaUtil.array)(values).reduce((obj, curr, j)=>(obj[fields[j].field] = curr, obj), {}));
             }
         } else {
             // Short circuit extensional selectionId stores which hold sorted IDs unique to each unit.
-            field1 = SelectionId;
+            field = SelectionId;
             value = $selectionId(entry);
-            res = resolved[field1] || (resolved[field1] = {});
-            resUnit = res[unit1] || (res[unit1] = []);
+            res = resolved[field] || (resolved[field] = {});
+            resUnit = res[unit] || (res[unit] = []);
             resUnit.push(value);
             if (isMulti) {
-                resUnit = multiRes[unit1] || (multiRes[unit1] = []);
+                resUnit = multiRes[unit] || (multiRes[unit] = []);
                 resUnit.push({
                     [SelectionId]: value
                 });
@@ -39768,9 +39768,9 @@ function finishUnaryExpression(operator, argument) {
     return node;
 } // Throw an exception
 function throwError(token, messageFormat) {
-    var error, args = Array.prototype.slice.call(arguments, 2), msg = messageFormat.replace(/%(\d)/g, (whole, index1)=>{
-        assert(index1 < args.length, "Message reference must be in range");
-        return args[index1];
+    var error, args = Array.prototype.slice.call(arguments, 2), msg = messageFormat.replace(/%(\d)/g, (whole, index)=>{
+        assert(index < args.length, "Message reference must be in range");
+        return args[index];
     });
     error = new Error(msg);
     error.index = index;
@@ -40096,14 +40096,14 @@ var Constants = {
     MIN_VALUE: "Number.MIN_VALUE",
     MAX_VALUE: "Number.MAX_VALUE"
 };
-function Functions(codegen1) {
+function Functions(codegen) {
     function fncall(name, args, cast, type) {
-        let obj = codegen1(args[0]);
+        let obj = codegen(args[0]);
         if (cast) {
             obj = cast + "(" + obj + ")";
             if (cast.lastIndexOf("new ", 0) === 0) obj = "(" + obj + ")";
         }
-        return obj + "." + name + (type < 0 ? "" : type === 0 ? "()" : "(" + args.slice(1).map(codegen1).join(",") + ")");
+        return obj + "." + name + (type < 0 ? "" : type === 0 ? "()" : "(" + args.slice(1).map(codegen).join(",") + ")");
     }
     function fn(name, cast, type) {
         return (args)=>fncall(name, args, cast, type);
@@ -40134,7 +40134,7 @@ function Functions(codegen1) {
         clamp: function(args) {
             if (args.length < 3) (0, _vegaUtil.error)("Missing arguments to clamp function.");
             if (args.length > 3) (0, _vegaUtil.error)("Too many arguments to clamp function.");
-            const a = args.map(codegen1);
+            const a = args.map(codegen);
             return "Math.max(" + a[1] + ", Math.min(" + a[2] + "," + a[0] + "))";
         },
         // DATE functions
@@ -40176,7 +40176,7 @@ function Functions(codegen1) {
         if: function(args) {
             if (args.length < 3) (0, _vegaUtil.error)("Missing arguments to if function.");
             if (args.length > 3) (0, _vegaUtil.error)("Too many arguments to if function.");
-            const a = args.map(codegen1);
+            const a = args.map(codegen);
             return "(" + a[0] + "?" + a[1] + ":" + a[2] + ")";
         }
     };
@@ -40236,7 +40236,7 @@ function codegen(opt) {
             return k + ":" + visit(n.value);
         }
     };
-    function codegen2(ast) {
+    function codegen(ast) {
         const result = {
             code: visit(ast),
             globals: Object.keys(globals),
@@ -40246,9 +40246,9 @@ function codegen(opt) {
         fields = {};
         return result;
     }
-    codegen2.functions = functions;
-    codegen2.constants = constants;
-    return codegen2;
+    codegen.functions = functions;
+    codegen.constants = constants;
+    return codegen;
 }
 
 },{"vega-util":"bApja","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"k7ppL":[function(require,module,exports) {
@@ -40492,11 +40492,11 @@ var expressionCodegen = {
 }
 /**
  * Resolve a comparator function reference.
- */ function getCompare(_1, ctx) {
+ */ function getCompare(_, ctx) {
     // As of Vega 5.5.3, $tupleid sort is no longer used.
     // Keep here for now for backwards compatibility.
-    const k = "c:" + _1.$compare + "_" + _1.$order, c = (0, _vegaUtil.array)(_1.$compare).map((_)=>_ && _.$tupleid ? (0, _vegaDataflow.tupleid) : _);
-    return ctx.fn[k] || (ctx.fn[k] = (0, _vegaUtil.compare)(c, _1.$order, ctx.expr.codegen));
+    const k = "c:" + _.$compare + "_" + _.$order, c = (0, _vegaUtil.array)(_.$compare).map((_)=>_ && _.$tupleid ? (0, _vegaDataflow.tupleid) : _);
+    return ctx.fn[k] || (ctx.fn[k] = (0, _vegaUtil.compare)(c, _.$order, ctx.expr.codegen));
 }
 /**
  * Resolve an encode operator reference.
@@ -40566,22 +40566,22 @@ const SKIP = {
     skip: true
 };
 function getState(options) {
-    var ctx1 = this, state = {};
+    var ctx = this, state = {};
     if (options.signals) {
         var signals = state.signals = {};
-        Object.keys(ctx1.signals).forEach((key)=>{
-            const op = ctx1.signals[key];
+        Object.keys(ctx.signals).forEach((key)=>{
+            const op = ctx.signals[key];
             if (options.signals(key, op)) signals[key] = op.value;
         });
     }
     if (options.data) {
         var data = state.data = {};
-        Object.keys(ctx1.data).forEach((key)=>{
-            const dataset = ctx1.data[key];
+        Object.keys(ctx.data).forEach((key)=>{
+            const dataset = ctx.data[key];
             if (options.data(key, dataset)) data[key] = dataset.input.value;
         });
     }
-    if (ctx1.subcontext && options.recurse !== false) state.subcontext = ctx1.subcontext.map((ctx)=>ctx.getState(options));
+    if (ctx.subcontext && options.recurse !== false) state.subcontext = ctx.subcontext.map((ctx)=>ctx.getState(options));
     return state;
 }
 function setState(state) {
@@ -40680,8 +40680,8 @@ Context.prototype = Subcontext.prototype = {
         if (spec.signal) ctx.signals[spec.signal] = op;
         if (spec.scale) ctx.scales[spec.scale] = op;
         if (spec.data) for(const name in spec.data){
-            const data = ctx.data[name] || (ctx.data[name] = {});
-            spec.data[name].forEach((role)=>data[role] = op);
+            const data1 = ctx.data[name] || (ctx.data[name] = {});
+            spec.data[name].forEach((role)=>data1[role] = op);
         }
     },
     resolve () {
@@ -40781,12 +40781,12 @@ function parsePadding(spec) {
 const encoder = (_)=>(0, _vegaUtil.isObject)(_) && !(0, _vegaUtil.isArray)(_) ? (0, _vegaUtil.extend)({}, _) : {
         value: _
     };
-function addEncode(object, name, value1, set) {
-    if (value1 != null) {
-        const isEncoder = (0, _vegaUtil.isObject)(value1) && !(0, _vegaUtil.isArray)(value1) || (0, _vegaUtil.isArray)(value1) && value1.length && (0, _vegaUtil.isObject)(value1[0]); // Always assign signal to update, even if the signal is from the enter block
-        if (isEncoder) object.update[name] = value1;
+function addEncode(object, name, value, set) {
+    if (value != null) {
+        const isEncoder = (0, _vegaUtil.isObject)(value) && !(0, _vegaUtil.isArray)(value) || (0, _vegaUtil.isArray)(value) && value.length && (0, _vegaUtil.isObject)(value[0]); // Always assign signal to update, even if the signal is from the enter block
+        if (isEncoder) object.update[name] = value;
         else object[set || "enter"][name] = {
-            value: value1
+            value: value
         };
         return 1;
     } else return 0;
@@ -40825,51 +40825,51 @@ const TitleRole = "title";
 const TitleTextRole = "title-text";
 const TitleSubtitleRole = "title-subtitle";
 function applyDefaults(encode, type, role, style, config) {
-    const defaults1 = {}, enter = {};
-    let update, key1, skip, props1; // if text mark, apply global lineBreak settings (#2370)
-    key1 = "lineBreak";
-    if (type === "text" && config[key1] != null && !has(key1, encode)) applyDefault(defaults1, key1, config[key1]);
+    const defaults = {}, enter = {};
+    let update, key, skip, props; // if text mark, apply global lineBreak settings (#2370)
+    key = "lineBreak";
+    if (type === "text" && config[key] != null && !has(key, encode)) applyDefault(defaults, key, config[key]);
      // ignore legend and axis roles
     if (role == "legend" || String(role).startsWith("axis")) role = null;
      // resolve mark config
-    props1 = role === FrameRole ? config.group : role === MarkRole ? (0, _vegaUtil.extend)({}, config.mark, config[type]) : null;
-    for(key1 in props1){
+    props = role === FrameRole ? config.group : role === MarkRole ? (0, _vegaUtil.extend)({}, config.mark, config[type]) : null;
+    for(key in props){
         // do not apply defaults if relevant fields are defined
-        skip = has(key1, encode) || (key1 === "fill" || key1 === "stroke") && (has("fill", encode) || has("stroke", encode));
-        if (!skip) applyDefault(defaults1, key1, props1[key1]);
+        skip = has(key, encode) || (key === "fill" || key === "stroke") && (has("fill", encode) || has("stroke", encode));
+        if (!skip) applyDefault(defaults, key, props[key]);
     } // resolve styles, apply with increasing precedence
     (0, _vegaUtil.array)(style).forEach((name)=>{
         const props = config.style && config.style[name];
-        for(const key in props)if (!has(key, encode)) applyDefault(defaults1, key, props[key]);
+        for(const key in props)if (!has(key, encode)) applyDefault(defaults, key, props[key]);
     });
     encode = (0, _vegaUtil.extend)({}, encode); // defensive copy
-    for(key1 in defaults1){
-        props1 = defaults1[key1];
-        if (props1.signal) (update = update || {})[key1] = props1;
-        else enter[key1] = props1;
+    for(key in defaults){
+        props = defaults[key];
+        if (props.signal) (update = update || {})[key] = props;
+        else enter[key] = props;
     }
     encode.enter = (0, _vegaUtil.extend)(enter, encode.enter);
     if (update) encode.update = (0, _vegaUtil.extend)(update, encode.update);
     return encode;
 }
-function applyDefault(defaults2, key, value2) {
-    defaults2[key] = value2 && value2.signal ? {
-        signal: value2.signal
+function applyDefault(defaults, key, value) {
+    defaults[key] = value && value.signal ? {
+        signal: value.signal
     } : {
-        value: value2
+        value: value
     };
 }
-const scaleRef = (scale1)=>(0, _vegaUtil.isString)(scale1) ? (0, _vegaUtil.stringValue)(scale1) : scale1.signal ? `(${scale1.signal})` : field(scale1);
+const scaleRef = (scale)=>(0, _vegaUtil.isString)(scale) ? (0, _vegaUtil.stringValue)(scale) : scale.signal ? `(${scale.signal})` : field(scale);
 function entry$1(enc) {
     if (enc.gradient != null) return gradient(enc);
-    let value3 = enc.signal ? `(${enc.signal})` : enc.color ? color(enc.color) : enc.field != null ? field(enc.field) : enc.value !== undefined ? (0, _vegaUtil.stringValue)(enc.value) : undefined;
-    if (enc.scale != null) value3 = scale(enc, value3);
-    if (value3 === undefined) value3 = null;
-    if (enc.exponent != null) value3 = `pow(${value3},${property(enc.exponent)})`;
-    if (enc.mult != null) value3 += `*${property(enc.mult)}`;
-    if (enc.offset != null) value3 += `+${property(enc.offset)}`;
-    if (enc.round) value3 = `round(${value3})`;
-    return value3;
+    let value = enc.signal ? `(${enc.signal})` : enc.color ? color(enc.color) : enc.field != null ? field(enc.field) : enc.value !== undefined ? (0, _vegaUtil.stringValue)(enc.value) : undefined;
+    if (enc.scale != null) value = scale(enc, value);
+    if (value === undefined) value = null;
+    if (enc.exponent != null) value = `pow(${value},${property(enc.exponent)})`;
+    if (enc.mult != null) value += `*${property(enc.mult)}`;
+    if (enc.offset != null) value += `+${property(enc.offset)}`;
+    if (enc.round) value = `round(${value})`;
+    return value;
 }
 const _color = (type, x, y, z)=>`(${type}(${[
         x,
@@ -40890,55 +40890,55 @@ function gradient(enc) {
     args.unshift(scaleRef(enc.gradient));
     return `gradient(${args.join(",")})`;
 }
-function property(property1) {
-    return (0, _vegaUtil.isObject)(property1) ? "(" + entry$1(property1) + ")" : property1;
+function property(property) {
+    return (0, _vegaUtil.isObject)(property) ? "(" + entry$1(property) + ")" : property;
 }
-function field(ref1) {
-    return resolveField((0, _vegaUtil.isObject)(ref1) ? ref1 : {
-        datum: ref1
+function field(ref) {
+    return resolveField((0, _vegaUtil.isObject)(ref) ? ref : {
+        datum: ref
     });
 }
-function resolveField(ref2) {
-    let object, level, field1;
-    if (ref2.signal) {
+function resolveField(ref) {
+    let object, level, field;
+    if (ref.signal) {
         object = "datum";
-        field1 = ref2.signal;
-    } else if (ref2.group || ref2.parent) {
-        level = Math.max(1, ref2.level || 1);
+        field = ref.signal;
+    } else if (ref.group || ref.parent) {
+        level = Math.max(1, ref.level || 1);
         object = "item";
         while(level-- > 0)object += ".mark.group";
-        if (ref2.parent) {
-            field1 = ref2.parent;
+        if (ref.parent) {
+            field = ref.parent;
             object += ".datum";
-        } else field1 = ref2.group;
-    } else if (ref2.datum) {
+        } else field = ref.group;
+    } else if (ref.datum) {
         object = "datum";
-        field1 = ref2.datum;
-    } else (0, _vegaUtil.error)("Invalid field reference: " + (0, _vegaUtil.stringValue)(ref2));
-    if (!ref2.signal) field1 = (0, _vegaUtil.isString)(field1) ? (0, _vegaUtil.splitAccessPath)(field1).map((0, _vegaUtil.stringValue)).join("][") : resolveField(field1);
-    return object + "[" + field1 + "]";
+        field = ref.datum;
+    } else (0, _vegaUtil.error)("Invalid field reference: " + (0, _vegaUtil.stringValue)(ref));
+    if (!ref.signal) field = (0, _vegaUtil.isString)(field) ? (0, _vegaUtil.splitAccessPath)(field).map((0, _vegaUtil.stringValue)).join("][") : resolveField(field);
+    return object + "[" + field + "]";
 }
-function scale(enc, value4) {
-    const scale2 = scaleRef(enc.scale);
+function scale(enc, value) {
+    const scale = scaleRef(enc.scale);
     if (enc.range != null) // pull value from scale range
-    value4 = `lerp(_range(${scale2}), ${+enc.range})`;
+    value = `lerp(_range(${scale}), ${+enc.range})`;
     else {
         // run value through scale and/or pull scale bandwidth
-        if (value4 !== undefined) value4 = `_scale(${scale2}, ${value4})`;
+        if (value !== undefined) value = `_scale(${scale}, ${value})`;
         if (enc.band) {
-            value4 = (value4 ? value4 + "+" : "") + `_bandwidth(${scale2})` + (+enc.band === 1 ? "" : "*" + property(enc.band));
+            value = (value ? value + "+" : "") + `_bandwidth(${scale})` + (+enc.band === 1 ? "" : "*" + property(enc.band));
             if (enc.extra) // include logic to handle extraneous elements
-            value4 = `(datum.extra ? _scale(${scale2}, datum.extra.value) : ${value4})`;
+            value = `(datum.extra ? _scale(${scale}, datum.extra.value) : ${value})`;
         }
-        if (value4 == null) value4 = "0";
+        if (value == null) value = "0";
     }
-    return value4;
+    return value;
 }
 function rule(enc) {
     let code = "";
-    enc.forEach((rule1)=>{
-        const value5 = entry$1(rule1);
-        code += rule1.test ? `(${rule1.test})?${value5}:` : value5;
+    enc.forEach((rule)=>{
+        const value = entry$1(rule);
+        code += rule.test ? `(${rule.test})?${value}:` : value;
     }); // if no else clause, terminate with null (#1366)
     if ((0, _vegaUtil.peek)(code) === ":") code += "null";
     return code;
@@ -40970,10 +40970,10 @@ function expr(enc) {
     return (0, _vegaUtil.isArray)(enc) ? rule(enc) : entry$1(enc);
 }
 function parse$1(code, scope, params, fields) {
-    const expr1 = (0, _vegaFunctions.parseExpression)(code, scope);
-    expr1.$fields.forEach((name)=>fields[name] = 1);
-    (0, _vegaUtil.extend)(params, expr1.$params);
-    return expr1.$expr;
+    const expr = (0, _vegaFunctions.parseExpression)(code, scope);
+    expr.$fields.forEach((name)=>fields[name] = 1);
+    (0, _vegaUtil.extend)(params, expr.$params);
+    return expr.$expr;
 }
 const OUTER = "outer", OUTER_INVALID = [
     "value",
@@ -41000,32 +41000,32 @@ function parseSignal(signal, scope) {
         if (signal.bind) scope.addBinding(name, signal.bind);
     }
 }
-function Entry(type, value6, params, parent) {
+function Entry(type, value, params, parent) {
     this.id = -1;
     this.type = type;
-    this.value = value6;
+    this.value = value;
     this.params = params;
     if (parent) this.parent = parent;
 }
-function entry(type, value7, params, parent) {
-    return new Entry(type, value7, params, parent);
+function entry(type, value, params, parent) {
+    return new Entry(type, value, params, parent);
 }
-function operator(value8, params) {
-    return entry("operator", value8, params);
+function operator(value, params) {
+    return entry("operator", value, params);
 } // -----
 function ref(op) {
-    const ref3 = {
+    const ref = {
         $ref: op.id
     }; // if operator not yet registered, cache ref to resolve later
-    if (op.id < 0) (op.refs = op.refs || []).push(ref3);
-    return ref3;
+    if (op.id < 0) (op.refs = op.refs || []).push(ref);
+    return ref;
 }
-function fieldRef$1(field2, name) {
+function fieldRef$1(field, name) {
     return name ? {
-        $field: field2,
+        $field: field,
         $name: name
     } : {
-        $field: field2
+        $field: field
     };
 }
 const keyFieldRef = fieldRef$1("key");
@@ -41036,19 +41036,19 @@ function compareRef(fields, orders) {
     };
 }
 function keyRef(fields, flat) {
-    const ref4 = {
+    const ref = {
         $key: fields
     };
-    if (flat) ref4.$flat = true;
-    return ref4;
+    if (flat) ref.$flat = true;
+    return ref;
 } // -----
 const Ascending = "ascending";
 const Descending = "descending";
 function sortKey(sort) {
     return !(0, _vegaUtil.isObject)(sort) ? "" : (sort.order === Descending ? "-" : "+") + aggrField(sort.op, sort.field);
 }
-function aggrField(op, field3) {
-    return (op && op.signal ? "$" + op.signal : op || "") + (op && field3 ? "_" : "") + (field3 && field3.signal ? "$" + field3.signal : field3 || "");
+function aggrField(op, field) {
+    return (op && op.signal ? "$" + op.signal : op || "") + (op && field ? "_" : "") + (field && field.signal ? "$" + field.signal : field || "");
 } // -----
 const Scope$1 = "scope";
 const View = "view";
@@ -41080,16 +41080,16 @@ function eventSource(source) {
     return source === Scope$1 ? View : source || View;
 }
 function mergeStream(stream, scope) {
-    const list = stream.merge.map((s)=>parseStream(s, scope)), entry1 = streamParameters({
+    const list = stream.merge.map((s)=>parseStream(s, scope)), entry = streamParameters({
         merge: list
     }, stream, scope);
-    return scope.addStream(entry1).id;
+    return scope.addStream(entry).id;
 }
 function nestedStream(stream, scope) {
-    const id = parseStream(stream.stream, scope), entry2 = streamParameters({
+    const id = parseStream(stream.stream, scope), entry = streamParameters({
         stream: id
     }, stream, scope);
-    return scope.addStream(entry2).id;
+    return scope.addStream(entry).id;
 }
 function eventStream(stream, scope) {
     let id;
@@ -41100,30 +41100,30 @@ function eventStream(stream, scope) {
             filter: stream.filter
         };
     } else id = scope.event(eventSource(stream.source), stream.type);
-    const entry3 = streamParameters({
+    const entry = streamParameters({
         stream: id
     }, stream, scope);
-    return Object.keys(entry3).length === 1 ? id : scope.addStream(entry3).id;
+    return Object.keys(entry).length === 1 ? id : scope.addStream(entry).id;
 }
-function streamParameters(entry4, stream, scope) {
-    let param1 = stream.between;
-    if (param1) {
-        if (param1.length !== 2) (0, _vegaUtil.error)('Stream "between" parameter must have 2 entries: ' + (0, _vegaUtil.stringValue)(stream));
-        entry4.between = [
-            parseStream(param1[0], scope),
-            parseStream(param1[1], scope)
+function streamParameters(entry, stream, scope) {
+    let param = stream.between;
+    if (param) {
+        if (param.length !== 2) (0, _vegaUtil.error)('Stream "between" parameter must have 2 entries: ' + (0, _vegaUtil.stringValue)(stream));
+        entry.between = [
+            parseStream(param[0], scope),
+            parseStream(param[1], scope)
         ];
     }
-    param1 = stream.filter ? [].concat(stream.filter) : [];
+    param = stream.filter ? [].concat(stream.filter) : [];
     if (stream.marktype || stream.markname || stream.markrole) // add filter for mark type, name and/or role
-    param1.push(filterMark(stream.marktype, stream.markname, stream.markrole));
+    param.push(filterMark(stream.marktype, stream.markname, stream.markrole));
     if (stream.source === Scope$1) // add filter to limit events from sub-scope only
-    param1.push("inScope(event.item)");
-    if (param1.length) entry4.filter = (0, _vegaFunctions.parseExpression)("(" + param1.join(")&&(") + ")", scope).$expr;
-    if ((param1 = stream.throttle) != null) entry4.throttle = +param1;
-    if ((param1 = stream.debounce) != null) entry4.debounce = +param1;
-    if (stream.consume) entry4.consume = true;
-    return entry4;
+    param.push("inScope(event.item)");
+    if (param.length) entry.filter = (0, _vegaFunctions.parseExpression)("(" + param.join(")&&(") + ")", scope).$expr;
+    if ((param = stream.throttle) != null) entry.throttle = +param;
+    if ((param = stream.debounce) != null) entry.debounce = +param;
+    if (stream.consume) entry.consume = true;
+    return entry;
 }
 function filterMark(type, name, role) {
     const item = "event.item";
@@ -41137,7 +41137,7 @@ const OP_VALUE_EXPR = {
     }
 };
 function parseUpdate(spec, scope, target) {
-    const encode = spec.encode, entry5 = {
+    const encode = spec.encode, entry = {
         target: target
     };
     let events = spec.events, update = spec.update, sources = [];
@@ -41157,16 +41157,16 @@ function parseUpdate(spec, scope, target) {
         if (update) (0, _vegaUtil.error)("Signal encode and update are mutually exclusive.");
         update = "encode(item()," + (0, _vegaUtil.stringValue)(encode) + ")";
     } // resolve update value
-    entry5.update = (0, _vegaUtil.isString)(update) ? (0, _vegaFunctions.parseExpression)(update, scope) : update.expr != null ? (0, _vegaFunctions.parseExpression)(update.expr, scope) : update.value != null ? update.value : update.signal != null ? {
+    entry.update = (0, _vegaUtil.isString)(update) ? (0, _vegaFunctions.parseExpression)(update, scope) : update.expr != null ? (0, _vegaFunctions.parseExpression)(update.expr, scope) : update.value != null ? update.value : update.signal != null ? {
         $expr: OP_VALUE_EXPR,
         $params: {
             $value: scope.signalRef(update.signal)
         }
     } : (0, _vegaUtil.error)("Invalid signal update specification.");
-    if (spec.force) entry5.options = {
+    if (spec.force) entry.options = {
         force: true
     };
-    sources.forEach((source)=>scope.addUpdate((0, _vegaUtil.extend)(streamSource(source, scope), entry5)));
+    sources.forEach((source)=>scope.addUpdate((0, _vegaUtil.extend)(streamSource(source, scope), entry)));
 }
 function streamSource(stream, scope) {
     return {
@@ -41180,22 +41180,22 @@ function mergeSources(sources) {
 }
 function parseSignalUpdates(signal, scope) {
     const op = scope.getSignal(signal.name);
-    let expr2 = signal.update;
+    let expr = signal.update;
     if (signal.init) {
-        if (expr2) (0, _vegaUtil.error)("Signals can not include both init and update expressions.");
+        if (expr) (0, _vegaUtil.error)("Signals can not include both init and update expressions.");
         else {
-            expr2 = signal.init;
+            expr = signal.init;
             op.initonly = true;
         }
     }
-    if (expr2) {
-        expr2 = (0, _vegaFunctions.parseExpression)(expr2, scope);
-        op.update = expr2.$expr;
-        op.params = expr2.$params;
+    if (expr) {
+        expr = (0, _vegaFunctions.parseExpression)(expr, scope);
+        op.update = expr.$expr;
+        op.params = expr.$params;
     }
     if (signal.on) signal.on.forEach((_)=>parseUpdate(_, scope, op.id));
 }
-const transform = (name)=>(params, value9, parent)=>entry(name, value9, params || undefined, parent);
+const transform = (name)=>(params, value, parent)=>entry(name, value, params || undefined, parent);
 const Aggregate = transform("aggregate");
 const AxisTicks = transform("axisticks");
 const Bound = transform("bound");
@@ -41254,8 +41254,8 @@ function parseScale(spec, scope) {
 function parseLiteral(v, scope) {
     return !(0, _vegaUtil.isObject)(v) ? v : v.signal ? scope.signalRef(v.signal) : (0, _vegaUtil.error)("Unsupported object: " + (0, _vegaUtil.stringValue)(v));
 }
-function parseArray(v1, scope) {
-    return v1.signal ? scope.signalRef(v1.signal) : v1.map((v)=>parseLiteral(v, scope));
+function parseArray(v, scope) {
+    return v.signal ? scope.signalRef(v.signal) : v.map((v)=>parseLiteral(v, scope));
 }
 function dataLookupError(name) {
     (0, _vegaUtil.error)("Can not find data set: " + (0, _vegaUtil.stringValue)(name));
@@ -41435,11 +41435,11 @@ function parseProjection(proj, scope) {
         if (name === "name") continue;
         params[name] = parseParameter$1(proj[name], name, scope);
     } // apply projection defaults from config
-    for(const name2 in config)if (params[name2] == null) params[name2] = parseParameter$1(config[name2], name2, scope);
+    for(const name1 in config)if (params[name1] == null) params[name1] = parseParameter$1(config[name1], name1, scope);
     scope.addProjection(proj.name, params);
 }
-function parseParameter$1(_1, name, scope) {
-    return (0, _vegaUtil.isArray)(_1) ? _1.map((_)=>parseParameter$1(_, name, scope)) : !(0, _vegaUtil.isObject)(_1) ? _1 : _1.signal ? scope.signalRef(_1.signal) : name === "fit" ? _1 : (0, _vegaUtil.error)("Unsupported parameter object: " + (0, _vegaUtil.stringValue)(_1));
+function parseParameter$1(_, name, scope) {
+    return (0, _vegaUtil.isArray)(_) ? _.map((_)=>parseParameter$1(_, name, scope)) : !(0, _vegaUtil.isObject)(_) ? _ : _.signal ? scope.signalRef(_.signal) : name === "fit" ? _ : (0, _vegaUtil.error)("Unsupported parameter object: " + (0, _vegaUtil.stringValue)(_));
 }
 const Top = "top";
 const Left = "left";
@@ -41554,12 +41554,12 @@ function tickBand(_) {
         offset
     };
 }
-function extendOffset(value10, offset) {
-    return !offset ? value10 : !value10 ? offset : !(0, _vegaUtil.isObject)(value10) ? {
-        value: value10,
+function extendOffset(value, offset) {
+    return !offset ? value : !value ? offset : !(0, _vegaUtil.isObject)(value) ? {
+        value,
         offset
-    } : Object.assign({}, value10, {
-        offset: extendOffset(value10.offset, offset)
+    } : Object.assign({}, value, {
+        offset: extendOffset(value.offset, offset)
     });
 }
 function guideMark(mark, extras) {
@@ -41571,7 +41571,7 @@ function guideMark(mark, extras) {
     } else mark.interactive = false;
     return mark;
 }
-function legendGradient(spec, scale3, config, userEncode) {
+function legendGradient(spec, scale, config, userEncode) {
     const _ = lookup(spec, config), vertical = _.isVertical(), thickness = _.gradientThickness(), length = _.gradientLength();
     let enter, start, stop, width, height;
     if (vertical) {
@@ -41608,7 +41608,7 @@ function legendGradient(spec, scale3, config, userEncode) {
         update: (0, _vegaUtil.extend)({}, enter, {
             opacity: one,
             fill: {
-                gradient: scale3,
+                gradient: scale,
                 start: start,
                 stop: stop
             }
@@ -41630,14 +41630,14 @@ function legendGradient(spec, scale3, config, userEncode) {
         encode
     }, userEncode);
 }
-function legendGradientDiscrete(spec, scale4, config, userEncode, dataRef) {
+function legendGradientDiscrete(spec, scale, config, userEncode, dataRef) {
     const _ = lookup(spec, config), vertical = _.isVertical(), thickness = _.gradientThickness(), length = _.gradientLength();
     let u, v, uu, vv, adjust = "";
     vertical ? (u = "y", uu = "y2", v = "x", vv = "width", adjust = "1-") : (u = "x", uu = "x2", v = "y", vv = "height");
     const enter = {
         opacity: zero,
         fill: {
-            scale: scale4,
+            scale: scale,
             field: Value
         }
     };
@@ -41744,7 +41744,7 @@ function legendGradientLabels(spec, config, userEncode, dataRef) {
     }, userEncode);
 }
 function legendSymbolGroups(spec, config, userEncode, dataRef, columns) {
-    const _ = lookup(spec, config), entries = userEncode.entries, interactive1 = !!(entries && entries.interactive), name = entries ? entries.name : undefined, height = _("clipHeight"), symbolOffset = _("symbolOffset"), valueRef = {
+    const _ = lookup(spec, config), entries = userEncode.entries, interactive = !!(entries && entries.interactive), name = entries ? entries.name : undefined, height = _("clipHeight"), symbolOffset = _("symbolOffset"), valueRef = {
         data: "value"
     }, xSignal = `(${columns}) ? datum.${Offset} : datum.${Size}`, yEncode = height ? encoder(height) : {
         field: Size
@@ -41787,9 +41787,9 @@ function legendSymbolGroups(spec, config, userEncode, dataRef, columns) {
         // update
         opacity: _("symbolOpacity")
     });
-    LegendScales.forEach((scale5)=>{
-        if (spec[scale5]) update[scale5] = enter[scale5] = {
-            scale: spec[scale5],
+    LegendScales.forEach((scale)=>{
+        if (spec[scale]) update[scale] = enter[scale] = {
+            scale: spec[scale],
             field: Value
         };
     });
@@ -41900,7 +41900,7 @@ function legendSymbolGroups(spec, config, userEncode, dataRef, columns) {
             labels
         ],
         name,
-        interactive: interactive1,
+        interactive,
         sort
     });
 }
@@ -41980,17 +41980,17 @@ function legendTitle(spec, config, userEncode, dataRef) {
         encode
     }, userEncode);
 }
-function clip(clip1, scope) {
-    let expr3;
-    if ((0, _vegaUtil.isObject)(clip1)) {
-        if (clip1.signal) expr3 = clip1.signal;
-        else if (clip1.path) expr3 = "pathShape(" + param(clip1.path) + ")";
-        else if (clip1.sphere) expr3 = "geoShape(" + param(clip1.sphere) + ', {type: "Sphere"})';
+function clip(clip, scope) {
+    let expr;
+    if ((0, _vegaUtil.isObject)(clip)) {
+        if (clip.signal) expr = clip.signal;
+        else if (clip.path) expr = "pathShape(" + param(clip.path) + ")";
+        else if (clip.sphere) expr = "geoShape(" + param(clip.sphere) + ', {type: "Sphere"})';
     }
-    return expr3 ? scope.signalRef(expr3) : !!clip1;
+    return expr ? scope.signalRef(expr) : !!clip;
 }
-function param(value11) {
-    return (0, _vegaUtil.isObject)(value11) && value11.signal ? value11.signal : (0, _vegaUtil.stringValue)(value11);
+function param(value) {
+    return (0, _vegaUtil.isObject)(value) && value.signal ? value.signal : (0, _vegaUtil.stringValue)(value);
 }
 function getRole(spec) {
     const role = spec.role || "";
@@ -42032,23 +42032,23 @@ function interactive(spec, scope) {
 /**
  * Parse a data transform parameter.
  */ function parseParameter(def, spec, scope) {
-    const type = def.type, value12 = spec[def.name];
+    const type = def.type, value = spec[def.name];
     if (type === "index") return parseIndexParameter(def, spec, scope);
-    else if (value12 === undefined) {
+    else if (value === undefined) {
         if (def.required) (0, _vegaUtil.error)("Missing required " + (0, _vegaUtil.stringValue)(spec.type) + " parameter: " + (0, _vegaUtil.stringValue)(def.name));
         return;
     } else if (type === "param") return parseSubParameters(def, spec, scope);
     else if (type === "projection") return scope.projectionRef(spec[def.name]);
-    return def.array && !isSignal(value12) ? value12.map((v)=>parameterValue(def, v, scope)) : parameterValue(def, value12, scope);
+    return def.array && !isSignal(value) ? value.map((v)=>parameterValue(def, v, scope)) : parameterValue(def, value, scope);
 }
 /**
  * Parse a single parameter value.
- */ function parameterValue(def, value13, scope) {
+ */ function parameterValue(def, value, scope) {
     const type = def.type;
-    if (isSignal(value13)) return isExpr(type) ? (0, _vegaUtil.error)("Expression references can not be signals.") : isField(type) ? scope.fieldRef(value13) : isCompare(type) ? scope.compareRef(value13) : scope.signalRef(value13.signal);
+    if (isSignal(value)) return isExpr(type) ? (0, _vegaUtil.error)("Expression references can not be signals.") : isField(type) ? scope.fieldRef(value) : isCompare(type) ? scope.compareRef(value) : scope.signalRef(value.signal);
     else {
-        const expr4 = def.expr || isField(type);
-        return expr4 && outerExpr(value13) ? scope.exprRef(value13.expr, value13.as) : expr4 && outerField(value13) ? fieldRef$1(value13.field, value13.as) : isExpr(type) ? (0, _vegaFunctions.parseExpression)(value13, scope) : isData(type) ? ref(scope.getData(value13).values) : isField(type) ? fieldRef$1(value13) : isCompare(type) ? scope.compareRef(value13) : value13;
+        const expr = def.expr || isField(type);
+        return expr && outerExpr(value) ? scope.exprRef(value.expr, value.as) : expr && outerField(value) ? fieldRef$1(value.field, value.as) : isExpr(type) ? (0, _vegaFunctions.parseExpression)(value, scope) : isData(type) ? ref(scope.getData(value).values) : isField(type) ? fieldRef$1(value) : isCompare(type) ? scope.compareRef(value) : value;
     }
 }
 /**
@@ -42060,28 +42060,28 @@ function interactive(spec, scope) {
 /**
  * Parse a parameter that contains one or more sub-parameter objects.
  */ function parseSubParameters(def, spec, scope) {
-    const value14 = spec[def.name];
+    const value = spec[def.name];
     if (def.array) {
-        if (!(0, _vegaUtil.isArray)(value14)) // signals not allowed!
-        (0, _vegaUtil.error)("Expected an array of sub-parameters. Instead: " + (0, _vegaUtil.stringValue)(value14));
-        return value14.map((v)=>parseSubParameter(def, v, scope));
-    } else return parseSubParameter(def, value14, scope);
+        if (!(0, _vegaUtil.isArray)(value)) // signals not allowed!
+        (0, _vegaUtil.error)("Expected an array of sub-parameters. Instead: " + (0, _vegaUtil.stringValue)(value));
+        return value.map((v)=>parseSubParameter(def, v, scope));
+    } else return parseSubParameter(def, value, scope);
 }
 /**
  * Parse a sub-parameter object.
- */ function parseSubParameter(def, value15, scope) {
+ */ function parseSubParameter(def, value, scope) {
     const n = def.params.length;
     let pdef; // loop over defs to find matching key
     for(let i = 0; i < n; ++i){
         pdef = def.params[i];
-        for(const k in pdef.key)if (pdef.key[k] !== value15[k]) {
+        for(const k in pdef.key)if (pdef.key[k] !== value[k]) {
             pdef = null;
             break;
         }
         if (pdef) break;
     } // raise error if matching key not found
-    if (!pdef) (0, _vegaUtil.error)("Unsupported parameter: " + (0, _vegaUtil.stringValue)(value15)); // parse params, create Params transform, return ref
-    const params = (0, _vegaUtil.extend)(parseParameters(pdef, value15, scope), pdef.key);
+    if (!pdef) (0, _vegaUtil.error)("Unsupported parameter: " + (0, _vegaUtil.stringValue)(value)); // parse params, create Params transform, return ref
+    const params = (0, _vegaUtil.extend)(parseParameters(pdef, value, scope), pdef.key);
     return ref(scope.add(Params(params)));
 } // -- Utilities -----
 const outerExpr = (_)=>_ && _.expr;
@@ -42144,8 +42144,8 @@ DataScope.fromEntries = function(scope, entries) {
     }
     return new DataScope(scope, input, output, values, aggr);
 };
-function fieldKey(field4) {
-    return (0, _vegaUtil.isString)(field4) ? field4 : null;
+function fieldKey(field) {
+    return (0, _vegaUtil.isString)(field) ? field : null;
 }
 function addSortField(scope, p, sort) {
     const as = aggrField(sort.op, sort.field);
@@ -42170,41 +42170,41 @@ function addSortField(scope, p, sort) {
         p.as.push(as);
     }
 }
-function cache(scope, ds, name, optype, field5, counts, index) {
-    const cache1 = ds[name] || (ds[name] = {}), sort = sortKey(counts);
-    let k = fieldKey(field5), v, op;
+function cache(scope, ds, name, optype, field, counts, index) {
+    const cache = ds[name] || (ds[name] = {}), sort = sortKey(counts);
+    let k = fieldKey(field), v, op;
     if (k != null) {
         scope = ds.scope;
         k = k + (sort ? "|" + sort : "");
-        v = cache1[k];
+        v = cache[k];
     }
     if (!v) {
         const params = counts ? {
             field: keyFieldRef,
-            pulse: ds.countsRef(scope, field5, counts)
+            pulse: ds.countsRef(scope, field, counts)
         } : {
-            field: scope.fieldRef(field5),
+            field: scope.fieldRef(field),
             pulse: ref(ds.output)
         };
         if (sort) params.sort = scope.sortRef(counts);
         op = scope.add(entry(optype, undefined, params));
-        if (index) ds.index[field5] = op;
+        if (index) ds.index[field] = op;
         v = ref(op);
-        if (k != null) cache1[k] = v;
+        if (k != null) cache[k] = v;
     }
     return v;
 }
 DataScope.prototype = {
-    countsRef (scope, field6, sort) {
-        const ds = this, cache2 = ds.counts || (ds.counts = {}), k = fieldKey(field6);
+    countsRef (scope, field, sort) {
+        const ds = this, cache = ds.counts || (ds.counts = {}), k = fieldKey(field);
         let v, a, p;
         if (k != null) {
             scope = ds.scope;
-            v = cache2[k];
+            v = cache[k];
         }
         if (!v) {
             p = {
-                groupby: scope.fieldRef(field6, "key"),
+                groupby: scope.fieldRef(field, "key"),
                 pulse: ref(ds.output)
             };
             if (sort && sort.field) addSortField(scope, p, sort);
@@ -42216,27 +42216,27 @@ DataScope.prototype = {
                 agg: a,
                 ref: ref(v)
             };
-            if (k != null) cache2[k] = v;
+            if (k != null) cache[k] = v;
         } else if (sort && sort.field) addSortField(scope, v.agg.params, sort);
         return v.ref;
     },
     tuplesRef () {
         return ref(this.values);
     },
-    extentRef (scope, field7) {
-        return cache(scope, this, "extent", "extent", field7, false);
+    extentRef (scope, field) {
+        return cache(scope, this, "extent", "extent", field, false);
     },
-    domainRef (scope, field8) {
-        return cache(scope, this, "domain", "values", field8, false);
+    domainRef (scope, field) {
+        return cache(scope, this, "domain", "values", field, false);
     },
-    valuesRef (scope, field9, sort) {
-        return cache(scope, this, "vals", "values", field9, sort || true);
+    valuesRef (scope, field, sort) {
+        return cache(scope, this, "vals", "values", field, sort || true);
     },
-    lookupRef (scope, field10) {
-        return cache(scope, this, "lookup", "tupleindex", field10, false);
+    lookupRef (scope, field) {
+        return cache(scope, this, "lookup", "tupleindex", field, false);
     },
-    indataRef (scope, field11) {
-        return cache(scope, this, "indata", "tupleindex", field11, true, true);
+    indataRef (scope, field) {
+        return cache(scope, this, "indata", "tupleindex", field, true, true);
     }
 };
 function parseFacet(spec, scope, group) {
@@ -42283,9 +42283,9 @@ function parseTrigger(spec, scope, name) {
         modify,
         values
     ].map((_)=>_ == null ? "null" : _).join(",") + "),0)";
-    const expr5 = (0, _vegaFunctions.parseExpression)(update, scope);
-    op.update = expr5.$expr;
-    op.params = expr5.$params;
+    const expr = (0, _vegaFunctions.parseExpression)(update, scope);
+    op.update = expr.$expr;
+    op.params = expr.$params;
 }
 function parseMark(spec, scope) {
     const role = getRole(spec), group = spec.type === GroupMark, facet = spec.from && spec.from.facet, overlap = spec.overlap;
@@ -42399,11 +42399,11 @@ function parseOverlap(overlap, source, scope) {
     return ref(scope.add(Overlap(params)));
 }
 function parseLegend(spec, scope) {
-    const config = scope.config.legend, encode = spec.encode || {}, _ = lookup(spec, config), legendEncode = encode.legend || {}, name = legendEncode.name || undefined, interactive2 = legendEncode.interactive, style = legendEncode.style, scales = {};
-    let scale6 = 0, entryLayout, params, children; // resolve scales and 'canonical' scale name
-    LegendScales.forEach((s)=>spec[s] ? (scales[s] = spec[s], scale6 = scale6 || spec[s]) : 0);
-    if (!scale6) (0, _vegaUtil.error)("Missing valid scale for legend."); // resolve legend type (symbol, gradient, or discrete gradient)
-    const type = legendType(spec, scope.scaleType(scale6)); // single-element data source for legend group
+    const config = scope.config.legend, encode = spec.encode || {}, _ = lookup(spec, config), legendEncode = encode.legend || {}, name = legendEncode.name || undefined, interactive = legendEncode.interactive, style = legendEncode.style, scales = {};
+    let scale = 0, entryLayout, params, children; // resolve scales and 'canonical' scale name
+    LegendScales.forEach((s)=>spec[s] ? (scales[s] = spec[s], scale = scale || spec[s]) : 0);
+    if (!scale) (0, _vegaUtil.error)("Missing valid scale for legend."); // resolve legend type (symbol, gradient, or discrete gradient)
+    const type = legendType(spec, scope.scaleType(scale)); // single-element data source for legend group
     const datum = {
         title: spec.title != null,
         scales: scales,
@@ -42425,7 +42425,7 @@ function parseLegend(spec, scope) {
     }; // data source for legend values
     const entryRef = ref(scope.add(LegendEntries(params = {
         type: type,
-        scale: scope.scaleRef(scale6),
+        scale: scope.scaleRef(scale),
         count: scope.objectProperty(_("tickCount")),
         limit: scope.property(_("symbolLimit")),
         values: scope.objectProperty(spec.values),
@@ -42435,12 +42435,12 @@ function parseLegend(spec, scope) {
     }))); // continuous gradient legend
     if (type === Gradient) {
         children = [
-            legendGradient(spec, scale6, config, encode.gradient),
+            legendGradient(spec, scale, config, encode.gradient),
             legendGradientLabels(spec, config, encode.labels, entryRef)
         ]; // adjust default tick count based on the gradient length
         params.count = params.count || scope.signalRef(`max(2,2*floor((${deref(_.gradientLength())})/100))`);
     } else if (type === Discrete) children = [
-        legendGradientDiscrete(spec, scale6, config, encode.gradient, entryRef),
+        legendGradientDiscrete(spec, scale, config, encode.gradient, entryRef),
         legendGradientLabels(spec, config, encode.labels, entryRef)
     ];
     else {
@@ -42458,7 +42458,7 @@ function parseLegend(spec, scope) {
             encode: entryEncode,
             marks: children,
             layout: entryLayout,
-            interactive: interactive2
+            interactive
         })
     ]; // include legend title if defined
     if (datum.title) children.push(legendTitle(spec, config, encode.title, dataRef));
@@ -42472,7 +42472,7 @@ function parseLegend(spec, scope) {
         description: _("description"),
         zindex: _("zindex"),
         name,
-        interactive: interactive2,
+        interactive,
         style
     }), scope);
 }
@@ -42522,7 +42522,7 @@ function parseTitle(spec, scope) {
     spec = (0, _vegaUtil.isString)(spec) ? {
         text: spec
     } : spec;
-    const _ = lookup(spec, scope.config.title), encode = spec.encode || {}, userEncode = encode.group || {}, name = userEncode.name || undefined, interactive3 = userEncode.interactive, style = userEncode.style, children = []; // single-element data source for group title
+    const _ = lookup(spec, scope.config.title), encode = spec.encode || {}, userEncode = encode.group || {}, name = userEncode.name || undefined, interactive = userEncode.interactive, style = userEncode.style, children = []; // single-element data source for group title
     const datum = {}, dataRef = ref(scope.add(Collect(null, [
         datum
     ]))); // include title text
@@ -42538,7 +42538,7 @@ function parseTitle(spec, scope) {
         description: _("description"),
         zindex: _("zindex"),
         name,
-        interactive: interactive3,
+        interactive,
         style
     }), scope);
 } // provide backwards-compatibility for title custom encode;
@@ -42573,11 +42573,11 @@ function groupEncode(_, userEncode) {
     return extendEncode(encode, userEncode, Skip);
 }
 function buildTitle(spec, _, userEncode, dataRef) {
-    const zero1 = {
+    const zero = {
         value: 0
     }, text = spec.text, encode = {
         enter: {
-            opacity: zero1
+            opacity: zero
         },
         update: {
             opacity: {
@@ -42585,7 +42585,7 @@ function buildTitle(spec, _, userEncode, dataRef) {
             }
         },
         exit: {
-            opacity: zero1
+            opacity: zero
         }
     };
     addEncoders(encode, {
@@ -42623,11 +42623,11 @@ function buildTitle(spec, _, userEncode, dataRef) {
     }, userEncode);
 }
 function buildSubTitle(spec, _, userEncode, dataRef) {
-    const zero2 = {
+    const zero = {
         value: 0
     }, text = spec.subtitle, encode = {
         enter: {
-            opacity: zero2
+            opacity: zero
         },
         update: {
             opacity: {
@@ -42635,7 +42635,7 @@ function buildSubTitle(spec, _, userEncode, dataRef) {
             }
         },
         exit: {
-            opacity: zero2
+            opacity: zero
         }
     };
     addEncoders(encode, {
@@ -42797,21 +42797,21 @@ const ifOrient = ($orient, t, b, l, r)=>({
         signal: (l != null ? `${$orient} === '${Left}' ? (${toExpr(l)}) : ` : "") + (b != null ? `${$orient} === '${Bottom}' ? (${toExpr(b)}) : ` : "") + (r != null ? `${$orient} === '${Right}' ? (${toExpr(r)}) : ` : "") + (t != null ? `${$orient} === '${Top}' ? (${toExpr(t)}) : ` : "") + "(null)"
     });
 const toExpr = (v)=>isSignal(v) ? v.signal : v == null ? null : (0, _vegaUtil.stringValue)(v);
-const mult = (sign, value16)=>value16 === 0 ? 0 : isSignal(sign) ? {
-        signal: `(${sign.signal}) * ${value16}`
+const mult = (sign, value)=>value === 0 ? 0 : isSignal(sign) ? {
+        signal: `(${sign.signal}) * ${value}`
     } : {
-        value: sign * value16
+        value: sign * value
     };
-const patch = (value17, base)=>{
-    const s = value17.signal;
+const patch = (value, base)=>{
+    const s = value.signal;
     return s && s.endsWith("(null)") ? {
         signal: s.slice(0, -6) + base.signal
-    } : value17;
+    } : value;
 };
-function fallback(prop, config, axisConfig1, style) {
+function fallback(prop, config, axisConfig, style) {
     let styleProp;
     if (config && (0, _vegaUtil.hasOwnProperty)(config, prop)) return config[prop];
-    else if ((0, _vegaUtil.hasOwnProperty)(axisConfig1, prop)) return axisConfig1[prop];
+    else if ((0, _vegaUtil.hasOwnProperty)(axisConfig, prop)) return axisConfig[prop];
     else if (prop.startsWith("title")) {
         switch(prop){
             case "titleColor":
@@ -42981,15 +42981,15 @@ function offsetValue(offset, sign) {
         signal: `(${sign.signal}) * (${offset || 0})`
     } : sign * (offset || 0);
     else {
-        let entry6 = offset = (0, _vegaUtil.extend)({}, offset);
-        while(entry6.mult != null)if (!(0, _vegaUtil.isObject)(entry6.mult)) {
-            entry6.mult = isSignal(sign) // no offset if sign === 1
+        let entry = offset = (0, _vegaUtil.extend)({}, offset);
+        while(entry.mult != null)if (!(0, _vegaUtil.isObject)(entry.mult)) {
+            entry.mult = isSignal(sign) // no offset if sign === 1
              ? {
-                signal: `(${entry6.mult}) * (${sign.signal})`
-            } : entry6.mult * sign;
+                signal: `(${entry.mult}) * (${sign.signal})`
+            } : entry.mult * sign;
             return offset;
-        } else entry6 = entry6.mult = (0, _vegaUtil.extend)({}, entry6.mult);
-        entry6.mult = sign;
+        } else entry = entry.mult = (0, _vegaUtil.extend)({}, entry.mult);
+        entry.mult = sign;
     }
     return offset;
 }
@@ -43039,31 +43039,31 @@ function axisTicks(spec, config, userEncode, dataRef, size, band) {
         encode
     }, userEncode);
 }
-function flushExpr(scale7, threshold, a, b, c) {
+function flushExpr(scale, threshold, a, b, c) {
     return {
-        signal: 'flush(range("' + scale7 + '"), ' + 'scale("' + scale7 + '", datum.value), ' + threshold + "," + a + "," + b + "," + c + ")"
+        signal: 'flush(range("' + scale + '"), ' + 'scale("' + scale + '", datum.value), ' + threshold + "," + a + "," + b + "," + c + ")"
     };
 }
 function axisLabels(spec, config, userEncode, dataRef, size, band) {
-    const _ = lookup(spec, config), orient = spec.orient, scale8 = spec.scale, sign = getSign(orient, -1, 1), flush = deref(_("labelFlush")), flushOffset = deref(_("labelFlushOffset")), labelAlign = _("labelAlign"), labelBaseline = _("labelBaseline");
+    const _ = lookup(spec, config), orient = spec.orient, scale = spec.scale, sign = getSign(orient, -1, 1), flush = deref(_("labelFlush")), flushOffset = deref(_("labelFlushOffset")), labelAlign = _("labelAlign"), labelBaseline = _("labelBaseline");
     let flushOn = flush === 0 || !!flush, update;
     const tickSize = encoder(size);
     tickSize.mult = sign;
     tickSize.offset = encoder(_("labelPadding") || 0);
     tickSize.offset.mult = sign;
     const tickPos = {
-        scale: scale8,
+        scale: scale,
         field: Value,
         band: 0.5,
         offset: extendOffset(band.offset, _("labelOffset"))
     };
-    const align = ifX(orient, flushOn ? flushExpr(scale8, flush, '"left"', '"right"', '"center"') : {
+    const align = ifX(orient, flushOn ? flushExpr(scale, flush, '"left"', '"right"', '"center"') : {
         value: "center"
     }, ifRight(orient, "left", "right"));
-    const baseline1 = ifX(orient, ifTop(orient, "bottom", "top"), flushOn ? flushExpr(scale8, flush, '"top"', '"bottom"', '"middle"') : {
+    const baseline = ifX(orient, ifTop(orient, "bottom", "top"), flushOn ? flushExpr(scale, flush, '"top"', '"bottom"', '"middle"') : {
         value: "middle"
     });
-    const offsetExpr = flushExpr(scale8, flush, `-(${flushOffset})`, flushOffset, 0);
+    const offsetExpr = flushExpr(scale, flush, `-(${flushOffset})`, flushOffset, 0);
     flushOn = flushOn && flushOffset;
     const enter = {
         opacity: zero,
@@ -43080,7 +43080,7 @@ function axisLabels(spec, config, userEncode, dataRef, size, band) {
             x: enter.x,
             y: enter.y,
             align,
-            baseline: baseline1
+            baseline
         },
         exit: {
             opacity: zero,
@@ -43113,13 +43113,13 @@ function axisLabels(spec, config, userEncode, dataRef, size, band) {
         method: overlap,
         order: "datum.index",
         bound: bound ? {
-            scale: scale8,
+            scale,
             orient,
             tolerance: bound
         } : null
     } : undefined;
     if (update.align !== align) update.align = patch(update.align, align);
-    if (update.baseline !== baseline1) update.baseline = patch(update.baseline, baseline1);
+    if (update.baseline !== baseline) update.baseline = patch(update.baseline, baseline);
     return guideMark({
         type: TextMark,
         role: AxisLabelRole,
@@ -43188,12 +43188,12 @@ function axisTitle(spec, config, userEncode, dataRef) {
     }, userEncode);
 }
 function autoLayout(_, orient, encode, userEncode) {
-    const auto = (value18, dim)=>value18 != null ? (encode.update[dim] = patch(encoder(value18), encode.update[dim]), false) : !has(dim, userEncode) ? true : false;
+    const auto = (value, dim)=>value != null ? (encode.update[dim] = patch(encoder(value), encode.update[dim]), false) : !has(dim, userEncode) ? true : false;
     const autoY = auto(_("titleX"), "x"), autoX = auto(_("titleY"), "y");
     encode.enter.auto = autoX === autoY ? encoder(autoX) : ifX(orient, encoder(autoX), encoder(autoY));
 }
 function parseAxis(spec, scope) {
-    const config = axisConfig(spec, scope), encode = spec.encode || {}, axisEncode = encode.axis || {}, name = axisEncode.name || undefined, interactive4 = axisEncode.interactive, style = axisEncode.style, _ = lookup(spec, config), band = tickBand(_); // single-element data source for axis group
+    const config = axisConfig(spec, scope), encode = spec.encode || {}, axisEncode = encode.axis || {}, name = axisEncode.name || undefined, interactive = axisEncode.interactive, style = axisEncode.style, _ = lookup(spec, config), band = tickBand(_); // single-element data source for axis group
     const datum = {
         scale: spec.scale,
         ticks: !!_("ticks"),
@@ -43239,7 +43239,7 @@ function parseAxis(spec, scope) {
         description: _("description"),
         zindex: _("zindex"),
         name,
-        interactive: interactive4,
+        interactive,
         style
     }), scope);
 }
@@ -43335,13 +43335,13 @@ function parseView(spec, scope) {
     scope.addData("root", new DataScope(scope, input, input, op));
     return scope;
 }
-function signalObject(name, value19) {
-    return value19 && value19.signal ? {
+function signalObject(name, value) {
+    return value && value.signal ? {
         name,
-        update: value19.signal
+        update: value.signal
     } : {
         name,
-        value: value19
+        value
     };
 }
 /**
@@ -43453,8 +43453,8 @@ Scope.prototype = Subscope.prototype = {
         this.operators.push(op);
         op.id = this.id(); // if pre-registration references exist, resolve them now
         if (op.refs) {
-            op.refs.forEach((ref5)=>{
-                ref5.$ref = op.id;
+            op.refs.forEach((ref)=>{
+                ref.$ref = op.id;
             });
             op.refs = null;
         }
@@ -43477,11 +43477,11 @@ Scope.prototype = Subscope.prototype = {
     },
     // Apply metadata
     finish () {
-        let name3, ds; // annotate root
+        let name, ds; // annotate root
         if (this.root) this.root.root = true; // annotate signals
-        for(name3 in this.signals)this.signals[name3].signal = name3;
+        for(name in this.signals)this.signals[name].signal = name;
          // annotate scales
-        for(name3 in this.scales)this.scales[name3].scale = name3;
+        for(name in this.scales)this.scales[name].scale = name;
          // annotate data sets
         function annotate(op, name, type) {
             let data, list;
@@ -43491,22 +43491,22 @@ Scope.prototype = Subscope.prototype = {
                 list.push(type);
             }
         }
-        for(name3 in this.data){
-            ds = this.data[name3];
-            annotate(ds.input, name3, "input");
-            annotate(ds.output, name3, "output");
-            annotate(ds.values, name3, "values");
-            for(const field12 in ds.index)annotate(ds.index[field12], name3, "index:" + field12);
+        for(name in this.data){
+            ds = this.data[name];
+            annotate(ds.input, name, "input");
+            annotate(ds.output, name, "output");
+            annotate(ds.values, name, "values");
+            for(const field in ds.index)annotate(ds.index[field], name, "index:" + field);
         }
         return this;
     },
     // ----
-    pushState (encode, parent, lookup1) {
+    pushState (encode, parent, lookup) {
         this._encode.push(ref(this.add(Sieve({
             pulse: encode
         }))));
         this._parent.push(parent);
-        this._lookup.push(lookup1 ? ref(this.proxy(lookup1)) : null);
+        this._lookup.push(lookup ? ref(this.proxy(lookup)) : null);
         this._markpath.push(-1);
     },
     popState () {
@@ -43529,10 +43529,10 @@ Scope.prototype = Subscope.prototype = {
         return ++p[p.length - 1];
     },
     // ----
-    fieldRef (field13, name) {
-        if ((0, _vegaUtil.isString)(field13)) return fieldRef$1(field13, name);
-        if (!field13.signal) (0, _vegaUtil.error)("Unsupported field reference: " + (0, _vegaUtil.stringValue)(field13));
-        const s = field13.signal;
+    fieldRef (field, name) {
+        if ((0, _vegaUtil.isString)(field)) return fieldRef$1(field, name);
+        if (!field.signal) (0, _vegaUtil.error)("Unsupported field reference: " + (0, _vegaUtil.stringValue)(field));
+        const s = field.signal;
         let f = this.field[s];
         if (!f) {
             const params = {
@@ -43588,9 +43588,9 @@ Scope.prototype = Subscope.prototype = {
     hasOwnSignal (name) {
         return (0, _vegaUtil.hasOwnProperty)(this.signals, name);
     },
-    addSignal (name, value20) {
+    addSignal (name, value) {
         if (this.hasOwnSignal(name)) (0, _vegaUtil.error)("Duplicate signal name: " + (0, _vegaUtil.stringValue)(name));
-        const op = value20 instanceof Entry ? value20 : this.add(operator(value20));
+        const op = value instanceof Entry ? value : this.add(operator(value));
         return this.signals[name] = op;
     },
     getSignal (name) {
@@ -43630,9 +43630,9 @@ Scope.prototype = Subscope.prototype = {
         }, bind));
     },
     // ----
-    addScaleProj (name, transform1) {
+    addScaleProj (name, transform) {
         if ((0, _vegaUtil.hasOwnProperty)(this.scales, name)) (0, _vegaUtil.error)("Duplicate scale or projection name: " + (0, _vegaUtil.stringValue)(name));
-        this.scales[name] = this.add(transform1);
+        this.scales[name] = this.add(transform);
     },
     addScale (name, params) {
         this.addScaleProj(name, Scale(params));
@@ -43677,16 +43677,16 @@ function arrayLambda(array) {
     const n = array.length;
     let code = "[";
     for(let i = 0; i < n; ++i){
-        const value21 = array[i];
-        code += (i > 0 ? "," : "") + ((0, _vegaUtil.isObject)(value21) ? value21.signal || propertyLambda(value21) : (0, _vegaUtil.stringValue)(value21));
+        const value = array[i];
+        code += (i > 0 ? "," : "") + ((0, _vegaUtil.isObject)(value) ? value.signal || propertyLambda(value) : (0, _vegaUtil.stringValue)(value));
     }
     return code + "]";
 }
 function objectLambda(obj) {
-    let code = "{", i = 0, key, value22;
+    let code = "{", i = 0, key, value;
     for(key in obj){
-        value22 = obj[key];
-        code += (++i > 1 ? "," : "") + (0, _vegaUtil.stringValue)(key) + ":" + ((0, _vegaUtil.isObject)(value22) ? value22.signal || propertyLambda(value22) : (0, _vegaUtil.stringValue)(value22));
+        value = obj[key];
+        code += (++i > 1 ? "," : "") + (0, _vegaUtil.stringValue)(key) + ":" + ((0, _vegaUtil.isObject)(value) ? value.signal || propertyLambda(value) : (0, _vegaUtil.stringValue)(value));
     }
     return code + "}";
 }
@@ -44832,9 +44832,9 @@ function finishUnaryExpression(operator, argument) {
     return node;
 } // Throw an exception
 function throwError(token, messageFormat) {
-    var error, args = Array.prototype.slice.call(arguments, 2), msg = messageFormat.replace(/%(\d)/g, (whole, index1)=>{
-        assert(index1 < args.length, "Message reference must be in range");
-        return args[index1];
+    var error, args = Array.prototype.slice.call(arguments, 2), msg = messageFormat.replace(/%(\d)/g, (whole, index)=>{
+        assert(index < args.length, "Message reference must be in range");
+        return args[index];
     });
     error = new Error(msg);
     error.index = index;
@@ -45160,14 +45160,14 @@ var Constants = {
     MIN_VALUE: "Number.MIN_VALUE",
     MAX_VALUE: "Number.MAX_VALUE"
 };
-function Functions(codegen1) {
+function Functions(codegen) {
     function fncall(name, args, cast, type) {
-        let obj = codegen1(args[0]);
+        let obj = codegen(args[0]);
         if (cast) {
             obj = cast + "(" + obj + ")";
             if (cast.lastIndexOf("new ", 0) === 0) obj = "(" + obj + ")";
         }
-        return obj + "." + name + (type < 0 ? "" : type === 0 ? "()" : "(" + args.slice(1).map(codegen1).join(",") + ")");
+        return obj + "." + name + (type < 0 ? "" : type === 0 ? "()" : "(" + args.slice(1).map(codegen).join(",") + ")");
     }
     function fn(name, cast, type) {
         return (args)=>fncall(name, args, cast, type);
@@ -45198,7 +45198,7 @@ function Functions(codegen1) {
         clamp: function(args) {
             if (args.length < 3) (0, _vegaUtil.error)("Missing arguments to clamp function.");
             if (args.length > 3) (0, _vegaUtil.error)("Too many arguments to clamp function.");
-            const a = args.map(codegen1);
+            const a = args.map(codegen);
             return "Math.max(" + a[1] + ", Math.min(" + a[2] + "," + a[0] + "))";
         },
         // DATE functions
@@ -45240,7 +45240,7 @@ function Functions(codegen1) {
         if: function(args) {
             if (args.length < 3) (0, _vegaUtil.error)("Missing arguments to if function.");
             if (args.length > 3) (0, _vegaUtil.error)("Too many arguments to if function.");
-            const a = args.map(codegen1);
+            const a = args.map(codegen);
             return "(" + a[0] + "?" + a[1] + ":" + a[2] + ")";
         }
     };
@@ -45300,7 +45300,7 @@ function codegen(opt) {
             return k + ":" + visit(n.value);
         }
     };
-    function codegen2(ast) {
+    function codegen(ast) {
         const result = {
             code: visit(ast),
             globals: Object.keys(globals),
@@ -45310,9 +45310,9 @@ function codegen(opt) {
         fields = {};
         return result;
     }
-    codegen2.functions = functions;
-    codegen2.constants = constants;
-    return codegen2;
+    codegen.functions = functions;
+    codegen.constants = constants;
+    return codegen;
 }
 
 },{"vega-util":"bApja","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"gXMNx":[function(require,module,exports) {
@@ -45515,6 +45515,7 @@ var _interfaces = require("./interfaces");
 parcelHelpers.exportAll(_interfaces, exports);
 var _types = require("./types");
 parcelHelpers.exportAll(_types, exports);
+console.log(55);
 
 },{"./build":"2pBTq","./constants":"3I5IU","./inference":"hgLDN","./interfaces":"czyLt","./types":"0QlBW","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"2pBTq":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -45739,7 +45740,7 @@ exports.default = function(specContext) {
                 {
                     x.aggregate = "sum";
                     x.title = language.sum;
-                    const stripProps = {
+                    const stripProps1 = {
                         sortOrder: "ascending",
                         orientation: "horizontal",
                         size: specColumns.size,
@@ -45750,7 +45751,7 @@ exports.default = function(specContext) {
                     };
                     layouts.push({
                         layoutType: "Strip",
-                        props: stripProps
+                        props: stripProps1
                     });
                     break;
                 }
@@ -45758,7 +45759,7 @@ exports.default = function(specContext) {
                 {
                     x.aggregate = "count";
                     x.title = language.count;
-                    const stripProps = {
+                    const stripProps2 = {
                         sortOrder: "ascending",
                         orientation: "horizontal",
                         size: specColumns.size,
@@ -45769,7 +45770,7 @@ exports.default = function(specContext) {
                     };
                     layouts.push({
                         layoutType: "Strip",
-                        props: stripProps
+                        props: stripProps2
                     });
                     break;
                 }
@@ -45859,6 +45860,10 @@ parcelHelpers.export(exports, "ScaleNames", ()=>ScaleNames);
 parcelHelpers.export(exports, "SignalNames", ()=>SignalNames);
 parcelHelpers.export(exports, "Other", ()=>Other);
 parcelHelpers.export(exports, "ColorScaleNone", ()=>ColorScaleNone);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ console.log(44);
 const FieldNames = {
     Active: "__SandDance__Active",
     Collapsed: "__SandDance__Collapsed",
@@ -46091,7 +46096,7 @@ exports.default = function(specContext) {
                 {
                     y.aggregate = "sum";
                     y.title = language.sum;
-                    const stripProps = {
+                    const stripProps1 = {
                         sortOrder: "descending",
                         orientation: "vertical",
                         size: specColumns.size,
@@ -46102,7 +46107,7 @@ exports.default = function(specContext) {
                     };
                     layouts.push({
                         layoutType: "Strip",
-                        props: stripProps
+                        props: stripProps1
                     });
                     break;
                 }
@@ -46110,7 +46115,7 @@ exports.default = function(specContext) {
                 {
                     y.aggregate = "count";
                     y.title = language.count;
-                    const stripProps = {
+                    const stripProps2 = {
                         sortOrder: "descending",
                         orientation: "vertical",
                         sort: specColumns.sort,
@@ -46120,7 +46125,7 @@ exports.default = function(specContext) {
                     };
                     layouts.push({
                         layoutType: "Strip",
-                        props: stripProps
+                        props: stripProps2
                     });
                     break;
                 }
@@ -46320,7 +46325,7 @@ exports.default = function(specContext) {
         case "count-strip":
             {
                 aggProps.aggregation = "count";
-                const stripProps = {
+                const stripProps1 = {
                     sortOrder: "ascending",
                     orientation: "vertical",
                     sort: specColumns.sort,
@@ -46330,7 +46335,7 @@ exports.default = function(specContext) {
                 };
                 layouts.push({
                     layoutType: "Strip",
-                    props: stripProps
+                    props: stripProps1
                 });
                 break;
             }
@@ -46941,14 +46946,14 @@ function getFacetLayout(facetStyle, facetColumn, facetVColumn, axisTextColor) {
         case "wrap":
         default:
             {
-                const props = {
+                const props1 = {
                     axisTextColor,
                     cellTitles: true,
                     groupby
                 };
                 layoutPair = {
                     layoutType: "Wrap",
-                    props
+                    props: props1
                 };
                 facetPadding = {
                     bottom: (0, _defaults.facetPaddingBottom),
@@ -47724,8 +47729,8 @@ class SpecBuilder {
                         arrIn.forEach((rule)=>arrOut.push(rule));
                         arrOut.push(value);
                     } else {
-                        const arrOut = update[key];
-                        arrIn.forEach((rule)=>arrOut.unshift(rule));
+                        const arrOut1 = update[key];
+                        arrIn.forEach((rule)=>arrOut1.unshift(rule));
                     }
                 }
             });
@@ -47904,8 +47909,8 @@ parcelHelpers.export(exports, "addGlobalAxes", ()=>addGlobalAxes);
 */ var _constants = require("./constants");
 var _defaults = require("./defaults");
 var _scope = require("./scope");
-function addGlobalAxes(props1) {
-    const { axesOffsets , axisScales , axesScopes , axesTitlePadding , allGlobalScales , globalScope , labelBaseline , plotOffsetSignals , specColumns , specViewOptions  } = props1;
+function addGlobalAxes(props) {
+    const { axesOffsets , axisScales , axesScopes , axesTitlePadding , allGlobalScales , globalScope , labelBaseline , plotOffsetSignals , specColumns , specViewOptions  } = props;
     const { scope  } = globalScope;
     allGlobalScales.forEach((globalScales)=>{
         const { scales  } = globalScales;
@@ -47917,7 +47922,7 @@ function addGlobalAxes(props1) {
                 let zindex = undefined;
                 if (xyz === "z") {
                     showAxes = false;
-                    if (props1.view === "3d" && specViewOptions.zAxisOptions && !props1.hideZAxis) {
+                    if (props.view === "3d" && specViewOptions.zAxisOptions && !props.hideZAxis) {
                         if (specViewOptions.zAxisOptions.showZAxis) {
                             showAxes = true;
                             zindex = specViewOptions.zAxisOptions.zIndex;
@@ -47933,7 +47938,7 @@ function addGlobalAxes(props1) {
                             quantitative: true
                         };
                         const title = axisScale.title;
-                        const props = {
+                        const props1 = {
                             title,
                             horizontal,
                             column,
@@ -47943,13 +47948,13 @@ function addGlobalAxes(props1) {
                             labelBaseline: labelBaseline[xyz],
                             zindex
                         };
-                        axesScopes["main"].forEach((a)=>(0, _scope.addAxes)(a.scope, createAxis(Object.assign(Object.assign({}, props), {
+                        axesScopes["main"].forEach((a)=>(0, _scope.addAxes)(a.scope, createAxis(Object.assign(Object.assign({}, props1), {
                                 scale: a.scale || _scales[0],
                                 showTitle: a.title,
                                 showLabels: a.labels,
                                 showLines: a.lines
                             }))));
-                        if (axesScopes[xyz]) axesScopes[xyz].forEach((a)=>(0, _scope.addAxes)(a.scope, createAxis(Object.assign(Object.assign({}, props), {
+                        if (axesScopes[xyz]) axesScopes[xyz].forEach((a)=>(0, _scope.addAxes)(a.scope, createAxis(Object.assign(Object.assign({}, props1), {
                                 scale: a.scale || _scales[0],
                                 showTitle: a.title,
                                 showLabels: a.labels,
@@ -48362,7 +48367,7 @@ parcelHelpers.export(exports, "getLegends", ()=>getLegends);
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
 */ function legend(column, fill) {
-    const legend1 = {
+    const legend = {
         orient: "none",
         title: column.name,
         fill,
@@ -48377,10 +48382,10 @@ parcelHelpers.export(exports, "getLegends", ()=>getLegends);
         }
     };
     if (column.quantitative) {
-        legend1.type = "symbol";
-        legend1.format = "~r";
+        legend.type = "symbol";
+        legend.format = "~r";
     }
-    return legend1;
+    return legend;
 }
 function getLegends(context, fill) {
     const { specColumns , insight  } = context;
@@ -51636,7 +51641,8 @@ const defaultViewerOptions = {
         ]),
         axisLine: "#000",
         axisText: "#000",
-        gridLine: "#CCC"
+        gridLine: "#CCC",
+        backgroundColor: "#FFF"
     },
     language: {
         headers: {
@@ -52317,8 +52323,8 @@ class Core {
             const currentAxes = this._renderer.currentAxes;
             if (currentAxes) {
                 renderer.currentAxes = [];
-                for(let i = 0; i < currentAxes.length; i++){
-                    const axesVisual = currentAxes[i];
+                for(let i1 = 0; i1 < currentAxes.length; i1++){
+                    const axesVisual = currentAxes[i1];
                     const axes = axesVisual.axes;
                     if (axes instanceof (0, _cartesian3DJs.Cartesian3dAxes)) {
                         const cartesian3dAxesVisual = renderer.createCartesian3dAxesVisual(axes);
@@ -52329,12 +52335,12 @@ class Core {
             const labelSets = this._renderer.labelSets;
             if (labelSets) {
                 renderer.labelSets = [];
-                for(let i = 0; i < labelSets.length; i++)renderer.labelSets.push(renderer.createLabelSetVisual(labelSets[i].label));
+                for(let i2 = 0; i2 < labelSets.length; i2++)renderer.labelSets.push(renderer.createLabelSetVisual(labelSets[i2].label));
             }
             const images = this._renderer.images;
             if (images) {
                 renderer.images = [];
-                for(let i = 0; i < images.length; i++)renderer.images.push(renderer.createImageVisual(images[i].image));
+                for(let i3 = 0; i3 < images.length; i3++)renderer.images.push(renderer.createImageVisual(images[i3].image));
             }
             const fonts = this._renderer.fonts;
             if (fonts) for(const key in fonts){
@@ -52450,9 +52456,9 @@ class Core {
         }
         if (event.removed.length > 0) this.renderer.controllers.length = 0;
     }
-    _tick(currentTime1, xrFrame) {
-        let elapsedTime = currentTime1 - this._previousTime;
-        this._previousTime = currentTime1;
+    _tick(currentTime, xrFrame) {
+        let elapsedTime = currentTime - this._previousTime;
+        this._previousTime = currentTime;
         if (elapsedTime > 0) {
             if (elapsedTime > 100) elapsedTime = 100;
             this.update(elapsedTime, xrFrame);
@@ -52587,8 +52593,8 @@ class Core {
         }
         if (pickType == PickType.data) {
             const translation = (0, _glMatrix.vec3).create();
-            for(let i = 0; i < this._renderer.transitionBuffers.length; i++){
-                const transitionBuffer = this._renderer.transitionBuffers[i];
+            for(let i2 = 0; i2 < this._renderer.transitionBuffers.length; i2++){
+                const transitionBuffer = this._renderer.transitionBuffers[i2];
                 const set = new Set();
                 if (transitionBuffer.isVisible) {
                     const start = window.performance.now();
@@ -52611,7 +52617,7 @@ class Core {
                             if (isInside) set.add(id);
                         }
                     }
-                    if (set.size > 0) this._log.write(LogLevel.info, `lasso transition buffer ${i} picked ${set.size} ${Math.round(window.performance.now() - start)}ms`);
+                    if (set.size > 0) this._log.write(LogLevel.info, `lasso transition buffer ${i2} picked ${set.size} ${Math.round(window.performance.now() - start)}ms`);
                 }
                 sets.push(set);
             }
@@ -53192,11 +53198,11 @@ function multiplyScalar(out, a, b) {
     out[3] = a[3] * b;
     return out;
 }
-function multiplyScalarAndAdd(out, a, b, scale1) {
-    out[0] = a[0] + b[0] * scale1;
-    out[1] = a[1] + b[1] * scale1;
-    out[2] = a[2] + b[2] * scale1;
-    out[3] = a[3] + b[3] * scale1;
+function multiplyScalarAndAdd(out, a, b, scale) {
+    out[0] = a[0] + b[0] * scale;
+    out[1] = a[1] + b[1] * scale;
+    out[2] = a[2] + b[2] * scale;
+    out[3] = a[3] + b[3] * scale;
     return out;
 }
 var mul = multiply;
@@ -53591,13 +53597,13 @@ function multiplyScalar(out, a, b) {
     out[5] = a[5] * b;
     return out;
 }
-function multiplyScalarAndAdd(out, a, b, scale1) {
-    out[0] = a[0] + b[0] * scale1;
-    out[1] = a[1] + b[1] * scale1;
-    out[2] = a[2] + b[2] * scale1;
-    out[3] = a[3] + b[3] * scale1;
-    out[4] = a[4] + b[4] * scale1;
-    out[5] = a[5] + b[5] * scale1;
+function multiplyScalarAndAdd(out, a, b, scale) {
+    out[0] = a[0] + b[0] * scale;
+    out[1] = a[1] + b[1] * scale;
+    out[2] = a[2] + b[2] * scale;
+    out[3] = a[3] + b[3] * scale;
+    out[4] = a[4] + b[4] * scale;
+    out[5] = a[5] + b[5] * scale;
     return out;
 }
 function exactEquals(a, b) {
@@ -54232,16 +54238,16 @@ function multiplyScalar(out, a, b) {
     out[8] = a[8] * b;
     return out;
 }
-function multiplyScalarAndAdd(out, a, b, scale1) {
-    out[0] = a[0] + b[0] * scale1;
-    out[1] = a[1] + b[1] * scale1;
-    out[2] = a[2] + b[2] * scale1;
-    out[3] = a[3] + b[3] * scale1;
-    out[4] = a[4] + b[4] * scale1;
-    out[5] = a[5] + b[5] * scale1;
-    out[6] = a[6] + b[6] * scale1;
-    out[7] = a[7] + b[7] * scale1;
-    out[8] = a[8] + b[8] * scale1;
+function multiplyScalarAndAdd(out, a, b, scale) {
+    out[0] = a[0] + b[0] * scale;
+    out[1] = a[1] + b[1] * scale;
+    out[2] = a[2] + b[2] * scale;
+    out[3] = a[3] + b[3] * scale;
+    out[4] = a[4] + b[4] * scale;
+    out[5] = a[5] + b[5] * scale;
+    out[6] = a[6] + b[6] * scale;
+    out[7] = a[7] + b[7] * scale;
+    out[8] = a[8] + b[8] * scale;
     return out;
 }
 function exactEquals(a, b) {
@@ -55895,23 +55901,23 @@ function multiplyScalar(out, a, b) {
     out[15] = a[15] * b;
     return out;
 }
-function multiplyScalarAndAdd(out, a, b, scale1) {
-    out[0] = a[0] + b[0] * scale1;
-    out[1] = a[1] + b[1] * scale1;
-    out[2] = a[2] + b[2] * scale1;
-    out[3] = a[3] + b[3] * scale1;
-    out[4] = a[4] + b[4] * scale1;
-    out[5] = a[5] + b[5] * scale1;
-    out[6] = a[6] + b[6] * scale1;
-    out[7] = a[7] + b[7] * scale1;
-    out[8] = a[8] + b[8] * scale1;
-    out[9] = a[9] + b[9] * scale1;
-    out[10] = a[10] + b[10] * scale1;
-    out[11] = a[11] + b[11] * scale1;
-    out[12] = a[12] + b[12] * scale1;
-    out[13] = a[13] + b[13] * scale1;
-    out[14] = a[14] + b[14] * scale1;
-    out[15] = a[15] + b[15] * scale1;
+function multiplyScalarAndAdd(out, a, b, scale) {
+    out[0] = a[0] + b[0] * scale;
+    out[1] = a[1] + b[1] * scale;
+    out[2] = a[2] + b[2] * scale;
+    out[3] = a[3] + b[3] * scale;
+    out[4] = a[4] + b[4] * scale;
+    out[5] = a[5] + b[5] * scale;
+    out[6] = a[6] + b[6] * scale;
+    out[7] = a[7] + b[7] * scale;
+    out[8] = a[8] + b[8] * scale;
+    out[9] = a[9] + b[9] * scale;
+    out[10] = a[10] + b[10] * scale;
+    out[11] = a[11] + b[11] * scale;
+    out[12] = a[12] + b[12] * scale;
+    out[13] = a[13] + b[13] * scale;
+    out[14] = a[14] + b[14] * scale;
+    out[15] = a[15] + b[15] * scale;
     return out;
 }
 function exactEquals(a, b) {
@@ -56287,8 +56293,8 @@ function random(out) {
 }
 function invert(out, a) {
     var a0 = a[0], a1 = a[1], a2 = a[2], a3 = a[3];
-    var dot1 = a0 * a0 + a1 * a1 + a2 * a2 + a3 * a3;
-    var invDot = dot1 ? 1.0 / dot1 : 0; // TODO: Would be faster to return [0,0,0,0] immediately if dot == 0
+    var dot = a0 * a0 + a1 * a1 + a2 * a2 + a3 * a3;
+    var invDot = dot ? 1.0 / dot : 0; // TODO: Would be faster to return [0,0,0,0] immediately if dot == 0
     out[0] = -a0 * invDot;
     out[1] = -a1 * invDot;
     out[2] = -a2 * invDot;
@@ -56372,14 +56378,14 @@ var rotationTo = function() {
     var xUnitVec3 = _vec3Js.fromValues(1, 0, 0);
     var yUnitVec3 = _vec3Js.fromValues(0, 1, 0);
     return function(out, a, b) {
-        var dot2 = _vec3Js.dot(a, b);
-        if (dot2 < -0.999999) {
+        var dot = _vec3Js.dot(a, b);
+        if (dot < -0.999999) {
             _vec3Js.cross(tmpvec3, xUnitVec3, a);
             if (_vec3Js.len(tmpvec3) < 0.000001) _vec3Js.cross(tmpvec3, yUnitVec3, a);
             _vec3Js.normalize(tmpvec3, tmpvec3);
             setAxisAngle(out, tmpvec3, Math.PI);
             return out;
-        } else if (dot2 > 0.999999) {
+        } else if (dot > 0.999999) {
             out[0] = 0;
             out[1] = 0;
             out[2] = 0;
@@ -56390,7 +56396,7 @@ var rotationTo = function() {
             out[0] = tmpvec3[0];
             out[1] = tmpvec3[1];
             out[2] = tmpvec3[2];
-            out[3] = 1 + dot2;
+            out[3] = 1 + dot;
             return normalize(out, out);
         }
     };
@@ -56840,10 +56846,10 @@ function scale(out, a, b) {
     out[2] = a[2] * b;
     return out;
 }
-function scaleAndAdd(out, a, b, scale1) {
-    out[0] = a[0] + b[0] * scale1;
-    out[1] = a[1] + b[1] * scale1;
-    out[2] = a[2] + b[2] * scale1;
+function scaleAndAdd(out, a, b, scale) {
+    out[0] = a[0] + b[0] * scale;
+    out[1] = a[1] + b[1] * scale;
+    out[2] = a[2] + b[2] * scale;
     return out;
 }
 function distance(a, b) {
@@ -56880,12 +56886,12 @@ function normalize(out, a) {
     var x = a[0];
     var y = a[1];
     var z = a[2];
-    var len1 = x * x + y * y + z * z;
-    if (len1 > 0) //TODO: evaluate use of glm_invsqrt here?
-    len1 = 1 / Math.sqrt(len1);
-    out[0] = a[0] * len1;
-    out[1] = a[1] * len1;
-    out[2] = a[2] * len1;
+    var len = x * x + y * y + z * z;
+    if (len > 0) //TODO: evaluate use of glm_invsqrt here?
+    len = 1 / Math.sqrt(len);
+    out[0] = a[0] * len;
+    out[1] = a[1] * len;
+    out[2] = a[2] * len;
     return out;
 }
 function dot(a, b) {
@@ -56932,14 +56938,14 @@ function bezier(out, a, b, c, d, t) {
     out[2] = a[2] * factor1 + b[2] * factor2 + c[2] * factor3 + d[2] * factor4;
     return out;
 }
-function random(out, scale2) {
-    scale2 = scale2 || 1.0;
+function random(out, scale) {
+    scale = scale || 1.0;
     var r = _commonJs.RANDOM() * 2.0 * Math.PI;
     var z = _commonJs.RANDOM() * 2.0 - 1.0;
-    var zScale = Math.sqrt(1.0 - z * z) * scale2;
+    var zScale = Math.sqrt(1.0 - z * z) * scale;
     out[0] = Math.cos(r) * zScale;
     out[1] = Math.sin(r) * zScale;
-    out[2] = z * scale2;
+    out[2] = z * scale;
     return out;
 }
 function transformMat4(out, a, m) {
@@ -57434,11 +57440,11 @@ function scale(out, a, b) {
     out[3] = a[3] * b;
     return out;
 }
-function scaleAndAdd(out, a, b, scale1) {
-    out[0] = a[0] + b[0] * scale1;
-    out[1] = a[1] + b[1] * scale1;
-    out[2] = a[2] + b[2] * scale1;
-    out[3] = a[3] + b[3] * scale1;
+function scaleAndAdd(out, a, b, scale) {
+    out[0] = a[0] + b[0] * scale;
+    out[1] = a[1] + b[1] * scale;
+    out[2] = a[2] + b[2] * scale;
+    out[3] = a[3] + b[3] * scale;
     return out;
 }
 function distance(a, b) {
@@ -57488,12 +57494,12 @@ function normalize(out, a) {
     var y = a[1];
     var z = a[2];
     var w = a[3];
-    var len1 = x * x + y * y + z * z + w * w;
-    if (len1 > 0) len1 = 1 / Math.sqrt(len1);
-    out[0] = x * len1;
-    out[1] = y * len1;
-    out[2] = z * len1;
-    out[3] = w * len1;
+    var len = x * x + y * y + z * z + w * w;
+    if (len > 0) len = 1 / Math.sqrt(len);
+    out[0] = x * len;
+    out[1] = y * len;
+    out[2] = z * len;
+    out[3] = w * len;
     return out;
 }
 function dot(a, b) {
@@ -57522,8 +57528,8 @@ function lerp(out, a, b, t) {
     out[3] = aw + t * (b[3] - aw);
     return out;
 }
-function random(out, scale2) {
-    scale2 = scale2 || 1.0; // Marsaglia, George. Choosing a Point from the Surface of a
+function random(out, scale) {
+    scale = scale || 1.0; // Marsaglia, George. Choosing a Point from the Surface of a
     // Sphere. Ann. Math. Statist. 43 (1972), no. 2, 645--646.
     // http://projecteuclid.org/euclid.aoms/1177692644;
     var v1, v2, v3, v4;
@@ -57539,10 +57545,10 @@ function random(out, scale2) {
         s2 = v3 * v3 + v4 * v4;
     }while (s2 >= 1);
     var d = Math.sqrt((1 - s1) / s2);
-    out[0] = scale2 * v1;
-    out[1] = scale2 * v2;
-    out[2] = scale2 * v3 * d;
-    out[3] = scale2 * v4 * d;
+    out[0] = scale * v1;
+    out[1] = scale * v2;
+    out[2] = scale * v3 * d;
+    out[3] = scale * v4 * d;
     return out;
 }
 function transformMat4(out, a, m) {
@@ -58626,9 +58632,9 @@ function scale(out, a, b) {
     out[1] = a[1] * b;
     return out;
 }
-function scaleAndAdd(out, a, b, scale1) {
-    out[0] = a[0] + b[0] * scale1;
-    out[1] = a[1] + b[1] * scale1;
+function scaleAndAdd(out, a, b, scale) {
+    out[0] = a[0] + b[0] * scale;
+    out[1] = a[1] + b[1] * scale;
     return out;
 }
 function distance(a, b) {
@@ -58659,11 +58665,11 @@ function inverse(out, a) {
 }
 function normalize(out, a) {
     var x = a[0], y = a[1];
-    var len1 = x * x + y * y;
-    if (len1 > 0) //TODO: evaluate use of glm_invsqrt here?
-    len1 = 1 / Math.sqrt(len1);
-    out[0] = a[0] * len1;
-    out[1] = a[1] * len1;
+    var len = x * x + y * y;
+    if (len > 0) //TODO: evaluate use of glm_invsqrt here?
+    len = 1 / Math.sqrt(len);
+    out[0] = a[0] * len;
+    out[1] = a[1] * len;
     return out;
 }
 function dot(a, b) {
@@ -58681,11 +58687,11 @@ function lerp(out, a, b, t) {
     out[1] = ay + t * (b[1] - ay);
     return out;
 }
-function random(out, scale2) {
-    scale2 = scale2 || 1.0;
+function random(out, scale) {
+    scale = scale || 1.0;
     var r = _commonJs.RANDOM() * 2.0 * Math.PI;
-    out[0] = Math.cos(r) * scale2;
-    out[1] = Math.sin(r) * scale2;
+    out[0] = Math.cos(r) * scale;
+    out[1] = Math.sin(r) * scale;
     return out;
 }
 function transformMat2(out, a, m) {
@@ -60996,9 +61002,9 @@ class Cartesian3dAxesHelper {
                 const divisions = requestedDivisions[axisId];
                 (0, _axesJs1.AxisHelper).continuous(minValue, maxValue, divisions, label, labels[axisId], tickPositions[axisId], fromValues[axisId], toValues[axisId]);
                 cartesian3dAxes.minorGridlines[axisId] = minorGridlines[axisId];
-                for(let i = 0; i < labels[axisId].length; i++){
-                    labelPositions[axisId].push(tickPositions[axisId][i]);
-                    labelScales[axisId].push(i == 0 || i == divisions ? labelMajorSizes[axisId] : labelMinorSizes[axisId]);
+                for(let i1 = 0; i1 < labels[axisId].length; i1++){
+                    labelPositions[axisId].push(tickPositions[axisId][i1]);
+                    labelScales[axisId].push(i1 == 0 || i1 == divisions ? labelMajorSizes[axisId] : labelMinorSizes[axisId]);
                 }
             }
             cartesian3dAxes.setTickPositions(axisId, tickPositions[axisId]);
@@ -61538,19 +61544,19 @@ class Cartesian3dAxes extends (0, _axesJs.AxesBase) {
                 (0, _glMatrix.vec2).set(this._gridTicksMinorGridlines[axisId], this.minorGridlines[axisId], 1);
                 const gridTicksScale = this._gridTicksScales[axisId];
                 for(let edge = 0; edge < 4; edge++){
-                    const edgeId = (0, _cubeJs.Cube).AXIS_EDGES[axisId][edge];
-                    if (this._isOutsideEdge[edgeId] && this.isEdgeVisible[edgeId]) {
-                        let distance = this._distances[edgeId];
+                    const edgeId1 = (0, _cubeJs.Cube).AXIS_EDGES[axisId][edge];
+                    if (this._isOutsideEdge[edgeId1] && this.isEdgeVisible[edgeId1]) {
+                        let distance = this._distances[edgeId1];
                         distance += this._gridPickDivisionHeight * 0.5;
-                        const gridTicksMMatrix = this._gridTicksMMatrices[edgeId];
-                        (0, _glMatrix.vec3).multiply(this._vec3, (0, _cubeJs.Cube).EDGE_POSITIONS[edgeId], this._size);
-                        (0, _glMatrix.vec3).scaleAndAdd(this._vec3, this._vec3, (0, _cubeJs.Cube).EDGE_NORMALS[edgeId], distance);
+                        const gridTicksMMatrix = this._gridTicksMMatrices[edgeId1];
+                        (0, _glMatrix.vec3).multiply(this._vec3, (0, _cubeJs.Cube).EDGE_POSITIONS[edgeId1], this._size);
+                        (0, _glMatrix.vec3).scaleAndAdd(this._vec3, this._vec3, (0, _cubeJs.Cube).EDGE_NORMALS[edgeId1], distance);
                         (0, _glMatrix.mat4).translate(gridTicksMMatrix, this._mMatrix, this._vec3);
-                        (0, _glMatrix.mat4).multiply(gridTicksMMatrix, gridTicksMMatrix, this._gridTicksRotations[edgeId]);
-                        if (!this._isForwardEdge[edgeId]) (0, _glMatrix.mat4).scale(gridTicksMMatrix, gridTicksMMatrix, (0, _constantsJs.Constants).VECTOR3_REFLECTX);
+                        (0, _glMatrix.mat4).multiply(gridTicksMMatrix, gridTicksMMatrix, this._gridTicksRotations[edgeId1]);
+                        if (!this._isForwardEdge[edgeId1]) (0, _glMatrix.mat4).scale(gridTicksMMatrix, gridTicksMMatrix, (0, _constantsJs.Constants).VECTOR3_REFLECTX);
                         (0, _glMatrix.mat4).scale(gridTicksMMatrix, gridTicksMMatrix, gridTicksScale);
                         distance += this._gridPickDivisionHeight * 0.5;
-                        this._distances[edgeId] = distance;
+                        this._distances[edgeId1] = distance;
                     }
                 }
             }
@@ -61560,77 +61566,77 @@ class Cartesian3dAxes extends (0, _axesJs.AxesBase) {
                 (0, _glMatrix.vec2).set(this._gridFaceZeros[axisId1], this.zero[axisId2], this.zero[axisId3]);
                 (0, _glMatrix.vec2).set(this._gridFaceMinorGridlines[axisId1], this.minorGridlines[axisId2], this.minorGridlines[axisId3]);
                 for(let face = 0; face < 2; face++){
-                    const faceId = (0, _cubeJs.Cube).AXIS_FACES[axisId1][face];
-                    if (this._isForwardFace[faceId]) {
-                        const gridFaceMMatrix = this._gridFaceMMatrices[faceId];
+                    const faceId1 = (0, _cubeJs.Cube).AXIS_FACES[axisId1][face];
+                    if (this._isForwardFace[faceId1]) {
+                        const gridFaceMMatrix = this._gridFaceMMatrices[faceId1];
                         (0, _glMatrix.mat4).scale(gridFaceMMatrix, this._mMatrix, this._gridFaceScale);
-                        if (this._size[axisId1] > 0) (0, _glMatrix.mat4).translate(gridFaceMMatrix, gridFaceMMatrix, (0, _cubeJs.Cube).FACE_POSITIONS[faceId]);
+                        if (this._size[axisId1] > 0) (0, _glMatrix.mat4).translate(gridFaceMMatrix, gridFaceMMatrix, (0, _cubeJs.Cube).FACE_POSITIONS[faceId1]);
                     }
                 }
             }
-            for(let axisId2 = 0; axisId2 < 3; axisId2++)for(let edge = 0; edge < 4; edge++){
-                const edgeId = (0, _cubeJs.Cube).AXIS_EDGES[axisId2][edge];
-                if (this._isOutsideEdge[edgeId]) {
-                    (0, _glMatrix.vec3).multiply(this._edgePosition, (0, _cubeJs.Cube).EDGE_POSITIONS[edgeId], this._size);
+            for(let axisId4 = 0; axisId4 < 3; axisId4++)for(let edge1 = 0; edge1 < 4; edge1++){
+                const edgeId2 = (0, _cubeJs.Cube).AXIS_EDGES[axisId4][edge1];
+                if (this._isOutsideEdge[edgeId2]) {
+                    (0, _glMatrix.vec3).multiply(this._edgePosition, (0, _cubeJs.Cube).EDGE_POSITIONS[edgeId2], this._size);
                     (0, _glMatrix.vec3).transformMat4(this._edgePosition, this._edgePosition, this._mvMatrix);
                     (0, _glMatrix.vec3).normalize(this._forward, this._edgePosition);
                     (0, _glMatrix.vec3).negate(this._forward, this._forward);
                     (0, _glMatrix.vec3).cross(this._right, (0, _constantsJs.Constants).VECTOR3_UNITY, this._forward);
                     (0, _glMatrix.vec3).normalize(this._right, this._right);
                     (0, _glMatrix.vec3).cross(this._up, this._forward, this._right);
-                    (0, _glMatrix.vec3).transformMat3(this._edgeNormal, (0, _cubeJs.Cube).EDGE_NORMALS[edgeId], this._mat3);
-                    (0, _glMatrix.vec3).transformMat3(this._edgePositive, (0, _cubeJs.Cube).EDGE_POSITIVES[edgeId], this._mat3);
+                    (0, _glMatrix.vec3).transformMat3(this._edgeNormal, (0, _cubeJs.Cube).EDGE_NORMALS[edgeId2], this._mat3);
+                    (0, _glMatrix.vec3).transformMat3(this._edgePositive, (0, _cubeJs.Cube).EDGE_POSITIVES[edgeId2], this._mat3);
                     (0, _glMatrix.vec3).copy(this._edgeNormalTemp, this._edgeNormal);
                     (0, _glMatrix.vec3).copy(this._edgePositiveTemp, this._edgePositive);
-                    const edgeHorizontalRight = this._edgeHorizontalRight[edgeId];
-                    const edgeHorizontalUp = this._edgeHorizontalUp[edgeId];
-                    const edgeHorizontalForward = this._edgeHorizontalForward[edgeId];
-                    if ((0, _glMatrix.vec3).dot(this._edgeNormalTemp, this._up) > 0) (0, _glMatrix.vec3).copy(edgeHorizontalUp, (0, _cubeJs.Cube).EDGE_NORMALS[edgeId]);
+                    const edgeHorizontalRight = this._edgeHorizontalRight[edgeId2];
+                    const edgeHorizontalUp = this._edgeHorizontalUp[edgeId2];
+                    const edgeHorizontalForward = this._edgeHorizontalForward[edgeId2];
+                    if ((0, _glMatrix.vec3).dot(this._edgeNormalTemp, this._up) > 0) (0, _glMatrix.vec3).copy(edgeHorizontalUp, (0, _cubeJs.Cube).EDGE_NORMALS[edgeId2]);
                     else {
-                        (0, _glMatrix.vec3).negate(edgeHorizontalUp, (0, _cubeJs.Cube).EDGE_NORMALS[edgeId]);
+                        (0, _glMatrix.vec3).negate(edgeHorizontalUp, (0, _cubeJs.Cube).EDGE_NORMALS[edgeId2]);
                         (0, _glMatrix.vec3).negate(this._edgeNormalTemp, this._edgeNormalTemp);
                     }
                     if ((0, _glMatrix.vec3).dot(this._edgePositiveTemp, this._right) > 0) {
-                        this._isLeftToRightHorizontal[edgeId] = true;
-                        (0, _glMatrix.vec3).copy(edgeHorizontalRight, (0, _cubeJs.Cube).EDGE_POSITIVES[edgeId]);
+                        this._isLeftToRightHorizontal[edgeId2] = true;
+                        (0, _glMatrix.vec3).copy(edgeHorizontalRight, (0, _cubeJs.Cube).EDGE_POSITIVES[edgeId2]);
                     } else {
-                        this._isLeftToRightHorizontal[edgeId] = false;
-                        (0, _glMatrix.vec3).negate(edgeHorizontalRight, (0, _cubeJs.Cube).EDGE_POSITIVES[edgeId]);
+                        this._isLeftToRightHorizontal[edgeId2] = false;
+                        (0, _glMatrix.vec3).negate(edgeHorizontalRight, (0, _cubeJs.Cube).EDGE_POSITIVES[edgeId2]);
                         (0, _glMatrix.vec3).negate(this._edgePositiveTemp, this._edgePositiveTemp);
                     }
                     (0, _glMatrix.vec3).cross(edgeHorizontalForward, this._edgePositiveTemp, this._edgeNormalTemp);
                     if ((0, _glMatrix.vec3).dot(edgeHorizontalForward, this._forward) < 0) {
-                        this._isLeftToRightHorizontal[edgeId] = !this._isLeftToRightHorizontal[edgeId];
+                        this._isLeftToRightHorizontal[edgeId2] = !this._isLeftToRightHorizontal[edgeId2];
                         (0, _glMatrix.vec3).negate(edgeHorizontalRight, edgeHorizontalRight);
                     }
                     (0, _glMatrix.vec3).cross(edgeHorizontalForward, edgeHorizontalRight, edgeHorizontalUp);
-                    const edgeVerticalRight = this._edgeVerticalRight[edgeId];
-                    const edgeVerticalUp = this._edgeVerticalUp[edgeId];
-                    const edgeVerticalForward = this._edgeVerticalForward[edgeId];
-                    if ((0, _glMatrix.vec3).dot(this._edgeNormal, this._right) < 0) (0, _glMatrix.vec3).copy(edgeVerticalUp, (0, _cubeJs.Cube).EDGE_NORMALS[edgeId]);
+                    const edgeVerticalRight = this._edgeVerticalRight[edgeId2];
+                    const edgeVerticalUp = this._edgeVerticalUp[edgeId2];
+                    const edgeVerticalForward = this._edgeVerticalForward[edgeId2];
+                    if ((0, _glMatrix.vec3).dot(this._edgeNormal, this._right) < 0) (0, _glMatrix.vec3).copy(edgeVerticalUp, (0, _cubeJs.Cube).EDGE_NORMALS[edgeId2]);
                     else {
-                        (0, _glMatrix.vec3).negate(edgeVerticalUp, (0, _cubeJs.Cube).EDGE_NORMALS[edgeId]);
+                        (0, _glMatrix.vec3).negate(edgeVerticalUp, (0, _cubeJs.Cube).EDGE_NORMALS[edgeId2]);
                         (0, _glMatrix.vec3).negate(this._edgeNormal, this._edgeNormal);
                     }
                     if ((0, _glMatrix.vec3).dot(this._edgePositive, this._up) < 0) {
-                        this._isLeftToRightVertical[edgeId] = true;
-                        (0, _glMatrix.vec3).copy(edgeVerticalRight, (0, _cubeJs.Cube).EDGE_POSITIVES[edgeId]);
+                        this._isLeftToRightVertical[edgeId2] = true;
+                        (0, _glMatrix.vec3).copy(edgeVerticalRight, (0, _cubeJs.Cube).EDGE_POSITIVES[edgeId2]);
                     } else {
-                        this._isLeftToRightVertical[edgeId] = false;
-                        (0, _glMatrix.vec3).negate(edgeVerticalRight, (0, _cubeJs.Cube).EDGE_POSITIVES[edgeId]);
+                        this._isLeftToRightVertical[edgeId2] = false;
+                        (0, _glMatrix.vec3).negate(edgeVerticalRight, (0, _cubeJs.Cube).EDGE_POSITIVES[edgeId2]);
                         (0, _glMatrix.vec3).negate(this._edgePositive, this._edgePositive);
                     }
                     (0, _glMatrix.vec3).cross(edgeVerticalForward, this._edgePositive, this._edgeNormal);
                     if ((0, _glMatrix.vec3).dot(edgeVerticalForward, this._forward) < 0) {
-                        this._isLeftToRightVertical[edgeId] = !this._isLeftToRightVertical[edgeId];
+                        this._isLeftToRightVertical[edgeId2] = !this._isLeftToRightVertical[edgeId2];
                         (0, _glMatrix.vec3).negate(edgeVerticalRight, edgeVerticalRight);
                     }
                     (0, _glMatrix.vec3).cross(edgeVerticalForward, edgeVerticalRight, edgeVerticalUp);
-                    if (this.isEdgeVisible[edgeId]) {
-                        if (this._labels[axisId2]) this._updateLabels(axisId2, edgeId);
-                        if (this._titles[axisId2]) this._updateTitle(axisId2, edgeId);
+                    if (this.isEdgeVisible[edgeId2]) {
+                        if (this._labels[axisId4]) this._updateLabels(axisId4, edgeId2);
+                        if (this._titles[axisId4]) this._updateTitle(axisId4, edgeId2);
                     }
-                    if (this.isHeadingVisible[edgeId]) this._updateHeading(axisId2, edgeId);
+                    if (this.isHeadingVisible[edgeId2]) this._updateHeading(axisId4, edgeId2);
                 }
             }
         }
@@ -61661,18 +61667,18 @@ class Cartesian3dAxes extends (0, _axesJs.AxesBase) {
             labelMMatrix[9] = forward[1];
             labelMMatrix[10] = forward[2];
         } else {
-            const right = this._edgeVerticalRight[edgeId];
-            const up = this._edgeVerticalUp[edgeId];
-            const forward = this._edgeVerticalForward[edgeId];
-            labelMMatrix[0] = right[0];
-            labelMMatrix[1] = right[1];
-            labelMMatrix[2] = right[2];
-            labelMMatrix[4] = up[0];
-            labelMMatrix[5] = up[1];
-            labelMMatrix[6] = up[2];
-            labelMMatrix[8] = forward[0];
-            labelMMatrix[9] = forward[1];
-            labelMMatrix[10] = forward[2];
+            const right1 = this._edgeVerticalRight[edgeId];
+            const up1 = this._edgeVerticalUp[edgeId];
+            const forward1 = this._edgeVerticalForward[edgeId];
+            labelMMatrix[0] = right1[0];
+            labelMMatrix[1] = right1[1];
+            labelMMatrix[2] = right1[2];
+            labelMMatrix[4] = up1[0];
+            labelMMatrix[5] = up1[1];
+            labelMMatrix[6] = up1[2];
+            labelMMatrix[8] = forward1[0];
+            labelMMatrix[9] = forward1[1];
+            labelMMatrix[10] = forward1[2];
         }
         (0, _glMatrix.mat4).multiply(labelMMatrix, this._mMatrix, labelMMatrix);
         if (orientation == (0, _mainJs.AxesTextOrientation).perpendicular) (0, _glMatrix.mat4).multiply(labelMMatrix, labelMMatrix, (0, _constantsJs.Constants).MAT4_ROTATION_MINUS_90);
@@ -61775,74 +61781,74 @@ class Cartesian3dAxes extends (0, _axesJs.AxesBase) {
         }
         this.pickLabelLookup = {};
         this._pickLabel = [];
-        for(let axisId4 = 0; axisId4 < 3; axisId4++)if (this._labels[axisId4]) {
-            const width = size[axisId4];
-            const maxLabelSize = this._maxLabelSize[axisId4];
-            const orientation = this._orientations[axisId4];
+        for(let axisId1 = 0; axisId1 < 3; axisId1++)if (this._labels[axisId1]) {
+            const width = size[axisId1];
+            const maxLabelSize = this._maxLabelSize[axisId1];
+            const orientation = this._orientations[axisId1];
             (0, _glMatrix.vec2).set(maxLabelSize, 0, 0);
-            this._axesLeftToRightIndexOffsets[axisId4] = glyphOffset * 6;
-            glyphOffset = this._updateLeftToRightAxisLabels(axisId4, width, maxLabelSize, glyphOffset, orientation, this._labels[axisId4], this._labelPositions[axisId4], this._labelSizes[axisId4]);
-            this._axesLeftToRightIndexCounts[axisId4] = glyphOffset * 6 - this._axesLeftToRightIndexOffsets[axisId4];
-            this._axesRightToLeftIndexOffsets[axisId4] = glyphOffset * 6;
-            glyphOffset = this._updateRightToLeftAxisLabels(axisId4, width, maxLabelSize, glyphOffset, orientation, this._labels[axisId4], this._labelPositions[axisId4], this._labelSizes[axisId4]);
-            this._axesRightToLeftIndexCounts[axisId4] = glyphOffset * 6 - this._axesRightToLeftIndexOffsets[axisId4];
+            this._axesLeftToRightIndexOffsets[axisId1] = glyphOffset * 6;
+            glyphOffset = this._updateLeftToRightAxisLabels(axisId1, width, maxLabelSize, glyphOffset, orientation, this._labels[axisId1], this._labelPositions[axisId1], this._labelSizes[axisId1]);
+            this._axesLeftToRightIndexCounts[axisId1] = glyphOffset * 6 - this._axesLeftToRightIndexOffsets[axisId1];
+            this._axesRightToLeftIndexOffsets[axisId1] = glyphOffset * 6;
+            glyphOffset = this._updateRightToLeftAxisLabels(axisId1, width, maxLabelSize, glyphOffset, orientation, this._labels[axisId1], this._labelPositions[axisId1], this._labelSizes[axisId1]);
+            this._axesRightToLeftIndexCounts[axisId1] = glyphOffset * 6 - this._axesRightToLeftIndexOffsets[axisId1];
         } else {
-            this._axesLeftToRightIndexOffsets[axisId4] = glyphOffset * 6;
-            this._axesRightToLeftIndexOffsets[axisId4] = glyphOffset * 6;
-            this._axesLeftToRightIndexCounts[axisId4] = 0;
-            this._axesRightToLeftIndexCounts[axisId4] = 0;
-            this._maxLabelSize[axisId4][0] = 0;
-            this._maxLabelSize[axisId4][1] = 0;
+            this._axesLeftToRightIndexOffsets[axisId1] = glyphOffset * 6;
+            this._axesRightToLeftIndexOffsets[axisId1] = glyphOffset * 6;
+            this._axesLeftToRightIndexCounts[axisId1] = 0;
+            this._axesRightToLeftIndexCounts[axisId1] = 0;
+            this._maxLabelSize[axisId1][0] = 0;
+            this._maxLabelSize[axisId1][1] = 0;
         }
         this.pickTitleLookup = {};
         this._pickTitle = [];
-        for(let axisId5 = 0; axisId5 < 3; axisId5++)if (this._titles[axisId5]) {
+        for(let axisId2 = 0; axisId2 < 3; axisId2++)if (this._titles[axisId2]) {
             (0, _glMatrix.vec3).set(this._textPosition, 0, 0, 0);
             (0, _glMatrix.vec3).set(this._textOffset, 0, 0, 0);
-            this._titleIndexOffsets[axisId5] = glyphOffset * 6;
-            const text = (0, _textJs.TextHelper).truncate(this._titles[axisId5], this._core.config.axesTextTitleMaxGlyphs);
-            const scale = this._titleSizes[axisId5] / this._font.size;
+            this._titleIndexOffsets[axisId2] = glyphOffset * 6;
+            const text = (0, _textJs.TextHelper).truncate(this._titles[axisId2], this._core.config.axesTextTitleMaxGlyphs);
+            const scale = this._titleSizes[axisId2] / this._font.size;
             (0, _textJs.TextHelper).measure(this._font, text, this._textMetric);
-            const width = this._textMetric.width * scale;
+            const width1 = this._textMetric.width * scale;
             const maxGlyphTop = this._textMetric.maxTop * scale;
             const lineHeight = this._font.size * scale;
-            this._textOffset[0] -= width / 2;
+            this._textOffset[0] -= width1 / 2;
             this._textOffset[1] -= (lineHeight - maxGlyphTop) / 2;
             const pickId = (0, _pickJs.PickHelper).nextPickId();
             (0, _pickJs.PickHelper).encodeNumber(pickId, (0, _mainJs.PickType).axesTitle, this._vec4);
             this.pickTitleLookup[pickId] = this._pickTitle.length;
-            this._pickTitle.push(axisId5);
+            this._pickTitle.push(axisId2);
             (0, _textJs.TextHelper).addString(this._font, text, this._textVerticesView, this._textIndices, glyphOffset, this._textPosition, scale, this._textOffset, null, this._vec4);
             glyphOffset += text.length;
-            this._titleIndexCounts[axisId5] = glyphOffset * 6 - this._titleIndexOffsets[axisId5];
+            this._titleIndexCounts[axisId2] = glyphOffset * 6 - this._titleIndexOffsets[axisId2];
         } else {
-            this._titleIndexOffsets[axisId5] = glyphOffset * 6;
-            this._titleIndexCounts[axisId5] = 0;
+            this._titleIndexOffsets[axisId2] = glyphOffset * 6;
+            this._titleIndexCounts[axisId2] = 0;
         }
         this.pickHeadingLookup = {};
         this._pickHeading = [];
-        for(let axisId6 = 0; axisId6 < 3; axisId6++)if (this._headings[axisId6]) {
+        for(let axisId3 = 0; axisId3 < 3; axisId3++)if (this._headings[axisId3]) {
             (0, _glMatrix.vec3).set(this._textPosition, 0, 0, 0);
             (0, _glMatrix.vec3).set(this._textOffset, 0, 0, 0);
-            this._headingIndexOffsets[axisId6] = glyphOffset * 6;
-            const text = (0, _textJs.TextHelper).truncate(this._headings[axisId6], this._core.config.axesTextHeadingMaxGlyphs);
-            const scale = this._headingSizes[axisId6] / this._font.size;
-            (0, _textJs.TextHelper).measure(this._font, text, this._textMetric);
-            const width = this._textMetric.width * scale;
-            const maxGlyphTop = this._textMetric.maxTop * scale;
-            const lineHeight = this._font.size * scale;
-            this._textOffset[0] -= width / 2;
-            this._textOffset[1] -= (lineHeight - maxGlyphTop) / 2;
-            const pickId = (0, _pickJs.PickHelper).nextPickId();
-            (0, _pickJs.PickHelper).encodeNumber(pickId, (0, _mainJs.PickType).axesHeading, this._vec4);
-            this.pickHeadingLookup[pickId] = this._pickHeading.length;
-            this._pickHeading.push(axisId6);
-            (0, _textJs.TextHelper).addString(this._font, text, this._textVerticesView, this._textIndices, glyphOffset, this._textPosition, scale, this._textOffset, null, this._vec4);
-            glyphOffset += text.length;
-            this._headingIndexCounts[axisId6] = glyphOffset * 6 - this._headingIndexOffsets[axisId6];
+            this._headingIndexOffsets[axisId3] = glyphOffset * 6;
+            const text1 = (0, _textJs.TextHelper).truncate(this._headings[axisId3], this._core.config.axesTextHeadingMaxGlyphs);
+            const scale1 = this._headingSizes[axisId3] / this._font.size;
+            (0, _textJs.TextHelper).measure(this._font, text1, this._textMetric);
+            const width2 = this._textMetric.width * scale1;
+            const maxGlyphTop1 = this._textMetric.maxTop * scale1;
+            const lineHeight1 = this._font.size * scale1;
+            this._textOffset[0] -= width2 / 2;
+            this._textOffset[1] -= (lineHeight1 - maxGlyphTop1) / 2;
+            const pickId1 = (0, _pickJs.PickHelper).nextPickId();
+            (0, _pickJs.PickHelper).encodeNumber(pickId1, (0, _mainJs.PickType).axesHeading, this._vec4);
+            this.pickHeadingLookup[pickId1] = this._pickHeading.length;
+            this._pickHeading.push(axisId3);
+            (0, _textJs.TextHelper).addString(this._font, text1, this._textVerticesView, this._textIndices, glyphOffset, this._textPosition, scale1, this._textOffset, null, this._vec4);
+            glyphOffset += text1.length;
+            this._headingIndexCounts[axisId3] = glyphOffset * 6 - this._headingIndexOffsets[axisId3];
         } else {
-            this._headingIndexOffsets[axisId6] = glyphOffset * 6;
-            this._headingIndexCounts[axisId6] = 0;
+            this._headingIndexOffsets[axisId3] = glyphOffset * 6;
+            this._headingIndexCounts[axisId3] = 0;
         }
     }
     _updateLeftToRightAxisLabels(axisId, size, maxSize, glyphOffset, orientation, labels, positions, scales) {
@@ -63395,9 +63401,9 @@ class Cartesian2dAxesHelper {
                 const divisions = requestedDivisions[axisId];
                 (0, _axesJs1.AxisHelper).continuous(minValue, maxValue, divisions, label, labels[axisId], tickPositions[axisId], fromValues[axisId], toValues[axisId]);
                 cartesian2dAxes.minorGridlines[axisId] = minorGridlines[axisId];
-                for(let i = 0; i < labels[axisId].length; i++){
-                    labelPositions[axisId].push(tickPositions[axisId][i]);
-                    labelScales[axisId].push(i == 0 || i == divisions ? labelMajorSizes[axisId] : labelMinorSizes[axisId]);
+                for(let i1 = 0; i1 < labels[axisId].length; i1++){
+                    labelPositions[axisId].push(tickPositions[axisId][i1]);
+                    labelScales[axisId].push(i1 == 0 || i1 == divisions ? labelMajorSizes[axisId] : labelMinorSizes[axisId]);
                 }
             }
             cartesian2dAxes.setTickPositions(axisId, tickPositions[axisId]);
@@ -63884,19 +63890,19 @@ class Cartesian2dAxes extends (0, _axesJs.AxesBase) {
                 (0, _glMatrix.vec2).set(this._gridTicksMinorGridlines[axisId], this.minorGridlines[axisId], 1);
                 const gridTicksScale = this._gridTicksScales[axisId];
                 for(let edge = 0; edge < 2; edge++){
-                    const edgeId = (0, _quadJs.Quad).AXIS_EDGES[axisId][edge];
-                    if (this.isEdgeVisible[edgeId]) {
-                        let distance = this._distances[edgeId];
+                    const edgeId1 = (0, _quadJs.Quad).AXIS_EDGES[axisId][edge];
+                    if (this.isEdgeVisible[edgeId1]) {
+                        let distance = this._distances[edgeId1];
                         distance += this._gridPickDivisionHeight * 0.5;
-                        const gridTicksMMatrix = this._gridTicksMMatrices[edgeId];
-                        (0, _glMatrix.vec3).multiply(this._vec3, (0, _quadJs.Quad).EDGE_POSITIONS[edgeId], this._size);
-                        (0, _glMatrix.vec3).scaleAndAdd(this._vec3, this._vec3, (0, _quadJs.Quad).EDGE_NORMALS[edgeId], distance);
+                        const gridTicksMMatrix = this._gridTicksMMatrices[edgeId1];
+                        (0, _glMatrix.vec3).multiply(this._vec3, (0, _quadJs.Quad).EDGE_POSITIONS[edgeId1], this._size);
+                        (0, _glMatrix.vec3).scaleAndAdd(this._vec3, this._vec3, (0, _quadJs.Quad).EDGE_NORMALS[edgeId1], distance);
                         (0, _glMatrix.mat4).translate(gridTicksMMatrix, this._mMatrix, this._vec3);
-                        (0, _glMatrix.mat4).multiply(gridTicksMMatrix, gridTicksMMatrix, this._gridTicksRotations[edgeId]);
-                        if (!this._isForwardEdge[edgeId]) (0, _glMatrix.mat4).scale(gridTicksMMatrix, gridTicksMMatrix, (0, _constantsJs.Constants).VECTOR3_REFLECTX);
+                        (0, _glMatrix.mat4).multiply(gridTicksMMatrix, gridTicksMMatrix, this._gridTicksRotations[edgeId1]);
+                        if (!this._isForwardEdge[edgeId1]) (0, _glMatrix.mat4).scale(gridTicksMMatrix, gridTicksMMatrix, (0, _constantsJs.Constants).VECTOR3_REFLECTX);
                         (0, _glMatrix.mat4).scale(gridTicksMMatrix, gridTicksMMatrix, gridTicksScale);
                         distance += this._gridPickDivisionHeight * 0.5;
-                        this._distances[edgeId] = distance;
+                        this._distances[edgeId1] = distance;
                     }
                 }
             }
@@ -63906,68 +63912,68 @@ class Cartesian2dAxes extends (0, _axesJs.AxesBase) {
                 const gridFaceMMatrix = this._gridFaceMMatrices[faceId1];
                 (0, _glMatrix.mat4).scale(gridFaceMMatrix, this._mMatrix, this._gridFaceScale);
             }
-            for(let axisId1 = 0; axisId1 < 2; axisId1++)for(let edge = 0; edge < 2; edge++){
-                const edgeId = (0, _quadJs.Quad).AXIS_EDGES[axisId1][edge];
-                (0, _glMatrix.vec3).multiply(this._edgePosition, (0, _quadJs.Quad).EDGE_POSITIONS[edgeId], this._size);
+            for(let axisId1 = 0; axisId1 < 2; axisId1++)for(let edge1 = 0; edge1 < 2; edge1++){
+                const edgeId2 = (0, _quadJs.Quad).AXIS_EDGES[axisId1][edge1];
+                (0, _glMatrix.vec3).multiply(this._edgePosition, (0, _quadJs.Quad).EDGE_POSITIONS[edgeId2], this._size);
                 (0, _glMatrix.vec3).transformMat4(this._edgePosition, this._edgePosition, this._mvMatrix);
                 (0, _glMatrix.vec3).normalize(this._forward, this._edgePosition);
                 (0, _glMatrix.vec3).negate(this._forward, this._forward);
                 (0, _glMatrix.vec3).cross(this._right, (0, _constantsJs.Constants).VECTOR3_UNITY, this._forward);
                 (0, _glMatrix.vec3).normalize(this._right, this._right);
                 (0, _glMatrix.vec3).cross(this._up, this._forward, this._right);
-                (0, _glMatrix.vec3).transformMat3(this._edgeNormal, (0, _quadJs.Quad).EDGE_NORMALS[edgeId], this._mat3);
-                (0, _glMatrix.vec3).transformMat3(this._edgePositive, (0, _quadJs.Quad).EDGE_POSITIVES[edgeId], this._mat3);
+                (0, _glMatrix.vec3).transformMat3(this._edgeNormal, (0, _quadJs.Quad).EDGE_NORMALS[edgeId2], this._mat3);
+                (0, _glMatrix.vec3).transformMat3(this._edgePositive, (0, _quadJs.Quad).EDGE_POSITIVES[edgeId2], this._mat3);
                 (0, _glMatrix.vec3).copy(this._edgeNormalTemp, this._edgeNormal);
                 (0, _glMatrix.vec3).copy(this._edgePositiveTemp, this._edgePositive);
-                const edgeHorizontalRight = this._edgeHorizontalRight[edgeId];
-                const edgeHorizontalUp = this._edgeHorizontalUp[edgeId];
-                const edgeHorizontalForward = this._edgeHorizontalForward[edgeId];
-                if ((0, _glMatrix.vec3).dot(this._edgeNormalTemp, this._up) > 0) (0, _glMatrix.vec3).copy(edgeHorizontalUp, (0, _quadJs.Quad).EDGE_NORMALS[edgeId]);
+                const edgeHorizontalRight = this._edgeHorizontalRight[edgeId2];
+                const edgeHorizontalUp = this._edgeHorizontalUp[edgeId2];
+                const edgeHorizontalForward = this._edgeHorizontalForward[edgeId2];
+                if ((0, _glMatrix.vec3).dot(this._edgeNormalTemp, this._up) > 0) (0, _glMatrix.vec3).copy(edgeHorizontalUp, (0, _quadJs.Quad).EDGE_NORMALS[edgeId2]);
                 else {
-                    (0, _glMatrix.vec3).negate(edgeHorizontalUp, (0, _quadJs.Quad).EDGE_NORMALS[edgeId]);
+                    (0, _glMatrix.vec3).negate(edgeHorizontalUp, (0, _quadJs.Quad).EDGE_NORMALS[edgeId2]);
                     (0, _glMatrix.vec3).negate(this._edgeNormalTemp, this._edgeNormalTemp);
                 }
                 if ((0, _glMatrix.vec3).dot(this._edgePositiveTemp, this._right) > 0) {
-                    this._isLeftToRightHorizontal[edgeId] = true;
-                    (0, _glMatrix.vec3).copy(edgeHorizontalRight, (0, _quadJs.Quad).EDGE_POSITIVES[edgeId]);
+                    this._isLeftToRightHorizontal[edgeId2] = true;
+                    (0, _glMatrix.vec3).copy(edgeHorizontalRight, (0, _quadJs.Quad).EDGE_POSITIVES[edgeId2]);
                 } else {
-                    this._isLeftToRightHorizontal[edgeId] = false;
-                    (0, _glMatrix.vec3).negate(edgeHorizontalRight, (0, _quadJs.Quad).EDGE_POSITIVES[edgeId]);
+                    this._isLeftToRightHorizontal[edgeId2] = false;
+                    (0, _glMatrix.vec3).negate(edgeHorizontalRight, (0, _quadJs.Quad).EDGE_POSITIVES[edgeId2]);
                     (0, _glMatrix.vec3).negate(this._edgePositiveTemp, this._edgePositiveTemp);
                 }
                 (0, _glMatrix.vec3).cross(edgeHorizontalForward, this._edgePositiveTemp, this._edgeNormalTemp);
                 if ((0, _glMatrix.vec3).dot(edgeHorizontalForward, this._forward) < 0) {
-                    this._isLeftToRightHorizontal[edgeId] = !this._isLeftToRightHorizontal[edgeId];
+                    this._isLeftToRightHorizontal[edgeId2] = !this._isLeftToRightHorizontal[edgeId2];
                     (0, _glMatrix.vec3).negate(edgeHorizontalRight, edgeHorizontalRight);
                 }
                 (0, _glMatrix.vec3).cross(edgeHorizontalForward, edgeHorizontalRight, edgeHorizontalUp);
-                const edgeVerticalRight = this._edgeVerticalRight[edgeId];
-                const edgeVerticalUp = this._edgeVerticalUp[edgeId];
-                const edgeVerticalForward = this._edgeVerticalForward[edgeId];
-                if ((0, _glMatrix.vec3).dot(this._edgeNormal, this._right) < 0) (0, _glMatrix.vec3).copy(edgeVerticalUp, (0, _quadJs.Quad).EDGE_NORMALS[edgeId]);
+                const edgeVerticalRight = this._edgeVerticalRight[edgeId2];
+                const edgeVerticalUp = this._edgeVerticalUp[edgeId2];
+                const edgeVerticalForward = this._edgeVerticalForward[edgeId2];
+                if ((0, _glMatrix.vec3).dot(this._edgeNormal, this._right) < 0) (0, _glMatrix.vec3).copy(edgeVerticalUp, (0, _quadJs.Quad).EDGE_NORMALS[edgeId2]);
                 else {
-                    (0, _glMatrix.vec3).negate(edgeVerticalUp, (0, _quadJs.Quad).EDGE_NORMALS[edgeId]);
+                    (0, _glMatrix.vec3).negate(edgeVerticalUp, (0, _quadJs.Quad).EDGE_NORMALS[edgeId2]);
                     (0, _glMatrix.vec3).negate(this._edgeNormal, this._edgeNormal);
                 }
                 if ((0, _glMatrix.vec3).dot(this._edgePositive, this._up) < 0) {
-                    this._isLeftToRightVertical[edgeId] = true;
-                    (0, _glMatrix.vec3).copy(edgeVerticalRight, (0, _quadJs.Quad).EDGE_POSITIVES[edgeId]);
+                    this._isLeftToRightVertical[edgeId2] = true;
+                    (0, _glMatrix.vec3).copy(edgeVerticalRight, (0, _quadJs.Quad).EDGE_POSITIVES[edgeId2]);
                 } else {
-                    this._isLeftToRightVertical[edgeId] = false;
-                    (0, _glMatrix.vec3).negate(edgeVerticalRight, (0, _quadJs.Quad).EDGE_POSITIVES[edgeId]);
+                    this._isLeftToRightVertical[edgeId2] = false;
+                    (0, _glMatrix.vec3).negate(edgeVerticalRight, (0, _quadJs.Quad).EDGE_POSITIVES[edgeId2]);
                     (0, _glMatrix.vec3).negate(this._edgePositive, this._edgePositive);
                 }
                 (0, _glMatrix.vec3).cross(edgeVerticalForward, this._edgePositive, this._edgeNormal);
                 if ((0, _glMatrix.vec3).dot(edgeVerticalForward, this._forward) < 0) {
-                    this._isLeftToRightVertical[edgeId] = !this._isLeftToRightVertical[edgeId];
+                    this._isLeftToRightVertical[edgeId2] = !this._isLeftToRightVertical[edgeId2];
                     (0, _glMatrix.vec3).negate(edgeVerticalRight, edgeVerticalRight);
                 }
                 (0, _glMatrix.vec3).cross(edgeVerticalForward, edgeVerticalRight, edgeVerticalUp);
-                if (this.isEdgeVisible[edgeId]) {
-                    if (this._labels[axisId1]) this._updateLabels(axisId1, edgeId);
-                    if (this._titles[axisId1]) this._updateTitle(axisId1, edgeId);
+                if (this.isEdgeVisible[edgeId2]) {
+                    if (this._labels[axisId1]) this._updateLabels(axisId1, edgeId2);
+                    if (this._titles[axisId1]) this._updateTitle(axisId1, edgeId2);
                 }
-                if (this.isHeadingVisible[edgeId]) this._updateHeading(axisId1, edgeId);
+                if (this.isHeadingVisible[edgeId2]) this._updateHeading(axisId1, edgeId2);
             }
         }
     }
@@ -63997,18 +64003,18 @@ class Cartesian2dAxes extends (0, _axesJs.AxesBase) {
             labelMMatrix[9] = forward[1];
             labelMMatrix[10] = forward[2];
         } else {
-            const right = this._edgeVerticalRight[edgeId];
-            const up = this._edgeVerticalUp[edgeId];
-            const forward = this._edgeVerticalForward[edgeId];
-            labelMMatrix[0] = right[0];
-            labelMMatrix[1] = right[1];
-            labelMMatrix[2] = right[2];
-            labelMMatrix[4] = up[0];
-            labelMMatrix[5] = up[1];
-            labelMMatrix[6] = up[2];
-            labelMMatrix[8] = forward[0];
-            labelMMatrix[9] = forward[1];
-            labelMMatrix[10] = forward[2];
+            const right1 = this._edgeVerticalRight[edgeId];
+            const up1 = this._edgeVerticalUp[edgeId];
+            const forward1 = this._edgeVerticalForward[edgeId];
+            labelMMatrix[0] = right1[0];
+            labelMMatrix[1] = right1[1];
+            labelMMatrix[2] = right1[2];
+            labelMMatrix[4] = up1[0];
+            labelMMatrix[5] = up1[1];
+            labelMMatrix[6] = up1[2];
+            labelMMatrix[8] = forward1[0];
+            labelMMatrix[9] = forward1[1];
+            labelMMatrix[10] = forward1[2];
         }
         (0, _glMatrix.mat4).multiply(labelMMatrix, this._mMatrix, labelMMatrix);
         if (orientation == (0, _mainJs.AxesTextOrientation).perpendicular) (0, _glMatrix.mat4).multiply(labelMMatrix, labelMMatrix, (0, _constantsJs.Constants).MAT4_ROTATION_MINUS_90);
@@ -64086,9 +64092,9 @@ class Cartesian2dAxes extends (0, _axesJs.AxesBase) {
             offset = this._updateGridTicks(axisId, this._gridVerticesView, this._gridIndices, offset);
             this._gridFaceScale[axisId] = size[axisId] == 0 ? 1 : size[axisId];
         }
-        const axisId2 = 2;
-        this._gridFaceScale[axisId2] = 1;
-        for(let faceId = 0; faceId < 2; faceId++)offset = this._updateGridFace(axisId2, faceId, this._gridVerticesView, this._gridIndices, offset);
+        const axisId1 = 2;
+        this._gridFaceScale[axisId1] = 1;
+        for(let faceId = 0; faceId < 2; faceId++)offset = this._updateGridFace(axisId1, faceId, this._gridVerticesView, this._gridIndices, offset);
     }
     _updateText(size) {
         let glyphOffset = 0;
@@ -64109,74 +64115,74 @@ class Cartesian2dAxes extends (0, _axesJs.AxesBase) {
         }
         this.pickLabelLookup = {};
         this._pickLabel = [];
-        for(let axisId3 = 0; axisId3 < 2; axisId3++)if (this._labels[axisId3]) {
-            const width = size[axisId3];
-            const maxLabelSize = this._maxLabelSize[axisId3];
-            const orientation = this._orientations[axisId3];
+        for(let axisId1 = 0; axisId1 < 2; axisId1++)if (this._labels[axisId1]) {
+            const width = size[axisId1];
+            const maxLabelSize = this._maxLabelSize[axisId1];
+            const orientation = this._orientations[axisId1];
             (0, _glMatrix.vec2).set(maxLabelSize, 0, 0);
-            this._axesLeftToRightIndexOffsets[axisId3] = glyphOffset * 6;
-            glyphOffset = this._updateLeftToRightAxisLabels(axisId3, width, maxLabelSize, glyphOffset, orientation, this._labels[axisId3], this._labelPositions[axisId3], this._labelSizes[axisId3]);
-            this._axesLeftToRightIndexCounts[axisId3] = glyphOffset * 6 - this._axesLeftToRightIndexOffsets[axisId3];
-            this._axesRightToLeftIndexOffsets[axisId3] = glyphOffset * 6;
-            glyphOffset = this._updateRightToLeftAxisLabels(axisId3, width, maxLabelSize, glyphOffset, orientation, this._labels[axisId3], this._labelPositions[axisId3], this._labelSizes[axisId3]);
-            this._axesRightToLeftIndexCounts[axisId3] = glyphOffset * 6 - this._axesRightToLeftIndexOffsets[axisId3];
+            this._axesLeftToRightIndexOffsets[axisId1] = glyphOffset * 6;
+            glyphOffset = this._updateLeftToRightAxisLabels(axisId1, width, maxLabelSize, glyphOffset, orientation, this._labels[axisId1], this._labelPositions[axisId1], this._labelSizes[axisId1]);
+            this._axesLeftToRightIndexCounts[axisId1] = glyphOffset * 6 - this._axesLeftToRightIndexOffsets[axisId1];
+            this._axesRightToLeftIndexOffsets[axisId1] = glyphOffset * 6;
+            glyphOffset = this._updateRightToLeftAxisLabels(axisId1, width, maxLabelSize, glyphOffset, orientation, this._labels[axisId1], this._labelPositions[axisId1], this._labelSizes[axisId1]);
+            this._axesRightToLeftIndexCounts[axisId1] = glyphOffset * 6 - this._axesRightToLeftIndexOffsets[axisId1];
         } else {
-            this._axesLeftToRightIndexOffsets[axisId3] = glyphOffset * 6;
-            this._axesRightToLeftIndexOffsets[axisId3] = glyphOffset * 6;
-            this._axesLeftToRightIndexCounts[axisId3] = 0;
-            this._axesRightToLeftIndexCounts[axisId3] = 0;
-            this._maxLabelSize[axisId3][0] = 0;
-            this._maxLabelSize[axisId3][1] = 0;
+            this._axesLeftToRightIndexOffsets[axisId1] = glyphOffset * 6;
+            this._axesRightToLeftIndexOffsets[axisId1] = glyphOffset * 6;
+            this._axesLeftToRightIndexCounts[axisId1] = 0;
+            this._axesRightToLeftIndexCounts[axisId1] = 0;
+            this._maxLabelSize[axisId1][0] = 0;
+            this._maxLabelSize[axisId1][1] = 0;
         }
         this.pickTitleLookup = {};
         this._pickTitle = [];
-        for(let axisId4 = 0; axisId4 < 2; axisId4++)if (this._titles[axisId4]) {
+        for(let axisId2 = 0; axisId2 < 2; axisId2++)if (this._titles[axisId2]) {
             (0, _glMatrix.vec3).set(this._textPosition, 0, 0, 0);
             (0, _glMatrix.vec3).set(this._textOffset, 0, 0, 0);
-            this._titleIndexOffsets[axisId4] = glyphOffset * 6;
-            const text = (0, _textJs.TextHelper).truncate(this._titles[axisId4], this._core.config.axesTextTitleMaxGlyphs);
-            const scale = this._titleSizes[axisId4] / this._font.size;
+            this._titleIndexOffsets[axisId2] = glyphOffset * 6;
+            const text = (0, _textJs.TextHelper).truncate(this._titles[axisId2], this._core.config.axesTextTitleMaxGlyphs);
+            const scale = this._titleSizes[axisId2] / this._font.size;
             (0, _textJs.TextHelper).measure(this._font, text, this._textMetric);
-            const width = this._textMetric.width * scale;
+            const width1 = this._textMetric.width * scale;
             const maxGlyphTop = this._textMetric.maxTop * scale;
             const lineHeight = this._font.size * scale;
-            this._textOffset[0] -= width / 2;
+            this._textOffset[0] -= width1 / 2;
             this._textOffset[1] -= (lineHeight - maxGlyphTop) / 2;
             const pickId = (0, _pickJs.PickHelper).nextPickId();
             (0, _pickJs.PickHelper).encodeNumber(pickId, (0, _mainJs.PickType).axesTitle, this._vec4);
             this.pickTitleLookup[pickId] = this._pickTitle.length;
-            this._pickTitle.push(axisId4);
+            this._pickTitle.push(axisId2);
             (0, _textJs.TextHelper).addString(this._font, text, this._textVerticesView, this._textIndices, glyphOffset, this._textPosition, scale, this._textOffset, null, this._vec4);
             glyphOffset += text.length;
-            this._titleIndexCounts[axisId4] = glyphOffset * 6 - this._titleIndexOffsets[axisId4];
+            this._titleIndexCounts[axisId2] = glyphOffset * 6 - this._titleIndexOffsets[axisId2];
         } else {
-            this._titleIndexOffsets[axisId4] = glyphOffset * 6;
-            this._titleIndexCounts[axisId4] = 0;
+            this._titleIndexOffsets[axisId2] = glyphOffset * 6;
+            this._titleIndexCounts[axisId2] = 0;
         }
         this.pickHeadingLookup = {};
         this._pickHeading = [];
-        for(let axisId5 = 0; axisId5 < 2; axisId5++)if (this._headings[axisId5]) {
+        for(let axisId3 = 0; axisId3 < 2; axisId3++)if (this._headings[axisId3]) {
             (0, _glMatrix.vec3).set(this._textPosition, 0, 0, 0);
             (0, _glMatrix.vec3).set(this._textOffset, 0, 0, 0);
-            this._headingIndexOffsets[axisId5] = glyphOffset * 6;
-            const text = (0, _textJs.TextHelper).truncate(this._headings[axisId5], this._core.config.axesTextHeadingMaxGlyphs);
-            const scale = this._headingSizes[axisId5] / this._font.size;
-            (0, _textJs.TextHelper).measure(this._font, text, this._textMetric);
-            const width = this._textMetric.width * scale;
-            const maxGlyphTop = this._textMetric.maxTop * scale;
-            const lineHeight = this._font.size * scale;
-            this._textOffset[0] -= width / 2;
-            this._textOffset[1] -= (lineHeight - maxGlyphTop) / 2;
-            const pickId = (0, _pickJs.PickHelper).nextPickId();
-            (0, _pickJs.PickHelper).encodeNumber(pickId, (0, _mainJs.PickType).axesHeading, this._vec4);
-            this.pickHeadingLookup[pickId] = this._pickHeading.length;
-            this._pickHeading.push(axisId5);
-            (0, _textJs.TextHelper).addString(this._font, text, this._textVerticesView, this._textIndices, glyphOffset, this._textPosition, scale, this._textOffset, null, this._vec4);
-            glyphOffset += text.length;
-            this._headingIndexCounts[axisId5] = glyphOffset * 6 - this._headingIndexOffsets[axisId5];
+            this._headingIndexOffsets[axisId3] = glyphOffset * 6;
+            const text1 = (0, _textJs.TextHelper).truncate(this._headings[axisId3], this._core.config.axesTextHeadingMaxGlyphs);
+            const scale1 = this._headingSizes[axisId3] / this._font.size;
+            (0, _textJs.TextHelper).measure(this._font, text1, this._textMetric);
+            const width2 = this._textMetric.width * scale1;
+            const maxGlyphTop1 = this._textMetric.maxTop * scale1;
+            const lineHeight1 = this._font.size * scale1;
+            this._textOffset[0] -= width2 / 2;
+            this._textOffset[1] -= (lineHeight1 - maxGlyphTop1) / 2;
+            const pickId1 = (0, _pickJs.PickHelper).nextPickId();
+            (0, _pickJs.PickHelper).encodeNumber(pickId1, (0, _mainJs.PickType).axesHeading, this._vec4);
+            this.pickHeadingLookup[pickId1] = this._pickHeading.length;
+            this._pickHeading.push(axisId3);
+            (0, _textJs.TextHelper).addString(this._font, text1, this._textVerticesView, this._textIndices, glyphOffset, this._textPosition, scale1, this._textOffset, null, this._vec4);
+            glyphOffset += text1.length;
+            this._headingIndexCounts[axisId3] = glyphOffset * 6 - this._headingIndexOffsets[axisId3];
         } else {
-            this._headingIndexOffsets[axisId5] = glyphOffset * 6;
-            this._headingIndexCounts[axisId5] = 0;
+            this._headingIndexOffsets[axisId3] = glyphOffset * 6;
+            this._headingIndexCounts[axisId3] = 0;
         }
     }
     _updateLeftToRightAxisLabels(axisId, size, maxSize, glyphOffset, orientation, labels, positions, scales) {
@@ -64642,9 +64648,9 @@ class GlyphRasterizer {
         }
         for(let q1 = 0, k1 = 0; q1 < n; q1++){
             while(z[k1 + 1] < q1)k1++;
-            const r = v[k1];
-            const qr = q1 - r;
-            grid[offset + q1 * stride] = f[r] + qr * qr;
+            const r1 = v[k1];
+            const qr = q1 - r1;
+            grid[offset + q1 * stride] = f[r1] + qr * qr;
         }
     }
 }
@@ -64814,36 +64820,36 @@ class Manager {
                     }
                 }
             } else {
-                const translationDelta = this._manipulationProcessor.translationDelta;
-                const camera = this._core.camera;
-                if (translationDelta[0] != 0 || translationDelta[1] != 0) camera.translate(translationDelta);
+                const translationDelta1 = this._manipulationProcessor.translationDelta;
+                const camera1 = this._core.camera;
+                if (translationDelta1[0] != 0 || translationDelta1[1] != 0) camera1.translate(translationDelta1);
                 if (this._manipulationProcessor.scaleDelta != 0) {
                     const distance = this._manipulationProcessor.scaleDelta * this.multiTouchZoomScale;
-                    camera.zoom(distance, this._manipulationProcessor.centroid[0], this._manipulationProcessor.centroid[1]);
+                    camera1.zoom(distance, this._manipulationProcessor.centroid[0], this._manipulationProcessor.centroid[1]);
                 }
-                if (this._manipulationProcessor.twistDelta != 0) camera.twist(this._manipulationProcessor.twistDelta, this._manipulationProcessor.centroid[0], this._manipulationProcessor.centroid[1]);
+                if (this._manipulationProcessor.twistDelta != 0) camera1.twist(this._manipulationProcessor.twistDelta, this._manipulationProcessor.centroid[0], this._manipulationProcessor.centroid[1]);
             }
             if (this.isPickingEnabled && !this._manipulationProcessor.isDragging && !this._isLassoPicking) {
-                const camera = this._core.camera;
+                const camera2 = this._core.camera;
                 const renderer = this._core.renderer;
                 if (renderer.isCapturingPickImage) {
-                    camera.updatePickVMatrix(renderer.width / 2, renderer.height / 2);
-                    renderer.pickVMatrix = camera.pickVMatrix;
+                    camera2.updatePickVMatrix(renderer.width / 2, renderer.height / 2);
+                    renderer.pickVMatrix = camera2.pickVMatrix;
                     renderer.isPickingEnabled = true;
                     this._pickedTime = 0;
                 } else if (this._pointers.hoverId > -1) {
                     const pickingX = this._pointers.hoverX;
                     const pickingY = this._pointers.hoverY;
-                    camera.updatePickVMatrix(pickingX, pickingY);
-                    renderer.pickVMatrix = camera.pickVMatrix;
+                    camera2.updatePickVMatrix(pickingX, pickingY);
+                    renderer.pickVMatrix = camera2.pickVMatrix;
                     renderer.isPickingEnabled = true;
                     if (this._pickedId != renderer.pickedId) {
                         this._pickedId = renderer.pickedId;
                         this._pickedTime = 0;
                     } else if (this._manipulationProcessor.count == 1) {
                         this._pickedTime += elapsedTime;
-                        for(const key in this._manipulators){
-                            this._manipulator = this._manipulators[key];
+                        for(const key1 in this._manipulators){
+                            this._manipulator = this._manipulators[key1];
                             break;
                         }
                     }
@@ -64858,13 +64864,13 @@ class Manager {
                                     const transitionBuffer = renderer.transitionBuffers[i];
                                     const id = transitionBuffer.pickIdLookup[this._pickedId];
                                     if (id > -1) {
-                                        const result = {
+                                        const result1 = {
                                             transitionBuffer: i,
                                             id: id,
                                             manipulator: this._manipulator
                                         };
-                                        this._core.log.write((0, _mainJs.LogLevel).info, `picked id ${result.id}, transition buffer ${i}`);
-                                        if (this.pickItemCallback) this.pickItemCallback(result);
+                                        this._core.log.write((0, _mainJs.LogLevel).info, `picked id ${result1.id}, transition buffer ${i}`);
+                                        if (this.pickItemCallback) this.pickItemCallback(result1);
                                         break;
                                     }
                                 }
@@ -64873,17 +64879,17 @@ class Manager {
                             break;
                         case (0, _mainJs.PickType).label:
                             if (this._manipulationProcessor.count == 0) {
-                                if (this._pickedTime > this.pickSelectDelay) for(let i = 0; i < renderer.labelSets.length; i++){
-                                    const labelSet = renderer.labelSets[i].label;
-                                    const id = labelSet.pickIdLookup[this._pickedId];
-                                    if (id > -1) {
-                                        const result = {
-                                            label: id,
-                                            set: i,
+                                if (this._pickedTime > this.pickSelectDelay) for(let i1 = 0; i1 < renderer.labelSets.length; i1++){
+                                    const labelSet = renderer.labelSets[i1].label;
+                                    const id1 = labelSet.pickIdLookup[this._pickedId];
+                                    if (id1 > -1) {
+                                        const result2 = {
+                                            label: id1,
+                                            set: i1,
                                             manipulator: this._manipulator
                                         };
-                                        this._core.log.write((0, _mainJs.LogLevel).info, `picked label ${result.label}, set ${result.set}`);
-                                        if (this.pickLabelSetCallback) this.pickLabelSetCallback(result);
+                                        this._core.log.write((0, _mainJs.LogLevel).info, `picked label ${result2.label}, set ${result2.set}`);
+                                        if (this.pickLabelSetCallback) this.pickLabelSetCallback(result2);
                                         break;
                                     }
                                 }
@@ -64892,15 +64898,15 @@ class Manager {
                             break;
                         case (0, _mainJs.PickType).axesDivision:
                             if (this._manipulationProcessor.count == 0) {
-                                if (this._pickedTime > this.pickSelectDelay) for(let i = 0; i < renderer.currentAxes.length; i++){
-                                    const axes = renderer.currentAxes[i].axes;
-                                    const id = axes.pickGridLookup[this._pickedId];
-                                    if (id > -1) {
-                                        const result = axes.pickGrid(id);
-                                        result.axes = i;
-                                        result.manipulator = this._manipulator;
-                                        this._core.log.write((0, _mainJs.LogLevel).info, `picked division (${result.divisionX}, ${result.divisionY}, ${result.divisionZ}), axes ${result.axes}`);
-                                        if (this.pickAxesGridCallback) this.pickAxesGridCallback(result);
+                                if (this._pickedTime > this.pickSelectDelay) for(let i2 = 0; i2 < renderer.currentAxes.length; i2++){
+                                    const axes = renderer.currentAxes[i2].axes;
+                                    const id2 = axes.pickGridLookup[this._pickedId];
+                                    if (id2 > -1) {
+                                        const result3 = axes.pickGrid(id2);
+                                        result3.axes = i2;
+                                        result3.manipulator = this._manipulator;
+                                        this._core.log.write((0, _mainJs.LogLevel).info, `picked division (${result3.divisionX}, ${result3.divisionY}, ${result3.divisionZ}), axes ${result3.axes}`);
+                                        if (this.pickAxesGridCallback) this.pickAxesGridCallback(result3);
                                         break;
                                     }
                                 }
@@ -64909,15 +64915,15 @@ class Manager {
                             break;
                         case (0, _mainJs.PickType).axesTitle:
                             if (this._manipulationProcessor.count == 0) {
-                                if (this._pickedTime > this.pickSelectDelay) for(let i = 0; i < renderer.currentAxes.length; i++){
-                                    const axes = renderer.currentAxes[i].axes;
-                                    const id = axes.pickTitleLookup[this._pickedId];
-                                    if (id > -1) {
-                                        const result = axes.pickTitle(id);
-                                        result.axes = i;
-                                        result.manipulator = this._manipulator;
-                                        this._core.log.write((0, _mainJs.LogLevel).info, `picked title ${result.axis}, axes ${result.axes}`);
-                                        if (this.pickAxesTitleCallback) this.pickAxesTitleCallback(result);
+                                if (this._pickedTime > this.pickSelectDelay) for(let i3 = 0; i3 < renderer.currentAxes.length; i3++){
+                                    const axes1 = renderer.currentAxes[i3].axes;
+                                    const id3 = axes1.pickTitleLookup[this._pickedId];
+                                    if (id3 > -1) {
+                                        const result4 = axes1.pickTitle(id3);
+                                        result4.axes = i3;
+                                        result4.manipulator = this._manipulator;
+                                        this._core.log.write((0, _mainJs.LogLevel).info, `picked title ${result4.axis}, axes ${result4.axes}`);
+                                        if (this.pickAxesTitleCallback) this.pickAxesTitleCallback(result4);
                                         break;
                                     }
                                 }
@@ -64926,15 +64932,15 @@ class Manager {
                             break;
                         case (0, _mainJs.PickType).axesLabel:
                             if (this._manipulationProcessor.count == 0) {
-                                if (this._pickedTime > this.pickSelectDelay) for(let i = 0; i < renderer.currentAxes.length; i++){
-                                    const axes = renderer.currentAxes[i].axes;
-                                    const id = axes.pickLabelLookup[this._pickedId];
-                                    if (id > -1) {
-                                        const result = axes.pickLabel(id);
-                                        result.axes = i;
-                                        result.manipulator = this._manipulator;
-                                        this._core.log.write((0, _mainJs.LogLevel).info, `picked label ${result.label}, axis ${result.axis}, axes ${result.axes}`);
-                                        if (this.pickAxesLabelCallback) this.pickAxesLabelCallback(result);
+                                if (this._pickedTime > this.pickSelectDelay) for(let i4 = 0; i4 < renderer.currentAxes.length; i4++){
+                                    const axes2 = renderer.currentAxes[i4].axes;
+                                    const id4 = axes2.pickLabelLookup[this._pickedId];
+                                    if (id4 > -1) {
+                                        const result5 = axes2.pickLabel(id4);
+                                        result5.axes = i4;
+                                        result5.manipulator = this._manipulator;
+                                        this._core.log.write((0, _mainJs.LogLevel).info, `picked label ${result5.label}, axis ${result5.axis}, axes ${result5.axes}`);
+                                        if (this.pickAxesLabelCallback) this.pickAxesLabelCallback(result5);
                                         break;
                                     }
                                 }
@@ -64943,15 +64949,15 @@ class Manager {
                             break;
                         case (0, _mainJs.PickType).axesHeading:
                             if (this._manipulationProcessor.count == 0) {
-                                if (this._pickedTime > this.pickSelectDelay) for(let i = 0; i < renderer.currentAxes.length; i++){
-                                    const axes = renderer.currentAxes[i].axes;
-                                    const id = axes.pickHeadingLookup[this._pickedId];
-                                    if (id > -1) {
-                                        const result = axes.pickHeading(id);
-                                        result.axes = i;
-                                        result.manipulator = this._manipulator;
-                                        this._core.log.write((0, _mainJs.LogLevel).info, `picked heading ${result.axis}, axes ${result.axes}`);
-                                        if (this.pickAxesHeadingCallback) this.pickAxesHeadingCallback(result);
+                                if (this._pickedTime > this.pickSelectDelay) for(let i5 = 0; i5 < renderer.currentAxes.length; i5++){
+                                    const axes3 = renderer.currentAxes[i5].axes;
+                                    const id5 = axes3.pickHeadingLookup[this._pickedId];
+                                    if (id5 > -1) {
+                                        const result6 = axes3.pickHeading(id5);
+                                        result6.axes = i5;
+                                        result6.manipulator = this._manipulator;
+                                        this._core.log.write((0, _mainJs.LogLevel).info, `picked heading ${result6.axis}, axes ${result6.axes}`);
+                                        if (this.pickAxesHeadingCallback) this.pickAxesHeadingCallback(result6);
                                         break;
                                     }
                                 }
@@ -65028,11 +65034,11 @@ class ManipulationProcessor {
             this._removedManipulators = [];
         }
         for(const key1 in manipulators){
-            const manipulator = manipulators[key1];
-            if (!this._manipulators[manipulator.id]) {
-                if (!this.addManipulator || this.addManipulator(manipulator)) {
-                    (0, _glMatrix.vec3).copy(manipulator.initialPosition, manipulator.position);
-                    this._manipulators[manipulator.id] = manipulator;
+            const manipulator1 = manipulators[key1];
+            if (!this._manipulators[manipulator1.id]) {
+                if (!this.addManipulator || this.addManipulator(manipulator1)) {
+                    (0, _glMatrix.vec3).copy(manipulator1.initialPosition, manipulator1.position);
+                    this._manipulators[manipulator1.id] = manipulator1;
                     this._count++;
                 }
             }
@@ -65075,28 +65081,28 @@ class ManipulationProcessor {
                 if (removed > 0) (0, _glMatrix.vec3).copy(this._centroid, this._previousCentroid);
                 else {
                     (0, _glMatrix.vec3).set(this._centroid, 0, 0, 0);
-                    for(const key in this._manipulators){
-                        const manipulator = this._manipulators[key];
-                        if (manipulator.isPersisted) (0, _glMatrix.vec3).add(this._centroid, this._centroid, manipulator.position);
+                    for(const key1 in this._manipulators){
+                        const manipulator1 = this._manipulators[key1];
+                        if (manipulator1.isPersisted) (0, _glMatrix.vec3).add(this._centroid, this._centroid, manipulator1.position);
                     }
                     (0, _glMatrix.vec3).scale(this._centroid, this._centroid, 1 / persisted);
                 }
-                for(const key in this._manipulators){
-                    const manipulator = this._manipulators[key];
-                    if (manipulator.isPersisted) {
-                        manipulator.maxTranslationSquared = Math.max(manipulator.maxTranslationSquared, (0, _glMatrix.vec3).squaredDistance(manipulator.position, manipulator.initialPosition));
-                        (0, _glMatrix.vec3).add(this.translationDelta, this.translationDelta, manipulator.position);
-                        (0, _glMatrix.vec3).subtract(this.translationDelta, this.translationDelta, manipulator.previousPosition);
-                        (0, _glMatrix.vec3).subtract(this._relativePositionToCentroid, manipulator.position, this._centroid);
+                for(const key2 in this._manipulators){
+                    const manipulator2 = this._manipulators[key2];
+                    if (manipulator2.isPersisted) {
+                        manipulator2.maxTranslationSquared = Math.max(manipulator2.maxTranslationSquared, (0, _glMatrix.vec3).squaredDistance(manipulator2.position, manipulator2.initialPosition));
+                        (0, _glMatrix.vec3).add(this.translationDelta, this.translationDelta, manipulator2.position);
+                        (0, _glMatrix.vec3).subtract(this.translationDelta, this.translationDelta, manipulator2.previousPosition);
+                        (0, _glMatrix.vec3).subtract(this._relativePositionToCentroid, manipulator2.position, this._centroid);
                         const distanceToCentroidSquared = (0, _glMatrix.vec3).squaredLength(this._relativePositionToCentroid);
                         if (distanceToCentroidSquared < this._core.config.manipulatorMinRelativeDistanceSquared) this.scaleDelta += 1;
                         else {
                             const distanceToCentroid = Math.sqrt(distanceToCentroidSquared);
-                            const previousDistanceToCentroidSquared = (0, _glMatrix.vec3).squaredLength(manipulator.previousPositionRelativeToCentroid);
+                            const previousDistanceToCentroidSquared = (0, _glMatrix.vec3).squaredLength(manipulator2.previousPositionRelativeToCentroid);
                             const previousDistanceToCentroid = Math.sqrt(previousDistanceToCentroidSquared);
                             this.scaleDelta += distanceToCentroid / previousDistanceToCentroid;
                             (0, _glMatrix.vec3).scale(this._directionToCentroid, this._relativePositionToCentroid, 1 / distanceToCentroid);
-                            (0, _glMatrix.vec3).scale(this._previousDirectionToCentroid, manipulator.previousPositionRelativeToCentroid, 1 / previousDistanceToCentroid);
+                            (0, _glMatrix.vec3).scale(this._previousDirectionToCentroid, manipulator2.previousPositionRelativeToCentroid, 1 / previousDistanceToCentroid);
                             this.twistDelta += (0, _angleJs.AngleHelper).signedAngleBetweenVectors(this._previousDirectionToCentroid, this._directionToCentroid, this.twistAxis);
                         }
                     }
@@ -65111,22 +65117,22 @@ class ManipulationProcessor {
             }
         }
         (0, _glMatrix.vec3).set(this.centroid, 0, 0, 0);
-        for(const key in this._manipulators){
-            const manipulator = this._manipulators[key];
-            (0, _glMatrix.vec3).add(this.centroid, this.centroid, manipulator.position);
+        for(const key3 in this._manipulators){
+            const manipulator3 = this._manipulators[key3];
+            (0, _glMatrix.vec3).add(this.centroid, this.centroid, manipulator3.position);
         }
         (0, _glMatrix.vec3).scale(this.centroid, this.centroid, 1 / this._count);
-        for(const key2 in this._manipulators){
-            const manipulator = this._manipulators[key2];
-            (0, _glMatrix.vec3).subtract(manipulator.positionRelativeToCentroid, manipulator.position, this.centroid);
+        for(const key4 in this._manipulators){
+            const manipulator4 = this._manipulators[key4];
+            (0, _glMatrix.vec3).subtract(manipulator4.positionRelativeToCentroid, manipulator4.position, this.centroid);
         }
         (0, _glMatrix.vec3).copy(this._previousCentroid, this.centroid);
-        for(const key3 in this._manipulators){
-            const manipulator = this._manipulators[key3];
-            manipulator.isPersisted = true;
-            (0, _glMatrix.vec3).copy(manipulator.previousPosition, manipulator.position);
-            (0, _glMatrix.vec3).copy(manipulator.previousRotationAxis, manipulator.rotationAxis);
-            (0, _glMatrix.vec3).copy(manipulator.previousPositionRelativeToCentroid, manipulator.positionRelativeToCentroid);
+        for(const key5 in this._manipulators){
+            const manipulator5 = this._manipulators[key5];
+            manipulator5.isPersisted = true;
+            (0, _glMatrix.vec3).copy(manipulator5.previousPosition, manipulator5.position);
+            (0, _glMatrix.vec3).copy(manipulator5.previousRotationAxis, manipulator5.rotationAxis);
+            (0, _glMatrix.vec3).copy(manipulator5.previousPositionRelativeToCentroid, manipulator5.positionRelativeToCentroid);
         }
     }
 }
@@ -65458,8 +65464,8 @@ class ObjHelper {
                     normals.push(parseFloat(parts[3]));
                     break;
                 case "f":
-                    for(let i3 = 0; i3 < parts.length - 1; i3++){
-                        const part = parts[i3 + 1];
+                    for(let i1 = 0; i1 < parts.length - 1; i1++){
+                        const part = parts[i1 + 1];
                         if (faceLookup[part] == undefined) faceLookup[part] = faceCount++;
                         indices.push(faceLookup[part]);
                     }
@@ -65470,7 +65476,7 @@ class ObjHelper {
                     break;
             }
         }
-        for(let i1 = 0; i1 < meshes.length - 1; i1++)indexCounts.push(indexOffsets[i1 + 1] - indexOffsets[i1]);
+        for(let i2 = 0; i2 < meshes.length - 1; i2++)indexCounts.push(indexOffsets[i2 + 1] - indexOffsets[i2]);
         indexCounts.push(indices.length - indexOffsets[meshes.length - 1]);
         const vertices = new ArrayBuffer((0, _vertexJs.PositionNormalTextureVertex).SIZE_BYTES * Object.keys(faceLookup).length);
         const dataView = new DataView(vertices);
@@ -65489,14 +65495,14 @@ class ObjHelper {
             hasTexCoords = faceParts.length > 1 && !isNaN(parseInt(faceParts[1]));
             hasNormals = faceParts.length > 2 && !isNaN(parseInt(faceParts[2]));
         }
-        for(let i2 = 0; i2 < faces.length; i2++){
-            const faceParts = faces[i2].split("/");
-            let index = (parseInt(faceParts[0]) - 1) * 3;
+        for(let i3 = 0; i3 < faces.length; i3++){
+            const faceParts1 = faces[i3].split("/");
+            let index = (parseInt(faceParts1[0]) - 1) * 3;
             const x = positions[index];
             const y = positions[index + 1];
             const z = positions[index + 2];
             (0, _glMatrix.vec3).set(_vec3, x, y, z);
-            (0, _vertexJs.PositionNormalTextureVertex).setPosition(dataView, i2, _vec3);
+            (0, _vertexJs.PositionNormalTextureVertex).setPosition(dataView, i3, _vec3);
             minX = Math.min(x, minX);
             minY = Math.min(y, minY);
             minZ = Math.min(z, minZ);
@@ -65504,14 +65510,14 @@ class ObjHelper {
             maxY = Math.max(y, maxY);
             maxZ = Math.max(z, maxZ);
             if (hasNormals) {
-                index = (parseInt(faceParts[2]) - 1) * 3;
+                index = (parseInt(faceParts1[2]) - 1) * 3;
                 (0, _glMatrix.vec3).set(_vec3, normals[index], normals[index + 1], normals[index + 2]);
-                (0, _vertexJs.PositionNormalTextureVertex).setNormal(dataView, i2, _vec3);
+                (0, _vertexJs.PositionNormalTextureVertex).setNormal(dataView, i3, _vec3);
             }
             if (hasTexCoords) {
-                index = (parseInt(faceParts[1]) - 1) * 2;
+                index = (parseInt(faceParts1[1]) - 1) * 2;
                 (0, _glMatrix.vec2).set(_vec2, texCoords[index], texCoords[index + 1]);
-                (0, _vertexJs.PositionNormalTextureVertex).setTexCoord(dataView, i2, _vec2);
+                (0, _vertexJs.PositionNormalTextureVertex).setTexCoord(dataView, i3, _vec2);
             }
         }
         const originX = (minX + maxX) / 2;
@@ -65806,10 +65812,10 @@ class Label extends LabelBase {
                     this._offset[1] = this._originY + height / 2 - i1 * lineHeight - lineHeight / 2 - maxGlyphTop / 2;
                     const pickingId = (0, _pickJs.PickHelper).nextPickId();
                     (0, _pickJs.PickHelper).encodeNumber(pickingId, (0, _mainJs.PickType).label, this._vec4);
-                    const text = truncated[i1];
-                    if (text.length > 0) {
-                        (0, _textJs.TextHelper).addString(this._font, text, this._verticesView, this._indices, glyphs, (0, _constantsJs.Constants).VECTOR3_ZERO, 1, this._offset, null, this._vec4);
-                        glyphs += text.length;
+                    const text1 = truncated[i1];
+                    if (text1.length > 0) {
+                        (0, _textJs.TextHelper).addString(this._font, text1, this._verticesView, this._indices, glyphs, (0, _constantsJs.Constants).VECTOR3_ZERO, 1, this._offset, null, this._vec4);
+                        glyphs += text1.length;
                     }
                 }
                 const scaling = this._scale / this._font.size;
@@ -66771,7 +66777,7 @@ class NominalKey extends KeyBase {
             (0, _textJs.TextHelper).measure(font, title, this._textMetric);
             titleWidth = this._textMetric.width;
         }
-        let width;
+        let width1;
         let height;
         switch(orientation){
             case (0, _mainJs.Orientation).horizontal:
@@ -66849,12 +66855,12 @@ class NominalKey extends KeyBase {
         }
         switch(orientation){
             case (0, _mainJs.Orientation).horizontal:
-                width = Math.max(sizeX * count + spacing * (count - 1) + totalLabelWidth, titleWidth);
+                width1 = Math.max(sizeX * count + spacing * (count - 1) + totalLabelWidth, titleWidth);
                 height = sizeY;
                 if (options.title) height += titleScale;
                 break;
             case (0, _mainJs.Orientation).vertical:
-                width = Math.max(sizeX + labelScale / 2 + maxLabelWidth, titleWidth);
+                width1 = Math.max(sizeX + labelScale / 2 + maxLabelWidth, titleWidth);
                 height = sizeY * count + spacing * (count - 1);
                 if (options.title) height += titleScale;
                 break;
@@ -66866,10 +66872,10 @@ class NominalKey extends KeyBase {
             case (0, _mainJs.HorizontalAlignment).center:
                 break;
             case (0, _mainJs.HorizontalAlignment).left:
-                originX += width / 2;
+                originX += width1 / 2;
                 break;
             case (0, _mainJs.HorizontalAlignment).right:
-                originX -= width / 2;
+                originX -= width1 / 2;
                 break;
         }
         switch(verticalAlignment){
@@ -66886,7 +66892,7 @@ class NominalKey extends KeyBase {
         const positionsY = new Float64Array(count);
         const positionsZ = new Float64Array(count);
         for(let i3 = 0; i3 < count; i3++){
-            positionsX[i3] = originX - width / 2 + sizeX / 2;
+            positionsX[i3] = originX - width1 / 2 + sizeX / 2;
             positionsY[i3] = originY + height / 2 - i3 * (sizeY + spacing);
             positionsZ[i3] = originZ + sizeZ / 2;
         }
@@ -66925,7 +66931,7 @@ class NominalKey extends KeyBase {
         const labelPositionsY = new Float64Array(count);
         const labelPositionsZ = new Float64Array(count);
         for(let i4 = 0; i4 < (options.title ? count - 1 : count); i4++){
-            labelPositionsX[i4] = originX - width / 2 + sizeX + labelScale / 2;
+            labelPositionsX[i4] = originX - width1 / 2 + sizeX + labelScale / 2;
             labelPositionsY[i4] = positionsY[i4];
             labelPositionsZ[i4] = originZ;
         }
@@ -67259,12 +67265,12 @@ class LayoutBase {
                 minBounds1 = (0, _glMatrix.vec3).create();
                 maxBounds1 = (0, _glMatrix.vec3).create();
                 for(let i1 = 0; i1 < count; i1++){
-                    const id = ids[i1 + offset];
-                    const index = lookup[id];
-                    (0, _vertexJs.UnitVertex).getTranslation(dataView, index, unitTranslation);
-                    (0, _vertexJs.UnitVertex).getRotation(dataView, index, unitRotation);
+                    const id1 = ids[i1 + offset];
+                    const index1 = lookup[id1];
+                    (0, _vertexJs.UnitVertex).getTranslation(dataView, index1, unitTranslation);
+                    (0, _vertexJs.UnitVertex).getRotation(dataView, index1, unitRotation);
                     (0, _glMatrix.quat).normalize(unitRotation, unitRotation);
-                    (0, _vertexJs.UnitVertex).getScale(dataView, index, unitScale);
+                    (0, _vertexJs.UnitVertex).getScale(dataView, index1, unitScale);
                     minBounds0[0] = unitTranslation[0] - unitScale[0] / 2;
                     minBounds0[1] = unitTranslation[1] - unitScale[1] / 2;
                     minBounds0[2] = unitTranslation[2] - unitScale[2] / 2;
@@ -67285,15 +67291,15 @@ class LayoutBase {
                 const identityRotation = (0, _constantsJs.Constants).VECTOR3_UNITY;
                 let ca;
                 for(let i2 = 0; i2 < count; i2++){
-                    const id = ids[i2 + offset];
-                    const index = lookup[id];
-                    (0, _vertexJs.UnitVertex).getTranslation(dataView, index, unitTranslation);
-                    (0, _vertexJs.UnitVertex).getRotation(dataView, index, unitRotation);
+                    const id2 = ids[i2 + offset];
+                    const index2 = lookup[id2];
+                    (0, _vertexJs.UnitVertex).getTranslation(dataView, index2, unitTranslation);
+                    (0, _vertexJs.UnitVertex).getRotation(dataView, index2, unitRotation);
                     (0, _glMatrix.quat).normalize(unitRotation, unitRotation);
-                    (0, _vertexJs.UnitVertex).getScale(dataView, index, unitScale);
+                    (0, _vertexJs.UnitVertex).getScale(dataView, index2, unitScale);
                     const length = unitScale[1];
-                    const radius = Math.max(unitScale[0], unitScale[2]);
-                    if (length != 0 && radius != 0) {
+                    const radius1 = Math.max(unitScale[0], unitScale[2]);
+                    if (length != 0 && radius1 != 0) {
                         if ((0, _glMatrix.quat).equals(unitRotation, (0, _constantsJs.Constants).QUAT_IDENTITY)) ca = identityRotation;
                         else {
                             ca = (0, _glMatrix.vec3).create();
@@ -67301,7 +67307,7 @@ class LayoutBase {
                         }
                         (0, _glMatrix.vec3).scaleAndAdd(pa, unitTranslation, ca, -length * 0.5);
                         (0, _glMatrix.vec3).scaleAndAdd(pb, unitTranslation, ca, length * 0.5);
-                        (0, _boundsJs.BoundsHelper).cylinder(pa, pb, radius, minBounds0, maxBounds0);
+                        (0, _boundsJs.BoundsHelper).cylinder(pa, pb, radius1, minBounds0, maxBounds0);
                         (0, _glMatrix.vec3).min(minBounds, minBounds, minBounds0);
                         (0, _glMatrix.vec3).max(maxBounds, maxBounds, maxBounds0);
                     }
@@ -67550,12 +67556,12 @@ class BinHelper {
             maxCount = Math.max(counts[binId], maxCount);
         }
         if (options.froms && options.tos) {
-            for(let i = 0; i < options.bins; i++)if (options.isDiscrete || maxValue == minValue) {
-                options.froms[i] = Math.ceil(minValue + binSize * i);
-                options.tos[i] = Math.floor(minValue + binSize * (i + 1));
+            for(let i1 = 0; i1 < options.bins; i1++)if (options.isDiscrete || maxValue == minValue) {
+                options.froms[i1] = Math.ceil(minValue + binSize * i1);
+                options.tos[i1] = Math.floor(minValue + binSize * (i1 + 1));
             } else {
-                options.froms[i] = minValue + binSize * i;
-                options.tos[i] = minValue + binSize * (i + 1);
+                options.froms[i1] = minValue + binSize * i1;
+                options.tos[i1] = minValue + binSize * (i1 + 1);
             }
         }
         return maxCount;
@@ -67766,10 +67772,10 @@ class FacetHelper {
         }
         const tempOffsets = new Uint32Array(offsets);
         for(let i2 = 0; i2 < ids.length; i2++){
-            const id = ids[i2];
-            const facetId = facetIds[id];
-            offset = tempOffsets[facetId]++;
-            orderedIds[offset] = id;
+            const id1 = ids[i2];
+            const facetId1 = facetIds[id1];
+            offset = tempOffsets[facetId1]++;
+            orderedIds[offset] = id1;
         }
         this._core.log.write((0, _mainJs.LogLevel).info, `facet split ${Math.round(window.performance.now() - start)}ms`);
     }
@@ -67926,15 +67932,15 @@ class HexBinHelper {
         const counts = new Uint32Array(nonEmptyBins);
         const lookup = {};
         for(let i1 = 0; i1 < maxBins; i1++){
-            const count = binCounts[i1];
-            if (count > 0) {
+            const count1 = binCounts[i1];
+            if (count1 > 0) {
                 const index = binLookup[i1];
                 lookup[i1] = index;
-                counts[index] = count;
-                const q = i1 % (binsX - minQ);
-                const r = Math.floor(i1 / (binsX - minQ));
-                hex[0] = q + minQ;
-                hex[1] = r;
+                counts[index] = count1;
+                const q1 = i1 % (binsX - minQ);
+                const r1 = Math.floor(i1 / (binsX - minQ));
+                hex[0] = q1 + minQ;
+                hex[1] = r1;
                 (0, _hexJs.HexHelper).pointyHexToPixel(hex, size, point);
                 positionsX[index] = point[0] + minValueX;
                 positionsY[index] = point[1] + minValueY;
@@ -68195,15 +68201,15 @@ class TableHelper {
         for(let i1 = firstRow + 1; i1 < Math.min(data.length, firstRow + maxRows); i1++){
             values = data[i1];
             for(let j = 0; j < values.length; j++)if (types[j] != (0, _tableJs.ColumnType).string) {
-                const value = values[j];
-                parsedFloat = Number(value);
+                const value1 = values[j];
+                parsedFloat = Number(value1);
                 if (types[j] == (0, _tableJs.ColumnType).float) {
                     if (isNaN(parsedFloat)) {
                         types[j] = (0, _tableJs.ColumnType).string;
                         integers[j] = false;
                     } else if (integers[j]) integers[j] = Number.isSafeInteger(parsedFloat);
                 } else if (types[j] == (0, _tableJs.ColumnType).date) {
-                    parsedDate = Date.parse(value);
+                    parsedDate = Date.parse(value1);
                     if (isNaN(parsedDate)) types[j] = (0, _tableJs.ColumnType).string;
                 }
             }
@@ -68451,16 +68457,16 @@ class Filter {
                 numericValues[i] = value;
             }
             else if (type == (0, _tableJs.ColumnType).integer) for(let i1 = 0; i1 < this._data.length; i1++){
-                const value = parseInt(this._data[i1][column]);
-                min = Math.min(min, value);
-                max = Math.max(max, value);
-                numericValues[i1] = value;
+                const value1 = parseInt(this._data[i1][column]);
+                min = Math.min(min, value1);
+                max = Math.max(max, value1);
+                numericValues[i1] = value1;
             }
             else if (type == (0, _tableJs.ColumnType).date) for(let i2 = 0; i2 < this._data.length; i2++){
-                const value = Date.parse(this._data[i2][column]);
-                min = Math.min(min, value);
-                max = Math.max(max, value);
-                numericValues[i2] = value;
+                const value2 = Date.parse(this._data[i2][column]);
+                min = Math.min(min, value2);
+                max = Math.max(max, value2);
+                numericValues[i2] = value2;
             }
             this._minValues[column] = min;
             this._maxValues[column] = max;
@@ -69247,20 +69253,20 @@ class PythagorasTree extends (0, _layoutJs.LayoutBase) {
                 this._vec3[1] = this._parentUp[1] * halfparentScaleY * cos - this._parentRight[1] * halfparentScaleX * cos;
                 this._vec3[2] = this._parentUp[2] * halfparentScaleY * cos - this._parentRight[2] * halfparentScaleX * cos;
                 (0, _glMatrix.vec3).transformQuat(this._vec3, this._vec3, this._quat);
-                const childTranslationX = this._parentTranslation[0] + this._vec3[0] + this._parentUp[0] * halfparentScaleY + this._parentRight[0] * halfparentScaleX;
-                const childTranslationY = this._parentTranslation[1] + this._vec3[1] + this._parentUp[1] * halfparentScaleY + this._parentRight[1] * halfparentScaleX;
-                const childTranslationZ = this._parentTranslation[2] + this._vec3[2] + this._parentUp[2] * halfparentScaleY + this._parentRight[2] * halfparentScaleX;
-                this._positions[childIndex2 * 3] = childTranslationX;
-                this._positions[childIndex2 * 3 + 1] = childTranslationY;
-                this._positions[childIndex2 * 3 + 2] = childTranslationZ;
+                const childTranslationX1 = this._parentTranslation[0] + this._vec3[0] + this._parentUp[0] * halfparentScaleY + this._parentRight[0] * halfparentScaleX;
+                const childTranslationY1 = this._parentTranslation[1] + this._vec3[1] + this._parentUp[1] * halfparentScaleY + this._parentRight[1] * halfparentScaleX;
+                const childTranslationZ1 = this._parentTranslation[2] + this._vec3[2] + this._parentUp[2] * halfparentScaleY + this._parentRight[2] * halfparentScaleX;
+                this._positions[childIndex2 * 3] = childTranslationX1;
+                this._positions[childIndex2 * 3 + 1] = childTranslationY1;
+                this._positions[childIndex2 * 3 + 2] = childTranslationZ1;
                 this._levels[childIndex2] = parentLevel + 1;
                 this._volumes[childIndex2] = this._sizes[childIndex2 * 3] * this._sizes[childIndex2 * 3 + 1] * this._sizes[childIndex2 * 3 + 2];
-                this.minLayoutBoundsX = Math.min(this.minLayoutBoundsX, childTranslationX);
-                this.minLayoutBoundsY = Math.min(this.minLayoutBoundsY, childTranslationY);
-                this.minLayoutBoundsZ = Math.min(this.minLayoutBoundsZ, childTranslationZ);
-                this.maxLayoutBoundsX = Math.max(this.maxLayoutBoundsX, childTranslationX);
-                this.maxLayoutBoundsY = Math.max(this.maxLayoutBoundsY, childTranslationY);
-                this.maxLayoutBoundsZ = Math.max(this.maxLayoutBoundsZ, childTranslationZ);
+                this.minLayoutBoundsX = Math.min(this.minLayoutBoundsX, childTranslationX1);
+                this.minLayoutBoundsY = Math.min(this.minLayoutBoundsY, childTranslationY1);
+                this.minLayoutBoundsZ = Math.min(this.minLayoutBoundsZ, childTranslationZ1);
+                this.maxLayoutBoundsX = Math.max(this.maxLayoutBoundsX, childTranslationX1);
+                this.maxLayoutBoundsY = Math.max(this.maxLayoutBoundsY, childTranslationY1);
+                this.maxLayoutBoundsZ = Math.max(this.maxLayoutBoundsZ, childTranslationZ1);
                 this._branch(childIndex1, ids, lookup, pseudoRandom);
                 this._branch(childIndex2, ids, lookup, pseudoRandom);
             }
@@ -69318,23 +69324,23 @@ class Tree extends (0, _layoutJs.LayoutBase) {
             if (parentId == childId) rootId = parentId;
             else children[parentId].push(childId);
         }
-        const index = indices[rootId];
-        this._positions[index * 3] = 0;
-        this._positions[index * 3 + 1] = 0;
-        this._positions[index * 3 + 2] = 0;
+        const index1 = indices[rootId];
+        this._positions[index1 * 3] = 0;
+        this._positions[index1 * 3 + 1] = 0;
+        this._positions[index1 * 3 + 2] = 0;
         this.minLayoutBoundsX = 0;
         this.minLayoutBoundsY = 0;
         this.minLayoutBoundsZ = 0;
         this.maxLayoutBoundsX = 0;
         this.maxLayoutBoundsY = 0;
         this.maxLayoutBoundsZ = 0;
-        this._rotations[index * 4] = 0;
-        this._rotations[index * 4 + 1] = 0;
-        this._rotations[index * 4 + 2] = 0;
-        this._rotations[index * 4 + 3] = 1;
-        this._sizes[index * 3] = sizeX;
-        this._sizes[index * 3 + 1] = sizeY;
-        this._sizes[index * 3 + 2] = sizeZ;
+        this._rotations[index1 * 4] = 0;
+        this._rotations[index1 * 4 + 1] = 0;
+        this._rotations[index1 * 4 + 2] = 0;
+        this._rotations[index1 * 4 + 3] = 1;
+        this._sizes[index1 * 3] = sizeX;
+        this._sizes[index1 * 3 + 1] = sizeY;
+        this._sizes[index1 * 3 + 2] = sizeZ;
         const pseudoRandom = new (0, _mathJs.PseudoRandom)(0);
         this._branch(rootId, indices, children, pseudoRandom);
         this._updateCumulativeLayoutBounds();
@@ -69629,8 +69635,8 @@ class SquarifiedTreeMap extends (0, _layoutJs.LayoutBase) {
         TreeMapHelper.squarifiedLayout(ids, options.sizes, this._positionsX, this._positionsY, this._sizesX, this._sizesY, offset, offset + count - 1, this.minLayoutBoundsX, this.minLayoutBoundsY, sizeX, sizeY, buffer.lookup);
         if (isRightToLeft || isTopToBottom) {
             const lookup = buffer.lookup;
-            for(let i = 0; i < count; i++){
-                const id = ids[i + offset];
+            for(let i1 = 0; i1 < count; i1++){
+                const id = ids[i1 + offset];
                 const index = lookup[id];
                 if (isRightToLeft) this._positionsX[index] = this.maxLayoutBoundsX - this._positionsX[index] + this.minLayoutBoundsX;
                 if (isTopToBottom) this._positionsY[index] = this.maxLayoutBoundsY - this._positionsY[index] + this.minLayoutBoundsY;
@@ -69672,17 +69678,17 @@ class SquarifiedTreeMap extends (0, _layoutJs.LayoutBase) {
         const heightScaling = (this.maxLayoutBoundsZ - this.minLayoutBoundsZ) / maxHeight;
         const lookup = buffer.lookup;
         const selection = options.selected && options.selected.size > 0;
-        for(let i = 0; i < count; i++){
-            const id = ids[i + offset];
-            const index = lookup[id];
-            const height = Math.max(heights ? heights[id] * heightScaling : heightScaling, minHeight);
+        for(let i1 = 0; i1 < count; i1++){
+            const id1 = ids[i1 + offset];
+            const index = lookup[id1];
+            const height = Math.max(heights ? heights[id1] * heightScaling : heightScaling, minHeight);
             let positionX = this._positionsX[index];
             let positionY = this._positionsY[index];
             let positionZ = this.minLayoutBoundsZ + height / 2;
             if (this._isFacetted) {
-                const facetX = options.facetCoordsX ? options.facetCoordsX[id] : 0;
-                const facetY = options.facetCoordsY ? options.facetCoordsY[id] : 0;
-                const facetZ = options.facetCoordsZ ? options.facetCoordsZ[id] : 0;
+                const facetX = options.facetCoordsX ? options.facetCoordsX[id1] : 0;
+                const facetY = options.facetCoordsY ? options.facetCoordsY[id1] : 0;
+                const facetZ = options.facetCoordsZ ? options.facetCoordsZ[id1] : 0;
                 positionX += this._facetSizeX * this._facetSpacingX / 2 + facetX * this._facetSizeX * (1 + this._facetSpacingX);
                 positionY += this._facetSizeY * this._facetSpacingY / 2 + facetY * this._facetSizeY * (1 + this._facetSpacingY);
                 positionZ += this._facetSizeZ * this._facetSpacingZ / 2 + facetZ * this._facetSizeZ * (1 + this._facetSpacingZ);
@@ -69697,22 +69703,22 @@ class SquarifiedTreeMap extends (0, _layoutJs.LayoutBase) {
             (0, _vertexJs.UnitVertex).setScale(dataView, index, _vec4);
             (0, _vertexJs.UnitVertex).setRotation(dataView, index, _quat);
             if (options.colors) {
-                const color = (0, _mathJs.MathHelper).normalize(options.colors[id], minColor, maxColor, 0, 1);
+                const color = (0, _mathJs.MathHelper).normalize(options.colors[id1], minColor, maxColor, 0, 1);
                 (0, _glMatrix.vec2).set(_vec2, color, color);
                 (0, _vertexJs.UnitVertex).setColor(dataView, index, _vec2);
             } else (0, _vertexJs.UnitVertex).setColor(dataView, index, (0, _constantsJs.Constants).VECTOR2_ONE);
-            (0, _vertexJs.UnitVertex).setIdHover(dataView, index, options.hover ? options.hover[id] : id);
-            (0, _vertexJs.UnitVertex).setSelected(dataView, index, selection ? options.selected.has(id) ? 1 : -1 : 0);
+            (0, _vertexJs.UnitVertex).setIdHover(dataView, index, options.hover ? options.hover[id1] : id1);
+            (0, _vertexJs.UnitVertex).setSelected(dataView, index, selection ? options.selected.has(id1) ? 1 : -1 : 0);
             if (options.order) {
-                const order = (0, _mathJs.MathHelper).normalize(options.order[id], minOrder, maxOrder, 0, 1);
+                const order = (0, _mathJs.MathHelper).normalize(options.order[id1], minOrder, maxOrder, 0, 1);
                 (0, _vertexJs.UnitVertex).setOrder(dataView, index, orderReverse ? 1 - order : order);
-            } else (0, _vertexJs.UnitVertex).setOrder(dataView, index, i / (count - 1));
+            } else (0, _vertexJs.UnitVertex).setOrder(dataView, index, i1 / (count - 1));
             if (options.staggerOrder !== undefined) (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, options.staggerOrder);
             else if (options.staggerOrders) {
-                const stagger = (0, _mathJs.MathHelper).normalize(options.staggerOrders[id], minStaggerOrder, maxStaggerOrder, 0, 1);
+                const stagger = (0, _mathJs.MathHelper).normalize(options.staggerOrders[id1], minStaggerOrder, maxStaggerOrder, 0, 1);
                 (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
-            } else (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, i / (count - 1));
-            (0, _vertexJs.UnitVertex).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            } else (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, i1 / (count - 1));
+            (0, _vertexJs.UnitVertex).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id1] : 0);
         }
         buffer.update();
         this._core.log.write((0, _mainJs.LogLevel).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -69845,11 +69851,11 @@ class TreeMapHelper {
             TreeMapHelper.squarifiedLayout(ids, sizes, positionsX, positionsY, sizesX, sizesY, from, mid - 1, x, y + height * b, width, height * (1 - b), lookup);
         } else {
             while(mid > from){
-                const aspect = TreeMapHelper._aspect(width, height, a, b);
-                const q = sizes ? sizes[ids[mid - 1]] / totalSize : 1 / totalSize;
-                if (TreeMapHelper._aspect(width, height, a, b + q) > aspect) break;
+                const aspect1 = TreeMapHelper._aspect(width, height, a, b);
+                const q1 = sizes ? sizes[ids[mid - 1]] / totalSize : 1 / totalSize;
+                if (TreeMapHelper._aspect(width, height, a, b + q1) > aspect1) break;
                 mid--;
-                b += q;
+                b += q1;
             }
             TreeMapHelper._sliceLayout(ids, sizes, positionsX, positionsY, sizesX, sizesY, mid, to, x, y, width * b, height, lookup);
             TreeMapHelper.squarifiedLayout(ids, sizes, positionsX, positionsY, sizesX, sizesY, from, mid - 1, x + width * b, y, width * (1 - b), height, lookup);
@@ -70130,7 +70136,7 @@ class StackTreeMap extends StackBase {
             if (count == ids.length) this._ids = new Uint32Array(ids);
             else {
                 this._ids = new Uint32Array(count);
-                for(let i = 0; i < count; i++)this._ids[i] = ids[offset + i];
+                for(let i1 = 0; i1 < count; i1++)this._ids[i1] = ids[offset + i1];
             }
             if (options.groupIds && options.sizes) {
                 this._ids.sort(function(a, b) {
@@ -70151,17 +70157,17 @@ class StackTreeMap extends StackBase {
         } else ids2 = ids;
         const binOffsets = new Uint32Array(this._binCounts.length);
         let binOffset = 0;
-        for(let i1 = 0; i1 < this._binCounts.length; i1++){
-            const binCount = this._binCounts[i1];
-            binOffsets[i1] = binOffset;
+        for(let i2 = 0; i2 < this._binCounts.length; i2++){
+            const binCount = this._binCounts[i2];
+            binOffsets[i2] = binOffset;
             binOffset += binCount;
         }
-        for(let i2 = 0; i2 < count; i2++){
-            const id = ids2[i2];
-            const index = lookup[id];
-            const binId = this._binIds[index];
-            binOffset = binOffsets[binId]++;
-            this._orderedIds[binOffset + offset] = id;
+        for(let i3 = 0; i3 < count; i3++){
+            const id1 = ids2[i3];
+            const index1 = lookup[id1];
+            const binId1 = this._binIds[index1];
+            binOffset = binOffsets[binId1]++;
+            this._orderedIds[binOffset + offset] = id1;
         }
         const minSliceHeight = this._core.config.minCubifiedTreeMapSlice * height;
         const side = Math.sqrt(sizeX * sizeZ);
@@ -70171,50 +70177,50 @@ class StackTreeMap extends StackBase {
         let groupCount = 0;
         let groupTotal = 0;
         let positionY = 0;
-        for(let i3 = 0; i3 < count; i3++){
-            const id = this._orderedIds[i3 + offset];
-            const index = lookup[id];
+        for(let i4 = 0; i4 < count; i4++){
+            const id2 = this._orderedIds[i4 + offset];
+            const index2 = lookup[id2];
             groupCount++;
-            groupTotal += options.sizes ? options.sizes[id] : 1;
-            const binId = this._binIds[index];
-            const groupId = options.groupIds ? options.groupIds[id] : 0;
-            if (i3 == count - 1) {
+            groupTotal += options.sizes ? options.sizes[id2] : 1;
+            const binId2 = this._binIds[index2];
+            const groupId = options.groupIds ? options.groupIds[id2] : 0;
+            if (i4 == count - 1) {
                 isLastInBin = true;
                 isLastInGroup = true;
             } else {
-                const nextId = this._orderedIds[i3 + 1 + offset];
+                const nextId = this._orderedIds[i4 + 1 + offset];
                 const nextIndex = lookup[nextId];
                 const nextBinId = this._binIds[nextIndex];
                 const nextGroupId = options.groupIds ? options.groupIds[nextId] : 0;
-                isLastInBin = binId != nextBinId;
+                isLastInBin = binId2 != nextBinId;
                 isLastInGroup = groupId != nextGroupId;
             }
             if (isLastInBin || isLastInGroup) {
-                const mid = i3 + offset;
-                const binIdX = options.binIdsX ? options.binIdsX[id] : 0;
-                const binIdZ = options.binIdsZ ? options.binIdsZ[id] : 0;
+                const mid = i4 + offset;
+                const binIdX1 = options.binIdsX ? options.binIdsX[id2] : 0;
+                const binIdZ1 = options.binIdsZ ? options.binIdsZ[id2] : 0;
                 let groupValue, binValue;
                 if (options.sizes) {
                     groupValue = groupTotal;
-                    binValue = isNormalized ? this._binTotals[binId] : maxBinTotal;
+                    binValue = isNormalized ? this._binTotals[binId2] : maxBinTotal;
                 } else {
                     groupValue = groupCount;
-                    binValue = isNormalized ? this._binCounts[binId] : maxBinCount;
+                    binValue = isNormalized ? this._binCounts[binId2] : maxBinCount;
                 }
                 const groupHeight = height * groupValue / binValue;
                 if (sizeZ == 1) {
-                    const positionX = spacingX / 2 + binIdX * (sizeX + spacingX);
+                    const positionX = spacingX / 2 + binIdX1 * (sizeX + spacingX);
                     (0, _treemapJs.TreeMapHelper).squarifiedLayout(this._orderedIds, options.sizes, this._positionsX, this._positionsY, this._sizesX, this._sizesY, from, mid, positionX, positionY, sizeX, groupHeight, lookup);
                     const isRightToLeft = true;
-                    for(let i = from; i <= mid; i++){
-                        const id = this._orderedIds[i];
-                        const index = lookup[id];
-                        this._sizesZ[index] = sizeZ;
-                        this._positionsZ[index] = (binIdZ + 0.5) * (sizeZ + spacingZ);
-                        if (isRightToLeft) this._positionsX[index] = positionX + sizeX - this._positionsX[index] + positionX;
-                        if (!isTopToBottom) this._positionsY[index] = positionY + groupHeight - this._positionsY[index] + positionY;
+                    for(let i5 = from; i5 <= mid; i5++){
+                        const id3 = this._orderedIds[i5];
+                        const index3 = lookup[id3];
+                        this._sizesZ[index3] = sizeZ;
+                        this._positionsZ[index3] = (binIdZ1 + 0.5) * (sizeZ + spacingZ);
+                        if (isRightToLeft) this._positionsX[index3] = positionX + sizeX - this._positionsX[index3] + positionX;
+                        if (!isTopToBottom) this._positionsY[index3] = positionY + groupHeight - this._positionsY[index3] + positionY;
                     }
-                } else (0, _treemapJs.TreeMapHelper).cubifiedLayout(this._orderedIds, options.sizes, this._positionsX, this._positionsY, this._positionsZ, this._sizesX, this._sizesY, this._sizesZ, from, mid, spacingX / 2 + binIdX * (sizeX + spacingX), positionY, spacingZ / 2 + binIdZ * (sizeZ + spacingZ), sizeX, groupHeight, sizeZ, side, groupValue, minSliceHeight, isTopToBottom, lookup);
+                } else (0, _treemapJs.TreeMapHelper).cubifiedLayout(this._orderedIds, options.sizes, this._positionsX, this._positionsY, this._positionsZ, this._sizesX, this._sizesY, this._sizesZ, from, mid, spacingX / 2 + binIdX1 * (sizeX + spacingX), positionY, spacingZ / 2 + binIdZ1 * (sizeZ + spacingZ), sizeX, groupHeight, sizeZ, side, groupValue, minSliceHeight, isTopToBottom, lookup);
                 if (isLastInGroup) {
                     isLastInGroup = false;
                     positionY += groupHeight;
@@ -70728,65 +70734,65 @@ class Main extends (0, _rendererJs.RendererBase) {
             this._viewportOffset = 0;
             this._viewportCount = 2;
         } else {
-            let viewport;
+            let viewport1;
             switch(this._core.config.stereoMode){
                 case (0, _mainJs.StereoMode).none:
-                    viewport = this._viewports[0];
-                    viewport.x = 0;
-                    viewport.y = 0;
-                    viewport.width = this._canvas.width;
-                    viewport.height = this._canvas.height;
+                    viewport1 = this._viewports[0];
+                    viewport1.x = 0;
+                    viewport1.y = 0;
+                    viewport1.width = this._canvas.width;
+                    viewport1.height = this._canvas.height;
                     this._viewportOffset = 0;
                     this._viewportCount = 1;
                     this._framebuffers[0] = null;
                     break;
                 case (0, _mainJs.StereoMode).left:
-                    viewport = this._viewports[0];
-                    viewport.x = 0;
-                    viewport.y = 0;
-                    viewport.width = this._canvas.width;
-                    viewport.height = this._canvas.height;
+                    viewport1 = this._viewports[0];
+                    viewport1.x = 0;
+                    viewport1.y = 0;
+                    viewport1.width = this._canvas.width;
+                    viewport1.height = this._canvas.height;
                     this._viewportOffset = 0;
                     this._viewportCount = 1;
                     this._framebuffers[0] = null;
                     break;
                 case (0, _mainJs.StereoMode).right:
-                    viewport = this._viewports[1];
-                    viewport.x = 0;
-                    viewport.y = 0;
-                    viewport.width = this._canvas.width;
-                    viewport.height = this._canvas.height;
+                    viewport1 = this._viewports[1];
+                    viewport1.x = 0;
+                    viewport1.y = 0;
+                    viewport1.width = this._canvas.width;
+                    viewport1.height = this._canvas.height;
                     this._viewportOffset = 1;
                     this._viewportCount = 1;
                     this._framebuffers[1] = null;
                     break;
                 case (0, _mainJs.StereoMode).anaglyph:
-                    viewport = this._viewports[0];
-                    viewport.x = 0;
-                    viewport.y = 0;
-                    viewport.width = this._canvas.width;
-                    viewport.height = this._canvas.height;
-                    viewport = this._viewports[1];
-                    viewport.x = 0;
-                    viewport.y = 0;
-                    viewport.width = this._canvas.width;
-                    viewport.height = this._canvas.height;
+                    viewport1 = this._viewports[0];
+                    viewport1.x = 0;
+                    viewport1.y = 0;
+                    viewport1.width = this._canvas.width;
+                    viewport1.height = this._canvas.height;
+                    viewport1 = this._viewports[1];
+                    viewport1.x = 0;
+                    viewport1.y = 0;
+                    viewport1.width = this._canvas.width;
+                    viewport1.height = this._canvas.height;
                     this._viewportOffset = 0;
                     this._viewportCount = 2;
                     this._framebuffers[0] = this.anaglyphFramebuffers[0];
                     this._framebuffers[1] = this.anaglyphFramebuffers[1];
                     break;
                 case (0, _mainJs.StereoMode).split:
-                    viewport = this._viewports[0];
-                    viewport.x = 0;
-                    viewport.y = 0;
-                    viewport.width = this._canvas.width / 2;
-                    viewport.height = this._canvas.height;
-                    viewport = this._viewports[1];
-                    viewport.x = this._canvas.width / 2;
-                    viewport.y = 0;
-                    viewport.width = this._canvas.width / 2;
-                    viewport.height = this._canvas.height;
+                    viewport1 = this._viewports[0];
+                    viewport1.x = 0;
+                    viewport1.y = 0;
+                    viewport1.width = this._canvas.width / 2;
+                    viewport1.height = this._canvas.height;
+                    viewport1 = this._viewports[1];
+                    viewport1.x = this._canvas.width / 2;
+                    viewport1.y = 0;
+                    viewport1.width = this._canvas.width / 2;
+                    viewport1.height = this._canvas.height;
                     this._viewportOffset = 0;
                     this._viewportCount = 2;
                     this._framebuffers[0] = null;
@@ -70869,13 +70875,13 @@ class Main extends (0, _rendererJs.RendererBase) {
             this._debugAxesVisual.framebuffers = this._framebuffers;
             this._debugAxesVisual.render(elapsedTime, xrFrame);
         }
-        for(let i = 0; i < this.transitionBuffers.length; i++){
-            const transitionBuffer = this.transitionBuffers[i];
+        for(let i1 = 0; i1 < this.transitionBuffers.length; i1++){
+            const transitionBuffer = this.transitionBuffers[i1];
             if (transitionBuffer.isVisible) this._renderTransitionBuffer(xrFrame, transitionBuffer);
         }
         const axesVisuals = this.axesVisibility == (0, _mainJs.AxesVisibility).current ? this.currentAxes : this.axesVisibility == (0, _mainJs.AxesVisibility).previous ? this.previousAxes : null;
-        if (axesVisuals) for(let i6 = 0; i6 < axesVisuals.length; i6++){
-            const axesVisual = axesVisuals[i6];
+        if (axesVisuals) for(let i2 = 0; i2 < axesVisuals.length; i2++){
+            const axesVisual = axesVisuals[i2];
             if (axesVisual.isVisible) {
                 axesVisual.pickedIdColor = this._pickedIdColor;
                 axesVisual.pickFramebuffer = this._pickFrameBuffer;
@@ -70883,8 +70889,8 @@ class Main extends (0, _rendererJs.RendererBase) {
                 axesVisual.render(elapsedTime, xrFrame);
             }
         }
-        if (this.areLabelsVisible) for(let i7 = 0; i7 < this.labelSets.length; i7++){
-            const labelSetVisual = this.labelSets[i7];
+        if (this.areLabelsVisible) for(let i3 = 0; i3 < this.labelSets.length; i3++){
+            const labelSetVisual = this.labelSets[i3];
             if (labelSetVisual.isVisible) {
                 labelSetVisual.pickedIdColor = this._pickedIdColor;
                 labelSetVisual.pickFramebuffer = this._pickFrameBuffer;
@@ -70892,15 +70898,15 @@ class Main extends (0, _rendererJs.RendererBase) {
                 labelSetVisual.render(elapsedTime, xrFrame);
             }
         }
-        if (this.areImagesVisible) for(let i8 = 0; i8 < this.images.length; i8++){
-            const imageVisual = this.images[i8];
+        if (this.areImagesVisible) for(let i4 = 0; i4 < this.images.length; i4++){
+            const imageVisual = this.images[i4];
             if (imageVisual.isVisible) {
                 imageVisual.framebuffers = this._framebuffers;
                 imageVisual.render(elapsedTime, xrFrame);
             }
         }
-        for(let i9 = 0; i9 < this.controllers.length; i9++){
-            const controllerVisual = this.controllers[i9];
+        for(let i5 = 0; i5 < this.controllers.length; i5++){
+            const controllerVisual = this.controllers[i5];
             if (controllerVisual.isVisible) {
                 controllerVisual.isRayVisible = this.isPickingEnabled;
                 controllerVisual.framebuffers = this._framebuffers;
@@ -70917,12 +70923,12 @@ class Main extends (0, _rendererJs.RendererBase) {
                 this._isCapturingPickImage = false;
                 const data = new Uint8ClampedArray(this._core.config.pickWidth * this._core.config.pickHeight * 4);
                 this._gl.readPixels(0, 0, this._core.config.pickWidth, this._core.config.pickHeight, this._gl.RGBA, this._gl.UNSIGNED_BYTE, data);
-                for(let i = 0; i < data.length / 4; i++)if (data[i * 4 + 3] == (0, _mainJs.PickType).data) data[i * 4 + 3] = 255;
+                for(let i6 = 0; i6 < data.length / 4; i6++)if (data[i6 * 4 + 3] == (0, _mainJs.PickType).data) data[i6 * 4 + 3] = 255;
                 else {
-                    data[i * 4] = 0;
-                    data[i * 4 + 1] = 0;
-                    data[i * 4 + 2] = 0;
-                    data[i * 4 + 3] = 0;
+                    data[i6 * 4] = 0;
+                    data[i6 * 4 + 1] = 0;
+                    data[i6 * 4 + 2] = 0;
+                    data[i6 * 4 + 3] = 0;
                 }
                 this.capturePickImageCallback(data, this._core.config.pickWidth, this._core.config.pickHeight);
             }
@@ -70940,8 +70946,8 @@ class Main extends (0, _rendererJs.RendererBase) {
             this._lassoShader.dashWidth = this.lassoDashWidth ? this.lassoDashWidth : this._core.config.lassoDashWidth;
             this._lassoShader.apply();
             const lassoThickness = this.lassoThickness ? this.lassoThickness : this._core.config.lassoThickness;
-            for(let i = 0; i < this._viewportCount; i++){
-                const viewportIndex = i + this._viewportOffset;
+            for(let i7 = 0; i7 < this._viewportCount; i7++){
+                const viewportIndex = i7 + this._viewportOffset;
                 this._shaderResources.bindFramebuffer(this._framebuffers[viewportIndex]);
                 const viewport = this._viewports[viewportIndex];
                 this._gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
@@ -71059,22 +71065,22 @@ class Main extends (0, _rendererJs.RendererBase) {
             this._sphereShader.specularIntensity = this._config.specularIntensity;
             this._sphereShader.apply();
             this._sphereShader.isPickShader = false;
-            for(let i = 0; i < this._viewportCount; i++){
-                const viewport = i + this._viewportOffset;
-                this._shaderResources.bindFramebuffer(this._framebuffers[viewport]);
-                this._gl.viewport(this._viewports[viewport].x, this._viewports[viewport].y, this._viewports[viewport].width, this._viewports[viewport].height);
-                const vMatrix = this.vMatrices[viewport];
+            for(let i1 = 0; i1 < this._viewportCount; i1++){
+                const viewport1 = i1 + this._viewportOffset;
+                this._shaderResources.bindFramebuffer(this._framebuffers[viewport1]);
+                this._gl.viewport(this._viewports[viewport1].x, this._viewports[viewport1].y, this._viewports[viewport1].width, this._viewports[viewport1].height);
+                const vMatrix1 = this.vMatrices[viewport1];
                 if (xrFrame) {
                     (0, _glMatrix.vec3).set(this._modelPosition, this.mMatrix[12], this.mMatrix[13], this.mMatrix[14]);
                     (0, _glMatrix.vec3).subtract(this._directionToLight, this._config.lightPosition, this._modelPosition);
                     (0, _glMatrix.vec3).normalize(this._directionToLight, this._directionToLight);
-                    const inverseVMatrix = this.inverseVMatrices[viewport];
-                    (0, _glMatrix.vec3).set(this._cameraPosition, inverseVMatrix[12], inverseVMatrix[13], inverseVMatrix[14]);
+                    const inverseVMatrix1 = this.inverseVMatrices[viewport1];
+                    (0, _glMatrix.vec3).set(this._cameraPosition, inverseVMatrix1[12], inverseVMatrix1[13], inverseVMatrix1[14]);
                     (0, _glMatrix.vec3).subtract(this._directionToCamera, this._cameraPosition, this._modelPosition);
                     (0, _glMatrix.vec3).normalize(this._directionToCamera, this._directionToCamera);
                     (0, _glMatrix.vec3).add(this._halfAngle, this._directionToLight, this._directionToCamera);
                     (0, _glMatrix.vec3).normalize(this._halfAngle, this._halfAngle);
-                    (0, _glMatrix.mat3).fromMat4(this._mat3, vMatrix);
+                    (0, _glMatrix.mat3).fromMat4(this._mat3, vMatrix1);
                     (0, _glMatrix.vec3).transformMat3(this._directionToLight, this._directionToLight, this._mat3);
                     (0, _glMatrix.vec3).transformMat3(this._halfAngle, this._halfAngle, this._mat3);
                     this._sphereShader.directionToLight = this._directionToLight;
@@ -71083,8 +71089,8 @@ class Main extends (0, _rendererJs.RendererBase) {
                     this._sphereShader.directionToLight = this._config.directionToLight;
                     this._sphereShader.halfAngle = this._config.halfAngle;
                 }
-                this._sphereShader.vMatrix = vMatrix;
-                this._sphereShader.pMatrix = this.pMatrices[viewport];
+                this._sphereShader.vMatrix = vMatrix1;
+                this._sphereShader.pMatrix = this.pMatrices[viewport1];
                 this._sphereShader.applyView();
                 this._shaderResources.ANGLE_instanced_arrays.drawElementsInstancedANGLE(this._gl.TRIANGLE_STRIP, this._sphereShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
             }
@@ -71118,22 +71124,22 @@ class Main extends (0, _rendererJs.RendererBase) {
             this._cylinderShader.specularIntensity = this._config.specularIntensity;
             this._cylinderShader.apply();
             this._cylinderShader.isPickShader = false;
-            for(let i = 0; i < this._viewportCount; i++){
-                const viewport = i + this._viewportOffset;
-                this._shaderResources.bindFramebuffer(this._framebuffers[viewport]);
-                this._gl.viewport(this._viewports[viewport].x, this._viewports[viewport].y, this._viewports[viewport].width, this._viewports[viewport].height);
-                const vMatrix = this.vMatrices[viewport];
+            for(let i2 = 0; i2 < this._viewportCount; i2++){
+                const viewport2 = i2 + this._viewportOffset;
+                this._shaderResources.bindFramebuffer(this._framebuffers[viewport2]);
+                this._gl.viewport(this._viewports[viewport2].x, this._viewports[viewport2].y, this._viewports[viewport2].width, this._viewports[viewport2].height);
+                const vMatrix2 = this.vMatrices[viewport2];
                 if (xrFrame) {
                     (0, _glMatrix.vec3).set(this._modelPosition, this.mMatrix[12], this.mMatrix[13], this.mMatrix[14]);
                     (0, _glMatrix.vec3).subtract(this._directionToLight, this._config.lightPosition, this._modelPosition);
                     (0, _glMatrix.vec3).normalize(this._directionToLight, this._directionToLight);
-                    const inverseVMatrix = this.inverseVMatrices[viewport];
-                    (0, _glMatrix.vec3).set(this._cameraPosition, inverseVMatrix[12], inverseVMatrix[13], inverseVMatrix[14]);
+                    const inverseVMatrix2 = this.inverseVMatrices[viewport2];
+                    (0, _glMatrix.vec3).set(this._cameraPosition, inverseVMatrix2[12], inverseVMatrix2[13], inverseVMatrix2[14]);
                     (0, _glMatrix.vec3).subtract(this._directionToCamera, this._cameraPosition, this._modelPosition);
                     (0, _glMatrix.vec3).normalize(this._directionToCamera, this._directionToCamera);
                     (0, _glMatrix.vec3).add(this._halfAngle, this._directionToLight, this._directionToCamera);
                     (0, _glMatrix.vec3).normalize(this._halfAngle, this._halfAngle);
-                    (0, _glMatrix.mat3).fromMat4(this._mat3, vMatrix);
+                    (0, _glMatrix.mat3).fromMat4(this._mat3, vMatrix2);
                     (0, _glMatrix.vec3).transformMat3(this._directionToLight, this._directionToLight, this._mat3);
                     (0, _glMatrix.vec3).transformMat3(this._halfAngle, this._halfAngle, this._mat3);
                     this._cylinderShader.directionToLight = this._directionToLight;
@@ -71142,8 +71148,8 @@ class Main extends (0, _rendererJs.RendererBase) {
                     this._cylinderShader.directionToLight = this._config.directionToLight;
                     this._cylinderShader.halfAngle = this._config.halfAngle;
                 }
-                this._cylinderShader.vMatrix = vMatrix;
-                this._cylinderShader.pMatrix = this.pMatrices[viewport];
+                this._cylinderShader.vMatrix = vMatrix2;
+                this._cylinderShader.pMatrix = this.pMatrices[viewport2];
                 this._cylinderShader.applyView();
                 this._shaderResources.ANGLE_instanced_arrays.drawElementsInstancedANGLE(this._gl.TRIANGLE_STRIP, this._cylinderShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
             }
@@ -71177,22 +71183,22 @@ class Main extends (0, _rendererJs.RendererBase) {
             this._hexPrismShader.specularIntensity = this._config.specularIntensity;
             this._hexPrismShader.apply();
             this._hexPrismShader.isPickShader = false;
-            for(let i = 0; i < this._viewportCount; i++){
-                const viewport = i + this._viewportOffset;
-                this._shaderResources.bindFramebuffer(this._framebuffers[viewport]);
-                this._gl.viewport(this._viewports[viewport].x, this._viewports[viewport].y, this._viewports[viewport].width, this._viewports[viewport].height);
-                const vMatrix = this.vMatrices[viewport];
+            for(let i3 = 0; i3 < this._viewportCount; i3++){
+                const viewport3 = i3 + this._viewportOffset;
+                this._shaderResources.bindFramebuffer(this._framebuffers[viewport3]);
+                this._gl.viewport(this._viewports[viewport3].x, this._viewports[viewport3].y, this._viewports[viewport3].width, this._viewports[viewport3].height);
+                const vMatrix3 = this.vMatrices[viewport3];
                 if (xrFrame) {
                     (0, _glMatrix.vec3).set(this._modelPosition, this.mMatrix[12], this.mMatrix[13], this.mMatrix[14]);
                     (0, _glMatrix.vec3).subtract(this._directionToLight, this._config.lightPosition, this._modelPosition);
                     (0, _glMatrix.vec3).normalize(this._directionToLight, this._directionToLight);
-                    const inverseVMatrix = this.inverseVMatrices[viewport];
-                    (0, _glMatrix.vec3).set(this._cameraPosition, inverseVMatrix[12], inverseVMatrix[13], inverseVMatrix[14]);
+                    const inverseVMatrix3 = this.inverseVMatrices[viewport3];
+                    (0, _glMatrix.vec3).set(this._cameraPosition, inverseVMatrix3[12], inverseVMatrix3[13], inverseVMatrix3[14]);
                     (0, _glMatrix.vec3).subtract(this._directionToCamera, this._cameraPosition, this._modelPosition);
                     (0, _glMatrix.vec3).normalize(this._directionToCamera, this._directionToCamera);
                     (0, _glMatrix.vec3).add(this._halfAngle, this._directionToLight, this._directionToCamera);
                     (0, _glMatrix.vec3).normalize(this._halfAngle, this._halfAngle);
-                    (0, _glMatrix.mat3).fromMat4(this._mat3, vMatrix);
+                    (0, _glMatrix.mat3).fromMat4(this._mat3, vMatrix3);
                     (0, _glMatrix.vec3).transformMat3(this._directionToLight, this._directionToLight, this._mat3);
                     (0, _glMatrix.vec3).transformMat3(this._halfAngle, this._halfAngle, this._mat3);
                     this._hexPrismShader.directionToLight = this._directionToLight;
@@ -71201,8 +71207,8 @@ class Main extends (0, _rendererJs.RendererBase) {
                     this._hexPrismShader.directionToLight = this._config.directionToLight;
                     this._hexPrismShader.halfAngle = this._config.halfAngle;
                 }
-                this._hexPrismShader.vMatrix = vMatrix;
-                this._hexPrismShader.pMatrix = this.pMatrices[viewport];
+                this._hexPrismShader.vMatrix = vMatrix3;
+                this._hexPrismShader.pMatrix = this.pMatrices[viewport3];
                 this._hexPrismShader.applyView();
                 this._shaderResources.ANGLE_instanced_arrays.drawElementsInstancedANGLE(this._gl.TRIANGLE_STRIP, this._hexPrismShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
             }
@@ -73193,12 +73199,12 @@ class Cartesian2dVisual extends (0, _axesJs.AxesVisualBase) {
                         sdfShader.mMatrix = axes.getTitleMMatrix(edgeId);
                         sdfShader.applyModel();
                         sdfShader.isPickShader = false;
-                        for(let i = 0; i < this.viewportCount; i++){
-                            const viewport = i + this.viewportOffset;
-                            shaderResources.bindFramebuffer(this.framebuffers[viewport]);
-                            this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                            sdfShader.vMatrix = this.vMatrices[viewport];
-                            sdfShader.pMatrix = this.pMatrices[viewport];
+                        for(let i1 = 0; i1 < this.viewportCount; i1++){
+                            const viewport1 = i1 + this.viewportOffset;
+                            shaderResources.bindFramebuffer(this.framebuffers[viewport1]);
+                            this._gl.viewport(this.viewports[viewport1].x, this.viewports[viewport1].y, this.viewports[viewport1].width, this.viewports[viewport1].height);
+                            sdfShader.vMatrix = this.vMatrices[viewport1];
+                            sdfShader.pMatrix = this.pMatrices[viewport1];
                             sdfShader.applyView();
                             this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                         }
@@ -73219,12 +73225,12 @@ class Cartesian2dVisual extends (0, _axesJs.AxesVisualBase) {
                     sdfShader.mMatrix = axes.getHeadingMMatrix(edgeId);
                     sdfShader.applyModel();
                     sdfShader.isPickShader = false;
-                    for(let i = 0; i < this.viewportCount; i++){
-                        const viewport = i + this.viewportOffset;
-                        shaderResources.bindFramebuffer(this.framebuffers[viewport]);
-                        this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                        sdfShader.vMatrix = this.vMatrices[viewport];
-                        sdfShader.pMatrix = this.pMatrices[viewport];
+                    for(let i2 = 0; i2 < this.viewportCount; i2++){
+                        const viewport2 = i2 + this.viewportOffset;
+                        shaderResources.bindFramebuffer(this.framebuffers[viewport2]);
+                        this._gl.viewport(this.viewports[viewport2].x, this.viewports[viewport2].y, this.viewports[viewport2].width, this.viewports[viewport2].height);
+                        sdfShader.vMatrix = this.vMatrices[viewport2];
+                        sdfShader.pMatrix = this.pMatrices[viewport2];
                         sdfShader.applyView();
                         this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                     }
@@ -73273,13 +73279,13 @@ class Cartesian2dVisual extends (0, _axesJs.AxesVisualBase) {
         const size = axes.size;
         const axisId2 = 0;
         const axisId3 = 1;
-        const width = size[axisId2];
-        const height = size[axisId3];
+        const width1 = size[axisId2];
+        const height1 = size[axisId3];
         gridShader.zero = axes.gridFaceZero;
         gridShader.minorGridlines = axes.gridFaceMinorGridlines;
         for(let face = 0; face < 2; face++){
             const faceId = face;
-            if (axes.getIsForwardFace(faceId)) this._renderGridFace(faceId, width, height);
+            if (axes.getIsForwardFace(faceId)) this._renderGridFace(faceId, width1, height1);
         }
         this._gl.enable(this._gl.CULL_FACE);
     }
@@ -73509,12 +73515,12 @@ class Cartesian3dVisual extends (0, _axesJs.AxesVisualBase) {
                             sdfShader.mMatrix = axes.getTitleMMatrix(edgeId);
                             sdfShader.applyModel();
                             sdfShader.isPickShader = false;
-                            for(let i = 0; i < this.viewportCount; i++){
-                                const viewport = i + this.viewportOffset;
-                                shaderResources.bindFramebuffer(this.framebuffers[viewport]);
-                                this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                                sdfShader.vMatrix = this.vMatrices[viewport];
-                                sdfShader.pMatrix = this.pMatrices[viewport];
+                            for(let i1 = 0; i1 < this.viewportCount; i1++){
+                                const viewport1 = i1 + this.viewportOffset;
+                                shaderResources.bindFramebuffer(this.framebuffers[viewport1]);
+                                this._gl.viewport(this.viewports[viewport1].x, this.viewports[viewport1].y, this.viewports[viewport1].width, this.viewports[viewport1].height);
+                                sdfShader.vMatrix = this.vMatrices[viewport1];
+                                sdfShader.pMatrix = this.pMatrices[viewport1];
                                 sdfShader.applyView();
                                 this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                             }
@@ -73535,12 +73541,12 @@ class Cartesian3dVisual extends (0, _axesJs.AxesVisualBase) {
                         sdfShader.mMatrix = axes.getHeadingMMatrix(edgeId);
                         sdfShader.applyModel();
                         sdfShader.isPickShader = false;
-                        for(let i = 0; i < this.viewportCount; i++){
-                            const viewport = i + this.viewportOffset;
-                            shaderResources.bindFramebuffer(this.framebuffers[viewport]);
-                            this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                            sdfShader.vMatrix = this.vMatrices[viewport];
-                            sdfShader.pMatrix = this.pMatrices[viewport];
+                        for(let i2 = 0; i2 < this.viewportCount; i2++){
+                            const viewport2 = i2 + this.viewportOffset;
+                            shaderResources.bindFramebuffer(this.framebuffers[viewport2]);
+                            this._gl.viewport(this.viewports[viewport2].x, this.viewports[viewport2].y, this.viewports[viewport2].width, this.viewports[viewport2].height);
+                            sdfShader.vMatrix = this.vMatrices[viewport2];
+                            sdfShader.pMatrix = this.pMatrices[viewport2];
                             sdfShader.applyView();
                             this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                         }
@@ -73591,13 +73597,13 @@ class Cartesian3dVisual extends (0, _axesJs.AxesVisualBase) {
         for(let axisId1 = 0; axisId1 < 3; axisId1++)if (axes.areFacesVisible[axisId1]) {
             const axisId2 = axisId1 == 0 ? 1 : 0;
             const axisId3 = axisId1 == 2 ? 1 : 2;
-            const width = size[axisId2];
-            const height = size[axisId3];
+            const width1 = size[axisId2];
+            const height1 = size[axisId3];
             gridShader.zero = axes.getGridFaceZero(axisId1);
             gridShader.minorGridlines = axes.getGridFaceMinorGridlines(axisId1);
             for(let face = 0; face < 2; face++){
                 const faceId = (0, _cubeJs.Cube).AXIS_FACES[axisId1][face];
-                if (axes.getIsForwardFace(faceId) && axes.isFaceVisible[faceId]) this._renderGridFace(faceId, width, height);
+                if (axes.getIsForwardFace(faceId) && axes.isFaceVisible[faceId]) this._renderGridFace(faceId, width1, height1);
             }
         }
         this._gl.enable(this._gl.CULL_FACE);
@@ -73742,12 +73748,12 @@ class ControllerVisual {
                 this._colorShader.mMatrix = this._mMatrix;
                 this._colorShader.apply();
                 this._colorShader.applyModel();
-                for(let i = 0; i < this.viewportCount; i++){
-                    const viewport = i + this.viewportOffset;
-                    this._main.shaderResources.bindFramebuffer(this.framebuffers[viewport]);
-                    this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                    this._colorShader.vMatrix = this.vMatrices[viewport];
-                    this._colorShader.pMatrix = this.pMatrices[viewport];
+                for(let i1 = 0; i1 < this.viewportCount; i1++){
+                    const viewport1 = i1 + this.viewportOffset;
+                    this._main.shaderResources.bindFramebuffer(this.framebuffers[viewport1]);
+                    this._gl.viewport(this.viewports[viewport1].x, this.viewports[viewport1].y, this.viewports[viewport1].width, this.viewports[viewport1].height);
+                    this._colorShader.vMatrix = this.vMatrices[viewport1];
+                    this._colorShader.pMatrix = this.pMatrices[viewport1];
                     this._colorShader.applyView();
                     this._gl.drawElements(this._gl.TRIANGLE_STRIP, this._controller.rayIndexCount, this._gl.UNSIGNED_SHORT, 0);
                 }
@@ -74468,8 +74474,8 @@ class Main extends (0, _rendererJs.RendererBase) {
             if (transitionBuffer.isVisible) this._renderTransitionBuffer(transitionBuffer);
         }
         const axesVisuals = this.axesVisibility == (0, _mainJs.AxesVisibility).current ? this.currentAxes : this.axesVisibility == (0, _mainJs.AxesVisibility).previous ? this.previousAxes : null;
-        if (axesVisuals) for(let i7 = 0; i7 < axesVisuals.length; i7++){
-            const axesVisual = axesVisuals[i7];
+        if (axesVisuals) for(let i1 = 0; i1 < axesVisuals.length; i1++){
+            const axesVisual = axesVisuals[i1];
             if (axesVisual.isVisible) {
                 axesVisual.pickedIdColor = this._pickedIdColor;
                 axesVisual.pickFramebuffer = this._pickFrameBuffer;
@@ -74477,8 +74483,8 @@ class Main extends (0, _rendererJs.RendererBase) {
                 axesVisual.render(elapsedTime);
             }
         }
-        if (this.areLabelsVisible) for(let i8 = 0; i8 < this.labelSets.length; i8++){
-            const labelSetVisual = this.labelSets[i8];
+        if (this.areLabelsVisible) for(let i2 = 0; i2 < this.labelSets.length; i2++){
+            const labelSetVisual = this.labelSets[i2];
             if (labelSetVisual.isVisible) {
                 labelSetVisual.pickedIdColor = this._pickedIdColor;
                 labelSetVisual.pickFramebuffer = this._pickFrameBuffer;
@@ -74486,8 +74492,8 @@ class Main extends (0, _rendererJs.RendererBase) {
                 labelSetVisual.render(elapsedTime);
             }
         }
-        if (this.areImagesVisible) for(let i9 = 0; i9 < this.images.length; i9++){
-            const imageVisual = this.images[i9];
+        if (this.areImagesVisible) for(let i3 = 0; i3 < this.images.length; i3++){
+            const imageVisual = this.images[i3];
             if (imageVisual.isVisible) {
                 imageVisual.geometryFramebuffer = this._geometryFrameBuffer;
                 imageVisual.render(elapsedTime);
@@ -74498,8 +74504,8 @@ class Main extends (0, _rendererJs.RendererBase) {
             this._backgroundShader.color = this._core.config.backgroundColor;
             this._backgroundShader.apply();
             this._shaderResources.bindFramebuffer(this._geometryFrameBuffer);
-            for(let i = 0; i < this._viewportCount; i++){
-                const viewport = i + this._viewportOffset;
+            for(let i4 = 0; i4 < this._viewportCount; i4++){
+                const viewport = i4 + this._viewportOffset;
                 this._gl.viewport(this._viewports[viewport].x, this._viewports[viewport].y, this._viewports[viewport].width, this._viewports[viewport].height);
                 this._gl.drawElements(this._gl.TRIANGLES, this._quad.indexCount, this._gl.UNSIGNED_SHORT, 0);
             }
@@ -74516,8 +74522,8 @@ class Main extends (0, _rendererJs.RendererBase) {
             this._pickedId = 0;
         }
         if (this.transitionBuffers.length > 0 && this._quad.isInitialized) {
-            const viewport = this._viewportOffset;
-            this._postProcess(this.vMatrices[viewport], this.inverseVMatrices[viewport], this.pMatrices[viewport], this._viewports[viewport]);
+            const viewport1 = this._viewportOffset;
+            this._postProcess(this.vMatrices[viewport1], this.inverseVMatrices[viewport1], this.pMatrices[viewport1], this._viewports[viewport1]);
         }
         if (this.isLassoPicking && this._lassoShader.isInitialized) {
             this._lassoShader.vertexBuffer = this._lasso.vertexBuffer;
@@ -74529,16 +74535,16 @@ class Main extends (0, _rendererJs.RendererBase) {
             this._lassoShader.dashWidth = this.lassoDashWidth ? this.lassoDashWidth : this._core.config.lassoDashWidth;
             this._lassoShader.apply();
             const lassoThickness = this.lassoThickness ? this.lassoThickness : this._core.config.lassoThickness;
-            for(let i = 0; i < this._viewportCount; i++){
-                const viewportIndex = i + this._viewportOffset;
+            for(let i5 = 0; i5 < this._viewportCount; i5++){
+                const viewportIndex = i5 + this._viewportOffset;
                 this._shaderResources.bindFramebuffer(this._framebuffers[viewportIndex]);
-                const viewport = this._viewports[viewportIndex];
-                this._gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
-                this._lassoMMatrix[0] = lassoWidth * 2 / viewport.width;
-                this._lassoMMatrix[5] = lassoHeight * 2 / viewport.height;
+                const viewport2 = this._viewports[viewportIndex];
+                this._gl.viewport(viewport2.x, viewport2.y, viewport2.width, viewport2.height);
+                this._lassoMMatrix[0] = lassoWidth * 2 / viewport2.width;
+                this._lassoMMatrix[5] = lassoHeight * 2 / viewport2.height;
                 this._lassoMMatrix[10] = 1;
-                this._lassoMMatrix[12] = (this.lassoX0 + lassoWidth / 2) / viewport.width * 2 - 1;
-                this._lassoMMatrix[13] = 1 - (this.lassoY0 + lassoHeight / 2) / viewport.height * 2;
+                this._lassoMMatrix[12] = (this.lassoX0 + lassoWidth / 2) / viewport2.width * 2 - 1;
+                this._lassoMMatrix[13] = 1 - (this.lassoY0 + lassoHeight / 2) / viewport2.height * 2;
                 this._lassoShader.mMatrix = this._lassoMMatrix;
                 (0, _glMatrix.vec2).set(this._lassoThickness, lassoThickness / lassoWidth, lassoThickness / lassoHeight);
                 this._lassoShader.thickness = this._lassoThickness;
@@ -74625,11 +74631,11 @@ class Main extends (0, _rendererJs.RendererBase) {
             this._sphereShader.isPickShader = false;
             this._sphereShader.isShadowMap = false;
             this._shaderResources.bindFramebuffer(this._geometryFrameBuffer);
-            for(let i = 0; i < this._viewportCount; i++){
-                const viewport = i + this._viewportOffset;
-                this._gl.viewport(this._viewports[viewport].x, this._viewports[viewport].y, this._viewports[viewport].width, this._viewports[viewport].height);
-                this._sphereShader.vMatrix = this.vMatrices[viewport];
-                this._sphereShader.pMatrix = this.pMatrices[viewport];
+            for(let i1 = 0; i1 < this._viewportCount; i1++){
+                const viewport1 = i1 + this._viewportOffset;
+                this._gl.viewport(this._viewports[viewport1].x, this._viewports[viewport1].y, this._viewports[viewport1].width, this._viewports[viewport1].height);
+                this._sphereShader.vMatrix = this.vMatrices[viewport1];
+                this._sphereShader.pMatrix = this.pMatrices[viewport1];
                 this._sphereShader.applyView();
                 this._gl.drawElementsInstanced(this._gl.TRIANGLE_STRIP, this._sphereShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
             }
@@ -74673,11 +74679,11 @@ class Main extends (0, _rendererJs.RendererBase) {
             this._cylinderShader.isPickShader = false;
             this._cylinderShader.isShadowMap = false;
             this._shaderResources.bindFramebuffer(this._geometryFrameBuffer);
-            for(let i = 0; i < this._viewportCount; i++){
-                const viewport = i + this._viewportOffset;
-                this._gl.viewport(this._viewports[viewport].x, this._viewports[viewport].y, this._viewports[viewport].width, this._viewports[viewport].height);
-                this._cylinderShader.vMatrix = this.vMatrices[viewport];
-                this._cylinderShader.pMatrix = this.pMatrices[viewport];
+            for(let i2 = 0; i2 < this._viewportCount; i2++){
+                const viewport2 = i2 + this._viewportOffset;
+                this._gl.viewport(this._viewports[viewport2].x, this._viewports[viewport2].y, this._viewports[viewport2].width, this._viewports[viewport2].height);
+                this._cylinderShader.vMatrix = this.vMatrices[viewport2];
+                this._cylinderShader.pMatrix = this.pMatrices[viewport2];
                 this._cylinderShader.applyView();
                 this._gl.drawElementsInstanced(this._gl.TRIANGLE_STRIP, this._cylinderShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
             }
@@ -76988,11 +76994,11 @@ class Cartesian2dVisual extends (0, _axesJs.AxesVisualBase) {
                         sdfShader.applyModel();
                         sdfShader.isPickShader = false;
                         shaderResources.bindFramebuffer(this.geometryFramebuffer);
-                        for(let i = 0; i < this.viewportCount; i++){
-                            const viewport = i + this.viewportOffset;
-                            this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                            sdfShader.vMatrix = this.vMatrices[viewport];
-                            sdfShader.pMatrix = this.pMatrices[viewport];
+                        for(let i1 = 0; i1 < this.viewportCount; i1++){
+                            const viewport1 = i1 + this.viewportOffset;
+                            this._gl.viewport(this.viewports[viewport1].x, this.viewports[viewport1].y, this.viewports[viewport1].width, this.viewports[viewport1].height);
+                            sdfShader.vMatrix = this.vMatrices[viewport1];
+                            sdfShader.pMatrix = this.pMatrices[viewport1];
                             sdfShader.applyView();
                             this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                         }
@@ -77014,11 +77020,11 @@ class Cartesian2dVisual extends (0, _axesJs.AxesVisualBase) {
                     sdfShader.applyModel();
                     sdfShader.isPickShader = false;
                     shaderResources.bindFramebuffer(this.geometryFramebuffer);
-                    for(let i = 0; i < this.viewportCount; i++){
-                        const viewport = i + this.viewportOffset;
-                        this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                        sdfShader.vMatrix = this.vMatrices[viewport];
-                        sdfShader.pMatrix = this.pMatrices[viewport];
+                    for(let i2 = 0; i2 < this.viewportCount; i2++){
+                        const viewport2 = i2 + this.viewportOffset;
+                        this._gl.viewport(this.viewports[viewport2].x, this.viewports[viewport2].y, this.viewports[viewport2].width, this.viewports[viewport2].height);
+                        sdfShader.vMatrix = this.vMatrices[viewport2];
+                        sdfShader.pMatrix = this.pMatrices[viewport2];
                         sdfShader.applyView();
                         this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                     }
@@ -77066,13 +77072,13 @@ class Cartesian2dVisual extends (0, _axesJs.AxesVisualBase) {
         const size = axes.size;
         const axisId2 = 0;
         const axisId3 = 1;
-        const width = size[axisId2];
-        const height = size[axisId3];
+        const width1 = size[axisId2];
+        const height1 = size[axisId3];
         gridShader.zero = axes.gridFaceZero;
         gridShader.minorGridlines = axes.gridFaceMinorGridlines;
         for(let face = 0; face < 2; face++){
             const faceId = face;
-            if (axes.getIsForwardFace(faceId)) this._renderGridFace(faceId, width, height);
+            if (axes.getIsForwardFace(faceId)) this._renderGridFace(faceId, width1, height1);
         }
         this._gl.enable(this._gl.CULL_FACE);
     }
@@ -77302,11 +77308,11 @@ class Cartesian3dVisual extends (0, _axesJs.AxesVisualBase) {
                             sdfShader.applyModel();
                             sdfShader.isPickShader = false;
                             shaderResources.bindFramebuffer(this.geometryFramebuffer);
-                            for(let i = 0; i < this.viewportCount; i++){
-                                const viewport = i + this.viewportOffset;
-                                this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                                sdfShader.vMatrix = this.vMatrices[viewport];
-                                sdfShader.pMatrix = this.pMatrices[viewport];
+                            for(let i1 = 0; i1 < this.viewportCount; i1++){
+                                const viewport1 = i1 + this.viewportOffset;
+                                this._gl.viewport(this.viewports[viewport1].x, this.viewports[viewport1].y, this.viewports[viewport1].width, this.viewports[viewport1].height);
+                                sdfShader.vMatrix = this.vMatrices[viewport1];
+                                sdfShader.pMatrix = this.pMatrices[viewport1];
                                 sdfShader.applyView();
                                 this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                             }
@@ -77328,11 +77334,11 @@ class Cartesian3dVisual extends (0, _axesJs.AxesVisualBase) {
                         sdfShader.applyModel();
                         sdfShader.isPickShader = false;
                         shaderResources.bindFramebuffer(this.geometryFramebuffer);
-                        for(let i = 0; i < this.viewportCount; i++){
-                            const viewport = i + this.viewportOffset;
-                            this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                            sdfShader.vMatrix = this.vMatrices[viewport];
-                            sdfShader.pMatrix = this.pMatrices[viewport];
+                        for(let i2 = 0; i2 < this.viewportCount; i2++){
+                            const viewport2 = i2 + this.viewportOffset;
+                            this._gl.viewport(this.viewports[viewport2].x, this.viewports[viewport2].y, this.viewports[viewport2].width, this.viewports[viewport2].height);
+                            sdfShader.vMatrix = this.vMatrices[viewport2];
+                            sdfShader.pMatrix = this.pMatrices[viewport2];
                             sdfShader.applyView();
                             this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                         }
@@ -77382,13 +77388,13 @@ class Cartesian3dVisual extends (0, _axesJs.AxesVisualBase) {
         for(let axisId1 = 0; axisId1 < 3; axisId1++)if (axes.areFacesVisible[axisId1]) {
             const axisId2 = axisId1 == 0 ? 1 : 0;
             const axisId3 = axisId1 == 2 ? 1 : 2;
-            const width = size[axisId2];
-            const height = size[axisId3];
+            const width1 = size[axisId2];
+            const height1 = size[axisId3];
             gridShader.zero = axes.getGridFaceZero(axisId1);
             gridShader.minorGridlines = axes.getGridFaceMinorGridlines(axisId1);
             for(let face = 0; face < 2; face++){
                 const faceId = (0, _cubeJs.Cube).AXIS_FACES[axisId1][face];
-                if (axes.getIsForwardFace(faceId) && axes.isFaceVisible[faceId]) this._renderGridFace(faceId, width, height);
+                if (axes.getIsForwardFace(faceId) && axes.isFaceVisible[faceId]) this._renderGridFace(faceId, width1, height1);
             }
         }
         this._gl.enable(this._gl.CULL_FACE);
@@ -77904,17 +77910,17 @@ class Main extends (0, _rendererJs.RendererBase) {
         const textures = [];
         const textureIds = [];
         for(let i2 = 0; i2 < materials.length; i2++){
-            const material = materials[i2];
-            const texture = material.texture;
+            const material1 = materials[i2];
+            const texture = material1.texture;
             if (texture) {
                 let textureId;
-                let found;
-                for(let j = 0; j < textures.length; j++)if (textures[j] === texture) {
-                    found = true;
-                    textureId = j;
+                let found1;
+                for(let j1 = 0; j1 < textures.length; j1++)if (textures[j1] === texture) {
+                    found1 = true;
+                    textureId = j1;
                     break;
                 }
-                if (!found) {
+                if (!found1) {
                     textureId = textures.length;
                     textures.push(texture);
                 }
@@ -77953,8 +77959,8 @@ class Main extends (0, _rendererJs.RendererBase) {
         this._hittableBuffer = this._device.createBuffer(hittableBufferDescriptor);
         this._hittableBufferData = new (0, _hittableJs.HittableBufferData)(hittables.length);
         for(let i6 = 0; i6 < hittables.length; i6++){
-            const hittable = hittables[i6];
-            hittable.toBuffer(this._hittableBufferData, i6, materialIds[i6]);
+            const hittable1 = hittables[i6];
+            hittable1.toBuffer(this._hittableBufferData, i6, materialIds[i6]);
         }
         const linearBVHNodes = bvhAccel.nodes;
         const linearBVHNodeBufferSizeBytes = linearBVHNodes.length * (0, _bvhJs.LinearBVHNodeBufferData).SIZE * 4;
@@ -78119,9 +78125,9 @@ class Main extends (0, _rendererJs.RendererBase) {
                 for(let j = 0; j < transitionBuffer.hittables.length; j++)hittables.push(transitionBuffer.hittables[j]);
             }
         }
-        if (this.labelSets && this.labelSets.length > 0) for(let i8 = 0; i8 < this.labelSets.length; i8++){
-            const labelSet = this.labelSets[i8];
-            if (labelSet.hittables) for(let j = 0; j < labelSet.hittables.length; j++)hittables.push(labelSet.hittables[j]);
+        if (this.labelSets && this.labelSets.length > 0) for(let i1 = 0; i1 < this.labelSets.length; i1++){
+            const labelSet = this.labelSets[i1];
+            if (labelSet.hittables) for(let j1 = 0; j1 < labelSet.hittables.length; j1++)hittables.push(labelSet.hittables[j1]);
         }
         if (this.images && this.images.length > 0 && this.images[0].hittable) hittables.push(this.images[0].hittable);
         const modelPosition = (0, _glMatrix.vec3).create();
@@ -80742,24 +80748,24 @@ class BVHAccel {
         const nPrimitives = end - start;
         if (nPrimitives == 1) {
             const firstPrimOffset = this._orderedPrimitives.length;
-            for(let i = start; i < end; i++){
-                const primNum = this._primitiveInfo[i].primitiveNumber;
+            for(let i1 = start; i1 < end; i1++){
+                const primNum = this._primitiveInfo[i1].primitiveNumber;
                 this._orderedPrimitives.push(this._primitives[primNum]);
             }
             node.initLeaf(firstPrimOffset, nPrimitives, bounds);
             return node;
         } else {
             const centroidBounds = new (0, _aabbJs.AABB)();
-            for(let i = start; i < end; i++)centroidBounds.unionPoint(this._primitiveInfo[i].centroid);
+            for(let i2 = start; i2 < end; i2++)centroidBounds.unionPoint(this._primitiveInfo[i2].centroid);
             const dim = centroidBounds.maximumExtent();
             let mid = Math.floor((start + end) / 2);
             if (centroidBounds.max[dim] == centroidBounds.min[dim]) {
-                const firstPrimOffset = this._orderedPrimitives.length;
-                for(let i = start; i < end; i++){
-                    const primNum = this._primitiveInfo[i].primitiveNumber;
-                    this._orderedPrimitives.push(this._primitives[primNum]);
+                const firstPrimOffset1 = this._orderedPrimitives.length;
+                for(let i3 = start; i3 < end; i3++){
+                    const primNum1 = this._primitiveInfo[i3].primitiveNumber;
+                    this._orderedPrimitives.push(this._primitives[primNum1]);
                 }
-                node.initLeaf(firstPrimOffset, nPrimitives, bounds);
+                node.initLeaf(firstPrimOffset1, nPrimitives, bounds);
                 return node;
             } else {
                 switch(this._splitMethod){
@@ -80771,41 +80777,41 @@ class BVHAccel {
                         primtiveInfo.sort(function(a, b) {
                             return a.centroid[dim] - b.centroid[dim];
                         });
-                        for(let i = start; i < end; i++)this._primitiveInfo[i] = primtiveInfo[i - start];
+                        for(let i4 = start; i4 < end; i4++)this._primitiveInfo[i4] = primtiveInfo[i4 - start];
                         break;
                     case SplitMethod.sah:
                     default:
                         if (nPrimitives <= 4) {
                             mid = Math.floor((start + end) / 2);
-                            const primtiveInfo = this._primitiveInfo.slice(start, end);
-                            primtiveInfo.sort(function(a, b) {
+                            const primtiveInfo1 = this._primitiveInfo.slice(start, end);
+                            primtiveInfo1.sort(function(a, b) {
                                 return a.centroid[dim] - b.centroid[dim];
                             });
-                            for(let i = start; i < end; i++)this._primitiveInfo[i] = primtiveInfo[i - start];
+                            for(let i5 = start; i5 < end; i5++)this._primitiveInfo[i5] = primtiveInfo1[i5 - start];
                         } else {
                             const nBuckets = 12;
                             const buckets = [];
-                            for(let i = 0; i < nBuckets; i++)buckets.push({
+                            for(let i6 = 0; i6 < nBuckets; i6++)buckets.push({
                                 count: 0,
                                 bounds: new (0, _aabbJs.AABB)()
                             });
-                            for(let i2 = start; i2 < end; i2++){
-                                centroidBounds.offset(this._primitiveInfo[i2].centroid, this._normalized);
+                            for(let i7 = start; i7 < end; i7++){
+                                centroidBounds.offset(this._primitiveInfo[i7].centroid, this._normalized);
                                 const b = Math.min(Math.round(nBuckets * this._normalized[dim]), nBuckets - 1);
                                 buckets[b].count++;
-                                buckets[b].bounds.unionBounds(this._primitiveInfo[i2].bounds);
+                                buckets[b].bounds.unionBounds(this._primitiveInfo[i7].bounds);
                             }
                             const cost = [];
-                            for(let i3 = 0; i3 < nBuckets - 1; i3++){
+                            for(let i8 = 0; i8 < nBuckets - 1; i8++){
                                 const b0 = new (0, _aabbJs.AABB)();
                                 const b1 = new (0, _aabbJs.AABB)();
                                 let count0 = 0;
                                 let count1 = 0;
-                                for(let j = 0; j <= i3; j++){
+                                for(let j = 0; j <= i8; j++){
                                     b0.unionBounds(buckets[j].bounds);
                                     count0 += buckets[j].count;
                                 }
-                                for(let j1 = i3 + 1; j1 < nBuckets; j1++){
+                                for(let j1 = i8 + 1; j1 < nBuckets; j1++){
                                     b1.unionBounds(buckets[j1].bounds);
                                     count1 += buckets[j1].count;
                                 }
@@ -80813,32 +80819,32 @@ class BVHAccel {
                             }
                             let minCost = cost[0];
                             let minCostSplitBucket = 0;
-                            for(let i4 = 1; i4 < nBuckets - 1; i4++)if (cost[i4] < minCost) {
-                                minCost = cost[i4];
-                                minCostSplitBucket = i4;
+                            for(let i9 = 1; i9 < nBuckets - 1; i9++)if (cost[i9] < minCost) {
+                                minCost = cost[i9];
+                                minCostSplitBucket = i9;
                             }
                             const leafCost = nPrimitives;
                             if (nPrimitives > this._maxPrimsInNode || minCost < leafCost) {
-                                const primtiveInfo = this._primitiveInfo.slice(start, end);
-                                primtiveInfo.sort(function(a, b) {
+                                const primtiveInfo2 = this._primitiveInfo.slice(start, end);
+                                primtiveInfo2.sort(function(a, b) {
                                     return a.centroid[dim] - b.centroid[dim];
                                 });
-                                for(let i = start; i < end; i++)this._primitiveInfo[i] = primtiveInfo[i - start];
-                                for(let i5 = start; i5 < end; i5++){
-                                    centroidBounds.offset(this._primitiveInfo[i5].centroid, this._normalized);
-                                    const b = Math.min(Math.round(nBuckets * this._normalized[dim]), nBuckets - 1);
-                                    if (b > minCostSplitBucket) {
-                                        mid = i5;
+                                for(let i10 = start; i10 < end; i10++)this._primitiveInfo[i10] = primtiveInfo2[i10 - start];
+                                for(let i11 = start; i11 < end; i11++){
+                                    centroidBounds.offset(this._primitiveInfo[i11].centroid, this._normalized);
+                                    const b2 = Math.min(Math.round(nBuckets * this._normalized[dim]), nBuckets - 1);
+                                    if (b2 > minCostSplitBucket) {
+                                        mid = i11;
                                         break;
                                     }
                                 }
                             } else {
-                                const firstPrimOffset = this._orderedPrimitives.length;
-                                for(let i = start; i < end; i++){
-                                    const primNum = this._primitiveInfo[i].primitiveNumber;
-                                    this._orderedPrimitives.push(this._primitives[primNum]);
+                                const firstPrimOffset2 = this._orderedPrimitives.length;
+                                for(let i12 = start; i12 < end; i12++){
+                                    const primNum2 = this._primitiveInfo[i12].primitiveNumber;
+                                    this._orderedPrimitives.push(this._primitives[primNum2]);
                                 }
-                                node.initLeaf(firstPrimOffset, nPrimitives, bounds);
+                                node.initLeaf(firstPrimOffset2, nPrimitives, bounds);
                                 return node;
                             }
                         }
@@ -81348,19 +81354,19 @@ class ImageVisual {
                 this.hittable = new (0, _hittableJs.HittableRotatedXyRect)(hittableRotatedXyRectOptions);
             } else if (this._image instanceof (0, _imageJs.ImageSphere)) {
                 const imageSphere = this._image;
-                const modelSizeX = imageSphere.maxBoundsX - imageSphere.minBoundsX;
-                const modelSizeY = imageSphere.maxBoundsY - imageSphere.minBoundsY;
-                const modelSizeZ = imageSphere.maxBoundsZ - imageSphere.minBoundsZ;
-                const maxBounds = Math.max(modelSizeX, Math.max(modelSizeY, modelSizeZ));
-                const boundsScaling = maxBounds == 0 ? 1 : 1 / maxBounds;
-                const position = imageSphere.position;
-                (0, _glMatrix.vec3).subtract(position, imageSphere.position, position);
-                (0, _glMatrix.vec3).scale(position, position, boundsScaling);
-                (0, _glMatrix.vec3).scale(position, position, modelScale);
-                (0, _glMatrix.vec3).transformQuat(position, position, modelRotation);
-                (0, _glMatrix.vec3).add(position, position, modelPosition);
+                const modelSizeX1 = imageSphere.maxBoundsX - imageSphere.minBoundsX;
+                const modelSizeY1 = imageSphere.maxBoundsY - imageSphere.minBoundsY;
+                const modelSizeZ1 = imageSphere.maxBoundsZ - imageSphere.minBoundsZ;
+                const maxBounds1 = Math.max(modelSizeX1, Math.max(modelSizeY1, modelSizeZ1));
+                const boundsScaling1 = maxBounds1 == 0 ? 1 : 1 / maxBounds1;
+                const position1 = imageSphere.position;
+                (0, _glMatrix.vec3).subtract(position1, imageSphere.position, position1);
+                (0, _glMatrix.vec3).scale(position1, position1, boundsScaling1);
+                (0, _glMatrix.vec3).scale(position1, position1, modelScale);
+                (0, _glMatrix.vec3).transformQuat(position1, position1, modelRotation);
+                (0, _glMatrix.vec3).add(position1, position1, modelPosition);
                 const hittableSphereOptions = {
-                    center: position,
+                    center: position1,
                     radius: imageSphere.radius / 2,
                     material: material
                 };
@@ -82676,8 +82682,8 @@ parcelHelpers.export(exports, "base", ()=>base);
 const base = {
     vega
 };
-function use(vega1) {
-    base.vega = vega1;
+function use(vega) {
+    base.vega = vega;
 }
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"bqYNS":[function(require,module,exports) {
@@ -82873,12 +82879,12 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "PresenterElement", ()=>PresenterElement);
 var PresenterElement;
-(function(PresenterElement1) {
-    PresenterElement1[PresenterElement1["root"] = 0] = "root";
-    PresenterElement1[PresenterElement1["gl"] = 1] = "gl";
-    PresenterElement1[PresenterElement1["panel"] = 2] = "panel";
-    PresenterElement1[PresenterElement1["legend"] = 3] = "legend";
-    PresenterElement1[PresenterElement1["vegaControls"] = 4] = "vegaControls";
+(function(PresenterElement) {
+    PresenterElement[PresenterElement["root"] = 0] = "root";
+    PresenterElement[PresenterElement["gl"] = 1] = "gl";
+    PresenterElement[PresenterElement["panel"] = 2] = "panel";
+    PresenterElement[PresenterElement["legend"] = 3] = "legend";
+    PresenterElement[PresenterElement["vegaControls"] = 4] = "vegaControls";
 })(PresenterElement || (PresenterElement = {}));
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"5qk80":[function(require,module,exports) {
@@ -83374,12 +83380,12 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "GroupType", ()=>GroupType);
 var GroupType;
-(function(GroupType1) {
-    GroupType1[GroupType1["none"] = 0] = "none";
-    GroupType1[GroupType1["legend"] = 1] = "legend";
-    GroupType1[GroupType1["xAxis"] = 2] = "xAxis";
-    GroupType1[GroupType1["yAxis"] = 3] = "yAxis";
-    GroupType1[GroupType1["zAxis"] = 4] = "zAxis";
+(function(GroupType) {
+    GroupType[GroupType["none"] = 0] = "none";
+    GroupType[GroupType["legend"] = 1] = "legend";
+    GroupType[GroupType["xAxis"] = 2] = "xAxis";
+    GroupType[GroupType["yAxis"] = 3] = "yAxis";
+    GroupType[GroupType["zAxis"] = 4] = "zAxis";
 })(GroupType || (GroupType = {}));
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"gGHdI":[function(require,module,exports) {
@@ -83404,12 +83410,12 @@ var _easing = require("../easing");
 var _image = require("./image");
 var _defaults = require("../defaults");
 var _canvas = require("./canvas");
-function init(options, mcRendererOptions1) {
+function init(options, mcRendererOptions) {
     const { container  } = options;
     const core = new (0, _morphcharts.Core)({
         container
     });
-    (0, _renderer.getRenderer)(mcRendererOptions1, core);
+    (0, _renderer.getRenderer)(mcRendererOptions, core);
     (0, _canvas.listenCanvasEvents)(core, options);
     core.config.pickSelectDelay = 50;
     const ref = {
@@ -83447,7 +83453,7 @@ function init(options, mcRendererOptions1) {
             (0, _renderer.setRendererOptions)(core.renderer, mcRendererOptions);
             ref.lastMorphChartsRendererOptions = mcRendererOptions;
         },
-        lastMorphChartsRendererOptions: mcRendererOptions1
+        lastMorphChartsRendererOptions: mcRendererOptions
     };
     const cam = (t)=>{
         (0, _glMatrix.quat).slerp(ref.qCameraRotationCurrent, ref.qCameraRotationFrom, ref.qCameraRotationTo, t);
@@ -83474,13 +83480,13 @@ function init(options, mcRendererOptions1) {
             cam(t);
         } else if (ref.isCameraMovement) {
             ref.cameraTime += elapsedTime;
-            const totalTime = core.config.transitionDuration;
-            if (ref.cameraTime >= totalTime) {
+            const totalTime1 = core.config.transitionDuration;
+            if (ref.cameraTime >= totalTime1) {
                 ref.isCameraMovement = false;
-                ref.cameraTime = totalTime;
+                ref.cameraTime = totalTime1;
             }
-            const t = (0, _easing.easing)(ref.cameraTime / totalTime);
-            cam(t);
+            const t1 = (0, _easing.easing)(ref.cameraTime / totalTime1);
+            cam(t1);
         } else core.inputManager.isPickingEnabled = true;
     };
     return ref;
@@ -83578,8 +83584,8 @@ function morphChartsRender(ref, prevStage, stage, height, width, preStage, color
         const imageDataCache = {};
         backgroundImages.forEach((backgroundImage)=>{
             const imageBounds = convertBounds(backgroundImage.bounds);
-            const imageData1 = imageDataCache[backgroundImage.url];
-            if (imageData1) addImage(imageBounds, imageData1);
+            const imageData = imageDataCache[backgroundImage.url];
+            if (imageData) addImage(imageBounds, imageData);
             else (0, _image.getImageData)(backgroundImage.url).then((imageData)=>{
                 imageDataCache[backgroundImage.url] = imageData;
                 addImage(imageBounds, imageData);
@@ -84043,7 +84049,7 @@ const createCubeLayer = (props)=>{
     const { ref , stage  } = props;
     const { core  } = ref;
     const scatter = new (0, _morphcharts.Layouts).Scatter(core);
-    const { ids , colors: colors1 , positionsX , positionsY , positionsZ , sizesX , sizesY , sizesZ , bounds , maxColor: maxColor1 , palette: palette1 ,  } = convert(stage);
+    const { ids , colors , positionsX , positionsY , positionsZ , sizesX , sizesY , sizesZ , bounds , maxColor , palette ,  } = convert(stage);
     if (!ids.length) return;
     const { renderer  } = core;
     let cubeTransitionBuffer = renderer.transitionBuffers.find((t)=>t.key === key);
@@ -84076,11 +84082,11 @@ const createCubeLayer = (props)=>{
         },
         bounds,
         unitColorMap: {
-            colors: colors1,
+            colors,
             ids,
             minColor: 0,
-            maxColor: maxColor1,
-            palette: palette1
+            maxColor,
+            palette
         }
     };
     return layer;
@@ -84335,7 +84341,7 @@ var _color = require("./color");
 const createTextLayer = (props)=>{
     const { ref , stage  } = props;
     const { core  } = ref;
-    const { positionsX , positionsY , positionsZ , sizes , bounds: bounds1 , maxGlyphs , text ,  } = convert(stage);
+    const { positionsX , positionsY , positionsZ , sizes , bounds , maxGlyphs , text ,  } = convert(stage);
     if (text.length === 0) {
         core.renderer.labelSets = [];
         return;
@@ -84361,7 +84367,7 @@ const createTextLayer = (props)=>{
             labelSet.maxBoundsY = maxBoundsY;
             labelSet.maxBoundsZ = maxBoundsZ;
         },
-        bounds: bounds1
+        bounds
     };
     const labelSetVisual = core.renderer.createLabelSetVisual(labelSet);
     core.renderer.labelSets = [
@@ -84621,7 +84627,7 @@ let registered = false;
 //dynamic superclass lets us create a subclass at execution phase instead of declaration phase.
 //This allows us to retrieve vega.View from either UMD or ES6 consumers of this class.
 //pass in the SuperClass, which should be a vega.View
-function _ViewGl(runtime1, config1) {
+function _ViewGl(runtime, config) {
     //dynamic superclass, since we don't know have vega.View in the declaration phase
     class ViewGlInternal extends (0, _base.base).vega.View {
         constructor(runtime, config = {}){
@@ -84660,7 +84666,7 @@ function _ViewGl(runtime1, config1) {
             if (this.presenter.logger) this.presenter.logger(e);
         }
     }
-    const instance = new ViewGlInternal(runtime1, config1);
+    const instance = new ViewGlInternal(runtime, config);
     return instance;
 }
 const ViewGl = _ViewGl;
@@ -85605,10 +85611,10 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "DataLayoutChange", ()=>DataLayoutChange);
 parcelHelpers.export(exports, "Animator", ()=>Animator);
 var DataLayoutChange;
-(function(DataLayoutChange1) {
-    DataLayoutChange1[DataLayoutChange1["same"] = 0] = "same";
-    DataLayoutChange1[DataLayoutChange1["reset"] = 1] = "reset";
-    DataLayoutChange1[DataLayoutChange1["refine"] = 2] = "refine";
+(function(DataLayoutChange) {
+    DataLayoutChange[DataLayoutChange["same"] = 0] = "same";
+    DataLayoutChange[DataLayoutChange["reset"] = 1] = "reset";
+    DataLayoutChange[DataLayoutChange["refine"] = 2] = "refine";
 })(DataLayoutChange || (DataLayoutChange = {}));
 class Animator {
     constructor(dataScope, props){
@@ -85701,12 +85707,12 @@ class AxisSelection {
             const role = dimToRole[i];
             const axes = this.stage.axes[role];
             //all axes in a faceted chart should be the same
-            const axis1 = axes.filter((axis)=>axis.tickText.length)[0];
-            if (axis1) {
+            const axis = axes.filter((axis)=>axis.tickText.length)[0];
+            if (axis) {
                 const capabilities = this.specCapabilities.roles.filter((r)=>r.role === role)[0];
                 const column = this.columns[role];
                 if (division >= 0 && (capabilities === null || capabilities === void 0 ? void 0 : capabilities.axisSelection)) searchRoles.push({
-                    axis: axis1,
+                    axis,
                     role,
                     capabilities,
                     column,
@@ -86000,13 +86006,13 @@ var _constants = require("./constants");
 var _searchExpression = require("@msrvida/search-expression");
 var _util = require("./util");
 var Action;
-(function(Action1) {
-    Action1[Action1["deselect"] = 0] = "deselect";
-    Action1[Action1["isolate"] = 1] = "isolate";
-    Action1[Action1["exclude"] = 2] = "exclude";
-    Action1[Action1["reset"] = 3] = "reset";
-    Action1[Action1["next"] = 4] = "next";
-    Action1[Action1["previous"] = 5] = "previous";
+(function(Action) {
+    Action[Action["deselect"] = 0] = "deselect";
+    Action[Action["isolate"] = 1] = "isolate";
+    Action[Action["exclude"] = 2] = "exclude";
+    Action[Action["reset"] = 3] = "reset";
+    Action[Action["next"] = 4] = "next";
+    Action[Action["previous"] = 5] = "previous";
 })(Action || (Action = {}));
 class Details {
     constructor(parentElement, language, animator, dataScope, colorMapHandler, hasColorMaps){
@@ -86265,7 +86271,7 @@ function selectQuantitative(colorBinType, column, legend, clickedIndex) {
                     };
                     return ex;
                 }
-                const dash = rowText.indexOf("\u2013"); //this is not the common dash character!
+                const dash = rowText.indexOf("–"); //this is not the common dash character!
                 if (dash > 0) {
                     //bug in Vega for quantize?
                     //lowOperator = '>';
@@ -86274,7 +86280,7 @@ function selectQuantitative(colorBinType, column, legend, clickedIndex) {
                     highValue = rowText.substr(dash + 1);
                 } else {
                     if (rowText.indexOf("<") >= 0) highValue = rowText.substring(2);
-                    else if (rowText.indexOf("\u2265") >= 0) lowValue = rowText.substring(2);
+                    else if (rowText.indexOf("≥") >= 0) lowValue = rowText.substring(2);
                 }
             }
     }

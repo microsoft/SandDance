@@ -83,7 +83,7 @@ var $mKnoG = parcelRequire("mKnoG");
 var $818261f0bc10eb56$var$maxDistinctVal = 20;
 var $818261f0bc10eb56$var$minDistinctVal = 2;
 var $818261f0bc10eb56$var$BarChartRecommenderSummary = /** @class */ function() {
-    function BarChartRecommenderSummary1(columns, data) {
+    function BarChartRecommenderSummary(columns, data) {
         var score = -1;
         for(var i = 0; i < columns.length; i++){
             var recommendation = new $818261f0bc10eb56$var$BarChartRecommender(columns[i], data).recommend();
@@ -104,16 +104,16 @@ var $818261f0bc10eb56$var$BarChartRecommenderSummary = /** @class */ function() 
             }
         }
     }
-    BarChartRecommenderSummary1.prototype.recommend = function() {
+    BarChartRecommenderSummary.prototype.recommend = function() {
         return this.best;
     };
-    return BarChartRecommenderSummary1;
+    return BarChartRecommenderSummary;
 }();
 module.exports.BarChartRecommenderSummary = $818261f0bc10eb56$var$BarChartRecommenderSummary;
 var $818261f0bc10eb56$var$BarChartRecommender = /** @class */ function() {
-    function BarChartRecommender1(column1, data) {
+    function BarChartRecommender(column, data) {
         this.score = 0;
-        this.column = column1;
+        this.column = column;
         //the total score for bar chart is 1
         this.rules = [
             function(column) {
@@ -123,9 +123,9 @@ var $818261f0bc10eb56$var$BarChartRecommender = /** @class */ function() {
                 else return false;
             }, 
         ];
-        for(var i = 0; i < this.rules.length; i++)if (this.rules[i](column1)) this.score++;
+        for(var i = 0; i < this.rules.length; i++)if (this.rules[i](column)) this.score++;
     }
-    BarChartRecommender1.prototype.recommend = function() {
+    BarChartRecommender.prototype.recommend = function() {
         var rec = {
             chart: "barchart",
             columns: {
@@ -137,7 +137,7 @@ var $818261f0bc10eb56$var$BarChartRecommender = /** @class */ function() {
         };
         return rec;
     };
-    return BarChartRecommender1;
+    return BarChartRecommender;
 }();
 module.exports.BarChartRecommender = $818261f0bc10eb56$var$BarChartRecommender;
 
@@ -153,8 +153,8 @@ parcelRequire.register("mKnoG", function(module, exports) {
 module.exports.defaultColorScheme = module.exports.Recommender = module.exports.maxCategoricalColors = void 0;
 module.exports.maxCategoricalColors = 20;
 var $04460791e43e84ac$var$Recommender = /** @class */ function() {
-    function Recommender1(columns, data) {}
-    return Recommender1;
+    function Recommender(columns, data) {}
+    return Recommender;
 }();
 module.exports.Recommender = $04460791e43e84ac$var$Recommender;
 function $04460791e43e84ac$var$defaultColorScheme(c) {
@@ -232,7 +232,7 @@ var $mKnoG = parcelRequire("mKnoG");
 
 var $a7afS = parcelRequire("a7afS");
 var $482125d789b1323b$var$ScatterPlotRecommenderSummary = /** @class */ function() {
-    function ScatterPlotRecommenderSummary1(columns, data) {
+    function ScatterPlotRecommenderSummary(columns, data) {
         var rec = {
             chart: "scatterplot",
             score: undefined,
@@ -260,10 +260,10 @@ var $482125d789b1323b$var$ScatterPlotRecommenderSummary = /** @class */ function
         });
         if (rec.columns.x && rec.columns.y) this.best = rec;
     }
-    ScatterPlotRecommenderSummary1.prototype.recommend = function() {
+    ScatterPlotRecommenderSummary.prototype.recommend = function() {
         return this.best;
     };
-    return ScatterPlotRecommenderSummary1;
+    return ScatterPlotRecommenderSummary;
 }();
 module.exports.ScatterPlotRecommenderSummary = $482125d789b1323b$var$ScatterPlotRecommenderSummary;
 
@@ -309,7 +309,7 @@ var $b7nfv = parcelRequire("b7nfv");
 
 var $6bWv0 = parcelRequire("6bWv0");
 var $6cbad9e37f0db778$var$RecommenderSummary = /** @class */ function() {
-    function RecommenderSummary1(columns, data) {
+    function RecommenderSummary(columns, data) {
         var quickRec = new $6bWv0.ScatterPlotRecommenderSummary(columns, data).recommend();
         if (quickRec) this.rec = quickRec;
         else {
@@ -322,10 +322,10 @@ var $6cbad9e37f0db778$var$RecommenderSummary = /** @class */ function() {
             };
         }
     }
-    RecommenderSummary1.prototype.recommend = function() {
+    RecommenderSummary.prototype.recommend = function() {
         return this.rec;
     };
-    return RecommenderSummary1;
+    return RecommenderSummary;
 }();
 module.exports.RecommenderSummary = $6cbad9e37f0db778$var$RecommenderSummary;
 
@@ -521,7 +521,8 @@ function $9d0255b0e2eb5a6d$export$2e2bcd8739ae039(specContext) {
             props: bandProps
         }
     ];
-    if (insight.totalStyle === "sum-strip-percent") {
+    const { totalStyle: totalStyle , view: view  } = insight;
+    if (totalStyle === "sum-strip-percent") {
         x.aggregate = "percent";
         x.title = language.percent;
         const stripProps = {
@@ -531,7 +532,8 @@ function $9d0255b0e2eb5a6d$export$2e2bcd8739ae039(specContext) {
             size: specColumns.size,
             sort: specColumns.sort,
             z: specColumns.z,
-            showAxes: showAxes
+            showAxes: showAxes,
+            view: view
         };
         layouts.push({
             layoutType: "Strip",
@@ -550,7 +552,7 @@ function $9d0255b0e2eb5a6d$export$2e2bcd8739ae039(specContext) {
             layoutType: "AggregateContainer",
             props: aggProps
         });
-        switch(insight.totalStyle){
+        switch(totalStyle){
             case "sum-treemap":
                 {
                     x.aggregate = "sum";
@@ -560,7 +562,8 @@ function $9d0255b0e2eb5a6d$export$2e2bcd8739ae039(specContext) {
                         size: specColumns.size,
                         treeMapMethod: specViewOptions.language.treeMapMethod,
                         z: specColumns.z,
-                        showAxes: showAxes
+                        showAxes: showAxes,
+                        view: view
                     };
                     layouts.push({
                         layoutType: "Treemap",
@@ -572,17 +575,18 @@ function $9d0255b0e2eb5a6d$export$2e2bcd8739ae039(specContext) {
                 {
                     x.aggregate = "sum";
                     x.title = language.sum;
-                    const stripProps = {
+                    const stripProps1 = {
                         sortOrder: "ascending",
                         orientation: "horizontal",
                         size: specColumns.size,
                         sort: specColumns.sort,
                         z: specColumns.z,
-                        showAxes: showAxes
+                        showAxes: showAxes,
+                        view: view
                     };
                     layouts.push({
                         layoutType: "Strip",
-                        props: stripProps
+                        props: stripProps1
                     });
                     break;
                 }
@@ -590,17 +594,18 @@ function $9d0255b0e2eb5a6d$export$2e2bcd8739ae039(specContext) {
                 {
                     x.aggregate = "count";
                     x.title = language.count;
-                    const stripProps = {
+                    const stripProps2 = {
                         sortOrder: "ascending",
                         orientation: "horizontal",
                         size: specColumns.size,
                         sort: specColumns.sort,
                         z: specColumns.z,
-                        showAxes: showAxes
+                        showAxes: showAxes,
+                        view: view
                     };
                     layouts.push({
                         layoutType: "Strip",
-                        props: stripProps
+                        props: stripProps2
                     });
                     break;
                 }
@@ -614,7 +619,8 @@ function $9d0255b0e2eb5a6d$export$2e2bcd8739ae039(specContext) {
                         z: specColumns.z,
                         maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
                         maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal,
-                        showAxes: showAxes
+                        showAxes: showAxes,
+                        view: view
                     };
                     layouts.push({
                         layoutType: "Square",
@@ -643,7 +649,8 @@ function $9d0255b0e2eb5a6d$export$2e2bcd8739ae039(specContext) {
                 {
                     role: "z",
                     axisSelection: ((_d = specColumns.z) === null || _d === void 0 ? void 0 : _d.quantitative) ? "range" : "exact",
-                    allowNone: true
+                    allowNone: true,
+                    disabled: view === "2d"
                 },
                 {
                     role: "color",
@@ -719,7 +726,8 @@ function $89432af83262137a$export$2e2bcd8739ae039(specContext) {
             props: bandProps
         }
     ];
-    if (insight.totalStyle === "sum-strip-percent") {
+    const { totalStyle: totalStyle , view: view  } = insight;
+    if (totalStyle === "sum-strip-percent") {
         y.aggregate = "percent";
         y.title = language.percent;
         const stripProps = {
@@ -729,7 +737,8 @@ function $89432af83262137a$export$2e2bcd8739ae039(specContext) {
             size: specColumns.size,
             sort: specColumns.sort,
             z: specColumns.z,
-            showAxes: showAxes
+            showAxes: showAxes,
+            view: view
         };
         layouts.push({
             layoutType: "Strip",
@@ -748,7 +757,7 @@ function $89432af83262137a$export$2e2bcd8739ae039(specContext) {
             layoutType: "AggregateContainer",
             props: aggProps
         });
-        switch(insight.totalStyle){
+        switch(totalStyle){
             case "sum-treemap":
                 {
                     y.aggregate = "sum";
@@ -758,7 +767,8 @@ function $89432af83262137a$export$2e2bcd8739ae039(specContext) {
                         size: specColumns.size,
                         treeMapMethod: specViewOptions.language.treeMapMethod,
                         z: specColumns.z,
-                        showAxes: showAxes
+                        showAxes: showAxes,
+                        view: view
                     };
                     layouts.push({
                         layoutType: "Treemap",
@@ -770,17 +780,18 @@ function $89432af83262137a$export$2e2bcd8739ae039(specContext) {
                 {
                     y.aggregate = "sum";
                     y.title = language.sum;
-                    const stripProps = {
+                    const stripProps1 = {
                         sortOrder: "descending",
                         orientation: "vertical",
                         size: specColumns.size,
                         sort: specColumns.sort,
                         z: specColumns.z,
-                        showAxes: showAxes
+                        showAxes: showAxes,
+                        view: view
                     };
                     layouts.push({
                         layoutType: "Strip",
-                        props: stripProps
+                        props: stripProps1
                     });
                     break;
                 }
@@ -788,16 +799,17 @@ function $89432af83262137a$export$2e2bcd8739ae039(specContext) {
                 {
                     y.aggregate = "count";
                     y.title = language.count;
-                    const stripProps = {
+                    const stripProps2 = {
                         sortOrder: "descending",
                         orientation: "vertical",
                         sort: specColumns.sort,
                         z: specColumns.z,
-                        showAxes: showAxes
+                        showAxes: showAxes,
+                        view: view
                     };
                     layouts.push({
                         layoutType: "Strip",
-                        props: stripProps
+                        props: stripProps2
                     });
                     break;
                 }
@@ -811,7 +823,8 @@ function $89432af83262137a$export$2e2bcd8739ae039(specContext) {
                         z: specColumns.z,
                         maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
                         maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal,
-                        showAxes: showAxes
+                        showAxes: showAxes,
+                        view: view
                     };
                     layouts.push({
                         layoutType: "Square",
@@ -840,7 +853,8 @@ function $89432af83262137a$export$2e2bcd8739ae039(specContext) {
                 {
                     role: "z",
                     axisSelection: ((_b = specColumns.z) === null || _b === void 0 ? void 0 : _b.quantitative) ? "range" : "exact",
-                    allowNone: true
+                    allowNone: true,
+                    disabled: view === "2d"
                 },
                 {
                     role: "color",
@@ -950,7 +964,8 @@ function $e99549e32deab63c$export$2e2bcd8739ae039(specContext) {
             props: aggProps
         }, 
     ];
-    switch(insight.totalStyle){
+    const { totalStyle: totalStyle , view: view  } = insight;
+    switch(totalStyle){
         case "sum-treemap":
             {
                 aggProps.aggregation = "sum";
@@ -959,7 +974,8 @@ function $e99549e32deab63c$export$2e2bcd8739ae039(specContext) {
                     size: specColumns.size,
                     treeMapMethod: specViewOptions.language.treeMapMethod,
                     z: specColumns.z,
-                    showAxes: showAxes
+                    showAxes: showAxes,
+                    view: view
                 };
                 layouts.push({
                     layoutType: "Treemap",
@@ -976,7 +992,8 @@ function $e99549e32deab63c$export$2e2bcd8739ae039(specContext) {
                     size: specColumns.size,
                     sort: specColumns.sort,
                     z: specColumns.z,
-                    showAxes: showAxes
+                    showAxes: showAxes,
+                    view: view
                 };
                 layouts.push({
                     layoutType: "Strip",
@@ -987,16 +1004,17 @@ function $e99549e32deab63c$export$2e2bcd8739ae039(specContext) {
         case "count-strip":
             {
                 aggProps.aggregation = "count";
-                const stripProps = {
+                const stripProps1 = {
                     sortOrder: "ascending",
                     orientation: "vertical",
                     sort: specColumns.sort,
                     z: specColumns.z,
-                    showAxes: showAxes
+                    showAxes: showAxes,
+                    view: view
                 };
                 layouts.push({
                     layoutType: "Strip",
-                    props: stripProps
+                    props: stripProps1
                 });
                 break;
             }
@@ -1009,7 +1027,8 @@ function $e99549e32deab63c$export$2e2bcd8739ae039(specContext) {
                     z: specColumns.z,
                     maxGroupedUnits: null,
                     maxGroupedFillSize: null,
-                    showAxes: showAxes
+                    showAxes: showAxes,
+                    view: view
                 };
                 aggProps.onBuild = (aggMaxExtent, aggMaxExtentScaled)=>{
                     squareProps.maxGroupedUnits = aggMaxExtent;
@@ -1050,7 +1069,8 @@ function $e99549e32deab63c$export$2e2bcd8739ae039(specContext) {
                 {
                     role: "z",
                     axisSelection: ((_j = specColumns.z) === null || _j === void 0 ? void 0 : _j.quantitative) ? "range" : "exact",
-                    allowNone: true
+                    allowNone: true,
+                    disabled: view === "2d"
                 },
                 {
                     role: "color",
@@ -1092,12 +1112,14 @@ function $e99549e32deab63c$export$2e2bcd8739ae039(specContext) {
 function $0e5537dc1b4c969f$export$2e2bcd8739ae039(specContext) {
     var _a;
     const { insight: insight , specColumns: specColumns  } = specContext;
+    const { view: view  } = insight;
     const squareProps = {
         sortBy: specColumns.sort,
         fillDirection: "right-down",
         z: specColumns.z,
         collapseYHeight: true,
-        showAxes: !insight.hideAxes
+        showAxes: !insight.hideAxes,
+        view: view
     };
     const axisScales = {
         z: {
@@ -1118,7 +1140,8 @@ function $0e5537dc1b4c969f$export$2e2bcd8739ae039(specContext) {
                 {
                     role: "z",
                     axisSelection: ((_a = specColumns.z) === null || _a === void 0 ? void 0 : _a.quantitative) ? "range" : "exact",
-                    allowNone: true
+                    allowNone: true,
+                    disabled: view === "2d"
                 },
                 {
                     role: "color",
@@ -1161,7 +1184,8 @@ function $cabbea1bb44c3af8$export$2e2bcd8739ae039(specContext) {
         scatterPointScaleDisplay: specViewOptions.language.scatterPointScale,
         zGrounded: specViewOptions.language.zGrounded,
         backgroundImageExtents: backgroundImageExtents,
-        showAxes: !(backgroundImageExtents || insight.hideAxes)
+        showAxes: !(backgroundImageExtents || insight.hideAxes),
+        view: insight.view
     };
     const axisScales = {
         x: {
@@ -1197,7 +1221,8 @@ function $cabbea1bb44c3af8$export$2e2bcd8739ae039(specContext) {
                 {
                     role: "z",
                     axisSelection: ((_j = specColumns.z) === null || _j === void 0 ? void 0 : _j.quantitative) ? "range" : "exact",
-                    allowNone: true
+                    allowNone: true,
+                    disabled: false
                 },
                 {
                     role: "color",
@@ -1359,13 +1384,15 @@ function $ad60c0d5f2be70b9$export$2e2bcd8739ae039(specContext) {
 function $484a23b50e74118e$export$2e2bcd8739ae039(specContext) {
     var _a;
     const { insight: insight , specColumns: specColumns  } = specContext;
+    const { view: view  } = insight;
     const stripProps = {
         sortOrder: "ascending",
         orientation: "vertical",
         size: specColumns.size,
         sort: specColumns.sort,
         z: specColumns.z,
-        showAxes: !insight.hideAxes
+        showAxes: !insight.hideAxes,
+        view: view
     };
     const axisScales = {
         z: {
@@ -1411,7 +1438,8 @@ function $484a23b50e74118e$export$2e2bcd8739ae039(specContext) {
                 {
                     role: "z",
                     axisSelection: ((_a = specColumns.z) === null || _a === void 0 ? void 0 : _a.quantitative) ? "range" : "exact",
-                    allowNone: true
+                    allowNone: true,
+                    disabled: view === "2d"
                 },
                 {
                     role: "color",
@@ -1445,13 +1473,15 @@ function $484a23b50e74118e$export$2e2bcd8739ae039(specContext) {
 function $248901cc968463fe$export$2e2bcd8739ae039(specContext) {
     var _a;
     const { insight: insight , specColumns: specColumns , specViewOptions: specViewOptions  } = specContext;
+    const { view: view  } = insight;
     const treemapProps = {
         corner: "top-left",
         group: specColumns.group,
         size: specColumns.size,
         treeMapMethod: specViewOptions.language.treeMapMethod,
         z: specColumns.z,
-        showAxes: !insight.hideAxes
+        showAxes: !insight.hideAxes,
+        view: view
     };
     const axisScales = {
         z: {
@@ -1500,7 +1530,8 @@ function $248901cc968463fe$export$2e2bcd8739ae039(specContext) {
                 {
                     role: "z",
                     axisSelection: ((_a = specColumns.z) === null || _a === void 0 ? void 0 : _a.quantitative) ? "range" : "exact",
-                    allowNone: true
+                    allowNone: true,
+                    disabled: view === "2d"
                 },
                 {
                     role: "color",
@@ -1563,14 +1594,14 @@ function $dd293f8894d4c075$export$fb43a8c8f10fdc99(facetStyle, facetColumn, face
         case "wrap":
         default:
             {
-                const props = {
+                const props1 = {
                     axisTextColor: axisTextColor,
                     cellTitles: true,
                     groupby: groupby
                 };
                 layoutPair = {
                     layoutType: "Wrap",
-                    props: props
+                    props: props1
                 };
                 facetPadding = {
                     bottom: (0, $17564e8cec2b9f75$export$bdb7a7da14f9ff2b),
@@ -2135,8 +2166,8 @@ function $b15ad8fb3905384f$export$e6b6683aec0fe907(...offsets) {
 }
 
 
-function $4414e2f92de0ee30$export$3678bfcfeaea7c36(props1) {
-    const { axesOffsets: axesOffsets , axisScales: axisScales , axesScopes: axesScopes , axesTitlePadding: axesTitlePadding , allGlobalScales: allGlobalScales , globalScope: globalScope , labelBaseline: labelBaseline , plotOffsetSignals: plotOffsetSignals , specColumns: specColumns , specViewOptions: specViewOptions  } = props1;
+function $4414e2f92de0ee30$export$3678bfcfeaea7c36(props) {
+    const { axesOffsets: axesOffsets , axisScales: axisScales , axesScopes: axesScopes , axesTitlePadding: axesTitlePadding , allGlobalScales: allGlobalScales , globalScope: globalScope , labelBaseline: labelBaseline , plotOffsetSignals: plotOffsetSignals , specColumns: specColumns , specViewOptions: specViewOptions  } = props;
     const { scope: scope  } = globalScope;
     allGlobalScales.forEach((globalScales)=>{
         const { scales: scales  } = globalScales;
@@ -2148,7 +2179,7 @@ function $4414e2f92de0ee30$export$3678bfcfeaea7c36(props1) {
                 let zindex = undefined;
                 if (xyz === "z") {
                     showAxes = false;
-                    if (props1.view === "3d" && specViewOptions.zAxisOptions && !props1.hideZAxis) {
+                    if (props.view === "3d" && specViewOptions.zAxisOptions && !props.hideZAxis) {
                         if (specViewOptions.zAxisOptions.showZAxis) {
                             showAxes = true;
                             zindex = specViewOptions.zAxisOptions.zIndex;
@@ -2164,7 +2195,7 @@ function $4414e2f92de0ee30$export$3678bfcfeaea7c36(props1) {
                             quantitative: true
                         };
                         const title = axisScale.title;
-                        const props = {
+                        const props1 = {
                             title: title,
                             horizontal: horizontal,
                             column: column,
@@ -2174,13 +2205,13 @@ function $4414e2f92de0ee30$export$3678bfcfeaea7c36(props1) {
                             labelBaseline: labelBaseline[xyz],
                             zindex: zindex
                         };
-                        axesScopes["main"].forEach((a)=>(0, $b15ad8fb3905384f$export$b18909608a999daa)(a.scope, $4414e2f92de0ee30$var$createAxis(Object.assign(Object.assign({}, props), {
+                        axesScopes["main"].forEach((a)=>(0, $b15ad8fb3905384f$export$b18909608a999daa)(a.scope, $4414e2f92de0ee30$var$createAxis(Object.assign(Object.assign({}, props1), {
                                 scale: a.scale || _scales[0],
                                 showTitle: a.title,
                                 showLabels: a.labels,
                                 showLines: a.lines
                             }))));
-                        if (axesScopes[xyz]) axesScopes[xyz].forEach((a)=>(0, $b15ad8fb3905384f$export$b18909608a999daa)(a.scope, $4414e2f92de0ee30$var$createAxis(Object.assign(Object.assign({}, props), {
+                        if (axesScopes[xyz]) axesScopes[xyz].forEach((a)=>(0, $b15ad8fb3905384f$export$b18909608a999daa)(a.scope, $4414e2f92de0ee30$var$createAxis(Object.assign(Object.assign({}, props1), {
                                 scale: a.scale || _scales[0],
                                 showTitle: a.title,
                                 showLabels: a.labels,
@@ -2450,7 +2481,7 @@ function $7b42c6682d6a3c62$export$cdc9366ba30317bd(s, fn, update) {
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
 */ function $5cda356d1efb9fa8$var$legend(column, fill) {
-    const legend1 = {
+    const legend = {
         orient: "none",
         title: column.name,
         fill: fill,
@@ -2465,10 +2496,10 @@ function $7b42c6682d6a3c62$export$cdc9366ba30317bd(s, fn, update) {
         }
     };
     if (column.quantitative) {
-        legend1.type = "symbol";
-        legend1.format = "~r";
+        legend.type = "symbol";
+        legend.format = "~r";
     }
-    return legend1;
+    return legend;
 }
 function $5cda356d1efb9fa8$export$765837a81fadca85(context, fill) {
     const { specColumns: specColumns , insight: insight  } = context;
@@ -3294,10 +3325,10 @@ function $02bd8e9b090c20c5$export$6868fd1605c79d3d(prefix, domainDataName, discr
         return nativeBinnable;
     }
 }
-function $02bd8e9b090c20c5$export$3794e0ea8ab2e895(name, min, max, dataExtent1) {
+function $02bd8e9b090c20c5$export$3794e0ea8ab2e895(name, min, max, dataExtent) {
     return {
         name: name,
-        update: `[min(${min}, ${dataExtent1}[0]), max(${max}, ${dataExtent1}[1])]`
+        update: `[min(${min}, ${dataExtent}[0]), max(${max}, ${dataExtent}[1])]`
     };
 }
 
@@ -3793,7 +3824,7 @@ class $154b2c962cf38cfb$export$1c460fb4285edadc extends (0, $9d478b599f3cbcb3$ex
     }
     build() {
         const { names: names , prefix: prefix , props: props  } = this;
-        const { backgroundImageExtents: backgroundImageExtents , globalScope: globalScope , parentScope: parentScope , scatterPointScaleDisplay: scatterPointScaleDisplay , showAxes: showAxes , size: size , x: x , y: y , z: z , zGrounded: zGrounded  } = props;
+        const { backgroundImageExtents: backgroundImageExtents , globalScope: globalScope , parentScope: parentScope , scatterPointScaleDisplay: scatterPointScaleDisplay , showAxes: showAxes , size: size , view: view , x: x , y: y , z: z , zGrounded: zGrounded  } = props;
         const qsize = size && size.quantitative && size;
         (0, $b15ad8fb3905384f$export$5346a0d8a9111b3f)(globalScope.scope, {
             name: (0, $ec270fbe8d9983b4$export$809e371dee643808).PointScale,
@@ -3893,13 +3924,18 @@ class $154b2c962cf38cfb$export$1c460fb4285edadc extends (0, $9d478b599f3cbcb3$ex
                     signal: `${(0, $ec270fbe8d9983b4$export$809e371dee643808).ZGrounded} ? 0 : ${zValue}`
                 }, 
             ],
+            zindex: [
+                {
+                    signal: `${(0, $ec270fbe8d9983b4$export$809e371dee643808).ZGrounded} ? 0 : ${zValue}`
+                }, 
+            ],
             depth: [
                 {
                     test: (0, $17aa946a16979010$export$71c45f78b1166d35)(),
                     value: 0
                 },
                 {
-                    signal: `${(0, $ec270fbe8d9983b4$export$809e371dee643808).ZGrounded} ? ${zValue} : ${sizeValueSignal}`
+                    signal: view === "3d" ? `${(0, $ec270fbe8d9983b4$export$809e371dee643808).ZGrounded} ? ${zValue} : ${sizeValueSignal}` : "0"
                 }, 
             ]
         });
@@ -3939,7 +3975,7 @@ class $154b2c962cf38cfb$export$1c460fb4285edadc extends (0, $9d478b599f3cbcb3$ex
                     field: z ? (0, $ac5b955a06ced550$export$fb70365b00e8cb7b)(z.name) : null
                 },
                 reverse: false,
-                signal: `(${globalScope.zSize}) * ${(0, $ec270fbe8d9983b4$export$809e371dee643808).ZProportion}`
+                signal: view === "3d" ? `(${globalScope.zSize}) * ${(0, $ec270fbe8d9983b4$export$809e371dee643808).ZProportion}` : `10 * ${(0, $ec270fbe8d9983b4$export$809e371dee643808).ZProportion}`
             }, 
         ];
         columnSignals.forEach((cs)=>{
@@ -4040,7 +4076,7 @@ class $c51cdb6381ccbb7b$export$b09fb900337259de extends (0, $9d478b599f3cbcb3$ex
     }
     build() {
         const { names: names , prefix: prefix , props: props  } = this;
-        const { fillDirection: fillDirection , globalScope: globalScope , groupings: groupings , parentScope: parentScope , collapseYHeight: collapseYHeight , showAxes: showAxes , sortBy: sortBy , z: z  } = props;
+        const { fillDirection: fillDirection , globalScope: globalScope , groupings: groupings , parentScope: parentScope , collapseYHeight: collapseYHeight , showAxes: showAxes , sortBy: sortBy , view: view , z: z  } = props;
         const zScale = (0, $b127773b4223519c$export$9e1d5954d0bb865c)(z, globalScope.zSize, globalScope.data.name, names.zScale);
         (0, $b15ad8fb3905384f$export$eea5d31e98930019)(globalScope.data, Object.assign({
             type: "stack",
@@ -4086,9 +4122,11 @@ class $c51cdb6381ccbb7b$export$b09fb900337259de extends (0, $9d478b599f3cbcb3$ex
                             test: (0, $17aa946a16979010$export$71c45f78b1166d35)(),
                             value: 0
                         },
-                        {
+                        view === "3d" ? {
                             scale: names.zScale,
                             field: (0, $ac5b955a06ced550$export$fb70365b00e8cb7b)(z.name)
+                        } : {
+                            value: 0
                         }, 
                     ]
                 })
@@ -4460,7 +4498,7 @@ class $c0dcd6f3c3c87d5a$export$c4df0d8c6c8f50e4 extends (0, $9d478b599f3cbcb3$ex
     }
     build() {
         const { names: names , prefix: prefix , props: props  } = this;
-        const { addPercentageScale: addPercentageScale , globalScope: globalScope , groupings: groupings , orientation: orientation , showAxes: showAxes , size: size , sort: sort , sortOrder: sortOrder , parentScope: parentScope , z: z  } = props;
+        const { addPercentageScale: addPercentageScale , globalScope: globalScope , groupings: groupings , orientation: orientation , showAxes: showAxes , size: size , sort: sort , sortOrder: sortOrder , parentScope: parentScope , view: view , z: z  } = props;
         const zScale = (0, $b127773b4223519c$export$9e1d5954d0bb865c)(z, globalScope.zSize, globalScope.data.name, names.zScale);
         const horizontal = orientation === "horizontal";
         const transform = [];
@@ -4531,9 +4569,11 @@ class $c0dcd6f3c3c87d5a$export$c4df0d8c6c8f50e4 extends (0, $9d478b599f3cbcb3$ex
                             test: (0, $17aa946a16979010$export$71c45f78b1166d35)(),
                             value: 0
                         },
-                        {
+                        view === "3d" ? {
                             scale: names.zScale,
                             field: (0, $ac5b955a06ced550$export$fb70365b00e8cb7b)(z.name)
+                        } : {
+                            value: 0
                         }, 
                     ]
                 })
@@ -4722,7 +4762,7 @@ class $e834c7064afd736d$export$d685cd2b84b49ee extends (0, $9d478b599f3cbcb3$exp
     }
     addMark(offsets, markParent, markDataName) {
         const { names: names , prefix: prefix , props: props  } = this;
-        const { z: z  } = props;
+        const { view: view , z: z  } = props;
         const mark = {
             name: prefix,
             type: "rect",
@@ -4746,9 +4786,11 @@ class $e834c7064afd736d$export$d685cd2b84b49ee extends (0, $9d478b599f3cbcb3$exp
                             test: (0, $17aa946a16979010$export$71c45f78b1166d35)(),
                             value: 0
                         },
-                        {
+                        view === "3d" ? {
                             scale: names.zScale,
                             field: (0, $ac5b955a06ced550$export$fb70365b00e8cb7b)(z.name)
+                        } : {
+                            value: 0
                         }, 
                     ]
                 })
@@ -5422,8 +5464,8 @@ class $afbd306f40f38f7e$export$e2e6dd2b1097c25b {
                         arrIn.forEach((rule)=>arrOut.push(rule));
                         arrOut.push(value);
                     } else {
-                        const arrOut = update[key];
-                        arrIn.forEach((rule)=>arrOut.unshift(rule));
+                        const arrOut1 = update[key];
+                        arrIn.forEach((rule)=>arrOut1.unshift(rule));
                     }
                 }
             });
@@ -6601,16 +6643,16 @@ function $d7206d7011462ee8$export$c697bed75648cdb7(out, a, b) {
     out[8] = a[8] * b;
     return out;
 }
-function $d7206d7011462ee8$export$553579f63bdd7137(out, a, b, scale1) {
-    out[0] = a[0] + b[0] * scale1;
-    out[1] = a[1] + b[1] * scale1;
-    out[2] = a[2] + b[2] * scale1;
-    out[3] = a[3] + b[3] * scale1;
-    out[4] = a[4] + b[4] * scale1;
-    out[5] = a[5] + b[5] * scale1;
-    out[6] = a[6] + b[6] * scale1;
-    out[7] = a[7] + b[7] * scale1;
-    out[8] = a[8] + b[8] * scale1;
+function $d7206d7011462ee8$export$553579f63bdd7137(out, a, b, scale) {
+    out[0] = a[0] + b[0] * scale;
+    out[1] = a[1] + b[1] * scale;
+    out[2] = a[2] + b[2] * scale;
+    out[3] = a[3] + b[3] * scale;
+    out[4] = a[4] + b[4] * scale;
+    out[5] = a[5] + b[5] * scale;
+    out[6] = a[6] + b[6] * scale;
+    out[7] = a[7] + b[7] * scale;
+    out[8] = a[8] + b[8] * scale;
     return out;
 }
 function $d7206d7011462ee8$export$f2599a5cf1109d8(a, b) {
@@ -7839,23 +7881,23 @@ function $8d309b2f98447504$export$c697bed75648cdb7(out, a, b) {
     out[15] = a[15] * b;
     return out;
 }
-function $8d309b2f98447504$export$553579f63bdd7137(out, a, b, scale1) {
-    out[0] = a[0] + b[0] * scale1;
-    out[1] = a[1] + b[1] * scale1;
-    out[2] = a[2] + b[2] * scale1;
-    out[3] = a[3] + b[3] * scale1;
-    out[4] = a[4] + b[4] * scale1;
-    out[5] = a[5] + b[5] * scale1;
-    out[6] = a[6] + b[6] * scale1;
-    out[7] = a[7] + b[7] * scale1;
-    out[8] = a[8] + b[8] * scale1;
-    out[9] = a[9] + b[9] * scale1;
-    out[10] = a[10] + b[10] * scale1;
-    out[11] = a[11] + b[11] * scale1;
-    out[12] = a[12] + b[12] * scale1;
-    out[13] = a[13] + b[13] * scale1;
-    out[14] = a[14] + b[14] * scale1;
-    out[15] = a[15] + b[15] * scale1;
+function $8d309b2f98447504$export$553579f63bdd7137(out, a, b, scale) {
+    out[0] = a[0] + b[0] * scale;
+    out[1] = a[1] + b[1] * scale;
+    out[2] = a[2] + b[2] * scale;
+    out[3] = a[3] + b[3] * scale;
+    out[4] = a[4] + b[4] * scale;
+    out[5] = a[5] + b[5] * scale;
+    out[6] = a[6] + b[6] * scale;
+    out[7] = a[7] + b[7] * scale;
+    out[8] = a[8] + b[8] * scale;
+    out[9] = a[9] + b[9] * scale;
+    out[10] = a[10] + b[10] * scale;
+    out[11] = a[11] + b[11] * scale;
+    out[12] = a[12] + b[12] * scale;
+    out[13] = a[13] + b[13] * scale;
+    out[14] = a[14] + b[14] * scale;
+    out[15] = a[15] + b[15] * scale;
     return out;
 }
 function $8d309b2f98447504$export$f2599a5cf1109d8(a, b) {
@@ -8070,10 +8112,10 @@ function $3060130e3101af24$export$dcdf75081b88279d(out, a, b) {
     out[2] = a[2] * b;
     return out;
 }
-function $3060130e3101af24$export$19cedf1da84ba854(out, a, b, scale1) {
-    out[0] = a[0] + b[0] * scale1;
-    out[1] = a[1] + b[1] * scale1;
-    out[2] = a[2] + b[2] * scale1;
+function $3060130e3101af24$export$19cedf1da84ba854(out, a, b, scale) {
+    out[0] = a[0] + b[0] * scale;
+    out[1] = a[1] + b[1] * scale;
+    out[2] = a[2] + b[2] * scale;
     return out;
 }
 function $3060130e3101af24$export$9f17032d917177de(a, b) {
@@ -8110,12 +8152,12 @@ function $3060130e3101af24$export$a3295358bff77e(out, a) {
     var x = a[0];
     var y = a[1];
     var z = a[2];
-    var len1 = x * x + y * y + z * z;
-    if (len1 > 0) //TODO: evaluate use of glm_invsqrt here?
-    len1 = 1 / Math.sqrt(len1);
-    out[0] = a[0] * len1;
-    out[1] = a[1] * len1;
-    out[2] = a[2] * len1;
+    var len = x * x + y * y + z * z;
+    if (len > 0) //TODO: evaluate use of glm_invsqrt here?
+    len = 1 / Math.sqrt(len);
+    out[0] = a[0] * len;
+    out[1] = a[1] * len;
+    out[2] = a[2] * len;
     return out;
 }
 function $3060130e3101af24$export$94132a0e348806d4(a, b) {
@@ -8162,14 +8204,14 @@ function $3060130e3101af24$export$b9c5f84610baddaf(out, a, b, c, d, t) {
     out[2] = a[2] * factor1 + b[2] * factor2 + c[2] * factor3 + d[2] * factor4;
     return out;
 }
-function $3060130e3101af24$export$4385e60b38654f68(out, scale2) {
-    scale2 = scale2 || 1.0;
+function $3060130e3101af24$export$4385e60b38654f68(out, scale) {
+    scale = scale || 1.0;
     var r = $f05d00667a622c1a$export$5ada478c8a628231() * 2.0 * Math.PI;
     var z = $f05d00667a622c1a$export$5ada478c8a628231() * 2.0 - 1.0;
-    var zScale = Math.sqrt(1.0 - z * z) * scale2;
+    var zScale = Math.sqrt(1.0 - z * z) * scale;
     out[0] = Math.cos(r) * zScale;
     out[1] = Math.sin(r) * zScale;
-    out[2] = z * scale2;
+    out[2] = z * scale;
     return out;
 }
 function $3060130e3101af24$export$5ffbd13800309d59(out, a, m) {
@@ -8450,11 +8492,11 @@ function $2e946b626132112f$export$dcdf75081b88279d(out, a, b) {
     out[3] = a[3] * b;
     return out;
 }
-function $2e946b626132112f$export$19cedf1da84ba854(out, a, b, scale1) {
-    out[0] = a[0] + b[0] * scale1;
-    out[1] = a[1] + b[1] * scale1;
-    out[2] = a[2] + b[2] * scale1;
-    out[3] = a[3] + b[3] * scale1;
+function $2e946b626132112f$export$19cedf1da84ba854(out, a, b, scale) {
+    out[0] = a[0] + b[0] * scale;
+    out[1] = a[1] + b[1] * scale;
+    out[2] = a[2] + b[2] * scale;
+    out[3] = a[3] + b[3] * scale;
     return out;
 }
 function $2e946b626132112f$export$9f17032d917177de(a, b) {
@@ -8504,12 +8546,12 @@ function $2e946b626132112f$export$a3295358bff77e(out, a) {
     var y = a[1];
     var z = a[2];
     var w = a[3];
-    var len1 = x * x + y * y + z * z + w * w;
-    if (len1 > 0) len1 = 1 / Math.sqrt(len1);
-    out[0] = x * len1;
-    out[1] = y * len1;
-    out[2] = z * len1;
-    out[3] = w * len1;
+    var len = x * x + y * y + z * z + w * w;
+    if (len > 0) len = 1 / Math.sqrt(len);
+    out[0] = x * len;
+    out[1] = y * len;
+    out[2] = z * len;
+    out[3] = w * len;
     return out;
 }
 function $2e946b626132112f$export$94132a0e348806d4(a, b) {
@@ -8538,8 +8580,8 @@ function $2e946b626132112f$export$3a89f8d6f6bf6c9f(out, a, b, t) {
     out[3] = aw + t * (b[3] - aw);
     return out;
 }
-function $2e946b626132112f$export$4385e60b38654f68(out, scale2) {
-    scale2 = scale2 || 1.0; // Marsaglia, George. Choosing a Point from the Surface of a
+function $2e946b626132112f$export$4385e60b38654f68(out, scale) {
+    scale = scale || 1.0; // Marsaglia, George. Choosing a Point from the Surface of a
     // Sphere. Ann. Math. Statist. 43 (1972), no. 2, 645--646.
     // http://projecteuclid.org/euclid.aoms/1177692644;
     var v1, v2, v3, v4;
@@ -8555,10 +8597,10 @@ function $2e946b626132112f$export$4385e60b38654f68(out, scale2) {
         s2 = v3 * v3 + v4 * v4;
     }while (s2 >= 1);
     var d = Math.sqrt((1 - s1) / s2);
-    out[0] = scale2 * v1;
-    out[1] = scale2 * v2;
-    out[2] = scale2 * v3 * d;
-    out[3] = scale2 * v4 * d;
+    out[0] = scale * v1;
+    out[1] = scale * v2;
+    out[2] = scale * v3 * d;
+    out[3] = scale * v4 * d;
     return out;
 }
 function $2e946b626132112f$export$5ffbd13800309d59(out, a, m) {
@@ -8798,8 +8840,8 @@ function $a75e1c0eea6f029a$export$4385e60b38654f68(out) {
 }
 function $a75e1c0eea6f029a$export$6897c284b6f9f4dc(out, a) {
     var a0 = a[0], a1 = a[1], a2 = a[2], a3 = a[3];
-    var dot1 = a0 * a0 + a1 * a1 + a2 * a2 + a3 * a3;
-    var invDot = dot1 ? 1.0 / dot1 : 0; // TODO: Would be faster to return [0,0,0,0] immediately if dot == 0
+    var dot = a0 * a0 + a1 * a1 + a2 * a2 + a3 * a3;
+    var invDot = dot ? 1.0 / dot : 0; // TODO: Would be faster to return [0,0,0,0] immediately if dot == 0
     out[0] = -a0 * invDot;
     out[1] = -a1 * invDot;
     out[2] = -a2 * invDot;
@@ -8883,14 +8925,14 @@ var $a75e1c0eea6f029a$export$72d66f5842c00904 = function() {
     var xUnitVec3 = $3060130e3101af24$export$a82be99ed2a44a7d(1, 0, 0);
     var yUnitVec3 = $3060130e3101af24$export$a82be99ed2a44a7d(0, 1, 0);
     return function(out, a, b) {
-        var dot2 = $3060130e3101af24$export$94132a0e348806d4(a, b);
-        if (dot2 < -0.999999) {
+        var dot = $3060130e3101af24$export$94132a0e348806d4(a, b);
+        if (dot < -0.999999) {
             $3060130e3101af24$export$bb646b20bb93d339(tmpvec3, xUnitVec3, a);
             if ($3060130e3101af24$export$fc1400facf92c78(tmpvec3) < 0.000001) $3060130e3101af24$export$bb646b20bb93d339(tmpvec3, yUnitVec3, a);
             $3060130e3101af24$export$a3295358bff77e(tmpvec3, tmpvec3);
             $a75e1c0eea6f029a$export$4286ddefc8f49512(out, tmpvec3, Math.PI);
             return out;
-        } else if (dot2 > 0.999999) {
+        } else if (dot > 0.999999) {
             out[0] = 0;
             out[1] = 0;
             out[2] = 0;
@@ -8901,7 +8943,7 @@ var $a75e1c0eea6f029a$export$72d66f5842c00904 = function() {
             out[0] = tmpvec3[0];
             out[1] = tmpvec3[1];
             out[2] = tmpvec3[2];
-            out[3] = 1 + dot2;
+            out[3] = 1 + dot;
             return $a75e1c0eea6f029a$export$a3295358bff77e(out, out);
         }
     };
@@ -9060,9 +9102,9 @@ function $a3ca522ed0848e85$export$dcdf75081b88279d(out, a, b) {
     out[1] = a[1] * b;
     return out;
 }
-function $a3ca522ed0848e85$export$19cedf1da84ba854(out, a, b, scale1) {
-    out[0] = a[0] + b[0] * scale1;
-    out[1] = a[1] + b[1] * scale1;
+function $a3ca522ed0848e85$export$19cedf1da84ba854(out, a, b, scale) {
+    out[0] = a[0] + b[0] * scale;
+    out[1] = a[1] + b[1] * scale;
     return out;
 }
 function $a3ca522ed0848e85$export$9f17032d917177de(a, b) {
@@ -9093,11 +9135,11 @@ function $a3ca522ed0848e85$export$70ae2c07e401031b(out, a) {
 }
 function $a3ca522ed0848e85$export$a3295358bff77e(out, a) {
     var x = a[0], y = a[1];
-    var len1 = x * x + y * y;
-    if (len1 > 0) //TODO: evaluate use of glm_invsqrt here?
-    len1 = 1 / Math.sqrt(len1);
-    out[0] = a[0] * len1;
-    out[1] = a[1] * len1;
+    var len = x * x + y * y;
+    if (len > 0) //TODO: evaluate use of glm_invsqrt here?
+    len = 1 / Math.sqrt(len);
+    out[0] = a[0] * len;
+    out[1] = a[1] * len;
     return out;
 }
 function $a3ca522ed0848e85$export$94132a0e348806d4(a, b) {
@@ -9115,11 +9157,11 @@ function $a3ca522ed0848e85$export$3a89f8d6f6bf6c9f(out, a, b, t) {
     out[1] = ay + t * (b[1] - ay);
     return out;
 }
-function $a3ca522ed0848e85$export$4385e60b38654f68(out, scale2) {
-    scale2 = scale2 || 1.0;
+function $a3ca522ed0848e85$export$4385e60b38654f68(out, scale) {
+    scale = scale || 1.0;
     var r = $f05d00667a622c1a$export$5ada478c8a628231() * 2.0 * Math.PI;
-    out[0] = Math.cos(r) * scale2;
-    out[1] = Math.sin(r) * scale2;
+    out[0] = Math.cos(r) * scale;
+    out[1] = Math.sin(r) * scale;
     return out;
 }
 function $a3ca522ed0848e85$export$b732428d73874bfc(out, a, m) {
@@ -12514,9 +12556,9 @@ class $52e490408927d13a$export$a623f6a4669f174c {
                 const divisions = requestedDivisions[axisId];
                 (0, $580fd00ef4a0bc11$export$46c1eaab6b8d1e23).continuous(minValue, maxValue, divisions, label, labels[axisId], tickPositions[axisId], fromValues[axisId], toValues[axisId]);
                 cartesian3dAxes.minorGridlines[axisId] = minorGridlines[axisId];
-                for(let i = 0; i < labels[axisId].length; i++){
-                    labelPositions[axisId].push(tickPositions[axisId][i]);
-                    labelScales[axisId].push(i == 0 || i == divisions ? labelMajorSizes[axisId] : labelMinorSizes[axisId]);
+                for(let i1 = 0; i1 < labels[axisId].length; i1++){
+                    labelPositions[axisId].push(tickPositions[axisId][i1]);
+                    labelScales[axisId].push(i1 == 0 || i1 == divisions ? labelMajorSizes[axisId] : labelMinorSizes[axisId]);
                 }
             }
             cartesian3dAxes.setTickPositions(axisId, tickPositions[axisId]);
@@ -13056,19 +13098,19 @@ class $52e490408927d13a$export$b1b08d445768978 extends (0, $542aab1cf3e54033$exp
                 (0, $a3ca522ed0848e85$exports).set(this._gridTicksMinorGridlines[axisId], this.minorGridlines[axisId], 1);
                 const gridTicksScale = this._gridTicksScales[axisId];
                 for(let edge = 0; edge < 4; edge++){
-                    const edgeId = (0, $0993b3badbc4a867$export$a15f0a83a652dd40).AXIS_EDGES[axisId][edge];
-                    if (this._isOutsideEdge[edgeId] && this.isEdgeVisible[edgeId]) {
-                        let distance = this._distances[edgeId];
+                    const edgeId1 = (0, $0993b3badbc4a867$export$a15f0a83a652dd40).AXIS_EDGES[axisId][edge];
+                    if (this._isOutsideEdge[edgeId1] && this.isEdgeVisible[edgeId1]) {
+                        let distance = this._distances[edgeId1];
                         distance += this._gridPickDivisionHeight * 0.5;
-                        const gridTicksMMatrix = this._gridTicksMMatrices[edgeId];
-                        (0, $3060130e3101af24$exports).multiply(this._vec3, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_POSITIONS[edgeId], this._size);
-                        (0, $3060130e3101af24$exports).scaleAndAdd(this._vec3, this._vec3, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_NORMALS[edgeId], distance);
+                        const gridTicksMMatrix = this._gridTicksMMatrices[edgeId1];
+                        (0, $3060130e3101af24$exports).multiply(this._vec3, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_POSITIONS[edgeId1], this._size);
+                        (0, $3060130e3101af24$exports).scaleAndAdd(this._vec3, this._vec3, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_NORMALS[edgeId1], distance);
                         (0, $8d309b2f98447504$exports).translate(gridTicksMMatrix, this._mMatrix, this._vec3);
-                        (0, $8d309b2f98447504$exports).multiply(gridTicksMMatrix, gridTicksMMatrix, this._gridTicksRotations[edgeId]);
-                        if (!this._isForwardEdge[edgeId]) (0, $8d309b2f98447504$exports).scale(gridTicksMMatrix, gridTicksMMatrix, (0, $87037c674fbf0952$export$a002182e51710d39).VECTOR3_REFLECTX);
+                        (0, $8d309b2f98447504$exports).multiply(gridTicksMMatrix, gridTicksMMatrix, this._gridTicksRotations[edgeId1]);
+                        if (!this._isForwardEdge[edgeId1]) (0, $8d309b2f98447504$exports).scale(gridTicksMMatrix, gridTicksMMatrix, (0, $87037c674fbf0952$export$a002182e51710d39).VECTOR3_REFLECTX);
                         (0, $8d309b2f98447504$exports).scale(gridTicksMMatrix, gridTicksMMatrix, gridTicksScale);
                         distance += this._gridPickDivisionHeight * 0.5;
-                        this._distances[edgeId] = distance;
+                        this._distances[edgeId1] = distance;
                     }
                 }
             }
@@ -13078,77 +13120,77 @@ class $52e490408927d13a$export$b1b08d445768978 extends (0, $542aab1cf3e54033$exp
                 (0, $a3ca522ed0848e85$exports).set(this._gridFaceZeros[axisId1], this.zero[axisId2], this.zero[axisId3]);
                 (0, $a3ca522ed0848e85$exports).set(this._gridFaceMinorGridlines[axisId1], this.minorGridlines[axisId2], this.minorGridlines[axisId3]);
                 for(let face = 0; face < 2; face++){
-                    const faceId = (0, $0993b3badbc4a867$export$a15f0a83a652dd40).AXIS_FACES[axisId1][face];
-                    if (this._isForwardFace[faceId]) {
-                        const gridFaceMMatrix = this._gridFaceMMatrices[faceId];
+                    const faceId1 = (0, $0993b3badbc4a867$export$a15f0a83a652dd40).AXIS_FACES[axisId1][face];
+                    if (this._isForwardFace[faceId1]) {
+                        const gridFaceMMatrix = this._gridFaceMMatrices[faceId1];
                         (0, $8d309b2f98447504$exports).scale(gridFaceMMatrix, this._mMatrix, this._gridFaceScale);
-                        if (this._size[axisId1] > 0) (0, $8d309b2f98447504$exports).translate(gridFaceMMatrix, gridFaceMMatrix, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).FACE_POSITIONS[faceId]);
+                        if (this._size[axisId1] > 0) (0, $8d309b2f98447504$exports).translate(gridFaceMMatrix, gridFaceMMatrix, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).FACE_POSITIONS[faceId1]);
                     }
                 }
             }
-            for(let axisId2 = 0; axisId2 < 3; axisId2++)for(let edge = 0; edge < 4; edge++){
-                const edgeId = (0, $0993b3badbc4a867$export$a15f0a83a652dd40).AXIS_EDGES[axisId2][edge];
-                if (this._isOutsideEdge[edgeId]) {
-                    (0, $3060130e3101af24$exports).multiply(this._edgePosition, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_POSITIONS[edgeId], this._size);
+            for(let axisId4 = 0; axisId4 < 3; axisId4++)for(let edge1 = 0; edge1 < 4; edge1++){
+                const edgeId2 = (0, $0993b3badbc4a867$export$a15f0a83a652dd40).AXIS_EDGES[axisId4][edge1];
+                if (this._isOutsideEdge[edgeId2]) {
+                    (0, $3060130e3101af24$exports).multiply(this._edgePosition, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_POSITIONS[edgeId2], this._size);
                     (0, $3060130e3101af24$exports).transformMat4(this._edgePosition, this._edgePosition, this._mvMatrix);
                     (0, $3060130e3101af24$exports).normalize(this._forward, this._edgePosition);
                     (0, $3060130e3101af24$exports).negate(this._forward, this._forward);
                     (0, $3060130e3101af24$exports).cross(this._right, (0, $87037c674fbf0952$export$a002182e51710d39).VECTOR3_UNITY, this._forward);
                     (0, $3060130e3101af24$exports).normalize(this._right, this._right);
                     (0, $3060130e3101af24$exports).cross(this._up, this._forward, this._right);
-                    (0, $3060130e3101af24$exports).transformMat3(this._edgeNormal, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_NORMALS[edgeId], this._mat3);
-                    (0, $3060130e3101af24$exports).transformMat3(this._edgePositive, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_POSITIVES[edgeId], this._mat3);
+                    (0, $3060130e3101af24$exports).transformMat3(this._edgeNormal, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_NORMALS[edgeId2], this._mat3);
+                    (0, $3060130e3101af24$exports).transformMat3(this._edgePositive, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_POSITIVES[edgeId2], this._mat3);
                     (0, $3060130e3101af24$exports).copy(this._edgeNormalTemp, this._edgeNormal);
                     (0, $3060130e3101af24$exports).copy(this._edgePositiveTemp, this._edgePositive);
-                    const edgeHorizontalRight = this._edgeHorizontalRight[edgeId];
-                    const edgeHorizontalUp = this._edgeHorizontalUp[edgeId];
-                    const edgeHorizontalForward = this._edgeHorizontalForward[edgeId];
-                    if ((0, $3060130e3101af24$exports).dot(this._edgeNormalTemp, this._up) > 0) (0, $3060130e3101af24$exports).copy(edgeHorizontalUp, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_NORMALS[edgeId]);
+                    const edgeHorizontalRight = this._edgeHorizontalRight[edgeId2];
+                    const edgeHorizontalUp = this._edgeHorizontalUp[edgeId2];
+                    const edgeHorizontalForward = this._edgeHorizontalForward[edgeId2];
+                    if ((0, $3060130e3101af24$exports).dot(this._edgeNormalTemp, this._up) > 0) (0, $3060130e3101af24$exports).copy(edgeHorizontalUp, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_NORMALS[edgeId2]);
                     else {
-                        (0, $3060130e3101af24$exports).negate(edgeHorizontalUp, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_NORMALS[edgeId]);
+                        (0, $3060130e3101af24$exports).negate(edgeHorizontalUp, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_NORMALS[edgeId2]);
                         (0, $3060130e3101af24$exports).negate(this._edgeNormalTemp, this._edgeNormalTemp);
                     }
                     if ((0, $3060130e3101af24$exports).dot(this._edgePositiveTemp, this._right) > 0) {
-                        this._isLeftToRightHorizontal[edgeId] = true;
-                        (0, $3060130e3101af24$exports).copy(edgeHorizontalRight, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_POSITIVES[edgeId]);
+                        this._isLeftToRightHorizontal[edgeId2] = true;
+                        (0, $3060130e3101af24$exports).copy(edgeHorizontalRight, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_POSITIVES[edgeId2]);
                     } else {
-                        this._isLeftToRightHorizontal[edgeId] = false;
-                        (0, $3060130e3101af24$exports).negate(edgeHorizontalRight, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_POSITIVES[edgeId]);
+                        this._isLeftToRightHorizontal[edgeId2] = false;
+                        (0, $3060130e3101af24$exports).negate(edgeHorizontalRight, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_POSITIVES[edgeId2]);
                         (0, $3060130e3101af24$exports).negate(this._edgePositiveTemp, this._edgePositiveTemp);
                     }
                     (0, $3060130e3101af24$exports).cross(edgeHorizontalForward, this._edgePositiveTemp, this._edgeNormalTemp);
                     if ((0, $3060130e3101af24$exports).dot(edgeHorizontalForward, this._forward) < 0) {
-                        this._isLeftToRightHorizontal[edgeId] = !this._isLeftToRightHorizontal[edgeId];
+                        this._isLeftToRightHorizontal[edgeId2] = !this._isLeftToRightHorizontal[edgeId2];
                         (0, $3060130e3101af24$exports).negate(edgeHorizontalRight, edgeHorizontalRight);
                     }
                     (0, $3060130e3101af24$exports).cross(edgeHorizontalForward, edgeHorizontalRight, edgeHorizontalUp);
-                    const edgeVerticalRight = this._edgeVerticalRight[edgeId];
-                    const edgeVerticalUp = this._edgeVerticalUp[edgeId];
-                    const edgeVerticalForward = this._edgeVerticalForward[edgeId];
-                    if ((0, $3060130e3101af24$exports).dot(this._edgeNormal, this._right) < 0) (0, $3060130e3101af24$exports).copy(edgeVerticalUp, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_NORMALS[edgeId]);
+                    const edgeVerticalRight = this._edgeVerticalRight[edgeId2];
+                    const edgeVerticalUp = this._edgeVerticalUp[edgeId2];
+                    const edgeVerticalForward = this._edgeVerticalForward[edgeId2];
+                    if ((0, $3060130e3101af24$exports).dot(this._edgeNormal, this._right) < 0) (0, $3060130e3101af24$exports).copy(edgeVerticalUp, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_NORMALS[edgeId2]);
                     else {
-                        (0, $3060130e3101af24$exports).negate(edgeVerticalUp, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_NORMALS[edgeId]);
+                        (0, $3060130e3101af24$exports).negate(edgeVerticalUp, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_NORMALS[edgeId2]);
                         (0, $3060130e3101af24$exports).negate(this._edgeNormal, this._edgeNormal);
                     }
                     if ((0, $3060130e3101af24$exports).dot(this._edgePositive, this._up) < 0) {
-                        this._isLeftToRightVertical[edgeId] = true;
-                        (0, $3060130e3101af24$exports).copy(edgeVerticalRight, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_POSITIVES[edgeId]);
+                        this._isLeftToRightVertical[edgeId2] = true;
+                        (0, $3060130e3101af24$exports).copy(edgeVerticalRight, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_POSITIVES[edgeId2]);
                     } else {
-                        this._isLeftToRightVertical[edgeId] = false;
-                        (0, $3060130e3101af24$exports).negate(edgeVerticalRight, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_POSITIVES[edgeId]);
+                        this._isLeftToRightVertical[edgeId2] = false;
+                        (0, $3060130e3101af24$exports).negate(edgeVerticalRight, (0, $0993b3badbc4a867$export$a15f0a83a652dd40).EDGE_POSITIVES[edgeId2]);
                         (0, $3060130e3101af24$exports).negate(this._edgePositive, this._edgePositive);
                     }
                     (0, $3060130e3101af24$exports).cross(edgeVerticalForward, this._edgePositive, this._edgeNormal);
                     if ((0, $3060130e3101af24$exports).dot(edgeVerticalForward, this._forward) < 0) {
-                        this._isLeftToRightVertical[edgeId] = !this._isLeftToRightVertical[edgeId];
+                        this._isLeftToRightVertical[edgeId2] = !this._isLeftToRightVertical[edgeId2];
                         (0, $3060130e3101af24$exports).negate(edgeVerticalRight, edgeVerticalRight);
                     }
                     (0, $3060130e3101af24$exports).cross(edgeVerticalForward, edgeVerticalRight, edgeVerticalUp);
-                    if (this.isEdgeVisible[edgeId]) {
-                        if (this._labels[axisId2]) this._updateLabels(axisId2, edgeId);
-                        if (this._titles[axisId2]) this._updateTitle(axisId2, edgeId);
+                    if (this.isEdgeVisible[edgeId2]) {
+                        if (this._labels[axisId4]) this._updateLabels(axisId4, edgeId2);
+                        if (this._titles[axisId4]) this._updateTitle(axisId4, edgeId2);
                     }
-                    if (this.isHeadingVisible[edgeId]) this._updateHeading(axisId2, edgeId);
+                    if (this.isHeadingVisible[edgeId2]) this._updateHeading(axisId4, edgeId2);
                 }
             }
         }
@@ -13179,18 +13221,18 @@ class $52e490408927d13a$export$b1b08d445768978 extends (0, $542aab1cf3e54033$exp
             labelMMatrix[9] = forward[1];
             labelMMatrix[10] = forward[2];
         } else {
-            const right = this._edgeVerticalRight[edgeId];
-            const up = this._edgeVerticalUp[edgeId];
-            const forward = this._edgeVerticalForward[edgeId];
-            labelMMatrix[0] = right[0];
-            labelMMatrix[1] = right[1];
-            labelMMatrix[2] = right[2];
-            labelMMatrix[4] = up[0];
-            labelMMatrix[5] = up[1];
-            labelMMatrix[6] = up[2];
-            labelMMatrix[8] = forward[0];
-            labelMMatrix[9] = forward[1];
-            labelMMatrix[10] = forward[2];
+            const right1 = this._edgeVerticalRight[edgeId];
+            const up1 = this._edgeVerticalUp[edgeId];
+            const forward1 = this._edgeVerticalForward[edgeId];
+            labelMMatrix[0] = right1[0];
+            labelMMatrix[1] = right1[1];
+            labelMMatrix[2] = right1[2];
+            labelMMatrix[4] = up1[0];
+            labelMMatrix[5] = up1[1];
+            labelMMatrix[6] = up1[2];
+            labelMMatrix[8] = forward1[0];
+            labelMMatrix[9] = forward1[1];
+            labelMMatrix[10] = forward1[2];
         }
         (0, $8d309b2f98447504$exports).multiply(labelMMatrix, this._mMatrix, labelMMatrix);
         if (orientation == (0, $b0e0bae684e98192$export$d2304d1f23cf3ace).perpendicular) (0, $8d309b2f98447504$exports).multiply(labelMMatrix, labelMMatrix, (0, $87037c674fbf0952$export$a002182e51710d39).MAT4_ROTATION_MINUS_90);
@@ -13293,74 +13335,74 @@ class $52e490408927d13a$export$b1b08d445768978 extends (0, $542aab1cf3e54033$exp
         }
         this.pickLabelLookup = {};
         this._pickLabel = [];
-        for(let axisId4 = 0; axisId4 < 3; axisId4++)if (this._labels[axisId4]) {
-            const width = size[axisId4];
-            const maxLabelSize = this._maxLabelSize[axisId4];
-            const orientation = this._orientations[axisId4];
+        for(let axisId1 = 0; axisId1 < 3; axisId1++)if (this._labels[axisId1]) {
+            const width = size[axisId1];
+            const maxLabelSize = this._maxLabelSize[axisId1];
+            const orientation = this._orientations[axisId1];
             (0, $a3ca522ed0848e85$exports).set(maxLabelSize, 0, 0);
-            this._axesLeftToRightIndexOffsets[axisId4] = glyphOffset * 6;
-            glyphOffset = this._updateLeftToRightAxisLabels(axisId4, width, maxLabelSize, glyphOffset, orientation, this._labels[axisId4], this._labelPositions[axisId4], this._labelSizes[axisId4]);
-            this._axesLeftToRightIndexCounts[axisId4] = glyphOffset * 6 - this._axesLeftToRightIndexOffsets[axisId4];
-            this._axesRightToLeftIndexOffsets[axisId4] = glyphOffset * 6;
-            glyphOffset = this._updateRightToLeftAxisLabels(axisId4, width, maxLabelSize, glyphOffset, orientation, this._labels[axisId4], this._labelPositions[axisId4], this._labelSizes[axisId4]);
-            this._axesRightToLeftIndexCounts[axisId4] = glyphOffset * 6 - this._axesRightToLeftIndexOffsets[axisId4];
+            this._axesLeftToRightIndexOffsets[axisId1] = glyphOffset * 6;
+            glyphOffset = this._updateLeftToRightAxisLabels(axisId1, width, maxLabelSize, glyphOffset, orientation, this._labels[axisId1], this._labelPositions[axisId1], this._labelSizes[axisId1]);
+            this._axesLeftToRightIndexCounts[axisId1] = glyphOffset * 6 - this._axesLeftToRightIndexOffsets[axisId1];
+            this._axesRightToLeftIndexOffsets[axisId1] = glyphOffset * 6;
+            glyphOffset = this._updateRightToLeftAxisLabels(axisId1, width, maxLabelSize, glyphOffset, orientation, this._labels[axisId1], this._labelPositions[axisId1], this._labelSizes[axisId1]);
+            this._axesRightToLeftIndexCounts[axisId1] = glyphOffset * 6 - this._axesRightToLeftIndexOffsets[axisId1];
         } else {
-            this._axesLeftToRightIndexOffsets[axisId4] = glyphOffset * 6;
-            this._axesRightToLeftIndexOffsets[axisId4] = glyphOffset * 6;
-            this._axesLeftToRightIndexCounts[axisId4] = 0;
-            this._axesRightToLeftIndexCounts[axisId4] = 0;
-            this._maxLabelSize[axisId4][0] = 0;
-            this._maxLabelSize[axisId4][1] = 0;
+            this._axesLeftToRightIndexOffsets[axisId1] = glyphOffset * 6;
+            this._axesRightToLeftIndexOffsets[axisId1] = glyphOffset * 6;
+            this._axesLeftToRightIndexCounts[axisId1] = 0;
+            this._axesRightToLeftIndexCounts[axisId1] = 0;
+            this._maxLabelSize[axisId1][0] = 0;
+            this._maxLabelSize[axisId1][1] = 0;
         }
         this.pickTitleLookup = {};
         this._pickTitle = [];
-        for(let axisId5 = 0; axisId5 < 3; axisId5++)if (this._titles[axisId5]) {
+        for(let axisId2 = 0; axisId2 < 3; axisId2++)if (this._titles[axisId2]) {
             (0, $3060130e3101af24$exports).set(this._textPosition, 0, 0, 0);
             (0, $3060130e3101af24$exports).set(this._textOffset, 0, 0, 0);
-            this._titleIndexOffsets[axisId5] = glyphOffset * 6;
-            const text = (0, $45b7bda56617a278$export$f080f423ca93034f).truncate(this._titles[axisId5], this._core.config.axesTextTitleMaxGlyphs);
-            const scale = this._titleSizes[axisId5] / this._font.size;
+            this._titleIndexOffsets[axisId2] = glyphOffset * 6;
+            const text = (0, $45b7bda56617a278$export$f080f423ca93034f).truncate(this._titles[axisId2], this._core.config.axesTextTitleMaxGlyphs);
+            const scale = this._titleSizes[axisId2] / this._font.size;
             (0, $45b7bda56617a278$export$f080f423ca93034f).measure(this._font, text, this._textMetric);
-            const width = this._textMetric.width * scale;
+            const width1 = this._textMetric.width * scale;
             const maxGlyphTop = this._textMetric.maxTop * scale;
             const lineHeight = this._font.size * scale;
-            this._textOffset[0] -= width / 2;
+            this._textOffset[0] -= width1 / 2;
             this._textOffset[1] -= (lineHeight - maxGlyphTop) / 2;
             const pickId = (0, $6510adcd3afd2b79$export$aadd933e49c67c12).nextPickId();
             (0, $6510adcd3afd2b79$export$aadd933e49c67c12).encodeNumber(pickId, (0, $b0e0bae684e98192$export$6fc3f4da94ff0be0).axesTitle, this._vec4);
             this.pickTitleLookup[pickId] = this._pickTitle.length;
-            this._pickTitle.push(axisId5);
+            this._pickTitle.push(axisId2);
             (0, $45b7bda56617a278$export$f080f423ca93034f).addString(this._font, text, this._textVerticesView, this._textIndices, glyphOffset, this._textPosition, scale, this._textOffset, null, this._vec4);
             glyphOffset += text.length;
-            this._titleIndexCounts[axisId5] = glyphOffset * 6 - this._titleIndexOffsets[axisId5];
+            this._titleIndexCounts[axisId2] = glyphOffset * 6 - this._titleIndexOffsets[axisId2];
         } else {
-            this._titleIndexOffsets[axisId5] = glyphOffset * 6;
-            this._titleIndexCounts[axisId5] = 0;
+            this._titleIndexOffsets[axisId2] = glyphOffset * 6;
+            this._titleIndexCounts[axisId2] = 0;
         }
         this.pickHeadingLookup = {};
         this._pickHeading = [];
-        for(let axisId6 = 0; axisId6 < 3; axisId6++)if (this._headings[axisId6]) {
+        for(let axisId3 = 0; axisId3 < 3; axisId3++)if (this._headings[axisId3]) {
             (0, $3060130e3101af24$exports).set(this._textPosition, 0, 0, 0);
             (0, $3060130e3101af24$exports).set(this._textOffset, 0, 0, 0);
-            this._headingIndexOffsets[axisId6] = glyphOffset * 6;
-            const text = (0, $45b7bda56617a278$export$f080f423ca93034f).truncate(this._headings[axisId6], this._core.config.axesTextHeadingMaxGlyphs);
-            const scale = this._headingSizes[axisId6] / this._font.size;
-            (0, $45b7bda56617a278$export$f080f423ca93034f).measure(this._font, text, this._textMetric);
-            const width = this._textMetric.width * scale;
-            const maxGlyphTop = this._textMetric.maxTop * scale;
-            const lineHeight = this._font.size * scale;
-            this._textOffset[0] -= width / 2;
-            this._textOffset[1] -= (lineHeight - maxGlyphTop) / 2;
-            const pickId = (0, $6510adcd3afd2b79$export$aadd933e49c67c12).nextPickId();
-            (0, $6510adcd3afd2b79$export$aadd933e49c67c12).encodeNumber(pickId, (0, $b0e0bae684e98192$export$6fc3f4da94ff0be0).axesHeading, this._vec4);
-            this.pickHeadingLookup[pickId] = this._pickHeading.length;
-            this._pickHeading.push(axisId6);
-            (0, $45b7bda56617a278$export$f080f423ca93034f).addString(this._font, text, this._textVerticesView, this._textIndices, glyphOffset, this._textPosition, scale, this._textOffset, null, this._vec4);
-            glyphOffset += text.length;
-            this._headingIndexCounts[axisId6] = glyphOffset * 6 - this._headingIndexOffsets[axisId6];
+            this._headingIndexOffsets[axisId3] = glyphOffset * 6;
+            const text1 = (0, $45b7bda56617a278$export$f080f423ca93034f).truncate(this._headings[axisId3], this._core.config.axesTextHeadingMaxGlyphs);
+            const scale1 = this._headingSizes[axisId3] / this._font.size;
+            (0, $45b7bda56617a278$export$f080f423ca93034f).measure(this._font, text1, this._textMetric);
+            const width2 = this._textMetric.width * scale1;
+            const maxGlyphTop1 = this._textMetric.maxTop * scale1;
+            const lineHeight1 = this._font.size * scale1;
+            this._textOffset[0] -= width2 / 2;
+            this._textOffset[1] -= (lineHeight1 - maxGlyphTop1) / 2;
+            const pickId1 = (0, $6510adcd3afd2b79$export$aadd933e49c67c12).nextPickId();
+            (0, $6510adcd3afd2b79$export$aadd933e49c67c12).encodeNumber(pickId1, (0, $b0e0bae684e98192$export$6fc3f4da94ff0be0).axesHeading, this._vec4);
+            this.pickHeadingLookup[pickId1] = this._pickHeading.length;
+            this._pickHeading.push(axisId3);
+            (0, $45b7bda56617a278$export$f080f423ca93034f).addString(this._font, text1, this._textVerticesView, this._textIndices, glyphOffset, this._textPosition, scale1, this._textOffset, null, this._vec4);
+            glyphOffset += text1.length;
+            this._headingIndexCounts[axisId3] = glyphOffset * 6 - this._headingIndexOffsets[axisId3];
         } else {
-            this._headingIndexOffsets[axisId6] = glyphOffset * 6;
-            this._headingIndexCounts[axisId6] = 0;
+            this._headingIndexOffsets[axisId3] = glyphOffset * 6;
+            this._headingIndexCounts[axisId3] = 0;
         }
     }
     _updateLeftToRightAxisLabels(axisId, size, maxSize, glyphOffset, orientation, labels, positions, scales) {
@@ -13694,9 +13736,9 @@ class $fbd53862e80b5057$export$133913079d003c31 {
                 const divisions = requestedDivisions[axisId];
                 (0, $580fd00ef4a0bc11$export$46c1eaab6b8d1e23).continuous(minValue, maxValue, divisions, label, labels[axisId], tickPositions[axisId], fromValues[axisId], toValues[axisId]);
                 cartesian2dAxes.minorGridlines[axisId] = minorGridlines[axisId];
-                for(let i = 0; i < labels[axisId].length; i++){
-                    labelPositions[axisId].push(tickPositions[axisId][i]);
-                    labelScales[axisId].push(i == 0 || i == divisions ? labelMajorSizes[axisId] : labelMinorSizes[axisId]);
+                for(let i1 = 0; i1 < labels[axisId].length; i1++){
+                    labelPositions[axisId].push(tickPositions[axisId][i1]);
+                    labelScales[axisId].push(i1 == 0 || i1 == divisions ? labelMajorSizes[axisId] : labelMinorSizes[axisId]);
                 }
             }
             cartesian2dAxes.setTickPositions(axisId, tickPositions[axisId]);
@@ -14183,19 +14225,19 @@ class $fbd53862e80b5057$export$e3e79a454e5f8e5a extends (0, $542aab1cf3e54033$ex
                 (0, $a3ca522ed0848e85$exports).set(this._gridTicksMinorGridlines[axisId], this.minorGridlines[axisId], 1);
                 const gridTicksScale = this._gridTicksScales[axisId];
                 for(let edge = 0; edge < 2; edge++){
-                    const edgeId = (0, $872acbae442b915c$export$7005c9eb6671414d).AXIS_EDGES[axisId][edge];
-                    if (this.isEdgeVisible[edgeId]) {
-                        let distance = this._distances[edgeId];
+                    const edgeId1 = (0, $872acbae442b915c$export$7005c9eb6671414d).AXIS_EDGES[axisId][edge];
+                    if (this.isEdgeVisible[edgeId1]) {
+                        let distance = this._distances[edgeId1];
                         distance += this._gridPickDivisionHeight * 0.5;
-                        const gridTicksMMatrix = this._gridTicksMMatrices[edgeId];
-                        (0, $3060130e3101af24$exports).multiply(this._vec3, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_POSITIONS[edgeId], this._size);
-                        (0, $3060130e3101af24$exports).scaleAndAdd(this._vec3, this._vec3, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_NORMALS[edgeId], distance);
+                        const gridTicksMMatrix = this._gridTicksMMatrices[edgeId1];
+                        (0, $3060130e3101af24$exports).multiply(this._vec3, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_POSITIONS[edgeId1], this._size);
+                        (0, $3060130e3101af24$exports).scaleAndAdd(this._vec3, this._vec3, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_NORMALS[edgeId1], distance);
                         (0, $8d309b2f98447504$exports).translate(gridTicksMMatrix, this._mMatrix, this._vec3);
-                        (0, $8d309b2f98447504$exports).multiply(gridTicksMMatrix, gridTicksMMatrix, this._gridTicksRotations[edgeId]);
-                        if (!this._isForwardEdge[edgeId]) (0, $8d309b2f98447504$exports).scale(gridTicksMMatrix, gridTicksMMatrix, (0, $87037c674fbf0952$export$a002182e51710d39).VECTOR3_REFLECTX);
+                        (0, $8d309b2f98447504$exports).multiply(gridTicksMMatrix, gridTicksMMatrix, this._gridTicksRotations[edgeId1]);
+                        if (!this._isForwardEdge[edgeId1]) (0, $8d309b2f98447504$exports).scale(gridTicksMMatrix, gridTicksMMatrix, (0, $87037c674fbf0952$export$a002182e51710d39).VECTOR3_REFLECTX);
                         (0, $8d309b2f98447504$exports).scale(gridTicksMMatrix, gridTicksMMatrix, gridTicksScale);
                         distance += this._gridPickDivisionHeight * 0.5;
-                        this._distances[edgeId] = distance;
+                        this._distances[edgeId1] = distance;
                     }
                 }
             }
@@ -14205,68 +14247,68 @@ class $fbd53862e80b5057$export$e3e79a454e5f8e5a extends (0, $542aab1cf3e54033$ex
                 const gridFaceMMatrix = this._gridFaceMMatrices[faceId1];
                 (0, $8d309b2f98447504$exports).scale(gridFaceMMatrix, this._mMatrix, this._gridFaceScale);
             }
-            for(let axisId1 = 0; axisId1 < 2; axisId1++)for(let edge = 0; edge < 2; edge++){
-                const edgeId = (0, $872acbae442b915c$export$7005c9eb6671414d).AXIS_EDGES[axisId1][edge];
-                (0, $3060130e3101af24$exports).multiply(this._edgePosition, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_POSITIONS[edgeId], this._size);
+            for(let axisId1 = 0; axisId1 < 2; axisId1++)for(let edge1 = 0; edge1 < 2; edge1++){
+                const edgeId2 = (0, $872acbae442b915c$export$7005c9eb6671414d).AXIS_EDGES[axisId1][edge1];
+                (0, $3060130e3101af24$exports).multiply(this._edgePosition, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_POSITIONS[edgeId2], this._size);
                 (0, $3060130e3101af24$exports).transformMat4(this._edgePosition, this._edgePosition, this._mvMatrix);
                 (0, $3060130e3101af24$exports).normalize(this._forward, this._edgePosition);
                 (0, $3060130e3101af24$exports).negate(this._forward, this._forward);
                 (0, $3060130e3101af24$exports).cross(this._right, (0, $87037c674fbf0952$export$a002182e51710d39).VECTOR3_UNITY, this._forward);
                 (0, $3060130e3101af24$exports).normalize(this._right, this._right);
                 (0, $3060130e3101af24$exports).cross(this._up, this._forward, this._right);
-                (0, $3060130e3101af24$exports).transformMat3(this._edgeNormal, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_NORMALS[edgeId], this._mat3);
-                (0, $3060130e3101af24$exports).transformMat3(this._edgePositive, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_POSITIVES[edgeId], this._mat3);
+                (0, $3060130e3101af24$exports).transformMat3(this._edgeNormal, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_NORMALS[edgeId2], this._mat3);
+                (0, $3060130e3101af24$exports).transformMat3(this._edgePositive, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_POSITIVES[edgeId2], this._mat3);
                 (0, $3060130e3101af24$exports).copy(this._edgeNormalTemp, this._edgeNormal);
                 (0, $3060130e3101af24$exports).copy(this._edgePositiveTemp, this._edgePositive);
-                const edgeHorizontalRight = this._edgeHorizontalRight[edgeId];
-                const edgeHorizontalUp = this._edgeHorizontalUp[edgeId];
-                const edgeHorizontalForward = this._edgeHorizontalForward[edgeId];
-                if ((0, $3060130e3101af24$exports).dot(this._edgeNormalTemp, this._up) > 0) (0, $3060130e3101af24$exports).copy(edgeHorizontalUp, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_NORMALS[edgeId]);
+                const edgeHorizontalRight = this._edgeHorizontalRight[edgeId2];
+                const edgeHorizontalUp = this._edgeHorizontalUp[edgeId2];
+                const edgeHorizontalForward = this._edgeHorizontalForward[edgeId2];
+                if ((0, $3060130e3101af24$exports).dot(this._edgeNormalTemp, this._up) > 0) (0, $3060130e3101af24$exports).copy(edgeHorizontalUp, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_NORMALS[edgeId2]);
                 else {
-                    (0, $3060130e3101af24$exports).negate(edgeHorizontalUp, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_NORMALS[edgeId]);
+                    (0, $3060130e3101af24$exports).negate(edgeHorizontalUp, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_NORMALS[edgeId2]);
                     (0, $3060130e3101af24$exports).negate(this._edgeNormalTemp, this._edgeNormalTemp);
                 }
                 if ((0, $3060130e3101af24$exports).dot(this._edgePositiveTemp, this._right) > 0) {
-                    this._isLeftToRightHorizontal[edgeId] = true;
-                    (0, $3060130e3101af24$exports).copy(edgeHorizontalRight, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_POSITIVES[edgeId]);
+                    this._isLeftToRightHorizontal[edgeId2] = true;
+                    (0, $3060130e3101af24$exports).copy(edgeHorizontalRight, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_POSITIVES[edgeId2]);
                 } else {
-                    this._isLeftToRightHorizontal[edgeId] = false;
-                    (0, $3060130e3101af24$exports).negate(edgeHorizontalRight, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_POSITIVES[edgeId]);
+                    this._isLeftToRightHorizontal[edgeId2] = false;
+                    (0, $3060130e3101af24$exports).negate(edgeHorizontalRight, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_POSITIVES[edgeId2]);
                     (0, $3060130e3101af24$exports).negate(this._edgePositiveTemp, this._edgePositiveTemp);
                 }
                 (0, $3060130e3101af24$exports).cross(edgeHorizontalForward, this._edgePositiveTemp, this._edgeNormalTemp);
                 if ((0, $3060130e3101af24$exports).dot(edgeHorizontalForward, this._forward) < 0) {
-                    this._isLeftToRightHorizontal[edgeId] = !this._isLeftToRightHorizontal[edgeId];
+                    this._isLeftToRightHorizontal[edgeId2] = !this._isLeftToRightHorizontal[edgeId2];
                     (0, $3060130e3101af24$exports).negate(edgeHorizontalRight, edgeHorizontalRight);
                 }
                 (0, $3060130e3101af24$exports).cross(edgeHorizontalForward, edgeHorizontalRight, edgeHorizontalUp);
-                const edgeVerticalRight = this._edgeVerticalRight[edgeId];
-                const edgeVerticalUp = this._edgeVerticalUp[edgeId];
-                const edgeVerticalForward = this._edgeVerticalForward[edgeId];
-                if ((0, $3060130e3101af24$exports).dot(this._edgeNormal, this._right) < 0) (0, $3060130e3101af24$exports).copy(edgeVerticalUp, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_NORMALS[edgeId]);
+                const edgeVerticalRight = this._edgeVerticalRight[edgeId2];
+                const edgeVerticalUp = this._edgeVerticalUp[edgeId2];
+                const edgeVerticalForward = this._edgeVerticalForward[edgeId2];
+                if ((0, $3060130e3101af24$exports).dot(this._edgeNormal, this._right) < 0) (0, $3060130e3101af24$exports).copy(edgeVerticalUp, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_NORMALS[edgeId2]);
                 else {
-                    (0, $3060130e3101af24$exports).negate(edgeVerticalUp, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_NORMALS[edgeId]);
+                    (0, $3060130e3101af24$exports).negate(edgeVerticalUp, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_NORMALS[edgeId2]);
                     (0, $3060130e3101af24$exports).negate(this._edgeNormal, this._edgeNormal);
                 }
                 if ((0, $3060130e3101af24$exports).dot(this._edgePositive, this._up) < 0) {
-                    this._isLeftToRightVertical[edgeId] = true;
-                    (0, $3060130e3101af24$exports).copy(edgeVerticalRight, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_POSITIVES[edgeId]);
+                    this._isLeftToRightVertical[edgeId2] = true;
+                    (0, $3060130e3101af24$exports).copy(edgeVerticalRight, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_POSITIVES[edgeId2]);
                 } else {
-                    this._isLeftToRightVertical[edgeId] = false;
-                    (0, $3060130e3101af24$exports).negate(edgeVerticalRight, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_POSITIVES[edgeId]);
+                    this._isLeftToRightVertical[edgeId2] = false;
+                    (0, $3060130e3101af24$exports).negate(edgeVerticalRight, (0, $872acbae442b915c$export$7005c9eb6671414d).EDGE_POSITIVES[edgeId2]);
                     (0, $3060130e3101af24$exports).negate(this._edgePositive, this._edgePositive);
                 }
                 (0, $3060130e3101af24$exports).cross(edgeVerticalForward, this._edgePositive, this._edgeNormal);
                 if ((0, $3060130e3101af24$exports).dot(edgeVerticalForward, this._forward) < 0) {
-                    this._isLeftToRightVertical[edgeId] = !this._isLeftToRightVertical[edgeId];
+                    this._isLeftToRightVertical[edgeId2] = !this._isLeftToRightVertical[edgeId2];
                     (0, $3060130e3101af24$exports).negate(edgeVerticalRight, edgeVerticalRight);
                 }
                 (0, $3060130e3101af24$exports).cross(edgeVerticalForward, edgeVerticalRight, edgeVerticalUp);
-                if (this.isEdgeVisible[edgeId]) {
-                    if (this._labels[axisId1]) this._updateLabels(axisId1, edgeId);
-                    if (this._titles[axisId1]) this._updateTitle(axisId1, edgeId);
+                if (this.isEdgeVisible[edgeId2]) {
+                    if (this._labels[axisId1]) this._updateLabels(axisId1, edgeId2);
+                    if (this._titles[axisId1]) this._updateTitle(axisId1, edgeId2);
                 }
-                if (this.isHeadingVisible[edgeId]) this._updateHeading(axisId1, edgeId);
+                if (this.isHeadingVisible[edgeId2]) this._updateHeading(axisId1, edgeId2);
             }
         }
     }
@@ -14296,18 +14338,18 @@ class $fbd53862e80b5057$export$e3e79a454e5f8e5a extends (0, $542aab1cf3e54033$ex
             labelMMatrix[9] = forward[1];
             labelMMatrix[10] = forward[2];
         } else {
-            const right = this._edgeVerticalRight[edgeId];
-            const up = this._edgeVerticalUp[edgeId];
-            const forward = this._edgeVerticalForward[edgeId];
-            labelMMatrix[0] = right[0];
-            labelMMatrix[1] = right[1];
-            labelMMatrix[2] = right[2];
-            labelMMatrix[4] = up[0];
-            labelMMatrix[5] = up[1];
-            labelMMatrix[6] = up[2];
-            labelMMatrix[8] = forward[0];
-            labelMMatrix[9] = forward[1];
-            labelMMatrix[10] = forward[2];
+            const right1 = this._edgeVerticalRight[edgeId];
+            const up1 = this._edgeVerticalUp[edgeId];
+            const forward1 = this._edgeVerticalForward[edgeId];
+            labelMMatrix[0] = right1[0];
+            labelMMatrix[1] = right1[1];
+            labelMMatrix[2] = right1[2];
+            labelMMatrix[4] = up1[0];
+            labelMMatrix[5] = up1[1];
+            labelMMatrix[6] = up1[2];
+            labelMMatrix[8] = forward1[0];
+            labelMMatrix[9] = forward1[1];
+            labelMMatrix[10] = forward1[2];
         }
         (0, $8d309b2f98447504$exports).multiply(labelMMatrix, this._mMatrix, labelMMatrix);
         if (orientation == (0, $b0e0bae684e98192$export$d2304d1f23cf3ace).perpendicular) (0, $8d309b2f98447504$exports).multiply(labelMMatrix, labelMMatrix, (0, $87037c674fbf0952$export$a002182e51710d39).MAT4_ROTATION_MINUS_90);
@@ -14385,9 +14427,9 @@ class $fbd53862e80b5057$export$e3e79a454e5f8e5a extends (0, $542aab1cf3e54033$ex
             offset = this._updateGridTicks(axisId, this._gridVerticesView, this._gridIndices, offset);
             this._gridFaceScale[axisId] = size[axisId] == 0 ? 1 : size[axisId];
         }
-        const axisId2 = 2;
-        this._gridFaceScale[axisId2] = 1;
-        for(let faceId = 0; faceId < 2; faceId++)offset = this._updateGridFace(axisId2, faceId, this._gridVerticesView, this._gridIndices, offset);
+        const axisId1 = 2;
+        this._gridFaceScale[axisId1] = 1;
+        for(let faceId = 0; faceId < 2; faceId++)offset = this._updateGridFace(axisId1, faceId, this._gridVerticesView, this._gridIndices, offset);
     }
     _updateText(size) {
         let glyphOffset = 0;
@@ -14408,74 +14450,74 @@ class $fbd53862e80b5057$export$e3e79a454e5f8e5a extends (0, $542aab1cf3e54033$ex
         }
         this.pickLabelLookup = {};
         this._pickLabel = [];
-        for(let axisId3 = 0; axisId3 < 2; axisId3++)if (this._labels[axisId3]) {
-            const width = size[axisId3];
-            const maxLabelSize = this._maxLabelSize[axisId3];
-            const orientation = this._orientations[axisId3];
+        for(let axisId1 = 0; axisId1 < 2; axisId1++)if (this._labels[axisId1]) {
+            const width = size[axisId1];
+            const maxLabelSize = this._maxLabelSize[axisId1];
+            const orientation = this._orientations[axisId1];
             (0, $a3ca522ed0848e85$exports).set(maxLabelSize, 0, 0);
-            this._axesLeftToRightIndexOffsets[axisId3] = glyphOffset * 6;
-            glyphOffset = this._updateLeftToRightAxisLabels(axisId3, width, maxLabelSize, glyphOffset, orientation, this._labels[axisId3], this._labelPositions[axisId3], this._labelSizes[axisId3]);
-            this._axesLeftToRightIndexCounts[axisId3] = glyphOffset * 6 - this._axesLeftToRightIndexOffsets[axisId3];
-            this._axesRightToLeftIndexOffsets[axisId3] = glyphOffset * 6;
-            glyphOffset = this._updateRightToLeftAxisLabels(axisId3, width, maxLabelSize, glyphOffset, orientation, this._labels[axisId3], this._labelPositions[axisId3], this._labelSizes[axisId3]);
-            this._axesRightToLeftIndexCounts[axisId3] = glyphOffset * 6 - this._axesRightToLeftIndexOffsets[axisId3];
+            this._axesLeftToRightIndexOffsets[axisId1] = glyphOffset * 6;
+            glyphOffset = this._updateLeftToRightAxisLabels(axisId1, width, maxLabelSize, glyphOffset, orientation, this._labels[axisId1], this._labelPositions[axisId1], this._labelSizes[axisId1]);
+            this._axesLeftToRightIndexCounts[axisId1] = glyphOffset * 6 - this._axesLeftToRightIndexOffsets[axisId1];
+            this._axesRightToLeftIndexOffsets[axisId1] = glyphOffset * 6;
+            glyphOffset = this._updateRightToLeftAxisLabels(axisId1, width, maxLabelSize, glyphOffset, orientation, this._labels[axisId1], this._labelPositions[axisId1], this._labelSizes[axisId1]);
+            this._axesRightToLeftIndexCounts[axisId1] = glyphOffset * 6 - this._axesRightToLeftIndexOffsets[axisId1];
         } else {
-            this._axesLeftToRightIndexOffsets[axisId3] = glyphOffset * 6;
-            this._axesRightToLeftIndexOffsets[axisId3] = glyphOffset * 6;
-            this._axesLeftToRightIndexCounts[axisId3] = 0;
-            this._axesRightToLeftIndexCounts[axisId3] = 0;
-            this._maxLabelSize[axisId3][0] = 0;
-            this._maxLabelSize[axisId3][1] = 0;
+            this._axesLeftToRightIndexOffsets[axisId1] = glyphOffset * 6;
+            this._axesRightToLeftIndexOffsets[axisId1] = glyphOffset * 6;
+            this._axesLeftToRightIndexCounts[axisId1] = 0;
+            this._axesRightToLeftIndexCounts[axisId1] = 0;
+            this._maxLabelSize[axisId1][0] = 0;
+            this._maxLabelSize[axisId1][1] = 0;
         }
         this.pickTitleLookup = {};
         this._pickTitle = [];
-        for(let axisId4 = 0; axisId4 < 2; axisId4++)if (this._titles[axisId4]) {
+        for(let axisId2 = 0; axisId2 < 2; axisId2++)if (this._titles[axisId2]) {
             (0, $3060130e3101af24$exports).set(this._textPosition, 0, 0, 0);
             (0, $3060130e3101af24$exports).set(this._textOffset, 0, 0, 0);
-            this._titleIndexOffsets[axisId4] = glyphOffset * 6;
-            const text = (0, $45b7bda56617a278$export$f080f423ca93034f).truncate(this._titles[axisId4], this._core.config.axesTextTitleMaxGlyphs);
-            const scale = this._titleSizes[axisId4] / this._font.size;
+            this._titleIndexOffsets[axisId2] = glyphOffset * 6;
+            const text = (0, $45b7bda56617a278$export$f080f423ca93034f).truncate(this._titles[axisId2], this._core.config.axesTextTitleMaxGlyphs);
+            const scale = this._titleSizes[axisId2] / this._font.size;
             (0, $45b7bda56617a278$export$f080f423ca93034f).measure(this._font, text, this._textMetric);
-            const width = this._textMetric.width * scale;
+            const width1 = this._textMetric.width * scale;
             const maxGlyphTop = this._textMetric.maxTop * scale;
             const lineHeight = this._font.size * scale;
-            this._textOffset[0] -= width / 2;
+            this._textOffset[0] -= width1 / 2;
             this._textOffset[1] -= (lineHeight - maxGlyphTop) / 2;
             const pickId = (0, $6510adcd3afd2b79$export$aadd933e49c67c12).nextPickId();
             (0, $6510adcd3afd2b79$export$aadd933e49c67c12).encodeNumber(pickId, (0, $b0e0bae684e98192$export$6fc3f4da94ff0be0).axesTitle, this._vec4);
             this.pickTitleLookup[pickId] = this._pickTitle.length;
-            this._pickTitle.push(axisId4);
+            this._pickTitle.push(axisId2);
             (0, $45b7bda56617a278$export$f080f423ca93034f).addString(this._font, text, this._textVerticesView, this._textIndices, glyphOffset, this._textPosition, scale, this._textOffset, null, this._vec4);
             glyphOffset += text.length;
-            this._titleIndexCounts[axisId4] = glyphOffset * 6 - this._titleIndexOffsets[axisId4];
+            this._titleIndexCounts[axisId2] = glyphOffset * 6 - this._titleIndexOffsets[axisId2];
         } else {
-            this._titleIndexOffsets[axisId4] = glyphOffset * 6;
-            this._titleIndexCounts[axisId4] = 0;
+            this._titleIndexOffsets[axisId2] = glyphOffset * 6;
+            this._titleIndexCounts[axisId2] = 0;
         }
         this.pickHeadingLookup = {};
         this._pickHeading = [];
-        for(let axisId5 = 0; axisId5 < 2; axisId5++)if (this._headings[axisId5]) {
+        for(let axisId3 = 0; axisId3 < 2; axisId3++)if (this._headings[axisId3]) {
             (0, $3060130e3101af24$exports).set(this._textPosition, 0, 0, 0);
             (0, $3060130e3101af24$exports).set(this._textOffset, 0, 0, 0);
-            this._headingIndexOffsets[axisId5] = glyphOffset * 6;
-            const text = (0, $45b7bda56617a278$export$f080f423ca93034f).truncate(this._headings[axisId5], this._core.config.axesTextHeadingMaxGlyphs);
-            const scale = this._headingSizes[axisId5] / this._font.size;
-            (0, $45b7bda56617a278$export$f080f423ca93034f).measure(this._font, text, this._textMetric);
-            const width = this._textMetric.width * scale;
-            const maxGlyphTop = this._textMetric.maxTop * scale;
-            const lineHeight = this._font.size * scale;
-            this._textOffset[0] -= width / 2;
-            this._textOffset[1] -= (lineHeight - maxGlyphTop) / 2;
-            const pickId = (0, $6510adcd3afd2b79$export$aadd933e49c67c12).nextPickId();
-            (0, $6510adcd3afd2b79$export$aadd933e49c67c12).encodeNumber(pickId, (0, $b0e0bae684e98192$export$6fc3f4da94ff0be0).axesHeading, this._vec4);
-            this.pickHeadingLookup[pickId] = this._pickHeading.length;
-            this._pickHeading.push(axisId5);
-            (0, $45b7bda56617a278$export$f080f423ca93034f).addString(this._font, text, this._textVerticesView, this._textIndices, glyphOffset, this._textPosition, scale, this._textOffset, null, this._vec4);
-            glyphOffset += text.length;
-            this._headingIndexCounts[axisId5] = glyphOffset * 6 - this._headingIndexOffsets[axisId5];
+            this._headingIndexOffsets[axisId3] = glyphOffset * 6;
+            const text1 = (0, $45b7bda56617a278$export$f080f423ca93034f).truncate(this._headings[axisId3], this._core.config.axesTextHeadingMaxGlyphs);
+            const scale1 = this._headingSizes[axisId3] / this._font.size;
+            (0, $45b7bda56617a278$export$f080f423ca93034f).measure(this._font, text1, this._textMetric);
+            const width2 = this._textMetric.width * scale1;
+            const maxGlyphTop1 = this._textMetric.maxTop * scale1;
+            const lineHeight1 = this._font.size * scale1;
+            this._textOffset[0] -= width2 / 2;
+            this._textOffset[1] -= (lineHeight1 - maxGlyphTop1) / 2;
+            const pickId1 = (0, $6510adcd3afd2b79$export$aadd933e49c67c12).nextPickId();
+            (0, $6510adcd3afd2b79$export$aadd933e49c67c12).encodeNumber(pickId1, (0, $b0e0bae684e98192$export$6fc3f4da94ff0be0).axesHeading, this._vec4);
+            this.pickHeadingLookup[pickId1] = this._pickHeading.length;
+            this._pickHeading.push(axisId3);
+            (0, $45b7bda56617a278$export$f080f423ca93034f).addString(this._font, text1, this._textVerticesView, this._textIndices, glyphOffset, this._textPosition, scale1, this._textOffset, null, this._vec4);
+            glyphOffset += text1.length;
+            this._headingIndexCounts[axisId3] = glyphOffset * 6 - this._headingIndexOffsets[axisId3];
         } else {
-            this._headingIndexOffsets[axisId5] = glyphOffset * 6;
-            this._headingIndexCounts[axisId5] = 0;
+            this._headingIndexOffsets[axisId3] = glyphOffset * 6;
+            this._headingIndexCounts[axisId3] = 0;
         }
     }
     _updateLeftToRightAxisLabels(axisId, size, maxSize, glyphOffset, orientation, labels, positions, scales) {
@@ -14930,9 +14972,9 @@ class $46d4ff4ca6611dfa$export$8109d828920592df {
         }
         for(let q1 = 0, k1 = 0; q1 < n; q1++){
             while(z[k1 + 1] < q1)k1++;
-            const r = v[k1];
-            const qr = q1 - r;
-            grid[offset + q1 * stride] = f[r] + qr * qr;
+            const r1 = v[k1];
+            const qr = q1 - r1;
+            grid[offset + q1 * stride] = f[r1] + qr * qr;
         }
     }
 }
@@ -14988,11 +15030,11 @@ class $94a3b5a040febbee$export$a1bb24b21e5c8dba {
             this._removedManipulators = [];
         }
         for(const key1 in manipulators){
-            const manipulator = manipulators[key1];
-            if (!this._manipulators[manipulator.id]) {
-                if (!this.addManipulator || this.addManipulator(manipulator)) {
-                    (0, $3060130e3101af24$exports).copy(manipulator.initialPosition, manipulator.position);
-                    this._manipulators[manipulator.id] = manipulator;
+            const manipulator1 = manipulators[key1];
+            if (!this._manipulators[manipulator1.id]) {
+                if (!this.addManipulator || this.addManipulator(manipulator1)) {
+                    (0, $3060130e3101af24$exports).copy(manipulator1.initialPosition, manipulator1.position);
+                    this._manipulators[manipulator1.id] = manipulator1;
                     this._count++;
                 }
             }
@@ -15035,28 +15077,28 @@ class $94a3b5a040febbee$export$a1bb24b21e5c8dba {
                 if (removed > 0) (0, $3060130e3101af24$exports).copy(this._centroid, this._previousCentroid);
                 else {
                     (0, $3060130e3101af24$exports).set(this._centroid, 0, 0, 0);
-                    for(const key in this._manipulators){
-                        const manipulator = this._manipulators[key];
-                        if (manipulator.isPersisted) (0, $3060130e3101af24$exports).add(this._centroid, this._centroid, manipulator.position);
+                    for(const key1 in this._manipulators){
+                        const manipulator1 = this._manipulators[key1];
+                        if (manipulator1.isPersisted) (0, $3060130e3101af24$exports).add(this._centroid, this._centroid, manipulator1.position);
                     }
                     (0, $3060130e3101af24$exports).scale(this._centroid, this._centroid, 1 / persisted);
                 }
-                for(const key in this._manipulators){
-                    const manipulator = this._manipulators[key];
-                    if (manipulator.isPersisted) {
-                        manipulator.maxTranslationSquared = Math.max(manipulator.maxTranslationSquared, (0, $3060130e3101af24$exports).squaredDistance(manipulator.position, manipulator.initialPosition));
-                        (0, $3060130e3101af24$exports).add(this.translationDelta, this.translationDelta, manipulator.position);
-                        (0, $3060130e3101af24$exports).subtract(this.translationDelta, this.translationDelta, manipulator.previousPosition);
-                        (0, $3060130e3101af24$exports).subtract(this._relativePositionToCentroid, manipulator.position, this._centroid);
+                for(const key2 in this._manipulators){
+                    const manipulator2 = this._manipulators[key2];
+                    if (manipulator2.isPersisted) {
+                        manipulator2.maxTranslationSquared = Math.max(manipulator2.maxTranslationSquared, (0, $3060130e3101af24$exports).squaredDistance(manipulator2.position, manipulator2.initialPosition));
+                        (0, $3060130e3101af24$exports).add(this.translationDelta, this.translationDelta, manipulator2.position);
+                        (0, $3060130e3101af24$exports).subtract(this.translationDelta, this.translationDelta, manipulator2.previousPosition);
+                        (0, $3060130e3101af24$exports).subtract(this._relativePositionToCentroid, manipulator2.position, this._centroid);
                         const distanceToCentroidSquared = (0, $3060130e3101af24$exports).squaredLength(this._relativePositionToCentroid);
                         if (distanceToCentroidSquared < this._core.config.manipulatorMinRelativeDistanceSquared) this.scaleDelta += 1;
                         else {
                             const distanceToCentroid = Math.sqrt(distanceToCentroidSquared);
-                            const previousDistanceToCentroidSquared = (0, $3060130e3101af24$exports).squaredLength(manipulator.previousPositionRelativeToCentroid);
+                            const previousDistanceToCentroidSquared = (0, $3060130e3101af24$exports).squaredLength(manipulator2.previousPositionRelativeToCentroid);
                             const previousDistanceToCentroid = Math.sqrt(previousDistanceToCentroidSquared);
                             this.scaleDelta += distanceToCentroid / previousDistanceToCentroid;
                             (0, $3060130e3101af24$exports).scale(this._directionToCentroid, this._relativePositionToCentroid, 1 / distanceToCentroid);
-                            (0, $3060130e3101af24$exports).scale(this._previousDirectionToCentroid, manipulator.previousPositionRelativeToCentroid, 1 / previousDistanceToCentroid);
+                            (0, $3060130e3101af24$exports).scale(this._previousDirectionToCentroid, manipulator2.previousPositionRelativeToCentroid, 1 / previousDistanceToCentroid);
                             this.twistDelta += (0, $1c067ae0f2b59810$export$210d3b2db589eb5c).signedAngleBetweenVectors(this._previousDirectionToCentroid, this._directionToCentroid, this.twistAxis);
                         }
                     }
@@ -15071,22 +15113,22 @@ class $94a3b5a040febbee$export$a1bb24b21e5c8dba {
             }
         }
         (0, $3060130e3101af24$exports).set(this.centroid, 0, 0, 0);
-        for(const key in this._manipulators){
-            const manipulator = this._manipulators[key];
-            (0, $3060130e3101af24$exports).add(this.centroid, this.centroid, manipulator.position);
+        for(const key3 in this._manipulators){
+            const manipulator3 = this._manipulators[key3];
+            (0, $3060130e3101af24$exports).add(this.centroid, this.centroid, manipulator3.position);
         }
         (0, $3060130e3101af24$exports).scale(this.centroid, this.centroid, 1 / this._count);
-        for(const key2 in this._manipulators){
-            const manipulator = this._manipulators[key2];
-            (0, $3060130e3101af24$exports).subtract(manipulator.positionRelativeToCentroid, manipulator.position, this.centroid);
+        for(const key4 in this._manipulators){
+            const manipulator4 = this._manipulators[key4];
+            (0, $3060130e3101af24$exports).subtract(manipulator4.positionRelativeToCentroid, manipulator4.position, this.centroid);
         }
         (0, $3060130e3101af24$exports).copy(this._previousCentroid, this.centroid);
-        for(const key3 in this._manipulators){
-            const manipulator = this._manipulators[key3];
-            manipulator.isPersisted = true;
-            (0, $3060130e3101af24$exports).copy(manipulator.previousPosition, manipulator.position);
-            (0, $3060130e3101af24$exports).copy(manipulator.previousRotationAxis, manipulator.rotationAxis);
-            (0, $3060130e3101af24$exports).copy(manipulator.previousPositionRelativeToCentroid, manipulator.positionRelativeToCentroid);
+        for(const key5 in this._manipulators){
+            const manipulator5 = this._manipulators[key5];
+            manipulator5.isPersisted = true;
+            (0, $3060130e3101af24$exports).copy(manipulator5.previousPosition, manipulator5.position);
+            (0, $3060130e3101af24$exports).copy(manipulator5.previousRotationAxis, manipulator5.rotationAxis);
+            (0, $3060130e3101af24$exports).copy(manipulator5.previousPositionRelativeToCentroid, manipulator5.positionRelativeToCentroid);
         }
     }
 }
@@ -15455,36 +15497,36 @@ class $e2473724aa3ec441$export$d0d38e7dec7a1a61 {
                     }
                 }
             } else {
-                const translationDelta = this._manipulationProcessor.translationDelta;
-                const camera = this._core.camera;
-                if (translationDelta[0] != 0 || translationDelta[1] != 0) camera.translate(translationDelta);
+                const translationDelta1 = this._manipulationProcessor.translationDelta;
+                const camera1 = this._core.camera;
+                if (translationDelta1[0] != 0 || translationDelta1[1] != 0) camera1.translate(translationDelta1);
                 if (this._manipulationProcessor.scaleDelta != 0) {
                     const distance = this._manipulationProcessor.scaleDelta * this.multiTouchZoomScale;
-                    camera.zoom(distance, this._manipulationProcessor.centroid[0], this._manipulationProcessor.centroid[1]);
+                    camera1.zoom(distance, this._manipulationProcessor.centroid[0], this._manipulationProcessor.centroid[1]);
                 }
-                if (this._manipulationProcessor.twistDelta != 0) camera.twist(this._manipulationProcessor.twistDelta, this._manipulationProcessor.centroid[0], this._manipulationProcessor.centroid[1]);
+                if (this._manipulationProcessor.twistDelta != 0) camera1.twist(this._manipulationProcessor.twistDelta, this._manipulationProcessor.centroid[0], this._manipulationProcessor.centroid[1]);
             }
             if (this.isPickingEnabled && !this._manipulationProcessor.isDragging && !this._isLassoPicking) {
-                const camera = this._core.camera;
+                const camera2 = this._core.camera;
                 const renderer = this._core.renderer;
                 if (renderer.isCapturingPickImage) {
-                    camera.updatePickVMatrix(renderer.width / 2, renderer.height / 2);
-                    renderer.pickVMatrix = camera.pickVMatrix;
+                    camera2.updatePickVMatrix(renderer.width / 2, renderer.height / 2);
+                    renderer.pickVMatrix = camera2.pickVMatrix;
                     renderer.isPickingEnabled = true;
                     this._pickedTime = 0;
                 } else if (this._pointers.hoverId > -1) {
                     const pickingX = this._pointers.hoverX;
                     const pickingY = this._pointers.hoverY;
-                    camera.updatePickVMatrix(pickingX, pickingY);
-                    renderer.pickVMatrix = camera.pickVMatrix;
+                    camera2.updatePickVMatrix(pickingX, pickingY);
+                    renderer.pickVMatrix = camera2.pickVMatrix;
                     renderer.isPickingEnabled = true;
                     if (this._pickedId != renderer.pickedId) {
                         this._pickedId = renderer.pickedId;
                         this._pickedTime = 0;
                     } else if (this._manipulationProcessor.count == 1) {
                         this._pickedTime += elapsedTime;
-                        for(const key in this._manipulators){
-                            this._manipulator = this._manipulators[key];
+                        for(const key1 in this._manipulators){
+                            this._manipulator = this._manipulators[key1];
                             break;
                         }
                     }
@@ -15499,13 +15541,13 @@ class $e2473724aa3ec441$export$d0d38e7dec7a1a61 {
                                     const transitionBuffer = renderer.transitionBuffers[i];
                                     const id = transitionBuffer.pickIdLookup[this._pickedId];
                                     if (id > -1) {
-                                        const result = {
+                                        const result1 = {
                                             transitionBuffer: i,
                                             id: id,
                                             manipulator: this._manipulator
                                         };
-                                        this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `picked id ${result.id}, transition buffer ${i}`);
-                                        if (this.pickItemCallback) this.pickItemCallback(result);
+                                        this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `picked id ${result1.id}, transition buffer ${i}`);
+                                        if (this.pickItemCallback) this.pickItemCallback(result1);
                                         break;
                                     }
                                 }
@@ -15514,17 +15556,17 @@ class $e2473724aa3ec441$export$d0d38e7dec7a1a61 {
                             break;
                         case (0, $b0e0bae684e98192$export$6fc3f4da94ff0be0).label:
                             if (this._manipulationProcessor.count == 0) {
-                                if (this._pickedTime > this.pickSelectDelay) for(let i = 0; i < renderer.labelSets.length; i++){
-                                    const labelSet = renderer.labelSets[i].label;
-                                    const id = labelSet.pickIdLookup[this._pickedId];
-                                    if (id > -1) {
-                                        const result = {
-                                            label: id,
-                                            set: i,
+                                if (this._pickedTime > this.pickSelectDelay) for(let i1 = 0; i1 < renderer.labelSets.length; i1++){
+                                    const labelSet = renderer.labelSets[i1].label;
+                                    const id1 = labelSet.pickIdLookup[this._pickedId];
+                                    if (id1 > -1) {
+                                        const result2 = {
+                                            label: id1,
+                                            set: i1,
                                             manipulator: this._manipulator
                                         };
-                                        this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `picked label ${result.label}, set ${result.set}`);
-                                        if (this.pickLabelSetCallback) this.pickLabelSetCallback(result);
+                                        this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `picked label ${result2.label}, set ${result2.set}`);
+                                        if (this.pickLabelSetCallback) this.pickLabelSetCallback(result2);
                                         break;
                                     }
                                 }
@@ -15533,15 +15575,15 @@ class $e2473724aa3ec441$export$d0d38e7dec7a1a61 {
                             break;
                         case (0, $b0e0bae684e98192$export$6fc3f4da94ff0be0).axesDivision:
                             if (this._manipulationProcessor.count == 0) {
-                                if (this._pickedTime > this.pickSelectDelay) for(let i = 0; i < renderer.currentAxes.length; i++){
-                                    const axes = renderer.currentAxes[i].axes;
-                                    const id = axes.pickGridLookup[this._pickedId];
-                                    if (id > -1) {
-                                        const result = axes.pickGrid(id);
-                                        result.axes = i;
-                                        result.manipulator = this._manipulator;
-                                        this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `picked division (${result.divisionX}, ${result.divisionY}, ${result.divisionZ}), axes ${result.axes}`);
-                                        if (this.pickAxesGridCallback) this.pickAxesGridCallback(result);
+                                if (this._pickedTime > this.pickSelectDelay) for(let i2 = 0; i2 < renderer.currentAxes.length; i2++){
+                                    const axes = renderer.currentAxes[i2].axes;
+                                    const id2 = axes.pickGridLookup[this._pickedId];
+                                    if (id2 > -1) {
+                                        const result3 = axes.pickGrid(id2);
+                                        result3.axes = i2;
+                                        result3.manipulator = this._manipulator;
+                                        this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `picked division (${result3.divisionX}, ${result3.divisionY}, ${result3.divisionZ}), axes ${result3.axes}`);
+                                        if (this.pickAxesGridCallback) this.pickAxesGridCallback(result3);
                                         break;
                                     }
                                 }
@@ -15550,15 +15592,15 @@ class $e2473724aa3ec441$export$d0d38e7dec7a1a61 {
                             break;
                         case (0, $b0e0bae684e98192$export$6fc3f4da94ff0be0).axesTitle:
                             if (this._manipulationProcessor.count == 0) {
-                                if (this._pickedTime > this.pickSelectDelay) for(let i = 0; i < renderer.currentAxes.length; i++){
-                                    const axes = renderer.currentAxes[i].axes;
-                                    const id = axes.pickTitleLookup[this._pickedId];
-                                    if (id > -1) {
-                                        const result = axes.pickTitle(id);
-                                        result.axes = i;
-                                        result.manipulator = this._manipulator;
-                                        this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `picked title ${result.axis}, axes ${result.axes}`);
-                                        if (this.pickAxesTitleCallback) this.pickAxesTitleCallback(result);
+                                if (this._pickedTime > this.pickSelectDelay) for(let i3 = 0; i3 < renderer.currentAxes.length; i3++){
+                                    const axes1 = renderer.currentAxes[i3].axes;
+                                    const id3 = axes1.pickTitleLookup[this._pickedId];
+                                    if (id3 > -1) {
+                                        const result4 = axes1.pickTitle(id3);
+                                        result4.axes = i3;
+                                        result4.manipulator = this._manipulator;
+                                        this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `picked title ${result4.axis}, axes ${result4.axes}`);
+                                        if (this.pickAxesTitleCallback) this.pickAxesTitleCallback(result4);
                                         break;
                                     }
                                 }
@@ -15567,15 +15609,15 @@ class $e2473724aa3ec441$export$d0d38e7dec7a1a61 {
                             break;
                         case (0, $b0e0bae684e98192$export$6fc3f4da94ff0be0).axesLabel:
                             if (this._manipulationProcessor.count == 0) {
-                                if (this._pickedTime > this.pickSelectDelay) for(let i = 0; i < renderer.currentAxes.length; i++){
-                                    const axes = renderer.currentAxes[i].axes;
-                                    const id = axes.pickLabelLookup[this._pickedId];
-                                    if (id > -1) {
-                                        const result = axes.pickLabel(id);
-                                        result.axes = i;
-                                        result.manipulator = this._manipulator;
-                                        this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `picked label ${result.label}, axis ${result.axis}, axes ${result.axes}`);
-                                        if (this.pickAxesLabelCallback) this.pickAxesLabelCallback(result);
+                                if (this._pickedTime > this.pickSelectDelay) for(let i4 = 0; i4 < renderer.currentAxes.length; i4++){
+                                    const axes2 = renderer.currentAxes[i4].axes;
+                                    const id4 = axes2.pickLabelLookup[this._pickedId];
+                                    if (id4 > -1) {
+                                        const result5 = axes2.pickLabel(id4);
+                                        result5.axes = i4;
+                                        result5.manipulator = this._manipulator;
+                                        this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `picked label ${result5.label}, axis ${result5.axis}, axes ${result5.axes}`);
+                                        if (this.pickAxesLabelCallback) this.pickAxesLabelCallback(result5);
                                         break;
                                     }
                                 }
@@ -15584,15 +15626,15 @@ class $e2473724aa3ec441$export$d0d38e7dec7a1a61 {
                             break;
                         case (0, $b0e0bae684e98192$export$6fc3f4da94ff0be0).axesHeading:
                             if (this._manipulationProcessor.count == 0) {
-                                if (this._pickedTime > this.pickSelectDelay) for(let i = 0; i < renderer.currentAxes.length; i++){
-                                    const axes = renderer.currentAxes[i].axes;
-                                    const id = axes.pickHeadingLookup[this._pickedId];
-                                    if (id > -1) {
-                                        const result = axes.pickHeading(id);
-                                        result.axes = i;
-                                        result.manipulator = this._manipulator;
-                                        this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `picked heading ${result.axis}, axes ${result.axes}`);
-                                        if (this.pickAxesHeadingCallback) this.pickAxesHeadingCallback(result);
+                                if (this._pickedTime > this.pickSelectDelay) for(let i5 = 0; i5 < renderer.currentAxes.length; i5++){
+                                    const axes3 = renderer.currentAxes[i5].axes;
+                                    const id5 = axes3.pickHeadingLookup[this._pickedId];
+                                    if (id5 > -1) {
+                                        const result6 = axes3.pickHeading(id5);
+                                        result6.axes = i5;
+                                        result6.manipulator = this._manipulator;
+                                        this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `picked heading ${result6.axis}, axes ${result6.axes}`);
+                                        if (this.pickAxesHeadingCallback) this.pickAxesHeadingCallback(result6);
                                         break;
                                     }
                                 }
@@ -15752,8 +15794,8 @@ class $b0e0bae684e98192$export$4143ab5b91744744 {
             const currentAxes = this._renderer.currentAxes;
             if (currentAxes) {
                 renderer.currentAxes = [];
-                for(let i = 0; i < currentAxes.length; i++){
-                    const axesVisual = currentAxes[i];
+                for(let i1 = 0; i1 < currentAxes.length; i1++){
+                    const axesVisual = currentAxes[i1];
                     const axes = axesVisual.axes;
                     if (axes instanceof (0, $52e490408927d13a$export$b1b08d445768978)) {
                         const cartesian3dAxesVisual = renderer.createCartesian3dAxesVisual(axes);
@@ -15764,12 +15806,12 @@ class $b0e0bae684e98192$export$4143ab5b91744744 {
             const labelSets = this._renderer.labelSets;
             if (labelSets) {
                 renderer.labelSets = [];
-                for(let i = 0; i < labelSets.length; i++)renderer.labelSets.push(renderer.createLabelSetVisual(labelSets[i].label));
+                for(let i2 = 0; i2 < labelSets.length; i2++)renderer.labelSets.push(renderer.createLabelSetVisual(labelSets[i2].label));
             }
             const images = this._renderer.images;
             if (images) {
                 renderer.images = [];
-                for(let i = 0; i < images.length; i++)renderer.images.push(renderer.createImageVisual(images[i].image));
+                for(let i3 = 0; i3 < images.length; i3++)renderer.images.push(renderer.createImageVisual(images[i3].image));
             }
             const fonts = this._renderer.fonts;
             if (fonts) for(const key in fonts){
@@ -15885,9 +15927,9 @@ class $b0e0bae684e98192$export$4143ab5b91744744 {
         }
         if (event.removed.length > 0) this.renderer.controllers.length = 0;
     }
-    _tick(currentTime1, xrFrame) {
-        let elapsedTime = currentTime1 - this._previousTime;
-        this._previousTime = currentTime1;
+    _tick(currentTime, xrFrame) {
+        let elapsedTime = currentTime - this._previousTime;
+        this._previousTime = currentTime;
         if (elapsedTime > 0) {
             if (elapsedTime > 100) elapsedTime = 100;
             this.update(elapsedTime, xrFrame);
@@ -16022,8 +16064,8 @@ class $b0e0bae684e98192$export$4143ab5b91744744 {
         }
         if (pickType == $b0e0bae684e98192$export$6fc3f4da94ff0be0.data) {
             const translation = (0, $3060130e3101af24$exports).create();
-            for(let i = 0; i < this._renderer.transitionBuffers.length; i++){
-                const transitionBuffer = this._renderer.transitionBuffers[i];
+            for(let i2 = 0; i2 < this._renderer.transitionBuffers.length; i2++){
+                const transitionBuffer = this._renderer.transitionBuffers[i2];
                 const set = new Set();
                 if (transitionBuffer.isVisible) {
                     const start = window.performance.now();
@@ -16046,7 +16088,7 @@ class $b0e0bae684e98192$export$4143ab5b91744744 {
                             if (isInside) set.add(id);
                         }
                     }
-                    if (set.size > 0) this._log.write($b0e0bae684e98192$export$243e62d78d3b544d.info, `lasso transition buffer ${i} picked ${set.size} ${Math.round(window.performance.now() - start)}ms`);
+                    if (set.size > 0) this._log.write($b0e0bae684e98192$export$243e62d78d3b544d.info, `lasso transition buffer ${i2} picked ${set.size} ${Math.round(window.performance.now() - start)}ms`);
                 }
                 sets.push(set);
             }
@@ -16237,8 +16279,8 @@ class $58336965f1370cf4$export$bfc5db82fb7164f0 {
                     normals.push(parseFloat(parts[3]));
                     break;
                 case "f":
-                    for(let i3 = 0; i3 < parts.length - 1; i3++){
-                        const part = parts[i3 + 1];
+                    for(let i1 = 0; i1 < parts.length - 1; i1++){
+                        const part = parts[i1 + 1];
                         if (faceLookup[part] == undefined) faceLookup[part] = faceCount++;
                         indices.push(faceLookup[part]);
                     }
@@ -16249,7 +16291,7 @@ class $58336965f1370cf4$export$bfc5db82fb7164f0 {
                     break;
             }
         }
-        for(let i1 = 0; i1 < meshes.length - 1; i1++)indexCounts.push(indexOffsets[i1 + 1] - indexOffsets[i1]);
+        for(let i2 = 0; i2 < meshes.length - 1; i2++)indexCounts.push(indexOffsets[i2 + 1] - indexOffsets[i2]);
         indexCounts.push(indices.length - indexOffsets[meshes.length - 1]);
         const vertices = new ArrayBuffer((0, $9baea54bf2330932$export$e40add16394b9bff).SIZE_BYTES * Object.keys(faceLookup).length);
         const dataView = new DataView(vertices);
@@ -16268,14 +16310,14 @@ class $58336965f1370cf4$export$bfc5db82fb7164f0 {
             hasTexCoords = faceParts.length > 1 && !isNaN(parseInt(faceParts[1]));
             hasNormals = faceParts.length > 2 && !isNaN(parseInt(faceParts[2]));
         }
-        for(let i2 = 0; i2 < faces.length; i2++){
-            const faceParts = faces[i2].split("/");
-            let index = (parseInt(faceParts[0]) - 1) * 3;
+        for(let i3 = 0; i3 < faces.length; i3++){
+            const faceParts1 = faces[i3].split("/");
+            let index = (parseInt(faceParts1[0]) - 1) * 3;
             const x = positions[index];
             const y = positions[index + 1];
             const z = positions[index + 2];
             (0, $3060130e3101af24$exports).set(_vec3, x, y, z);
-            (0, $9baea54bf2330932$export$e40add16394b9bff).setPosition(dataView, i2, _vec3);
+            (0, $9baea54bf2330932$export$e40add16394b9bff).setPosition(dataView, i3, _vec3);
             minX = Math.min(x, minX);
             minY = Math.min(y, minY);
             minZ = Math.min(z, minZ);
@@ -16283,14 +16325,14 @@ class $58336965f1370cf4$export$bfc5db82fb7164f0 {
             maxY = Math.max(y, maxY);
             maxZ = Math.max(z, maxZ);
             if (hasNormals) {
-                index = (parseInt(faceParts[2]) - 1) * 3;
+                index = (parseInt(faceParts1[2]) - 1) * 3;
                 (0, $3060130e3101af24$exports).set(_vec3, normals[index], normals[index + 1], normals[index + 2]);
-                (0, $9baea54bf2330932$export$e40add16394b9bff).setNormal(dataView, i2, _vec3);
+                (0, $9baea54bf2330932$export$e40add16394b9bff).setNormal(dataView, i3, _vec3);
             }
             if (hasTexCoords) {
-                index = (parseInt(faceParts[1]) - 1) * 2;
+                index = (parseInt(faceParts1[1]) - 1) * 2;
                 (0, $a3ca522ed0848e85$exports).set(_vec2, texCoords[index], texCoords[index + 1]);
-                (0, $9baea54bf2330932$export$e40add16394b9bff).setTexCoord(dataView, i2, _vec2);
+                (0, $9baea54bf2330932$export$e40add16394b9bff).setTexCoord(dataView, i3, _vec2);
             }
         }
         const originX = (minX + maxX) / 2;
@@ -16710,10 +16752,10 @@ class $9121297154cd69fc$export$b04be29aa201d4f5 extends $9121297154cd69fc$export
                     this._offset[1] = this._originY + height / 2 - i1 * lineHeight - lineHeight / 2 - maxGlyphTop / 2;
                     const pickingId = (0, $6510adcd3afd2b79$export$aadd933e49c67c12).nextPickId();
                     (0, $6510adcd3afd2b79$export$aadd933e49c67c12).encodeNumber(pickingId, (0, $b0e0bae684e98192$export$6fc3f4da94ff0be0).label, this._vec4);
-                    const text = truncated[i1];
-                    if (text.length > 0) {
-                        (0, $45b7bda56617a278$export$f080f423ca93034f).addString(this._font, text, this._verticesView, this._indices, glyphs, (0, $87037c674fbf0952$export$a002182e51710d39).VECTOR3_ZERO, 1, this._offset, null, this._vec4);
-                        glyphs += text.length;
+                    const text1 = truncated[i1];
+                    if (text1.length > 0) {
+                        (0, $45b7bda56617a278$export$f080f423ca93034f).addString(this._font, text1, this._verticesView, this._indices, glyphs, (0, $87037c674fbf0952$export$a002182e51710d39).VECTOR3_ZERO, 1, this._offset, null, this._vec4);
+                        glyphs += text1.length;
                     }
                 }
                 const scaling = this._scale / this._font.size;
@@ -17590,12 +17632,12 @@ class $c84832b16446a62d$export$f4f11265faddf354 {
                 minBounds1 = (0, $3060130e3101af24$exports).create();
                 maxBounds1 = (0, $3060130e3101af24$exports).create();
                 for(let i1 = 0; i1 < count; i1++){
-                    const id = ids[i1 + offset];
-                    const index = lookup[id];
-                    (0, $9baea54bf2330932$export$849e31d725692576).getTranslation(dataView, index, unitTranslation);
-                    (0, $9baea54bf2330932$export$849e31d725692576).getRotation(dataView, index, unitRotation);
+                    const id1 = ids[i1 + offset];
+                    const index1 = lookup[id1];
+                    (0, $9baea54bf2330932$export$849e31d725692576).getTranslation(dataView, index1, unitTranslation);
+                    (0, $9baea54bf2330932$export$849e31d725692576).getRotation(dataView, index1, unitRotation);
                     (0, $a75e1c0eea6f029a$exports).normalize(unitRotation, unitRotation);
-                    (0, $9baea54bf2330932$export$849e31d725692576).getScale(dataView, index, unitScale);
+                    (0, $9baea54bf2330932$export$849e31d725692576).getScale(dataView, index1, unitScale);
                     minBounds0[0] = unitTranslation[0] - unitScale[0] / 2;
                     minBounds0[1] = unitTranslation[1] - unitScale[1] / 2;
                     minBounds0[2] = unitTranslation[2] - unitScale[2] / 2;
@@ -17616,15 +17658,15 @@ class $c84832b16446a62d$export$f4f11265faddf354 {
                 const identityRotation = (0, $87037c674fbf0952$export$a002182e51710d39).VECTOR3_UNITY;
                 let ca;
                 for(let i2 = 0; i2 < count; i2++){
-                    const id = ids[i2 + offset];
-                    const index = lookup[id];
-                    (0, $9baea54bf2330932$export$849e31d725692576).getTranslation(dataView, index, unitTranslation);
-                    (0, $9baea54bf2330932$export$849e31d725692576).getRotation(dataView, index, unitRotation);
+                    const id2 = ids[i2 + offset];
+                    const index2 = lookup[id2];
+                    (0, $9baea54bf2330932$export$849e31d725692576).getTranslation(dataView, index2, unitTranslation);
+                    (0, $9baea54bf2330932$export$849e31d725692576).getRotation(dataView, index2, unitRotation);
                     (0, $a75e1c0eea6f029a$exports).normalize(unitRotation, unitRotation);
-                    (0, $9baea54bf2330932$export$849e31d725692576).getScale(dataView, index, unitScale);
+                    (0, $9baea54bf2330932$export$849e31d725692576).getScale(dataView, index2, unitScale);
                     const length = unitScale[1];
-                    const radius = Math.max(unitScale[0], unitScale[2]);
-                    if (length != 0 && radius != 0) {
+                    const radius1 = Math.max(unitScale[0], unitScale[2]);
+                    if (length != 0 && radius1 != 0) {
                         if ((0, $a75e1c0eea6f029a$exports).equals(unitRotation, (0, $87037c674fbf0952$export$a002182e51710d39).QUAT_IDENTITY)) ca = identityRotation;
                         else {
                             ca = (0, $3060130e3101af24$exports).create();
@@ -17632,7 +17674,7 @@ class $c84832b16446a62d$export$f4f11265faddf354 {
                         }
                         (0, $3060130e3101af24$exports).scaleAndAdd(pa, unitTranslation, ca, -length * 0.5);
                         (0, $3060130e3101af24$exports).scaleAndAdd(pb, unitTranslation, ca, length * 0.5);
-                        (0, $a118d1449fc178bf$export$93b17801046b2267).cylinder(pa, pb, radius, minBounds0, maxBounds0);
+                        (0, $a118d1449fc178bf$export$93b17801046b2267).cylinder(pa, pb, radius1, minBounds0, maxBounds0);
                         (0, $3060130e3101af24$exports).min(minBounds, minBounds, minBounds0);
                         (0, $3060130e3101af24$exports).max(maxBounds, maxBounds, maxBounds0);
                     }
@@ -18039,7 +18081,7 @@ class $5fc1d1c992c4da46$export$1f02ce5a460c3bdd extends $5fc1d1c992c4da46$export
             (0, $45b7bda56617a278$export$f080f423ca93034f).measure(font, title, this._textMetric);
             titleWidth = this._textMetric.width;
         }
-        let width;
+        let width1;
         let height;
         switch(orientation){
             case (0, $b0e0bae684e98192$export$df54d73aa0ec5e82).horizontal:
@@ -18117,12 +18159,12 @@ class $5fc1d1c992c4da46$export$1f02ce5a460c3bdd extends $5fc1d1c992c4da46$export
         }
         switch(orientation){
             case (0, $b0e0bae684e98192$export$df54d73aa0ec5e82).horizontal:
-                width = Math.max(sizeX * count + spacing * (count - 1) + totalLabelWidth, titleWidth);
+                width1 = Math.max(sizeX * count + spacing * (count - 1) + totalLabelWidth, titleWidth);
                 height = sizeY;
                 if (options.title) height += titleScale;
                 break;
             case (0, $b0e0bae684e98192$export$df54d73aa0ec5e82).vertical:
-                width = Math.max(sizeX + labelScale / 2 + maxLabelWidth, titleWidth);
+                width1 = Math.max(sizeX + labelScale / 2 + maxLabelWidth, titleWidth);
                 height = sizeY * count + spacing * (count - 1);
                 if (options.title) height += titleScale;
                 break;
@@ -18134,10 +18176,10 @@ class $5fc1d1c992c4da46$export$1f02ce5a460c3bdd extends $5fc1d1c992c4da46$export
             case (0, $b0e0bae684e98192$export$d94dcb5bec64086e).center:
                 break;
             case (0, $b0e0bae684e98192$export$d94dcb5bec64086e).left:
-                originX += width / 2;
+                originX += width1 / 2;
                 break;
             case (0, $b0e0bae684e98192$export$d94dcb5bec64086e).right:
-                originX -= width / 2;
+                originX -= width1 / 2;
                 break;
         }
         switch(verticalAlignment){
@@ -18154,7 +18196,7 @@ class $5fc1d1c992c4da46$export$1f02ce5a460c3bdd extends $5fc1d1c992c4da46$export
         const positionsY = new Float64Array(count);
         const positionsZ = new Float64Array(count);
         for(let i3 = 0; i3 < count; i3++){
-            positionsX[i3] = originX - width / 2 + sizeX / 2;
+            positionsX[i3] = originX - width1 / 2 + sizeX / 2;
             positionsY[i3] = originY + height / 2 - i3 * (sizeY + spacing);
             positionsZ[i3] = originZ + sizeZ / 2;
         }
@@ -18193,7 +18235,7 @@ class $5fc1d1c992c4da46$export$1f02ce5a460c3bdd extends $5fc1d1c992c4da46$export
         const labelPositionsY = new Float64Array(count);
         const labelPositionsZ = new Float64Array(count);
         for(let i4 = 0; i4 < (options.title ? count - 1 : count); i4++){
-            labelPositionsX[i4] = originX - width / 2 + sizeX + labelScale / 2;
+            labelPositionsX[i4] = originX - width1 / 2 + sizeX + labelScale / 2;
             labelPositionsY[i4] = positionsY[i4];
             labelPositionsZ[i4] = originZ;
         }
@@ -18365,12 +18407,12 @@ class $c3014e661a83cc86$export$eecfe2b6190b0ed {
             maxCount = Math.max(counts[binId], maxCount);
         }
         if (options.froms && options.tos) {
-            for(let i = 0; i < options.bins; i++)if (options.isDiscrete || maxValue == minValue) {
-                options.froms[i] = Math.ceil(minValue + binSize * i);
-                options.tos[i] = Math.floor(minValue + binSize * (i + 1));
+            for(let i1 = 0; i1 < options.bins; i1++)if (options.isDiscrete || maxValue == minValue) {
+                options.froms[i1] = Math.ceil(minValue + binSize * i1);
+                options.tos[i1] = Math.floor(minValue + binSize * (i1 + 1));
             } else {
-                options.froms[i] = minValue + binSize * i;
-                options.tos[i] = minValue + binSize * (i + 1);
+                options.froms[i1] = minValue + binSize * i1;
+                options.tos[i1] = minValue + binSize * (i1 + 1);
             }
         }
         return maxCount;
@@ -18563,10 +18605,10 @@ class $2ef0716921ecf117$export$4b34289fff3e9e9d {
         }
         const tempOffsets = new Uint32Array(offsets);
         for(let i2 = 0; i2 < ids.length; i2++){
-            const id = ids[i2];
-            const facetId = facetIds[id];
-            offset = tempOffsets[facetId]++;
-            orderedIds[offset] = id;
+            const id1 = ids[i2];
+            const facetId1 = facetIds[id1];
+            offset = tempOffsets[facetId1]++;
+            orderedIds[offset] = id1;
         }
         this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `facet split ${Math.round(window.performance.now() - start)}ms`);
     }
@@ -18711,15 +18753,15 @@ class $3bad70403a603e67$export$917b5ee4d724090b {
         const counts = new Uint32Array(nonEmptyBins);
         const lookup = {};
         for(let i1 = 0; i1 < maxBins; i1++){
-            const count = binCounts[i1];
-            if (count > 0) {
+            const count1 = binCounts[i1];
+            if (count1 > 0) {
                 const index = binLookup[i1];
                 lookup[i1] = index;
-                counts[index] = count;
-                const q = i1 % (binsX - minQ);
-                const r = Math.floor(i1 / (binsX - minQ));
-                hex[0] = q + minQ;
-                hex[1] = r;
+                counts[index] = count1;
+                const q1 = i1 % (binsX - minQ);
+                const r1 = Math.floor(i1 / (binsX - minQ));
+                hex[0] = q1 + minQ;
+                hex[1] = r1;
                 (0, $50caeada3a0f88fb$export$db005bf9e0fbda31).pointyHexToPixel(hex, size, point);
                 positionsX[index] = point[0] + minValueX;
                 positionsY[index] = point[1] + minValueY;
@@ -19070,16 +19112,16 @@ class $1b1a7f1e559d7156$export$ec91da630f36d5ea {
                 numericValues[i] = value;
             }
             else if (type == (0, $212bb5c4fc5225a2$export$7ce43d0a8f00d826).integer) for(let i1 = 0; i1 < this._data.length; i1++){
-                const value = parseInt(this._data[i1][column]);
-                min = Math.min(min, value);
-                max = Math.max(max, value);
-                numericValues[i1] = value;
+                const value1 = parseInt(this._data[i1][column]);
+                min = Math.min(min, value1);
+                max = Math.max(max, value1);
+                numericValues[i1] = value1;
             }
             else if (type == (0, $212bb5c4fc5225a2$export$7ce43d0a8f00d826).date) for(let i2 = 0; i2 < this._data.length; i2++){
-                const value = Date.parse(this._data[i2][column]);
-                min = Math.min(min, value);
-                max = Math.max(max, value);
-                numericValues[i2] = value;
+                const value2 = Date.parse(this._data[i2][column]);
+                min = Math.min(min, value2);
+                max = Math.max(max, value2);
+                numericValues[i2] = value2;
             }
             this._minValues[column] = min;
             this._maxValues[column] = max;
@@ -19186,15 +19228,15 @@ class $727e8d1491a142a3$export$9ac52b025685a4d0 {
         for(let i1 = firstRow + 1; i1 < Math.min(data.length, firstRow + maxRows); i1++){
             values = data[i1];
             for(let j = 0; j < values.length; j++)if (types[j] != (0, $212bb5c4fc5225a2$export$7ce43d0a8f00d826).string) {
-                const value = values[j];
-                parsedFloat = Number(value);
+                const value1 = values[j];
+                parsedFloat = Number(value1);
                 if (types[j] == (0, $212bb5c4fc5225a2$export$7ce43d0a8f00d826).float) {
                     if (isNaN(parsedFloat)) {
                         types[j] = (0, $212bb5c4fc5225a2$export$7ce43d0a8f00d826).string;
                         integers[j] = false;
                     } else if (integers[j]) integers[j] = Number.isSafeInteger(parsedFloat);
                 } else if (types[j] == (0, $212bb5c4fc5225a2$export$7ce43d0a8f00d826).date) {
-                    parsedDate = Date.parse(value);
+                    parsedDate = Date.parse(value1);
                     if (isNaN(parsedDate)) types[j] = (0, $212bb5c4fc5225a2$export$7ce43d0a8f00d826).string;
                 }
             }
@@ -19937,20 +19979,20 @@ class $cc5febd67997657a$export$b74c7d46bc92515c extends (0, $c84832b16446a62d$ex
                 this._vec3[1] = this._parentUp[1] * halfparentScaleY * cos - this._parentRight[1] * halfparentScaleX * cos;
                 this._vec3[2] = this._parentUp[2] * halfparentScaleY * cos - this._parentRight[2] * halfparentScaleX * cos;
                 (0, $3060130e3101af24$exports).transformQuat(this._vec3, this._vec3, this._quat);
-                const childTranslationX = this._parentTranslation[0] + this._vec3[0] + this._parentUp[0] * halfparentScaleY + this._parentRight[0] * halfparentScaleX;
-                const childTranslationY = this._parentTranslation[1] + this._vec3[1] + this._parentUp[1] * halfparentScaleY + this._parentRight[1] * halfparentScaleX;
-                const childTranslationZ = this._parentTranslation[2] + this._vec3[2] + this._parentUp[2] * halfparentScaleY + this._parentRight[2] * halfparentScaleX;
-                this._positions[childIndex2 * 3] = childTranslationX;
-                this._positions[childIndex2 * 3 + 1] = childTranslationY;
-                this._positions[childIndex2 * 3 + 2] = childTranslationZ;
+                const childTranslationX1 = this._parentTranslation[0] + this._vec3[0] + this._parentUp[0] * halfparentScaleY + this._parentRight[0] * halfparentScaleX;
+                const childTranslationY1 = this._parentTranslation[1] + this._vec3[1] + this._parentUp[1] * halfparentScaleY + this._parentRight[1] * halfparentScaleX;
+                const childTranslationZ1 = this._parentTranslation[2] + this._vec3[2] + this._parentUp[2] * halfparentScaleY + this._parentRight[2] * halfparentScaleX;
+                this._positions[childIndex2 * 3] = childTranslationX1;
+                this._positions[childIndex2 * 3 + 1] = childTranslationY1;
+                this._positions[childIndex2 * 3 + 2] = childTranslationZ1;
                 this._levels[childIndex2] = parentLevel + 1;
                 this._volumes[childIndex2] = this._sizes[childIndex2 * 3] * this._sizes[childIndex2 * 3 + 1] * this._sizes[childIndex2 * 3 + 2];
-                this.minLayoutBoundsX = Math.min(this.minLayoutBoundsX, childTranslationX);
-                this.minLayoutBoundsY = Math.min(this.minLayoutBoundsY, childTranslationY);
-                this.minLayoutBoundsZ = Math.min(this.minLayoutBoundsZ, childTranslationZ);
-                this.maxLayoutBoundsX = Math.max(this.maxLayoutBoundsX, childTranslationX);
-                this.maxLayoutBoundsY = Math.max(this.maxLayoutBoundsY, childTranslationY);
-                this.maxLayoutBoundsZ = Math.max(this.maxLayoutBoundsZ, childTranslationZ);
+                this.minLayoutBoundsX = Math.min(this.minLayoutBoundsX, childTranslationX1);
+                this.minLayoutBoundsY = Math.min(this.minLayoutBoundsY, childTranslationY1);
+                this.minLayoutBoundsZ = Math.min(this.minLayoutBoundsZ, childTranslationZ1);
+                this.maxLayoutBoundsX = Math.max(this.maxLayoutBoundsX, childTranslationX1);
+                this.maxLayoutBoundsY = Math.max(this.maxLayoutBoundsY, childTranslationY1);
+                this.maxLayoutBoundsZ = Math.max(this.maxLayoutBoundsZ, childTranslationZ1);
                 this._branch(childIndex1, ids, lookup, pseudoRandom);
                 this._branch(childIndex2, ids, lookup, pseudoRandom);
             }
@@ -20008,23 +20050,23 @@ class $cc5febd67997657a$export$7fbedc92909ed28e extends (0, $c84832b16446a62d$ex
             if (parentId == childId) rootId = parentId;
             else children[parentId].push(childId);
         }
-        const index = indices[rootId];
-        this._positions[index * 3] = 0;
-        this._positions[index * 3 + 1] = 0;
-        this._positions[index * 3 + 2] = 0;
+        const index1 = indices[rootId];
+        this._positions[index1 * 3] = 0;
+        this._positions[index1 * 3 + 1] = 0;
+        this._positions[index1 * 3 + 2] = 0;
         this.minLayoutBoundsX = 0;
         this.minLayoutBoundsY = 0;
         this.minLayoutBoundsZ = 0;
         this.maxLayoutBoundsX = 0;
         this.maxLayoutBoundsY = 0;
         this.maxLayoutBoundsZ = 0;
-        this._rotations[index * 4] = 0;
-        this._rotations[index * 4 + 1] = 0;
-        this._rotations[index * 4 + 2] = 0;
-        this._rotations[index * 4 + 3] = 1;
-        this._sizes[index * 3] = sizeX;
-        this._sizes[index * 3 + 1] = sizeY;
-        this._sizes[index * 3 + 2] = sizeZ;
+        this._rotations[index1 * 4] = 0;
+        this._rotations[index1 * 4 + 1] = 0;
+        this._rotations[index1 * 4 + 2] = 0;
+        this._rotations[index1 * 4 + 3] = 1;
+        this._sizes[index1 * 3] = sizeX;
+        this._sizes[index1 * 3 + 1] = sizeY;
+        this._sizes[index1 * 3 + 2] = sizeZ;
         const pseudoRandom = new (0, $43b3041aec256b88$export$b8e288c3467acb0e)(0);
         this._branch(rootId, indices, children, pseudoRandom);
         this._updateCumulativeLayoutBounds();
@@ -20306,8 +20348,8 @@ class $091ddf50c2a6d267$export$ce1cde616fb0ca7e extends (0, $c84832b16446a62d$ex
         $091ddf50c2a6d267$export$ece3d818ad8f3b75.squarifiedLayout(ids, options.sizes, this._positionsX, this._positionsY, this._sizesX, this._sizesY, offset, offset + count - 1, this.minLayoutBoundsX, this.minLayoutBoundsY, sizeX, sizeY, buffer.lookup);
         if (isRightToLeft || isTopToBottom) {
             const lookup = buffer.lookup;
-            for(let i = 0; i < count; i++){
-                const id = ids[i + offset];
+            for(let i1 = 0; i1 < count; i1++){
+                const id = ids[i1 + offset];
                 const index = lookup[id];
                 if (isRightToLeft) this._positionsX[index] = this.maxLayoutBoundsX - this._positionsX[index] + this.minLayoutBoundsX;
                 if (isTopToBottom) this._positionsY[index] = this.maxLayoutBoundsY - this._positionsY[index] + this.minLayoutBoundsY;
@@ -20349,17 +20391,17 @@ class $091ddf50c2a6d267$export$ce1cde616fb0ca7e extends (0, $c84832b16446a62d$ex
         const heightScaling = (this.maxLayoutBoundsZ - this.minLayoutBoundsZ) / maxHeight;
         const lookup = buffer.lookup;
         const selection = options.selected && options.selected.size > 0;
-        for(let i = 0; i < count; i++){
-            const id = ids[i + offset];
-            const index = lookup[id];
-            const height = Math.max(heights ? heights[id] * heightScaling : heightScaling, minHeight);
+        for(let i1 = 0; i1 < count; i1++){
+            const id1 = ids[i1 + offset];
+            const index = lookup[id1];
+            const height = Math.max(heights ? heights[id1] * heightScaling : heightScaling, minHeight);
             let positionX = this._positionsX[index];
             let positionY = this._positionsY[index];
             let positionZ = this.minLayoutBoundsZ + height / 2;
             if (this._isFacetted) {
-                const facetX = options.facetCoordsX ? options.facetCoordsX[id] : 0;
-                const facetY = options.facetCoordsY ? options.facetCoordsY[id] : 0;
-                const facetZ = options.facetCoordsZ ? options.facetCoordsZ[id] : 0;
+                const facetX = options.facetCoordsX ? options.facetCoordsX[id1] : 0;
+                const facetY = options.facetCoordsY ? options.facetCoordsY[id1] : 0;
+                const facetZ = options.facetCoordsZ ? options.facetCoordsZ[id1] : 0;
                 positionX += this._facetSizeX * this._facetSpacingX / 2 + facetX * this._facetSizeX * (1 + this._facetSpacingX);
                 positionY += this._facetSizeY * this._facetSpacingY / 2 + facetY * this._facetSizeY * (1 + this._facetSpacingY);
                 positionZ += this._facetSizeZ * this._facetSpacingZ / 2 + facetZ * this._facetSizeZ * (1 + this._facetSpacingZ);
@@ -20374,22 +20416,22 @@ class $091ddf50c2a6d267$export$ce1cde616fb0ca7e extends (0, $c84832b16446a62d$ex
             (0, $9baea54bf2330932$export$849e31d725692576).setScale(dataView, index, _vec4);
             (0, $9baea54bf2330932$export$849e31d725692576).setRotation(dataView, index, _quat);
             if (options.colors) {
-                const color = (0, $43b3041aec256b88$export$80a8c44b8858d625).normalize(options.colors[id], minColor, maxColor, 0, 1);
+                const color = (0, $43b3041aec256b88$export$80a8c44b8858d625).normalize(options.colors[id1], minColor, maxColor, 0, 1);
                 (0, $a3ca522ed0848e85$exports).set(_vec2, color, color);
                 (0, $9baea54bf2330932$export$849e31d725692576).setColor(dataView, index, _vec2);
             } else (0, $9baea54bf2330932$export$849e31d725692576).setColor(dataView, index, (0, $87037c674fbf0952$export$a002182e51710d39).VECTOR2_ONE);
-            (0, $9baea54bf2330932$export$849e31d725692576).setIdHover(dataView, index, options.hover ? options.hover[id] : id);
-            (0, $9baea54bf2330932$export$849e31d725692576).setSelected(dataView, index, selection ? options.selected.has(id) ? 1 : -1 : 0);
+            (0, $9baea54bf2330932$export$849e31d725692576).setIdHover(dataView, index, options.hover ? options.hover[id1] : id1);
+            (0, $9baea54bf2330932$export$849e31d725692576).setSelected(dataView, index, selection ? options.selected.has(id1) ? 1 : -1 : 0);
             if (options.order) {
-                const order = (0, $43b3041aec256b88$export$80a8c44b8858d625).normalize(options.order[id], minOrder, maxOrder, 0, 1);
+                const order = (0, $43b3041aec256b88$export$80a8c44b8858d625).normalize(options.order[id1], minOrder, maxOrder, 0, 1);
                 (0, $9baea54bf2330932$export$849e31d725692576).setOrder(dataView, index, orderReverse ? 1 - order : order);
-            } else (0, $9baea54bf2330932$export$849e31d725692576).setOrder(dataView, index, i / (count - 1));
+            } else (0, $9baea54bf2330932$export$849e31d725692576).setOrder(dataView, index, i1 / (count - 1));
             if (options.staggerOrder !== undefined) (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, options.staggerOrder);
             else if (options.staggerOrders) {
-                const stagger = (0, $43b3041aec256b88$export$80a8c44b8858d625).normalize(options.staggerOrders[id], minStaggerOrder, maxStaggerOrder, 0, 1);
+                const stagger = (0, $43b3041aec256b88$export$80a8c44b8858d625).normalize(options.staggerOrders[id1], minStaggerOrder, maxStaggerOrder, 0, 1);
                 (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
-            } else (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, i / (count - 1));
-            (0, $9baea54bf2330932$export$849e31d725692576).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            } else (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, i1 / (count - 1));
+            (0, $9baea54bf2330932$export$849e31d725692576).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id1] : 0);
         }
         buffer.update();
         this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -20522,11 +20564,11 @@ class $091ddf50c2a6d267$export$ece3d818ad8f3b75 {
             $091ddf50c2a6d267$export$ece3d818ad8f3b75.squarifiedLayout(ids, sizes, positionsX, positionsY, sizesX, sizesY, from, mid - 1, x, y + height * b, width, height * (1 - b), lookup);
         } else {
             while(mid > from){
-                const aspect = $091ddf50c2a6d267$export$ece3d818ad8f3b75._aspect(width, height, a, b);
-                const q = sizes ? sizes[ids[mid - 1]] / totalSize : 1 / totalSize;
-                if ($091ddf50c2a6d267$export$ece3d818ad8f3b75._aspect(width, height, a, b + q) > aspect) break;
+                const aspect1 = $091ddf50c2a6d267$export$ece3d818ad8f3b75._aspect(width, height, a, b);
+                const q1 = sizes ? sizes[ids[mid - 1]] / totalSize : 1 / totalSize;
+                if ($091ddf50c2a6d267$export$ece3d818ad8f3b75._aspect(width, height, a, b + q1) > aspect1) break;
                 mid--;
-                b += q;
+                b += q1;
             }
             $091ddf50c2a6d267$export$ece3d818ad8f3b75._sliceLayout(ids, sizes, positionsX, positionsY, sizesX, sizesY, mid, to, x, y, width * b, height, lookup);
             $091ddf50c2a6d267$export$ece3d818ad8f3b75.squarifiedLayout(ids, sizes, positionsX, positionsY, sizesX, sizesY, from, mid - 1, x + width * b, y, width * (1 - b), height, lookup);
@@ -20799,7 +20841,7 @@ class $8e8b902bb9bb0800$export$75310880a535fd3b extends $8e8b902bb9bb0800$export
             if (count == ids.length) this._ids = new Uint32Array(ids);
             else {
                 this._ids = new Uint32Array(count);
-                for(let i = 0; i < count; i++)this._ids[i] = ids[offset + i];
+                for(let i1 = 0; i1 < count; i1++)this._ids[i1] = ids[offset + i1];
             }
             if (options.groupIds && options.sizes) {
                 this._ids.sort(function(a, b) {
@@ -20820,17 +20862,17 @@ class $8e8b902bb9bb0800$export$75310880a535fd3b extends $8e8b902bb9bb0800$export
         } else ids2 = ids;
         const binOffsets = new Uint32Array(this._binCounts.length);
         let binOffset = 0;
-        for(let i1 = 0; i1 < this._binCounts.length; i1++){
-            const binCount = this._binCounts[i1];
-            binOffsets[i1] = binOffset;
+        for(let i2 = 0; i2 < this._binCounts.length; i2++){
+            const binCount = this._binCounts[i2];
+            binOffsets[i2] = binOffset;
             binOffset += binCount;
         }
-        for(let i2 = 0; i2 < count; i2++){
-            const id = ids2[i2];
-            const index = lookup[id];
-            const binId = this._binIds[index];
-            binOffset = binOffsets[binId]++;
-            this._orderedIds[binOffset + offset] = id;
+        for(let i3 = 0; i3 < count; i3++){
+            const id1 = ids2[i3];
+            const index1 = lookup[id1];
+            const binId1 = this._binIds[index1];
+            binOffset = binOffsets[binId1]++;
+            this._orderedIds[binOffset + offset] = id1;
         }
         const minSliceHeight = this._core.config.minCubifiedTreeMapSlice * height;
         const side = Math.sqrt(sizeX * sizeZ);
@@ -20840,50 +20882,50 @@ class $8e8b902bb9bb0800$export$75310880a535fd3b extends $8e8b902bb9bb0800$export
         let groupCount = 0;
         let groupTotal = 0;
         let positionY = 0;
-        for(let i3 = 0; i3 < count; i3++){
-            const id = this._orderedIds[i3 + offset];
-            const index = lookup[id];
+        for(let i4 = 0; i4 < count; i4++){
+            const id2 = this._orderedIds[i4 + offset];
+            const index2 = lookup[id2];
             groupCount++;
-            groupTotal += options.sizes ? options.sizes[id] : 1;
-            const binId = this._binIds[index];
-            const groupId = options.groupIds ? options.groupIds[id] : 0;
-            if (i3 == count - 1) {
+            groupTotal += options.sizes ? options.sizes[id2] : 1;
+            const binId2 = this._binIds[index2];
+            const groupId = options.groupIds ? options.groupIds[id2] : 0;
+            if (i4 == count - 1) {
                 isLastInBin = true;
                 isLastInGroup = true;
             } else {
-                const nextId = this._orderedIds[i3 + 1 + offset];
+                const nextId = this._orderedIds[i4 + 1 + offset];
                 const nextIndex = lookup[nextId];
                 const nextBinId = this._binIds[nextIndex];
                 const nextGroupId = options.groupIds ? options.groupIds[nextId] : 0;
-                isLastInBin = binId != nextBinId;
+                isLastInBin = binId2 != nextBinId;
                 isLastInGroup = groupId != nextGroupId;
             }
             if (isLastInBin || isLastInGroup) {
-                const mid = i3 + offset;
-                const binIdX = options.binIdsX ? options.binIdsX[id] : 0;
-                const binIdZ = options.binIdsZ ? options.binIdsZ[id] : 0;
+                const mid = i4 + offset;
+                const binIdX1 = options.binIdsX ? options.binIdsX[id2] : 0;
+                const binIdZ1 = options.binIdsZ ? options.binIdsZ[id2] : 0;
                 let groupValue, binValue;
                 if (options.sizes) {
                     groupValue = groupTotal;
-                    binValue = isNormalized ? this._binTotals[binId] : maxBinTotal;
+                    binValue = isNormalized ? this._binTotals[binId2] : maxBinTotal;
                 } else {
                     groupValue = groupCount;
-                    binValue = isNormalized ? this._binCounts[binId] : maxBinCount;
+                    binValue = isNormalized ? this._binCounts[binId2] : maxBinCount;
                 }
                 const groupHeight = height * groupValue / binValue;
                 if (sizeZ == 1) {
-                    const positionX = spacingX / 2 + binIdX * (sizeX + spacingX);
+                    const positionX = spacingX / 2 + binIdX1 * (sizeX + spacingX);
                     (0, $091ddf50c2a6d267$export$ece3d818ad8f3b75).squarifiedLayout(this._orderedIds, options.sizes, this._positionsX, this._positionsY, this._sizesX, this._sizesY, from, mid, positionX, positionY, sizeX, groupHeight, lookup);
                     const isRightToLeft = true;
-                    for(let i = from; i <= mid; i++){
-                        const id = this._orderedIds[i];
-                        const index = lookup[id];
-                        this._sizesZ[index] = sizeZ;
-                        this._positionsZ[index] = (binIdZ + 0.5) * (sizeZ + spacingZ);
-                        if (isRightToLeft) this._positionsX[index] = positionX + sizeX - this._positionsX[index] + positionX;
-                        if (!isTopToBottom) this._positionsY[index] = positionY + groupHeight - this._positionsY[index] + positionY;
+                    for(let i5 = from; i5 <= mid; i5++){
+                        const id3 = this._orderedIds[i5];
+                        const index3 = lookup[id3];
+                        this._sizesZ[index3] = sizeZ;
+                        this._positionsZ[index3] = (binIdZ1 + 0.5) * (sizeZ + spacingZ);
+                        if (isRightToLeft) this._positionsX[index3] = positionX + sizeX - this._positionsX[index3] + positionX;
+                        if (!isTopToBottom) this._positionsY[index3] = positionY + groupHeight - this._positionsY[index3] + positionY;
                     }
-                } else (0, $091ddf50c2a6d267$export$ece3d818ad8f3b75).cubifiedLayout(this._orderedIds, options.sizes, this._positionsX, this._positionsY, this._positionsZ, this._sizesX, this._sizesY, this._sizesZ, from, mid, spacingX / 2 + binIdX * (sizeX + spacingX), positionY, spacingZ / 2 + binIdZ * (sizeZ + spacingZ), sizeX, groupHeight, sizeZ, side, groupValue, minSliceHeight, isTopToBottom, lookup);
+                } else (0, $091ddf50c2a6d267$export$ece3d818ad8f3b75).cubifiedLayout(this._orderedIds, options.sizes, this._positionsX, this._positionsY, this._positionsZ, this._sizesX, this._sizesY, this._sizesZ, from, mid, spacingX / 2 + binIdX1 * (sizeX + spacingX), positionY, spacingZ / 2 + binIdZ1 * (sizeZ + spacingZ), sizeX, groupHeight, sizeZ, side, groupValue, minSliceHeight, isTopToBottom, lookup);
                 if (isLastInGroup) {
                     isLastInGroup = false;
                     positionY += groupHeight;
@@ -22957,12 +22999,12 @@ class $e8f6aa4df1e39874$export$30e3ee7ba3e49080 extends (0, $890bdeb86c3e0694$ex
                         sdfShader.mMatrix = axes.getTitleMMatrix(edgeId);
                         sdfShader.applyModel();
                         sdfShader.isPickShader = false;
-                        for(let i = 0; i < this.viewportCount; i++){
-                            const viewport = i + this.viewportOffset;
-                            shaderResources.bindFramebuffer(this.framebuffers[viewport]);
-                            this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                            sdfShader.vMatrix = this.vMatrices[viewport];
-                            sdfShader.pMatrix = this.pMatrices[viewport];
+                        for(let i1 = 0; i1 < this.viewportCount; i1++){
+                            const viewport1 = i1 + this.viewportOffset;
+                            shaderResources.bindFramebuffer(this.framebuffers[viewport1]);
+                            this._gl.viewport(this.viewports[viewport1].x, this.viewports[viewport1].y, this.viewports[viewport1].width, this.viewports[viewport1].height);
+                            sdfShader.vMatrix = this.vMatrices[viewport1];
+                            sdfShader.pMatrix = this.pMatrices[viewport1];
                             sdfShader.applyView();
                             this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                         }
@@ -22983,12 +23025,12 @@ class $e8f6aa4df1e39874$export$30e3ee7ba3e49080 extends (0, $890bdeb86c3e0694$ex
                     sdfShader.mMatrix = axes.getHeadingMMatrix(edgeId);
                     sdfShader.applyModel();
                     sdfShader.isPickShader = false;
-                    for(let i = 0; i < this.viewportCount; i++){
-                        const viewport = i + this.viewportOffset;
-                        shaderResources.bindFramebuffer(this.framebuffers[viewport]);
-                        this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                        sdfShader.vMatrix = this.vMatrices[viewport];
-                        sdfShader.pMatrix = this.pMatrices[viewport];
+                    for(let i2 = 0; i2 < this.viewportCount; i2++){
+                        const viewport2 = i2 + this.viewportOffset;
+                        shaderResources.bindFramebuffer(this.framebuffers[viewport2]);
+                        this._gl.viewport(this.viewports[viewport2].x, this.viewports[viewport2].y, this.viewports[viewport2].width, this.viewports[viewport2].height);
+                        sdfShader.vMatrix = this.vMatrices[viewport2];
+                        sdfShader.pMatrix = this.pMatrices[viewport2];
                         sdfShader.applyView();
                         this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                     }
@@ -23037,13 +23079,13 @@ class $e8f6aa4df1e39874$export$30e3ee7ba3e49080 extends (0, $890bdeb86c3e0694$ex
         const size = axes.size;
         const axisId2 = 0;
         const axisId3 = 1;
-        const width = size[axisId2];
-        const height = size[axisId3];
+        const width1 = size[axisId2];
+        const height1 = size[axisId3];
         gridShader.zero = axes.gridFaceZero;
         gridShader.minorGridlines = axes.gridFaceMinorGridlines;
         for(let face = 0; face < 2; face++){
             const faceId = face;
-            if (axes.getIsForwardFace(faceId)) this._renderGridFace(faceId, width, height);
+            if (axes.getIsForwardFace(faceId)) this._renderGridFace(faceId, width1, height1);
         }
         this._gl.enable(this._gl.CULL_FACE);
     }
@@ -23235,12 +23277,12 @@ class $7f34868962789802$export$3dc3b91df297f2ee extends (0, $890bdeb86c3e0694$ex
                             sdfShader.mMatrix = axes.getTitleMMatrix(edgeId);
                             sdfShader.applyModel();
                             sdfShader.isPickShader = false;
-                            for(let i = 0; i < this.viewportCount; i++){
-                                const viewport = i + this.viewportOffset;
-                                shaderResources.bindFramebuffer(this.framebuffers[viewport]);
-                                this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                                sdfShader.vMatrix = this.vMatrices[viewport];
-                                sdfShader.pMatrix = this.pMatrices[viewport];
+                            for(let i1 = 0; i1 < this.viewportCount; i1++){
+                                const viewport1 = i1 + this.viewportOffset;
+                                shaderResources.bindFramebuffer(this.framebuffers[viewport1]);
+                                this._gl.viewport(this.viewports[viewport1].x, this.viewports[viewport1].y, this.viewports[viewport1].width, this.viewports[viewport1].height);
+                                sdfShader.vMatrix = this.vMatrices[viewport1];
+                                sdfShader.pMatrix = this.pMatrices[viewport1];
                                 sdfShader.applyView();
                                 this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                             }
@@ -23261,12 +23303,12 @@ class $7f34868962789802$export$3dc3b91df297f2ee extends (0, $890bdeb86c3e0694$ex
                         sdfShader.mMatrix = axes.getHeadingMMatrix(edgeId);
                         sdfShader.applyModel();
                         sdfShader.isPickShader = false;
-                        for(let i = 0; i < this.viewportCount; i++){
-                            const viewport = i + this.viewportOffset;
-                            shaderResources.bindFramebuffer(this.framebuffers[viewport]);
-                            this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                            sdfShader.vMatrix = this.vMatrices[viewport];
-                            sdfShader.pMatrix = this.pMatrices[viewport];
+                        for(let i2 = 0; i2 < this.viewportCount; i2++){
+                            const viewport2 = i2 + this.viewportOffset;
+                            shaderResources.bindFramebuffer(this.framebuffers[viewport2]);
+                            this._gl.viewport(this.viewports[viewport2].x, this.viewports[viewport2].y, this.viewports[viewport2].width, this.viewports[viewport2].height);
+                            sdfShader.vMatrix = this.vMatrices[viewport2];
+                            sdfShader.pMatrix = this.pMatrices[viewport2];
                             sdfShader.applyView();
                             this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                         }
@@ -23317,13 +23359,13 @@ class $7f34868962789802$export$3dc3b91df297f2ee extends (0, $890bdeb86c3e0694$ex
         for(let axisId1 = 0; axisId1 < 3; axisId1++)if (axes.areFacesVisible[axisId1]) {
             const axisId2 = axisId1 == 0 ? 1 : 0;
             const axisId3 = axisId1 == 2 ? 1 : 2;
-            const width = size[axisId2];
-            const height = size[axisId3];
+            const width1 = size[axisId2];
+            const height1 = size[axisId3];
             gridShader.zero = axes.getGridFaceZero(axisId1);
             gridShader.minorGridlines = axes.getGridFaceMinorGridlines(axisId1);
             for(let face = 0; face < 2; face++){
                 const faceId = (0, $0993b3badbc4a867$export$a15f0a83a652dd40).AXIS_FACES[axisId1][face];
-                if (axes.getIsForwardFace(faceId) && axes.isFaceVisible[faceId]) this._renderGridFace(faceId, width, height);
+                if (axes.getIsForwardFace(faceId) && axes.isFaceVisible[faceId]) this._renderGridFace(faceId, width1, height1);
             }
         }
         this._gl.enable(this._gl.CULL_FACE);
@@ -23462,12 +23504,12 @@ class $4f62b433964c73bc$export$c6e88a9dc8138322 {
                 this._colorShader.mMatrix = this._mMatrix;
                 this._colorShader.apply();
                 this._colorShader.applyModel();
-                for(let i = 0; i < this.viewportCount; i++){
-                    const viewport = i + this.viewportOffset;
-                    this._main.shaderResources.bindFramebuffer(this.framebuffers[viewport]);
-                    this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                    this._colorShader.vMatrix = this.vMatrices[viewport];
-                    this._colorShader.pMatrix = this.pMatrices[viewport];
+                for(let i1 = 0; i1 < this.viewportCount; i1++){
+                    const viewport1 = i1 + this.viewportOffset;
+                    this._main.shaderResources.bindFramebuffer(this.framebuffers[viewport1]);
+                    this._gl.viewport(this.viewports[viewport1].x, this.viewports[viewport1].y, this.viewports[viewport1].width, this.viewports[viewport1].height);
+                    this._colorShader.vMatrix = this.vMatrices[viewport1];
+                    this._colorShader.pMatrix = this.pMatrices[viewport1];
                     this._colorShader.applyView();
                     this._gl.drawElements(this._gl.TRIANGLE_STRIP, this._controller.rayIndexCount, this._gl.UNSIGNED_SHORT, 0);
                 }
@@ -23919,65 +23961,65 @@ class $04b4694d50e05a30$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
             this._viewportOffset = 0;
             this._viewportCount = 2;
         } else {
-            let viewport;
+            let viewport1;
             switch(this._core.config.stereoMode){
                 case (0, $b0e0bae684e98192$export$ec20dfa68810b176).none:
-                    viewport = this._viewports[0];
-                    viewport.x = 0;
-                    viewport.y = 0;
-                    viewport.width = this._canvas.width;
-                    viewport.height = this._canvas.height;
+                    viewport1 = this._viewports[0];
+                    viewport1.x = 0;
+                    viewport1.y = 0;
+                    viewport1.width = this._canvas.width;
+                    viewport1.height = this._canvas.height;
                     this._viewportOffset = 0;
                     this._viewportCount = 1;
                     this._framebuffers[0] = null;
                     break;
                 case (0, $b0e0bae684e98192$export$ec20dfa68810b176).left:
-                    viewport = this._viewports[0];
-                    viewport.x = 0;
-                    viewport.y = 0;
-                    viewport.width = this._canvas.width;
-                    viewport.height = this._canvas.height;
+                    viewport1 = this._viewports[0];
+                    viewport1.x = 0;
+                    viewport1.y = 0;
+                    viewport1.width = this._canvas.width;
+                    viewport1.height = this._canvas.height;
                     this._viewportOffset = 0;
                     this._viewportCount = 1;
                     this._framebuffers[0] = null;
                     break;
                 case (0, $b0e0bae684e98192$export$ec20dfa68810b176).right:
-                    viewport = this._viewports[1];
-                    viewport.x = 0;
-                    viewport.y = 0;
-                    viewport.width = this._canvas.width;
-                    viewport.height = this._canvas.height;
+                    viewport1 = this._viewports[1];
+                    viewport1.x = 0;
+                    viewport1.y = 0;
+                    viewport1.width = this._canvas.width;
+                    viewport1.height = this._canvas.height;
                     this._viewportOffset = 1;
                     this._viewportCount = 1;
                     this._framebuffers[1] = null;
                     break;
                 case (0, $b0e0bae684e98192$export$ec20dfa68810b176).anaglyph:
-                    viewport = this._viewports[0];
-                    viewport.x = 0;
-                    viewport.y = 0;
-                    viewport.width = this._canvas.width;
-                    viewport.height = this._canvas.height;
-                    viewport = this._viewports[1];
-                    viewport.x = 0;
-                    viewport.y = 0;
-                    viewport.width = this._canvas.width;
-                    viewport.height = this._canvas.height;
+                    viewport1 = this._viewports[0];
+                    viewport1.x = 0;
+                    viewport1.y = 0;
+                    viewport1.width = this._canvas.width;
+                    viewport1.height = this._canvas.height;
+                    viewport1 = this._viewports[1];
+                    viewport1.x = 0;
+                    viewport1.y = 0;
+                    viewport1.width = this._canvas.width;
+                    viewport1.height = this._canvas.height;
                     this._viewportOffset = 0;
                     this._viewportCount = 2;
                     this._framebuffers[0] = this.anaglyphFramebuffers[0];
                     this._framebuffers[1] = this.anaglyphFramebuffers[1];
                     break;
                 case (0, $b0e0bae684e98192$export$ec20dfa68810b176).split:
-                    viewport = this._viewports[0];
-                    viewport.x = 0;
-                    viewport.y = 0;
-                    viewport.width = this._canvas.width / 2;
-                    viewport.height = this._canvas.height;
-                    viewport = this._viewports[1];
-                    viewport.x = this._canvas.width / 2;
-                    viewport.y = 0;
-                    viewport.width = this._canvas.width / 2;
-                    viewport.height = this._canvas.height;
+                    viewport1 = this._viewports[0];
+                    viewport1.x = 0;
+                    viewport1.y = 0;
+                    viewport1.width = this._canvas.width / 2;
+                    viewport1.height = this._canvas.height;
+                    viewport1 = this._viewports[1];
+                    viewport1.x = this._canvas.width / 2;
+                    viewport1.y = 0;
+                    viewport1.width = this._canvas.width / 2;
+                    viewport1.height = this._canvas.height;
                     this._viewportOffset = 0;
                     this._viewportCount = 2;
                     this._framebuffers[0] = null;
@@ -24060,13 +24102,13 @@ class $04b4694d50e05a30$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
             this._debugAxesVisual.framebuffers = this._framebuffers;
             this._debugAxesVisual.render(elapsedTime, xrFrame);
         }
-        for(let i = 0; i < this.transitionBuffers.length; i++){
-            const transitionBuffer = this.transitionBuffers[i];
+        for(let i1 = 0; i1 < this.transitionBuffers.length; i1++){
+            const transitionBuffer = this.transitionBuffers[i1];
             if (transitionBuffer.isVisible) this._renderTransitionBuffer(xrFrame, transitionBuffer);
         }
         const axesVisuals = this.axesVisibility == (0, $b0e0bae684e98192$export$7dbc7c2b82487e42).current ? this.currentAxes : this.axesVisibility == (0, $b0e0bae684e98192$export$7dbc7c2b82487e42).previous ? this.previousAxes : null;
-        if (axesVisuals) for(let i6 = 0; i6 < axesVisuals.length; i6++){
-            const axesVisual = axesVisuals[i6];
+        if (axesVisuals) for(let i2 = 0; i2 < axesVisuals.length; i2++){
+            const axesVisual = axesVisuals[i2];
             if (axesVisual.isVisible) {
                 axesVisual.pickedIdColor = this._pickedIdColor;
                 axesVisual.pickFramebuffer = this._pickFrameBuffer;
@@ -24074,8 +24116,8 @@ class $04b4694d50e05a30$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
                 axesVisual.render(elapsedTime, xrFrame);
             }
         }
-        if (this.areLabelsVisible) for(let i7 = 0; i7 < this.labelSets.length; i7++){
-            const labelSetVisual = this.labelSets[i7];
+        if (this.areLabelsVisible) for(let i3 = 0; i3 < this.labelSets.length; i3++){
+            const labelSetVisual = this.labelSets[i3];
             if (labelSetVisual.isVisible) {
                 labelSetVisual.pickedIdColor = this._pickedIdColor;
                 labelSetVisual.pickFramebuffer = this._pickFrameBuffer;
@@ -24083,15 +24125,15 @@ class $04b4694d50e05a30$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
                 labelSetVisual.render(elapsedTime, xrFrame);
             }
         }
-        if (this.areImagesVisible) for(let i8 = 0; i8 < this.images.length; i8++){
-            const imageVisual = this.images[i8];
+        if (this.areImagesVisible) for(let i4 = 0; i4 < this.images.length; i4++){
+            const imageVisual = this.images[i4];
             if (imageVisual.isVisible) {
                 imageVisual.framebuffers = this._framebuffers;
                 imageVisual.render(elapsedTime, xrFrame);
             }
         }
-        for(let i9 = 0; i9 < this.controllers.length; i9++){
-            const controllerVisual = this.controllers[i9];
+        for(let i5 = 0; i5 < this.controllers.length; i5++){
+            const controllerVisual = this.controllers[i5];
             if (controllerVisual.isVisible) {
                 controllerVisual.isRayVisible = this.isPickingEnabled;
                 controllerVisual.framebuffers = this._framebuffers;
@@ -24108,12 +24150,12 @@ class $04b4694d50e05a30$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
                 this._isCapturingPickImage = false;
                 const data = new Uint8ClampedArray(this._core.config.pickWidth * this._core.config.pickHeight * 4);
                 this._gl.readPixels(0, 0, this._core.config.pickWidth, this._core.config.pickHeight, this._gl.RGBA, this._gl.UNSIGNED_BYTE, data);
-                for(let i = 0; i < data.length / 4; i++)if (data[i * 4 + 3] == (0, $b0e0bae684e98192$export$6fc3f4da94ff0be0).data) data[i * 4 + 3] = 255;
+                for(let i6 = 0; i6 < data.length / 4; i6++)if (data[i6 * 4 + 3] == (0, $b0e0bae684e98192$export$6fc3f4da94ff0be0).data) data[i6 * 4 + 3] = 255;
                 else {
-                    data[i * 4] = 0;
-                    data[i * 4 + 1] = 0;
-                    data[i * 4 + 2] = 0;
-                    data[i * 4 + 3] = 0;
+                    data[i6 * 4] = 0;
+                    data[i6 * 4 + 1] = 0;
+                    data[i6 * 4 + 2] = 0;
+                    data[i6 * 4 + 3] = 0;
                 }
                 this.capturePickImageCallback(data, this._core.config.pickWidth, this._core.config.pickHeight);
             }
@@ -24131,8 +24173,8 @@ class $04b4694d50e05a30$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
             this._lassoShader.dashWidth = this.lassoDashWidth ? this.lassoDashWidth : this._core.config.lassoDashWidth;
             this._lassoShader.apply();
             const lassoThickness = this.lassoThickness ? this.lassoThickness : this._core.config.lassoThickness;
-            for(let i = 0; i < this._viewportCount; i++){
-                const viewportIndex = i + this._viewportOffset;
+            for(let i7 = 0; i7 < this._viewportCount; i7++){
+                const viewportIndex = i7 + this._viewportOffset;
                 this._shaderResources.bindFramebuffer(this._framebuffers[viewportIndex]);
                 const viewport = this._viewports[viewportIndex];
                 this._gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
@@ -24250,22 +24292,22 @@ class $04b4694d50e05a30$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
             this._sphereShader.specularIntensity = this._config.specularIntensity;
             this._sphereShader.apply();
             this._sphereShader.isPickShader = false;
-            for(let i = 0; i < this._viewportCount; i++){
-                const viewport = i + this._viewportOffset;
-                this._shaderResources.bindFramebuffer(this._framebuffers[viewport]);
-                this._gl.viewport(this._viewports[viewport].x, this._viewports[viewport].y, this._viewports[viewport].width, this._viewports[viewport].height);
-                const vMatrix = this.vMatrices[viewport];
+            for(let i1 = 0; i1 < this._viewportCount; i1++){
+                const viewport1 = i1 + this._viewportOffset;
+                this._shaderResources.bindFramebuffer(this._framebuffers[viewport1]);
+                this._gl.viewport(this._viewports[viewport1].x, this._viewports[viewport1].y, this._viewports[viewport1].width, this._viewports[viewport1].height);
+                const vMatrix1 = this.vMatrices[viewport1];
                 if (xrFrame) {
                     (0, $3060130e3101af24$exports).set(this._modelPosition, this.mMatrix[12], this.mMatrix[13], this.mMatrix[14]);
                     (0, $3060130e3101af24$exports).subtract(this._directionToLight, this._config.lightPosition, this._modelPosition);
                     (0, $3060130e3101af24$exports).normalize(this._directionToLight, this._directionToLight);
-                    const inverseVMatrix = this.inverseVMatrices[viewport];
-                    (0, $3060130e3101af24$exports).set(this._cameraPosition, inverseVMatrix[12], inverseVMatrix[13], inverseVMatrix[14]);
+                    const inverseVMatrix1 = this.inverseVMatrices[viewport1];
+                    (0, $3060130e3101af24$exports).set(this._cameraPosition, inverseVMatrix1[12], inverseVMatrix1[13], inverseVMatrix1[14]);
                     (0, $3060130e3101af24$exports).subtract(this._directionToCamera, this._cameraPosition, this._modelPosition);
                     (0, $3060130e3101af24$exports).normalize(this._directionToCamera, this._directionToCamera);
                     (0, $3060130e3101af24$exports).add(this._halfAngle, this._directionToLight, this._directionToCamera);
                     (0, $3060130e3101af24$exports).normalize(this._halfAngle, this._halfAngle);
-                    (0, $d7206d7011462ee8$exports).fromMat4(this._mat3, vMatrix);
+                    (0, $d7206d7011462ee8$exports).fromMat4(this._mat3, vMatrix1);
                     (0, $3060130e3101af24$exports).transformMat3(this._directionToLight, this._directionToLight, this._mat3);
                     (0, $3060130e3101af24$exports).transformMat3(this._halfAngle, this._halfAngle, this._mat3);
                     this._sphereShader.directionToLight = this._directionToLight;
@@ -24274,8 +24316,8 @@ class $04b4694d50e05a30$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
                     this._sphereShader.directionToLight = this._config.directionToLight;
                     this._sphereShader.halfAngle = this._config.halfAngle;
                 }
-                this._sphereShader.vMatrix = vMatrix;
-                this._sphereShader.pMatrix = this.pMatrices[viewport];
+                this._sphereShader.vMatrix = vMatrix1;
+                this._sphereShader.pMatrix = this.pMatrices[viewport1];
                 this._sphereShader.applyView();
                 this._shaderResources.ANGLE_instanced_arrays.drawElementsInstancedANGLE(this._gl.TRIANGLE_STRIP, this._sphereShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
             }
@@ -24309,22 +24351,22 @@ class $04b4694d50e05a30$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
             this._cylinderShader.specularIntensity = this._config.specularIntensity;
             this._cylinderShader.apply();
             this._cylinderShader.isPickShader = false;
-            for(let i = 0; i < this._viewportCount; i++){
-                const viewport = i + this._viewportOffset;
-                this._shaderResources.bindFramebuffer(this._framebuffers[viewport]);
-                this._gl.viewport(this._viewports[viewport].x, this._viewports[viewport].y, this._viewports[viewport].width, this._viewports[viewport].height);
-                const vMatrix = this.vMatrices[viewport];
+            for(let i2 = 0; i2 < this._viewportCount; i2++){
+                const viewport2 = i2 + this._viewportOffset;
+                this._shaderResources.bindFramebuffer(this._framebuffers[viewport2]);
+                this._gl.viewport(this._viewports[viewport2].x, this._viewports[viewport2].y, this._viewports[viewport2].width, this._viewports[viewport2].height);
+                const vMatrix2 = this.vMatrices[viewport2];
                 if (xrFrame) {
                     (0, $3060130e3101af24$exports).set(this._modelPosition, this.mMatrix[12], this.mMatrix[13], this.mMatrix[14]);
                     (0, $3060130e3101af24$exports).subtract(this._directionToLight, this._config.lightPosition, this._modelPosition);
                     (0, $3060130e3101af24$exports).normalize(this._directionToLight, this._directionToLight);
-                    const inverseVMatrix = this.inverseVMatrices[viewport];
-                    (0, $3060130e3101af24$exports).set(this._cameraPosition, inverseVMatrix[12], inverseVMatrix[13], inverseVMatrix[14]);
+                    const inverseVMatrix2 = this.inverseVMatrices[viewport2];
+                    (0, $3060130e3101af24$exports).set(this._cameraPosition, inverseVMatrix2[12], inverseVMatrix2[13], inverseVMatrix2[14]);
                     (0, $3060130e3101af24$exports).subtract(this._directionToCamera, this._cameraPosition, this._modelPosition);
                     (0, $3060130e3101af24$exports).normalize(this._directionToCamera, this._directionToCamera);
                     (0, $3060130e3101af24$exports).add(this._halfAngle, this._directionToLight, this._directionToCamera);
                     (0, $3060130e3101af24$exports).normalize(this._halfAngle, this._halfAngle);
-                    (0, $d7206d7011462ee8$exports).fromMat4(this._mat3, vMatrix);
+                    (0, $d7206d7011462ee8$exports).fromMat4(this._mat3, vMatrix2);
                     (0, $3060130e3101af24$exports).transformMat3(this._directionToLight, this._directionToLight, this._mat3);
                     (0, $3060130e3101af24$exports).transformMat3(this._halfAngle, this._halfAngle, this._mat3);
                     this._cylinderShader.directionToLight = this._directionToLight;
@@ -24333,8 +24375,8 @@ class $04b4694d50e05a30$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
                     this._cylinderShader.directionToLight = this._config.directionToLight;
                     this._cylinderShader.halfAngle = this._config.halfAngle;
                 }
-                this._cylinderShader.vMatrix = vMatrix;
-                this._cylinderShader.pMatrix = this.pMatrices[viewport];
+                this._cylinderShader.vMatrix = vMatrix2;
+                this._cylinderShader.pMatrix = this.pMatrices[viewport2];
                 this._cylinderShader.applyView();
                 this._shaderResources.ANGLE_instanced_arrays.drawElementsInstancedANGLE(this._gl.TRIANGLE_STRIP, this._cylinderShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
             }
@@ -24368,22 +24410,22 @@ class $04b4694d50e05a30$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
             this._hexPrismShader.specularIntensity = this._config.specularIntensity;
             this._hexPrismShader.apply();
             this._hexPrismShader.isPickShader = false;
-            for(let i = 0; i < this._viewportCount; i++){
-                const viewport = i + this._viewportOffset;
-                this._shaderResources.bindFramebuffer(this._framebuffers[viewport]);
-                this._gl.viewport(this._viewports[viewport].x, this._viewports[viewport].y, this._viewports[viewport].width, this._viewports[viewport].height);
-                const vMatrix = this.vMatrices[viewport];
+            for(let i3 = 0; i3 < this._viewportCount; i3++){
+                const viewport3 = i3 + this._viewportOffset;
+                this._shaderResources.bindFramebuffer(this._framebuffers[viewport3]);
+                this._gl.viewport(this._viewports[viewport3].x, this._viewports[viewport3].y, this._viewports[viewport3].width, this._viewports[viewport3].height);
+                const vMatrix3 = this.vMatrices[viewport3];
                 if (xrFrame) {
                     (0, $3060130e3101af24$exports).set(this._modelPosition, this.mMatrix[12], this.mMatrix[13], this.mMatrix[14]);
                     (0, $3060130e3101af24$exports).subtract(this._directionToLight, this._config.lightPosition, this._modelPosition);
                     (0, $3060130e3101af24$exports).normalize(this._directionToLight, this._directionToLight);
-                    const inverseVMatrix = this.inverseVMatrices[viewport];
-                    (0, $3060130e3101af24$exports).set(this._cameraPosition, inverseVMatrix[12], inverseVMatrix[13], inverseVMatrix[14]);
+                    const inverseVMatrix3 = this.inverseVMatrices[viewport3];
+                    (0, $3060130e3101af24$exports).set(this._cameraPosition, inverseVMatrix3[12], inverseVMatrix3[13], inverseVMatrix3[14]);
                     (0, $3060130e3101af24$exports).subtract(this._directionToCamera, this._cameraPosition, this._modelPosition);
                     (0, $3060130e3101af24$exports).normalize(this._directionToCamera, this._directionToCamera);
                     (0, $3060130e3101af24$exports).add(this._halfAngle, this._directionToLight, this._directionToCamera);
                     (0, $3060130e3101af24$exports).normalize(this._halfAngle, this._halfAngle);
-                    (0, $d7206d7011462ee8$exports).fromMat4(this._mat3, vMatrix);
+                    (0, $d7206d7011462ee8$exports).fromMat4(this._mat3, vMatrix3);
                     (0, $3060130e3101af24$exports).transformMat3(this._directionToLight, this._directionToLight, this._mat3);
                     (0, $3060130e3101af24$exports).transformMat3(this._halfAngle, this._halfAngle, this._mat3);
                     this._hexPrismShader.directionToLight = this._directionToLight;
@@ -24392,8 +24434,8 @@ class $04b4694d50e05a30$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
                     this._hexPrismShader.directionToLight = this._config.directionToLight;
                     this._hexPrismShader.halfAngle = this._config.halfAngle;
                 }
-                this._hexPrismShader.vMatrix = vMatrix;
-                this._hexPrismShader.pMatrix = this.pMatrices[viewport];
+                this._hexPrismShader.vMatrix = vMatrix3;
+                this._hexPrismShader.pMatrix = this.pMatrices[viewport3];
                 this._hexPrismShader.applyView();
                 this._shaderResources.ANGLE_instanced_arrays.drawElementsInstancedANGLE(this._gl.TRIANGLE_STRIP, this._hexPrismShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
             }
@@ -26307,11 +26349,11 @@ class $3948f5159ae7679c$export$30e3ee7ba3e49080 extends (0, $1384259d246f5467$ex
                         sdfShader.applyModel();
                         sdfShader.isPickShader = false;
                         shaderResources.bindFramebuffer(this.geometryFramebuffer);
-                        for(let i = 0; i < this.viewportCount; i++){
-                            const viewport = i + this.viewportOffset;
-                            this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                            sdfShader.vMatrix = this.vMatrices[viewport];
-                            sdfShader.pMatrix = this.pMatrices[viewport];
+                        for(let i1 = 0; i1 < this.viewportCount; i1++){
+                            const viewport1 = i1 + this.viewportOffset;
+                            this._gl.viewport(this.viewports[viewport1].x, this.viewports[viewport1].y, this.viewports[viewport1].width, this.viewports[viewport1].height);
+                            sdfShader.vMatrix = this.vMatrices[viewport1];
+                            sdfShader.pMatrix = this.pMatrices[viewport1];
                             sdfShader.applyView();
                             this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                         }
@@ -26333,11 +26375,11 @@ class $3948f5159ae7679c$export$30e3ee7ba3e49080 extends (0, $1384259d246f5467$ex
                     sdfShader.applyModel();
                     sdfShader.isPickShader = false;
                     shaderResources.bindFramebuffer(this.geometryFramebuffer);
-                    for(let i = 0; i < this.viewportCount; i++){
-                        const viewport = i + this.viewportOffset;
-                        this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                        sdfShader.vMatrix = this.vMatrices[viewport];
-                        sdfShader.pMatrix = this.pMatrices[viewport];
+                    for(let i2 = 0; i2 < this.viewportCount; i2++){
+                        const viewport2 = i2 + this.viewportOffset;
+                        this._gl.viewport(this.viewports[viewport2].x, this.viewports[viewport2].y, this.viewports[viewport2].width, this.viewports[viewport2].height);
+                        sdfShader.vMatrix = this.vMatrices[viewport2];
+                        sdfShader.pMatrix = this.pMatrices[viewport2];
                         sdfShader.applyView();
                         this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                     }
@@ -26385,13 +26427,13 @@ class $3948f5159ae7679c$export$30e3ee7ba3e49080 extends (0, $1384259d246f5467$ex
         const size = axes.size;
         const axisId2 = 0;
         const axisId3 = 1;
-        const width = size[axisId2];
-        const height = size[axisId3];
+        const width1 = size[axisId2];
+        const height1 = size[axisId3];
         gridShader.zero = axes.gridFaceZero;
         gridShader.minorGridlines = axes.gridFaceMinorGridlines;
         for(let face = 0; face < 2; face++){
             const faceId = face;
-            if (axes.getIsForwardFace(faceId)) this._renderGridFace(faceId, width, height);
+            if (axes.getIsForwardFace(faceId)) this._renderGridFace(faceId, width1, height1);
         }
         this._gl.enable(this._gl.CULL_FACE);
     }
@@ -26583,11 +26625,11 @@ class $edcaecd8614357ca$export$3dc3b91df297f2ee extends (0, $1384259d246f5467$ex
                             sdfShader.applyModel();
                             sdfShader.isPickShader = false;
                             shaderResources.bindFramebuffer(this.geometryFramebuffer);
-                            for(let i = 0; i < this.viewportCount; i++){
-                                const viewport = i + this.viewportOffset;
-                                this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                                sdfShader.vMatrix = this.vMatrices[viewport];
-                                sdfShader.pMatrix = this.pMatrices[viewport];
+                            for(let i1 = 0; i1 < this.viewportCount; i1++){
+                                const viewport1 = i1 + this.viewportOffset;
+                                this._gl.viewport(this.viewports[viewport1].x, this.viewports[viewport1].y, this.viewports[viewport1].width, this.viewports[viewport1].height);
+                                sdfShader.vMatrix = this.vMatrices[viewport1];
+                                sdfShader.pMatrix = this.pMatrices[viewport1];
                                 sdfShader.applyView();
                                 this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                             }
@@ -26609,11 +26651,11 @@ class $edcaecd8614357ca$export$3dc3b91df297f2ee extends (0, $1384259d246f5467$ex
                         sdfShader.applyModel();
                         sdfShader.isPickShader = false;
                         shaderResources.bindFramebuffer(this.geometryFramebuffer);
-                        for(let i = 0; i < this.viewportCount; i++){
-                            const viewport = i + this.viewportOffset;
-                            this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                            sdfShader.vMatrix = this.vMatrices[viewport];
-                            sdfShader.pMatrix = this.pMatrices[viewport];
+                        for(let i2 = 0; i2 < this.viewportCount; i2++){
+                            const viewport2 = i2 + this.viewportOffset;
+                            this._gl.viewport(this.viewports[viewport2].x, this.viewports[viewport2].y, this.viewports[viewport2].width, this.viewports[viewport2].height);
+                            sdfShader.vMatrix = this.vMatrices[viewport2];
+                            sdfShader.pMatrix = this.pMatrices[viewport2];
                             sdfShader.applyView();
                             this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                         }
@@ -26663,13 +26705,13 @@ class $edcaecd8614357ca$export$3dc3b91df297f2ee extends (0, $1384259d246f5467$ex
         for(let axisId1 = 0; axisId1 < 3; axisId1++)if (axes.areFacesVisible[axisId1]) {
             const axisId2 = axisId1 == 0 ? 1 : 0;
             const axisId3 = axisId1 == 2 ? 1 : 2;
-            const width = size[axisId2];
-            const height = size[axisId3];
+            const width1 = size[axisId2];
+            const height1 = size[axisId3];
             gridShader.zero = axes.getGridFaceZero(axisId1);
             gridShader.minorGridlines = axes.getGridFaceMinorGridlines(axisId1);
             for(let face = 0; face < 2; face++){
                 const faceId = (0, $0993b3badbc4a867$export$a15f0a83a652dd40).AXIS_FACES[axisId1][face];
-                if (axes.getIsForwardFace(faceId) && axes.isFaceVisible[faceId]) this._renderGridFace(faceId, width, height);
+                if (axes.getIsForwardFace(faceId) && axes.isFaceVisible[faceId]) this._renderGridFace(faceId, width1, height1);
             }
         }
         this._gl.enable(this._gl.CULL_FACE);
@@ -27369,8 +27411,8 @@ class $d4a2bb9423c9441d$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
             if (transitionBuffer.isVisible) this._renderTransitionBuffer(transitionBuffer);
         }
         const axesVisuals = this.axesVisibility == (0, $b0e0bae684e98192$export$7dbc7c2b82487e42).current ? this.currentAxes : this.axesVisibility == (0, $b0e0bae684e98192$export$7dbc7c2b82487e42).previous ? this.previousAxes : null;
-        if (axesVisuals) for(let i7 = 0; i7 < axesVisuals.length; i7++){
-            const axesVisual = axesVisuals[i7];
+        if (axesVisuals) for(let i1 = 0; i1 < axesVisuals.length; i1++){
+            const axesVisual = axesVisuals[i1];
             if (axesVisual.isVisible) {
                 axesVisual.pickedIdColor = this._pickedIdColor;
                 axesVisual.pickFramebuffer = this._pickFrameBuffer;
@@ -27378,8 +27420,8 @@ class $d4a2bb9423c9441d$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
                 axesVisual.render(elapsedTime);
             }
         }
-        if (this.areLabelsVisible) for(let i8 = 0; i8 < this.labelSets.length; i8++){
-            const labelSetVisual = this.labelSets[i8];
+        if (this.areLabelsVisible) for(let i2 = 0; i2 < this.labelSets.length; i2++){
+            const labelSetVisual = this.labelSets[i2];
             if (labelSetVisual.isVisible) {
                 labelSetVisual.pickedIdColor = this._pickedIdColor;
                 labelSetVisual.pickFramebuffer = this._pickFrameBuffer;
@@ -27387,8 +27429,8 @@ class $d4a2bb9423c9441d$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
                 labelSetVisual.render(elapsedTime);
             }
         }
-        if (this.areImagesVisible) for(let i9 = 0; i9 < this.images.length; i9++){
-            const imageVisual = this.images[i9];
+        if (this.areImagesVisible) for(let i3 = 0; i3 < this.images.length; i3++){
+            const imageVisual = this.images[i3];
             if (imageVisual.isVisible) {
                 imageVisual.geometryFramebuffer = this._geometryFrameBuffer;
                 imageVisual.render(elapsedTime);
@@ -27399,8 +27441,8 @@ class $d4a2bb9423c9441d$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
             this._backgroundShader.color = this._core.config.backgroundColor;
             this._backgroundShader.apply();
             this._shaderResources.bindFramebuffer(this._geometryFrameBuffer);
-            for(let i = 0; i < this._viewportCount; i++){
-                const viewport = i + this._viewportOffset;
+            for(let i4 = 0; i4 < this._viewportCount; i4++){
+                const viewport = i4 + this._viewportOffset;
                 this._gl.viewport(this._viewports[viewport].x, this._viewports[viewport].y, this._viewports[viewport].width, this._viewports[viewport].height);
                 this._gl.drawElements(this._gl.TRIANGLES, this._quad.indexCount, this._gl.UNSIGNED_SHORT, 0);
             }
@@ -27417,8 +27459,8 @@ class $d4a2bb9423c9441d$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
             this._pickedId = 0;
         }
         if (this.transitionBuffers.length > 0 && this._quad.isInitialized) {
-            const viewport = this._viewportOffset;
-            this._postProcess(this.vMatrices[viewport], this.inverseVMatrices[viewport], this.pMatrices[viewport], this._viewports[viewport]);
+            const viewport1 = this._viewportOffset;
+            this._postProcess(this.vMatrices[viewport1], this.inverseVMatrices[viewport1], this.pMatrices[viewport1], this._viewports[viewport1]);
         }
         if (this.isLassoPicking && this._lassoShader.isInitialized) {
             this._lassoShader.vertexBuffer = this._lasso.vertexBuffer;
@@ -27430,16 +27472,16 @@ class $d4a2bb9423c9441d$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
             this._lassoShader.dashWidth = this.lassoDashWidth ? this.lassoDashWidth : this._core.config.lassoDashWidth;
             this._lassoShader.apply();
             const lassoThickness = this.lassoThickness ? this.lassoThickness : this._core.config.lassoThickness;
-            for(let i = 0; i < this._viewportCount; i++){
-                const viewportIndex = i + this._viewportOffset;
+            for(let i5 = 0; i5 < this._viewportCount; i5++){
+                const viewportIndex = i5 + this._viewportOffset;
                 this._shaderResources.bindFramebuffer(this._framebuffers[viewportIndex]);
-                const viewport = this._viewports[viewportIndex];
-                this._gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
-                this._lassoMMatrix[0] = lassoWidth * 2 / viewport.width;
-                this._lassoMMatrix[5] = lassoHeight * 2 / viewport.height;
+                const viewport2 = this._viewports[viewportIndex];
+                this._gl.viewport(viewport2.x, viewport2.y, viewport2.width, viewport2.height);
+                this._lassoMMatrix[0] = lassoWidth * 2 / viewport2.width;
+                this._lassoMMatrix[5] = lassoHeight * 2 / viewport2.height;
                 this._lassoMMatrix[10] = 1;
-                this._lassoMMatrix[12] = (this.lassoX0 + lassoWidth / 2) / viewport.width * 2 - 1;
-                this._lassoMMatrix[13] = 1 - (this.lassoY0 + lassoHeight / 2) / viewport.height * 2;
+                this._lassoMMatrix[12] = (this.lassoX0 + lassoWidth / 2) / viewport2.width * 2 - 1;
+                this._lassoMMatrix[13] = 1 - (this.lassoY0 + lassoHeight / 2) / viewport2.height * 2;
                 this._lassoShader.mMatrix = this._lassoMMatrix;
                 (0, $a3ca522ed0848e85$exports).set(this._lassoThickness, lassoThickness / lassoWidth, lassoThickness / lassoHeight);
                 this._lassoShader.thickness = this._lassoThickness;
@@ -27526,11 +27568,11 @@ class $d4a2bb9423c9441d$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
             this._sphereShader.isPickShader = false;
             this._sphereShader.isShadowMap = false;
             this._shaderResources.bindFramebuffer(this._geometryFrameBuffer);
-            for(let i = 0; i < this._viewportCount; i++){
-                const viewport = i + this._viewportOffset;
-                this._gl.viewport(this._viewports[viewport].x, this._viewports[viewport].y, this._viewports[viewport].width, this._viewports[viewport].height);
-                this._sphereShader.vMatrix = this.vMatrices[viewport];
-                this._sphereShader.pMatrix = this.pMatrices[viewport];
+            for(let i1 = 0; i1 < this._viewportCount; i1++){
+                const viewport1 = i1 + this._viewportOffset;
+                this._gl.viewport(this._viewports[viewport1].x, this._viewports[viewport1].y, this._viewports[viewport1].width, this._viewports[viewport1].height);
+                this._sphereShader.vMatrix = this.vMatrices[viewport1];
+                this._sphereShader.pMatrix = this.pMatrices[viewport1];
                 this._sphereShader.applyView();
                 this._gl.drawElementsInstanced(this._gl.TRIANGLE_STRIP, this._sphereShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
             }
@@ -27574,11 +27616,11 @@ class $d4a2bb9423c9441d$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
             this._cylinderShader.isPickShader = false;
             this._cylinderShader.isShadowMap = false;
             this._shaderResources.bindFramebuffer(this._geometryFrameBuffer);
-            for(let i = 0; i < this._viewportCount; i++){
-                const viewport = i + this._viewportOffset;
-                this._gl.viewport(this._viewports[viewport].x, this._viewports[viewport].y, this._viewports[viewport].width, this._viewports[viewport].height);
-                this._cylinderShader.vMatrix = this.vMatrices[viewport];
-                this._cylinderShader.pMatrix = this.pMatrices[viewport];
+            for(let i2 = 0; i2 < this._viewportCount; i2++){
+                const viewport2 = i2 + this._viewportOffset;
+                this._gl.viewport(this._viewports[viewport2].x, this._viewports[viewport2].y, this._viewports[viewport2].width, this._viewports[viewport2].height);
+                this._cylinderShader.vMatrix = this.vMatrices[viewport2];
+                this._cylinderShader.pMatrix = this.pMatrices[viewport2];
                 this._cylinderShader.applyView();
                 this._gl.drawElementsInstanced(this._gl.TRIANGLE_STRIP, this._cylinderShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
             }
@@ -29998,24 +30040,24 @@ class $06a08f56d430b165$export$c191703b2daa3f18 {
         const nPrimitives = end - start;
         if (nPrimitives == 1) {
             const firstPrimOffset = this._orderedPrimitives.length;
-            for(let i = start; i < end; i++){
-                const primNum = this._primitiveInfo[i].primitiveNumber;
+            for(let i1 = start; i1 < end; i1++){
+                const primNum = this._primitiveInfo[i1].primitiveNumber;
                 this._orderedPrimitives.push(this._primitives[primNum]);
             }
             node.initLeaf(firstPrimOffset, nPrimitives, bounds);
             return node;
         } else {
             const centroidBounds = new (0, $e520d19faead12bb$export$8ec70f2db73b49aa)();
-            for(let i = start; i < end; i++)centroidBounds.unionPoint(this._primitiveInfo[i].centroid);
+            for(let i2 = start; i2 < end; i2++)centroidBounds.unionPoint(this._primitiveInfo[i2].centroid);
             const dim = centroidBounds.maximumExtent();
             let mid = Math.floor((start + end) / 2);
             if (centroidBounds.max[dim] == centroidBounds.min[dim]) {
-                const firstPrimOffset = this._orderedPrimitives.length;
-                for(let i = start; i < end; i++){
-                    const primNum = this._primitiveInfo[i].primitiveNumber;
-                    this._orderedPrimitives.push(this._primitives[primNum]);
+                const firstPrimOffset1 = this._orderedPrimitives.length;
+                for(let i3 = start; i3 < end; i3++){
+                    const primNum1 = this._primitiveInfo[i3].primitiveNumber;
+                    this._orderedPrimitives.push(this._primitives[primNum1]);
                 }
-                node.initLeaf(firstPrimOffset, nPrimitives, bounds);
+                node.initLeaf(firstPrimOffset1, nPrimitives, bounds);
                 return node;
             } else {
                 switch(this._splitMethod){
@@ -30027,41 +30069,41 @@ class $06a08f56d430b165$export$c191703b2daa3f18 {
                         primtiveInfo.sort(function(a, b) {
                             return a.centroid[dim] - b.centroid[dim];
                         });
-                        for(let i = start; i < end; i++)this._primitiveInfo[i] = primtiveInfo[i - start];
+                        for(let i4 = start; i4 < end; i4++)this._primitiveInfo[i4] = primtiveInfo[i4 - start];
                         break;
                     case $06a08f56d430b165$export$17e31acd02f2a1e.sah:
                     default:
                         if (nPrimitives <= 4) {
                             mid = Math.floor((start + end) / 2);
-                            const primtiveInfo = this._primitiveInfo.slice(start, end);
-                            primtiveInfo.sort(function(a, b) {
+                            const primtiveInfo1 = this._primitiveInfo.slice(start, end);
+                            primtiveInfo1.sort(function(a, b) {
                                 return a.centroid[dim] - b.centroid[dim];
                             });
-                            for(let i = start; i < end; i++)this._primitiveInfo[i] = primtiveInfo[i - start];
+                            for(let i5 = start; i5 < end; i5++)this._primitiveInfo[i5] = primtiveInfo1[i5 - start];
                         } else {
                             const nBuckets = 12;
                             const buckets = [];
-                            for(let i = 0; i < nBuckets; i++)buckets.push({
+                            for(let i6 = 0; i6 < nBuckets; i6++)buckets.push({
                                 count: 0,
                                 bounds: new (0, $e520d19faead12bb$export$8ec70f2db73b49aa)()
                             });
-                            for(let i2 = start; i2 < end; i2++){
-                                centroidBounds.offset(this._primitiveInfo[i2].centroid, this._normalized);
+                            for(let i7 = start; i7 < end; i7++){
+                                centroidBounds.offset(this._primitiveInfo[i7].centroid, this._normalized);
                                 const b = Math.min(Math.round(nBuckets * this._normalized[dim]), nBuckets - 1);
                                 buckets[b].count++;
-                                buckets[b].bounds.unionBounds(this._primitiveInfo[i2].bounds);
+                                buckets[b].bounds.unionBounds(this._primitiveInfo[i7].bounds);
                             }
                             const cost = [];
-                            for(let i3 = 0; i3 < nBuckets - 1; i3++){
+                            for(let i8 = 0; i8 < nBuckets - 1; i8++){
                                 const b0 = new (0, $e520d19faead12bb$export$8ec70f2db73b49aa)();
                                 const b1 = new (0, $e520d19faead12bb$export$8ec70f2db73b49aa)();
                                 let count0 = 0;
                                 let count1 = 0;
-                                for(let j = 0; j <= i3; j++){
+                                for(let j = 0; j <= i8; j++){
                                     b0.unionBounds(buckets[j].bounds);
                                     count0 += buckets[j].count;
                                 }
-                                for(let j1 = i3 + 1; j1 < nBuckets; j1++){
+                                for(let j1 = i8 + 1; j1 < nBuckets; j1++){
                                     b1.unionBounds(buckets[j1].bounds);
                                     count1 += buckets[j1].count;
                                 }
@@ -30069,32 +30111,32 @@ class $06a08f56d430b165$export$c191703b2daa3f18 {
                             }
                             let minCost = cost[0];
                             let minCostSplitBucket = 0;
-                            for(let i4 = 1; i4 < nBuckets - 1; i4++)if (cost[i4] < minCost) {
-                                minCost = cost[i4];
-                                minCostSplitBucket = i4;
+                            for(let i9 = 1; i9 < nBuckets - 1; i9++)if (cost[i9] < minCost) {
+                                minCost = cost[i9];
+                                minCostSplitBucket = i9;
                             }
                             const leafCost = nPrimitives;
                             if (nPrimitives > this._maxPrimsInNode || minCost < leafCost) {
-                                const primtiveInfo = this._primitiveInfo.slice(start, end);
-                                primtiveInfo.sort(function(a, b) {
+                                const primtiveInfo2 = this._primitiveInfo.slice(start, end);
+                                primtiveInfo2.sort(function(a, b) {
                                     return a.centroid[dim] - b.centroid[dim];
                                 });
-                                for(let i = start; i < end; i++)this._primitiveInfo[i] = primtiveInfo[i - start];
-                                for(let i5 = start; i5 < end; i5++){
-                                    centroidBounds.offset(this._primitiveInfo[i5].centroid, this._normalized);
-                                    const b = Math.min(Math.round(nBuckets * this._normalized[dim]), nBuckets - 1);
-                                    if (b > minCostSplitBucket) {
-                                        mid = i5;
+                                for(let i10 = start; i10 < end; i10++)this._primitiveInfo[i10] = primtiveInfo2[i10 - start];
+                                for(let i11 = start; i11 < end; i11++){
+                                    centroidBounds.offset(this._primitiveInfo[i11].centroid, this._normalized);
+                                    const b2 = Math.min(Math.round(nBuckets * this._normalized[dim]), nBuckets - 1);
+                                    if (b2 > minCostSplitBucket) {
+                                        mid = i11;
                                         break;
                                     }
                                 }
                             } else {
-                                const firstPrimOffset = this._orderedPrimitives.length;
-                                for(let i = start; i < end; i++){
-                                    const primNum = this._primitiveInfo[i].primitiveNumber;
-                                    this._orderedPrimitives.push(this._primitives[primNum]);
+                                const firstPrimOffset2 = this._orderedPrimitives.length;
+                                for(let i12 = start; i12 < end; i12++){
+                                    const primNum2 = this._primitiveInfo[i12].primitiveNumber;
+                                    this._orderedPrimitives.push(this._primitives[primNum2]);
                                 }
-                                node.initLeaf(firstPrimOffset, nPrimitives, bounds);
+                                node.initLeaf(firstPrimOffset2, nPrimitives, bounds);
                                 return node;
                             }
                         }
@@ -30573,19 +30615,19 @@ class $c175e843fb388d77$export$6f251cd327b2ff1 {
                 this.hittable = new (0, $53a562f97577f76a$export$71089e9c0fdb5c5)(hittableRotatedXyRectOptions);
             } else if (this._image instanceof (0, $66a54358178bc812$export$f4ca272a8ace4457)) {
                 const imageSphere = this._image;
-                const modelSizeX = imageSphere.maxBoundsX - imageSphere.minBoundsX;
-                const modelSizeY = imageSphere.maxBoundsY - imageSphere.minBoundsY;
-                const modelSizeZ = imageSphere.maxBoundsZ - imageSphere.minBoundsZ;
-                const maxBounds = Math.max(modelSizeX, Math.max(modelSizeY, modelSizeZ));
-                const boundsScaling = maxBounds == 0 ? 1 : 1 / maxBounds;
-                const position = imageSphere.position;
-                (0, $3060130e3101af24$exports).subtract(position, imageSphere.position, position);
-                (0, $3060130e3101af24$exports).scale(position, position, boundsScaling);
-                (0, $3060130e3101af24$exports).scale(position, position, modelScale);
-                (0, $3060130e3101af24$exports).transformQuat(position, position, modelRotation);
-                (0, $3060130e3101af24$exports).add(position, position, modelPosition);
+                const modelSizeX1 = imageSphere.maxBoundsX - imageSphere.minBoundsX;
+                const modelSizeY1 = imageSphere.maxBoundsY - imageSphere.minBoundsY;
+                const modelSizeZ1 = imageSphere.maxBoundsZ - imageSphere.minBoundsZ;
+                const maxBounds1 = Math.max(modelSizeX1, Math.max(modelSizeY1, modelSizeZ1));
+                const boundsScaling1 = maxBounds1 == 0 ? 1 : 1 / maxBounds1;
+                const position1 = imageSphere.position;
+                (0, $3060130e3101af24$exports).subtract(position1, imageSphere.position, position1);
+                (0, $3060130e3101af24$exports).scale(position1, position1, boundsScaling1);
+                (0, $3060130e3101af24$exports).scale(position1, position1, modelScale);
+                (0, $3060130e3101af24$exports).transformQuat(position1, position1, modelRotation);
+                (0, $3060130e3101af24$exports).add(position1, position1, modelPosition);
                 const hittableSphereOptions = {
-                    center: position,
+                    center: position1,
                     radius: imageSphere.radius / 2,
                     material: material
                 };
@@ -31031,17 +31073,17 @@ class $7c7a9d64ae8a03b0$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
         const textures = [];
         const textureIds = [];
         for(let i2 = 0; i2 < materials.length; i2++){
-            const material = materials[i2];
-            const texture = material.texture;
+            const material1 = materials[i2];
+            const texture = material1.texture;
             if (texture) {
                 let textureId;
-                let found;
-                for(let j = 0; j < textures.length; j++)if (textures[j] === texture) {
-                    found = true;
-                    textureId = j;
+                let found1;
+                for(let j1 = 0; j1 < textures.length; j1++)if (textures[j1] === texture) {
+                    found1 = true;
+                    textureId = j1;
                     break;
                 }
-                if (!found) {
+                if (!found1) {
                     textureId = textures.length;
                     textures.push(texture);
                 }
@@ -31080,8 +31122,8 @@ class $7c7a9d64ae8a03b0$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
         this._hittableBuffer = this._device.createBuffer(hittableBufferDescriptor);
         this._hittableBufferData = new (0, $53a562f97577f76a$export$1337e9dd34ffc243)(hittables.length);
         for(let i6 = 0; i6 < hittables.length; i6++){
-            const hittable = hittables[i6];
-            hittable.toBuffer(this._hittableBufferData, i6, materialIds[i6]);
+            const hittable1 = hittables[i6];
+            hittable1.toBuffer(this._hittableBufferData, i6, materialIds[i6]);
         }
         const linearBVHNodes = bvhAccel.nodes;
         const linearBVHNodeBufferSizeBytes = linearBVHNodes.length * (0, $06a08f56d430b165$export$9e920ed4165673f5).SIZE * 4;
@@ -31246,9 +31288,9 @@ class $7c7a9d64ae8a03b0$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
                 for(let j = 0; j < transitionBuffer.hittables.length; j++)hittables.push(transitionBuffer.hittables[j]);
             }
         }
-        if (this.labelSets && this.labelSets.length > 0) for(let i8 = 0; i8 < this.labelSets.length; i8++){
-            const labelSet = this.labelSets[i8];
-            if (labelSet.hittables) for(let j = 0; j < labelSet.hittables.length; j++)hittables.push(labelSet.hittables[j]);
+        if (this.labelSets && this.labelSets.length > 0) for(let i1 = 0; i1 < this.labelSets.length; i1++){
+            const labelSet = this.labelSets[i1];
+            if (labelSet.hittables) for(let j1 = 0; j1 < labelSet.hittables.length; j1++)hittables.push(labelSet.hittables[j1]);
         }
         if (this.images && this.images.length > 0 && this.images[0].hittable) hittables.push(this.images[0].hittable);
         const modelPosition = (0, $3060130e3101af24$exports).create();
@@ -32582,8 +32624,8 @@ function $8c2135bbc56de0f6$var$removeCurrentAxes(stage, currAxis) {
 const $94c0add5c61b9a48$export$e2253033e6e1df16 = {
     vega: $94c0add5c61b9a48$var$vega
 };
-function $94c0add5c61b9a48$export$1f96ae73734a86cc(vega1) {
-    $94c0add5c61b9a48$export$e2253033e6e1df16.vega = vega1;
+function $94c0add5c61b9a48$export$1f96ae73734a86cc(vega) {
+    $94c0add5c61b9a48$export$e2253033e6e1df16.vega = vega;
 }
 
 
@@ -32593,12 +32635,12 @@ var $20fbdb0de5c041fa$exports = {};
 
 $parcel$export($20fbdb0de5c041fa$exports, "PresenterElement", () => $20fbdb0de5c041fa$export$79420be32f83a5b0);
 var $20fbdb0de5c041fa$export$79420be32f83a5b0;
-(function(PresenterElement1) {
-    PresenterElement1[PresenterElement1["root"] = 0] = "root";
-    PresenterElement1[PresenterElement1["gl"] = 1] = "gl";
-    PresenterElement1[PresenterElement1["panel"] = 2] = "panel";
-    PresenterElement1[PresenterElement1["legend"] = 3] = "legend";
-    PresenterElement1[PresenterElement1["vegaControls"] = 4] = "vegaControls";
+(function(PresenterElement) {
+    PresenterElement[PresenterElement["root"] = 0] = "root";
+    PresenterElement[PresenterElement["gl"] = 1] = "gl";
+    PresenterElement[PresenterElement["panel"] = 2] = "panel";
+    PresenterElement[PresenterElement["legend"] = 3] = "legend";
+    PresenterElement[PresenterElement["vegaControls"] = 4] = "vegaControls";
 })($20fbdb0de5c041fa$export$79420be32f83a5b0 || ($20fbdb0de5c041fa$export$79420be32f83a5b0 = {}));
 
 
@@ -32750,8 +32792,9 @@ var $224e36b75e0ab80b$export$2e2bcd8739ae039 = $224e36b75e0ab80b$var$markStager;
 
 const $d10b096a0f387c56$var$markStager = (options, stage, scene, x, y, groupType)=>{
     (0, $94c0add5c61b9a48$export$e2253033e6e1df16).vega.sceneVisit(scene, function(item) {
-        const z = stage.view === "2d" ? 0 : (item.z || 0) + (0, $8c2135bbc56de0f6$export$ce94e349d95a214c);
-        const depth = (stage.view === "2d" ? 0 : item.depth || 0) + (0, $8c2135bbc56de0f6$export$d90a7322036a432e);
+        const noZ = item.z === undefined;
+        const z = noZ ? 0 : (item.z || 0) + (0, $8c2135bbc56de0f6$export$ce94e349d95a214c);
+        const depth = (noZ ? 0 : item.depth || 0) + (0, $8c2135bbc56de0f6$export$d90a7322036a432e);
         //change direction of y from SVG to GL
         const ty = -1;
         const ordinal = options.assignCubeOrdinal(item.datum);
@@ -32920,12 +32963,12 @@ $25906a8f9b94d423$export$2e2bcd8739ae039 = $25906a8f9b94d423$var$markStager;
 
 
 var $9d13aced50016ea2$export$d460f747b73abb10;
-(function(GroupType1) {
-    GroupType1[GroupType1["none"] = 0] = "none";
-    GroupType1[GroupType1["legend"] = 1] = "legend";
-    GroupType1[GroupType1["xAxis"] = 2] = "xAxis";
-    GroupType1[GroupType1["yAxis"] = 3] = "yAxis";
-    GroupType1[GroupType1["zAxis"] = 4] = "zAxis";
+(function(GroupType) {
+    GroupType[GroupType["none"] = 0] = "none";
+    GroupType[GroupType["legend"] = 1] = "legend";
+    GroupType[GroupType["xAxis"] = 2] = "xAxis";
+    GroupType[GroupType["yAxis"] = 3] = "yAxis";
+    GroupType[GroupType["zAxis"] = 4] = "zAxis";
 })($9d13aced50016ea2$export$d460f747b73abb10 || ($9d13aced50016ea2$export$d460f747b73abb10 = {}));
 
 
@@ -33426,7 +33469,7 @@ const $49daf541f0b809d4$export$1858923cd0c63ab5 = (props)=>{
     const { ref: ref , stage: stage  } = props;
     const { core: core  } = ref;
     const scatter = new (0, $2aed7ec3818b6622$exports).Scatter(core);
-    const { ids: ids , colors: colors1 , positionsX: positionsX , positionsY: positionsY , positionsZ: positionsZ , sizesX: sizesX , sizesY: sizesY , sizesZ: sizesZ , bounds: bounds , maxColor: maxColor1 , palette: palette1 ,  } = $49daf541f0b809d4$var$convert(stage);
+    const { ids: ids , colors: colors , positionsX: positionsX , positionsY: positionsY , positionsZ: positionsZ , sizesX: sizesX , sizesY: sizesY , sizesZ: sizesZ , bounds: bounds , maxColor: maxColor , palette: palette ,  } = $49daf541f0b809d4$var$convert(stage);
     if (!ids.length) return;
     const { renderer: renderer  } = core;
     let cubeTransitionBuffer = renderer.transitionBuffers.find((t)=>t.key === $49daf541f0b809d4$var$key);
@@ -33459,11 +33502,11 @@ const $49daf541f0b809d4$export$1858923cd0c63ab5 = (props)=>{
         },
         bounds: bounds,
         unitColorMap: {
-            colors: colors1,
+            colors: colors,
             ids: ids,
             minColor: 0,
-            maxColor: maxColor1,
-            palette: palette1
+            maxColor: maxColor,
+            palette: palette
         }
     };
     return layer;
@@ -33660,7 +33703,7 @@ function $eed32355f965d77a$export$12cca049a4826e61(advanced) {
 const $3fd62b3715bd2081$export$bbc48f7bb3ba03ac = (props)=>{
     const { ref: ref , stage: stage  } = props;
     const { core: core  } = ref;
-    const { positionsX: positionsX , positionsY: positionsY , positionsZ: positionsZ , sizes: sizes , bounds: bounds1 , maxGlyphs: maxGlyphs , text: text ,  } = $3fd62b3715bd2081$var$convert(stage);
+    const { positionsX: positionsX , positionsY: positionsY , positionsZ: positionsZ , sizes: sizes , bounds: bounds , maxGlyphs: maxGlyphs , text: text ,  } = $3fd62b3715bd2081$var$convert(stage);
     if (text.length === 0) {
         core.renderer.labelSets = [];
         return;
@@ -33686,7 +33729,7 @@ const $3fd62b3715bd2081$export$bbc48f7bb3ba03ac = (props)=>{
             labelSet.maxBoundsY = maxBoundsY;
             labelSet.maxBoundsZ = maxBoundsZ;
         },
-        bounds: bounds1
+        bounds: bounds
     };
     const labelSetVisual = core.renderer.createLabelSetVisual(labelSet);
     core.renderer.labelSets = [
@@ -33859,12 +33902,12 @@ function $59dd6522201d03c1$export$63db8d52413993da(core, options) {
 }
 
 
-function $129c4fedfb092cf6$export$2cd8252107eb640b(options, mcRendererOptions1) {
+function $129c4fedfb092cf6$export$2cd8252107eb640b(options, mcRendererOptions) {
     const { container: container  } = options;
     const core = new (0, $b0e0bae684e98192$export$4143ab5b91744744)({
         container: container
     });
-    (0, $eed32355f965d77a$export$4aa259f2a0167a49)(mcRendererOptions1, core);
+    (0, $eed32355f965d77a$export$4aa259f2a0167a49)(mcRendererOptions, core);
     (0, $59dd6522201d03c1$export$63db8d52413993da)(core, options);
     core.config.pickSelectDelay = 50;
     const ref = {
@@ -33902,7 +33945,7 @@ function $129c4fedfb092cf6$export$2cd8252107eb640b(options, mcRendererOptions1) 
             (0, $eed32355f965d77a$export$cfea0671ae41cdf)(core.renderer, mcRendererOptions);
             ref.lastMorphChartsRendererOptions = mcRendererOptions;
         },
-        lastMorphChartsRendererOptions: mcRendererOptions1
+        lastMorphChartsRendererOptions: mcRendererOptions
     };
     const cam = (t)=>{
         (0, $a75e1c0eea6f029a$exports).slerp(ref.qCameraRotationCurrent, ref.qCameraRotationFrom, ref.qCameraRotationTo, t);
@@ -33929,13 +33972,13 @@ function $129c4fedfb092cf6$export$2cd8252107eb640b(options, mcRendererOptions1) 
             cam(t);
         } else if (ref.isCameraMovement) {
             ref.cameraTime += elapsedTime;
-            const totalTime = core.config.transitionDuration;
-            if (ref.cameraTime >= totalTime) {
+            const totalTime1 = core.config.transitionDuration;
+            if (ref.cameraTime >= totalTime1) {
                 ref.isCameraMovement = false;
-                ref.cameraTime = totalTime;
+                ref.cameraTime = totalTime1;
             }
-            const t = (0, $930e0e0dfc69f257$export$24c5ac7c37452e7d)(ref.cameraTime / totalTime);
-            cam(t);
+            const t1 = (0, $930e0e0dfc69f257$export$24c5ac7c37452e7d)(ref.cameraTime / totalTime1);
+            cam(t1);
         } else core.inputManager.isPickingEnabled = true;
     };
     return ref;
@@ -34033,8 +34076,8 @@ function $129c4fedfb092cf6$export$bd1c7209c525d9d0(ref, prevStage, stage, height
         const imageDataCache = {};
         backgroundImages.forEach((backgroundImage)=>{
             const imageBounds = $129c4fedfb092cf6$var$convertBounds(backgroundImage.bounds);
-            const imageData1 = imageDataCache[backgroundImage.url];
-            if (imageData1) addImage(imageBounds, imageData1);
+            const imageData = imageDataCache[backgroundImage.url];
+            if (imageData) addImage(imageBounds, imageData);
             else (0, $33223c7a8c3f4e85$export$d93c68e129326488)(backgroundImage.url).then((imageData)=>{
                 imageDataCache[backgroundImage.url] = imageData;
                 addImage(imageBounds, imageData);
@@ -34327,7 +34370,7 @@ let $d35dded7832c8625$var$registered = false;
 //dynamic superclass lets us create a subclass at execution phase instead of declaration phase.
 //This allows us to retrieve vega.View from either UMD or ES6 consumers of this class.
 //pass in the SuperClass, which should be a vega.View
-function $d35dded7832c8625$var$_ViewGl(runtime1, config1) {
+function $d35dded7832c8625$var$_ViewGl(runtime, config) {
     //dynamic superclass, since we don't know have vega.View in the declaration phase
     class ViewGlInternal extends (0, $94c0add5c61b9a48$export$e2253033e6e1df16).vega.View {
         constructor(runtime, config = {}){
@@ -34366,14 +34409,14 @@ function $d35dded7832c8625$var$_ViewGl(runtime1, config1) {
             if (this.presenter.logger) this.presenter.logger(e);
         }
     }
-    const instance = new ViewGlInternal(runtime1, config1);
+    const instance = new ViewGlInternal(runtime, config);
     return instance;
 }
 const $d35dded7832c8625$export$6d8f9057dcd7f9e6 = $d35dded7832c8625$var$_ViewGl;
 
 
 
-const $6cb4b91d47e414da$export$83d89fbfd8236492 = "1.0.0";
+const $6cb4b91d47e414da$export$83d89fbfd8236492 = "1.0.1";
 
 
 $parcel$exportWildcard($77c6d719b6f16e7d$exports, $20fbdb0de5c041fa$exports);
@@ -34394,7 +34437,8 @@ const $74c2763994d75bb8$export$fb736e4909afb3d7 = {
         ]),
         axisLine: "#000",
         axisText: "#000",
-        gridLine: "#CCC"
+        gridLine: "#CCC",
+        backgroundColor: "#FFF"
     },
     language: {
         headers: {
@@ -34553,10 +34597,10 @@ var $0000a41cc7b5918f$exports = {};
 
 $parcel$export($0000a41cc7b5918f$exports, "Viewer", () => $0000a41cc7b5918f$export$2ec4afd9b3c16a85, (v) => $0000a41cc7b5918f$export$2ec4afd9b3c16a85 = v);
 var $57be1fa2f8a8b996$export$d9e571576e98a7ab;
-(function(DataLayoutChange1) {
-    DataLayoutChange1[DataLayoutChange1["same"] = 0] = "same";
-    DataLayoutChange1[DataLayoutChange1["reset"] = 1] = "reset";
-    DataLayoutChange1[DataLayoutChange1["refine"] = 2] = "refine";
+(function(DataLayoutChange) {
+    DataLayoutChange[DataLayoutChange["same"] = 0] = "same";
+    DataLayoutChange[DataLayoutChange["reset"] = 1] = "reset";
+    DataLayoutChange[DataLayoutChange["refine"] = 2] = "refine";
 })($57be1fa2f8a8b996$export$d9e571576e98a7ab || ($57be1fa2f8a8b996$export$d9e571576e98a7ab = {}));
 class $57be1fa2f8a8b996$export$c774d8c9d4e9e234 {
     constructor(dataScope, props){
@@ -34714,12 +34758,12 @@ class $04c641c9701e126c$export$b4d41fd4fcc19c {
             const role = $04c641c9701e126c$var$dimToRole[i];
             const axes = this.stage.axes[role];
             //all axes in a faceted chart should be the same
-            const axis1 = axes.filter((axis)=>axis.tickText.length)[0];
-            if (axis1) {
+            const axis = axes.filter((axis)=>axis.tickText.length)[0];
+            if (axis) {
                 const capabilities = this.specCapabilities.roles.filter((r)=>r.role === role)[0];
                 const column = this.columns[role];
                 if (division >= 0 && (capabilities === null || capabilities === void 0 ? void 0 : capabilities.axisSelection)) searchRoles.push({
-                    axis: axis1,
+                    axis: axis,
                     role: role,
                     capabilities: capabilities,
                     column: column,
@@ -34914,13 +34958,13 @@ class $bb7ed1a84d2d22a1$export$3fb74a6ae4f1171d {
 
 
 var $1e584946c82e7f09$var$Action;
-(function(Action1) {
-    Action1[Action1["deselect"] = 0] = "deselect";
-    Action1[Action1["isolate"] = 1] = "isolate";
-    Action1[Action1["exclude"] = 2] = "exclude";
-    Action1[Action1["reset"] = 3] = "reset";
-    Action1[Action1["next"] = 4] = "next";
-    Action1[Action1["previous"] = 5] = "previous";
+(function(Action) {
+    Action[Action["deselect"] = 0] = "deselect";
+    Action[Action["isolate"] = 1] = "isolate";
+    Action[Action["exclude"] = 2] = "exclude";
+    Action[Action["reset"] = 3] = "reset";
+    Action[Action["next"] = 4] = "next";
+    Action[Action["previous"] = 5] = "previous";
 })($1e584946c82e7f09$var$Action || ($1e584946c82e7f09$var$Action = {}));
 class $1e584946c82e7f09$export$3e8048d3cf2ba3fd {
     constructor(parentElement, language, animator, dataScope, colorMapHandler, hasColorMaps){
@@ -35167,7 +35211,7 @@ function $d50aa7ce26a6d6ed$var$selectQuantitative(colorBinType, column, legend, 
                     };
                     return ex;
                 }
-                const dash = rowText.indexOf("\u2013"); //this is not the common dash character!
+                const dash = rowText.indexOf("–"); //this is not the common dash character!
                 if (dash > 0) {
                     //bug in Vega for quantize?
                     //lowOperator = '>';
@@ -35176,7 +35220,7 @@ function $d50aa7ce26a6d6ed$var$selectQuantitative(colorBinType, column, legend, 
                     highValue = rowText.substr(dash + 1);
                 } else {
                     if (rowText.indexOf("<") >= 0) highValue = rowText.substring(2);
-                    else if (rowText.indexOf("\u2265") >= 0) lowValue = rowText.substring(2);
+                    else if (rowText.indexOf("≥") >= 0) lowValue = rowText.substring(2);
                 }
             }
     }
@@ -36334,11 +36378,11 @@ function $a1d9524814b1e23a$export$62baf1cd3780635c(viewer, insight) {
     const currentInsight = viewer.getInsight();
     const a = $a1d9524814b1e23a$var$addNullable(currentInsight, Object.assign(Object.assign({}, viewer.insight.signalValues), currentInsight.signalValues));
     const b = $a1d9524814b1e23a$var$addNullable(insight, Object.assign(Object.assign({}, a.signalValues), insight.signalValues));
-    const compare1 = $a1d9524814b1e23a$export$e12301e595e16ad8(a, b);
+    const compare = $a1d9524814b1e23a$export$e12301e595e16ad8(a, b);
     return {
         a: a,
         b: b,
-        compare: compare1
+        compare: compare
     };
 }
 
@@ -36534,7 +36578,7 @@ const $0db66385c00a3f15$export$21c51bc433c16634 = {
     labelFacetLayoutWrap: "Wrap",
     // labelFacetLayoutHorizontal: 'Horizontal',
     // labelFacetLayoutVertical: 'Vertical',
-    labelFacetLayoutCross: "\u229E",
+    labelFacetLayoutCross: "⊞",
     labelColumnFacetV: "Cross facet by",
     labelColumnSort: "Sort by",
     labelColumnX: "X Axis",
@@ -36784,7 +36828,7 @@ function $26f1c3755ae0f685$var$_BackgroundImageEditor(_props) {
                 className: "error"
             }, state.backgroundImageFileFormatError)), this.inputForColumn(state.xCol, "X axis", "x", (0, $0db66385c00a3f15$export$21c51bc433c16634).labelBackgroundLeft, (0, $0db66385c00a3f15$export$21c51bc433c16634).labelBackgroundRight), this.inputForColumn(state.yCol, "Y axis", "y", (0, $0db66385c00a3f15$export$21c51bc433c16634).labelBackgroundBottom, (0, $0db66385c00a3f15$export$21c51bc433c16634).labelBackgroundTop));
         }
-        inputForColumn(column, label1, dimension, minLabel, maxLabel) {
+        inputForColumn(column, label, dimension, minLabel, maxLabel) {
             const { props: props , state: state  } = this;
             const fieldInput = (label, dataExtent, getDefault)=>{
                 const bounds = state.backgroundImageColumnBounds.filter((b)=>b.columnName === (column === null || column === void 0 ? void 0 : column.name) && b.dimension === dimension && b.dataExtent === dataExtent)[0];
@@ -36831,7 +36875,7 @@ function $26f1c3755ae0f685$var$_BackgroundImageEditor(_props) {
             return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
                 className: "axis-bounds"
             }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Dropdown, {
-                label: label1,
+                label: label,
                 options: props.quantitativeColumns.map((c)=>{
                     const option = {
                         key: c.name,
@@ -37551,8 +37595,8 @@ var $72367f17ca00272b$exports = {};
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
 });
-var $72367f17ca00272b$var$__exportStar = $72367f17ca00272b$exports && $72367f17ca00272b$exports.__exportStar || function(m, exports) {
-    for(var p in m)if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) $72367f17ca00272b$var$__createBinding(exports, m, p);
+var $72367f17ca00272b$var$__exportStar = $72367f17ca00272b$exports && $72367f17ca00272b$exports.__exportStar || function(m, exports1) {
+    for(var p in m)if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports1, p)) $72367f17ca00272b$var$__createBinding(exports1, m, p);
 };
 Object.defineProperty($72367f17ca00272b$exports, "__esModule", {
     value: true
@@ -37762,8 +37806,8 @@ function $247884a4197e9da6$var$_Chart(_props) {
                 let prefix;
                 let suffix;
                 let hideDropdown = false;
-                let { totalStyle: totalStyle1  } = props;
-                if (!totalStyle1) totalStyle1 = "count-square";
+                let { totalStyle: totalStyle  } = props;
+                if (!totalStyle) totalStyle = "count-square";
                 let { facetStyle: facetStyle  } = props;
                 if (!facetStyle) facetStyle = "wrap";
                 switch(specRole.role){
@@ -37836,25 +37880,25 @@ function $247884a4197e9da6$var$_Chart(_props) {
                                     key: "count-square",
                                     text: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTotalByCountSquare,
                                     data: "count-square",
-                                    selected: !totalStyle1 || totalStyle1 === "count-square"
+                                    selected: !totalStyle || totalStyle === "count-square"
                                 },
                                 {
                                     key: "count-strip",
                                     text: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTotalByCountStrip,
                                     data: "count-strip",
-                                    selected: totalStyle1 === "count-strip"
+                                    selected: totalStyle === "count-strip"
                                 },
                                 {
                                     key: "sum-strip",
                                     text: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTotalBySumStrip,
                                     data: "sum-strip",
-                                    selected: totalStyle1 === "sum-strip"
+                                    selected: totalStyle === "sum-strip"
                                 },
                                 {
                                     key: "sum-treemap",
                                     text: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTotalBySumTreemap,
                                     data: "sum-treemap",
-                                    selected: totalStyle1 === "sum-treemap",
+                                    selected: totalStyle === "sum-treemap",
                                     disabled: props.quantitativeColumns.length === 0
                                 }, 
                             ];
@@ -37862,7 +37906,7 @@ function $247884a4197e9da6$var$_Chart(_props) {
                                 key: "sum-strip-percent",
                                 text: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTotalBySumStripPercent,
                                 data: "sum-strip-percent",
-                                selected: totalStyle1 === "sum-strip-percent",
+                                selected: totalStyle === "sum-strip-percent",
                                 disabled: props.quantitativeColumns.length === 0
                             });
                             prefix = !specCapabilities.countsAndSums ? null : (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $01c4eef7f720da5f$export$931cbfb6bfb85fc), {
@@ -37889,7 +37933,7 @@ function $247884a4197e9da6$var$_Chart(_props) {
                             break;
                         }
                 }
-                const disabled = props.disabled || props.view === "2d" && specRole.role === "z" || specRole.role === "size" && !(!specCapabilities.countsAndSums || totalStyle1.indexOf("sum-") === 0) || specRole.role === "sort" && specCapabilities.countsAndSums && totalStyle1 === "sum-treemap";
+                const disabled = props.disabled || specRole.disabled || specRole.role === "size" && !(!specCapabilities.countsAndSums || totalStyle.indexOf("sum-") === 0) || specRole.role === "sort" && specCapabilities.countsAndSums && totalStyle === "sum-treemap";
                 return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $f3c9564b99b49be4$export$83b9e0badda50eeb), Object.assign({}, props, {
                     prefix: prefix,
                     suffix: suffix,
@@ -38458,25 +38502,25 @@ function $fd0d652c33ef4e65$var$_Search(_props) {
                     onChange: (e, o)=>this.updateGroup({
                             clause: o.data
                         }, groupIndex)
-                }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", null, group.expressions.map((ex1, i1)=>(0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
+                }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", null, group.expressions.map((ex, i)=>(0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
                         className: "sanddance-search-expression",
-                        key: ex1.key
+                        key: ex.key
                     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $f979d5a7baf59678$export$793106cac50ab579), {
-                        dropdownRef: groupIndex === 0 && i1 === 0 ? this.dropdownRef : undefined,
+                        dropdownRef: groupIndex === 0 && i === 0 ? this.dropdownRef : undefined,
                         collapseLabels: this.props.collapseLabels,
                         onUpdateExpression: (ex, i)=>this.updateExpression(ex, groupIndex, i),
                         autoCompleteDistinctValues: this.props.autoCompleteDistinctValues,
-                        index: i1,
+                        index: i,
                         columns: this.state.sortedColumns,
                         data: this.props.data,
-                        searchExpression: ex1,
+                        searchExpression: ex,
                         disableOR: this.props.disableExpressionOR,
-                        column: $fd0d652c33ef4e65$var$getColumnWithName(ex1.name, this.state.sortedColumns)
+                        column: $fd0d652c33ef4e65$var$getColumnWithName(ex.name, this.state.sortedColumns)
                     }), group.expressions.length > 1 && (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $2a5fa1321d305a42$export$353f5b6fc5456de1), {
                         themePalette: this.props.themePalette,
                         className: "search-action",
                         iconName: "Cancel",
-                        onClick: ()=>this.deleteExpression(groupIndex, i1),
+                        onClick: ()=>this.deleteExpression(groupIndex, i),
                         text: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonDeleteExpression
                     })))), group.expressions.length < $fd0d652c33ef4e65$var$maxClauses && (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $2a5fa1321d305a42$export$353f5b6fc5456de1), {
                     themePalette: this.props.themePalette,
@@ -38536,10 +38580,10 @@ const $f56a95f33c4cc847$export$83d89fbfd8236492 = "4.0.0";
 
 var $4805700d8b417596$var$SandDance = $3b509b9541e52a8f$exports;
 var $4805700d8b417596$var$DataRefType;
-(function(DataRefType1) {
-    DataRefType1[DataRefType1["none"] = 0] = "none";
-    DataRefType1[DataRefType1["inline"] = 1] = "inline";
-    DataRefType1[DataRefType1["url"] = 2] = "url";
+(function(DataRefType) {
+    DataRefType[DataRefType["none"] = 0] = "none";
+    DataRefType[DataRefType["inline"] = 1] = "inline";
+    DataRefType[DataRefType["url"] = 2] = "url";
 })($4805700d8b417596$var$DataRefType || ($4805700d8b417596$var$DataRefType = {}));
 function $4805700d8b417596$var$filterSignals(signal) {
     switch(signal.name){
@@ -38586,11 +38630,11 @@ function $4805700d8b417596$var$serializeSpec(vegaSpec, datafile, dataRefType, tr
         };
         valuesData.values = clone.values;
     } else if (dataRefType === $4805700d8b417596$var$DataRefType.none) {
-        const valuesData = data0;
-        valuesData.values = [];
+        const valuesData1 = data0;
+        valuesData1.values = [];
         if (transform) {
-            if (valuesData.transform) valuesData.transform.push.apply(valuesData.transform, transform);
-            else valuesData.transform = transform;
+            if (valuesData1.transform) valuesData1.transform.push.apply(valuesData1.transform, transform);
+            else valuesData1.transform = transform;
         }
     } else if (dataRefType === $4805700d8b417596$var$DataRefType.url) {
         const urlData = data0;
@@ -39435,8 +39479,8 @@ function $c953dd2438486cb9$export$2e2bcd8739ae039(locale) {
         };
         return format;
     }
-    function formatPrefix(specifier, value1) {
-        var f = newFormat((specifier = (0, $4e7c2ad27f8b8986$export$2e2bcd8739ae039)(specifier), specifier.type = "f", specifier)), e = Math.max(-8, Math.min(8, Math.floor((0, $66ddd43ef132fe4c$export$2e2bcd8739ae039)(value1) / 3))) * 3, k = Math.pow(10, -e), prefix = $c953dd2438486cb9$var$prefixes[8 + e / 3];
+    function formatPrefix(specifier, value) {
+        var f = newFormat((specifier = (0, $4e7c2ad27f8b8986$export$2e2bcd8739ae039)(specifier), specifier.type = "f", specifier)), e = Math.max(-8, Math.min(8, Math.floor((0, $66ddd43ef132fe4c$export$2e2bcd8739ae039)(value) / 3))) * 3, k = Math.pow(10, -e), prefix = $c953dd2438486cb9$var$prefixes[8 + e / 3];
         return function(value) {
             return f(k * value) + prefix;
         };
@@ -39473,10 +39517,10 @@ function $2ab610105ad986f3$export$2e2bcd8739ae039(definition) {
 
 
 var $99df88aa84de796a$export$f0297ce57faf7d71;
-(function(DataScopeId1) {
-    DataScopeId1[DataScopeId1["AllData"] = 0] = "AllData";
-    DataScopeId1[DataScopeId1["SelectedData"] = 1] = "SelectedData";
-    DataScopeId1[DataScopeId1["FilteredData"] = 2] = "FilteredData";
+(function(DataScopeId) {
+    DataScopeId[DataScopeId["AllData"] = 0] = "AllData";
+    DataScopeId[DataScopeId["SelectedData"] = 1] = "SelectedData";
+    DataScopeId[DataScopeId["FilteredData"] = 2] = "FilteredData";
 })($99df88aa84de796a$export$f0297ce57faf7d71 || ($99df88aa84de796a$export$f0297ce57faf7d71 = {}));
 const $99df88aa84de796a$var$shortFormat = (0, $2ab610105ad986f3$export$d9468344d3651243)(".2~s");
 function $99df88aa84de796a$var$short(n) {
@@ -39566,16 +39610,16 @@ function $4833a31f56c4b60e$export$fcc7818a78919c8c(props) {
 
 
 var $a4811b1c86ed19fa$export$f3b7566ffe363e3b;
-(function(SideTabId1) {
-    SideTabId1[SideTabId1["ChartType"] = 0] = "ChartType";
-    SideTabId1[SideTabId1["Data"] = 1] = "Data";
-    SideTabId1[SideTabId1["Search"] = 2] = "Search";
-    SideTabId1[SideTabId1["Color"] = 3] = "Color";
-    SideTabId1[SideTabId1["Snapshots"] = 4] = "Snapshots";
-    SideTabId1[SideTabId1["History"] = 5] = "History";
-    SideTabId1[SideTabId1["Settings"] = 6] = "Settings";
-    SideTabId1[SideTabId1["Pin"] = 7] = "Pin";
-    SideTabId1[SideTabId1["Collapse"] = 8] = "Collapse";
+(function(SideTabId) {
+    SideTabId[SideTabId["ChartType"] = 0] = "ChartType";
+    SideTabId[SideTabId["Data"] = 1] = "Data";
+    SideTabId[SideTabId["Search"] = 2] = "Search";
+    SideTabId[SideTabId["Color"] = 3] = "Color";
+    SideTabId[SideTabId["Snapshots"] = 4] = "Snapshots";
+    SideTabId[SideTabId["History"] = 5] = "History";
+    SideTabId[SideTabId["Settings"] = 6] = "Settings";
+    SideTabId[SideTabId["Pin"] = 7] = "Pin";
+    SideTabId[SideTabId["Collapse"] = 8] = "Collapse";
 })($a4811b1c86ed19fa$export$f3b7566ffe363e3b || ($a4811b1c86ed19fa$export$f3b7566ffe363e3b = {}));
 
 
@@ -43169,8 +43213,8 @@ function $68fd7b14b397ce6c$export$1690e12b840569b9(e) {
     if (xy) return xy;
     const te = e;
     if (te === null || te === void 0 ? void 0 : te.touches) for(let i = 0; i < te.touches.length; i++){
-        const xy = $68fd7b14b397ce6c$var$hasClientXY(te.touches[i]);
-        if (xy) return xy;
+        const xy1 = $68fd7b14b397ce6c$var$hasClientXY(te.touches[i]);
+        if (xy1) return xy1;
     }
     const el = e.target;
     if (el && el.getClientRects) return el.getClientRects()[0];
@@ -43269,10 +43313,10 @@ function $e0216832bbbcfdeb$export$2e59f49d97a9dbde(haystack, needle) {
 function $dc870545cd7ec4ba$var$_Renderer(_props) {
     class __Renderer extends (0, $8535c575077b9670$export$e2253033e6e1df16).react.Component {
         constructor(props){
-            var _a1, _b1;
+            var _a, _b;
             super(props);
             this.state = this.getInitialState(props);
-            if (!((_b1 = (_a1 = this.state.viewer) === null || _a1 === void 0 ? void 0 : _a1.presenter) === null || _b1 === void 0 ? void 0 : _b1.morphchartsref)) {
+            if (!((_b = (_a = this.state.viewer) === null || _a === void 0 ? void 0 : _a.presenter) === null || _b === void 0 ? void 0 : _b.morphchartsref)) {
                 const t = setInterval(()=>{
                     var _a, _b;
                     const newState = this.getInitialState(props);
@@ -43798,15 +43842,15 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                     label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelHistoryReviveSnapshot
                 }, newState, snapshot.insight, true, snapshot.camera);
             } else {
-                const snapshot = snapshotOrIndex;
-                if (snapshot.insight) this.setInsight({
+                const snapshot1 = snapshotOrIndex;
+                if (snapshot1.insight) this.setInsight({
                     label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelHistoryReviveSnapshot
                 }, {
-                    note: snapshot.description,
+                    note: snapshot1.description,
                     selectedSnapshotIndex: -1
-                }, snapshot.insight, true, snapshot.camera); //don't navigate to sideTab
+                }, snapshot1.insight, true, snapshot1.camera); //don't navigate to sideTab
                 else this.setState({
-                    note: snapshot.description,
+                    note: snapshot1.description,
                     selectedSnapshotIndex: -1
                 });
             }
@@ -44068,16 +44112,16 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                     case "color":
                         {
                             let calculating = null;
-                            const historicInsight = {
+                            const historicInsight1 = {
                                 scheme: options && options.scheme,
                                 columns: columns,
                                 colorBin: this.state.colorBin
                             };
-                            if (!historicInsight.scheme) (0, $b16b30fb0ba8a026$export$318d2f27a5d54aff)(this.prefs, this.state.chart, "color", column.name);
-                            if (!historicInsight.scheme) historicInsight.scheme = (0, $02ad5d745dd4974f$export$ba25af89e7ea3c1a)(column, null, this.state.scheme);
+                            if (!historicInsight1.scheme) (0, $b16b30fb0ba8a026$export$318d2f27a5d54aff)(this.prefs, this.state.chart, "color", column.name);
+                            if (!historicInsight1.scheme) historicInsight1.scheme = (0, $02ad5d745dd4974f$export$ba25af89e7ea3c1a)(column, null, this.state.scheme);
                             if (!column.stats.hasColorData) {
-                                historicInsight.directColor = false;
-                                if (this.state.directColor !== historicInsight.directColor) calculating = ()=>this._resize();
+                                historicInsight1.directColor = false;
+                                if (this.state.directColor !== historicInsight1.directColor) calculating = ()=>this._resize();
                             }
                             if (this.state.columns && this.state.columns.color && this.state.columns.color !== column.name) {
                                 const currColorColumn = this.state.dataContent.columns.filter((c)=>c.name === this.state.columns.color)[0];
@@ -44095,7 +44139,7 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                                     this.setState({
                                         calculating: calculating
                                     });
-                                    _changeInsight(historicInsight, columnUpdate, {
+                                    _changeInsight(historicInsight1, columnUpdate, {
                                         label: label
                                     });
                                 });
@@ -44105,13 +44149,13 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                     case "x":
                         {
                             (0, $b16b30fb0ba8a026$export$318d2f27a5d54aff)(this.prefs, this.state.chart, "x", column.name);
-                            const historicInsight = {
+                            const historicInsight2 = {
                                 columns: columns
                             };
                             columnUpdate = {
                                 x: column.name
                             };
-                            _changeInsight(historicInsight, columnUpdate, {
+                            _changeInsight(historicInsight2, columnUpdate, {
                                 label: label
                             });
                             break;
@@ -44119,13 +44163,13 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                     case "size":
                         {
                             (0, $b16b30fb0ba8a026$export$318d2f27a5d54aff)(this.prefs, this.state.chart, "size", column.name);
-                            const historicInsight = {
+                            const historicInsight3 = {
                                 totalStyle: options ? options.totalStyle : this.state.totalStyle
                             };
                             columnUpdate = {
                                 size: column.name
                             };
-                            _changeInsight(historicInsight, columnUpdate, {
+                            _changeInsight(historicInsight3, columnUpdate, {
                                 label: label
                             });
                             break;

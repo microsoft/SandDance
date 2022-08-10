@@ -17437,8 +17437,9 @@ f 5/6/6 1/12/6 8/11/6`;
 	*/
 	const markStager$3 = (options, stage, scene, x, y, groupType) => {
 	    base.vega.sceneVisit(scene, function (item) {
-	        const z = stage.view === '2d' ? 0 : (item.z || 0) + minZ;
-	        const depth = (stage.view === '2d' ? 0 : (item.depth || 0)) + min3dDepth;
+	        const noZ = item.z === undefined;
+	        const z = noZ ? 0 : (item.z || 0) + minZ;
+	        const depth = (noZ ? 0 : (item.depth || 0)) + min3dDepth;
 	        //change direction of y from SVG to GL
 	        const ty = -1;
 	        const ordinal = options.assignCubeOrdinal(item.datum);
@@ -19116,7 +19117,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	* Copyright (c) Microsoft Corporation.
 	* Licensed under the MIT License.
 	*/
-	const version = '1.0.0';
+	const version = '1.0.1';
 
 	exports.Presenter = Presenter;
 	exports.ViewGl = ViewGl;

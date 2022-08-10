@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "dom", "es2015"
+        ],
+        "outDir": "../../../docs/tests/sanddance-specs/v1/js/",
+        "removeComments": true,
+        "skipLibCheck": true
+    }
+}

@@ -169,7 +169,8 @@
                 layoutType: 'Band',
                 props: bandProps,
             }];
-        if (insight.totalStyle === 'sum-strip-percent') {
+        const { totalStyle, view } = insight;
+        if (totalStyle === 'sum-strip-percent') {
             x.aggregate = 'percent';
             x.title = language.percent;
             const stripProps = {
@@ -180,6 +181,7 @@
                 sort: specColumns.sort,
                 z: specColumns.z,
                 showAxes,
+                view,
             };
             layouts.push({
                 layoutType: 'Strip',
@@ -199,7 +201,7 @@
                 layoutType: 'AggregateContainer',
                 props: aggProps,
             });
-            switch (insight.totalStyle) {
+            switch (totalStyle) {
                 case 'sum-treemap': {
                     x.aggregate = 'sum';
                     x.title = language.sum;
@@ -209,6 +211,7 @@
                         treeMapMethod: specViewOptions.language.treeMapMethod,
                         z: specColumns.z,
                         showAxes,
+                        view,
                     };
                     layouts.push({
                         layoutType: 'Treemap',
@@ -226,6 +229,7 @@
                         sort: specColumns.sort,
                         z: specColumns.z,
                         showAxes,
+                        view,
                     };
                     layouts.push({
                         layoutType: 'Strip',
@@ -243,6 +247,7 @@
                         sort: specColumns.sort,
                         z: specColumns.z,
                         showAxes,
+                        view,
                     };
                     layouts.push({
                         layoutType: 'Strip',
@@ -260,6 +265,7 @@
                         maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
                         maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal,
                         showAxes,
+                        view,
                     };
                     layouts.push({
                         layoutType: 'Square',
@@ -287,6 +293,7 @@
                         role: 'z',
                         axisSelection: ((_d = specColumns.z) === null || _d === void 0 ? void 0 : _d.quantitative) ? 'range' : 'exact',
                         allowNone: true,
+                        disabled: view === '2d',
                     },
                     {
                         role: 'color',
@@ -348,7 +355,8 @@
                 layoutType: 'Band',
                 props: bandProps,
             }];
-        if (insight.totalStyle === 'sum-strip-percent') {
+        const { totalStyle, view } = insight;
+        if (totalStyle === 'sum-strip-percent') {
             y.aggregate = 'percent';
             y.title = language.percent;
             const stripProps = {
@@ -359,6 +367,7 @@
                 sort: specColumns.sort,
                 z: specColumns.z,
                 showAxes,
+                view,
             };
             layouts.push({
                 layoutType: 'Strip',
@@ -378,7 +387,7 @@
                 layoutType: 'AggregateContainer',
                 props: aggProps,
             });
-            switch (insight.totalStyle) {
+            switch (totalStyle) {
                 case 'sum-treemap': {
                     y.aggregate = 'sum';
                     y.title = language.sum;
@@ -388,6 +397,7 @@
                         treeMapMethod: specViewOptions.language.treeMapMethod,
                         z: specColumns.z,
                         showAxes,
+                        view,
                     };
                     layouts.push({
                         layoutType: 'Treemap',
@@ -405,6 +415,7 @@
                         sort: specColumns.sort,
                         z: specColumns.z,
                         showAxes,
+                        view,
                     };
                     layouts.push({
                         layoutType: 'Strip',
@@ -421,6 +432,7 @@
                         sort: specColumns.sort,
                         z: specColumns.z,
                         showAxes,
+                        view,
                     };
                     layouts.push({
                         layoutType: 'Strip',
@@ -438,6 +450,7 @@
                         maxGroupedUnits: aggProps.globalAggregateMaxExtentSignal,
                         maxGroupedFillSize: aggProps.globalAggregateMaxExtentScaledSignal,
                         showAxes,
+                        view,
                     };
                     layouts.push({
                         layoutType: 'Square',
@@ -465,6 +478,7 @@
                         role: 'z',
                         axisSelection: ((_b = specColumns.z) === null || _b === void 0 ? void 0 : _b.quantitative) ? 'range' : 'exact',
                         allowNone: true,
+                        disabled: view === '2d',
                     },
                     {
                         role: 'color',
@@ -556,7 +570,8 @@
                 props: aggProps,
             },
         ];
-        switch (insight.totalStyle) {
+        const { totalStyle, view } = insight;
+        switch (totalStyle) {
             case 'sum-treemap': {
                 aggProps.aggregation = 'sum';
                 const treemapProps = {
@@ -565,6 +580,7 @@
                     treeMapMethod: specViewOptions.language.treeMapMethod,
                     z: specColumns.z,
                     showAxes,
+                    view,
                 };
                 layouts.push({
                     layoutType: 'Treemap',
@@ -581,6 +597,7 @@
                     sort: specColumns.sort,
                     z: specColumns.z,
                     showAxes,
+                    view,
                 };
                 layouts.push({
                     layoutType: 'Strip',
@@ -596,6 +613,7 @@
                     sort: specColumns.sort,
                     z: specColumns.z,
                     showAxes,
+                    view,
                 };
                 layouts.push({
                     layoutType: 'Strip',
@@ -612,6 +630,7 @@
                     maxGroupedUnits: null,
                     maxGroupedFillSize: null,
                     showAxes,
+                    view,
                 };
                 aggProps.onBuild = (aggMaxExtent, aggMaxExtentScaled) => {
                     squareProps.maxGroupedUnits = aggMaxExtent;
@@ -649,6 +668,7 @@
                         role: 'z',
                         axisSelection: ((_j = specColumns.z) === null || _j === void 0 ? void 0 : _j.quantitative) ? 'range' : 'exact',
                         allowNone: true,
+                        disabled: view === '2d',
                     },
                     {
                         role: 'color',
@@ -686,12 +706,14 @@
     function grid (specContext) {
         var _a;
         const { insight, specColumns } = specContext;
+        const { view } = insight;
         const squareProps = {
             sortBy: specColumns.sort,
             fillDirection: 'right-down',
             z: specColumns.z,
             collapseYHeight: true,
             showAxes: !insight.hideAxes,
+            view,
         };
         const axisScales = {
             z: { title: specColumns.z && specColumns.z.name },
@@ -711,6 +733,7 @@
                         role: 'z',
                         axisSelection: ((_a = specColumns.z) === null || _a === void 0 ? void 0 : _a.quantitative) ? 'range' : 'exact',
                         allowNone: true,
+                        disabled: view === '2d',
                     },
                     {
                         role: 'color',
@@ -752,6 +775,7 @@
             zGrounded: specViewOptions.language.zGrounded,
             backgroundImageExtents,
             showAxes: !(backgroundImageExtents || insight.hideAxes),
+            view: insight.view,
         };
         const axisScales = {
             x: { title: (_d = specColumns.x) === null || _d === void 0 ? void 0 : _d.name },
@@ -782,6 +806,7 @@
                         role: 'z',
                         axisSelection: ((_j = specColumns.z) === null || _j === void 0 ? void 0 : _j.quantitative) ? 'range' : 'exact',
                         allowNone: true,
+                        disabled: false,
                     },
                     {
                         role: 'color',
@@ -919,6 +944,7 @@
     function strips (specContext) {
         var _a;
         const { insight, specColumns } = specContext;
+        const { view } = insight;
         const stripProps = {
             sortOrder: 'ascending',
             orientation: 'vertical',
@@ -926,6 +952,7 @@
             sort: specColumns.sort,
             z: specColumns.z,
             showAxes: !insight.hideAxes,
+            view,
         };
         const axisScales = {
             z: { title: specColumns.z && specColumns.z.name },
@@ -970,6 +997,7 @@
                         role: 'z',
                         axisSelection: ((_a = specColumns.z) === null || _a === void 0 ? void 0 : _a.quantitative) ? 'range' : 'exact',
                         allowNone: true,
+                        disabled: view === '2d',
                     },
                     {
                         role: 'color',
@@ -1001,6 +1029,7 @@
     function treemap (specContext) {
         var _a;
         const { insight, specColumns, specViewOptions } = specContext;
+        const { view } = insight;
         const treemapProps = {
             corner: 'top-left',
             group: specColumns.group,
@@ -1008,6 +1037,7 @@
             treeMapMethod: specViewOptions.language.treeMapMethod,
             z: specColumns.z,
             showAxes: !insight.hideAxes,
+            view,
         };
         const axisScales = {
             z: { title: specColumns.z && specColumns.z.name },
@@ -1055,6 +1085,7 @@
                         role: 'z',
                         axisSelection: ((_a = specColumns.z) === null || _a === void 0 ? void 0 : _a.quantitative) ? 'range' : 'exact',
                         allowNone: true,
+                        disabled: view === '2d',
                     },
                     {
                         role: 'color',
@@ -3386,7 +3417,7 @@
         }
         build() {
             const { names, prefix, props } = this;
-            const { backgroundImageExtents, globalScope, parentScope, scatterPointScaleDisplay, showAxes, size, x, y, z, zGrounded } = props;
+            const { backgroundImageExtents, globalScope, parentScope, scatterPointScaleDisplay, showAxes, size, view, x, y, z, zGrounded } = props;
             const qsize = size && size.quantitative && size;
             addSignals(globalScope.scope, {
                 name: SignalNames.PointScale,
@@ -3469,13 +3500,20 @@
                         signal: `${SignalNames.ZGrounded} ? 0 : ${zValue}`,
                     },
                 ],
+                zindex: [
+                    {
+                        signal: `${SignalNames.ZGrounded} ? 0 : ${zValue}`,
+                    },
+                ],
                 depth: [
                     {
                         test: testForCollapseSelection(),
                         value: 0,
                     },
                     {
-                        signal: `${SignalNames.ZGrounded} ? ${zValue} : ${sizeValueSignal}`,
+                        signal: view === '3d'
+                            ? `${SignalNames.ZGrounded} ? ${zValue} : ${sizeValueSignal}`
+                            : '0',
                     },
                 ],
             });
@@ -3521,7 +3559,9 @@
                         field: z ? safeFieldName(z.name) : null,
                     },
                     reverse: false,
-                    signal: `(${globalScope.zSize}) * ${SignalNames.ZProportion}`,
+                    signal: view === '3d'
+                        ? `(${globalScope.zSize}) * ${SignalNames.ZProportion}`
+                        : `10 * ${SignalNames.ZProportion}`,
                 },
             ];
             columnSignals.forEach(cs => {
@@ -3608,7 +3648,7 @@
         }
         build() {
             const { names, prefix, props } = this;
-            const { fillDirection, globalScope, groupings, parentScope, collapseYHeight, showAxes, sortBy, z } = props;
+            const { fillDirection, globalScope, groupings, parentScope, collapseYHeight, showAxes, sortBy, view, z } = props;
             const zScale = addZScale(z, globalScope.zSize, globalScope.data.name, names.zScale);
             addTransforms(globalScope.data, Object.assign({ type: 'stack', groupby: getGroupBy(groupings).map(safeFieldName), as: [names.stack0, names.stack1] }, sortBy && {
                 sort: {
@@ -3645,10 +3685,16 @@
                                 test: testForCollapseSelection(),
                                 value: 0,
                             },
-                            {
-                                scale: names.zScale,
-                                field: safeFieldName(z.name),
-                            },
+                            view === '3d'
+                                ?
+                                    {
+                                        scale: names.zScale,
+                                        field: safeFieldName(z.name),
+                                    }
+                                :
+                                    {
+                                        value: 0
+                                    },
                         ],
                     }),
                 },
@@ -3980,7 +4026,7 @@
         }
         build() {
             const { names, prefix, props } = this;
-            const { addPercentageScale, globalScope, groupings, orientation, showAxes, size, sort, sortOrder, parentScope, z } = props;
+            const { addPercentageScale, globalScope, groupings, orientation, showAxes, size, sort, sortOrder, parentScope, view, z } = props;
             const zScale = addZScale(z, globalScope.zSize, globalScope.data.name, names.zScale);
             const horizontal = orientation === 'horizontal';
             const transform = [];
@@ -4053,10 +4099,16 @@
                                 test: testForCollapseSelection(),
                                 value: 0,
                             },
-                            {
-                                scale: names.zScale,
-                                field: safeFieldName(z.name),
-                            },
+                            view === '3d'
+                                ?
+                                    {
+                                        scale: names.zScale,
+                                        field: safeFieldName(z.name),
+                                    }
+                                :
+                                    {
+                                        value: 0
+                                    },
                         ],
                     }),
                 },
@@ -4234,7 +4286,7 @@
         }
         addMark(offsets, markParent, markDataName) {
             const { names, prefix, props } = this;
-            const { z } = props;
+            const { view, z } = props;
             const mark = {
                 name: prefix,
                 type: 'rect',
@@ -4251,10 +4303,16 @@
                                 test: testForCollapseSelection(),
                                 value: 0,
                             },
-                            {
-                                scale: names.zScale,
-                                field: safeFieldName(z.name),
-                            },
+                            view === '3d'
+                                ?
+                                    {
+                                        scale: names.zScale,
+                                        field: safeFieldName(z.name),
+                                    }
+                                :
+                                    {
+                                        value: 0
+                                    },
                         ],
                     }),
                 },
@@ -22868,8 +22926,9 @@ f 5/6/6 1/12/6 8/11/6`;
     */
     const markStager$3 = (options, stage, scene, x, y, groupType) => {
         base.vega.sceneVisit(scene, function (item) {
-            const z = stage.view === '2d' ? 0 : (item.z || 0) + minZ;
-            const depth = (stage.view === '2d' ? 0 : (item.depth || 0)) + min3dDepth;
+            const noZ = item.z === undefined;
+            const z = noZ ? 0 : (item.z || 0) + minZ;
+            const depth = (noZ ? 0 : (item.depth || 0)) + min3dDepth;
             //change direction of y from SVG to GL
             const ty = -1;
             const ordinal = options.assignCubeOrdinal(item.datum);
@@ -24547,7 +24606,7 @@ f 5/6/6 1/12/6 8/11/6`;
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
-    const version$1 = '1.0.0';
+    const version$1 = '1.0.1';
 
     /*!
     * Copyright (c) Microsoft Corporation.
@@ -24583,6 +24642,7 @@ f 5/6/6 1/12/6 8/11/6`;
             axisLine: '#000',
             axisText: '#000',
             gridLine: '#CCC',
+            backgroundColor: '#FFF',
         },
         language: {
             headers: {

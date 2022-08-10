@@ -6,8 +6,7 @@
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "build:sanddance-core": "tsc -p .",
     "start": "parcel serve ./test/index.html --open",
-    "predeploy": "rimraf .parcel-cache",
-    "deploy": "parcel build ./src/sanddance-test-es6.ts"
+    "deploy": "parcel build ./src/sanddance-test-es6.ts --no-autoinstall --no-cache"
   },
   "umd": "../../docs/tests/v4/es6/js/sanddance-test-es6.js",
   "targets": {

@@ -18,6 +18,7 @@ export const defaultViewerOptions: ViewerOptions = {
         axisLine: '#000',
         axisText: '#000',
         gridLine: '#CCC',
+        backgroundColor: '#FFF',
     },
     language: {
         headers: {
