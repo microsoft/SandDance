@@ -19,7 +19,7 @@
     "watch-typescript": "tsc -p . -w",
     "build-css": "sass ./src/css/sanddance-explorer.scss ./dist/css/sanddance-explorer.css",
     "watch-css": "sass ./src/css/sanddance-explorer.scss ./dist/css/sanddance-explorer.css --watch",
-    "bundle": "parcel build ./bundle/umd.js --no-cache",
+    "bundle": "parcel build ./bundle/umd.js --no-autoinstall --no-cache",
     "deploy": "node ./scripts/deploy.js",
     "prebuild:sanddance-core": "node ./scripts/prebuild.js",
     "build:sanddance-core": "npm run build-typescript && node ../../scripts/version.js && npm run bundle && npm run build-css"
