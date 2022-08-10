@@ -21,6 +21,7 @@
     "build:sanddance-core": "npm run build-typescript && npm run bundle",
     "bundle": "rollup -c",
     "deploy": "parcel build ./uitest/sanddance-specs.ts --no-autoinstall --no-cache",
+    "postdeploy": "npm run build-typescript && echo this is here because 'parcel build' has side effects which truncates .d.ts files in dist/es6",
     "deploy-watch": "parcel watch ./uitest/sanddance-specs.ts --target umd",
     "test2": "node -r esm ./test/perf.js"
   },
