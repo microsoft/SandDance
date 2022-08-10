@@ -2,6 +2,6 @@
 // Licensed under the MIT license.
 export * from '../es6';
 
-export { ViewGl_Class } from '../es6/vega-deck.gl/viewGl';
+export { ViewGl_Class } from '@msrvida/vega-morphcharts/dist/es6/vega-classes/viewGl';
 
 export as namespace SandDance;
