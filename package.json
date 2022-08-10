@@ -48,9 +48,9 @@
     "license": "MIT",
     "devDependencies": {
         "@babel/helper-compilation-targets": "^7.18.2",
-        "@parcel/packager-ts": "^2.6.0",
-        "@parcel/transformer-sass": "^2.6.0",
-        "@parcel/transformer-typescript-types": "^2.6.0",
+        "@parcel/packager-ts": "^2.7.0",
+        "@parcel/transformer-sass": "^2.7.0",
+        "@parcel/transformer-typescript-types": "^2.7.0",
         "@rollup/plugin-buble": "^0.21.3",
         "@rollup/plugin-commonjs": "^21.0.3",
         "@rollup/plugin-json": "^4.1.0",
