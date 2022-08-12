@@ -52,7 +52,7 @@ import {
     saveSignalValuePref,
 } from './partialInsight';
 import { themePalettes } from './themes';
-import { toggleSearch } from './toggleSearch';
+import { compareGroups } from './searchGroups';
 import { RecommenderSummary } from '@msrvida/chart-recommender';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
@@ -941,7 +941,7 @@ function _Explorer(_props: Props) {
                 const oldSelection = this.viewer.getSelection();
                 if (oldSelection.search) {
                     //look for matching groups and toggle them
-                    const result = toggleSearch(SandDance.searchExpression.ensureSearchExpressionGroupArray(oldSelection.search), search);
+                    const result = compareGroups(SandDance.searchExpression.ensureSearchExpressionGroupArray(oldSelection.search), search);
                     if (result.found) {
                         //removing a group
                         if (result.groups.length === 0) {
