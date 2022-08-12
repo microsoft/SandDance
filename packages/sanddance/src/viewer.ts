@@ -279,7 +279,14 @@ export class Viewer {
     private convertSearchToSet() {
         if (this._dataScope.selection) {
             const s = new Set<number>();
-            this._dataScope.selection.included.forEach((o, i) => s.add(o[GL_ORDINAL]));
+            let found = false;
+            this._dataScope.selection.included.forEach((o, i) => {
+                s.add(o[GL_ORDINAL]);
+                found = true;
+            });
+            if (!found) {
+                s.add(-1);
+            }
             return s;
         }
     }
