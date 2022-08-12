@@ -24,16 +24,10 @@ export function compareGroups(haystack: SearchExpressionGroup[], needle: SearchE
         if (compareGroup(group, needle)) {
             //if it exists, don't add it
             found = true;
-
-            console.log('compareGroups found ===========================')
-            console.log('compareGroups found haystack', JSON.stringify(haystack))
-            console.log('compareGroups found needle', JSON.stringify(needle))
-            console.log('compareGroups found')
         } else {
             groups.push(group);
         }
     });
 
-    console.log('compareGroups exit', found)
     return { groups, found };
 }
