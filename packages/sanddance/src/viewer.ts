@@ -720,7 +720,7 @@ export class Viewer {
                     cartesian.isLabelPickingEnabled[dim3d] = true;
                     cartesian.isTitlePickingEnabled[dim3d] = true;
                     cartesian.isHeadingPickingEnabled[dim3d] = true;
-                    cartesian.isGridPickingEnabled = true;
+                    cartesian.isGridPickingEnabled = false;
                 }
             },
             onAxesComplete: (cartesian) => {
