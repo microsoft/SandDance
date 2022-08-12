@@ -164,7 +164,7 @@ export class Visual implements IVisual {
                     }
                     this.persistSelectionChange = true;
 
-                    if (selectedData) {
+                    if (selectedData?.length) {
                         const result = convertFilter(search, this.columns, selectedData);
                         this.applySelection(result.selectedIds);
                         this.applyFilters(this.filters ? this.filters.pbi.concat(result.filters) : result.filters);
