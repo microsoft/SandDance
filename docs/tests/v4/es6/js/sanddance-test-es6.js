@@ -45515,7 +45515,6 @@ var _interfaces = require("./interfaces");
 parcelHelpers.exportAll(_interfaces, exports);
 var _types = require("./types");
 parcelHelpers.exportAll(_types, exports);
-console.log(55);
 
 },{"./build":"2pBTq","./constants":"3I5IU","./inference":"hgLDN","./interfaces":"czyLt","./types":"0QlBW","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"2pBTq":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -45860,10 +45859,6 @@ parcelHelpers.export(exports, "ScaleNames", ()=>ScaleNames);
 parcelHelpers.export(exports, "SignalNames", ()=>SignalNames);
 parcelHelpers.export(exports, "Other", ()=>Other);
 parcelHelpers.export(exports, "ColorScaleNone", ()=>ColorScaleNone);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ console.log(44);
 const FieldNames = {
     Active: "__SandDance__Active",
     Collapsed: "__SandDance__Collapsed",
@@ -84998,7 +84993,12 @@ class Viewer {
     convertSearchToSet() {
         if (this._dataScope.selection) {
             const s = new Set();
-            this._dataScope.selection.included.forEach((o, i)=>s.add(o[0, _constants.GL_ORDINAL]));
+            let found = false;
+            this._dataScope.selection.included.forEach((o, i)=>{
+                s.add(o[0, _constants.GL_ORDINAL]);
+                found = true;
+            });
+            if (!found) s.add(-1);
             return s;
         }
     }
@@ -85389,7 +85389,7 @@ class Viewer {
                     cartesian.isLabelPickingEnabled[dim3d] = true;
                     cartesian.isTitlePickingEnabled[dim3d] = true;
                     cartesian.isHeadingPickingEnabled[dim3d] = true;
-                    cartesian.isGridPickingEnabled = true;
+                    cartesian.isGridPickingEnabled = false;
                 }
             },
             onAxesComplete: (cartesian)=>{},
