@@ -35683,7 +35683,12 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
     convertSearchToSet() {
         if (this._dataScope.selection) {
             const s = new Set();
-            this._dataScope.selection.included.forEach((o, i)=>s.add(o[0, $4d0539c68a8de77f$export$5672246984822a29]));
+            let found = false;
+            this._dataScope.selection.included.forEach((o, i)=>{
+                s.add(o[0, $4d0539c68a8de77f$export$5672246984822a29]);
+                found = true;
+            });
+            if (!found) s.add(-1);
             return s;
         }
     }
@@ -36074,7 +36079,7 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
                     cartesian.isLabelPickingEnabled[dim3d] = true;
                     cartesian.isTitlePickingEnabled[dim3d] = true;
                     cartesian.isHeadingPickingEnabled[dim3d] = true;
-                    cartesian.isGridPickingEnabled = true;
+                    cartesian.isGridPickingEnabled = false;
                 }
             },
             onAxesComplete: (cartesian)=>{},
@@ -40049,42 +40054,44 @@ $b61671d8f61aadb4$export$3465a0e7b289ab72[""] = {
     themeDarkAlt: "#106ebe",
     themeDark: "#005a9e",
     themeDarker: "#004578",
-    neutralLighterAlt: "#f8f8f8",
-    neutralLighter: "#f4f4f4",
-    neutralLight: "#eaeaea",
-    neutralQuaternaryAlt: "#dadada",
+    neutralLighterAlt: "#faf9f8",
+    neutralLighter: "#f3f2f1",
+    neutralLight: "#edebe9",
+    neutralQuaternaryAlt: "#e1dfdd",
     neutralQuaternary: "#d0d0d0",
-    neutralTertiaryAlt: "#c8c8c8",
-    neutralTertiary: "#c2c2c2",
-    neutralSecondary: "#858585",
-    neutralPrimaryAlt: "#4b4b4b",
-    neutralPrimary: "#333333",
-    neutralDark: "#272727",
-    black: "#1d1d1d",
+    neutralTertiaryAlt: "#c8c6c4",
+    neutralTertiary: "#595959",
+    neutralSecondary: "#373737",
+    neutralSecondaryAlt: "#373737",
+    neutralPrimaryAlt: "#2f2f2f",
+    neutralPrimary: "#000000",
+    neutralDark: "#151515",
+    black: "#0b0b0b",
     white: "#ffffff"
 };
 $b61671d8f61aadb4$export$3465a0e7b289ab72["dark-theme"] = {
-    themePrimary: "#00b4f0",
-    themeLighterAlt: "#00070a",
-    themeLighter: "#001d26",
-    themeLight: "#003648",
-    themeTertiary: "#006c90",
-    themeSecondary: "#009ed3",
-    themeDarkAlt: "#18bbf1",
-    themeDark: "#3ac5f3",
-    themeDarker: "#6cd4f6",
+    themePrimary: "#0078d4",
+    themeLighterAlt: "#eff6fc",
+    themeLighter: "#deecf9",
+    themeLight: "#c7e0f4",
+    themeTertiary: "#71afe5",
+    themeSecondary: "#2b88d8",
+    themeDarkAlt: "#106ebe",
+    themeDark: "#005a9e",
+    themeDarker: "#004578",
     neutralLighterAlt: "#0b0b0b",
     neutralLighter: "#151515",
     neutralLight: "#252525",
     neutralQuaternaryAlt: "#2f2f2f",
     neutralQuaternary: "#373737",
     neutralTertiaryAlt: "#595959",
-    neutralTertiary: "#929292",
-    neutralSecondary: "#a7a7a7",
-    neutralPrimaryAlt: "#b4b4b4",
-    neutralPrimary: "#cccccc",
-    neutralDark: "#d8d8d8",
-    black: "#f5f5f5",
+    neutralTertiary: "#c8c8c8",
+    neutralSecondary: "#d0d0d0",
+    neutralSecondaryAlt: "#d0d0d0",
+    neutralPrimaryAlt: "#dadada",
+    neutralPrimary: "#ffffff",
+    neutralDark: "#f4f4f4",
+    black: "#f8f8f8",
     white: "#000000"
 };
 function $b61671d8f61aadb4$export$93a255849c3bdb97(themePalette) {
@@ -43279,20 +43286,20 @@ function $b16b30fb0ba8a026$export$a14483004c11686f(prefs, chart, role, column, p
 
 
 
-function $e0216832bbbcfdeb$var$comparableGroup(group) {
+function $b64aa1c1bdcad83c$var$comparableGroup(group) {
     return Object.assign(Object.assign({}, group), {
         clause: null
     });
 }
-function $e0216832bbbcfdeb$var$compareGroup(a, b) {
-    return (0, $3b509b9541e52a8f$exports).searchExpression.compareGroup($e0216832bbbcfdeb$var$comparableGroup(a), $e0216832bbbcfdeb$var$comparableGroup(b));
+function $b64aa1c1bdcad83c$var$compareGroup(a, b) {
+    return (0, $3b509b9541e52a8f$exports).searchExpression.compareGroup($b64aa1c1bdcad83c$var$comparableGroup(a), $b64aa1c1bdcad83c$var$comparableGroup(b));
 }
-function $e0216832bbbcfdeb$export$2e59f49d97a9dbde(haystack, needle) {
+function $b64aa1c1bdcad83c$export$c2270d7efbef44bf(haystack, needle) {
     const groups = [];
     let found = false;
     //look for item in all
     haystack.forEach((group)=>{
-        if ($e0216832bbbcfdeb$var$compareGroup(group, needle)) //if it exists, don't add it
+        if ($b64aa1c1bdcad83c$var$compareGroup(group, needle)) //if it exists, don't add it
         found = true;
         else groups.push(group);
     });
@@ -44286,7 +44293,7 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                 const oldSelection = this.viewer.getSelection();
                 if (oldSelection.search) {
                     //look for matching groups and toggle them
-                    const result = (0, $e0216832bbbcfdeb$export$2e59f49d97a9dbde)((0, $3b509b9541e52a8f$exports).searchExpression.ensureSearchExpressionGroupArray(oldSelection.search), search);
+                    const result = (0, $b64aa1c1bdcad83c$export$c2270d7efbef44bf)((0, $3b509b9541e52a8f$exports).searchExpression.ensureSearchExpressionGroupArray(oldSelection.search), search);
                     if (result.found) {
                         //removing a group
                         if (result.groups.length === 0) this.doDeselect();

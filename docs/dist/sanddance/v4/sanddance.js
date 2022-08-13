@@ -25961,7 +25961,14 @@ f 5/6/6 1/12/6 8/11/6`;
         convertSearchToSet() {
             if (this._dataScope.selection) {
                 const s = new Set();
-                this._dataScope.selection.included.forEach((o, i) => s.add(o[GL_ORDINAL]));
+                let found = false;
+                this._dataScope.selection.included.forEach((o, i) => {
+                    s.add(o[GL_ORDINAL]);
+                    found = true;
+                });
+                if (!found) {
+                    s.add(-1);
+                }
                 return s;
             }
         }
@@ -26382,7 +26389,7 @@ f 5/6/6 1/12/6 8/11/6`;
                         cartesian.isLabelPickingEnabled[dim3d] = true;
                         cartesian.isTitlePickingEnabled[dim3d] = true;
                         cartesian.isHeadingPickingEnabled[dim3d] = true;
-                        cartesian.isGridPickingEnabled = true;
+                        cartesian.isGridPickingEnabled = false;
                     }
                 },
                 onAxesComplete: (cartesian) => {
