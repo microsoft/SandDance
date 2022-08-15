@@ -5,25 +5,20 @@
 
 import { base } from '../base';
 import { DataScope, Props as DataScopeProps } from './dataScope';
-import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
-import { IconButton } from './iconButton';
 import { Scrollable } from './scrollable';
 import { SideTabId } from '../interfaces';
 import { strings } from '../language';
 import { util } from '@msrvida/sanddance-react';
+import { BaseProps, Sidebutton, SidebuttonProps } from './sideButton';
 
-export interface Props {
+export interface Props extends BaseProps {
     calculating: boolean;
     children: React.ReactNode;
     hideSidebarControls: boolean;
     snapshotsHidden: boolean;
-    onSideTabClick: (sideTabId: SideTabId) => void;
-    selectedSideTab: SideTabId;
     disabled: boolean;
     dataScopeProps: DataScopeProps;
-    closed: boolean;
     pinned: boolean;
-    themePalette: Partial<FluentUITypes.IPalette>;
 }
 
 export function Sidebar(props: Props) {
@@ -113,33 +108,6 @@ export function Sidebar(props: Props) {
                     </div>
                 )}
             </div>
-        </div>
-    );
-}
-
-export interface SidebuttonProps {
-    iconName: string;
-    title: string;
-    sideTabId: SideTabId;
-    badgeText?: string;
-    themePalette?: Partial<FluentUITypes.IPalette>;
-    role?: string;
-}
-
-export function Sidebutton(props: SidebuttonProps & Props) {
-    const selected = !props.closed && props.selectedSideTab === props.sideTabId;
-    return (
-        <div className={util.classList('vbutton', selected && 'selected')}>
-            {props.badgeText && <div className="count">{props.badgeText}</div>}
-            <IconButton
-                role={props.role || 'tab'} 
-                aria-selected={selected}
-                themePalette={props.themePalette}
-                className="vbutton"
-                iconName={props.iconName}
-                title={props.title}
-                onClick={() => { props.onSideTabClick(props.sideTabId); }}
-            />
         </div>
     );
 }
