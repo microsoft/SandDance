@@ -9,6 +9,8 @@ import {
     Column,
     ColumnStats,
     ColumnTypeMap,
+    Dimension2D,
+    Dimension3D,
     Size,
     View,
 } from '@msrvida/chart-types';
@@ -24,7 +26,7 @@ import {
     SpecViewOptions,
 } from '@msrvida/sanddance-specs';
 
-export { Camera, Column, ColumnStats, ColumnTypeMap, Size, View };
+export { Camera, Column, ColumnStats, ColumnTypeMap, Dimension2D, Dimension3D, Size, View };
 
 /**
  * Map of ordinals per unique Id.
