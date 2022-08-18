@@ -54,6 +54,11 @@ export function Sidebar(props: Props) {
             title: strings.labelHistory,
         },
         {
+            sideTabId: SideTabId.Transition,
+            iconName: 'Flow',
+            title: strings.labelTransition,
+        },
+        {
             sideTabId: SideTabId.Settings,
             iconName: 'Settings',
             title: strings.labelChartSettings,

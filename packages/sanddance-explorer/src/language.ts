@@ -83,6 +83,7 @@ export const strings = {
     labelExportTSV: '.TSV - Tab separated values',
     labelHistory: 'History',
     labelTools: 'Tools',
+    labelTransition: 'Transition',
     labelVegaSpec: 'Vega specification',
     labelColor: 'Chart color',
     labelError: 'Error',
