@@ -6,7 +6,7 @@
 import { base } from './base';
 import { removeTabIndex } from './canvas';
 import {
-    onBeforeCreateLayers,
+    attachSpecRoleToAxisTitle,
     PositionedColumnMap,
     PositionedColumnMapProps,
     TextWithSpecRole,
@@ -319,7 +319,9 @@ function _Explorer(_props: Props) {
                     this.setState({ errors });
                     viewerOptions && viewerOptions.onError && viewerOptions.onError(errors);
                 },
-                onBeforeCreateLayers,
+                onBeforeCreateLayers: (stage, specCapabilities) => {
+                    attachSpecRoleToAxisTitle(stage, specCapabilities);
+                },
                 getTextColor: o => {
                     if ((o as TextWithSpecRole).specRole) {
                         return SandDance.VegaMorphCharts.util.colorFromString((this.viewerOptions.colors as ColorSettings).clickableText);
