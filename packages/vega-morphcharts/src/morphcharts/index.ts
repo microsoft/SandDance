@@ -256,7 +256,7 @@ export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: 
 }
 
 function layersWithSelection(cubeLayer: ILayer, lineLayer: ILayer, textLayer: ILayer, layerSelection: LayerSelection, bounds: IBounds) {
-    const layers = [
+    const layerItems = [
         {
             layer: cubeLayer,
             selection: layerSelection?.cubes,
@@ -270,7 +270,7 @@ function layersWithSelection(cubeLayer: ILayer, lineLayer: ILayer, textLayer: IL
             selection: layerSelection?.texts,
         },
     ];
-    layers.forEach(x => x.layer?.update(bounds, x.selection));
+    layerItems.forEach(layerItem => layerItem.layer?.update(bounds, layerItem.selection));
 }
 
 function convert(newColor: string): MorphChartsColor {
