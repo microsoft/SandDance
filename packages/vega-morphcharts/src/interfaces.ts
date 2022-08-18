@@ -169,7 +169,7 @@ export interface PresenterConfig {
     getCameraTo?: () => Camera;
     transitionDurations?: TransitionDurations;
     morphChartsColors?: MorphChartsColors;
-    initialMorphChartsRendererOptions?: MorphChartsRendererOptions;
+    renderer?: MorphChartsRendererOptions;
     preStage?: PreStage;
     getCharacterSet?: (stage: Stage) => string[];
     redraw?: () => void;

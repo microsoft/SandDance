@@ -180,7 +180,7 @@ export class Presenter {
                 onCanvasClick: config?.onLayerClick,
                 onLasso: config?.onLasso,
             };
-            this.morphchartsref = init(this._morphChartsOptions, c.initialMorphChartsRendererOptions || defaultPresenterConfig.initialMorphChartsRendererOptions);
+            this.morphchartsref = init(this._morphChartsOptions, c.renderer || defaultPresenterConfig.renderer);
         }
         let cubeCount = Math.max(this._last.cubeCount, stage.cubeData.length);
         if (options.maxOrdinal) {

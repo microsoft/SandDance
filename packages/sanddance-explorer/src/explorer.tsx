@@ -89,7 +89,7 @@ export interface Props {
     onTooltipExclusionsChanged?: (tooltipExclusions: string[]) => void;
     additionalSettings?: SettingsGroup[];
     systemInfoChildren?: React.ReactNode;
-    initialMorphChartsRendererOptions?: SandDance.VegaMorphCharts.MorphChartsRendererOptions;
+    renderer?: SandDance.VegaMorphCharts.MorphChartsRendererOptions;
     renderOptions?: SandDance.types.RenderOptions;
 }
 
@@ -1091,7 +1091,7 @@ function _Explorer(_props: Props) {
                     rebaseFilter: () => this.rebaseFilter,
                     initialColorContext: this.getColorContext && this.getColorContext(this.viewer.insight, insight),
                     discardColorContextUpdates: () => this.discardColorContextUpdates,
-                    initialMorphChartsRendererOptions: this.props.initialMorphChartsRendererOptions,
+                    renderer: this.props.renderer,
                 };
                 if (this.cameraTo) {
                     renderOptions.getCameraTo = () => this.cameraTo;

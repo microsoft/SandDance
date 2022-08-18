@@ -563,7 +563,7 @@ export class Viewer {
                     }
                     this.options.onPresent && this.options.onPresent();
                 },
-                initialMorphChartsRendererOptions: renderOptions.initialMorphChartsRendererOptions,
+                renderer: renderOptions.renderer,
                 shouldViewstateTransition: () => this.shouldViewstateTransition(insight, this.insight),
             },
             this.getView(insight.view),
