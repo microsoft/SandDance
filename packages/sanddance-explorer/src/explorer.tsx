@@ -89,7 +89,7 @@ export interface Props {
     onTooltipExclusionsChanged?: (tooltipExclusions: string[]) => void;
     additionalSettings?: SettingsGroup[];
     systemInfoChildren?: React.ReactNode;
-    renderer?: SandDance.VegaMorphCharts.MorphChartsRendererOptions;
+    renderer?: SandDance.VegaMorphCharts.types.MorphChartsRendererOptions;
     renderOptions?: SandDance.types.RenderOptions;
 }
 
@@ -114,7 +114,7 @@ export interface UIState {
     note: string;
     historyIndex: number;
     historyItems: HistoryItem[];
-    morphChartsRendererOptions?: SandDance.VegaMorphCharts.MorphChartsRendererOptions;
+    morphChartsRendererOptions?: SandDance.VegaMorphCharts.types.MorphChartsRendererOptions;
 }
 
 export interface HistoricInsight extends SandDance.specs.Insight {

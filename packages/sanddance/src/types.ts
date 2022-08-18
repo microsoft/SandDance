@@ -199,7 +199,7 @@ export interface RenderOptions {
     ordinalMap?: OrdinalMap;
     initialColorContext?: ColorContext;
     discardColorContextUpdates?: () => boolean;
-    renderer?: VegaMorphCharts.MorphChartsRendererOptions
+    renderer?: VegaMorphCharts.types.MorphChartsRendererOptions
 }
 
 /**
