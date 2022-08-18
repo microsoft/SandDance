@@ -3,7 +3,7 @@
 * Licensed under the MIT License.
 */
 
-import { Camera, View } from '@msrvida/chart-types';
+import { Camera, Dimension3D, View } from '@msrvida/chart-types';
 import { Scene, SceneLine, SceneText } from 'vega-typings';
 import { Axes, Core, Renderers } from 'morphcharts';
 import { Config } from 'morphcharts/dist/renderers/advanced/config';
@@ -36,7 +36,7 @@ export interface TickText extends VegaTextLayerDatum {
     value: number | string;
 }
 
-export type AxisRole = 'x' | 'y' | 'z';
+export type AxisRole = Dimension3D;
 
 export interface Axis {
     axisRole: AxisRole;
