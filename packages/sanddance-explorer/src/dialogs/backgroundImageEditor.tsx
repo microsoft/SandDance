@@ -11,7 +11,7 @@ import { IconButton } from '../controls/iconButton';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { ColumnMapBaseProps } from '../controls/columnMap';
 import { IDropdownOption } from '@msrvida/fluentui-react-cdn-typings/types';
-import { BackgroundImageColumnBound, BackgroundImageDimension, DataExtent } from '../interfaces';
+import { BackgroundImageColumnBound, DataExtent } from '../interfaces';
 
 export interface Props extends ColumnMapBaseProps {
     themePalette: Partial<FluentUITypes.IPalette>;
@@ -112,7 +112,7 @@ function _BackgroundImageEditor(_props: Props) {
             );
         }
 
-        private inputForColumn(column: SandDance.types.Column, label: string, dimension: BackgroundImageDimension, minLabel: string, maxLabel: string) {
+        private inputForColumn(column: SandDance.types.Column, label: string, dimension: SandDance.types.Dimension2D, minLabel: string, maxLabel: string) {
             const { props, state } = this;
             const fieldInput = (label: string, dataExtent: DataExtent, getDefault: () => number) => {
                 const bounds = state.backgroundImageColumnBounds.filter(b => b.columnName === column?.name && b.dimension === dimension && b.dataExtent === dataExtent)[0];
@@ -226,7 +226,7 @@ function _BackgroundImageEditor(_props: Props) {
                 const { explorer } = props;
                 const { backgroundImageColumnBounds } = state;
                 let valid = true;
-                const dimensions: BackgroundImageDimension[] = ['x', 'y'];
+                const dimensions: SandDance.types.Dimension2D[] = ['x', 'y'];
                 const dataExtents: DataExtent[] = ['max', 'min'];
                 [state.xCol, state.yCol].forEach(c => dimensions.forEach(dimension => dataExtents.forEach(dataExtent => {
                     const bounds = backgroundImageColumnBounds.filter(b => b.columnName === c.name && b.dataExtent === dataExtent && b.dimension === dimension)[0];
