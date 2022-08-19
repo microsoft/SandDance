@@ -16,29 +16,19 @@ export interface Props {
     explorer: Explorer_Class;
     themePalette: Partial<FluentUITypes.IPalette>;
     onHomeClick: () => void;
+    advanced: boolean;
+    advancedOptions: SandDance.VegaMorphCharts.types.AdvancedRendererOptions;
+    basicOptions: SandDance.VegaMorphCharts.types.BasicRendererOptions;
 }
 
 export interface State {
     viewer: SandDance.Viewer;
     showOptions: boolean;
-    antialias: boolean;
-    isSsaoEnabled: boolean;
-    isShadowEnabled: boolean;
-    isDofEnabled: boolean;
-    dofFocusRange: number;
-    isBloomEnabled: boolean;
-    bloomIntensity: number;
-    isFxaaEnabled: boolean;
-}
-
-interface SyncRenderer {
-    advanced: boolean;
 }
 
 function _Renderer(_props: Props) {
 
     class __Renderer extends base.react.Component<Props, State> {
-        private needsSync: SyncRenderer;
 
         constructor(props: Props) {
             super(props);
@@ -59,51 +49,52 @@ function _Renderer(_props: Props) {
             return {
                 showOptions: false,
                 viewer,
-                antialias: true,
-                isSsaoEnabled: true,
-                isShadowEnabled: true,
-                isDofEnabled: false,
-                dofFocusRange: 0.25,
-                isBloomEnabled: false,
-                bloomIntensity: 2,
-                isFxaaEnabled: false,
             };
         }
 
         change(advanced: boolean) {
-            this.sync(advanced);
-            this.forceUpdate();
-        }
-
-        sync(advanced: boolean) {
-            const { state } = this;
-            const { antialias, bloomIntensity, dofFocusRange, isBloomEnabled, isDofEnabled, isFxaaEnabled, isShadowEnabled, isSsaoEnabled } = state;
-            state.viewer.presenter.morphchartsref.setMorphChartsRendererOptions({
-                advanced,
-                advancedOptions: {
-                    bloomIntensity,
-                    isBloomEnabled,
-                    isDofEnabled,
-                    dofFocusRange,
-                    isFxaaEnabled,
-                    isShadowEnabled,
-                    isSsaoEnabled,
-                },
-                basicOptions: {
-                    antialias,
+            this.props.explorer.setState({
+                renderer:
+                {
+                    ...this.props.explorer.state.renderer,
+                    advanced,
                 },
             });
         }
 
-        syncNext(advanced: boolean, newState: Partial<State>) {
-            this.needsSync = {
-                advanced,
-            };
-            this.setState(newState as State);
+        setBasicOptions(newOptions: Partial<SandDance.VegaMorphCharts.types.BasicRendererOptions>) {
+            const { basicOptions } = this.props;
+            this.props.explorer.setState({
+                renderer:
+                {
+                    ...this.props.explorer.state.renderer,
+                    advanced: false,
+                    basicOptions: {
+                        ...basicOptions,
+                        ...newOptions,
+                    },
+                },
+            });
+        }
+
+        setAdvancedOptions(newOptions: Partial<SandDance.VegaMorphCharts.types.AdvancedRendererOptions>) {
+            const { advancedOptions } = this.props;
+            this.props.explorer.setState({
+                renderer:
+                {
+                    ...this.props.explorer.state.renderer,
+                    advanced: true,
+                    advancedOptions: {
+                        ...advancedOptions,
+                        ...newOptions,
+                    },
+                },
+            });
         }
 
         render() {
             const { props, state } = this;
+            const { explorer } = props;
 
             const iconButtonStyles: FluentUITypes.IButtonStyles = {
                 menuIcon: {
@@ -130,12 +121,7 @@ function _Renderer(_props: Props) {
                     border: 'none',
                 };
 
-                if (this.needsSync) {
-                    this.sync(this.needsSync.advanced);
-                    this.needsSync = null;
-                }
-
-                const { advanced } = morphchartsref.lastMorphChartsRendererOptions;
+                const { advanced, advancedOptions, basicOptions } = props;
 
                 return (
                     <div>
@@ -201,9 +187,9 @@ function _Renderer(_props: Props) {
                                 <ul>
                                     <li>
                                         <base.fluentUI.Toggle
-                                            checked={state.antialias}
+                                            checked={basicOptions.antialias}
                                             label={strings.labelRendererOptionsAntialias}
-                                            onChange={(e, antialias) => this.syncNext(false, { antialias })}
+                                            onChange={(e, antialias) => this.setBasicOptions({ antialias })}
                                         />
                                     </li>
                                 </ul>
@@ -219,61 +205,61 @@ function _Renderer(_props: Props) {
                                 <ul>
                                     <li>
                                         <base.fluentUI.Toggle
-                                            checked={state.isShadowEnabled}
+                                            checked={advancedOptions.isShadowEnabled}
                                             label={strings.labelRendererOptionsShadow}
-                                            onChange={(e, isShadowEnabled) => this.syncNext(true, { isShadowEnabled })}
+                                            onChange={(e, isShadowEnabled) => this.setAdvancedOptions({ isShadowEnabled })}
                                         />
                                     </li>
                                     <li>
                                         <base.fluentUI.Toggle
-                                            checked={state.isSsaoEnabled}
+                                            checked={advancedOptions.isSsaoEnabled}
                                             label={strings.labelRendererOptionsSsao}
-                                            onChange={(e, isSsaoEnabled) => this.syncNext(true, { isSsaoEnabled })}
+                                            onChange={(e, isSsaoEnabled) => this.setAdvancedOptions({ isSsaoEnabled })}
                                         />
                                     </li>
                                     <li>
                                         <base.fluentUI.Toggle
-                                            checked={state.isBloomEnabled}
+                                            checked={advancedOptions.isBloomEnabled}
                                             label={strings.labelRendererOptionsBloom}
-                                            onChange={(e, isBloomEnabled) => this.syncNext(true, { isBloomEnabled })}
+                                            onChange={(e, isBloomEnabled) => this.setAdvancedOptions({ isBloomEnabled })}
                                         />
                                         <ul>
                                             <li>
                                                 <base.fluentUI.Slider
-                                                    value={state.bloomIntensity}
+                                                    value={advancedOptions.bloomIntensity}
                                                     min={0.1}
                                                     max={5}
                                                     step={0.01}
                                                     label={strings.labelRendererOptionsBloomIntensity}
-                                                    onChange={bloomIntensity => this.syncNext(true, { bloomIntensity, isBloomEnabled: true })}
+                                                    onChange={bloomIntensity => this.setAdvancedOptions({ bloomIntensity, isBloomEnabled: true })}
                                                 />
                                             </li>
                                         </ul>
                                     </li>
                                     <li>
                                         <base.fluentUI.Toggle
-                                            checked={state.isDofEnabled}
+                                            checked={advancedOptions.isDofEnabled}
                                             label={strings.labelRendererOptionsDof}
-                                            onChange={(e, isDofEnabled) => this.syncNext(true, { isDofEnabled })}
+                                            onChange={(e, isDofEnabled) => this.setAdvancedOptions({ isDofEnabled })}
                                         />
                                         <ul>
                                             <li>
                                                 <base.fluentUI.Slider
-                                                    value={state.dofFocusRange}
+                                                    value={advancedOptions.dofFocusRange}
                                                     min={0}
                                                     max={2}
                                                     step={0.01}
                                                     label={strings.labelRendererOptionsDofRange}
-                                                    onChange={dofFocusRange => this.syncNext(true, { dofFocusRange, isDofEnabled: true })}
+                                                    onChange={dofFocusRange => this.setAdvancedOptions({ dofFocusRange, isDofEnabled: true })}
                                                 />
                                             </li>
                                         </ul>
                                     </li>
                                     <li>
                                         <base.fluentUI.Toggle
-                                            checked={state.isFxaaEnabled}
+                                            checked={advancedOptions.isFxaaEnabled}
                                             label={strings.labelRendererOptionsFxaa}
-                                            onChange={(e, isFxaaEnabled) => this.syncNext(true, { isFxaaEnabled })}
+                                            onChange={(e, isFxaaEnabled) => this.setAdvancedOptions({ isFxaaEnabled })}
                                         />
                                     </li>
                                 </ul>

@@ -9,8 +9,10 @@
  */
 
 import {
+    AdvancedRendererOptions,
     Axis,
     AxisRole,
+    BasicRendererOptions,
     Cube,
     FacetRect,
     LayerStagger,
@@ -45,9 +47,11 @@ import { ViewGlConfig } from '../vega-classes/viewGl';
 
 //alphabetize interfaces  for documentation
 export {
+    AdvancedRendererOptions,
     Axis,
     AxisRole,
     Base,
+    BasicRendererOptions,
     Cube,
     FacetRect,
     LayerStagger,

@@ -22,7 +22,7 @@ import { AutoCompleteDistinctValues, InputSearchExpression } from './controls/se
 import { Sidebar } from './controls/sidebar';
 import { Topbar } from './controls/topbar';
 import { loadDataArray, loadDataFile } from './dataLoader';
-import { defaultViewerOptions, snapshotThumbWidth } from './defaults';
+import { defaultRenderer, defaultViewerOptions, snapshotThumbWidth } from './defaults';
 import { Chart, chartLabel } from './dialogs/chart';
 import { Color } from './dialogs/color';
 import { DataBrowser } from './dialogs/dataBrowser';
@@ -229,7 +229,7 @@ function _Explorer(_props: Props) {
                 note: null,
                 historyIndex: -1,
                 historyItems: [],
-                renderer: this.props.initialRenderer,
+                renderer: this.props.initialRenderer || defaultRenderer,
                 transitionDurations: SandDance.VegaMorphCharts.util.clone(SandDance.VegaMorphCharts.defaults.defaultPresenterConfig.transitionDurations),
             };
 
@@ -1559,6 +1559,9 @@ function _Explorer(_props: Props) {
                                 )}
                                 <Renderer
                                     explorer={this as any as Explorer_Class}
+                                    advanced={this.state.renderer.advanced}
+                                    advancedOptions={this.state.renderer.advancedOptions}
+                                    basicOptions={this.state.renderer.basicOptions}
                                     themePalette={themePalette}
                                     onHomeClick={() => this.viewer.presenter.homeCamera()}
                                 />

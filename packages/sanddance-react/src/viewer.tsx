@@ -61,11 +61,14 @@ function _SandDanceReact(_props: Props) {
             }
             if (!didLayout && props.setup) {
                 //compare setup, move camera
-                if (props.setup?.camera) {
+                if (props.setup.camera) {
                     if (!deepCompare(this.viewer.getCamera(), props.setup.camera)) {
                         //camera is different
                         this.viewer.setCamera(props.setup.camera);
                     }
+                }
+                if (props.setup.renderer) {
+                    this.viewer.presenter.morphchartsref.setMorphChartsRendererOptions(props.setup.renderer);
                 }
             }
         }
