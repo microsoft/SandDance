@@ -25,7 +25,7 @@ import { loadDataArray, loadDataFile } from './dataLoader';
 import { defaultViewerOptions, initialExplorerState, snapshotThumbWidth } from './defaults';
 import { Chart, chartLabel } from './dialogs/chart';
 import { Color } from './dialogs/color';
-import { DataBrowser } from './dialogs/dataBrowser';
+import { DataBrowser, dataBrowserNullMessages, dataBrowserZeroMessages } from './dialogs/dataBrowser';
 import { History } from './dialogs/history';
 import { InputSearchExpressionGroup, Search } from './dialogs/search';
 import { Settings } from './dialogs/settings';
@@ -139,16 +139,6 @@ export interface HistoryItem {
     label: string;
     historicInsight: Partial<HistoricInsight>;
 }
-
-const dataBrowserZeroMessages: { [key: number]: string } = {};
-dataBrowserZeroMessages[DataScopeId.AllData] = strings.labelZeroAll;
-dataBrowserZeroMessages[DataScopeId.FilteredData] = null; //empty array is not used
-dataBrowserZeroMessages[DataScopeId.SelectedData] = strings.labelZeroSearchResults;
-
-const dataBrowserNullMessages: { [key: number]: string } = {};
-dataBrowserNullMessages[DataScopeId.AllData] = strings.labelDataNullAll;
-dataBrowserNullMessages[DataScopeId.FilteredData] = strings.labelDataNullFiltered;
-dataBrowserNullMessages[DataScopeId.SelectedData] = strings.labelDataNullSelection;
 
 function createInputSearch(search: SandDance.searchExpression.Search) {
     const groups = SandDance.searchExpression.ensureSearchExpressionGroupArray(search);

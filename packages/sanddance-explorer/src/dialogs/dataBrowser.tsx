@@ -17,6 +17,16 @@ import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
 import { Explorer_Class } from '../explorer';
 
+export const dataBrowserZeroMessages: { [key: number]: string } = {};
+dataBrowserZeroMessages[DataScopeId.AllData] = strings.labelZeroAll;
+dataBrowserZeroMessages[DataScopeId.FilteredData] = null; //empty array is not used
+dataBrowserZeroMessages[DataScopeId.SelectedData] = strings.labelZeroSearchResults;
+
+export const dataBrowserNullMessages: { [key: number]: string } = {};
+dataBrowserNullMessages[DataScopeId.AllData] = strings.labelDataNullAll;
+dataBrowserNullMessages[DataScopeId.FilteredData] = strings.labelDataNullFiltered;
+dataBrowserNullMessages[DataScopeId.SelectedData] = strings.labelDataNullSelection;
+
 export interface Props {
     data: object[];
     index: number;
