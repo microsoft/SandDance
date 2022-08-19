@@ -18,7 +18,7 @@ import { ColumnMapBaseProps } from './controls/columnMap';
 import { DataScopeId, resetSelectedItemIndex, SelectedItemIndex } from './controls/dataScope';
 import { Dialog } from './controls/dialog';
 import { IconButton } from './controls/iconButton';
-import { AutoCompleteDistinctValues, InputSearchExpression } from './controls/searchTerm';
+import { AutoCompleteDistinctValues } from './controls/searchTerm';
 import { Sidebar } from './controls/sidebar';
 import { Topbar } from './controls/topbar';
 import { loadDataArray, loadDataFile } from './dataLoader';
@@ -26,7 +26,7 @@ import { defaultViewerOptions, initialExplorerState, snapshotThumbWidth } from '
 import { Chart, chartLabel } from './dialogs/chart';
 import { Color } from './dialogs/color';
 import { DataBrowser, dataBrowserNullMessages, dataBrowserZeroMessages } from './dialogs/dataBrowser';
-import { History } from './dialogs/history';
+import { getPureInsight, HistoricInsight, History, HistoryAction, HistoryItem, replay } from './dialogs/history';
 import { InputSearchExpressionGroup, Search } from './dialogs/search';
 import { Settings } from './dialogs/settings';
 import { SnapshotEditor, SnapshotEditor_Class } from './dialogs/snapshotEditor';
@@ -122,23 +122,7 @@ export interface UIState {
     transitionDurations: SandDance.VegaMorphCharts.types.TransitionDurations;
 }
 
-export interface HistoricInsight extends SandDance.specs.Insight {
-    rebaseFilter?: boolean;
-    setup?: SandDance.types.Setup;
-}
-
 export interface State extends HistoricInsight, UIState {
-}
-
-export interface HistoryAction {
-    insert?: boolean;
-    omit?: boolean;
-    label: string;
-}
-
-export interface HistoryItem {
-    label: string;
-    historicInsight: Partial<HistoricInsight>;
 }
 
 function _Explorer(_props: Props) {
@@ -627,22 +611,7 @@ function _Explorer(_props: Props) {
         }
 
         private replay(index: number): Partial<HistoricInsight> {
-            let filter: SandDance.searchExpression.Search = null;
-            let historicInsight: Partial<HistoricInsight> = {};
-            for (let i = 0; i < index + 1; i++) {
-                const historyItem = this.state.historyItems[i];
-                if (historyItem) {
-                    if (historyItem.historicInsight.filter === null) {
-                        filter = null;
-                    } else if (historyItem.historicInsight.rebaseFilter) {
-                        filter = historyItem.historicInsight.filter;
-                    } else if (historyItem.historicInsight.filter) {
-                        filter = SandDance.searchExpression.narrow(filter, historyItem.historicInsight.filter);
-                    }
-                    historicInsight = { ...historicInsight, ...historyItem.historicInsight };
-                }
-            }
-            return { ...historicInsight, filter };
+            return replay(this.state.historyItems, index);
         }
 
         public undo() {
@@ -964,29 +933,8 @@ function _Explorer(_props: Props) {
             }
         }
 
-        private getPureInsight(state: HistoricInsight) {
-            const { colorBin, columns, directColor, facetStyle, filter, hideAxes, hideLegend, scheme, signalValues, size, totalStyle, transform, chart, view } = state;
-            const insight: SandDance.specs.Insight = {
-                colorBin,
-                columns,
-                directColor,
-                facetStyle,
-                filter,
-                hideAxes,
-                hideLegend,
-                scheme,
-                signalValues,
-                size,
-                totalStyle,
-                transform,
-                chart,
-                view,
-            };
-            return insight;
-        }
-
         render() {
-            const insight = this.getPureInsight(this.state);
+            const insight = getPureInsight(this.state);
 
             const loaded = !!(insight.columns && this.state.dataContent);
             if (loaded) {
