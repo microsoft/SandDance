@@ -156,18 +156,24 @@ export interface PreStage {
  * Lengths of time for a transition animation.
  */
 export interface TransitionDurations {
-    color?: number;
     position?: number;
     stagger?: number;
     view?: number;
 }
 
 /**
+ * Visualization setup options to be used by the Presenter.
+ */
+export interface PresenterSetup {
+    camera?: Camera;
+    transitionDurations?: TransitionDurations;
+    renderer?: MorphChartsRendererOptions;
+}
+
+/**
  * Configuration options to be used by the Presenter.
  */
-export interface PresenterConfig {
-    getCameraTo?: () => Camera;
-    transitionDurations?: TransitionDurations;
+export interface PresenterConfig extends PresenterSetup {
     morphChartsColors?: MorphChartsColors;
     renderer?: MorphChartsRendererOptions;
     preStage?: PreStage;
@@ -258,10 +264,13 @@ export interface MorphChartsRef {
     reset: () => void;
     core: Core;
     isCameraMovement: boolean;
-    isTransitioning: boolean;
+    isTransitioningPosition: boolean;
+    isTransitioningModel: boolean;
     cameraTime: number;
-    transitionTime: number;
+    transitionPositionTime: number;
+    transitionModelTime: number;
     transitionModel: boolean;
+    transitionDurations: TransitionDurations;
     setMorphChartsRendererOptions: (value: MorphChartsRendererOptions) => void;
     lastMorphChartsRendererOptions: MorphChartsRendererOptions;
     qModelFrom: quat;
@@ -277,6 +286,7 @@ export interface MorphChartsRef {
         advanced: boolean;
         basic: boolean;
     }
+    layerStagger: LayerStagger;
 }
 
 export interface ILayerProps {
@@ -299,7 +309,7 @@ export interface IBounds {
 
 export interface ILayer {
     bounds: IBounds;
-    update?: (bounds: IBounds, selected?: Set<number>) => void;
+    update?: (bounds: IBounds, selected?: Set<number>, stagger?: Stagger) => void;
     unitColorMap?: UnitColorMap
 }
 
@@ -309,6 +319,18 @@ export interface LayerSelection {
     cubes?: Set<number>;
     lines?: Set<number>;
     texts?: Set<number>;
+}
+
+export interface Stagger {
+    staggerOrders?: Float64Array | Uint32Array;
+    minStaggerOrder?: number;
+    maxStaggerOrder?: number;
+}
+
+export interface LayerStagger {
+    cubes?: Stagger;
+    lines?: Stagger;
+    texts?: Stagger;
 }
 
 export interface MorphChartsColorMapper {

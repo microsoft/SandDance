@@ -6,7 +6,7 @@
 import { Constants, Core, Helpers } from 'morphcharts';
 import { colorFromString } from '../color';
 import { MorphChartsColorMapper, UnitColorMap } from '../exports/types';
-import { IBounds, ILayerProps, MorphChartsRenderResult, MorphChartsRef, PreStage, Stage, MorphChartsColor, MorphChartsColors, PresenterConfig, MorphChartsRendererOptions, LayerSelection, ILayer, ImageBounds, MorphChartsOptions } from '../interfaces';
+import { IBounds, ILayerProps, MorphChartsRenderResult, MorphChartsRef, PreStage, Stage, MorphChartsColor, MorphChartsColors, PresenterConfig, MorphChartsRendererOptions, LayerSelection, ILayer, ImageBounds, MorphChartsOptions, LayerStagger } from '../interfaces';
 import { createAxesLayer } from './axes';
 import { outerBounds } from './bounds';
 import { createCubeLayer } from './cubes';
@@ -56,8 +56,11 @@ export function init(options: MorphChartsOptions, mcRendererOptions: MorphCharts
         core,
         cameraTime: 0,
         isCameraMovement: false,
-        isTransitioning: false,
-        transitionTime: 0,
+        isTransitioningPosition: false,
+        isTransitioningModel: false,
+        transitionPositionTime: 0,
+        transitionModelTime: 0,
+        transitionDurations: null,
         setMorphChartsRendererOptions(mcRendererOptions: MorphChartsRendererOptions) {
             if (shouldChangeRenderer(ref.lastMorphChartsRendererOptions, mcRendererOptions)) {
                 getRenderer(mcRendererOptions, core);
@@ -71,6 +74,7 @@ export function init(options: MorphChartsOptions, mcRendererOptions: MorphCharts
             ref.lastMorphChartsRendererOptions = mcRendererOptions;
         },
         lastMorphChartsRendererOptions: mcRendererOptions,
+        layerStagger: {},
     };
     const cam = (t: number) => {
         quat.slerp(ref.qCameraRotationCurrent, ref.qCameraRotationFrom, ref.qCameraRotationTo, t);
@@ -82,23 +86,34 @@ export function init(options: MorphChartsOptions, mcRendererOptions: MorphCharts
         core.inputManager.isPickingEnabled = false;
     };
     core.updateCallback = (elapsedTime) => {
-        if (ref.isTransitioning) {
-            ref.transitionTime += elapsedTime;
-            const totalTime = core.config.transitionDuration + core.config.transitionStaggering;
-            if (ref.transitionTime >= totalTime) {
-                ref.isTransitioning = false;
-                ref.transitionTime = totalTime;
+        const { transitionDurations } = ref;
+        if (ref.isTransitioningPosition) {
+            ref.transitionPositionTime += elapsedTime;
+            const totalPositionTime = transitionDurations.position + transitionDurations.stagger;
+            if (ref.transitionPositionTime >= totalPositionTime) {
+                ref.isTransitioningPosition = false;
+                ref.transitionPositionTime = totalPositionTime;
             }
-            const t = easing(ref.transitionTime / totalTime);
-            core.renderer.transitionTime = t;
+            const tp = easing(ref.transitionPositionTime / totalPositionTime);
+            core.renderer.transitionTime = tp;
+        }
+        if (ref.isTransitioningModel) {
+            ref.transitionModelTime += elapsedTime;
+            const totalModelTime = transitionDurations.view;
+            if (ref.transitionModelTime >= totalModelTime) {
+                ref.isTransitioningModel = false;
+                ref.transitionModelTime = totalModelTime;
+            }
+            const tm = easing(ref.transitionModelTime / totalModelTime);
             if (ref.transitionModel) {
-                quat.slerp(ref.qModelCurrent, ref.qModelFrom, ref.qModelTo, t);
+                quat.slerp(ref.qModelCurrent, ref.qModelFrom, ref.qModelTo, tm);
                 core.setModelRotation(ref.qModelCurrent, false);
             }
-            cam(t);
-        } else if (ref.isCameraMovement) {
+            cam(tm);
+        }
+        if (ref.isCameraMovement) {
             ref.cameraTime += elapsedTime;
-            const totalTime = core.config.transitionDuration;
+            const totalTime = transitionDurations.view;
             if (ref.cameraTime >= totalTime) {
                 ref.isCameraMovement = false;
                 ref.cameraTime = totalTime;
@@ -128,7 +143,7 @@ quat.multiply(qCameraRotation3d, qCameraRotation3d, qAngle);
 
 
 export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: Stage, height: number, width: number, preStage: PreStage, colors: MorphChartsColors, config: PresenterConfig): MorphChartsRenderResult {
-    const cameraTo = config.getCameraTo && config.getCameraTo();
+    const cameraTo = config.camera;
     if (prevStage && (prevStage.view !== stage.view)) {
         ref.transitionModel = true;
         if (stage.view === '2d') {
@@ -160,6 +175,10 @@ export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: 
         ref.core.setModelRotation(ref.qModelTo, false);
         ref.core.camera.setOrbit(ref.qCameraRotationTo, false);
         ref.core.camera.setPosition(ref.vCameraPositionTo, false);
+    } else {
+        ref.isTransitioningPosition = true;
+        ref.isCameraMovement = true;
+        ref.cameraTime = 0;
     }
 
     const props: ILayerProps = { ref, stage, height, width, config };
@@ -230,20 +249,23 @@ export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: 
     }
 
     //Now call update on each layout
-    layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds);
+    layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds, ref.layerStagger);
 
-    ref.isTransitioning = true;
-    ref.transitionTime = 0;
+    ref.isTransitioningPosition = true;
+    ref.transitionPositionTime = 0;
+    ref.isTransitioningModel = ref.transitionModel;
+    ref.transitionModelTime = 0;
+    ref.transitionDurations = config.transitionDurations;
     core.renderer.transitionTime = 0; // Set renderer transition time for this render pass to prevent rendering target buffer for single frame
 
     colorConfig(ref, colors);
 
     return {
         ...colorMapper,
-        update: layerSelection => layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds),
+        update: layerSelection => layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds, ref.layerStagger),
         activate: id => core.renderer.transitionBuffers[0].activeId = id,
         moveCamera: (position: vec3, rotation: quat) => {
-            if (!ref.isTransitioning) {
+            if (!(ref.isTransitioningPosition || ref.isTransitioningModel)) {
                 ref.core.camera.getOrbit(ref.qCameraRotationFrom);
                 ref.core.camera.getPosition(ref.vCameraPositionFrom);
                 ref.isCameraMovement = true;
@@ -255,22 +277,25 @@ export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: 
     };
 }
 
-function layersWithSelection(cubeLayer: ILayer, lineLayer: ILayer, textLayer: ILayer, layerSelection: LayerSelection, bounds: IBounds) {
+function layersWithSelection(cubeLayer: ILayer, lineLayer: ILayer, textLayer: ILayer, layerSelection: LayerSelection, bounds: IBounds, layerStagger: LayerStagger) {
     const layerItems = [
         {
             layer: cubeLayer,
             selection: layerSelection?.cubes,
+            stagger: layerStagger?.cubes,
         },
         {
             layer: lineLayer,
             selection: layerSelection?.lines,
+            stagger: layerStagger?.lines,
         },
         {
             layer: textLayer,
             selection: layerSelection?.texts,
+            stagger: layerStagger?.texts,
         },
     ];
-    layerItems.forEach(layerItem => layerItem.layer?.update(bounds, layerItem.selection));
+    layerItems.forEach(layerItem => layerItem.layer?.update(bounds, layerItem.selection, layerItem.stagger));
 }
 
 function convert(newColor: string): MorphChartsColor {
