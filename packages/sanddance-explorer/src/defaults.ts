@@ -4,8 +4,10 @@
 */
 
 import { getColorSettingsFromThemePalette, themePalettes } from './themes';
-import { ViewerOptions } from './interfaces';
+import { SideTabId, ViewerOptions } from './interfaces';
 import { SandDance } from '@msrvida/sanddance-react';
+import { Props, State } from './explorer';
+import { DataScopeId, resetSelectedItemIndex } from './controls/dataScope';
 
 export const fontFamily = 'Segoe UI, sans-serif';
 
@@ -31,3 +33,48 @@ export const defaultRenderer: SandDance.VegaMorphCharts.types.MorphChartsRendere
         antialias: true
     }
 };
+
+export function initialExplorerState(props: Props) {
+    const state: State = {
+        calculating: null,
+        errors: null,
+        autoCompleteDistinctValues: {},
+        colorBin: null,
+        dataContent: null,
+        dataFile: null,
+        search: null,
+        totalStyle: null,
+        facetStyle: 'wrap',
+        filter: null,
+        filteredData: null,
+        specCapabilities: null,
+        size: {
+            height: null,
+            width: null,
+        },
+        scheme: null,
+        transform: null,
+        columns: null,
+        chart: 'grid',
+        signalValues: null,
+        hideAxes: false,
+        hideLegend: false,
+        sideTabId: SideTabId.ChartType,
+        dataScopeId: DataScopeId.AllData,
+        selectedItemIndex: {},
+        sidebarClosed: false,
+        sidebarPinned: true,
+        view: props.initialView || '2d',
+        snapshots: [],
+        selectedSnapshotIndex: -1,
+        tooltipExclusions: [],
+        positionedColumnMapProps: null,
+        note: null,
+        historyIndex: -1,
+        historyItems: [],
+        renderer: props.initialRenderer || defaultRenderer,
+        transitionDurations: SandDance.VegaMorphCharts.util.clone(SandDance.VegaMorphCharts.defaults.defaultPresenterConfig.transitionDurations),
+    };
+    resetSelectedItemIndex(state.selectedItemIndex);
+    return state;
+}

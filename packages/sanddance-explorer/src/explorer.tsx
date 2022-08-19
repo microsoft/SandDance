@@ -15,14 +15,14 @@ import { applyColorButtons } from './colorMap';
 import { bestColorScheme } from './colorScheme';
 import { colorMapping, ensureColumnsExist, ensureColumnsPopulated, getBackgroundImageColumnBounds, getTreemapColumn } from './columns';
 import { ColumnMapBaseProps } from './controls/columnMap';
-import { DataScopeId } from './controls/dataScope';
+import { DataScopeId, resetSelectedItemIndex, SelectedItemIndex } from './controls/dataScope';
 import { Dialog } from './controls/dialog';
 import { IconButton } from './controls/iconButton';
 import { AutoCompleteDistinctValues, InputSearchExpression } from './controls/searchTerm';
 import { Sidebar } from './controls/sidebar';
 import { Topbar } from './controls/topbar';
 import { loadDataArray, loadDataFile } from './dataLoader';
-import { defaultRenderer, defaultViewerOptions, snapshotThumbWidth } from './defaults';
+import { defaultViewerOptions, initialExplorerState, snapshotThumbWidth } from './defaults';
 import { Chart, chartLabel } from './dialogs/chart';
 import { Color } from './dialogs/color';
 import { DataBrowser } from './dialogs/dataBrowser';
@@ -107,7 +107,7 @@ export interface UIState {
     specCapabilities: SandDance.specs.SpecCapabilities;
     sideTabId: SideTabId;
     dataScopeId: DataScopeId;
-    selectedItemIndex: { [key: number]: number };
+    selectedItemIndex: SelectedItemIndex;
     snapshots: Snapshot[];
     selectedSnapshotIndex: number;
     tooltipExclusions: string[];
@@ -192,51 +192,7 @@ function _Explorer(_props: Props) {
         constructor(props: Props) {
             super(props);
             this.dialogFocusHandler = {};
-            this.state = {
-                calculating: null,
-                errors: null,
-                autoCompleteDistinctValues: {},
-                colorBin: null,
-                dataContent: null,
-                dataFile: null,
-                search: null,
-                totalStyle: null,
-                facetStyle: 'wrap',
-                filter: null,
-                filteredData: null,
-                specCapabilities: null,
-                size: {
-                    height: null,
-                    width: null,
-                },
-                scheme: null,
-                transform: null,
-                columns: null,
-                chart: 'grid',
-                signalValues: null,
-                hideAxes: false,
-                hideLegend: false,
-                sideTabId: SideTabId.ChartType,
-                dataScopeId: DataScopeId.AllData,
-                selectedItemIndex: {},
-                sidebarClosed: false,
-                sidebarPinned: true,
-                view: props.initialView || '2d',
-                snapshots: [],
-                selectedSnapshotIndex: -1,
-                tooltipExclusions: [],
-                positionedColumnMapProps: null,
-                note: null,
-                historyIndex: -1,
-                historyItems: [],
-                renderer: this.props.initialRenderer || defaultRenderer,
-                transitionDurations: SandDance.VegaMorphCharts.util.clone(SandDance.VegaMorphCharts.defaults.defaultPresenterConfig.transitionDurations),
-            };
-
-            this.state.selectedItemIndex[DataScopeId.AllData] = 0;
-            this.state.selectedItemIndex[DataScopeId.FilteredData] = 0;
-            this.state.selectedItemIndex[DataScopeId.SelectedData] = 0;
-
+            this.state = initialExplorerState(props);
             this.imageHolder = { img: null, backgroundImageColumnBounds: [], showBackgroundImage: false };
             this.snapshotThumbWidth = snapshotThumbWidth;
             this.discardColorContextUpdates = true;
@@ -436,9 +392,7 @@ function _Explorer(_props: Props) {
 
         public setInsight(historyAction: HistoryAction, newState: Partial<UIState> = {}, partialInsight: Partial<SandDance.specs.Insight> = this.viewer.getInsight(), rebaseFilter: boolean, setup?: SandDance.types.Setup) {
             const selectedItemIndex = { ...this.state.selectedItemIndex };
-            selectedItemIndex[DataScopeId.AllData] = 0;
-            selectedItemIndex[DataScopeId.FilteredData] = 0;
-            selectedItemIndex[DataScopeId.SelectedData] = 0;
+            resetSelectedItemIndex(selectedItemIndex);
             const historicInsight: Partial<HistoricInsight> = {
                 chart: null,
                 scheme: null,
@@ -546,9 +500,7 @@ function _Explorer(_props: Props) {
                     }
                     const selectedItemIndex = { ...this.state.selectedItemIndex };
                     const sideTabId = SideTabId.ChartType;
-                    selectedItemIndex[DataScopeId.AllData] = 0;
-                    selectedItemIndex[DataScopeId.FilteredData] = 0;
-                    selectedItemIndex[DataScopeId.SelectedData] = 0;
+                    resetSelectedItemIndex(selectedItemIndex);
                     const newState: Partial<State> = {
                         dataFile,
                         dataContent,
