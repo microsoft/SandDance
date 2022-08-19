@@ -112,7 +112,9 @@ function _SnapshotEditor(_props: Props) {
                                     insight: this.state.insight,
                                     image: this.state.image,
                                     bgColor: this.state.bgColor,
-                                    camera: explorer.viewer.getCamera(),
+                                    setup: {
+                                        camera: explorer.viewer.getCamera(),
+                                    }
                                 };
                                 this.props.modifySnapShot && this.props.modifySnapShot(snapshot);
                                 this.props.onWriteSnapshot(snapshot, this.state.editIndex);

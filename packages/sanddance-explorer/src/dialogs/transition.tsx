@@ -20,7 +20,7 @@ export interface Props extends ColumnMapBaseProps {
 }
 
 export interface State {
-    //transitionType: SandDance.types.TransitionType;
+    transitionType: SandDance.types.TransitionType;
     positionDimension: SandDance.types.Dimension3D;
     column: string;
 }
@@ -30,7 +30,7 @@ function _Transition(_props: Props) {
         constructor(props: Props) {
             super(props);
             this.state = {
-                //transitionType: 'ordinal',
+                transitionType: 'ordinal',
                 positionDimension: 'y',
                 column: props.transitionColumn,
             };
@@ -55,7 +55,7 @@ function _Transition(_props: Props) {
                     />
                     <base.fluentUI.ChoiceGroup
                         label={'Transition type TODO'}
-                        //selectedKey={state.transitionType}
+                        selectedKey={state.transitionType}
                         options={[
                             {
                                 key: 'ordinal',
