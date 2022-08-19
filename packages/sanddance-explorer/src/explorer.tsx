@@ -53,13 +53,14 @@ import {
     saveSignalValuePref,
 } from './partialInsight';
 import { themePalettes } from './themes';
-import { compareGroups } from './searchGroups';
+import { compareGroups, createInputSearch } from './searchGroups';
 import { RecommenderSummary } from '@msrvida/chart-recommender';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
 import { Renderer } from './controls/renderer';
 
 import Snapshot = SandDance.types.Snapshot;
+import { setInsightBackgroundImage } from './dialogs/backgroundImageEditor';
 
 export interface Options {
     chartPrefs?: Prefs;
@@ -138,24 +139,6 @@ export interface HistoryAction {
 export interface HistoryItem {
     label: string;
     historicInsight: Partial<HistoricInsight>;
-}
-
-function createInputSearch(search: SandDance.searchExpression.Search) {
-    const groups = SandDance.searchExpression.ensureSearchExpressionGroupArray(search);
-    const dialogSearch: InputSearchExpressionGroup[] = groups.map((group, groupIndex) => {
-        return {
-            key: groupIndex,
-            ...group,
-            expressions: group.expressions.map((ex, i) => {
-                const ex2: InputSearchExpression = {
-                    key: i,
-                    ...ex,
-                };
-                return ex2;
-            }),
-        };
-    });
-    return dialogSearch;
 }
 
 function _Explorer(_props: Props) {
@@ -1007,7 +990,7 @@ function _Explorer(_props: Props) {
 
             const loaded = !!(insight.columns && this.state.dataContent);
             if (loaded) {
-                this.getBackgroundImage(insight);
+                setInsightBackgroundImage(insight, this.imageHolder, this.state.columns);
             }
 
             const selectionState: SandDance.types.SelectionState = (this.viewer && this.viewer.getSelection()) || {};
@@ -1535,48 +1518,6 @@ function _Explorer(_props: Props) {
                     )}
                 </div>
             );
-        }
-
-        private getBackgroundImage(insight: SandDance.specs.Insight) {
-            const { imageHolder } = this;
-            const { columns } = this.state;
-            if (!imageHolder.showBackgroundImage || !columns.x || !columns.y) {
-                return;
-            }
-            const { backgroundImageColumnBounds } = imageHolder;
-            const xBounds = backgroundImageColumnBounds.filter(b => b.columnName === columns.x && b.dimension === 'x');
-            const yBounds = backgroundImageColumnBounds.filter(b => b.columnName === columns.y && b.dimension === 'y');
-            if (!xBounds.length || !yBounds.length) {
-                return;
-            }
-            const allBounds = [...xBounds, ...yBounds];
-            for (let i = 0; i < allBounds.length; i++) {
-                if (!allBounds[i].valid) {
-                    return;
-                }
-            }
-            const bottom = yBounds.filter(b => b.dataExtent === 'min')[0];
-            const left = xBounds.filter(b => b.dataExtent === 'min')[0];
-            const right = xBounds.filter(b => b.dataExtent === 'max')[0];
-            const top = yBounds.filter(b => b.dataExtent === 'max')[0];
-            const all = [bottom, left, right, top];
-            for (let i = 0; i < all.length; i++) {
-                if (!all[i]) {
-                    return;
-                }
-            }
-            const { src, height, width } = imageHolder.img;
-            insight.backgroundImage = {
-                url: src,
-                size: { height, width },
-                extents: {
-                    bottom: bottom.numericValue,
-                    left: left.numericValue,
-                    right: right.numericValue,
-                    top: top.numericValue,
-                },
-            };
-            insight.size = insight.backgroundImage.size;
         }
 
         private getColumnMapBaseProps() {

@@ -11,7 +11,7 @@ import { IconButton } from '../controls/iconButton';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { ColumnMapBaseProps } from '../controls/columnMap';
 import { IDropdownOption } from '@msrvida/fluentui-react-cdn-typings/types';
-import { BackgroundImageColumnBound, DataExtent } from '../interfaces';
+import { BackgroundImageColumnBound, DataExtent, ImageHolder } from '../interfaces';
 
 export interface Props extends ColumnMapBaseProps {
     themePalette: Partial<FluentUITypes.IPalette>;
@@ -269,4 +269,44 @@ export const BackgroundImageEditor: typeof BackgroundImageEditor_Class = _Backgr
 
 export declare class BackgroundImageEditor_Class extends base.react.Component<Props, State> {
     show(insightColumns: SandDance.specs.InsightColumns): void;
+}
+
+export function setInsightBackgroundImage(insight: SandDance.specs.Insight, imageHolder: ImageHolder, columns: SandDance.specs.InsightColumns) {
+    if (!imageHolder.showBackgroundImage || !columns.x || !columns.y) {
+        return;
+    }
+    const { backgroundImageColumnBounds } = imageHolder;
+    const xBounds = backgroundImageColumnBounds.filter(b => b.columnName === columns.x && b.dimension === 'x');
+    const yBounds = backgroundImageColumnBounds.filter(b => b.columnName === columns.y && b.dimension === 'y');
+    if (!xBounds.length || !yBounds.length) {
+        return;
+    }
+    const allBounds = [...xBounds, ...yBounds];
+    for (let i = 0; i < allBounds.length; i++) {
+        if (!allBounds[i].valid) {
+            return;
+        }
+    }
+    const bottom = yBounds.filter(b => b.dataExtent === 'min')[0];
+    const left = xBounds.filter(b => b.dataExtent === 'min')[0];
+    const right = xBounds.filter(b => b.dataExtent === 'max')[0];
+    const top = yBounds.filter(b => b.dataExtent === 'max')[0];
+    const all = [bottom, left, right, top];
+    for (let i = 0; i < all.length; i++) {
+        if (!all[i]) {
+            return;
+        }
+    }
+    const { src, height, width } = imageHolder.img;
+    insight.backgroundImage = {
+        url: src,
+        size: { height, width },
+        extents: {
+            bottom: bottom.numericValue,
+            left: left.numericValue,
+            right: right.numericValue,
+            top: top.numericValue,
+        },
+    };
+    insight.size = insight.backgroundImage.size;
 }
