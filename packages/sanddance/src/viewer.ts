@@ -101,7 +101,7 @@ export class Viewer {
     /**
      * Setup object for visual rendering of Insight.
      */
-     public setup: Setup;
+    public setup: Setup;
 
     /**
      * Color contexts. There is only one color context until data is filtered, after which colors may be re-mapped in another color context.
@@ -178,6 +178,7 @@ export class Viewer {
                 const oldColorContext = this.colorContexts[this.currentColorContext];
                 innerPromise = new Promise<void>(innerResolve => {
                     this.renderNewLayout({}, {
+                        ...(this.setup || {}),
                         preStage: (stage, colorMapper) => {
                             finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                             this.overrideAxisLabels(stage);
@@ -194,6 +195,7 @@ export class Viewer {
                 });
             } else {
                 innerPromise = this.renderNewLayout({}, {
+                    ...(this.setup || {}),
                     preStage: (stage, colorMapper) => {
                         finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                         this.overrideAxisLabels(stage);
@@ -228,6 +230,7 @@ export class Viewer {
                 let colorMap: VegaMorphCharts.types.UnitColorMap;
                 this.presenter.morphChartsRenderResult.update({ cubes: null });
                 await this.renderNewLayout({}, {
+                    ...(this.setup || {}),
                     preStage: (stage, colorMapper) => {
                         //save off the spec colors
                         colorMap = colorMapper.getCubeUnitColorMap();
@@ -266,6 +269,7 @@ export class Viewer {
                 this.changeColorContexts([colorContext]);
                 this.presenter.morphChartsRenderResult.update({ cubes: null });
                 await this.renderNewLayout({}, {
+                    ...(this.setup || {}),
                     onPresent: () => {
                         //color needs to change instantly
                         populateColorContext(colorContext, this.presenter);
