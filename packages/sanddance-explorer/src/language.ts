@@ -159,7 +159,7 @@ export const strings = {
     labelRendererOptions: 'Renderer options ...',
     labelRendererOptionsDialogTitle: 'Renderer options',
     labelRendererOptionsAntialias: 'Antialias',
-    labelRendererOptionsBloom: 'Bloom highlighting',
+    labelRendererOptionsBloom: 'Bloom highlighting (for selections)',
     labelRendererOptionsBloomIntensity: 'Intensity',
     labelRendererOptionsDof: 'Depth of Field',
     labelRendererOptionsDofRange: 'Focus Range',
