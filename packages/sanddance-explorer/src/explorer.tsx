@@ -424,9 +424,8 @@ function _Explorer(_props: Props) {
 
         private setSetup(setup: SandDance.types.Setup) {
             if (!setup) {
-                this.setState({ camera: undefined, renderer: undefined, transition: undefined });
+                this.setState({ camera: undefined });
                 return;
-
             }
             const { camera, renderer, transition, transitionDurations } = setup;
             this.setState({ camera, renderer, transition });

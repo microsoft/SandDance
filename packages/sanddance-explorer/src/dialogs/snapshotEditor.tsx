@@ -114,7 +114,8 @@ function _SnapshotEditor(_props: Props) {
                                     bgColor: this.state.bgColor,
                                     setup: {
                                         camera: explorer.viewer.getCamera(),
-                                    }
+                                        renderer: explorer.state.renderer,
+                                    },
                                 };
                                 this.props.modifySnapShot && this.props.modifySnapShot(snapshot);
                                 this.props.onWriteSnapshot(snapshot, this.state.editIndex);
