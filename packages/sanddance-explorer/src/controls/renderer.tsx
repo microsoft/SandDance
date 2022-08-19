@@ -52,49 +52,41 @@ function _Renderer(_props: Props) {
             };
         }
 
-        change(advanced: boolean) {
-            this.props.explorer.setState({
+        setOptions(newOptions: Partial<SandDance.VegaMorphCharts.types.MorphChartsRendererOptions>) {
+            const { explorer } = this.props;
+            explorer.setState({
                 renderer:
                 {
-                    ...this.props.explorer.state.renderer,
-                    advanced,
+                    ...explorer.state.renderer,
+                    ...newOptions,
                 },
             });
         }
 
         setBasicOptions(newOptions: Partial<SandDance.VegaMorphCharts.types.BasicRendererOptions>) {
             const { basicOptions } = this.props;
-            this.props.explorer.setState({
-                renderer:
-                {
-                    ...this.props.explorer.state.renderer,
-                    advanced: false,
-                    basicOptions: {
-                        ...basicOptions,
-                        ...newOptions,
-                    },
+            this.setOptions({
+                advanced: false,
+                basicOptions: {
+                    ...basicOptions,
+                    ...newOptions,
                 },
             });
         }
 
         setAdvancedOptions(newOptions: Partial<SandDance.VegaMorphCharts.types.AdvancedRendererOptions>) {
             const { advancedOptions } = this.props;
-            this.props.explorer.setState({
-                renderer:
-                {
-                    ...this.props.explorer.state.renderer,
-                    advanced: true,
-                    advancedOptions: {
-                        ...advancedOptions,
-                        ...newOptions,
-                    },
+            this.setOptions({
+                advanced: true,
+                advancedOptions: {
+                    ...advancedOptions,
+                    ...newOptions,
                 },
             });
         }
 
         render() {
             const { props, state } = this;
-            const { explorer } = props;
 
             const iconButtonStyles: FluentUITypes.IButtonStyles = {
                 menuIcon: {
@@ -148,7 +140,7 @@ function _Renderer(_props: Props) {
                                         iconProps: {
                                             iconName: advanced ? null : 'RadioBullet',
                                         },
-                                        onClick: () => advanced && this.change(false),
+                                        onClick: () => advanced && this.setOptions({ advanced: false }),
                                         //disabled: !advanced,
                                     },
                                     {
@@ -157,7 +149,7 @@ function _Renderer(_props: Props) {
                                         iconProps: {
                                             iconName: advanced ? 'RadioBullet' : null,
                                         },
-                                        onClick: () => !advanced && this.change(true),
+                                        onClick: () => !advanced && this.setOptions({ advanced: true }),
                                         //disabled: advanced,
                                     },
                                     {
@@ -179,7 +171,7 @@ function _Renderer(_props: Props) {
                             <div>
                                 <Button
                                     iconName={advanced ? 'RadioBtnOff' : 'RadioBtnOn'}
-                                    onClick={() => this.change(false)}
+                                    onClick={() => this.setOptions({ advanced: false })}
                                     text={strings.labelRendererBasic}
                                     themePalette={props.themePalette}
                                     rootStyle={choiceButtonStyle}
@@ -197,7 +189,7 @@ function _Renderer(_props: Props) {
                             <div>
                                 <Button
                                     iconName={advanced ? 'RadioBtnOn' : 'RadioBtnOff'}
-                                    onClick={() => this.change(true)}
+                                    onClick={() => this.setOptions({ advanced: true })}
                                     text={strings.labelRendererAdvanced}
                                     themePalette={props.themePalette}
                                     rootStyle={choiceButtonStyle}
