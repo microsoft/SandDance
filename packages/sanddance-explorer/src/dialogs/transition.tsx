@@ -88,29 +88,29 @@ function _Transition(_props: Props) {
                         <base.fluentUI.Slider
                             label={strings.labelTransitionPosition}
                             onChange={value => {
-                                //props.explorer.viewerOptions.transitionDurations.position = value;
+                                props.explorer.state.transitionDurations.position = value;
                             }}
                             min={0}
                             max={10000}
-                            //defaultValue={props.explorer.viewerOptions.transitionDurations.position}
+                            defaultValue={props.explorer.state.transitionDurations.position}
                         />
                         <base.fluentUI.Slider
                             label={strings.labelTransitionStagger}
                             onChange={value => {
-                                //props.explorer.viewerOptions.transitionDurations.stagger = value;
+                                props.explorer.state.transitionDurations.stagger = value;
                             }}
                             min={0}
                             max={10000}
-                            //defaultValue={props.explorer.viewerOptions.transitionDurations.stagger}
+                            defaultValue={props.explorer.state.transitionDurations.stagger}
                         />
                         <base.fluentUI.Slider
                             label={strings.labelTransitionCamera}
                             onChange={value => {
-                                //props.explorer.viewerOptions.transitionDurations.view = value;
+                                props.explorer.state.transitionDurations.view = value;
                             }}
                             min={0}
                             max={10000}
-                            //defaultValue={props.explorer.viewerOptions.transitionDurations.view}
+                            defaultValue={props.explorer.state.transitionDurations.view}
                         />
                     </Group>
                 </div>
