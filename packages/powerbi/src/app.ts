@@ -147,7 +147,7 @@ export class App extends React.Component<Props, State> {
         const { viewer } = this.explorer;
         this.lastCameraStable = stable;
         this.lastCamera = viewer.getCamera(transitionFinal);
-        const { transitionDurations } = viewer.options;
+        const { transitionDurations } = viewer.setup;
         this.cameraTimer = setTimeout(() => this.listenToCamera(), transitionDurations.position + transitionDurations.stagger + cameraSettle) as unknown as number;
     }
 
