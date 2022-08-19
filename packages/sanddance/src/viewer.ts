@@ -20,11 +20,12 @@ import { applySignalValues, extractSignalValuesFromView, unbindSignalUI } from '
 import { cleanDataItem, Tooltip } from './tooltip';
 import {
     ColorContext,
-    ColorSettings,
+    InsightSetup,
     LegendRowWithSearch,
     RenderOptions,
     RenderResult,
     SelectionState,
+    Setup,
     TooltipCreateOptions,
     TooltipDestroyable,
     ViewerOptions,
@@ -93,9 +94,14 @@ export class Viewer {
     public presenter: VegaMorphCharts.Presenter;
 
     /**
-     * Insight object from current rendering.
+     * Insight object for chart layout.
      */
     public insight: Insight;
+
+    /**
+     * Setup object for visual rendering of Insight.
+     */
+     public setup: Setup;
 
     /**
      * Color contexts. There is only one color context until data is filtered, after which colors may be re-mapped in another color context.
@@ -161,7 +167,11 @@ export class Viewer {
         this.presenter.stage.legend = colorContext.legend;
     }
 
-    private onAnimateDataChange(dataChange: DataLayoutChange, waitingLabel: string, handlerLabel: string, time = this.options.transitionDurations.position + this.options.transitionDurations.stagger) {
+    private onAnimateDataChange(dataChange: DataLayoutChange, waitingLabel: string, handlerLabel: string, time?: number) {
+        if (time === undefined) {
+            const transitionDurations = this.setup?.transitionDurations || VegaMorphCharts.defaults.defaultPresenterConfig.transitionDurations;
+            time = transitionDurations.position + transitionDurations.stagger;
+        }
         return new Promise<void>((resolve, reject) => {
             let innerPromise: Promise<any>;
             if (dataChange === DataLayoutChange.refine) {
@@ -447,32 +457,34 @@ export class Viewer {
 
     /**
      * Render data into a visualization.
-     * @param insight Object to create a visualization specification.
+     * @param insightSetup InsightSetup object to create a visualization rendering.
      * @param data Array of data objects.
      * @param renderOptions Optional RenderOptions object.
      */
-    async render(insight: Insight, data: object[], renderOptions: RenderOptions = {}) {
+    async render(insightSetup: InsightSetup, data: object[], renderOptions: RenderOptions = {}) {
+        const { insight, setup } = insightSetup;
         let result: RenderResult;
         //see if refine expression has changed
         if (!searchExpression.compare(insight.filter, this.insight.filter)) {
-            const renderTime = this.options.transitionDurations.position + this.options.transitionDurations.stagger;
+            const transitionDurations = setup?.transitionDurations || VegaMorphCharts.defaults.defaultPresenterConfig.transitionDurations;
+            const renderTime = transitionDurations.position + transitionDurations.stagger;
             const allowAsyncRenderTime = renderTime + 200;
             if (insight.filter) {
                 //refining
-                result = await this._render(insight, data, renderOptions, true);
+                result = await this._render(insightSetup, data, renderOptions, true);
                 this.presenter.animationQueue(() => {
                     this.filter(insight.filter, renderOptions.rebaseFilter && renderOptions.rebaseFilter());
                 }, allowAsyncRenderTime, { waitingLabel: 'layout before refine', handlerLabel: 'refine after layout' });
             } else {
                 //not refining
                 this._dataScope.setFilteredData(null);
-                result = await this._render(insight, data, renderOptions, true);
+                result = await this._render(insightSetup, data, renderOptions, true);
                 this.presenter.animationQueue(() => {
                     this.reset();
                 }, allowAsyncRenderTime, { waitingLabel: 'layout before reset', handlerLabel: 'reset after layout' });
             }
         } else {
-            result = await this._render(insight, data, renderOptions, false);
+            result = await this._render(insightSetup, data, renderOptions, false);
         }
         return result;
     }
@@ -511,7 +523,8 @@ export class Viewer {
         };
     }
 
-    private async _render(insight: Insight, data: object[], renderOptions: RenderOptions, forceNewCharacterSet: boolean) {
+    private async _render(insightSetup: InsightSetup, data: object[], renderOptions: RenderOptions, forceNewCharacterSet: boolean) {
+        const { insight, setup } = insightSetup;
         if (this._tooltip) {
             this._tooltip.destroy();
             this._tooltip = null;
@@ -526,6 +539,7 @@ export class Viewer {
         this._characterSet.resetCharacterSet(forceNewCharacterSet, this.insight, insight);
 
         this.insight = VegaMorphCharts.util.clone(insight);
+        this.setup = setup;
         this._shouldSaveColorContext = () => !renderOptions.initialColorContext;
         const colorContext = renderOptions.initialColorContext || {
             colorMap: null,
@@ -535,7 +549,7 @@ export class Viewer {
         const specResult = await this.renderNewLayout(
             insight.signalValues,
             {
-                getCameraTo: renderOptions.getCameraTo,
+                ...(setup || {}),
                 preStage: (stage, colorMapper) => {
                     if (this._shouldSaveColorContext()) {
                         //save off the colors from Vega layout
@@ -548,7 +562,7 @@ export class Viewer {
                     const hasSelectedData = !!this._dataScope.hasSelectedData();
                     //const hasActive = !!this._dataScope.active;
                     if (hasSelectedData || this._dataScope.active) {
-                        //TODO paint active item    
+                        //TODO paint active item
                         //this.presenter.mcRenderResult.update({ cubes: this.convertSearchToSet() });
                     }
                     this.preStage(stage, colorMapper);
@@ -563,7 +577,6 @@ export class Viewer {
                     }
                     this.options.onPresent && this.options.onPresent();
                 },
-                renderer: renderOptions.renderer,
                 shouldViewstateTransition: () => this.shouldViewstateTransition(insight, this.insight),
             },
             this.getView(insight.view),
@@ -790,8 +803,8 @@ export class Viewer {
             presenter: this.presenter,
             presenterConfig: Object.assign(defaultPresenterConfig, c),
         };
-        if (this.options.transitionDurations) {
-            config.presenterConfig.transitionDurations = this.options.transitionDurations;
+        if (this.setup?.transitionDurations) {
+            config.presenterConfig.transitionDurations = this.setup.transitionDurations;
         }
         return config;
     }

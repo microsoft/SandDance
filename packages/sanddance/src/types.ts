@@ -52,17 +52,6 @@ export interface RenderResult {
 }
 
 /**
- * Lengths of time for a transition animation.
- */
-export interface TransitionDurations extends VegaMorphCharts.types.TransitionDurations {
-
-    /**
-     * Transition time when a filter is applied / removed.
-     */
-    scope: number;
-}
-
-/**
  * Customization options for the Viewer.
  */
 export interface ViewerOptions extends SpecViewOptions {
@@ -86,16 +75,6 @@ export interface ViewerOptions extends SpecViewOptions {
      * Tooltip options
      */
     tooltipOptions?: TooltipOptions;
-
-    /**
-     * Optional map of light settings for the visualization, per camera view type.
-     */
-    //    lightSettings?: { [view in View]: LightSettings };
-
-    /**
-     * Lengths of time for a transition animation.
-     */
-    transitionDurations: TransitionDurations;
 
     /**
      * Optional error handler.
@@ -190,18 +169,16 @@ export interface ViewerOptions extends SpecViewOptions {
     /**
      * Disable lasso selection.
      */
-     disableLasso?: boolean;
+    disableLasso?: boolean;
 }
 
 export interface RenderOptions {
-    getCameraTo?: () => Camera;
     rebaseFilter?: () => boolean;
     columns?: Column[];
     columnTypes?: ColumnTypeMap;
     ordinalMap?: OrdinalMap;
     initialColorContext?: ColorContext;
     discardColorContextUpdates?: () => boolean;
-    renderer?: VegaMorphCharts.types.MorphChartsRendererOptions
 }
 
 /**
@@ -381,6 +358,30 @@ export interface TooltipOptions {
     create?: (props: TooltipCreateOptions) => TooltipDestroyable;
 }
 
+export type Transition = TransitionByOrdinal | TransitionByColumn | TransitionByPosition;
+
+export type TransitionType = 'ordinal' | 'column' | 'position';
+
+export interface TransitionBase {
+    type: TransitionType;
+}
+export interface TransitionByOrdinal extends TransitionBase {
+    type: 'ordinal';
+}
+export interface TransitionByColumn extends TransitionBase {
+    type: 'column';
+    column: string;
+}
+
+export interface TransitionByPosition extends TransitionBase {
+    type: 'position';
+    dimension: Dimension3D;
+}
+
+export interface Setup extends VegaMorphCharts.types.PresenterSetup {
+    transition?: Transition;
+}
+
 /**
  * Saved metadata about an Insight.
  */
@@ -390,5 +391,14 @@ export interface Snapshot {
     insight?: Insight;
     image?: string;
     bgColor?: string;
-    camera?: Camera;
+    setup?: Setup;
 }
+
+/**
+ * Visualize an Insight with a particular Setup.
+ */
+export interface InsightSetup {
+    insight: Insight;
+    setup?: Setup;
+}
+

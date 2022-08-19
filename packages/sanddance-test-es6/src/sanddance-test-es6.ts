@@ -41,4 +41,4 @@ const insight: SandDance.specs.Insight = {
     view: '3d',
 };
 
-viewer.render(insight, data);
+viewer.render({ insight }, data);

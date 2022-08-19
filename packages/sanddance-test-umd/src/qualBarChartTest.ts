@@ -57,5 +57,5 @@ namespace qualBarChartTest {
         view: '2d',
     };
 
-    viewer.render(insight, data, { columnTypes: { myColor: 'string' } });
+    viewer.render({ insight }, data, { columnTypes: { myColor: 'string' } });
 }
