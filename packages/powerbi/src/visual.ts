@@ -436,10 +436,10 @@ export class Visual implements IVisual {
             if (camera) {
                 if (now) {
                     this.app.explorer.viewer.setCamera(camera);
-                    delete this.sanddanceRenderOptions.getCameraTo;
+                    //delete this.sanddanceRenderOptions.getCameraTo;
                 } else {
-                    this.sanddanceRenderOptions.getCameraTo = () => camera;
-                    this.afterView.push(() => delete this.sanddanceRenderOptions.getCameraTo);
+                    //this.sanddanceRenderOptions.getCameraTo = () => camera;
+                    //this.afterView.push(() => delete this.sanddanceRenderOptions.getCameraTo);
                 }
                 this.lastCameraJSON = cameraJSON;
             }
