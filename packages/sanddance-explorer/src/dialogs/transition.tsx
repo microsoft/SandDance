@@ -17,14 +17,13 @@ export interface Props extends ColumnMapBaseProps {
     themePalette: Partial<FluentUITypes.IPalette>;
     explorer: Explorer_Class;
     transitionCluster: boolean
-    transitionColumn: string;
+    transitionColumn: SandDance.types.Column;
     transitionDimension: SandDance.types.Dimension2D;
 }
 
 export interface State {
     transitionType: SandDance.types.TransitionType;
     positionDimension: SandDance.types.Dimension3D;
-    column: string;
 }
 
 function _Transition(_props: Props) {
@@ -34,7 +33,6 @@ function _Transition(_props: Props) {
             this.state = {
                 transitionType: 'ordinal',
                 positionDimension: 'y',
-                column: props.transitionColumn,
             };
         }
 
@@ -97,7 +95,7 @@ function _Transition(_props: Props) {
                                         break;
                                     }
                                 }
-                                props.explorer.setState({ transition, calculating: () => setStagger(props.explorer) });
+                                props.explorer.setState({ transition, calculating: () => props.explorer.setStagger() });
                             }}
                         />
                         {(() => {
@@ -107,9 +105,9 @@ function _Transition(_props: Props) {
                                         <Dropdown
                                             collapseLabel={props.compactUI}
                                             label={'column TODO'}
-                                            options={getColumnOptions(props, props.transitionColumn)}
+                                            options={getColumnOptions(props, props.transitionColumn.name)}
                                             onChange={(e, o) => {
-                                                props.explorer.setState({ transitionColumn: o.text, calculating: () => setStagger(props.explorer) });
+                                                props.explorer.setState({ transitionColumn: o.data, calculating: () => props.explorer.setStagger() });
                                             }}
                                         />
                                     );
@@ -132,7 +130,7 @@ function _Transition(_props: Props) {
                                                 },
                                             ]}
                                             onChange={(e, o) => {
-                                                props.explorer.setState({ transitionDimension: o.key as SandDance.types.Dimension2D, calculating: () => setStagger(props.explorer) });
+                                                props.explorer.setState({ transitionDimension: o.key as SandDance.types.Dimension2D, calculating: () => props.explorer.setStagger() });
                                             }}
                                         />
                                     );
@@ -143,7 +141,7 @@ function _Transition(_props: Props) {
                             <base.fluentUI.Toggle
                                 label='Cluster TODO'
                                 checked={props.transitionCluster}
-                                onChange={(e, transitionCluster) => props.explorer.setState({ transitionCluster, calculating: () => setStagger(props.explorer) })}
+                                onChange={(e, transitionCluster) => props.explorer.setState({ transitionCluster, calculating: () => props.explorer.setStagger() })}
                             />
                         )}
                     </Group>
@@ -195,8 +193,9 @@ export declare class Transition_Class extends base.react.Component<Props, State>
 function groupOptions(sectionName: string, columns: SandDance.types.Column[], selectedKey: string) {
     const options = columns.map(column => {
         const option: FluentUITypes.IDropdownOption = {
-            key: column.name,
+            key: `column:${column.name}`,
             text: column.name,
+            data: column,
             selected: column.name === selectedKey,
         };
         return option;
@@ -216,17 +215,4 @@ function getColumnOptions(props: ColumnMapBaseProps, selectedKey: string) {
     const quantitativeGroup = groupOptions(strings.selectNumeric, props.quantitativeColumns, selectedKey);
     const categoricGroup = groupOptions(strings.selectNonNumeric, props.categoricalColumns, selectedKey);
     return quantitativeGroup.concat(categoricGroup);
-}
-
-export function setStagger(explorer: Explorer_Class) {
-    const { state } = explorer;
-    const { layerStagger } = explorer.viewer.presenter.morphchartsref;
-    console.log('set stagger order');//, explorer.viewer._dataScope.currentData().length);
-    if (!state.transition) {
-        delete layerStagger.cubes;
-    } else {
-        const staggerOrders = new Float64Array();
-        //TODO calc column via filtered data
-        //layerStagger.cubes = { staggerOrders };
-    }
 }

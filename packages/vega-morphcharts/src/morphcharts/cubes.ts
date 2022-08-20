@@ -4,7 +4,7 @@
 */
 
 import { Layouts, UnitType } from 'morphcharts';
-import { IBounds, ILayer, ILayerCreator, ILayerProps, Stage } from '../interfaces';
+import { IBounds, ICubeLayer, ILayer, ILayerCreator, ILayerProps, Stage } from '../interfaces';
 import { increment } from './bounds';
 import { ColorMap } from './color';
 
@@ -47,7 +47,10 @@ export const createCubeLayer: ILayerCreator = (props: ILayerProps): ILayer => {
         positionsZ,
     });
 
-    const layer: ILayer = {
+    const layer: ICubeLayer = {
+        positionsX,
+        positionsY,
+        positionsZ,
         update: (newBounds, selected, stagger) => {
             const { colors, maxColor, minColor, palette } = layer.unitColorMap;
 

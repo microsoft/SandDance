@@ -31,7 +31,7 @@ import { InputSearchExpressionGroup, Search } from './dialogs/search';
 import { Settings } from './dialogs/settings';
 import { SnapshotEditor, SnapshotEditor_Class } from './dialogs/snapshotEditor';
 import { Snapshots } from './dialogs/snapshots';
-import { setStagger, Transition } from './dialogs/transition';
+import { Transition } from './dialogs/transition';
 import {
     ChangeColumnMappingOptions,
     ColorSettings,
@@ -120,7 +120,7 @@ export interface UIState {
     renderer: SandDance.VegaMorphCharts.types.MorphChartsRendererOptions;
     transition?: SandDance.types.Transition;
     transitionCluster: boolean;
-    transitionColumn?: string;
+    transitionColumn?: SandDance.types.Column;
     transitionDimension: SandDance.types.Dimension2D;
     transitionDurations: SandDance.VegaMorphCharts.types.TransitionDurations;
 }
@@ -241,7 +241,7 @@ function _Explorer(_props: Props) {
                     viewerOptions && viewerOptions.onError && viewerOptions.onError(errors);
                 },
                 onBeforeCreateLayers: (stage, specCapabilities) => {
-                    setStagger(this);
+                    this.setStagger();
                     attachSpecRoleToAxisTitle(stage, specCapabilities);
                 },
                 getTextColor: o => {
@@ -294,6 +294,10 @@ function _Explorer(_props: Props) {
                 this.viewer.presenter.style = mergePrenterStyle;
                 this.viewer.options = SandDance.VegaMorphCharts.util.deepMerge(this.viewer.options, this.props.viewerOptions, this.viewerOptions) as SandDance.types.ViewerOptions;
             }
+        }
+
+        public setStagger() {
+            this.viewer.assignTransitionStagger(this.state.transition);
         }
 
         public signal(signalName: string, signalValue: any, newViewStateTarget?: boolean) {
@@ -475,7 +479,7 @@ function _Explorer(_props: Props) {
                     ensureColumnsExist(newState.columns, dataContent.columns, newState.transform);
                     const errors = ensureColumnsPopulated(partialInsight?.chart, partialInsight?.totalStyle, newState.columns, dataContent.columns);
                     newState.errors = errors;
-                    newState.transitionColumn = dataContent.columns[0].name;
+                    newState.transitionColumn = dataContent.columns[0];
                     //change insight
                     this.changeInsight(
                         partialInsight,
@@ -1526,6 +1530,7 @@ export declare class Explorer_Class extends base.react.Component<Props, State> {
     constructor(props: Props);
     finalize(): void;
     updateViewerOptions(viewerOptions: Partial<SandDance.types.ViewerOptions>): void;
+    setStagger(): void;
     signal(signalName: string, signalValue: any, newViewStateTarget?: boolean): void;
     //private manageColorToolbar(): void;
     getInsight(): SandDance.specs.Insight;

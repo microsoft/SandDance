@@ -370,7 +370,7 @@ export interface TransitionByOrdinal extends TransitionBase {
 }
 export interface TransitionByColumn extends TransitionBase {
     type: 'column';
-    column: string;
+    column: Column;
 }
 
 export interface TransitionByPosition extends TransitionBase {

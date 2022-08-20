@@ -28,6 +28,7 @@ import {
     Setup,
     TooltipCreateOptions,
     TooltipDestroyable,
+    Transition,
     ViewerOptions,
 } from './types';
 import { Camera, Column } from '@msrvida/chart-types';
@@ -51,6 +52,7 @@ import SearchExpression = searchExpression.SearchExpression;
 import SearchExpressionGroup = searchExpression.SearchExpressionGroup;
 
 import { CharacterSet } from './characterSet';
+import { assignTransitionStagger } from './transition';
 
 const { defaultView } = VegaMorphCharts.defaults;
 
@@ -179,10 +181,10 @@ export class Viewer {
                 innerPromise = new Promise<void>(innerResolve => {
                     this.renderNewLayout({}, {
                         ...(this.setup || {}),
-                        preStage: (stage, colorMapper) => {
+                        preStage: (stage, cubeLayer) => {
                             finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                             this.overrideAxisLabels(stage);
-                            colorMapper.setCubeUnitColorMap(oldColorContext.colorMap);
+                            cubeLayer.unitColorMap = oldColorContext.colorMap;
                             if (this.options.onStage) {
                                 this.options.onStage(stage);
                             }
@@ -231,11 +233,11 @@ export class Viewer {
                 this.presenter.morphChartsRenderResult.update({ cubes: null });
                 await this.renderNewLayout({}, {
                     ...(this.setup || {}),
-                    preStage: (stage, colorMapper) => {
+                    preStage: (stage, cubeLayer) => {
                         //save off the spec colors
-                        colorMap = colorMapper.getCubeUnitColorMap();
-                        colorMapper.setCubeUnitColorMap(oldColorContext.colorMap);
-                        this.preStage(stage, colorMapper);
+                        colorMap = cubeLayer.unitColorMap;
+                        cubeLayer.unitColorMap = oldColorContext.colorMap;
+                        this.preStage(stage, cubeLayer);
                     },
                     onPresent: () => {
                         //save new legend
@@ -425,7 +427,7 @@ export class Viewer {
             this.options = VegaMorphCharts.util.deepMerge(this.options, newViewerOptions as ViewerOptions);
         }
 
-        this.presenter.morphChartsRenderResult.setCubeUnitColorMap(colorContext.colorMap);
+        this.presenter.morphChartsRenderResult.getCubeLayer().unitColorMap = colorContext.colorMap;
         this.presenter.morphChartsRenderResult.update({ cubes: this.convertSearchToSet() });
     }
 
@@ -510,12 +512,12 @@ export class Viewer {
         };
 
         //now be ready to capture color changing signals 
-        presenterConfig.preStage = (stage: VegaMorphCharts.types.Stage, colorMapper: VegaMorphCharts.types.MorphChartsColorMapper) => {
+        presenterConfig.preStage = (stage, cubeLayer) => {
             if (this._shouldSaveColorContext()) {
                 //save off the colors from Vega layout
-                colorContext.colorMap = colorMapper.getCubeUnitColorMap();
+                colorContext.colorMap = cubeLayer.unitColorMap;
             }
-            this.preStage(stage, colorMapper);
+            this.preStage(stage, cubeLayer);
         };
         presenterConfig.onPresent = () => {
             if (this._shouldSaveColorContext()) {
@@ -554,13 +556,13 @@ export class Viewer {
             insight.signalValues,
             {
                 ...(setup || {}),
-                preStage: (stage, colorMapper) => {
+                preStage: (stage, cubeLayer) => {
                     if (this._shouldSaveColorContext()) {
                         //save off the colors from Vega layout
-                        colorContext.colorMap = colorMapper.getCubeUnitColorMap();  //colorMapFromCubes(colorMapper);
+                        colorContext.colorMap = cubeLayer.unitColorMap;
                     } else {
                         //apply passed colorContext
-                        colorMapper.setCubeUnitColorMap(colorContext.colorMap);
+                        cubeLayer.unitColorMap = colorContext.colorMap;
                     }
                     //if items are selected, repaint
                     const hasSelectedData = !!this._dataScope.hasSelectedData();
@@ -569,7 +571,7 @@ export class Viewer {
                         //TODO paint active item
                         //this.presenter.mcRenderResult.update({ cubes: this.convertSearchToSet() });
                     }
-                    this.preStage(stage, colorMapper);
+                    this.preStage(stage, cubeLayer);
                 },
                 onPresent: () => {
                     if (this._shouldSaveColorContext()) {
@@ -619,7 +621,7 @@ export class Viewer {
         }
     }
 
-    private preStage(stage: VegaMorphCharts.types.Stage, colorMapper: VegaMorphCharts.types.MorphChartsColorMapper) {
+    private preStage(stage: VegaMorphCharts.types.Stage, cubeLayer: VegaMorphCharts.types.ICubeLayer) {
         this.overrideAxisLabels(stage);
         this._axisSelection = new AxisSelection(this.specCapabilities, this._specColumns, stage);
         finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
@@ -961,6 +963,10 @@ export class Viewer {
      */
     getSignalValues() {
         return extractSignalValuesFromView(this.vegaViewGl, this.vegaSpec);
+    }
+
+    assignTransitionStagger(transition: Transition) {
+        assignTransitionStagger(transition, this._dataScope.currentData(), this.presenter);
     }
 
     finalize() {

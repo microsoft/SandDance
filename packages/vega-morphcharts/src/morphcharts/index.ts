@@ -5,8 +5,7 @@
 
 import { Constants, Core, Helpers } from 'morphcharts';
 import { colorFromString } from '../color';
-import { MorphChartsColorMapper, UnitColorMap } from '../exports/types';
-import { IBounds, ILayerProps, MorphChartsRenderResult, MorphChartsRef, PreStage, Stage, MorphChartsColor, MorphChartsColors, PresenterConfig, MorphChartsRendererOptions, LayerSelection, ILayer, ImageBounds, MorphChartsOptions, LayerStagger } from '../interfaces';
+import { IBounds, ILayerProps, MorphChartsRenderResult, MorphChartsRef, PreStage, Stage, MorphChartsColor, MorphChartsColors, PresenterConfig, MorphChartsRendererOptions, LayerSelection, ILayer, ImageBounds, MorphChartsOptions, LayerStagger, ICubeLayer } from '../interfaces';
 import { createAxesLayer } from './axes';
 import { outerBounds } from './bounds';
 import { createCubeLayer } from './cubes';
@@ -211,15 +210,8 @@ export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: 
         bounds = contentBounds;
     }
 
-    const colorMapper: MorphChartsColorMapper = {
-        getCubeUnitColorMap: () => cubeLayer.unitColorMap,
-        setCubeUnitColorMap: (unitColorMap: UnitColorMap) => {
-            cubeLayer.unitColorMap = unitColorMap;
-        },
-    };
-
     if (preStage) {
-        preStage(stage, colorMapper);
+        preStage(stage, <ICubeLayer>cubeLayer);
     }
 
     //add images
@@ -261,7 +253,7 @@ export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: 
     colorConfig(ref, colors);
 
     return {
-        ...colorMapper,
+        getCubeLayer: () => <ICubeLayer>cubeLayer,
         update: layerSelection => layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds, ref.layerStagger),
         activate: id => core.renderer.transitionBuffers[0].activeId = id,
         moveCamera: (position: vec3, rotation: quat) => {

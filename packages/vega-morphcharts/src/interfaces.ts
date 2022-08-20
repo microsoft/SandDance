@@ -149,7 +149,7 @@ export interface LegendRowSymbol {
  * Function that can be called prior to presenting the stage.
  */
 export interface PreStage {
-    (stage: Stage, colorMapper: MorphChartsColorMapper): void;
+    (stage: Stage, cubeLayer: ICubeLayer): void;
 }
 
 /**
@@ -310,7 +310,13 @@ export interface IBounds {
 export interface ILayer {
     bounds: IBounds;
     update?: (bounds: IBounds, selected?: Set<number>, stagger?: Stagger) => void;
-    unitColorMap?: UnitColorMap
+    unitColorMap?: UnitColorMap;
+}
+
+export interface ICubeLayer extends ILayer {
+    positionsX: Float64Array;
+    positionsY: Float64Array;
+    positionsZ: Float64Array;
 }
 
 export type ILayerCreator = (props: ILayerProps) => ILayer;
@@ -322,7 +328,7 @@ export interface LayerSelection {
 }
 
 export interface Stagger {
-    staggerOrders?: Float64Array | Uint32Array;
+    staggerOrders?: Float64Array;
     minStaggerOrder?: number;
     maxStaggerOrder?: number;
 }
@@ -333,15 +339,11 @@ export interface LayerStagger {
     texts?: Stagger;
 }
 
-export interface MorphChartsColorMapper {
-    getCubeUnitColorMap: () => UnitColorMap;
-    setCubeUnitColorMap: (unitColorMap: UnitColorMap) => void;
-}
-
-export interface MorphChartsRenderResult extends MorphChartsColorMapper {
+export interface MorphChartsRenderResult {
     activate(id: number),
     update: (layerSelection: LayerSelection) => void;
     moveCamera: (position: vec3, rotation: quat) => void;
+    getCubeLayer: () => ICubeLayer;
 }
 
 export type MorphChartsColor = [number, number, number];
