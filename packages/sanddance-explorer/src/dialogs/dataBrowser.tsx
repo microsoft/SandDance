@@ -101,6 +101,9 @@ export function DataBrowser(props: Props) {
                     disabled={props.disabled}
                     onSearch={props.onSearch}
                     bingSearchDisabled={props.bingSearchDisabled}
+                    onChangeColumnType={(column: SandDance.types.Column)=>{
+                        props.explorer.viewer.updateColumn(column);
+                    }}
                 />
             </div>}
             {props.dataExportHandler && props.data && (

@@ -20,6 +20,7 @@ export interface Props {
     bingSearchDisabled: boolean;
     disabled: boolean;
     columns: SandDance.types.Column[];
+    onChangeColumnType?: (column: SandDance.types.Column) => void;
 }
 
 function isNumber(value: any) {
@@ -56,10 +57,28 @@ function bingSearchLink(column: SandDance.types.Column, value: any) {
     );
 }
 
+function categoricalToggle(column: SandDance.types.Column, onChangeSignal: (column: SandDance.types.Column) => void) {
+    if (!column) return null;
+    if (column.type != 'integer' && column.type != 'number') return null;
+    if (column.stats.distinctValueCount > 1000) return null;
+    return (
+        <div>
+            <a 
+                href={'#'}
+                onClick={() => {
+                    column.quantitative = !column.quantitative;
+                    if (onChangeSignal) onChangeSignal(column);
+                }}
+            >{`switch to ${column.quantitative ? 'categorical':'quantitative'}`}</a>
+        </div>
+    );
+}
+
 interface NameValuePair {
     columnName: string;
     value: SearchExpressionValue;
     bingSearch?: JSX.Element;
+    categoricalToggle?: JSX.Element;
 }
 
 interface DisplayValue {
@@ -121,6 +140,7 @@ export function DataItem(props: Props) {
         if (!props.bingSearchDisabled) {
             nameValuePair.bingSearch = bingSearchLink(props.columns.filter(c => c.name === columnName)[0], props.item[columnName]);
         }
+        nameValuePair.categoricalToggle = categoricalToggle(props.columns.filter(c => c.name === columnName)[0], props.onChangeColumnType);
         nameValuePairs.push(nameValuePair);
     }
     return (
@@ -159,6 +179,7 @@ export function DataItem(props: Props) {
                     >
                         <div className="column-name">{nameValuePair.columnName}</div>
                         <div className="column-value">{displayValueElement(nameValuePair)}</div>
+                        {nameValuePair.categoricalToggle}
                         {nameValuePair.bingSearch}
                     </div>
                 );
