@@ -33,6 +33,7 @@
 		"vega-typings": "0.21.0"
 	},
 	"devDependencies": {
+		"@types/d3-color": "^1.4.2",
 		"@types/d3-ease": "^3.0.0",
 		"@types/react": ">=16.8.0 <18.0.0",
 		"typescript": "^4.2.3",
