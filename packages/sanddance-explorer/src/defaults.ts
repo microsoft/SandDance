@@ -73,6 +73,7 @@ export function initialExplorerState(props: Props) {
         historyIndex: -1,
         historyItems: [],
         renderer: props.initialRenderer || defaultRenderer,
+        transitionDimension: 'x',
         transitionDurations: SandDance.VegaMorphCharts.util.clone(SandDance.VegaMorphCharts.defaults.defaultPresenterConfig.transitionDurations),
     };
     resetSelectedItemIndex(state.selectedItemIndex);

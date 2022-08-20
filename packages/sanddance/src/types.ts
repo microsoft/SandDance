@@ -375,7 +375,7 @@ export interface TransitionByColumn extends TransitionBase {
 
 export interface TransitionByPosition extends TransitionBase {
     type: 'position';
-    dimension: Dimension3D;
+    dimension: Dimension2D;
 }
 
 export interface Setup extends VegaMorphCharts.types.PresenterSetup {

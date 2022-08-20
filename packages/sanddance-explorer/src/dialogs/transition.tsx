@@ -17,6 +17,7 @@ export interface Props extends ColumnMapBaseProps {
     themePalette: Partial<FluentUITypes.IPalette>;
     explorer: Explorer_Class;
     transitionColumn: string;
+    transitionDimension: SandDance.types.Dimension2D;
 }
 
 export interface State {
@@ -38,52 +39,110 @@ function _Transition(_props: Props) {
 
         render() {
             const { props, state } = this;
-            console.log('props.transitionColumn', props.transitionColumn)
             const dropdownRef = base.react.createRef<FluentUITypes.IDropdown>();
             props.explorer.dialogFocusHandler.focus = () => dropdownRef.current?.focus();
             return (
                 <div>
-                    <base.fluentUI.Slider
-                        label='Transition scrubber TODO'
-                        min={0}
-                        max={1}
-                        step={0.01}
-                        defaultValue={1}
-                        onChange={value => {
-                            props.explorer.viewer.presenter.morphchartsref.core.renderer.transitionTime = value;
-                            //TODO - swap axes at 0
-                        }}
-                    />
-                    <base.fluentUI.ChoiceGroup
-                        label={'Transition type TODO'}
-                        selectedKey={state.transitionType}
-                        options={[
-                            {
-                                key: 'ordinal',
-                                text: 'Ordinal TODO',
-                            },
-                            {
-                                key: 'column',
-                                text: 'Column TODO',
-                            },
-                            {
-                                key: 'layout',
-                                text: 'Layout TODO',
-                            },
-                        ]}
-                        onChange={(e, o) => {
-                            //this.setState({ transitionType: o.key as SandDance.types.TransitionType });
-                        }}
-                    />
                     <Group label={strings.labelTransition}>
-                        <Dropdown
-                            collapseLabel={props.compactUI}
-                            label={'column TODO'}
-                            options={getColumnOptions(props, props.transitionColumn)}
-                            onChange={(e, o) => {
-                                props.explorer.setState({ transitionColumn: o.text });
+                        <base.fluentUI.Slider
+                            label='Transition scrubber TODO'
+                            min={0}
+                            max={1}
+                            step={0.01}
+                            defaultValue={1}
+                            onChange={value => {
+                                props.explorer.viewer.presenter.morphchartsref.core.renderer.transitionTime = value;
+                                //TODO - swap axes at 0
                             }}
                         />
+                        <base.fluentUI.ChoiceGroup
+                            label={'Transition type TODO'}
+                            selectedKey={state.transitionType}
+                            options={[
+                                {
+                                    key: 'ordinal',
+                                    text: 'Ordinal TODO',
+                                },
+                                {
+                                    key: 'column',
+                                    text: 'Column TODO',
+                                },
+                                {
+                                    key: 'position',
+                                    text: 'Layout TODO',
+                                },
+                            ]}
+                            onChange={(e, o) => {
+                                const transitionType = o.key as SandDance.types.TransitionType;
+                                this.setState({ transitionType });
+                                let transition: SandDance.types.Transition;
+                                switch (transitionType) {
+                                    case 'ordinal': {
+                                        //do nothing
+                                        break;
+                                    }
+                                    case 'column': {
+                                        transition = {
+                                            type: transitionType,
+                                            column: props.transitionColumn,
+                                        };
+                                        break;
+                                    }
+                                    case 'position': {
+                                        transition = {
+                                            type: transitionType,
+                                            dimension: props.transitionDimension,
+                                        };
+                                        break;
+                                    }
+                                }
+                                props.explorer.setState({ transition });
+                            }}
+                        />
+                        {(() => {
+                            switch (state.transitionType) {
+                                case 'column': {
+                                    return (
+                                        <Dropdown
+                                            collapseLabel={props.compactUI}
+                                            label={'column TODO'}
+                                            options={getColumnOptions(props, props.transitionColumn)}
+                                            onChange={(e, o) => {
+                                                props.explorer.setState({ transitionColumn: o.text });
+                                            }}
+                                        />
+                                    );
+                                }
+                                case 'position': {
+                                    return (
+                                        <Dropdown
+                                            collapseLabel={props.compactUI}
+                                            label={'position TODO'}
+                                            options={[
+                                                {
+                                                    key: 'x',
+                                                    text: 'X TODO',
+                                                    selected: props.transitionDimension === 'x',
+                                                },
+                                                {
+                                                    key: 'y',
+                                                    text: 'Y TODO',
+                                                    selected: props.transitionDimension === 'y',
+                                                },
+                                            ]}
+                                            onChange={(e, o) => {
+                                                props.explorer.setState({ transitionDimension: o.key as SandDance.types.Dimension2D });
+                                            }}
+                                        />
+                                    );
+                                }
+                            }
+                        })()}
+                        {(state.transitionType !== 'ordinal') && (
+                            <div>
+                                TODO cluster
+                            </div>
+                        )}
                     </Group>
                     <Group label={strings.labelTransitionDurations}>
                         <base.fluentUI.Slider

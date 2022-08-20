@@ -120,6 +120,7 @@ export interface UIState {
     renderer: SandDance.VegaMorphCharts.types.MorphChartsRendererOptions;
     transition?: SandDance.types.Transition;
     transitionColumn?: string;
+    transitionDimension: SandDance.types.Dimension2D;
     transitionDurations: SandDance.VegaMorphCharts.types.TransitionDurations;
 }
 
@@ -1348,6 +1349,7 @@ function _Explorer(_props: Props) {
                                                 explorer={this as any as Explorer_Class}
                                                 themePalette={themePalette}
                                                 transitionColumn={this.state.transitionColumn}
+                                                transitionDimension={this.state.transitionDimension}
                                             />
                                         );
                                     }
