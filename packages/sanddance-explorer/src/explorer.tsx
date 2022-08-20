@@ -1361,6 +1361,17 @@ function _Explorer(_props: Props) {
                                                     }
                                                 }}
                                                 bingSearchDisabled={this.props.bingSearchDisabled}
+                                                onUpdateColumn={updatedColumn => {
+                                                    this.setState(state => {
+                                                        state.dataContent.columns
+                                                            .filter(c => c.name == updatedColumn.name)
+                                                            .forEach(c => {
+                                                                // keep this updating step the same as viewer.updateColumn
+                                                                c.quantitative = updatedColumn.quantitative;
+                                                            });
+                                                    });
+                                                    this.viewer.updateColumn(updatedColumn);
+                                                }}
                                             />
                                         );
                                     }
