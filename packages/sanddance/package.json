@@ -26,8 +26,10 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@types/d3-scale": "^4.0.2"
   },
   "dependencies": {
+    "d3-scale": "^4.0.2",
     "@msrvida/chart-types": "^1",
     "@msrvida/sanddance-specs": "^1",
     "@msrvida/search-expression": "^1",
