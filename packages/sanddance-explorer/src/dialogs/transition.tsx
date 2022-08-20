@@ -16,6 +16,7 @@ export interface Props extends ColumnMapBaseProps {
     compactUI: boolean;
     themePalette: Partial<FluentUITypes.IPalette>;
     explorer: Explorer_Class;
+    transitionCluster: boolean
     transitionColumn: string;
     transitionDimension: SandDance.types.Dimension2D;
 }
@@ -96,7 +97,7 @@ function _Transition(_props: Props) {
                                         break;
                                     }
                                 }
-                                props.explorer.setState({ transition });
+                                props.explorer.setState({ transition, calculating: () => setStagger(props.explorer) });
                             }}
                         />
                         {(() => {
@@ -108,7 +109,7 @@ function _Transition(_props: Props) {
                                             label={'column TODO'}
                                             options={getColumnOptions(props, props.transitionColumn)}
                                             onChange={(e, o) => {
-                                                props.explorer.setState({ transitionColumn: o.text });
+                                                props.explorer.setState({ transitionColumn: o.text, calculating: () => setStagger(props.explorer) });
                                             }}
                                         />
                                     );
@@ -131,7 +132,7 @@ function _Transition(_props: Props) {
                                                 },
                                             ]}
                                             onChange={(e, o) => {
-                                                props.explorer.setState({ transitionDimension: o.key as SandDance.types.Dimension2D });
+                                                props.explorer.setState({ transitionDimension: o.key as SandDance.types.Dimension2D, calculating: () => setStagger(props.explorer) });
                                             }}
                                         />
                                     );
@@ -139,9 +140,11 @@ function _Transition(_props: Props) {
                             }
                         })()}
                         {(state.transitionType !== 'ordinal') && (
-                            <div>
-                                TODO cluster
-                            </div>
+                            <base.fluentUI.Toggle
+                                label='Cluster TODO'
+                                checked={props.transitionCluster}
+                                onChange={(e, transitionCluster) => props.explorer.setState({ transitionCluster, calculating: () => setStagger(props.explorer) })}
+                            />
                         )}
                     </Group>
                     <Group label={strings.labelTransitionDurations}>
@@ -213,4 +216,17 @@ function getColumnOptions(props: ColumnMapBaseProps, selectedKey: string) {
     const quantitativeGroup = groupOptions(strings.selectNumeric, props.quantitativeColumns, selectedKey);
     const categoricGroup = groupOptions(strings.selectNonNumeric, props.categoricalColumns, selectedKey);
     return quantitativeGroup.concat(categoricGroup);
+}
+
+export function setStagger(explorer: Explorer_Class) {
+    const { state } = explorer;
+    const { layerStagger } = explorer.viewer.presenter.morphchartsref;
+    console.log('set stagger order');//, explorer.viewer._dataScope.currentData().length);
+    if (!state.transition) {
+        delete layerStagger.cubes;
+    } else {
+        const staggerOrders = new Float64Array();
+        //TODO calc column via filtered data
+        //layerStagger.cubes = { staggerOrders };
+    }
 }

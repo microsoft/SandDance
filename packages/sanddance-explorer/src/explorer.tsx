@@ -31,7 +31,7 @@ import { InputSearchExpressionGroup, Search } from './dialogs/search';
 import { Settings } from './dialogs/settings';
 import { SnapshotEditor, SnapshotEditor_Class } from './dialogs/snapshotEditor';
 import { Snapshots } from './dialogs/snapshots';
-import { Transition } from './dialogs/transition';
+import { setStagger, Transition } from './dialogs/transition';
 import {
     ChangeColumnMappingOptions,
     ColorSettings,
@@ -119,6 +119,7 @@ export interface UIState {
     camera?: SandDance.types.Camera;
     renderer: SandDance.VegaMorphCharts.types.MorphChartsRendererOptions;
     transition?: SandDance.types.Transition;
+    transitionCluster: boolean;
     transitionColumn?: string;
     transitionDimension: SandDance.types.Dimension2D;
     transitionDurations: SandDance.VegaMorphCharts.types.TransitionDurations;
@@ -240,8 +241,7 @@ function _Explorer(_props: Props) {
                     viewerOptions && viewerOptions.onError && viewerOptions.onError(errors);
                 },
                 onBeforeCreateLayers: (stage, specCapabilities) => {
-                    console.log('todo; layerStagger', this.viewer.presenter.morphchartsref.layerStagger);
-
+                    setStagger(this);
                     attachSpecRoleToAxisTitle(stage, specCapabilities);
                 },
                 getTextColor: o => {
@@ -1348,6 +1348,7 @@ function _Explorer(_props: Props) {
                                                 compactUI={this.props.compactUI}
                                                 explorer={this as any as Explorer_Class}
                                                 themePalette={themePalette}
+                                                transitionCluster={this.state.transitionCluster}
                                                 transitionColumn={this.state.transitionColumn}
                                                 transitionDimension={this.state.transitionDimension}
                                             />
@@ -1505,15 +1506,15 @@ function _Explorer(_props: Props) {
 export const Explorer: typeof Explorer_Class = _Explorer as any;
 
 export declare class Explorer_Class extends base.react.Component<Props, State> {
-    private layoutDivUnpinned: HTMLElement;
-    private layoutDivPinned: HTMLElement;
-    private getColorContext: (oldInsight: SandDance.specs.Insight, newInsight: SandDance.specs.Insight) => SandDance.types.ColorContext;
-    private historicFilterChange: string;
-    private lastHistoryIndex: number;
-    private ignoreSelectionChange: boolean;
-    private snapshotEditor: SnapshotEditor_Class;
-    private scrollSnapshotTimer: number;
-    private newViewStateTarget: boolean;
+    // private layoutDivUnpinned: HTMLElement;
+    // private layoutDivPinned: HTMLElement;
+    // private getColorContext: (oldInsight: SandDance.specs.Insight, newInsight: SandDance.specs.Insight) => SandDance.types.ColorContext;
+    // private historicFilterChange: string;
+    // private rebaseFilter: boolean;
+    // private ignoreSelectionChange: boolean;
+    // private snapshotEditor: SnapshotEditor_Class;
+    // private scrollSnapshotTimer: number;
+    // private newViewStateTarget: boolean;
     dialogFocusHandler: { focus?: () => void; };
     imageHolder: ImageHolder;
     viewer: SandDance.Viewer;
@@ -1526,39 +1527,39 @@ export declare class Explorer_Class extends base.react.Component<Props, State> {
     finalize(): void;
     updateViewerOptions(viewerOptions: Partial<SandDance.types.ViewerOptions>): void;
     signal(signalName: string, signalValue: any, newViewStateTarget?: boolean): void;
-    private manageColorToolbar(): void;
+    //private manageColorToolbar(): void;
     getInsight(): SandDance.specs.Insight;
     setInsight(historyAction: HistoryAction, newState?: Partial<UIState>, partialInsight?: Partial<SandDance.specs.Insight>, rebaseFilter?: boolean): void;
-    private handleReviveSnapshot(snapshot: Snapshot, selectedSnapshotIndex: number): void;
+    //private handleReviveSnapshot(snapshot: Snapshot, selectedSnapshotIndex: number): void;
     reviveSnapshot(snapshotOrIndex: Snapshot | number): void;
     load(data: DataFile | object[], getPartialInsight?: (columns: SandDance.types.Column[]) => Partial<SandDance.specs.Insight>, optionsOrPrefs?: Prefs | Options): Promise<void>;
     changeChartType(chart: SandDance.specs.Chart): SandDance.specs.InsightColumns;
     calculate(calculating: () => any): void;
     changeView(view: SandDance.types.View): void;
-    private changeInsight(partialInsight: Partial<SandDance.specs.Insight>, historyAction: HistoryAction, additionalUIState?: Partial<UIState>): void;
+    //private changeInsight(partialInsight: Partial<SandDance.specs.Insight>, historyAction: HistoryAction, additionalUIState?: Partial<UIState>): void;
     addHistory(historicInsight: Partial<HistoricInsight>, historyAction: HistoryAction, additionalUIState?: Partial<UIState>): void;
-    private replay(index: number): void;
+    //private replay(index: number): void;
     undo(): void;
     redo(historyIndex?: number): void;
     changespecCapabilities(specCapabilities: SandDance.specs.SpecCapabilities): void;
     changeColumnMapping(role: SandDance.specs.InsightColumnRoles, column: SandDance.types.Column, options?: ChangeColumnMappingOptions): void;
-    private setSideTabId(sideTabId: SideTabId, dataScopeId?: DataScopeId): void;
-    private getBestDataScopeId(): void;
-    private activateDataBrowserItem(sideTabId: SideTabId, dataScopeId: DataScopeId): void;
-    private silentActivation(itemToActivate: object): Promise<void>;
+    // private setSideTabId(sideTabId: SideTabId, dataScopeId?: DataScopeId): void;
+    // private getBestDataScopeId(): void;
+    // private activateDataBrowserItem(sideTabId: SideTabId, dataScopeId: DataScopeId): void;
+    // private silentActivation(itemToActivate: object): Promise<void>;
     sidebar(sidebarClosed: boolean, sidebarPinned: boolean): void;
     resize(): void;
-    private _resize(): void;
-    private viewerMounted(glDiv: HTMLElement): void;
-    private getLayoutDivSize(pinned: boolean, closed: boolean): SandDance.types.Size;
-    private toggleableSearch(e: TouchEvent | MouseEvent | PointerEvent, search: SandDance.searchExpression.SearchExpressionGroup): void;
-    private doFilter(search: SandDance.searchExpression.Search, historicFilterChange: string): void;
-    private doUnfilter(historicFilterChange: string): void;
-    private doSelect(search: SandDance.searchExpression.Search): Promise<void>;
-    private doDeselect(): Promise<void>;
-    private writeSnapshot(snapshot: Snapshot, editIndex: number): void;
+    // private _resize(): void;
+    // private viewerMounted(glDiv: HTMLElement): void;
+    // private getLayoutDivSize(pinned: boolean, closed: boolean): SandDance.types.Size;
+    // private toggleableSearch(e: TouchEvent | MouseEvent | PointerEvent, search: SandDance.searchExpression.SearchExpressionGroup): void;
+    // private doFilter(search: SandDance.searchExpression.Search, historicFilterChange: string): void;
+    // private doUnfilter(historicFilterChange: string): void;
+    // private doSelect(search: SandDance.searchExpression.Search): Promise<void>;
+    // private doDeselect(): Promise<void>;
+    // private writeSnapshot(snapshot: Snapshot, editIndex: number): void;
     scrollSnapshotIntoView(selectedSnapshotIndex: number): void;
     componentDidMount(): void;
     render(): JSX.Element;
-    private getColumnMapBaseProps(): ColumnMapBaseProps;
+    //private getColumnMapBaseProps(): ColumnMapBaseProps;
 }
