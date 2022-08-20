@@ -8,12 +8,12 @@ import { Group } from '../controls/group';
 import { strings } from '../language';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { Explorer_Class } from '../explorer';
-import { ColumnMap, ColumnMapBaseProps } from '../controls/columnMap';
+import { ColumnMapBaseProps } from '../controls/columnMap';
 import { SandDance } from '@msrvida/sanddance-react';
+import { Dropdown } from '../controls/dropdown';
 
 export interface Props extends ColumnMapBaseProps {
     compactUI: boolean;
-    disabled?: boolean;
     themePalette: Partial<FluentUITypes.IPalette>;
     explorer: Explorer_Class;
     transitionColumn: string;
@@ -38,6 +38,7 @@ function _Transition(_props: Props) {
 
         render() {
             const { props, state } = this;
+            console.log('props.transitionColumn', props.transitionColumn)
             const dropdownRef = base.react.createRef<FluentUITypes.IDropdown>();
             props.explorer.dialogFocusHandler.focus = () => dropdownRef.current?.focus();
             return (
@@ -75,13 +76,13 @@ function _Transition(_props: Props) {
                         }}
                     />
                     <Group label={strings.labelTransition}>
-                        <ColumnMap
-                            {...props}
-                            componentRef={dropdownRef}
+                        <Dropdown
                             collapseLabel={props.compactUI}
-                            selectedColumnName={props.transitionColumn}
-                            specRole={props.specCapabilities && props.specCapabilities.roles.filter(r => r.role === 'color')[0]}
-                            key={0}
+                            label={'column TODO'}
+                            options={getColumnOptions(props, props.transitionColumn)}
+                            onChange={(e, o) => {
+                                props.explorer.setState({ transitionColumn: o.text });
+                            }}
                         />
                     </Group>
                     <Group label={strings.labelTransitionDurations}>
@@ -127,4 +128,30 @@ function _Transition(_props: Props) {
 export const Transition: typeof Transition_Class = _Transition as any;
 
 export declare class Transition_Class extends base.react.Component<Props, State> {
+}
+
+function groupOptions(sectionName: string, columns: SandDance.types.Column[], selectedKey: string) {
+    const options = columns.map(column => {
+        const option: FluentUITypes.IDropdownOption = {
+            key: column.name,
+            text: column.name,
+            selected: column.name === selectedKey,
+        };
+        return option;
+    });
+    if (options.length) {
+        const option: FluentUITypes.IDropdownOption = {
+            key: sectionName,
+            text: sectionName,
+            itemType: base.fluentUI.DropdownMenuItemType.Header,
+        };
+        options.unshift(option);
+    }
+    return options;
+}
+
+function getColumnOptions(props: ColumnMapBaseProps, selectedKey: string) {
+    const quantitativeGroup = groupOptions(strings.selectNumeric, props.quantitativeColumns, selectedKey);
+    const categoricGroup = groupOptions(strings.selectNonNumeric, props.categoricalColumns, selectedKey);
+    return quantitativeGroup.concat(categoricGroup);
 }

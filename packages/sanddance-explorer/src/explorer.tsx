@@ -118,7 +118,8 @@ export interface UIState {
     historyItems: HistoryItem[];
     camera?: SandDance.types.Camera;
     renderer: SandDance.VegaMorphCharts.types.MorphChartsRendererOptions;
-    transition?: SandDance.types.Transition
+    transition?: SandDance.types.Transition;
+    transitionColumn?: string;
     transitionDurations: SandDance.VegaMorphCharts.types.TransitionDurations;
 }
 
@@ -473,6 +474,7 @@ function _Explorer(_props: Props) {
                     ensureColumnsExist(newState.columns, dataContent.columns, newState.transform);
                     const errors = ensureColumnsPopulated(partialInsight?.chart, partialInsight?.totalStyle, newState.columns, dataContent.columns);
                     newState.errors = errors;
+                    newState.transitionColumn = dataContent.columns[0].name;
                     //change insight
                     this.changeInsight(
                         partialInsight,
@@ -1345,7 +1347,7 @@ function _Explorer(_props: Props) {
                                                 compactUI={this.props.compactUI}
                                                 explorer={this as any as Explorer_Class}
                                                 themePalette={themePalette}
-                                                transitionColumn={this.state.columns.color}
+                                                transitionColumn={this.state.transitionColumn}
                                             />
                                         );
                                     }
