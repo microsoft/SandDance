@@ -96,7 +96,6 @@ function checkIsColorData(data: object[], column: Column) {
 export function getStats(data: object[] | Float64Array, columnName: string | number, columnType: TypeInference, columnQuantitative: boolean, distinctValuesCallback?: (distinctValues: string[]) => void): ColumnStats;
 export function getStats(data: object[], column: Column, distinctValuesCallback?: (distinctValues: string[]) => void): ColumnStats;
 export function getStats(data: object[] | Float64Array, ...args: any[]) {
-    console.log('ok here we go')
     let columnName: string | number;
     let columnType: TypeInference;
     let columnQuantitative: boolean;
