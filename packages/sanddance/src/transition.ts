@@ -44,7 +44,6 @@ export function assignTransitionStagger(transition: Transition, currentData: obj
                     values[i] = positions[glOrdinal];
                 })
                 stats = getStats(values, null, 'number', true);
-                console.log('stats', stats, values)
                 const scale = scaleLinear([0, 1])
                     .domain([stats.min, stats.max]);
 
