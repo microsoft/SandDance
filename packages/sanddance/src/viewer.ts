@@ -181,6 +181,7 @@ export class Viewer {
                 innerPromise = new Promise<void>(innerResolve => {
                     this.renderNewLayout({}, {
                         ...(this.setup || {}),
+                        onPresent: ()=> this.options.onPresent(),
                         preStage: (stage, cubeLayer) => {
                             finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                             this.overrideAxisLabels(stage);
@@ -198,6 +199,7 @@ export class Viewer {
             } else {
                 innerPromise = this.renderNewLayout({}, {
                     ...(this.setup || {}),
+                    onPresent: ()=> this.options.onPresent(),
                     preStage: (stage, colorMapper) => {
                         finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                         this.overrideAxisLabels(stage);
