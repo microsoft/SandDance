@@ -341,7 +341,8 @@ export interface LayerStagger {
 }
 
 export interface MorphChartsRenderResult {
-    activate(id: number),
+    activate(id: number);
+    bounds: IBounds;
     update: (layerSelection: LayerSelection) => void;
     moveCamera: (position: vec3, rotation: quat) => void;
     getCubeLayer: () => ICubeLayer;

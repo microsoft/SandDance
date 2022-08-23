@@ -11,11 +11,11 @@ import { GL_ORDINAL } from './constants';
 
 export function assignTransitionStagger(transition: Transition, currentData: object[], presenter: VegaMorphCharts.Presenter) {
     const { layerStagger } = presenter.morphchartsref;
-    console.log('set stagger order', currentData.length);
     if (!transition || transition.type === 'ordinal') {
         delete layerStagger.cubes;
     } else {
-        const cubelayer = presenter.morphChartsRenderResult.getCubeLayer();
+        const { morphChartsRenderResult } = presenter;
+        const cubelayer = morphChartsRenderResult.getCubeLayer();
         const staggerOrders = new Float64Array(cubelayer.positionsX.length);
         //TODO calc column via filtered data
         let stats: ColumnStats;
@@ -58,6 +58,6 @@ export function assignTransitionStagger(transition: Transition, currentData: obj
         }
         //console.log('staggerOrders', staggerOrders)
         layerStagger.cubes = { staggerOrders, maxStaggerOrder: 1, minStaggerOrder: 0 };
-        cubelayer.update(cubelayer.bounds, new Set<number>(), layerStagger.cubes)
+        cubelayer.update(morphChartsRenderResult.bounds, new Set<number>(), layerStagger.cubes)
     }
 }
