@@ -108,10 +108,13 @@ export function DataBrowser(props: Props) {
                     bingSearchDisabled={props.bingSearchDisabled}
                 />
             </div>}
-            {showColumnTypeChanger && <ColumnTypeChanger
-                columns={props.columns}
-                onUpdateColumn={props.onUpdateColumn}
-            />}
+            {showColumnTypeChanger && (
+                <ColumnTypeChanger
+                    theme={props.theme}
+                    columns={props.columns}
+                    onUpdateColumn={props.onUpdateColumn}
+                />
+            )}
             {props.dataExportHandler && props.data && (
                 <DataExportPicker
                     theme={props.theme}

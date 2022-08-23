@@ -4,6 +4,7 @@ import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
 
 export interface Props {
+    theme: string;
     columns: SandDance.types.Column[];
     onUpdateColumn: (column: SandDance.types.Column) => void;
 }
@@ -17,46 +18,74 @@ function _ColumnTypeChanger(_props: Props) {
         constructor(props: Props) {
             super(props);
             this.state = {dialogHidden: true};
+            this.openDialog = this.openDialog.bind(this);
+            this.closeDialog = this.closeDialog.bind(this);
+            this.revert = this.revert.bind(this);
+        }
+
+        private openDialog() {
+            this.setState({dialogHidden: false});
+        }
+        
+        private closeDialog() {
+            this.setState({dialogHidden: true});
+        }
+
+        private getChangeableColumns(): SandDance.types.Column[] {
+            return this.props.columns.filter(c => c.type == 'integer' || c.type == 'number');
+        }
+
+        private revert() {
+            this.getChangeableColumns()
+                .filter(c => !c.quantitative)
+                .forEach(c => this.props.onUpdateColumn({
+                    name: c.name,
+                    type: c.type,
+                    quantitative: true,
+                }));
+            this.closeDialog();
         }
 
         render() {
-            // TODO Give it its own class
-            // TODO Add revert button
             return (
-                <div className="sanddance-dataExporter">
+                <div className="sanddance-columnTypeChanger">
                     <base.fluentUI.DefaultButton
-                        className="search-action search-bottom-action"
                         text={strings.buttonChangeColumnType}
-                        onClick={() => this.setState({dialogHidden: false})}
+                        onClick={this.openDialog}
                     />
                     <Dialog
                         hidden={this.state.dialogHidden}
-                        onDismiss={() => this.setState({dialogHidden: true})}
+                        onDismiss={this.closeDialog}
                         dialogContentProps={{
+                            className: `sanddance-dialog ${this.props.theme}`,
+                            type: base.fluentUI.DialogType.normal,
                             title: strings.labelChangeColumnType,
-                            subText: strings.labelChangeColumnTypeSubtext
+                            subText: strings.labelChangeColumnTypeSubtext,
                         }}
-                    >
-                        {this.props.columns
-                            .filter(c => c.type == 'integer' || c.type == 'number')
-                            .map(c => (
-                                <div key={c.name}>
-                                    <base.fluentUI.Dropdown
-                                        options={[
-                                            {key: "c", text: strings.labelCategorical},
-                                            {key: "q", text: strings.labelQuantitative},
-                                        ]}
-                                        label={c.name}
-                                        defaultSelectedKey={c.quantitative ? "q" : "c"}
-                                        onChange={(e, opt) => this.props.onUpdateColumn({
-                                            name: c.name,
-                                            type: c.type,
-                                            quantitative: opt.key == "q",
-                                        })}
-                                    />
-                                </div>
-                            ))
+                        buttons={
+                            <base.fluentUI.DefaultButton
+                                text={strings.buttonRevert}
+                                onClick={this.revert}
+                                iconProps={{iconName: 'Undo'}}
+                            />
                         }
+                    >
+                        {this.getChangeableColumns().map(c => (
+                            <base.fluentUI.Dropdown
+                                key={c.name}
+                                options={[
+                                    {key: 'c', text: strings.labelCategorical},
+                                    {key: 'q', text: strings.labelQuantitative},
+                                ]}
+                                label={c.name}
+                                defaultSelectedKey={c.quantitative ? 'q' : 'c'}
+                                onChange={(e, opt) => this.props.onUpdateColumn({
+                                    name: c.name,
+                                    type: c.type,
+                                    quantitative: opt.key == 'q',
+                                })}
+                            />
+                        ))}
                     </Dialog>
                 </div>
             );

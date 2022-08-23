@@ -46,6 +46,7 @@ export const strings = {
     buttonUndo: 'Undo',
     buttonRedo: 'Redo',
     buttonChangeColumnType: 'Change column type...',
+    buttonRevert: 'Revert',
     chartTypeBarChartH: 'Bar',
     chartTypeBarChartV: 'Column',
     chartTypeDensity: 'Density',
