@@ -57,5 +57,5 @@ namespace quanBarChartTest {
         view: '2d',
     };
 
-    viewer.render(insight, data);
+    viewer.render({ insight }, data);
 }

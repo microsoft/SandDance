@@ -4,6 +4,8 @@
 */
 
 import { SandDance } from '@msrvida/sanddance-react';
+import { InputSearchExpression } from './controls/searchTerm';
+import { InputSearchExpressionGroup } from './dialogs/search';
 
 import SearchExpressionGroup = SandDance.searchExpression.SearchExpressionGroup;
 
@@ -30,4 +32,22 @@ export function compareGroups(haystack: SearchExpressionGroup[], needle: SearchE
     });
 
     return { groups, found };
+}
+
+export function createInputSearch(search: SandDance.searchExpression.Search) {
+    const groups = SandDance.searchExpression.ensureSearchExpressionGroupArray(search);
+    const dialogSearch: InputSearchExpressionGroup[] = groups.map((group, groupIndex) => {
+        return {
+            key: groupIndex,
+            ...group,
+            expressions: group.expressions.map((ex, i) => {
+                const ex2: InputSearchExpression = {
+                    key: i,
+                    ...ex,
+                };
+                return ex2;
+            }),
+        };
+    });
+    return dialogSearch;
 }

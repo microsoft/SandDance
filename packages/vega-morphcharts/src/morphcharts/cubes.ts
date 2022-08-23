@@ -4,7 +4,7 @@
 */
 
 import { Layouts, UnitType } from 'morphcharts';
-import { IBounds, ILayer, ILayerCreator, ILayerProps, Stage } from '../interfaces';
+import { IBounds, ICubeLayer, ILayer, ILayerCreator, ILayerProps, Stage } from '../interfaces';
 import { increment } from './bounds';
 import { ColorMap } from './color';
 
@@ -47,8 +47,11 @@ export const createCubeLayer: ILayerCreator = (props: ILayerProps): ILayer => {
         positionsZ,
     });
 
-    const layer: ILayer = {
-        update: (newBounds, selected) => {
+    const layer: ICubeLayer = {
+        positionsX,
+        positionsY,
+        positionsZ,
+        update: (newBounds, selected, stagger) => {
             const { colors, maxColor, minColor, palette } = layer.unitColorMap;
 
             // reference off of core.renderer to get the actual buffer
@@ -56,7 +59,7 @@ export const createCubeLayer: ILayerCreator = (props: ILayerProps): ILayer => {
             currCubeTransitionBuffer.currentBuffer.unitType = UnitType.block;
             currCubeTransitionBuffer.currentPalette.colors = palette;
 
-            scatter.update(currCubeTransitionBuffer.currentBuffer, ids, {
+            let options: Layouts.IScatterVertexOptions = {
                 selected,
                 colors,
                 minColor,
@@ -65,7 +68,17 @@ export const createCubeLayer: ILayerCreator = (props: ILayerProps): ILayer => {
                 sizesY,
                 sizesZ,
                 ...newBounds,
-            });
+            };
+            if (stagger?.staggerOrders) {
+                const { maxStaggerOrder, minStaggerOrder, staggerOrders } = stagger;
+                options = {
+                    ...options,
+                    maxStaggerOrder,
+                    minStaggerOrder,
+                    staggerOrders,
+                };
+            }
+            scatter.update(currCubeTransitionBuffer.currentBuffer, ids, options);
         },
         bounds,
         unitColorMap: {

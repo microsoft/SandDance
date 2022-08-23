@@ -4,4 +4,5 @@
 */
 
 export * from './column';
+export * from './dimensions';
 export * from './view';

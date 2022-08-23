@@ -6,7 +6,7 @@
 import * as VegaMorphCharts from '@msrvida/vega-morphcharts';
 import { ViewerOptions } from './types';
 
-const { defaultPresenterConfig, defaultPresenterStyle } = VegaMorphCharts.defaults;
+const { defaultPresenterStyle } = VegaMorphCharts.defaults;
 
 export const defaultViewerOptions: ViewerOptions = {
     colors: {
@@ -66,10 +66,7 @@ export const defaultViewerOptions: ViewerOptions = {
     onError: (errors) => {
         //console.log(`UnitVisViewer errors: ${errors.join('\n')}`);
     },
-    transitionDurations: {
-        ...defaultPresenterConfig.transitionDurations,
-        scope: 600,
-    },
+
     selectionPolygonZ: -1,
     tickSize: 10,
 };

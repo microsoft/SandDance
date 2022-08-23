@@ -11,6 +11,7 @@ import { Search } from './dialogs/search';
 import { Settings } from './dialogs/settings';
 import { SnapshotEditor } from './dialogs/snapshotEditor';
 import { Snapshots } from './dialogs/snapshots';
+import { TransitionEditor } from './dialogs/transition';
 import { Explorer } from './explorer';
 import { FluentUIComponents } from '@msrvida/fluentui-react-cdn-typings';
 import { SandDance, use as _use } from '@msrvida/sanddance-react';
@@ -63,5 +64,6 @@ export function use(
     Search.prototype = react.Component.prototype as any;
     SnapshotEditor.prototype = react.Component.prototype as any;
     Snapshots.prototype = react.Component.prototype as any;
-    Settings.prototype = react.Component.prototype as any;    
+    Settings.prototype = react.Component.prototype as any;
+    TransitionEditor.prototype = react.Component.prototype as any;
 }

@@ -46,7 +46,7 @@ namespace transformTest {
     fetch('https://vega.github.io/editor/data/cars.json').then(response => {
         return response.json();
     }).then(json => {
-        viewer.render(insight, json);
+        viewer.render({ insight }, json);
     });
 
 }

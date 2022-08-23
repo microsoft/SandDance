@@ -63,7 +63,7 @@ export interface SettingsGroup {
 }
 
 export enum SideTabId {
-  ChartType, Data, Search, Color, Snapshots, History, Settings, Pin, Collapse,
+  ChartType, Data, Search, Color, Snapshots, History, Transition, Settings, Pin, Collapse,
 }
 
 export interface ChangeColumnMappingOptions {
@@ -73,11 +73,10 @@ export interface ChangeColumnMappingOptions {
 }
 
 export type DataExtent = 'max' | 'min';
-export type BackgroundImageDimension = 'x' | 'y';
 
 export interface BackgroundImageColumnBound {
   columnName: string;
-  dimension: BackgroundImageDimension;
+  dimension: SandDance.types.Dimension2D;
   dataExtent: DataExtent;
   stringValue: string;
   numericValue: number;

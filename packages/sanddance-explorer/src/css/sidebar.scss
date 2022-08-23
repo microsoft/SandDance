@@ -5,7 +5,8 @@
     $dark-bg-color,
     $toolbar-margin,
     $toolbar-width,
-    $sidetab-width: 50px
+    $sidetab-width: 50px,
+    $sidetab-count: 6,
 ) {
     .sanddance-sidebar {
         background-color: $bg-color;
@@ -49,13 +50,13 @@
                 height: 100%;
                 width: 100%;
                 .ms-Button-icon {
-                    font-size: 24px;
+                    font-size: 20px;
                 }
             }
         }
         .sidebar-dialogs {
             .vbutton {
-                height: 16%;
+                height: math.percentage(math.div(1, $sidetab-count));
                 max-height: 60px;
                 min-height: 32px;    
             }

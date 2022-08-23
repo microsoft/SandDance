@@ -21,7 +21,7 @@ namespace test {
         { myUid: 2, myColor: 2, mySort: 2, myX: 2, myY: 2, myZ: 2 },
     ];
 
-    const options: SandDance.specs.Insight = {
+    const insight: SandDance.specs.Insight = {
         columns: {
             color: 'myColor',
             sort: 'mySort',
@@ -39,5 +39,5 @@ namespace test {
 
     SandDance.use(vega);
     export const viewer = new SandDance.Viewer(document.querySelector('#vis'));
-    viewer.render(options, data);
+    viewer.render({ insight }, data);
 }

@@ -6,7 +6,7 @@
 import { base } from './base';
 import { removeTabIndex } from './canvas';
 import {
-    onBeforeCreateLayers,
+    attachSpecRoleToAxisTitle,
     PositionedColumnMap,
     PositionedColumnMapProps,
     TextWithSpecRole,
@@ -15,22 +15,23 @@ import { applyColorButtons } from './colorMap';
 import { bestColorScheme } from './colorScheme';
 import { colorMapping, ensureColumnsExist, ensureColumnsPopulated, getBackgroundImageColumnBounds, getTreemapColumn } from './columns';
 import { ColumnMapBaseProps } from './controls/columnMap';
-import { DataScopeId } from './controls/dataScope';
+import { DataScopeId, resetSelectedItemIndex, SelectedItemIndex } from './controls/dataScope';
 import { Dialog } from './controls/dialog';
 import { IconButton } from './controls/iconButton';
-import { AutoCompleteDistinctValues, InputSearchExpression } from './controls/searchTerm';
+import { AutoCompleteDistinctValues } from './controls/searchTerm';
 import { Sidebar } from './controls/sidebar';
 import { Topbar } from './controls/topbar';
 import { loadDataArray, loadDataFile } from './dataLoader';
-import { defaultViewerOptions, snapshotThumbWidth } from './defaults';
+import { defaultViewerOptions, initialExplorerState, snapshotThumbWidth } from './defaults';
 import { Chart, chartLabel } from './dialogs/chart';
 import { Color } from './dialogs/color';
-import { DataBrowser } from './dialogs/dataBrowser';
-import { History } from './dialogs/history';
+import { DataBrowser, dataBrowserNullMessages, dataBrowserZeroMessages } from './dialogs/dataBrowser';
+import { getPureInsight, HistoricInsight, History, HistoryAction, HistoryItem, replay } from './dialogs/history';
 import { InputSearchExpressionGroup, Search } from './dialogs/search';
 import { Settings } from './dialogs/settings';
 import { SnapshotEditor, SnapshotEditor_Class } from './dialogs/snapshotEditor';
 import { Snapshots } from './dialogs/snapshots';
+import { getTransition, TransitionEdits, TransitionEditor } from './dialogs/transition';
 import {
     ChangeColumnMappingOptions,
     ColorSettings,
@@ -52,13 +53,14 @@ import {
     saveSignalValuePref,
 } from './partialInsight';
 import { themePalettes } from './themes';
-import { compareGroups } from './searchGroups';
+import { compareGroups, createInputSearch } from './searchGroups';
 import { RecommenderSummary } from '@msrvida/chart-recommender';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
 import { Renderer } from './controls/renderer';
 
 import Snapshot = SandDance.types.Snapshot;
+import { setInsightBackgroundImage } from './dialogs/backgroundImageEditor';
 
 export interface Options {
     chartPrefs?: Prefs;
@@ -89,7 +91,7 @@ export interface Props {
     onTooltipExclusionsChanged?: (tooltipExclusions: string[]) => void;
     additionalSettings?: SettingsGroup[];
     systemInfoChildren?: React.ReactNode;
-    initialMorphChartsRendererOptions?: SandDance.VegaMorphCharts.MorphChartsRendererOptions;
+    initialRenderer?: SandDance.VegaMorphCharts.types.MorphChartsRendererOptions;
     renderOptions?: SandDance.types.RenderOptions;
 }
 
@@ -106,7 +108,7 @@ export interface UIState {
     specCapabilities: SandDance.specs.SpecCapabilities;
     sideTabId: SideTabId;
     dataScopeId: DataScopeId;
-    selectedItemIndex: { [key: number]: number };
+    selectedItemIndex: SelectedItemIndex;
     snapshots: Snapshot[];
     selectedSnapshotIndex: number;
     tooltipExclusions: string[];
@@ -114,54 +116,11 @@ export interface UIState {
     note: string;
     historyIndex: number;
     historyItems: HistoryItem[];
-    morphChartsRendererOptions?: SandDance.VegaMorphCharts.MorphChartsRendererOptions;
+    camera?: SandDance.types.Camera;
+    renderer: SandDance.VegaMorphCharts.types.MorphChartsRendererOptions;
 }
 
-export interface HistoricInsight extends SandDance.specs.Insight {
-    rebaseFilter?: boolean;
-    cameraTo?: SandDance.types.Camera;
-}
-
-export interface State extends HistoricInsight, UIState {
-}
-
-export interface HistoryAction {
-    insert?: boolean;
-    omit?: boolean;
-    label: string;
-}
-
-export interface HistoryItem {
-    label: string;
-    historicInsight: Partial<HistoricInsight>;
-}
-
-const dataBrowserZeroMessages: { [key: number]: string } = {};
-dataBrowserZeroMessages[DataScopeId.AllData] = strings.labelZeroAll;
-dataBrowserZeroMessages[DataScopeId.FilteredData] = null; //empty array is not used
-dataBrowserZeroMessages[DataScopeId.SelectedData] = strings.labelZeroSearchResults;
-
-const dataBrowserNullMessages: { [key: number]: string } = {};
-dataBrowserNullMessages[DataScopeId.AllData] = strings.labelDataNullAll;
-dataBrowserNullMessages[DataScopeId.FilteredData] = strings.labelDataNullFiltered;
-dataBrowserNullMessages[DataScopeId.SelectedData] = strings.labelDataNullSelection;
-
-function createInputSearch(search: SandDance.searchExpression.Search) {
-    const groups = SandDance.searchExpression.ensureSearchExpressionGroupArray(search);
-    const dialogSearch: InputSearchExpressionGroup[] = groups.map((group, groupIndex) => {
-        return {
-            key: groupIndex,
-            ...group,
-            expressions: group.expressions.map((ex, i) => {
-                const ex2: InputSearchExpression = {
-                    key: i,
-                    ...ex,
-                };
-                return ex2;
-            }),
-        };
-    });
-    return dialogSearch;
+export interface State extends HistoricInsight, UIState, TransitionEdits {
 }
 
 function _Explorer(_props: Props) {
@@ -171,7 +130,6 @@ function _Explorer(_props: Props) {
         private getColorContext: (oldInsight: SandDance.specs.Insight, newInsight: SandDance.specs.Insight) => SandDance.types.ColorContext;
         private historicFilterChange: string;
         private rebaseFilter: boolean;
-        private cameraTo: SandDance.types.Camera;
         private ignoreSelectionChange: boolean;
         private snapshotEditor: SnapshotEditor_Class;
         private scrollSnapshotTimer: number;
@@ -189,49 +147,7 @@ function _Explorer(_props: Props) {
         constructor(props: Props) {
             super(props);
             this.dialogFocusHandler = {};
-            this.state = {
-                calculating: null,
-                errors: null,
-                autoCompleteDistinctValues: {},
-                colorBin: null,
-                dataContent: null,
-                dataFile: null,
-                search: null,
-                totalStyle: null,
-                facetStyle: 'wrap',
-                filter: null,
-                filteredData: null,
-                specCapabilities: null,
-                size: {
-                    height: null,
-                    width: null,
-                },
-                scheme: null,
-                transform: null,
-                columns: null,
-                chart: 'grid',
-                signalValues: null,
-                hideAxes: false,
-                hideLegend: false,
-                sideTabId: SideTabId.ChartType,
-                dataScopeId: DataScopeId.AllData,
-                selectedItemIndex: {},
-                sidebarClosed: false,
-                sidebarPinned: true,
-                view: props.initialView || '2d',
-                snapshots: [],
-                selectedSnapshotIndex: -1,
-                tooltipExclusions: [],
-                positionedColumnMapProps: null,
-                note: null,
-                historyIndex: -1,
-                historyItems: [],
-            };
-
-            this.state.selectedItemIndex[DataScopeId.AllData] = 0;
-            this.state.selectedItemIndex[DataScopeId.FilteredData] = 0;
-            this.state.selectedItemIndex[DataScopeId.SelectedData] = 0;
-
+            this.state = initialExplorerState(props);
             this.imageHolder = { img: null, backgroundImageColumnBounds: [], showBackgroundImage: false };
             this.snapshotThumbWidth = snapshotThumbWidth;
             this.discardColorContextUpdates = true;
@@ -319,7 +235,12 @@ function _Explorer(_props: Props) {
                     this.setState({ errors });
                     viewerOptions && viewerOptions.onError && viewerOptions.onError(errors);
                 },
-                onBeforeCreateLayers,
+                onBeforeCreateLayers: (stage, specCapabilities) => {
+                    attachSpecRoleToAxisTitle(stage, specCapabilities);
+                },
+                onPresent: () => {
+                    this.setStagger();
+                },
                 getTextColor: o => {
                     if ((o as TextWithSpecRole).specRole) {
                         return SandDance.VegaMorphCharts.util.colorFromString((this.viewerOptions.colors as ColorSettings).clickableText);
@@ -372,6 +293,10 @@ function _Explorer(_props: Props) {
             }
         }
 
+        public setStagger() {
+            this.viewer.assignTransitionStagger(getTransition(this.state));
+        }
+
         public signal(signalName: string, signalValue: any, newViewStateTarget?: boolean) {
             switch (signalName) {
                 case SandDance.constants.SignalNames.ColorBinCount:
@@ -413,34 +338,33 @@ function _Explorer(_props: Props) {
             return this.viewer.getInsight();
         }
 
-        private compareInsightAndCamera(newInsight: Partial<HistoricInsight>) {
-            //compare insight
-            const insight = { ...this.getPureInsight(this.state), ...this.getPureInsight(newInsight as HistoricInsight), size: this.state.size };
-            const compare = util.compareInsight(this.viewer, insight);
-            if (compare.compare) {
-                //insight is SAME, compare camera
-                if (!util.deepCompare(this.viewer.getCamera(), newInsight.cameraTo)) {
-                    //camera is different
-                    this.viewer.setCamera(newInsight.cameraTo);
-                }
-            } else {
-                //insight is different
-                this.cameraTo = newInsight.cameraTo;
+        private setSetup(setup: SandDance.types.Setup) {
+            if (!setup) {
+                this.setState({ camera: undefined });
+                return;
+            }
+            //TODO setstate only once
+            const { camera, renderer, transition, transitionDurations } = setup;
+            this.setState({ camera, renderer, transitionType: transition.type });
+            if (transition.type === 'column') {
+                this.setState({ transitionColumn: transition.column });
+            } else if (transition.type === 'position') {
+                this.setState({ transitionDimension: transition.dimension });
+            }
+            if (transitionDurations) {
+                this.setState({ transitionDurations });
             }
         }
 
-        public setInsight(historyAction: HistoryAction, newState: Partial<UIState> = {}, partialInsight: Partial<SandDance.specs.Insight> = this.viewer.getInsight(), rebaseFilter: boolean, cameraTo: SandDance.types.Camera) {
+        public setInsight(historyAction: HistoryAction, newState: Partial<UIState> = {}, partialInsight: Partial<SandDance.specs.Insight> = this.viewer.getInsight(), rebaseFilter: boolean, setup?: SandDance.types.Setup) {
             const selectedItemIndex = { ...this.state.selectedItemIndex };
-            selectedItemIndex[DataScopeId.AllData] = 0;
-            selectedItemIndex[DataScopeId.FilteredData] = 0;
-            selectedItemIndex[DataScopeId.SelectedData] = 0;
+            resetSelectedItemIndex(selectedItemIndex);
             const historicInsight: Partial<HistoricInsight> = {
                 chart: null,
                 scheme: null,
                 columns: null,
                 filter: null,
                 rebaseFilter,
-                cameraTo,
                 ...partialInsight,
             };
             const state: Partial<UIState> = {
@@ -451,16 +375,18 @@ function _Explorer(_props: Props) {
             };
             const changeInsight = () => {
                 this.getColorContext = null;
-                this.compareInsightAndCamera(historicInsight);
-                this.changeInsight(historicInsight, historyAction, state);
+                this.changeInsight(historicInsight, historyAction, state, setup);
             };
             const currentFilter = this.viewer.getInsight().filter;
             if (rebaseFilter && currentFilter && historicInsight.filter) {
                 if (SandDance.searchExpression.startsWith(historicInsight.filter, currentFilter)) {
                     changeInsight();
                 } else {
+                    const { transitionDurations } = this.state;
+                    const renderTime = transitionDurations.position + transitionDurations.stagger;
+                    const allowAsyncRenderTime = renderTime + 200;
                     this.viewer.reset()
-                        .then(() => new Promise((resolve, reject) => { setTimeout(resolve, this.viewer.options.transitionDurations.scope); }))
+                        .then(() => new Promise((resolve, reject) => { setTimeout(resolve, allowAsyncRenderTime); }))
                         .then(changeInsight);
                 }
             } else {
@@ -488,11 +414,13 @@ function _Explorer(_props: Props) {
                     newState.sideTabId = SideTabId.Snapshots;
                     this.scrollSnapshotIntoView(selectedSnapshotIndex);
                 }
-                this.setInsight({ label: strings.labelHistoryReviveSnapshot }, newState, snapshot.insight, true, snapshot.camera);
+                this.setSetup(snapshot.setup);
+                this.setInsight({ label: strings.labelHistoryReviveSnapshot }, newState, snapshot.insight, true, snapshot.setup);
             } else {
                 const snapshot = snapshotOrIndex as Snapshot;
                 if (snapshot.insight) {
-                    this.setInsight({ label: strings.labelHistoryReviveSnapshot }, { note: snapshot.description, selectedSnapshotIndex: -1 }, snapshot.insight, true, snapshot.camera); //don't navigate to sideTab
+                    this.setSetup(snapshot.setup);
+                    this.setInsight({ label: strings.labelHistoryReviveSnapshot }, { note: snapshot.description, selectedSnapshotIndex: -1 }, snapshot.insight, true, snapshot.setup); //don't navigate to sideTab
                 } else {
                     this.setState({ note: snapshot.description, selectedSnapshotIndex: -1 });
                 }
@@ -538,9 +466,7 @@ function _Explorer(_props: Props) {
                     }
                     const selectedItemIndex = { ...this.state.selectedItemIndex };
                     const sideTabId = SideTabId.ChartType;
-                    selectedItemIndex[DataScopeId.AllData] = 0;
-                    selectedItemIndex[DataScopeId.FilteredData] = 0;
-                    selectedItemIndex[DataScopeId.SelectedData] = 0;
+                    resetSelectedItemIndex(selectedItemIndex);
                     const newState: Partial<State> = {
                         dataFile,
                         dataContent,
@@ -556,6 +482,7 @@ function _Explorer(_props: Props) {
                     ensureColumnsExist(newState.columns, dataContent.columns, newState.transform);
                     const errors = ensureColumnsPopulated(partialInsight?.chart, partialInsight?.totalStyle, newState.columns, dataContent.columns);
                     newState.errors = errors;
+                    newState.transitionColumn = dataContent.columns[0];
                     //change insight
                     this.changeInsight(
                         partialInsight,
@@ -652,14 +579,14 @@ function _Explorer(_props: Props) {
         }
 
         //state members which change the insight
-        private changeInsight(partialInsight: Partial<SandDance.specs.Insight>, historyAction: HistoryAction, additionalUIState?: Partial<UIState>) {
+        private changeInsight(partialInsight: Partial<SandDance.specs.Insight>, historyAction: HistoryAction, additionalUIState?: Partial<UIState>, setup?: SandDance.types.Setup) {
             if (!partialInsight.signalValues) {
                 partialInsight.signalValues = null;
             }
             if (partialInsight.chart === 'barchart') {
                 partialInsight.chart = 'barchartV';
             }
-            this.addHistory(partialInsight, historyAction, additionalUIState);
+            this.addHistory({ ...partialInsight, setup }, historyAction, additionalUIState);
         }
 
         public addHistory(historicInsight: Partial<HistoricInsight>, historyAction: HistoryAction, additionalUIState?: Partial<UIState>) {
@@ -670,7 +597,6 @@ function _Explorer(_props: Props) {
                     cleanState.note = null;
                 }
                 delete cleanState.rebaseFilter;
-                delete cleanState.cameraTo;
 
                 if (this.viewer) {
                     const { signalValues } = this.viewer.getInsight();
@@ -695,22 +621,7 @@ function _Explorer(_props: Props) {
         }
 
         private replay(index: number): Partial<HistoricInsight> {
-            let filter: SandDance.searchExpression.Search = null;
-            let historicInsight: Partial<HistoricInsight> = {};
-            for (let i = 0; i < index + 1; i++) {
-                const historyItem = this.state.historyItems[i];
-                if (historyItem) {
-                    if (historyItem.historicInsight.filter === null) {
-                        filter = null;
-                    } else if (historyItem.historicInsight.rebaseFilter) {
-                        filter = historyItem.historicInsight.filter;
-                    } else if (historyItem.historicInsight.filter) {
-                        filter = SandDance.searchExpression.narrow(filter, historyItem.historicInsight.filter);
-                    }
-                    historicInsight = { ...historicInsight, ...historyItem.historicInsight };
-                }
-            }
-            return { ...historicInsight, filter };
+            return replay(this.state.historyItems, index);
         }
 
         public undo() {
@@ -718,7 +629,7 @@ function _Explorer(_props: Props) {
             if (historyIndex < 0) return;
             const newState = this.replay(historyIndex);
             this.rebaseFilter = true;
-            this.compareInsightAndCamera(newState);
+            this.setSetup(newState.setup);
             this.setState({ ...newState as State, historyIndex });
         }
 
@@ -726,7 +637,7 @@ function _Explorer(_props: Props) {
             if (historyIndex >= this.state.historyItems.length) return;
             const newState = this.replay(historyIndex);
             this.rebaseFilter = true;
-            this.compareInsightAndCamera(newState);
+            this.setSetup(newState.setup);
             this.setState({ ...newState as State, historyIndex });
         }
 
@@ -1032,33 +943,12 @@ function _Explorer(_props: Props) {
             }
         }
 
-        private getPureInsight(state: HistoricInsight) {
-            const { colorBin, columns, directColor, facetStyle, filter, hideAxes, hideLegend, scheme, signalValues, size, totalStyle, transform, chart, view } = state;
-            const insight: SandDance.specs.Insight = {
-                colorBin,
-                columns,
-                directColor,
-                facetStyle,
-                filter,
-                hideAxes,
-                hideLegend,
-                scheme,
-                signalValues,
-                size,
-                totalStyle,
-                transform,
-                chart,
-                view,
-            };
-            return insight;
-        }
-
         render() {
-            const insight = this.getPureInsight(this.state);
+            const insight = getPureInsight(this.state);
 
             const loaded = !!(insight.columns && this.state.dataContent);
             if (loaded) {
-                this.getBackgroundImage(insight);
+                setInsightBackgroundImage(insight, this.imageHolder, this.state.columns);
             }
 
             const selectionState: SandDance.types.SelectionState = (this.viewer && this.viewer.getSelection()) || {};
@@ -1091,11 +981,7 @@ function _Explorer(_props: Props) {
                     rebaseFilter: () => this.rebaseFilter,
                     initialColorContext: this.getColorContext && this.getColorContext(this.viewer.insight, insight),
                     discardColorContextUpdates: () => this.discardColorContextUpdates,
-                    initialMorphChartsRendererOptions: this.props.initialMorphChartsRendererOptions,
                 };
-                if (this.cameraTo) {
-                    renderOptions.getCameraTo = () => this.cameraTo;
-                }
             }
 
             return (
@@ -1462,6 +1348,17 @@ function _Explorer(_props: Props) {
                                             />
                                         );
                                     }
+                                    case SideTabId.Transition: {
+                                        return (
+                                            <TransitionEditor
+                                                {...columnMapProps}
+                                                {...this.state}
+                                                compactUI={this.props.compactUI}
+                                                explorer={this as any as Explorer_Class}
+                                                themePalette={themePalette}
+                                            />
+                                        );
+                                    }
                                     case SideTabId.Settings: {
                                         return (
                                             <Settings
@@ -1493,7 +1390,7 @@ function _Explorer(_props: Props) {
                                     }}
                                     onView={renderResult => {
                                         this.rebaseFilter = false;
-                                        this.cameraTo = null;
+                                        this.setState({ camera: undefined });
                                         this.changespecCapabilities(renderResult.specResult.errors ? renderResult.specResult.specCapabilities : this.viewer.specCapabilities);
                                         this.getColorContext = (oldInsight: SandDance.specs.Insight, newInsight: SandDance.specs.Insight) => {
                                             if (!oldInsight && !newInsight) {
@@ -1522,6 +1419,12 @@ function _Explorer(_props: Props) {
                                     }}
                                     data={this.state.dataContent.data}
                                     insight={insight}
+                                    setup={{
+                                        camera: this.state.camera,
+                                        renderer: this.state.renderer,
+                                        transition: getTransition(this.state),
+                                        transitionDurations: this.state.transitionDurations,
+                                    }}
                                     onMount={el => this.viewerMounted(el)}
                                 />
                                 {this.state.note && (
@@ -1538,6 +1441,9 @@ function _Explorer(_props: Props) {
                                 )}
                                 <Renderer
                                     explorer={this as any as Explorer_Class}
+                                    advanced={this.state.renderer.advanced}
+                                    advancedOptions={this.state.renderer.advancedOptions}
+                                    basicOptions={this.state.renderer.basicOptions}
                                     themePalette={themePalette}
                                     onHomeClick={() => this.viewer.presenter.homeCamera()}
                                 />
@@ -1570,48 +1476,6 @@ function _Explorer(_props: Props) {
                     )}
                 </div>
             );
-        }
-
-        private getBackgroundImage(insight: SandDance.specs.Insight) {
-            const { imageHolder } = this;
-            const { columns } = this.state;
-            if (!imageHolder.showBackgroundImage || !columns.x || !columns.y) {
-                return;
-            }
-            const { backgroundImageColumnBounds } = imageHolder;
-            const xBounds = backgroundImageColumnBounds.filter(b => b.columnName === columns.x && b.dimension === 'x');
-            const yBounds = backgroundImageColumnBounds.filter(b => b.columnName === columns.y && b.dimension === 'y');
-            if (!xBounds.length || !yBounds.length) {
-                return;
-            }
-            const allBounds = [...xBounds, ...yBounds];
-            for (let i = 0; i < allBounds.length; i++) {
-                if (!allBounds[i].valid) {
-                    return;
-                }
-            }
-            const bottom = yBounds.filter(b => b.dataExtent === 'min')[0];
-            const left = xBounds.filter(b => b.dataExtent === 'min')[0];
-            const right = xBounds.filter(b => b.dataExtent === 'max')[0];
-            const top = yBounds.filter(b => b.dataExtent === 'max')[0];
-            const all = [bottom, left, right, top];
-            for (let i = 0; i < all.length; i++) {
-                if (!all[i]) {
-                    return;
-                }
-            }
-            const { src, height, width } = imageHolder.img;
-            insight.backgroundImage = {
-                url: src,
-                size: { height, width },
-                extents: {
-                    bottom: bottom.numericValue,
-                    left: left.numericValue,
-                    right: right.numericValue,
-                    top: top.numericValue,
-                },
-            };
-            insight.size = insight.backgroundImage.size;
         }
 
         private getColumnMapBaseProps() {
@@ -1647,15 +1511,15 @@ function _Explorer(_props: Props) {
 export const Explorer: typeof Explorer_Class = _Explorer as any;
 
 export declare class Explorer_Class extends base.react.Component<Props, State> {
-    private layoutDivUnpinned: HTMLElement;
-    private layoutDivPinned: HTMLElement;
-    private getColorContext: (oldInsight: SandDance.specs.Insight, newInsight: SandDance.specs.Insight) => SandDance.types.ColorContext;
-    private historicFilterChange: string;
-    private lastHistoryIndex: number;
-    private ignoreSelectionChange: boolean;
-    private snapshotEditor: SnapshotEditor_Class;
-    private scrollSnapshotTimer: number;
-    private newViewStateTarget: boolean;
+    // private layoutDivUnpinned: HTMLElement;
+    // private layoutDivPinned: HTMLElement;
+    // private getColorContext: (oldInsight: SandDance.specs.Insight, newInsight: SandDance.specs.Insight) => SandDance.types.ColorContext;
+    // private historicFilterChange: string;
+    // private rebaseFilter: boolean;
+    // private ignoreSelectionChange: boolean;
+    // private snapshotEditor: SnapshotEditor_Class;
+    // private scrollSnapshotTimer: number;
+    // private newViewStateTarget: boolean;
     dialogFocusHandler: { focus?: () => void; };
     imageHolder: ImageHolder;
     viewer: SandDance.Viewer;
@@ -1667,40 +1531,41 @@ export declare class Explorer_Class extends base.react.Component<Props, State> {
     constructor(props: Props);
     finalize(): void;
     updateViewerOptions(viewerOptions: Partial<SandDance.types.ViewerOptions>): void;
+    setStagger(): void;
     signal(signalName: string, signalValue: any, newViewStateTarget?: boolean): void;
-    private manageColorToolbar(): void;
+    //private manageColorToolbar(): void;
     getInsight(): SandDance.specs.Insight;
     setInsight(historyAction: HistoryAction, newState?: Partial<UIState>, partialInsight?: Partial<SandDance.specs.Insight>, rebaseFilter?: boolean): void;
-    private handleReviveSnapshot(snapshot: Snapshot, selectedSnapshotIndex: number): void;
+    //private handleReviveSnapshot(snapshot: Snapshot, selectedSnapshotIndex: number): void;
     reviveSnapshot(snapshotOrIndex: Snapshot | number): void;
     load(data: DataFile | object[], getPartialInsight?: (columns: SandDance.types.Column[]) => Partial<SandDance.specs.Insight>, optionsOrPrefs?: Prefs | Options): Promise<void>;
     changeChartType(chart: SandDance.specs.Chart): SandDance.specs.InsightColumns;
     calculate(calculating: () => any): void;
     changeView(view: SandDance.types.View): void;
-    private changeInsight(partialInsight: Partial<SandDance.specs.Insight>, historyAction: HistoryAction, additionalUIState?: Partial<UIState>): void;
+    //private changeInsight(partialInsight: Partial<SandDance.specs.Insight>, historyAction: HistoryAction, additionalUIState?: Partial<UIState>): void;
     addHistory(historicInsight: Partial<HistoricInsight>, historyAction: HistoryAction, additionalUIState?: Partial<UIState>): void;
-    private replay(index: number): void;
+    //private replay(index: number): void;
     undo(): void;
     redo(historyIndex?: number): void;
     changespecCapabilities(specCapabilities: SandDance.specs.SpecCapabilities): void;
     changeColumnMapping(role: SandDance.specs.InsightColumnRoles, column: SandDance.types.Column, options?: ChangeColumnMappingOptions): void;
-    private setSideTabId(sideTabId: SideTabId, dataScopeId?: DataScopeId): void;
-    private getBestDataScopeId(): void;
-    private activateDataBrowserItem(sideTabId: SideTabId, dataScopeId: DataScopeId): void;
-    private silentActivation(itemToActivate: object): Promise<void>;
+    // private setSideTabId(sideTabId: SideTabId, dataScopeId?: DataScopeId): void;
+    // private getBestDataScopeId(): void;
+    // private activateDataBrowserItem(sideTabId: SideTabId, dataScopeId: DataScopeId): void;
+    // private silentActivation(itemToActivate: object): Promise<void>;
     sidebar(sidebarClosed: boolean, sidebarPinned: boolean): void;
     resize(): void;
-    private _resize(): void;
-    private viewerMounted(glDiv: HTMLElement): void;
-    private getLayoutDivSize(pinned: boolean, closed: boolean): SandDance.types.Size;
-    private toggleableSearch(e: TouchEvent | MouseEvent | PointerEvent, search: SandDance.searchExpression.SearchExpressionGroup): void;
-    private doFilter(search: SandDance.searchExpression.Search, historicFilterChange: string): void;
-    private doUnfilter(historicFilterChange: string): void;
-    private doSelect(search: SandDance.searchExpression.Search): Promise<void>;
-    private doDeselect(): Promise<void>;
-    private writeSnapshot(snapshot: Snapshot, editIndex: number): void;
+    // private _resize(): void;
+    // private viewerMounted(glDiv: HTMLElement): void;
+    // private getLayoutDivSize(pinned: boolean, closed: boolean): SandDance.types.Size;
+    // private toggleableSearch(e: TouchEvent | MouseEvent | PointerEvent, search: SandDance.searchExpression.SearchExpressionGroup): void;
+    // private doFilter(search: SandDance.searchExpression.Search, historicFilterChange: string): void;
+    // private doUnfilter(historicFilterChange: string): void;
+    // private doSelect(search: SandDance.searchExpression.Search): Promise<void>;
+    // private doDeselect(): Promise<void>;
+    // private writeSnapshot(snapshot: Snapshot, editIndex: number): void;
     scrollSnapshotIntoView(selectedSnapshotIndex: number): void;
     componentDidMount(): void;
     render(): JSX.Element;
-    private getColumnMapBaseProps(): ColumnMapBaseProps;
+    //private getColumnMapBaseProps(): ColumnMapBaseProps;
 }

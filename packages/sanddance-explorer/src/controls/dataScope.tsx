@@ -14,6 +14,16 @@ export enum DataScopeId {
     AllData, SelectedData, FilteredData,
 }
 
+export interface SelectedItemIndex {
+    [key: number]: number;
+}
+
+export function resetSelectedItemIndex(selectedItemIndex: SelectedItemIndex) {
+    selectedItemIndex[DataScopeId.AllData] = 0;
+    selectedItemIndex[DataScopeId.FilteredData] = 0;
+    selectedItemIndex[DataScopeId.SelectedData] = 0;
+}
+
 export interface DataCount {
     all: number;
     filtered: number;

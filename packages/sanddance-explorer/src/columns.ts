@@ -7,7 +7,7 @@ import { preferredColumnForTreemapSize } from '@msrvida/chart-recommender';
 import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from './language';
 import { Transforms } from 'vega-typings/types';
-import { BackgroundImageColumnBound, BackgroundImageDimension, DataExtent } from './interfaces';
+import { BackgroundImageColumnBound, DataExtent } from './interfaces';
 
 import TotalStyle = SandDance.specs.TotalStyle;
 
@@ -104,7 +104,7 @@ export function colorMapping(insight: SandDance.specs.Insight, columns: SandDanc
 
 export function getBackgroundImageColumnBounds(columns: SandDance.types.Column[]) {
     const bounds: BackgroundImageColumnBound[] = [];
-    const getBound = (dimension: BackgroundImageDimension, dataExtent: DataExtent, column: SandDance.types.Column): BackgroundImageColumnBound => {
+    const getBound = (dimension: SandDance.types.Dimension2D, dataExtent: DataExtent, column: SandDance.types.Column): BackgroundImageColumnBound => {
         const { stats } = column;
         const numericValue = dataExtent === 'max' ? stats.max : stats.min;
         return {
@@ -117,7 +117,7 @@ export function getBackgroundImageColumnBounds(columns: SandDance.types.Column[]
         };
     };
     const dataExtents: DataExtent[] = ['max', 'min'];
-    const dimensions: BackgroundImageDimension[] = ['x', 'y'];
+    const dimensions: SandDance.types.Dimension2D[] = ['x', 'y'];
     columns.forEach(c => {
         if (c.quantitative) {
             dimensions.forEach(dimension => dataExtents.forEach(dataExtent => bounds.push(getBound(dimension, dataExtent, c))));
