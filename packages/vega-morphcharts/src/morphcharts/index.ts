@@ -3,7 +3,7 @@
 * Licensed under the MIT License.
 */
 
-import { Constants, Core, Helpers } from 'morphcharts';
+import { Core } from 'morphcharts';
 import { IBounds, ILayerProps, MorphChartsRenderResult, MorphChartsRef, PreStage, Stage, MorphChartsColors, PresenterConfig, MorphChartsRendererOptions, LayerSelection, ILayer, ImageBounds, MorphChartsOptions, LayerStagger, ICubeLayer } from '../interfaces';
 import { createAxesLayer } from './axes';
 import { outerBounds } from './bounds';
@@ -11,13 +11,13 @@ import { createCubeLayer } from './cubes';
 import { createLineLayer } from './lines';
 import { getRenderer, rendererEnabled, setRendererOptions, shouldChangeRenderer } from './renderer';
 import { createTextLayer } from './text';
-import { quat } from 'gl-matrix';
 import { easing } from '../easing';
 import { createImageQuad, getImageData } from './image';
 import { minZ } from '../defaults';
-import { vec3 } from 'gl-matrix';
+import { quat, vec3 } from 'gl-matrix';
 import { listenCanvasEvents } from './canvas';
 import { colorConfig } from './color';
+import { cameraDefaults } from './defaults';
 
 export { MorphChartsRef };
 
@@ -127,22 +127,8 @@ export function init(options: MorphChartsOptions, mcRendererOptions: MorphCharts
     return ref;
 }
 
-const qModel2d = quat.create();
-const qModel3d = Constants.QUAT_ROTATEX_MINUS_90;
-const qCameraRotation2d = quat.create();
-const qCameraRotation3d = quat.create();
-const qAngle = quat.create();
-const vPosition = vec3.create();
-
-// Altitude (pitch around local right axis)
-quat.setAxisAngle(qCameraRotation3d, Constants.VECTOR3_UNITX, Helpers.AngleHelper.degreesToRadians(30));
-
-// Azimuth (yaw around global up axis)
-quat.setAxisAngle(qAngle, Constants.VECTOR3_UNITY, Helpers.AngleHelper.degreesToRadians(-25));
-quat.multiply(qCameraRotation3d, qCameraRotation3d, qAngle);
-
-
 export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: Stage, height: number, width: number, preStage: PreStage, colors: MorphChartsColors, config: PresenterConfig): MorphChartsRenderResult {
+    const { qCameraRotation2d, qCameraRotation3d, qModel2d, qModel3d, vPosition } = cameraDefaults;
     const cameraTo = config.camera;
     if (prevStage && (prevStage.view !== stage.view)) {
         ref.transitionModel = ref.resetCameraWithLayout;
