@@ -4,7 +4,7 @@
 */
 
 import * as VegaMorphCharts from '@msrvida/vega-morphcharts';
-import { ColumnStats, Transition } from "./types";
+import { Transition } from "./types";
 import { getStats } from '@msrvida/sanddance-specs';
 import { scaleLinear, scaleOrdinal } from 'd3-scale';
 import { GL_ORDINAL } from './constants';
@@ -20,7 +20,6 @@ export function assignTransitionStagger(transition: Transition, currentData: obj
     } else {
         const staggerOrders = new Float64Array(cubelayer.positionsX.length);
         //TODO calc column via filtered data
-        let stats: ColumnStats;
         switch (transition.type) {
             case 'ordinal': {
                 //reverse ordinal
@@ -32,9 +31,31 @@ export function assignTransitionStagger(transition: Transition, currentData: obj
                 break;
             }
             case 'column': {
-                stats = getStats(currentData, transition.column)
+                if (transition.column.quantitative) {
+                    const values = new Float64Array(currentData.length);
+                    currentData.forEach((datum, i) => {
+                        values[i] = datum[transition.column.name];
+                    });
+                    const stats = getStats(currentData, transition.column);
+                    const scale = scaleLinear(range).domain([stats.min, stats.max]);
+                    currentData.forEach((datum, i) => {
+                        const glOrdinal = datum[GL_ORDINAL] as number;
+                        staggerOrders[glOrdinal] = scale(values[i]);
+                    });
+                } else {
+                    const strings: string[] = new Array(currentData.length);
+                    currentData.forEach((datum, i) => {
+                        strings[i] = datum[transition.column.name];
+                    });
+                    getStats(currentData, transition.column, distictValues => {
+                        const scale = scaleOrdinal(range).domain(distictValues);
+                        currentData.forEach((datum, i) => {
+                            const glOrdinal = datum[GL_ORDINAL] as number;
+                            staggerOrders[glOrdinal] = scale(strings[i]);
+                        });
+                    });
+                }
                 //TODO extract the column, get stats, sort it, use as a domain, create a scale range 0-1
-                //TODO cluster
                 break;
             }
             case 'position': {
@@ -49,7 +70,7 @@ export function assignTransitionStagger(transition: Transition, currentData: obj
                     const glOrdinal = datum[GL_ORDINAL] as number;
                     values[i] = positions[glOrdinal];
                 });
-                stats = getStats(values, null, 'number', true);
+                const stats = getStats(values, null, 'number', true);
                 const scale = scaleLinear(range).domain([stats.min, stats.max]);
                 currentData.forEach((datum, i) => {
                     const glOrdinal = datum[GL_ORDINAL] as number;
