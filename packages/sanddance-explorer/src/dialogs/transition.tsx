@@ -15,8 +15,9 @@ import { Dropdown } from '../controls/dropdown';
 export interface TransitionEdits {
     transitionType: SandDance.types.TransitionType;
     transitionCluster: boolean;
+    transitionReverse?: boolean;
     transitionColumn?: SandDance.types.Column;
-    transitionDimension: SandDance.types.Dimension2D;
+    transitionDimension: SandDance.types.Dimension3D;
     transitionDurations: SandDance.VegaMorphCharts.types.TransitionDurations;
 }
 
@@ -28,6 +29,12 @@ export interface Props extends ColumnMapBaseProps, TransitionEdits {
 
 export interface State {
 }
+
+const positions: [SandDance.types.Dimension3D, string][] = [
+    ['x', strings.labelAliasX],
+    ['y', strings.labelAliasY],
+    ['z', strings.labelAliasZ],
+];
 
 function _TransitionEditor(_props: Props) {
     class __TransitionEditor extends base.react.Component<Props, State>{
@@ -46,7 +53,7 @@ function _TransitionEditor(_props: Props) {
                 <div>
                     <Group label={strings.labelTransition}>
                         <base.fluentUI.Toggle
-                            label='Reset camera when layout TODO'
+                            label={strings.labelResetCameraOnLayout}
                             checked={explorer.viewer.presenter.morphchartsref.resetCameraWithLayout}
                             onChange={(e, resetCameraWithLayout) => {
                                 explorer.viewer.presenter.morphchartsref.resetCameraWithLayout = resetCameraWithLayout;
@@ -54,7 +61,7 @@ function _TransitionEditor(_props: Props) {
                             }}
                         />
                         <base.fluentUI.Slider
-                            label='Transition scrubber TODO'
+                            label={strings.labelTransitionScrubber}
                             min={0}
                             max={1}
                             step={0.01}
@@ -65,20 +72,20 @@ function _TransitionEditor(_props: Props) {
                             }}
                         />
                         <base.fluentUI.ChoiceGroup
-                            label={'Transition type TODO'}
+                            label={strings.labelTransitionStaggerBy}
                             selectedKey={props.transitionType}
                             options={[
                                 {
                                     key: 'ordinal',
-                                    text: 'Ordinal TODO',
+                                    text: strings.labelTransitionStaggerByOrdinal,
                                 },
                                 {
                                     key: 'column',
-                                    text: 'Column TODO',
+                                    text: strings.labelTransitionStaggerByColumn,
                                 },
                                 {
                                     key: 'position',
-                                    text: 'Layout TODO',
+                                    text: strings.labelTransitionStaggerByPosition,
                                 },
                             ]}
                             onChange={(e, o) => {
@@ -87,13 +94,15 @@ function _TransitionEditor(_props: Props) {
                                 explorer.setState({ transitionType, calculating: () => explorer.setStagger() });
                             }}
                         />
+                    </Group>
+                    <Group label={strings.labelTransitionStaggerOptions}>
                         {(() => {
                             switch (props.transitionType) {
                                 case 'column': {
                                     return (
                                         <Dropdown
                                             collapseLabel={props.compactUI}
-                                            label={'column TODO'}
+                                            label={strings.labelTransitionStaggerByColumn}
                                             options={getColumnOptions(props, props.transitionColumn.name)}
                                             onChange={(e, o) => {
                                                 explorer.setState({ transitionColumn: o.data, calculating: () => explorer.setStagger() });
@@ -105,19 +114,10 @@ function _TransitionEditor(_props: Props) {
                                     return (
                                         <Dropdown
                                             collapseLabel={props.compactUI}
-                                            label={'position TODO'}
-                                            options={[
-                                                {
-                                                    key: 'x',
-                                                    text: 'X TODO',
-                                                    selected: props.transitionDimension === 'x',
-                                                },
-                                                {
-                                                    key: 'y',
-                                                    text: 'Y TODO',
-                                                    selected: props.transitionDimension === 'y',
-                                                },
-                                            ]}
+                                            label={strings.labelTransitionStaggerByPosition}
+                                            options={positions.map(([key, text]) => {
+                                                return { key, text, selected: props.transitionDimension === key };
+                                            })}
                                             onChange={(e, o) => {
                                                 explorer.setState({ transitionDimension: o.key as SandDance.types.Dimension2D, calculating: () => explorer.setStagger() });
                                             }}
@@ -128,11 +128,16 @@ function _TransitionEditor(_props: Props) {
                         })()}
                         {(props.transitionType !== 'ordinal') && (
                             <base.fluentUI.Toggle
-                                label='Cluster TODO'
+                                label={strings.labelTransitionStaggerOCluster}
                                 checked={props.transitionCluster}
                                 onChange={(e, transitionCluster) => explorer.setState({ transitionCluster, calculating: () => explorer.setStagger() })}
                             />
                         )}
+                        <base.fluentUI.Toggle
+                            label={strings.labelTransitionStaggerReverse}
+                            checked={props.transitionReverse}
+                            onChange={(e, transitionReverse) => explorer.setState({ transitionReverse, calculating: () => explorer.setStagger() })}
+                        />
                     </Group>
                     <Group label={strings.labelTransitionDurations}>
                         <base.fluentUI.Slider
