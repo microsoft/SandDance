@@ -968,7 +968,7 @@ export class Viewer {
     }
 
     assignTransitionStagger(transition: Transition) {
-        assignTransitionStagger(transition, this._dataScope.currentData(), this.presenter);
+        assignTransitionStagger(transition, this._dataScope.currentData(), this.convertSearchToSet(), this.presenter);
     }
 
     finalize() {

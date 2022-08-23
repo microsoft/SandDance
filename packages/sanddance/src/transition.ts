@@ -10,7 +10,7 @@ import { scaleLinear } from 'd3-scale';
 import { GL_ORDINAL } from './constants';
 import { Dimension3D } from '../../chart-types/dist/es6';
 
-export function assignTransitionStagger(transition: Transition, currentData: object[], presenter: VegaMorphCharts.Presenter) {
+export function assignTransitionStagger(transition: Transition, currentData: object[], selection: Set<number>, presenter: VegaMorphCharts.Presenter) {
     const { layerStagger } = presenter.morphchartsref;
     const { morphChartsRenderResult } = presenter;
     const cubelayer = morphChartsRenderResult.getCubeLayer();
@@ -80,5 +80,5 @@ export function assignTransitionStagger(transition: Transition, currentData: obj
         }
         layerStagger.cubes = { staggerOrders, maxStaggerOrder: 1, minStaggerOrder: 0 };
     }
-    cubelayer.update(morphChartsRenderResult.bounds, new Set<number>(), layerStagger.cubes)
+    cubelayer.update(morphChartsRenderResult.bounds, selection, layerStagger.cubes)
 }
