@@ -6,7 +6,7 @@
 import * as VegaMorphCharts from '@msrvida/vega-morphcharts';
 import { Transition } from "./types";
 import { getStats } from '@msrvida/sanddance-specs';
-import { scaleLinear, scaleOrdinal } from 'd3-scale';
+import { scaleLinear } from 'd3-scale';
 import { GL_ORDINAL } from './constants';
 import { Dimension3D } from '../../chart-types/dist/es6';
 
@@ -19,7 +19,6 @@ export function assignTransitionStagger(transition: Transition, currentData: obj
         delete layerStagger.cubes;
     } else {
         const staggerOrders = new Float64Array(cubelayer.positionsX.length);
-        //TODO calc column via filtered data
         switch (transition.type) {
             case 'ordinal': {
                 //reverse ordinal
@@ -48,14 +47,14 @@ export function assignTransitionStagger(transition: Transition, currentData: obj
                         strings[i] = datum[transition.column.name];
                     });
                     getStats(currentData, transition.column, distictValues => {
-                        const scale = scaleOrdinal(range).domain(distictValues);
                         currentData.forEach((datum, i) => {
                             const glOrdinal = datum[GL_ORDINAL] as number;
-                            staggerOrders[glOrdinal] = scale(strings[i]);
+                            const index = distictValues.indexOf(strings[i]);
+                            const staggerOrder = index / distictValues.length;
+                            staggerOrders[glOrdinal] = transition.reverse ? 1 - staggerOrder : staggerOrder;
                         });
                     });
                 }
-                //TODO extract the column, get stats, sort it, use as a domain, create a scale range 0-1
                 break;
             }
             case 'position': {
