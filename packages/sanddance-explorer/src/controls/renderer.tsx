@@ -64,22 +64,20 @@ function _Renderer(_props: Props) {
         }
 
         setBasicOptions(newOptions: Partial<SandDance.VegaMorphCharts.types.BasicRendererOptions>) {
-            const { basicOptions } = this.props;
             this.setOptions({
                 advanced: false,
                 basicOptions: {
-                    ...basicOptions,
+                    ...this.props.basicOptions,
                     ...newOptions,
                 },
             });
         }
 
         setAdvancedOptions(newOptions: Partial<SandDance.VegaMorphCharts.types.AdvancedRendererOptions>) {
-            const { advancedOptions } = this.props;
             this.setOptions({
                 advanced: true,
                 advancedOptions: {
-                    ...advancedOptions,
+                    ...this.props.advancedOptions,
                     ...newOptions,
                 },
             });
