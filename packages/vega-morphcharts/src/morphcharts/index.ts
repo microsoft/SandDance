@@ -4,8 +4,7 @@
 */
 
 import { Constants, Core, Helpers } from 'morphcharts';
-import { colorFromString } from '../color';
-import { IBounds, ILayerProps, MorphChartsRenderResult, MorphChartsRef, PreStage, Stage, MorphChartsColor, MorphChartsColors, PresenterConfig, MorphChartsRendererOptions, LayerSelection, ILayer, ImageBounds, MorphChartsOptions, LayerStagger, ICubeLayer } from '../interfaces';
+import { IBounds, ILayerProps, MorphChartsRenderResult, MorphChartsRef, PreStage, Stage, MorphChartsColors, PresenterConfig, MorphChartsRendererOptions, LayerSelection, ILayer, ImageBounds, MorphChartsOptions, LayerStagger, ICubeLayer } from '../interfaces';
 import { createAxesLayer } from './axes';
 import { outerBounds } from './bounds';
 import { createCubeLayer } from './cubes';
@@ -18,6 +17,7 @@ import { createImageQuad, getImageData } from './image';
 import { minZ } from '../defaults';
 import { vec3 } from 'gl-matrix';
 import { listenCanvasEvents } from './canvas';
+import { colorConfig } from './color';
 
 export { MorphChartsRef };
 
@@ -290,29 +290,6 @@ function layersWithSelection(cubeLayer: ILayer, lineLayer: ILayer, textLayer: IL
         },
     ];
     layerItems.forEach(layerItem => layerItem.layer?.update(bounds, layerItem.selection, layerItem.stagger));
-}
-
-function convert(newColor: string): MorphChartsColor {
-    const c = colorFromString(newColor).slice(0, 3);
-    return c.map(v => v / 255) as MorphChartsColor;
-}
-
-export function colorConfig(ref: MorphChartsRef, colors: MorphChartsColors) {
-    if (!colors) return;
-    const { config } = ref.core;
-    config.activeColor = convert(colors.activeItemColor);
-    config.backgroundColor = convert(colors.backgroundColor);
-    config.textColor = convert(colors.textColor);
-    config.textBorderColor = convert(colors.textBorderColor);
-    config.axesTextColor = convert(colors.axesTextLabelColor);
-    config.axesGridBackgroundColor = convert(colors.axesGridBackgroundColor);
-    config.axesGridHighlightColor = convert(colors.axesGridHighlightColor);
-    config.axesGridMinorColor = convert(colors.axesGridMinorColor);
-    config.axesGridMajorColor = convert(colors.axesGridMajorColor);
-    config.axesGridZeroColor = convert(colors.axesGridZeroColor);
-
-    //TODO fix this - hack to reset the background color
-    ref.core.renderer['_theme'] = null;
 }
 
 function convertBounds(bounds: ImageBounds): IBounds {
