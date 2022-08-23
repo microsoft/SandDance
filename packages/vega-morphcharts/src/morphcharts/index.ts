@@ -254,6 +254,7 @@ export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: 
     colorConfig(ref, colors);
 
     return {
+        bounds,
         getCubeLayer: () => <ICubeLayer>cubeLayer,
         update: layerSelection => layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds, ref.layerStagger),
         activate: id => core.renderer.transitionBuffers[0].activeId = id,
