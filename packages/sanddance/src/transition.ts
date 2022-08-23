@@ -8,18 +8,29 @@ import { ColumnStats, Transition } from "./types";
 import { getStats } from '@msrvida/sanddance-specs';
 import { scaleLinear, scaleOrdinal } from 'd3-scale';
 import { GL_ORDINAL } from './constants';
+import { Dimension3D } from '../../chart-types/dist/es6';
 
 export function assignTransitionStagger(transition: Transition, currentData: object[], presenter: VegaMorphCharts.Presenter) {
     const { layerStagger } = presenter.morphchartsref;
     const { morphChartsRenderResult } = presenter;
     const cubelayer = morphChartsRenderResult.getCubeLayer();
-    if (!transition || transition.type === 'ordinal') {
+    const range = transition.reverse ? [1, 0] : [0, 1];
+    if (!transition || transition.type === 'ordinal' && !transition.reverse) {
         delete layerStagger.cubes;
     } else {
         const staggerOrders = new Float64Array(cubelayer.positionsX.length);
         //TODO calc column via filtered data
         let stats: ColumnStats;
         switch (transition.type) {
+            case 'ordinal': {
+                //reverse ordinal
+                const scale = scaleLinear(range).domain([0, currentData.length]);
+                currentData.forEach((datum, i) => {
+                    const glOrdinal = datum[GL_ORDINAL] as number;
+                    staggerOrders[glOrdinal] = scale(i);
+                });
+                break;
+            }
             case 'column': {
                 stats = getStats(currentData, transition.column)
                 //TODO extract the column, get stats, sort it, use as a domain, create a scale range 0-1
@@ -27,32 +38,23 @@ export function assignTransitionStagger(transition: Transition, currentData: obj
                 break;
             }
             case 'position': {
-                let positions: Float64Array;
-                switch (transition.dimension) {
-                    case 'x': {
-                        positions = cubelayer.positionsX;
-                        break;
-                    }
-                    case 'y': {
-                        positions = cubelayer.positionsY;
-                        break;
-                    }
-                }
+                const dimensions: { [key in Dimension3D]: Float64Array } = {
+                    'x': cubelayer.positionsX,
+                    'y': cubelayer.positionsY,
+                    'z': cubelayer.positionsZ,
+                };
+                const positions = dimensions[transition.dimension];
                 const values = new Float64Array(currentData.length);
                 currentData.forEach((datum, i) => {
                     const glOrdinal = datum[GL_ORDINAL] as number;
                     values[i] = positions[glOrdinal];
-                })
+                });
                 stats = getStats(values, null, 'number', true);
-                const scale = scaleLinear([0, 1])
-                    .domain([stats.min, stats.max]);
-
+                const scale = scaleLinear(range).domain([stats.min, stats.max]);
                 currentData.forEach((datum, i) => {
                     const glOrdinal = datum[GL_ORDINAL] as number;
                     staggerOrders[glOrdinal] = scale(values[i]);
-                })
-
-                //TODO cluster
+                });
                 break;
             }
         }

@@ -364,6 +364,7 @@ export type TransitionType = 'ordinal' | 'column' | 'position';
 
 export interface TransitionBase {
     type: TransitionType;
+    reverse?: boolean;
 }
 export interface TransitionByOrdinal extends TransitionBase {
     type: 'ordinal';

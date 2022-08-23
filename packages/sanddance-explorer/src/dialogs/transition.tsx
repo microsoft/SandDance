@@ -14,7 +14,6 @@ import { Dropdown } from '../controls/dropdown';
 
 export interface TransitionEdits {
     transitionType: SandDance.types.TransitionType;
-    transitionCluster: boolean;
     transitionReverse?: boolean;
     transitionColumn?: SandDance.types.Column;
     transitionDimension: SandDance.types.Dimension3D;
@@ -126,13 +125,6 @@ function _TransitionEditor(_props: Props) {
                                 }
                             }
                         })()}
-                        {(props.transitionType !== 'ordinal') && (
-                            <base.fluentUI.Toggle
-                                label={strings.labelTransitionStaggerOCluster}
-                                checked={props.transitionCluster}
-                                onChange={(e, transitionCluster) => explorer.setState({ transitionCluster, calculating: () => explorer.setStagger() })}
-                            />
-                        )}
                         <base.fluentUI.Toggle
                             label={strings.labelTransitionStaggerReverse}
                             checked={props.transitionReverse}
@@ -210,22 +202,26 @@ function getColumnOptions(props: ColumnMapBaseProps, selectedKey: string) {
 }
 
 export function getTransition(state: TransitionEdits): SandDance.types.Transition {
+    const reverse = state.transitionReverse;
     switch (state.transitionType) {
         case 'ordinal': {
             return {
                 type: 'ordinal',
+                reverse,
             };
         }
         case 'column': {
             return {
                 type: 'column',
                 column: state.transitionColumn,
+                reverse,
             };
         }
         case 'position': {
             return {
                 type: 'position',
                 dimension: state.transitionDimension,
+                reverse,
             };
         }
     }

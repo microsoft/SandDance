@@ -91,7 +91,6 @@ export const strings = {
     labelTransitionStaggerByColumn: 'Column',
     labelTransitionStaggerByPosition: 'Axis position',
     labelTransitionStaggerOptions: 'Stagger options',
-    labelTransitionStaggerOCluster: 'Cluster',
     labelTransitionStaggerReverse: 'Reverse',
     labelVegaSpec: 'Vega specification',
     labelColor: 'Chart color',
