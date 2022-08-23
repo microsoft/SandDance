@@ -74,6 +74,7 @@ export function init(options: MorphChartsOptions, mcRendererOptions: MorphCharts
         },
         lastMorphChartsRendererOptions: mcRendererOptions,
         layerStagger: {},
+        resetCameraWithLayout: true,
     };
     const cam = (t: number) => {
         quat.slerp(ref.qCameraRotationCurrent, ref.qCameraRotationFrom, ref.qCameraRotationTo, t);
@@ -93,7 +94,7 @@ export function init(options: MorphChartsOptions, mcRendererOptions: MorphCharts
                 ref.isTransitioningPosition = false;
                 ref.transitionPositionTime = totalPositionTime;
             }
-            const tp = easing(ref.transitionPositionTime / totalPositionTime);
+            const tp = ref.transitionPositionTime / totalPositionTime;
             core.renderer.transitionTime = tp;
         }
         if (ref.isTransitioningModel) {
@@ -144,7 +145,7 @@ quat.multiply(qCameraRotation3d, qCameraRotation3d, qAngle);
 export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: Stage, height: number, width: number, preStage: PreStage, colors: MorphChartsColors, config: PresenterConfig): MorphChartsRenderResult {
     const cameraTo = config.camera;
     if (prevStage && (prevStage.view !== stage.view)) {
-        ref.transitionModel = true;
+        ref.transitionModel = ref.resetCameraWithLayout;
         if (stage.view === '2d') {
             ref.qModelFrom = qModel3d;
             ref.qModelTo = qModel2d;
@@ -157,6 +158,7 @@ export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: 
             ref.vCameraPositionTo = cameraTo?.position || vPosition;
         }
     } else {
+        ref.transitionModel = false;
         if (stage.view === '2d') {
             ref.qModelTo = qModel2d;
             ref.qCameraRotationTo = cameraTo?.rotation || qCameraRotation2d;
@@ -166,7 +168,6 @@ export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: 
             ref.qCameraRotationTo = cameraTo?.rotation || qCameraRotation3d;
             ref.vCameraPositionTo = cameraTo?.position || vPosition;
         }
-        ref.transitionModel = false;
     }
     ref.core.camera.getOrbit(ref.qCameraRotationFrom);
     ref.core.camera.getPosition(ref.vCameraPositionFrom);
@@ -174,7 +175,7 @@ export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: 
         ref.core.setModelRotation(ref.qModelTo, false);
         ref.core.camera.setOrbit(ref.qCameraRotationTo, false);
         ref.core.camera.setPosition(ref.vCameraPositionTo, false);
-    } else {
+    } else if (ref.resetCameraWithLayout) {
         ref.isTransitioningPosition = true;
         ref.isCameraMovement = true;
         ref.cameraTime = 0;

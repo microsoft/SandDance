@@ -12,37 +12,47 @@ import { ColumnMapBaseProps } from '../controls/columnMap';
 import { SandDance } from '@msrvida/sanddance-react';
 import { Dropdown } from '../controls/dropdown';
 
-export interface Props extends ColumnMapBaseProps {
+export interface TransitionEdits {
+    transitionType: SandDance.types.TransitionType;
+    transitionCluster: boolean;
+    transitionColumn?: SandDance.types.Column;
+    transitionDimension: SandDance.types.Dimension2D;
+    transitionDurations: SandDance.VegaMorphCharts.types.TransitionDurations;
+}
+
+export interface Props extends ColumnMapBaseProps, TransitionEdits {
     compactUI: boolean;
     themePalette: Partial<FluentUITypes.IPalette>;
     explorer: Explorer_Class;
-    transitionCluster: boolean
-    transitionColumn: SandDance.types.Column;
-    transitionDimension: SandDance.types.Dimension2D;
 }
 
 export interface State {
-    transitionType: SandDance.types.TransitionType;
-    positionDimension: SandDance.types.Dimension3D;
 }
 
-function _Transition(_props: Props) {
-    class __Transition extends base.react.Component<Props, State>{
+function _TransitionEditor(_props: Props) {
+    class __TransitionEditor extends base.react.Component<Props, State>{
         constructor(props: Props) {
             super(props);
             this.state = {
-                transitionType: 'ordinal',
-                positionDimension: 'y',
             };
         }
 
         render() {
-            const { props, state } = this;
+            const { props } = this;
+            const { explorer } = props;
             const dropdownRef = base.react.createRef<FluentUITypes.IDropdown>();
-            props.explorer.dialogFocusHandler.focus = () => dropdownRef.current?.focus();
+            explorer.dialogFocusHandler.focus = () => dropdownRef.current?.focus();
             return (
                 <div>
                     <Group label={strings.labelTransition}>
+                        <base.fluentUI.Toggle
+                            label='Reset camera when layout TODO'
+                            checked={explorer.viewer.presenter.morphchartsref.resetCameraWithLayout}
+                            onChange={(e, resetCameraWithLayout) => {
+                                explorer.viewer.presenter.morphchartsref.resetCameraWithLayout = resetCameraWithLayout;
+                                this.forceUpdate();
+                            }}
+                        />
                         <base.fluentUI.Slider
                             label='Transition scrubber TODO'
                             min={0}
@@ -50,13 +60,13 @@ function _Transition(_props: Props) {
                             step={0.01}
                             defaultValue={1}
                             onChange={value => {
-                                props.explorer.viewer.presenter.morphchartsref.core.renderer.transitionTime = value;
+                                explorer.viewer.presenter.morphchartsref.core.renderer.transitionTime = value;
                                 //TODO - swap axes at 0
                             }}
                         />
                         <base.fluentUI.ChoiceGroup
                             label={'Transition type TODO'}
-                            selectedKey={state.transitionType}
+                            selectedKey={props.transitionType}
                             options={[
                                 {
                                     key: 'ordinal',
@@ -74,32 +84,11 @@ function _Transition(_props: Props) {
                             onChange={(e, o) => {
                                 const transitionType = o.key as SandDance.types.TransitionType;
                                 this.setState({ transitionType });
-                                let transition: SandDance.types.Transition;
-                                switch (transitionType) {
-                                    case 'ordinal': {
-                                        //do nothing
-                                        break;
-                                    }
-                                    case 'column': {
-                                        transition = {
-                                            type: transitionType,
-                                            column: props.transitionColumn,
-                                        };
-                                        break;
-                                    }
-                                    case 'position': {
-                                        transition = {
-                                            type: transitionType,
-                                            dimension: props.transitionDimension,
-                                        };
-                                        break;
-                                    }
-                                }
-                                props.explorer.setState({ transition, calculating: () => props.explorer.setStagger() });
+                                explorer.setState({ transitionType, calculating: () => explorer.setStagger() });
                             }}
                         />
                         {(() => {
-                            switch (state.transitionType) {
+                            switch (props.transitionType) {
                                 case 'column': {
                                     return (
                                         <Dropdown
@@ -107,7 +96,7 @@ function _Transition(_props: Props) {
                                             label={'column TODO'}
                                             options={getColumnOptions(props, props.transitionColumn.name)}
                                             onChange={(e, o) => {
-                                                props.explorer.setState({ transitionColumn: o.data, calculating: () => props.explorer.setStagger() });
+                                                explorer.setState({ transitionColumn: o.data, calculating: () => explorer.setStagger() });
                                             }}
                                         />
                                     );
@@ -130,18 +119,18 @@ function _Transition(_props: Props) {
                                                 },
                                             ]}
                                             onChange={(e, o) => {
-                                                props.explorer.setState({ transitionDimension: o.key as SandDance.types.Dimension2D, calculating: () => props.explorer.setStagger() });
+                                                explorer.setState({ transitionDimension: o.key as SandDance.types.Dimension2D, calculating: () => explorer.setStagger() });
                                             }}
                                         />
                                     );
                                 }
                             }
                         })()}
-                        {(state.transitionType !== 'ordinal') && (
+                        {(props.transitionType !== 'ordinal') && (
                             <base.fluentUI.Toggle
                                 label='Cluster TODO'
                                 checked={props.transitionCluster}
-                                onChange={(e, transitionCluster) => props.explorer.setState({ transitionCluster, calculating: () => props.explorer.setStagger() })}
+                                onChange={(e, transitionCluster) => explorer.setState({ transitionCluster, calculating: () => explorer.setStagger() })}
                             />
                         )}
                     </Group>
@@ -149,45 +138,43 @@ function _Transition(_props: Props) {
                         <base.fluentUI.Slider
                             label={strings.labelTransitionPosition}
                             onChange={value => {
-                                props.explorer.state.transitionDurations.position = value;
+                                explorer.state.transitionDurations.position = value;
+                                explorer.viewer.presenter.morphchartsref.core.config.transitionDuration = value;
                             }}
                             min={0}
                             max={10000}
-                            defaultValue={props.explorer.state.transitionDurations.position}
+                            defaultValue={explorer.state.transitionDurations.position}
                         />
                         <base.fluentUI.Slider
                             label={strings.labelTransitionStagger}
                             onChange={value => {
-                                props.explorer.state.transitionDurations.stagger = value;
+                                explorer.state.transitionDurations.stagger = value;
+                                explorer.viewer.presenter.morphchartsref.core.config.transitionStaggering = value;
                             }}
                             min={0}
                             max={10000}
-                            defaultValue={props.explorer.state.transitionDurations.stagger}
+                            defaultValue={explorer.state.transitionDurations.stagger}
                         />
                         <base.fluentUI.Slider
                             label={strings.labelTransitionCamera}
                             onChange={value => {
-                                props.explorer.state.transitionDurations.view = value;
+                                explorer.state.transitionDurations.view = value;
                             }}
                             min={0}
                             max={10000}
-                            defaultValue={props.explorer.state.transitionDurations.view}
+                            defaultValue={explorer.state.transitionDurations.view}
                         />
                     </Group>
                 </div>
             );
         }
-
-        // changeTransitionType(transitionType: SandDance.types.TransitionType) {
-        //     this.setState({ transitionType });
-        // }
     }
-    return new __Transition(_props);
+    return new __TransitionEditor(_props);
 }
 
-export const Transition: typeof Transition_Class = _Transition as any;
+export const TransitionEditor: typeof TransitionEditor_Class = _TransitionEditor as any;
 
-export declare class Transition_Class extends base.react.Component<Props, State> {
+export declare class TransitionEditor_Class extends base.react.Component<Props, State> {
 }
 
 function groupOptions(sectionName: string, columns: SandDance.types.Column[], selectedKey: string) {
@@ -215,4 +202,26 @@ function getColumnOptions(props: ColumnMapBaseProps, selectedKey: string) {
     const quantitativeGroup = groupOptions(strings.selectNumeric, props.quantitativeColumns, selectedKey);
     const categoricGroup = groupOptions(strings.selectNonNumeric, props.categoricalColumns, selectedKey);
     return quantitativeGroup.concat(categoricGroup);
+}
+
+export function getTransition(state: TransitionEdits): SandDance.types.Transition {
+    switch (state.transitionType) {
+        case 'ordinal': {
+            return {
+                type: 'ordinal',
+            };
+        }
+        case 'column': {
+            return {
+                type: 'column',
+                column: state.transitionColumn,
+            };
+        }
+        case 'position': {
+            return {
+                type: 'position',
+                dimension: state.transitionDimension,
+            };
+        }
+    }
 }

@@ -285,7 +285,8 @@ export interface MorphChartsRef {
     supportedRenders: {
         advanced: boolean;
         basic: boolean;
-    }
+    };
+    resetCameraWithLayout: boolean;
     layerStagger: LayerStagger;
 }
 

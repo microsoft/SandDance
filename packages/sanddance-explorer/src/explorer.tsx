@@ -31,7 +31,7 @@ import { InputSearchExpressionGroup, Search } from './dialogs/search';
 import { Settings } from './dialogs/settings';
 import { SnapshotEditor, SnapshotEditor_Class } from './dialogs/snapshotEditor';
 import { Snapshots } from './dialogs/snapshots';
-import { Transition } from './dialogs/transition';
+import { getTransition, TransitionEdits, TransitionEditor } from './dialogs/transition';
 import {
     ChangeColumnMappingOptions,
     ColorSettings,
@@ -118,14 +118,9 @@ export interface UIState {
     historyItems: HistoryItem[];
     camera?: SandDance.types.Camera;
     renderer: SandDance.VegaMorphCharts.types.MorphChartsRendererOptions;
-    transition?: SandDance.types.Transition;
-    transitionCluster: boolean;
-    transitionColumn?: SandDance.types.Column;
-    transitionDimension: SandDance.types.Dimension2D;
-    transitionDurations: SandDance.VegaMorphCharts.types.TransitionDurations;
 }
 
-export interface State extends HistoricInsight, UIState {
+export interface State extends HistoricInsight, UIState, TransitionEdits {
 }
 
 function _Explorer(_props: Props) {
@@ -241,8 +236,10 @@ function _Explorer(_props: Props) {
                     viewerOptions && viewerOptions.onError && viewerOptions.onError(errors);
                 },
                 onBeforeCreateLayers: (stage, specCapabilities) => {
-                    this.setStagger();
                     attachSpecRoleToAxisTitle(stage, specCapabilities);
+                },
+                onPresent: () => {
+                    this.setStagger();
                 },
                 getTextColor: o => {
                     if ((o as TextWithSpecRole).specRole) {
@@ -297,7 +294,7 @@ function _Explorer(_props: Props) {
         }
 
         public setStagger() {
-            this.viewer.assignTransitionStagger(this.state.transition);
+            this.viewer.assignTransitionStagger(getTransition(this.state));
         }
 
         public signal(signalName: string, signalValue: any, newViewStateTarget?: boolean) {
@@ -346,8 +343,14 @@ function _Explorer(_props: Props) {
                 this.setState({ camera: undefined });
                 return;
             }
+            //TODO setstate only once
             const { camera, renderer, transition, transitionDurations } = setup;
-            this.setState({ camera, renderer, transition });
+            this.setState({ camera, renderer, transitionType: transition.type });
+            if (transition.type === 'column') {
+                this.setState({ transitionColumn: transition.column });
+            } else if (transition.type === 'position') {
+                this.setState({ transitionDimension: transition.dimension });
+            }
             if (transitionDurations) {
                 this.setState({ transitionDurations });
             }
@@ -1347,14 +1350,12 @@ function _Explorer(_props: Props) {
                                     }
                                     case SideTabId.Transition: {
                                         return (
-                                            <Transition
+                                            <TransitionEditor
                                                 {...columnMapProps}
+                                                {...this.state}
                                                 compactUI={this.props.compactUI}
                                                 explorer={this as any as Explorer_Class}
                                                 themePalette={themePalette}
-                                                transitionCluster={this.state.transitionCluster}
-                                                transitionColumn={this.state.transitionColumn}
-                                                transitionDimension={this.state.transitionDimension}
                                             />
                                         );
                                     }
@@ -1421,7 +1422,7 @@ function _Explorer(_props: Props) {
                                     setup={{
                                         camera: this.state.camera,
                                         renderer: this.state.renderer,
-                                        transition: this.state.transition,
+                                        transition: getTransition(this.state),
                                         transitionDurations: this.state.transitionDurations,
                                     }}
                                     onMount={el => this.viewerMounted(el)}
