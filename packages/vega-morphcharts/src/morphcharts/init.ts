@@ -6,9 +6,9 @@
 import { Core } from 'morphcharts';
 import { MorphChartsRef, MorphChartsRendererOptions, MorphChartsOptions } from '../interfaces';
 import { getRenderer, rendererEnabled, setRendererOptions, shouldChangeRenderer } from './renderer';
-import { easing } from '../easing';
 import { quat, vec3 } from 'gl-matrix';
 import { listenCanvasEvents } from './canvas';
+import { CameraTransitioner, ModelTransitioner, Transitioner } from '../transition';
 
 export function init(options: MorphChartsOptions, mcRendererOptions: MorphChartsRendererOptions) {
     const { container } = options;
@@ -26,29 +26,16 @@ export function init(options: MorphChartsOptions, mcRendererOptions: MorphCharts
         },
         reset: () => {
             core.reset(true);
-            quat.slerp(ref.qModelCurrent, ref.qModelTo, ref.qModelTo, 0);
-            core.setModelRotation(ref.qModelCurrent, true);
-            core.camera.setOrbit(ref.qCameraRotationTo, false);
-            //core.camera.setPosition(ref.vCameraPositionTo, false);
+            const { cameraTransitioner: cameraState, modelTransitioner: modelState } = ref;
+            quat.slerp(modelState.qModelCurrent, modelState.qModelTo, modelState.qModelTo, 0);
+            core.setModelRotation(modelState.qModelCurrent, true);
+            core.camera.setOrbit(cameraState.qCameraRotationTo, false);
+            //core.camera.setPosition(cameraState.vCameraPositionTo, false);
         },
-        transitionModel: false,
-        qModelFrom: null,
-        qModelTo: null,
-        qModelCurrent: quat.create(),
-        qCameraRotationFrom: quat.create(),
-        qCameraRotationTo: null,
-        qCameraRotationCurrent: quat.create(),
-        vCameraPositionFrom: vec3.create(),
-        vCameraPositionTo: null,
-        vCameraPositionCurrent: vec3.create(),
+        cameraTransitioner: new CameraTransitioner(),
+        modelTransitioner: new ModelTransitioner(),
+        positionTransitioner: new Transitioner(),
         core,
-        cameraTime: 0,
-        isCameraMovement: false,
-        isTransitioningPosition: false,
-        isTransitioningModel: false,
-        transitionPositionTime: 0,
-        transitionModelTime: 0,
-        transitionDurations: null,
         setMorphChartsRendererOptions(mcRendererOptions: MorphChartsRendererOptions) {
             if (shouldChangeRenderer(ref.lastMorphChartsRendererOptions, mcRendererOptions)) {
                 getRenderer(mcRendererOptions, core);
@@ -62,52 +49,35 @@ export function init(options: MorphChartsOptions, mcRendererOptions: MorphCharts
             ref.lastMorphChartsRendererOptions = mcRendererOptions;
         },
         lastMorphChartsRendererOptions: mcRendererOptions,
+        lastPresenterConfig: null,
         layerStagger: {},
-        resetCameraWithLayout: true,
     };
     const cam = (t: number) => {
-        quat.slerp(ref.qCameraRotationCurrent, ref.qCameraRotationFrom, ref.qCameraRotationTo, t);
-        vec3.lerp(ref.vCameraPositionCurrent, ref.vCameraPositionFrom, ref.vCameraPositionTo, t);
-        core.camera.setOrbit(ref.qCameraRotationCurrent, false);
-        core.camera.setPosition(ref.vCameraPositionCurrent, false);
+        const { cameraTransitioner: cameraState } = ref;
+        quat.slerp(cameraState.qCameraRotationCurrent, cameraState.qCameraRotationFrom, cameraState.qCameraRotationTo, t);
+        vec3.lerp(cameraState.vCameraPositionCurrent, cameraState.vCameraPositionFrom, cameraState.vCameraPositionTo, t);
+        core.camera.setOrbit(cameraState.qCameraRotationCurrent, false);
+        core.camera.setPosition(cameraState.vCameraPositionCurrent, false);
 
         // disable picking during transitions, as the performance degradation could reduce the framerate
         core.inputManager.isPickingEnabled = false;
     };
     core.updateCallback = (elapsedTime) => {
-        const { transitionDurations } = ref;
-        if (ref.isTransitioningPosition) {
-            ref.transitionPositionTime += elapsedTime;
-            const totalPositionTime = transitionDurations.position + transitionDurations.stagger;
-            if (ref.transitionPositionTime >= totalPositionTime) {
-                ref.isTransitioningPosition = false;
-                ref.transitionPositionTime = totalPositionTime;
-            }
-            const tp = ref.transitionPositionTime / totalPositionTime;
-            core.renderer.transitionTime = tp;
+        const { cameraTransitioner: cameraState, modelTransitioner: modelState, positionTransitioner: transitionState } = ref;
+        const { transitionDurations } = ref.lastPresenterConfig;
+        if (transitionState.isTransitioning) {
+            core.renderer.transitionTime = transitionState.elapse(elapsedTime, transitionDurations.position + transitionDurations.stagger);
         }
-        if (ref.isTransitioningModel) {
-            ref.transitionModelTime += elapsedTime;
-            const totalModelTime = transitionDurations.view;
-            if (ref.transitionModelTime >= totalModelTime) {
-                ref.isTransitioningModel = false;
-                ref.transitionModelTime = totalModelTime;
-            }
-            const tm = easing(ref.transitionModelTime / totalModelTime);
-            if (ref.transitionModel) {
-                quat.slerp(ref.qModelCurrent, ref.qModelFrom, ref.qModelTo, tm);
-                core.setModelRotation(ref.qModelCurrent, false);
+        if (modelState.isTransitioning) {
+            const tm = modelState.elapse(elapsedTime, transitionDurations.view, true);
+            if (modelState.shouldTransition) {
+                quat.slerp(modelState.qModelCurrent, modelState.qModelFrom, modelState.qModelTo, tm);
+                core.setModelRotation(modelState.qModelCurrent, false);
             }
             cam(tm);
         }
-        if (ref.isCameraMovement) {
-            ref.cameraTime += elapsedTime;
-            const totalTime = transitionDurations.view;
-            if (ref.cameraTime >= totalTime) {
-                ref.isCameraMovement = false;
-                ref.cameraTime = totalTime;
-            }
-            const t = easing(ref.cameraTime / totalTime);
+        if (cameraState.isTransitioning) {
+            const t = cameraState.elapse(elapsedTime, transitionDurations.view, true);
             cam(t);
         } else {
             core.inputManager.isPickingEnabled = true;

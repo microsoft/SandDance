@@ -923,8 +923,8 @@ export class Viewer {
         let position: [number, number, number] = [0, 0, 0];
         let rotation: [number, number, number, number] = [0, 0, 0, 0];
         if (transitionFinal) {
-            position = Array.from(this.presenter?.morphchartsref?.vCameraPositionTo as any) as [number, number, number];
-            rotation = Array.from(this.presenter?.morphchartsref?.qCameraRotationTo as any) as [number, number, number, number];
+            position = Array.from(this.presenter?.morphchartsref?.cameraTransitioner.vCameraPositionTo as any) as [number, number, number];
+            rotation = Array.from(this.presenter?.morphchartsref?.cameraTransitioner.qCameraRotationTo as any) as [number, number, number, number];
         } else {
             const camera = this.presenter?.morphchartsref?.core?.camera;
             if (camera) {

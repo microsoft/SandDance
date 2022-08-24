@@ -114,7 +114,7 @@ function _SnapshotEditor(_props: Props) {
                                     image: this.state.image,
                                     bgColor: this.state.bgColor,
                                     setup: {
-                                        camera: explorer.viewer.getCamera(),
+                                        camera: explorer.state.holdCamera ? 'hold' : explorer.viewer.getCamera(),
                                         renderer: explorer.state.renderer,
                                         transition: getTransition(explorer.state),
                                     },

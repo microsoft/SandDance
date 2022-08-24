@@ -83,7 +83,7 @@ export const strings = {
     labelExportTSV: '.TSV - Tab separated values',
     labelHistory: 'History',
     labelTools: 'Tools',
-    labelResetCameraOnLayout: 'Auto-position camera when changing chart',
+    labelHoldCamera: 'Hold camera position',
     labelTransition: 'Transition',
     labelTransitionScrubber: 'Scrub transition',
     labelTransitionStaggerBy: 'Stagger by',

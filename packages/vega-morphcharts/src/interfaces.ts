@@ -8,6 +8,7 @@ import { Scene, SceneLine, SceneText } from 'vega-typings';
 import { Axes, Core, Renderers } from 'morphcharts';
 import { Config } from 'morphcharts/dist/renderers/advanced/config';
 import { quat, vec3 } from 'gl-matrix';
+import { CameraTransitioner, ModelTransitioner, Transitioner } from './transition';
 
 export type Position = [number, number, number];
 export type RGBAColor = [number, number, number, number];
@@ -165,7 +166,7 @@ export interface TransitionDurations {
  * Visualization setup options to be used by the Presenter.
  */
 export interface PresenterSetup {
-    camera?: Camera;
+    camera?: Camera | 'hold';
     transitionDurations?: TransitionDurations;
     renderer?: MorphChartsRendererOptions;
 }
@@ -263,30 +264,16 @@ export interface MorphChartsRendererOptions {
 export interface MorphChartsRef {
     reset: () => void;
     core: Core;
-    isCameraMovement: boolean;
-    isTransitioningPosition: boolean;
-    isTransitioningModel: boolean;
-    cameraTime: number;
-    transitionPositionTime: number;
-    transitionModelTime: number;
-    transitionModel: boolean;
-    transitionDurations: TransitionDurations;
+    cameraTransitioner: CameraTransitioner;
+    modelTransitioner: ModelTransitioner;
+    positionTransitioner: Transitioner,
     setMorphChartsRendererOptions: (value: MorphChartsRendererOptions) => void;
     lastMorphChartsRendererOptions: MorphChartsRendererOptions;
-    qModelFrom: quat;
-    qModelTo: quat;
-    qModelCurrent: quat;
-    qCameraRotationFrom: quat;
-    qCameraRotationTo: quat;
-    qCameraRotationCurrent: quat;
-    vCameraPositionFrom: vec3;
-    vCameraPositionTo: vec3;
-    vCameraPositionCurrent: vec3;
+    lastPresenterConfig: PresenterConfig;
     supportedRenders: {
         advanced: boolean;
         basic: boolean;
     };
-    resetCameraWithLayout: boolean;
     layerStagger: LayerStagger;
 }
 

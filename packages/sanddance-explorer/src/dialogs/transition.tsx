@@ -52,11 +52,10 @@ function _TransitionEditor(_props: Props) {
                 <div>
                     <Group label={strings.labelTransition}>
                         <base.fluentUI.Toggle
-                            label={strings.labelResetCameraOnLayout}
-                            checked={explorer.viewer.presenter.morphchartsref.resetCameraWithLayout}
-                            onChange={(e, resetCameraWithLayout) => {
-                                explorer.viewer.presenter.morphchartsref.resetCameraWithLayout = resetCameraWithLayout;
-                                this.forceUpdate();
+                            label={strings.labelHoldCamera}
+                            checked={explorer.state.holdCamera}
+                            onChange={(e, holdCamera) => {
+                                explorer.setState({ holdCamera });
                             }}
                         />
                         <base.fluentUI.Slider
@@ -135,31 +134,31 @@ function _TransitionEditor(_props: Props) {
                         <base.fluentUI.Slider
                             label={strings.labelTransitionPosition}
                             onChange={value => {
-                                explorer.state.transitionDurations.position = value;
+                                props.transitionDurations.position = value;
                                 explorer.viewer.presenter.morphchartsref.core.config.transitionDuration = value;
                             }}
                             min={0}
                             max={10000}
-                            defaultValue={explorer.state.transitionDurations.position}
+                            defaultValue={props.transitionDurations.position}
                         />
                         <base.fluentUI.Slider
                             label={strings.labelTransitionStagger}
                             onChange={value => {
-                                explorer.state.transitionDurations.stagger = value;
+                                props.transitionDurations.stagger = value;
                                 explorer.viewer.presenter.morphchartsref.core.config.transitionStaggering = value;
                             }}
                             min={0}
                             max={10000}
-                            defaultValue={explorer.state.transitionDurations.stagger}
+                            defaultValue={props.transitionDurations.stagger}
                         />
                         <base.fluentUI.Slider
                             label={strings.labelTransitionCamera}
                             onChange={value => {
-                                explorer.state.transitionDurations.view = value;
+                                props.transitionDurations.view = value;
                             }}
                             min={0}
                             max={10000}
-                            defaultValue={explorer.state.transitionDurations.view}
+                            defaultValue={props.transitionDurations.view}
                         />
                     </Group>
                 </div>

@@ -117,6 +117,7 @@ export interface UIState {
     historyIndex: number;
     historyItems: HistoryItem[];
     camera?: SandDance.types.Camera;
+    holdCamera?: boolean;
     renderer: SandDance.VegaMorphCharts.types.MorphChartsRendererOptions;
 }
 
@@ -339,21 +340,28 @@ function _Explorer(_props: Props) {
         }
 
         private setSetup(setup: SandDance.types.Setup) {
+            let newState: Partial<State>;
             if (!setup) {
-                this.setState({ camera: undefined });
-                return;
+                newState = { camera: undefined };
+            } else {
+                const { camera, renderer, transition, transitionDurations } = setup;
+                newState = { renderer, transitionType: transition.type };
+                if (camera === 'hold') {
+                    newState.holdCamera = true;
+                } else {
+                    newState.holdCamera = false;
+                    newState.camera = camera;
+                }
+                if (transition.type === 'column') {
+                    newState.transitionColumn = transition.column;
+                } else if (transition.type === 'position') {
+                    newState.transitionDimension = transition.dimension;
+                }
+                if (transitionDurations) {
+                    newState.transitionDurations = transitionDurations;
+                }
             }
-            //TODO setstate only once
-            const { camera, renderer, transition, transitionDurations } = setup;
-            this.setState({ camera, renderer, transitionType: transition.type });
-            if (transition.type === 'column') {
-                this.setState({ transitionColumn: transition.column });
-            } else if (transition.type === 'position') {
-                this.setState({ transitionDimension: transition.dimension });
-            }
-            if (transitionDurations) {
-                this.setState({ transitionDurations });
-            }
+            this.setState(newState as State);
         }
 
         public setInsight(historyAction: HistoryAction, newState: Partial<UIState> = {}, partialInsight: Partial<SandDance.specs.Insight> = this.viewer.getInsight(), rebaseFilter: boolean, setup?: SandDance.types.Setup) {
@@ -384,7 +392,7 @@ function _Explorer(_props: Props) {
                 } else {
                     const { transitionDurations } = this.state;
                     const renderTime = transitionDurations.position + transitionDurations.stagger;
-                    const allowAsyncRenderTime = renderTime + 200;
+                    const allowAsyncRenderTime = renderTime + 200;  //TODO normalize this
                     this.viewer.reset()
                         .then(() => new Promise((resolve, reject) => { setTimeout(resolve, allowAsyncRenderTime); }))
                         .then(changeInsight);
@@ -1420,7 +1428,7 @@ function _Explorer(_props: Props) {
                                     data={this.state.dataContent.data}
                                     insight={insight}
                                     setup={{
-                                        camera: this.state.camera,
+                                        camera: this.state.holdCamera ? 'hold' : this.state.camera,
                                         renderer: this.state.renderer,
                                         transition: getTransition(this.state),
                                         transitionDurations: this.state.transitionDurations,

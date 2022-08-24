@@ -14,45 +14,55 @@ import { minZ } from '../defaults';
 import { quat, vec3 } from 'gl-matrix';
 import { colorConfig } from './color';
 import { cameraDefaults } from './defaults';
+import { Camera } from '@msrvida/chart-types';
 
 export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: Stage, height: number, width: number, preStage: PreStage, colors: MorphChartsColors, config: PresenterConfig): MorphChartsRenderResult {
     const { qCameraRotation2d, qCameraRotation3d, qModel2d, qModel3d, vPosition } = cameraDefaults;
-    const cameraTo = config.camera;
+    const { core, cameraTransitioner, modelTransitioner, positionTransitioner } = ref;
+    let cameraTo: Camera;
+    let holdCamera: boolean;
+    if (config.camera === 'hold') {
+        holdCamera = true;
+    } else {
+        cameraTo = config.camera;
+    }
     if (prevStage && (prevStage.view !== stage.view)) {
-        ref.transitionModel = ref.resetCameraWithLayout;
+        modelTransitioner.shouldTransition = !holdCamera;
         if (stage.view === '2d') {
-            ref.qModelFrom = qModel3d;
-            ref.qModelTo = qModel2d;
-            ref.qCameraRotationTo = cameraTo?.rotation || qCameraRotation2d;
-            ref.vCameraPositionTo = cameraTo?.position || vPosition;
+            modelTransitioner.qModelFrom = qModel3d;
+            modelTransitioner.qModelTo = qModel2d;
+            cameraTransitioner.qCameraRotationTo = cameraTo?.rotation || qCameraRotation2d;
+            cameraTransitioner.vCameraPositionTo = cameraTo?.position || vPosition;
         } else {
-            ref.qModelFrom = qModel2d;
-            ref.qModelTo = qModel3d;
-            ref.qCameraRotationTo = cameraTo?.rotation || qCameraRotation3d;
-            ref.vCameraPositionTo = cameraTo?.position || vPosition;
+            modelTransitioner.qModelFrom = qModel2d;
+            modelTransitioner.qModelTo = qModel3d;
+            cameraTransitioner.qCameraRotationTo = cameraTo?.rotation || qCameraRotation3d;
+            cameraTransitioner.vCameraPositionTo = cameraTo?.position || vPosition;
         }
     } else {
-        ref.transitionModel = false;
+        modelTransitioner.shouldTransition = false;
         if (stage.view === '2d') {
-            ref.qModelTo = qModel2d;
-            ref.qCameraRotationTo = cameraTo?.rotation || qCameraRotation2d;
-            ref.vCameraPositionTo = cameraTo?.position || vPosition;
+            modelTransitioner.qModelTo = qModel2d;
+            cameraTransitioner.qCameraRotationTo = cameraTo?.rotation || qCameraRotation2d;
+            cameraTransitioner.vCameraPositionTo = cameraTo?.position || vPosition;
         } else {
-            ref.qModelTo = qModel3d;
-            ref.qCameraRotationTo = cameraTo?.rotation || qCameraRotation3d;
-            ref.vCameraPositionTo = cameraTo?.position || vPosition;
+            modelTransitioner.qModelTo = qModel3d;
+            cameraTransitioner.qCameraRotationTo = cameraTo?.rotation || qCameraRotation3d;
+            cameraTransitioner.vCameraPositionTo = cameraTo?.position || vPosition;
         }
     }
-    ref.core.camera.getOrbit(ref.qCameraRotationFrom);
-    ref.core.camera.getPosition(ref.vCameraPositionFrom);
+    core.camera.getOrbit(cameraTransitioner.qCameraRotationFrom);
+    core.camera.getPosition(cameraTransitioner.vCameraPositionFrom);
     if (!prevStage) {
-        ref.core.setModelRotation(ref.qModelTo, false);
-        ref.core.camera.setOrbit(ref.qCameraRotationTo, false);
-        ref.core.camera.setPosition(ref.vCameraPositionTo, false);
-    } else if (ref.resetCameraWithLayout) {
-        ref.isTransitioningPosition = true;
-        ref.isCameraMovement = true;
-        ref.cameraTime = 0;
+        core.setModelRotation(modelTransitioner.qModelTo, false);
+        core.camera.setOrbit(cameraTransitioner.qCameraRotationTo, false);
+        core.camera.setPosition(cameraTransitioner.vCameraPositionTo, false);
+    } else if (!holdCamera) {
+        cameraTransitioner.begin();
+    }
+    positionTransitioner.begin();
+    if (modelTransitioner.shouldTransition) {
+        modelTransitioner.begin();
     }
 
     const props: ILayerProps = { ref, stage, height, width, config };
@@ -74,7 +84,6 @@ export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: 
 
     const axesLayer = createAxesLayer(props);
 
-    const { core } = ref;
     core.config.transitionStaggering = config.transitionDurations.stagger;
     core.config.transitionDuration = config.transitionDurations.position;
 
@@ -118,11 +127,7 @@ export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: 
     //Now call update on each layout
     layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds, ref.layerStagger);
 
-    ref.isTransitioningPosition = true;
-    ref.transitionPositionTime = 0;
-    ref.isTransitioningModel = ref.transitionModel;
-    ref.transitionModelTime = 0;
-    ref.transitionDurations = config.transitionDurations;
+    ref.lastPresenterConfig = config;
     core.renderer.transitionTime = 0; // Set renderer transition time for this render pass to prevent rendering target buffer for single frame
 
     colorConfig(ref, colors);
@@ -133,13 +138,10 @@ export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: 
         update: layerSelection => layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds, ref.layerStagger),
         activate: id => core.renderer.transitionBuffers[0].activeId = id,
         moveCamera: (position: vec3, rotation: quat) => {
-            if (!(ref.isTransitioningPosition || ref.isTransitioningModel)) {
-                ref.core.camera.getOrbit(ref.qCameraRotationFrom);
-                ref.core.camera.getPosition(ref.vCameraPositionFrom);
-                ref.isCameraMovement = true;
-                ref.cameraTime = 0;
-                ref.qCameraRotationTo = rotation;
-                ref.vCameraPositionTo = position;
+            if (!(positionTransitioner.isTransitioning || modelTransitioner.isTransitioning)) {
+                core.camera.getOrbit(cameraTransitioner.qCameraRotationFrom);
+                core.camera.getPosition(cameraTransitioner.vCameraPositionFrom);
+                cameraTransitioner.move(position, rotation);
             }
         },
     };
