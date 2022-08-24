@@ -476,7 +476,7 @@ export class Viewer {
         if (!searchExpression.compare(insight.filter, this.insight.filter)) {
             const transitionDurations = setup?.transitionDurations || VegaMorphCharts.defaults.defaultPresenterConfig.transitionDurations;
             const renderTime = transitionDurations.position + transitionDurations.stagger;
-            const allowAsyncRenderTime = renderTime + 200;
+            const allowAsyncRenderTime = renderTime + this.options.filterRenderingTimerPadding;
             if (insight.filter) {
                 //refining
                 result = await this._render(insightSetup, data, renderOptions, true);

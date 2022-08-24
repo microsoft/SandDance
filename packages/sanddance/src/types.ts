@@ -170,6 +170,8 @@ export interface ViewerOptions extends SpecViewOptions {
      * Disable lasso selection.
      */
     disableLasso?: boolean;
+
+    filterRenderingTimerPadding?: number;
 }
 
 export interface RenderOptions {

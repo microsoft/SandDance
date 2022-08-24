@@ -392,7 +392,7 @@ function _Explorer(_props: Props) {
                 } else {
                     const { transitionDurations } = this.state;
                     const renderTime = transitionDurations.position + transitionDurations.stagger;
-                    const allowAsyncRenderTime = renderTime + 200;  //TODO normalize this
+                    const allowAsyncRenderTime = renderTime + this.viewerOptions.filterRenderingTimerPadding;
                     this.viewer.reset()
                         .then(() => new Promise((resolve, reject) => { setTimeout(resolve, allowAsyncRenderTime); }))
                         .then(changeInsight);
