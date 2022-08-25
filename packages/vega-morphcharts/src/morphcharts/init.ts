@@ -19,6 +19,10 @@ export function init(options: MorphChartsOptions, mcRendererOptions: MorphCharts
 
     core.config.pickSelectDelay = 50;
 
+    const cameraTransitioner = new CameraTransitioner();
+    const modelTransitioner = new ModelTransitioner();
+    const positionTransitioner = new Transitioner();
+
     const ref: MorphChartsRef = {
         supportedRenders: {
             advanced: rendererEnabled(true),
@@ -32,9 +36,9 @@ export function init(options: MorphChartsOptions, mcRendererOptions: MorphCharts
             core.camera.setOrbit(cameraState.qCameraRotationTo, false);
             //core.camera.setPosition(cameraState.vCameraPositionTo, false);
         },
-        cameraTransitioner: new CameraTransitioner(),
-        modelTransitioner: new ModelTransitioner(),
-        positionTransitioner: new Transitioner(),
+        cameraTransitioner,
+        modelTransitioner,
+        positionTransitioner,
         core,
         setMorphChartsRendererOptions(mcRendererOptions: MorphChartsRendererOptions) {
             if (shouldChangeRenderer(ref.lastMorphChartsRendererOptions, mcRendererOptions)) {
@@ -53,31 +57,29 @@ export function init(options: MorphChartsOptions, mcRendererOptions: MorphCharts
         layerStagger: {},
     };
     const cam = (t: number) => {
-        const { cameraTransitioner: cameraState } = ref;
-        quat.slerp(cameraState.qCameraRotationCurrent, cameraState.qCameraRotationFrom, cameraState.qCameraRotationTo, t);
-        vec3.lerp(cameraState.vCameraPositionCurrent, cameraState.vCameraPositionFrom, cameraState.vCameraPositionTo, t);
-        core.camera.setOrbit(cameraState.qCameraRotationCurrent, false);
-        core.camera.setPosition(cameraState.vCameraPositionCurrent, false);
+        quat.slerp(cameraTransitioner.qCameraRotationCurrent, cameraTransitioner.qCameraRotationFrom, cameraTransitioner.qCameraRotationTo, t);
+        vec3.lerp(cameraTransitioner.vCameraPositionCurrent, cameraTransitioner.vCameraPositionFrom, cameraTransitioner.vCameraPositionTo, t);
+        core.camera.setOrbit(cameraTransitioner.qCameraRotationCurrent, false);
+        core.camera.setPosition(cameraTransitioner.vCameraPositionCurrent, false);
 
         // disable picking during transitions, as the performance degradation could reduce the framerate
         core.inputManager.isPickingEnabled = false;
     };
     core.updateCallback = (elapsedTime) => {
-        const { cameraTransitioner: cameraState, modelTransitioner: modelState, positionTransitioner: transitionState } = ref;
         const { transitionDurations } = ref.lastPresenterConfig;
-        if (transitionState.isTransitioning) {
-            core.renderer.transitionTime = transitionState.elapse(elapsedTime, transitionDurations.position + transitionDurations.stagger);
+        if (positionTransitioner.isTransitioning) {
+            core.renderer.transitionTime = positionTransitioner.elapse(elapsedTime, transitionDurations.position + transitionDurations.stagger);
         }
-        if (modelState.isTransitioning) {
-            const tm = modelState.elapse(elapsedTime, transitionDurations.view, true);
-            if (modelState.shouldTransition) {
-                quat.slerp(modelState.qModelCurrent, modelState.qModelFrom, modelState.qModelTo, tm);
-                core.setModelRotation(modelState.qModelCurrent, false);
+        if (modelTransitioner.isTransitioning) {
+            const tm = modelTransitioner.elapse(elapsedTime, transitionDurations.view, true);
+            if (modelTransitioner.shouldTransition) {
+                quat.slerp(modelTransitioner.qModelCurrent, modelTransitioner.qModelFrom, modelTransitioner.qModelTo, tm);
+                core.setModelRotation(modelTransitioner.qModelCurrent, false);
             }
             cam(tm);
         }
-        if (cameraState.isTransitioning) {
-            const t = cameraState.elapse(elapsedTime, transitionDurations.view, true);
+        if (cameraTransitioner.isTransitioning) {
+            const t = cameraTransitioner.elapse(elapsedTime, transitionDurations.view, true);
             cam(t);
         } else {
             core.inputManager.isPickingEnabled = true;
