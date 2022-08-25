@@ -359,6 +359,9 @@ function _Explorer(_props: Props) {
                 }
                 if (transitionDurations) {
                     newState.transitionDurations = transitionDurations;
+                    const { config } = this.viewer.presenter.morphchartsref.core;
+                    config.transitionDuration = transitionDurations.position;
+                    config.transitionStaggering = transitionDurations.stagger;
                 }
             }
             this.setState(newState as State);

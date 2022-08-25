@@ -27,6 +27,8 @@ export interface Props extends ColumnMapBaseProps, TransitionEdits {
 }
 
 export interface State {
+    staggerPercent: number;
+    totalTransition: number;
 }
 
 const positions: [SandDance.types.Dimension3D, string][] = [
@@ -35,38 +37,60 @@ const positions: [SandDance.types.Dimension3D, string][] = [
     ['z', strings.labelAliasZ],
 ];
 
+const percentValueFormat = (value: number) => `${value}%`;
+
 function _TransitionEditor(_props: Props) {
     class __TransitionEditor extends base.react.Component<Props, State>{
         constructor(props: Props) {
             super(props);
+            const { transitionDurations } = props;
+            const totalTransition = (transitionDurations.position + transitionDurations.stagger) / 1000;
+            console.log('totalTransition', totalTransition)
             this.state = {
+                staggerPercent: transitionDurations.stagger === 0 ? 1 : (transitionDurations.stagger / (totalTransition * 1000)) * 100,
+                totalTransition,
             };
         }
 
+        setDurations() {
+            setTimeout(() => {  //allow full state to update
+                const { totalTransition, staggerPercent } = this.state;
+                const stagger = totalTransition * staggerPercent / 100;
+                const position = totalTransition - stagger;
+                const { transitionDurations } = this.props;
+                const { config } = this.props.explorer.viewer.presenter.morphchartsref.core;
+                transitionDurations.position = config.transitionDuration = position * 1000;
+                transitionDurations.stagger = config.transitionStaggering = stagger * 1000;
+            })
+        }
+
         render() {
-            const { props } = this;
-            const { explorer } = props;
+            const { props, state } = this;
+            const { explorer, transitionDurations } = props;
             const dropdownRef = base.react.createRef<FluentUITypes.IDropdown>();
             explorer.dialogFocusHandler.focus = () => dropdownRef.current?.focus();
             return (
                 <div>
                     <Group label={strings.labelTransition}>
+                        <base.fluentUI.Slider
+                            label={strings.labelTransitionScrubber}
+                            min={0}
+                            max={100}
+                            valueFormat={percentValueFormat}
+                            defaultValue={100}
+                            onChange={value => {
+                                explorer.viewer.presenter.morphchartsref.core.renderer.transitionTime = value / 100;
+                                //TODO - swap axes at 0
+                            }}
+                        />
+                        {/* TODO: Rewind Pause Forward */}
+                    </Group>
+                    <Group label={strings.labelTransitionOptions}>
                         <base.fluentUI.Toggle
                             label={strings.labelHoldCamera}
                             checked={explorer.state.holdCamera}
                             onChange={(e, holdCamera) => {
                                 explorer.setState({ holdCamera });
-                            }}
-                        />
-                        <base.fluentUI.Slider
-                            label={strings.labelTransitionScrubber}
-                            min={0}
-                            max={1}
-                            step={0.01}
-                            defaultValue={1}
-                            onChange={value => {
-                                explorer.viewer.presenter.morphchartsref.core.renderer.transitionTime = value;
-                                //TODO - swap axes at 0
                             }}
                         />
                         <base.fluentUI.ChoiceGroup
@@ -88,7 +112,6 @@ function _TransitionEditor(_props: Props) {
                             ]}
                             onChange={(e, o) => {
                                 const transitionType = o.key as SandDance.types.TransitionType;
-                                this.setState({ transitionType });
                                 explorer.setState({ transitionType, calculating: () => explorer.setStagger() });
                             }}
                         />
@@ -132,33 +155,35 @@ function _TransitionEditor(_props: Props) {
                     </Group>
                     <Group label={strings.labelTransitionDurations}>
                         <base.fluentUI.Slider
-                            label={strings.labelTransitionPosition}
-                            onChange={value => {
-                                props.transitionDurations.position = value;
-                                explorer.viewer.presenter.morphchartsref.core.config.transitionDuration = value;
+                            label={strings.labelTransitionDuration}
+                            onChange={totalTransition => {
+                                this.setState({ totalTransition });
+                                this.setDurations();
                             }}
                             min={0}
-                            max={10000}
-                            defaultValue={props.transitionDurations.position}
+                            max={5}
+                            step={0.1}
+                            defaultValue={state.totalTransition}
                         />
                         <base.fluentUI.Slider
                             label={strings.labelTransitionStagger}
-                            onChange={value => {
-                                props.transitionDurations.stagger = value;
-                                explorer.viewer.presenter.morphchartsref.core.config.transitionStaggering = value;
+                            onChange={staggerPercent => {
+                                this.setState({ staggerPercent });
+                                this.setDurations();
                             }}
                             min={0}
-                            max={10000}
-                            defaultValue={props.transitionDurations.stagger}
+                            max={100}
+                            valueFormat={percentValueFormat}
+                            defaultValue={state.staggerPercent}
                         />
                         <base.fluentUI.Slider
                             label={strings.labelTransitionCamera}
                             onChange={value => {
-                                props.transitionDurations.view = value;
+                                transitionDurations.view = value;
                             }}
                             min={0}
                             max={10000}
-                            defaultValue={props.transitionDurations.view}
+                            defaultValue={transitionDurations.view}
                         />
                     </Group>
                 </div>
