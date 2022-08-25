@@ -20,6 +20,8 @@ export { IComboBox, IComboBoxProps, IComboBoxOption } from '@fluentui/react/lib/
 
 export { IChoiceGroup } from '@fluentui/react/lib/ChoiceGroup';
 
+export { ISlider, ISliderProps } from '@fluentui/react/lib/Slider';
+
 export { ITextField, ITextFieldProps } from '@fluentui/react/lib/TextField';
 
 export { ICommandBarItemProps, ICommandBarProps } from '@fluentui/react/lib/CommandBar';
