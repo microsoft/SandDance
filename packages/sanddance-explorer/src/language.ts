@@ -43,6 +43,9 @@ export const strings = {
     buttonCameraHome: 'Center chart in window',
     buttonTooltipMapping: 'Tooltip columns...',
     buttonBackgroundImage: 'Background image...',
+    buttonTransitionReverse: 'Play Reverse',
+    buttonTransitionPause: 'Pause',
+    buttonTransitionPlay: 'Play',
     buttonUndo: 'Undo',
     buttonRedo: 'Redo',
     chartTypeBarChartH: 'Bar',
@@ -243,4 +246,5 @@ export const strings = {
         { prefix: 'Text', label: 'Text options' },
         { prefix: '*', label: 'Options' },
     ],
+    percentValueFormat: (value: number) => `${value}%`,
 };

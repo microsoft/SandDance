@@ -11,6 +11,7 @@ import { Explorer_Class } from '../explorer';
 import { ColumnMapBaseProps } from '../controls/columnMap';
 import { SandDance } from '@msrvida/sanddance-react';
 import { Dropdown } from '../controls/dropdown';
+import { IconButton } from '../controls/iconButton';
 
 export interface TransitionEdits {
     transitionType: SandDance.types.TransitionType;
@@ -27,8 +28,10 @@ export interface Props extends ColumnMapBaseProps, TransitionEdits {
 }
 
 export interface State {
+    scrub: number;
     staggerPercent: number;
     totalTransition: number;
+    pauseDisabled: boolean;
 }
 
 const positions: [SandDance.types.Dimension3D, string][] = [
@@ -37,19 +40,48 @@ const positions: [SandDance.types.Dimension3D, string][] = [
     ['z', strings.labelAliasZ],
 ];
 
-const percentValueFormat = (value: number) => `${value}%`;
+const autoScrubInterval = 25;   //tune to get the smoothest animation while able to do an update pass through React
 
 function _TransitionEditor(_props: Props) {
     class __TransitionEditor extends base.react.Component<Props, State>{
+        private autoScrubber: AutoScrubber;
+
         constructor(props: Props) {
             super(props);
             const { transitionDurations } = props;
             const totalTransition = (transitionDurations.position + transitionDurations.stagger) / 1000;
-            console.log('totalTransition', totalTransition)
             this.state = {
+                scrub: 100,
                 staggerPercent: transitionDurations.stagger === 0 ? 1 : (transitionDurations.stagger / (totalTransition * 1000)) * 100,
                 totalTransition,
+                pauseDisabled: true,
             };
+            this.autoScrubber = new AutoScrubber(
+                autoScrubInterval,
+                (direction, interval) => {
+                    const totalMs = this.state.totalTransition * 1000;
+                    const currentMs = (this.state.scrub / 100) * totalMs;
+                    const scrubMs = currentMs + direction * interval;
+                    let scrub = scrubMs / totalMs * 100;
+                    if (direction < 0 && scrub <= 0) {
+                        scrub = 0;
+                        this.autoScrubber.stop();
+                    }
+                    if (direction > 0 && scrub >= 100) {
+                        scrub = 100;
+                        this.autoScrubber.stop();
+                    }
+                    this.setScrubState(scrub);
+                }
+            );
+        }
+
+        setScrubState(scrub: number) {
+            this.props.explorer.viewer.presenter.morphchartsref.core.renderer.transitionTime = scrub / 100;
+            scrub = Math.round(scrub);
+            this.setState({ scrub, pauseDisabled: this.autoScrubber.isStopped() });
+            //TODO - swap axes at 0
+            //TODO core.inputManager.isPickingEnabled = true;
         }
 
         setDurations() {
@@ -67,23 +99,54 @@ function _TransitionEditor(_props: Props) {
         render() {
             const { props, state } = this;
             const { explorer, transitionDurations } = props;
-            const dropdownRef = base.react.createRef<FluentUITypes.IDropdown>();
-            explorer.dialogFocusHandler.focus = () => dropdownRef.current?.focus();
+            const sliderRef = base.react.createRef<FluentUITypes.ISlider>();
+            explorer.dialogFocusHandler.focus = () => sliderRef.current?.focus();
             return (
                 <div>
                     <Group label={strings.labelTransition}>
                         <base.fluentUI.Slider
+                            componentRef={sliderRef}
                             label={strings.labelTransitionScrubber}
                             min={0}
                             max={100}
-                            valueFormat={percentValueFormat}
-                            defaultValue={100}
-                            onChange={value => {
-                                explorer.viewer.presenter.morphchartsref.core.renderer.transitionTime = value / 100;
-                                //TODO - swap axes at 0
+                            valueFormat={strings.percentValueFormat}
+                            value={state.scrub}
+                            onChange={scrub => {
+                                this.autoScrubber.stop();
+                                this.setScrubState(scrub);
                             }}
                         />
-                        {/* TODO: Rewind Pause Forward */}
+                        <IconButton
+                            themePalette={props.themePalette}
+                            title={strings.buttonTransitionReverse}
+                            iconName='PlayReverseResume'
+                            onClick={() => {
+                                this.autoScrubber.toggleScrubbing(-1);
+                                if (state.scrub === 0) {
+                                    this.setState({ scrub: 100 });
+                                }
+                            }}
+                        />
+                        <IconButton
+                            themePalette={props.themePalette}
+                            title={strings.buttonTransitionPause}
+                            iconName='Pause'
+                            onClick={() => {
+                                this.autoScrubber.togglePause();
+                            }}
+                            disabled={state.pauseDisabled}
+                        />
+                        <IconButton
+                            themePalette={props.themePalette}
+                            title={strings.buttonTransitionPlay}
+                            iconName='PlayResume'
+                            onClick={() => {
+                                this.autoScrubber.toggleScrubbing(1);
+                                if (state.scrub === 100) {
+                                    this.setState({ scrub: 0 });
+                                }
+                            }}
+                        />
                     </Group>
                     <Group label={strings.labelTransitionOptions}>
                         <base.fluentUI.Toggle
@@ -173,7 +236,7 @@ function _TransitionEditor(_props: Props) {
                             }}
                             min={0}
                             max={100}
-                            valueFormat={percentValueFormat}
+                            valueFormat={strings.percentValueFormat}
                             defaultValue={state.staggerPercent}
                         />
                         <base.fluentUI.Slider
@@ -185,6 +248,7 @@ function _TransitionEditor(_props: Props) {
                             max={10000}
                             defaultValue={transitionDurations.view}
                         />
+                        TODO:  defaults button
                     </Group>
                 </div>
             );
@@ -248,5 +312,75 @@ export function getTransition(state: TransitionEdits): SandDance.types.Transitio
                 reverse,
             };
         }
+    }
+}
+
+type AutoScrubberDirection = -1 | 1;
+
+class AutoScrubber {
+    private autoScrubTimer: NodeJS.Timer;
+    public direction: AutoScrubberDirection;
+
+    constructor(
+        public interval: number,
+        public onInterval: (
+            direction: AutoScrubberDirection,
+            interval: number,
+        ) => void,
+    ) { }
+
+    getSignedInterval() {
+        return this.interval * this.direction;
+    }
+
+    toggleScrubbing(direction: AutoScrubberDirection) {
+        if (this.isScrubbing() && direction === this.direction) {
+            this.pause();
+        } else {
+            this.start(direction);
+        }
+    }
+
+    isPaused() {
+        return !this.isScrubbing() && this.direction !== undefined;
+    }
+
+    isStopped() {
+        return !this.isScrubbing() && this.direction === undefined;
+    }
+
+    isScrubbing() {
+        return this.autoScrubTimer !== undefined;
+    }
+
+    togglePause() {
+        if (this.isScrubbing()) {
+            this.pause();
+        } else if (this.direction) {
+            this.start(this.direction);
+        }
+    }
+
+    start(direction: AutoScrubberDirection) {
+        this.direction = direction;
+        if (!this.isScrubbing()) {
+            this.autoScrubTimer = setInterval(
+                () => this.onInterval(
+                    this.direction,
+                    this.interval,
+                ),
+                this.interval,
+            );
+        }
+    }
+
+    pause() {
+        clearInterval(this.autoScrubTimer);
+        this.autoScrubTimer = undefined;
+    }
+
+    stop() {
+        this.pause();
+        this.direction = undefined;
     }
 }
