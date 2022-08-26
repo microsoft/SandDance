@@ -339,7 +339,7 @@ function _Explorer(_props: Props) {
             return this.viewer.getInsight();
         }
 
-        private setSetup(setup: SandDance.types.Setup) {
+        public setSetup(setup: SandDance.types.Setup) {
             let newState: Partial<State>;
             if (!setup) {
                 newState = { camera: undefined };
@@ -360,7 +360,6 @@ function _Explorer(_props: Props) {
                 if (transitionDurations) {
                     newState.transitionDurations = transitionDurations;
                     syncTansitionDurations(this.viewer, transitionDurations);
-                    const { config } = this.viewer.presenter.morphchartsref.core;
                 }
             }
             this.setState(newState as State);
