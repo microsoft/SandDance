@@ -335,10 +335,12 @@ export function getTransition(state: TransitionEdits): SandDance.types.Transitio
 }
 
 export function syncTansitionDurations(viewer: SandDance.Viewer, transitionDurations: SandDance.VegaMorphCharts.types.TransitionDurations) {
-    const { config } = viewer.presenter.morphchartsref.core;
+    const { config } = viewer?.presenter?.morphchartsref?.core;
     const { position, stagger } = transitionDurations;
-    config.transitionDuration = position;
-    config.transitionStaggering = stagger;
+    if (config) {
+        config.transitionDuration = position;
+        config.transitionStaggering = stagger;
+    }
 }
 
 type AutoScrubberDirection = -1 | 1;
