@@ -32,6 +32,7 @@ export interface State {
     scrub: number;
     staggerPercent: number;
     totalTransition: number;
+    viewTransition: number;
     pauseDisabled: boolean;
 }
 
@@ -77,7 +78,8 @@ function _TransitionEditor(_props: Props) {
         initialCalc(transitionDurations: SandDance.VegaMorphCharts.types.TransitionDurations) {
             const totalTransition = (transitionDurations.position + transitionDurations.stagger) / 1000;
             const staggerPercent = transitionDurations.stagger === 0 ? 1 : (transitionDurations.stagger / (totalTransition * 1000)) * 100;
-            return { totalTransition, staggerPercent };
+            const viewTransition = transitionDurations.view / 1000;
+            return { totalTransition, staggerPercent, viewTransition };
         }
 
         setScrubState(scrub: number) {
@@ -90,11 +92,12 @@ function _TransitionEditor(_props: Props) {
 
         setDurations() {
             setTimeout(() => {  //allow full state to update
-                const { totalTransition, staggerPercent } = this.state;
+                const { totalTransition, staggerPercent, viewTransition } = this.state;
                 const stagger = totalTransition * staggerPercent / 100;
                 const { transitionDurations } = this.props;
                 transitionDurations.position = (totalTransition - stagger) * 1000;
                 transitionDurations.stagger = stagger * 1000;
+                transitionDurations.view = viewTransition * 1000;
                 syncTansitionDurations(this.props.explorer.viewer, transitionDurations);
             })
         }
@@ -244,13 +247,14 @@ function _TransitionEditor(_props: Props) {
                         />
                         <base.fluentUI.Slider
                             label={strings.labelTransitionCamera}
-                            onChange={value => {
-                                transitionDurations.view = value;
-                                this.forceUpdate();
+                            onChange={viewTransition => {
+                                this.setState({ viewTransition });
+                                this.setDurations();
                             }}
                             min={0}
-                            max={10000}
-                            value={transitionDurations.view}
+                            max={5}
+                            step={0.1}
+                            value={state.viewTransition}
                         />
                         <Button
                             themePalette={props.themePalette}
