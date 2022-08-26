@@ -57,6 +57,10 @@ SandDance.use(vega);
 * Fix for animation easing
 * Text character set accepts all unicode
 
+### Breaking changes in v4
+
+* `viewer.render(insight)` now takes a higher level object, call as `viewer.render({insight})`
+
 ### Breaking changes in v3
 
 * deck.gl dependency from 6.4 to 8.1

@@ -24,10 +24,13 @@ title: 'State | @msrvida/sanddance-explorer'
 			<h3>Hierarchy</h3>
 			<ul class="tsd-hierarchy">
 				<li>
-					<a href="HistoricInsight.html" class="tsd-signature-type" data-tsd-kind="Interface">HistoricInsight</a>
+					<span class="tsd-signature-type">HistoricInsight</span>
 				</li>
 				<li>
 					<a href="UIState.html" class="tsd-signature-type" data-tsd-kind="Interface">UIState</a>
+				</li>
+				<li>
+					<span class="tsd-signature-type">TransitionEdits</span>
 					<ul class="tsd-hierarchy">
 						<li>
 							<span class="target">State</span>
@@ -45,7 +48,7 @@ title: 'State | @msrvida/sanddance-explorer'
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#autoCompleteDistinctValues" class="tsd-kind-icon">auto<wbr>Complete<wbr>Distinct<wbr>Values</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#backgroundImage" class="tsd-kind-icon">background<wbr>Image</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#cameraTo" class="tsd-kind-icon">camera<wbr>To</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#camera" class="tsd-kind-icon">camera</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#chart" class="tsd-kind-icon">chart</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#colorBin" class="tsd-kind-icon">color<wbr>Bin</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#columns" class="tsd-kind-icon">columns</a></li>
@@ -61,14 +64,16 @@ title: 'State | @msrvida/sanddance-explorer'
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#hideLegend" class="tsd-kind-icon">hide<wbr>Legend</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#historyIndex" class="tsd-kind-icon">history<wbr>Index</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#historyItems" class="tsd-kind-icon">history<wbr>Items</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#morphChartsRendererOptions" class="tsd-kind-icon">morph<wbr>Charts<wbr>Renderer<wbr>Options</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#holdCamera" class="tsd-kind-icon">hold<wbr>Camera</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#note" class="tsd-kind-icon">note</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#positionedColumnMapProps" class="tsd-kind-icon">positioned<wbr>Column<wbr>Map<wbr>Props</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#rebaseFilter" class="tsd-kind-icon">rebase<wbr>Filter</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#renderer" class="tsd-kind-icon">renderer</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#scheme" class="tsd-kind-icon">scheme</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#search" class="tsd-kind-icon">search</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#selectedItemIndex" class="tsd-kind-icon">selected<wbr>Item<wbr>Index</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#selectedSnapshotIndex" class="tsd-kind-icon">selected<wbr>Snapshot<wbr>Index</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#setup" class="tsd-kind-icon">setup</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#sideTabId" class="tsd-kind-icon">side<wbr>Tab<wbr>Id</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#sidebarClosed" class="tsd-kind-icon">sidebar<wbr>Closed</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#sidebarPinned" class="tsd-kind-icon">sidebar<wbr>Pinned</a></li>
@@ -79,6 +84,11 @@ title: 'State | @msrvida/sanddance-explorer'
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#tooltipExclusions" class="tsd-kind-icon">tooltip<wbr>Exclusions</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#totalStyle" class="tsd-kind-icon">total<wbr>Style</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#transform" class="tsd-kind-icon">transform</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#transitionColumn" class="tsd-kind-icon">transition<wbr>Column</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#transitionDimension" class="tsd-kind-icon">transition<wbr>Dimension</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#transitionDurations" class="tsd-kind-icon">transition<wbr>Durations</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#transitionReverse" class="tsd-kind-icon">transition<wbr>Reverse</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#transitionType" class="tsd-kind-icon">transition<wbr>Type</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="State.html#view" class="tsd-kind-icon">view</a></li>
 						</ul>
 					</section>
@@ -100,7 +110,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#autoCompleteDistinctValues">autoCompleteDistinctValues</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L99">sanddance-explorer/src/explorer.tsx:99</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L101">sanddance-explorer/src/explorer.tsx:101</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -109,20 +119,20 @@ title: 'State | @msrvida/sanddance-explorer'
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> background<wbr>Image</h3>
 				<div class="tsd-signature tsd-kind-icon">background<wbr>Image<span class="tsd-signature-symbol">:</span> <a href="SandDance.specs.BackgroundImage.html" class="tsd-signature-type" data-tsd-kind="Interface">BackgroundImage</a></div>
 				<aside class="tsd-sources">
-					<p>Inherited from <a href="HistoricInsight.html">HistoricInsight</a>.<a href="HistoricInsight.html#backgroundImage">backgroundImage</a></p>
+					<p>Inherited from HistoricInsight.backgroundImage</p>
 					<ul>
 						<li>Defined in sanddance-specs/dist/es6/types.d.ts:57</li>
 					</ul>
 				</aside>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-				<a name="cameraTo" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagOptional">Optional</span> camera<wbr>To</h3>
-				<div class="tsd-signature tsd-kind-icon">camera<wbr>To<span class="tsd-signature-symbol">:</span> <a href="SandDance.types.Camera.html" class="tsd-signature-type" data-tsd-kind="Interface">Camera</a></div>
+				<a name="camera" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> camera</h3>
+				<div class="tsd-signature tsd-kind-icon">camera<span class="tsd-signature-symbol">:</span> <a href="SandDance.types.Camera.html" class="tsd-signature-type" data-tsd-kind="Interface">Camera</a></div>
 				<aside class="tsd-sources">
-					<p>Inherited from <a href="HistoricInsight.html">HistoricInsight</a>.<a href="HistoricInsight.html#cameraTo">cameraTo</a></p>
+					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#camera">camera</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L122">sanddance-explorer/src/explorer.tsx:122</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L119">sanddance-explorer/src/explorer.tsx:119</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -131,7 +141,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<h3>chart</h3>
 				<div class="tsd-signature tsd-kind-icon">chart<span class="tsd-signature-symbol">:</span> <a href="../modules/SandDance.specs.html#Chart" class="tsd-signature-type" data-tsd-kind="Type alias">Chart</a></div>
 				<aside class="tsd-sources">
-					<p>Inherited from <a href="HistoricInsight.html">HistoricInsight</a>.<a href="HistoricInsight.html#chart">chart</a></p>
+					<p>Inherited from HistoricInsight.chart</p>
 					<ul>
 						<li>Defined in sanddance-specs/dist/es6/types.d.ts:58</li>
 					</ul>
@@ -142,7 +152,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> color<wbr>Bin</h3>
 				<div class="tsd-signature tsd-kind-icon">color<wbr>Bin<span class="tsd-signature-symbol">:</span> <a href="../modules/SandDance.specs.html#ColorBin" class="tsd-signature-type" data-tsd-kind="Type alias">ColorBin</a></div>
 				<aside class="tsd-sources">
-					<p>Inherited from <a href="HistoricInsight.html">HistoricInsight</a>.<a href="HistoricInsight.html#colorBin">colorBin</a></p>
+					<p>Inherited from HistoricInsight.colorBin</p>
 					<ul>
 						<li>Defined in sanddance-specs/dist/es6/types.d.ts:68</li>
 					</ul>
@@ -158,7 +168,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<h3>columns</h3>
 				<div class="tsd-signature tsd-kind-icon">columns<span class="tsd-signature-symbol">:</span> <a href="SandDance.specs.InsightColumns.html" class="tsd-signature-type" data-tsd-kind="Interface">InsightColumns</a></div>
 				<aside class="tsd-sources">
-					<p>Inherited from <a href="HistoricInsight.html">HistoricInsight</a>.<a href="HistoricInsight.html#columns">columns</a></p>
+					<p>Inherited from HistoricInsight.columns</p>
 					<ul>
 						<li>Defined in sanddance-specs/dist/es6/types.d.ts:60</li>
 					</ul>
@@ -171,7 +181,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#dataContent">dataContent</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L105">sanddance-explorer/src/explorer.tsx:105</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L107">sanddance-explorer/src/explorer.tsx:107</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -182,7 +192,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#dataFile">dataFile</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L104">sanddance-explorer/src/explorer.tsx:104</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L106">sanddance-explorer/src/explorer.tsx:106</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -193,7 +203,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#dataScopeId">dataScopeId</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L108">sanddance-explorer/src/explorer.tsx:108</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L110">sanddance-explorer/src/explorer.tsx:110</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -202,7 +212,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> direct<wbr>Color</h3>
 				<div class="tsd-signature tsd-kind-icon">direct<wbr>Color<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 				<aside class="tsd-sources">
-					<p>Inherited from <a href="HistoricInsight.html">HistoricInsight</a>.<a href="HistoricInsight.html#directColor">directColor</a></p>
+					<p>Inherited from HistoricInsight.directColor</p>
 					<ul>
 						<li>Defined in sanddance-specs/dist/es6/types.d.ts:88</li>
 					</ul>
@@ -220,7 +230,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#errors">errors</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L98">sanddance-explorer/src/explorer.tsx:98</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L100">sanddance-explorer/src/explorer.tsx:100</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -229,7 +239,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> facet<wbr>Style</h3>
 				<div class="tsd-signature tsd-kind-icon">facet<wbr>Style<span class="tsd-signature-symbol">:</span> <a href="../modules/SandDance.specs.html#FacetStyle" class="tsd-signature-type" data-tsd-kind="Type alias">FacetStyle</a></div>
 				<aside class="tsd-sources">
-					<p>Inherited from <a href="HistoricInsight.html">HistoricInsight</a>.<a href="HistoricInsight.html#facetStyle">facetStyle</a></p>
+					<p>Inherited from HistoricInsight.facetStyle</p>
 					<ul>
 						<li>Defined in sanddance-specs/dist/es6/types.d.ts:63</li>
 					</ul>
@@ -240,7 +250,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> filter</h3>
 				<div class="tsd-signature tsd-kind-icon">filter<span class="tsd-signature-symbol">:</span> <a href="../modules/SandDance.searchExpression.html#Search" class="tsd-signature-type" data-tsd-kind="Type alias">Search</a></div>
 				<aside class="tsd-sources">
-					<p>Inherited from <a href="HistoricInsight.html">HistoricInsight</a>.<a href="HistoricInsight.html#filter">filter</a></p>
+					<p>Inherited from HistoricInsight.filter</p>
 					<ul>
 						<li>Defined in sanddance-specs/dist/es6/types.d.ts:62</li>
 					</ul>
@@ -253,7 +263,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#filteredData">filteredData</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L101">sanddance-explorer/src/explorer.tsx:101</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L103">sanddance-explorer/src/explorer.tsx:103</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -262,7 +272,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> hide<wbr>Axes</h3>
 				<div class="tsd-signature tsd-kind-icon">hide<wbr>Axes<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 				<aside class="tsd-sources">
-					<p>Inherited from <a href="HistoricInsight.html">HistoricInsight</a>.<a href="HistoricInsight.html#hideAxes">hideAxes</a></p>
+					<p>Inherited from HistoricInsight.hideAxes</p>
 					<ul>
 						<li>Defined in sanddance-specs/dist/es6/types.d.ts:80</li>
 					</ul>
@@ -278,7 +288,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> hide<wbr>Legend</h3>
 				<div class="tsd-signature tsd-kind-icon">hide<wbr>Legend<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 				<aside class="tsd-sources">
-					<p>Inherited from <a href="HistoricInsight.html">HistoricInsight</a>.<a href="HistoricInsight.html#hideLegend">hideLegend</a></p>
+					<p>Inherited from HistoricInsight.hideLegend</p>
 					<ul>
 						<li>Defined in sanddance-specs/dist/es6/types.d.ts:84</li>
 					</ul>
@@ -296,29 +306,29 @@ title: 'State | @msrvida/sanddance-explorer'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#historyIndex">historyIndex</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L115">sanddance-explorer/src/explorer.tsx:115</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L117">sanddance-explorer/src/explorer.tsx:117</a></li>
 					</ul>
 				</aside>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 				<a name="historyItems" class="tsd-anchor"></a>
 				<h3>history<wbr>Items</h3>
-				<div class="tsd-signature tsd-kind-icon">history<wbr>Items<span class="tsd-signature-symbol">:</span> <a href="HistoryItem.html" class="tsd-signature-type" data-tsd-kind="Interface">HistoryItem</a><span class="tsd-signature-symbol">[]</span></div>
+				<div class="tsd-signature tsd-kind-icon">history<wbr>Items<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HistoryItem</span><span class="tsd-signature-symbol">[]</span></div>
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#historyItems">historyItems</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L116">sanddance-explorer/src/explorer.tsx:116</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L118">sanddance-explorer/src/explorer.tsx:118</a></li>
 					</ul>
 				</aside>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-				<a name="morphChartsRendererOptions" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagOptional">Optional</span> morph<wbr>Charts<wbr>Renderer<wbr>Options</h3>
-				<div class="tsd-signature tsd-kind-icon">morph<wbr>Charts<wbr>Renderer<wbr>Options<span class="tsd-signature-symbol">:</span> <a href="SandDance.VegaMorphCharts.MorphChartsRendererOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">MorphChartsRendererOptions</a></div>
+				<a name="holdCamera" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> hold<wbr>Camera</h3>
+				<div class="tsd-signature tsd-kind-icon">hold<wbr>Camera<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 				<aside class="tsd-sources">
-					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#morphChartsRendererOptions">morphChartsRendererOptions</a></p>
+					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#holdCamera">holdCamera</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L117">sanddance-explorer/src/explorer.tsx:117</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L120">sanddance-explorer/src/explorer.tsx:120</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -329,7 +339,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#note">note</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L114">sanddance-explorer/src/explorer.tsx:114</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L116">sanddance-explorer/src/explorer.tsx:116</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -340,7 +350,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#positionedColumnMapProps">positionedColumnMapProps</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L113">sanddance-explorer/src/explorer.tsx:113</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L115">sanddance-explorer/src/explorer.tsx:115</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -349,7 +359,18 @@ title: 'State | @msrvida/sanddance-explorer'
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> rebase<wbr>Filter</h3>
 				<div class="tsd-signature tsd-kind-icon">rebase<wbr>Filter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 				<aside class="tsd-sources">
-					<p>Inherited from <a href="HistoricInsight.html">HistoricInsight</a>.<a href="HistoricInsight.html#rebaseFilter">rebaseFilter</a></p>
+					<p>Inherited from HistoricInsight.rebaseFilter</p>
+					<ul>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/dialogs/history.tsx#L15">sanddance-explorer/src/dialogs/history.tsx:15</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+				<a name="renderer" class="tsd-anchor"></a>
+				<h3>renderer</h3>
+				<div class="tsd-signature tsd-kind-icon">renderer<span class="tsd-signature-symbol">:</span> <a href="SandDance.VegaMorphCharts.types.MorphChartsRendererOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">MorphChartsRendererOptions</a></div>
+				<aside class="tsd-sources">
+					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#renderer">renderer</a></p>
 					<ul>
 						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L121">sanddance-explorer/src/explorer.tsx:121</a></li>
 					</ul>
@@ -360,7 +381,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> scheme</h3>
 				<div class="tsd-signature tsd-kind-icon">scheme<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 				<aside class="tsd-sources">
-					<p>Inherited from <a href="HistoricInsight.html">HistoricInsight</a>.<a href="HistoricInsight.html#scheme">scheme</a></p>
+					<p>Inherited from HistoricInsight.scheme</p>
 					<ul>
 						<li>Defined in sanddance-specs/dist/es6/types.d.ts:72</li>
 					</ul>
@@ -378,28 +399,20 @@ title: 'State | @msrvida/sanddance-explorer'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#search">search</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L100">sanddance-explorer/src/explorer.tsx:100</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L102">sanddance-explorer/src/explorer.tsx:102</a></li>
 					</ul>
 				</aside>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 				<a name="selectedItemIndex" class="tsd-anchor"></a>
 				<h3>selected<wbr>Item<wbr>Index</h3>
-				<div class="tsd-signature tsd-kind-icon">selected<wbr>Item<wbr>Index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
+				<div class="tsd-signature tsd-kind-icon">selected<wbr>Item<wbr>Index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">SelectedItemIndex</span></div>
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#selectedItemIndex">selectedItemIndex</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L109">sanddance-explorer/src/explorer.tsx:109</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L111">sanddance-explorer/src/explorer.tsx:111</a></li>
 					</ul>
 				</aside>
-				<div class="tsd-type-declaration">
-					<h4>Type declaration</h4>
-					<ul class="tsd-parameters">
-						<li class="tsd-parameter-index-signature">
-							<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">number</span></h5>
-						</li>
-					</ul>
-				</div>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 				<a name="selectedSnapshotIndex" class="tsd-anchor"></a>
@@ -408,7 +421,18 @@ title: 'State | @msrvida/sanddance-explorer'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#selectedSnapshotIndex">selectedSnapshotIndex</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L111">sanddance-explorer/src/explorer.tsx:111</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L113">sanddance-explorer/src/explorer.tsx:113</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+				<a name="setup" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> setup</h3>
+				<div class="tsd-signature tsd-kind-icon">setup<span class="tsd-signature-symbol">:</span> <a href="SandDance.types.Setup.html" class="tsd-signature-type" data-tsd-kind="Interface">Setup</a></div>
+				<aside class="tsd-sources">
+					<p>Inherited from HistoricInsight.setup</p>
+					<ul>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/dialogs/history.tsx#L16">sanddance-explorer/src/dialogs/history.tsx:16</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -419,7 +443,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#sideTabId">sideTabId</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L107">sanddance-explorer/src/explorer.tsx:107</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L109">sanddance-explorer/src/explorer.tsx:109</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -430,7 +454,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#sidebarClosed">sidebarClosed</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L102">sanddance-explorer/src/explorer.tsx:102</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L104">sanddance-explorer/src/explorer.tsx:104</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -441,7 +465,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#sidebarPinned">sidebarPinned</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L103">sanddance-explorer/src/explorer.tsx:103</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L105">sanddance-explorer/src/explorer.tsx:105</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -450,7 +474,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> signal<wbr>Values</h3>
 				<div class="tsd-signature tsd-kind-icon">signal<wbr>Values<span class="tsd-signature-symbol">:</span> <a href="SandDance.specs.SignalValues.html" class="tsd-signature-type" data-tsd-kind="Interface">SignalValues</a></div>
 				<aside class="tsd-sources">
-					<p>Inherited from <a href="HistoricInsight.html">HistoricInsight</a>.<a href="HistoricInsight.html#signalValues">signalValues</a></p>
+					<p>Inherited from HistoricInsight.signalValues</p>
 					<ul>
 						<li>Defined in sanddance-specs/dist/es6/types.d.ts:76</li>
 					</ul>
@@ -466,7 +490,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<h3>size</h3>
 				<div class="tsd-signature tsd-kind-icon">size<span class="tsd-signature-symbol">:</span> <a href="SandDance.specs.Size.html" class="tsd-signature-type" data-tsd-kind="Interface">Size</a></div>
 				<aside class="tsd-sources">
-					<p>Inherited from <a href="HistoricInsight.html">HistoricInsight</a>.<a href="HistoricInsight.html#size">size</a></p>
+					<p>Inherited from HistoricInsight.size</p>
 					<ul>
 						<li>Defined in sanddance-specs/dist/es6/types.d.ts:59</li>
 					</ul>
@@ -479,7 +503,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#snapshots">snapshots</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L110">sanddance-explorer/src/explorer.tsx:110</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L112">sanddance-explorer/src/explorer.tsx:112</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -490,7 +514,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#specCapabilities">specCapabilities</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L106">sanddance-explorer/src/explorer.tsx:106</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L108">sanddance-explorer/src/explorer.tsx:108</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -501,7 +525,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#tooltipExclusions">tooltipExclusions</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L112">sanddance-explorer/src/explorer.tsx:112</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L114">sanddance-explorer/src/explorer.tsx:114</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -510,7 +534,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> total<wbr>Style</h3>
 				<div class="tsd-signature tsd-kind-icon">total<wbr>Style<span class="tsd-signature-symbol">:</span> <a href="../modules/SandDance.specs.html#TotalStyle" class="tsd-signature-type" data-tsd-kind="Type alias">TotalStyle</a></div>
 				<aside class="tsd-sources">
-					<p>Inherited from <a href="HistoricInsight.html">HistoricInsight</a>.<a href="HistoricInsight.html#totalStyle">totalStyle</a></p>
+					<p>Inherited from HistoricInsight.totalStyle</p>
 					<ul>
 						<li>Defined in sanddance-specs/dist/es6/types.d.ts:64</li>
 					</ul>
@@ -521,7 +545,7 @@ title: 'State | @msrvida/sanddance-explorer'
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> transform</h3>
 				<div class="tsd-signature tsd-kind-icon">transform<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Transforms</span><span class="tsd-signature-symbol">[]</span></div>
 				<aside class="tsd-sources">
-					<p>Inherited from <a href="HistoricInsight.html">HistoricInsight</a>.<a href="HistoricInsight.html#transform">transform</a></p>
+					<p>Inherited from HistoricInsight.transform</p>
 					<ul>
 						<li>Defined in sanddance-specs/dist/es6/types.d.ts:92</li>
 					</ul>
@@ -533,11 +557,66 @@ title: 'State | @msrvida/sanddance-explorer'
 				</div>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+				<a name="transitionColumn" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> transition<wbr>Column</h3>
+				<div class="tsd-signature tsd-kind-icon">transition<wbr>Column<span class="tsd-signature-symbol">:</span> <a href="SandDance.types.Column.html" class="tsd-signature-type" data-tsd-kind="Interface">Column</a></div>
+				<aside class="tsd-sources">
+					<p>Inherited from TransitionEdits.transitionColumn</p>
+					<ul>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/dialogs/transition.tsx#L20">sanddance-explorer/src/dialogs/transition.tsx:20</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+				<a name="transitionDimension" class="tsd-anchor"></a>
+				<h3>transition<wbr>Dimension</h3>
+				<div class="tsd-signature tsd-kind-icon">transition<wbr>Dimension<span class="tsd-signature-symbol">:</span> <a href="../modules/SandDance.types.html#Dimension3D" class="tsd-signature-type" data-tsd-kind="Type alias">Dimension3D</a></div>
+				<aside class="tsd-sources">
+					<p>Inherited from TransitionEdits.transitionDimension</p>
+					<ul>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/dialogs/transition.tsx#L21">sanddance-explorer/src/dialogs/transition.tsx:21</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+				<a name="transitionDurations" class="tsd-anchor"></a>
+				<h3>transition<wbr>Durations</h3>
+				<div class="tsd-signature tsd-kind-icon">transition<wbr>Durations<span class="tsd-signature-symbol">:</span> <a href="SandDance.VegaMorphCharts.types.TransitionDurations.html" class="tsd-signature-type" data-tsd-kind="Interface">TransitionDurations</a></div>
+				<aside class="tsd-sources">
+					<p>Inherited from TransitionEdits.transitionDurations</p>
+					<ul>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/dialogs/transition.tsx#L22">sanddance-explorer/src/dialogs/transition.tsx:22</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+				<a name="transitionReverse" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> transition<wbr>Reverse</h3>
+				<div class="tsd-signature tsd-kind-icon">transition<wbr>Reverse<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+				<aside class="tsd-sources">
+					<p>Inherited from TransitionEdits.transitionReverse</p>
+					<ul>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/dialogs/transition.tsx#L19">sanddance-explorer/src/dialogs/transition.tsx:19</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+				<a name="transitionType" class="tsd-anchor"></a>
+				<h3>transition<wbr>Type</h3>
+				<div class="tsd-signature tsd-kind-icon">transition<wbr>Type<span class="tsd-signature-symbol">:</span> <a href="../modules/SandDance.types.html#TransitionType" class="tsd-signature-type" data-tsd-kind="Type alias">TransitionType</a></div>
+				<aside class="tsd-sources">
+					<p>Inherited from TransitionEdits.transitionType</p>
+					<ul>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/dialogs/transition.tsx#L18">sanddance-explorer/src/dialogs/transition.tsx:18</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 				<a name="view" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> view</h3>
 				<div class="tsd-signature tsd-kind-icon">view<span class="tsd-signature-symbol">:</span> <a href="../modules/SandDance.types.html#View" class="tsd-signature-type" data-tsd-kind="Type alias">View</a></div>
 				<aside class="tsd-sources">
-					<p>Inherited from <a href="HistoricInsight.html">HistoricInsight</a>.<a href="HistoricInsight.html#view">view</a></p>
+					<p>Inherited from HistoricInsight.view</p>
 					<ul>
 						<li>Defined in sanddance-specs/dist/es6/types.d.ts:61</li>
 					</ul>
@@ -557,7 +636,7 @@ title: 'State | @msrvida/sanddance-explorer'
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="UIState.html">UIState</a>.<a href="UIState.html#calculating">calculating</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L97">sanddance-explorer/src/explorer.tsx:97</a></li>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-explorer/src/explorer.tsx#L99">sanddance-explorer/src/explorer.tsx:99</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -592,15 +671,6 @@ title: 'State | @msrvida/sanddance-explorer'
 					<a href="DataFile.html" class="tsd-kind-icon">Data<wbr>File</a>
 				</li>
 				<li class=" tsd-kind-interface">
-					<a href="HistoricInsight.html" class="tsd-kind-icon">Historic<wbr>Insight</a>
-				</li>
-				<li class=" tsd-kind-interface">
-					<a href="HistoryAction.html" class="tsd-kind-icon">History<wbr>Action</a>
-				</li>
-				<li class=" tsd-kind-interface">
-					<a href="HistoryItem.html" class="tsd-kind-icon">History<wbr>Item</a>
-				</li>
-				<li class=" tsd-kind-interface">
 					<a href="Options.html" class="tsd-kind-icon">Options</a>
 				</li>
 				<li class=" tsd-kind-interface">
@@ -624,7 +694,7 @@ title: 'State | @msrvida/sanddance-explorer'
 							<a href="State.html#backgroundImage" class="tsd-kind-icon">background<wbr>Image</a>
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-							<a href="State.html#cameraTo" class="tsd-kind-icon">camera<wbr>To</a>
+							<a href="State.html#camera" class="tsd-kind-icon">camera</a>
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 							<a href="State.html#chart" class="tsd-kind-icon">chart</a>
@@ -672,7 +742,7 @@ title: 'State | @msrvida/sanddance-explorer'
 							<a href="State.html#historyItems" class="tsd-kind-icon">history<wbr>Items</a>
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-							<a href="State.html#morphChartsRendererOptions" class="tsd-kind-icon">morph<wbr>Charts<wbr>Renderer<wbr>Options</a>
+							<a href="State.html#holdCamera" class="tsd-kind-icon">hold<wbr>Camera</a>
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 							<a href="State.html#note" class="tsd-kind-icon">note</a>
@@ -682,6 +752,9 @@ title: 'State | @msrvida/sanddance-explorer'
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 							<a href="State.html#rebaseFilter" class="tsd-kind-icon">rebase<wbr>Filter</a>
+						</li>
+						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+							<a href="State.html#renderer" class="tsd-kind-icon">renderer</a>
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 							<a href="State.html#scheme" class="tsd-kind-icon">scheme</a>
@@ -694,6 +767,9 @@ title: 'State | @msrvida/sanddance-explorer'
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 							<a href="State.html#selectedSnapshotIndex" class="tsd-kind-icon">selected<wbr>Snapshot<wbr>Index</a>
+						</li>
+						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+							<a href="State.html#setup" class="tsd-kind-icon">setup</a>
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 							<a href="State.html#sideTabId" class="tsd-kind-icon">side<wbr>Tab<wbr>Id</a>
@@ -724,6 +800,21 @@ title: 'State | @msrvida/sanddance-explorer'
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 							<a href="State.html#transform" class="tsd-kind-icon">transform</a>
+						</li>
+						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+							<a href="State.html#transitionColumn" class="tsd-kind-icon">transition<wbr>Column</a>
+						</li>
+						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+							<a href="State.html#transitionDimension" class="tsd-kind-icon">transition<wbr>Dimension</a>
+						</li>
+						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+							<a href="State.html#transitionDurations" class="tsd-kind-icon">transition<wbr>Durations</a>
+						</li>
+						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+							<a href="State.html#transitionReverse" class="tsd-kind-icon">transition<wbr>Reverse</a>
+						</li>
+						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+							<a href="State.html#transitionType" class="tsd-kind-icon">transition<wbr>Type</a>
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 							<a href="State.html#view" class="tsd-kind-icon">view</a>
