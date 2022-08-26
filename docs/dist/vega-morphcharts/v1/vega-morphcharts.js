@@ -16724,15 +16724,15 @@ f 5/6/6 1/12/6 8/11/6`;
 	var brighter = 1 / darker;
 
 	var reI = "\\s*([+-]?\\d+)\\s*",
-	    reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
-	    reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+	    reN = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+	    reP = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
 	    reHex = /^#([0-9a-f]{3,8})$/,
-	    reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$"),
-	    reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$"),
-	    reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$"),
-	    reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$"),
-	    reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$"),
-	    reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
+	    reRgbInteger = new RegExp(`^rgb\\(${reI},${reI},${reI}\\)$`),
+	    reRgbPercent = new RegExp(`^rgb\\(${reP},${reP},${reP}\\)$`),
+	    reRgbaInteger = new RegExp(`^rgba\\(${reI},${reI},${reI},${reN}\\)$`),
+	    reRgbaPercent = new RegExp(`^rgba\\(${reP},${reP},${reP},${reN}\\)$`),
+	    reHslPercent = new RegExp(`^hsl\\(${reN},${reP},${reP}\\)$`),
+	    reHslaPercent = new RegExp(`^hsla\\(${reN},${reP},${reP},${reN}\\)$`);
 
 	var named = {
 	  aliceblue: 0xf0f8ff,
@@ -16886,14 +16886,15 @@ f 5/6/6 1/12/6 8/11/6`;
 	};
 
 	define(Color, color, {
-	  copy: function(channels) {
+	  copy(channels) {
 	    return Object.assign(new this.constructor, this, channels);
 	  },
-	  displayable: function() {
+	  displayable() {
 	    return this.rgb().displayable();
 	  },
 	  hex: color_formatHex, // Deprecated! Use color.formatHex.
 	  formatHex: color_formatHex,
+	  formatHex8: color_formatHex8,
 	  formatHsl: color_formatHsl,
 	  formatRgb: color_formatRgb,
 	  toString: color_formatRgb
@@ -16901,6 +16902,10 @@ f 5/6/6 1/12/6 8/11/6`;
 
 	function color_formatHex() {
 	  return this.rgb().formatHex();
+	}
+
+	function color_formatHex8() {
+	  return this.rgb().formatHex8();
 	}
 
 	function color_formatHsl() {
@@ -16958,18 +16963,21 @@ f 5/6/6 1/12/6 8/11/6`;
 	}
 
 	define(Rgb, rgb, extend(Color, {
-	  brighter: function(k) {
+	  brighter(k) {
 	    k = k == null ? brighter : Math.pow(brighter, k);
 	    return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
 	  },
-	  darker: function(k) {
+	  darker(k) {
 	    k = k == null ? darker : Math.pow(darker, k);
 	    return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
 	  },
-	  rgb: function() {
+	  rgb() {
 	    return this;
 	  },
-	  displayable: function() {
+	  clamp() {
+	    return new Rgb(clampi(this.r), clampi(this.g), clampi(this.b), clampa(this.opacity));
+	  },
+	  displayable() {
 	    return (-0.5 <= this.r && this.r < 255.5)
 	        && (-0.5 <= this.g && this.g < 255.5)
 	        && (-0.5 <= this.b && this.b < 255.5)
@@ -16977,25 +16985,34 @@ f 5/6/6 1/12/6 8/11/6`;
 	  },
 	  hex: rgb_formatHex, // Deprecated! Use color.formatHex.
 	  formatHex: rgb_formatHex,
+	  formatHex8: rgb_formatHex8,
 	  formatRgb: rgb_formatRgb,
 	  toString: rgb_formatRgb
 	}));
 
 	function rgb_formatHex() {
-	  return "#" + hex(this.r) + hex(this.g) + hex(this.b);
+	  return `#${hex(this.r)}${hex(this.g)}${hex(this.b)}`;
+	}
+
+	function rgb_formatHex8() {
+	  return `#${hex(this.r)}${hex(this.g)}${hex(this.b)}${hex((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
 	}
 
 	function rgb_formatRgb() {
-	  var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-	  return (a === 1 ? "rgb(" : "rgba(")
-	      + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
-	      + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", "
-	      + Math.max(0, Math.min(255, Math.round(this.b) || 0))
-	      + (a === 1 ? ")" : ", " + a + ")");
+	  const a = clampa(this.opacity);
+	  return `${a === 1 ? "rgb(" : "rgba("}${clampi(this.r)}, ${clampi(this.g)}, ${clampi(this.b)}${a === 1 ? ")" : `, ${a})`}`;
+	}
+
+	function clampa(opacity) {
+	  return isNaN(opacity) ? 1 : Math.max(0, Math.min(1, opacity));
+	}
+
+	function clampi(value) {
+	  return Math.max(0, Math.min(255, Math.round(value) || 0));
 	}
 
 	function hex(value) {
-	  value = Math.max(0, Math.min(255, Math.round(value) || 0));
+	  value = clampi(value);
 	  return (value < 16 ? "0" : "") + value.toString(16);
 	}
 
@@ -17044,15 +17061,15 @@ f 5/6/6 1/12/6 8/11/6`;
 	}
 
 	define(Hsl, hsl, extend(Color, {
-	  brighter: function(k) {
+	  brighter(k) {
 	    k = k == null ? brighter : Math.pow(brighter, k);
 	    return new Hsl(this.h, this.s, this.l * k, this.opacity);
 	  },
-	  darker: function(k) {
+	  darker(k) {
 	    k = k == null ? darker : Math.pow(darker, k);
 	    return new Hsl(this.h, this.s, this.l * k, this.opacity);
 	  },
-	  rgb: function() {
+	  rgb() {
 	    var h = this.h % 360 + (this.h < 0) * 360,
 	        s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
 	        l = this.l,
@@ -17065,20 +17082,28 @@ f 5/6/6 1/12/6 8/11/6`;
 	      this.opacity
 	    );
 	  },
-	  displayable: function() {
+	  clamp() {
+	    return new Hsl(clamph(this.h), clampt(this.s), clampt(this.l), clampa(this.opacity));
+	  },
+	  displayable() {
 	    return (0 <= this.s && this.s <= 1 || isNaN(this.s))
 	        && (0 <= this.l && this.l <= 1)
 	        && (0 <= this.opacity && this.opacity <= 1);
 	  },
-	  formatHsl: function() {
-	    var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-	    return (a === 1 ? "hsl(" : "hsla(")
-	        + (this.h || 0) + ", "
-	        + (this.s || 0) * 100 + "%, "
-	        + (this.l || 0) * 100 + "%"
-	        + (a === 1 ? ")" : ", " + a + ")");
+	  formatHsl() {
+	    const a = clampa(this.opacity);
+	    return `${a === 1 ? "hsl(" : "hsla("}${clamph(this.h)}, ${clampt(this.s) * 100}%, ${clampt(this.l) * 100}%${a === 1 ? ")" : `, ${a})`}`;
 	  }
 	}));
+
+	function clamph(value) {
+	  value = (value || 0) % 360;
+	  return value < 0 ? value + 360 : value;
+	}
+
+	function clampt(value) {
+	  return Math.max(0, Math.min(1, value || 0));
+	}
 
 	/* From FvD 13.37, CSS Color Module Level 3 */
 	function hsl2rgb(h, m1, m2) {
@@ -17182,12 +17207,11 @@ f 5/6/6 1/12/6 8/11/6`;
 	    onCubeClick: (e, cube) => { },
 	    onCubeHover: (e, cube) => { },
 	    transitionDurations: {
-	        color: 100,
 	        position: 600,
 	        stagger: 600,
 	        view: 600,
 	    },
-	    initialMorphChartsRendererOptions: {
+	    renderer: {
 	        advanced: false,
 	        advancedOptions: {},
 	        basicOptions: {
@@ -18100,6 +18124,27 @@ f 5/6/6 1/12/6 8/11/6`;
 	        };
 	    }
 	}
+	function convert$3(newColor) {
+	    const c = colorFromString(newColor).slice(0, 3);
+	    return c.map(v => v / 255);
+	}
+	function colorConfig(ref, colors) {
+	    if (!colors)
+	        return;
+	    const { config } = ref.core;
+	    config.activeColor = convert$3(colors.activeItemColor);
+	    config.backgroundColor = convert$3(colors.backgroundColor);
+	    config.textColor = convert$3(colors.textColor);
+	    config.textBorderColor = convert$3(colors.textBorderColor);
+	    config.axesTextColor = convert$3(colors.axesTextLabelColor);
+	    config.axesGridBackgroundColor = convert$3(colors.axesGridBackgroundColor);
+	    config.axesGridHighlightColor = convert$3(colors.axesGridHighlightColor);
+	    config.axesGridMinorColor = convert$3(colors.axesGridMinorColor);
+	    config.axesGridMajorColor = convert$3(colors.axesGridMajorColor);
+	    config.axesGridZeroColor = convert$3(colors.axesGridZeroColor);
+	    //TODO fix this - hack to reset the background color
+	    ref.core.renderer['_theme'] = null;
+	}
 
 	/*!
 	* Copyright (c) Microsoft Corporation.
@@ -18110,7 +18155,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    const { ref, stage } = props;
 	    const { core } = ref;
 	    const scatter = new Scatter(core);
-	    const { ids, colors, positionsX, positionsY, positionsZ, sizesX, sizesY, sizesZ, bounds, maxColor, palette, } = convert$3(stage);
+	    const { ids, colors, positionsX, positionsY, positionsZ, sizesX, sizesY, sizesZ, bounds, maxColor, palette, } = convert$2(stage);
 	    if (!ids.length)
 	        return;
 	    const { renderer } = core;
@@ -18129,19 +18174,29 @@ f 5/6/6 1/12/6 8/11/6`;
 	        positionsZ,
 	    });
 	    const layer = {
-	        update: (newBounds, selected) => {
+	        positionsX,
+	        positionsY,
+	        positionsZ,
+	        update: (newBounds, selected, stagger) => {
 	            const { colors, maxColor, minColor, palette } = layer.unitColorMap;
 	            // reference off of core.renderer to get the actual buffer
 	            const currCubeTransitionBuffer = core.renderer.transitionBuffers.find(t => t.key === key$1);
 	            currCubeTransitionBuffer.currentBuffer.unitType = UnitType.block;
 	            currCubeTransitionBuffer.currentPalette.colors = palette;
-	            scatter.update(currCubeTransitionBuffer.currentBuffer, ids, Object.assign({ selected,
+	            let options = Object.assign({ selected,
 	                colors,
 	                minColor,
 	                maxColor,
 	                sizesX,
 	                sizesY,
-	                sizesZ }, newBounds));
+	                sizesZ }, newBounds);
+	            if (stagger === null || stagger === void 0 ? void 0 : stagger.staggerOrders) {
+	                const { maxStaggerOrder, minStaggerOrder, staggerOrders } = stagger;
+	                options = Object.assign(Object.assign({}, options), { maxStaggerOrder,
+	                    minStaggerOrder,
+	                    staggerOrders });
+	            }
+	            scatter.update(currCubeTransitionBuffer.currentBuffer, ids, options);
 	        },
 	        bounds,
 	        unitColorMap: {
@@ -18154,7 +18209,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    };
 	    return layer;
 	};
-	function convert$3(stage) {
+	function convert$2(stage) {
 	    const { cubeData } = stage;
 	    const { length } = cubeData;
 	    const ids = [];
@@ -18215,7 +18270,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    const { height, ref, stage, width } = props;
 	    const { core } = ref;
 	    const lines = new Line(core);
-	    const { ids, fromIds, toIds, lineColors, lineSizes, bounds, positionsX, positionsY, positionsZ, lineMaxColor, palette, } = convert$2(stage, height);
+	    const { ids, fromIds, toIds, lineColors, lineSizes, bounds, positionsX, positionsY, positionsZ, lineMaxColor, palette, } = convert$1(stage, height);
 	    if (!ids.length)
 	        return;
 	    const { renderer } = core;
@@ -18260,7 +18315,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        },
 	    };
 	};
-	function convert$2(stage, height, width) {
+	function convert$1(stage, height, width) {
 	    const { pathData } = stage;
 	    const positions = [];
 	    const lines = [];
@@ -18324,50 +18379,10 @@ f 5/6/6 1/12/6 8/11/6`;
 	* Copyright (c) Microsoft Corporation.
 	* Licensed under the MIT License.
 	*/
-	function shouldChangeRenderer(prev, next) {
-	    var _a, _b;
-	    if (!prev || !next)
-	        return true;
-	    if (prev.advanced !== next.advanced)
-	        return true;
-	    if (!prev.advanced) {
-	        return ((_a = prev.basicOptions) === null || _a === void 0 ? void 0 : _a.antialias) != ((_b = next.basicOptions) === null || _b === void 0 ? void 0 : _b.antialias);
-	    }
-	}
-	function getRenderer(mcRendererOptions, core) {
-	    const advanced = mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advanced;
-	    const r = advanced ?
-	        new Main()
-	        :
-	            new Main$1(mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.basicOptions);
-	    core.renderer = r;
-	    setRendererOptions(r, mcRendererOptions);
-	    return r;
-	}
-	function setRendererOptions(renderer, mcRendererOptions) {
-	    const o = mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advancedOptions;
-	    if ((mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advanced) && o) {
-	        for (const key in o) {
-	            renderer.config[key] = o[key];
-	        }
-	    }
-	}
-	function rendererEnabled(advanced) {
-	    const r = advanced ?
-	        new Main()
-	        :
-	            new Main$1();
-	    return r.isSupported;
-	}
-
-	/*!
-	* Copyright (c) Microsoft Corporation.
-	* Licensed under the MIT License.
-	*/
 	const createTextLayer = (props) => {
 	    const { ref, stage } = props;
 	    const { core } = ref;
-	    const { positionsX, positionsY, positionsZ, sizes, bounds, maxGlyphs, text, } = convert$1(stage);
+	    const { positionsX, positionsY, positionsZ, sizes, bounds, maxGlyphs, text, } = convert(stage);
 	    if (text.length === 0) {
 	        core.renderer.labelSets = [];
 	        return;
@@ -18399,7 +18414,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    core.renderer.labelSets = [labelSetVisual];
 	    return layer;
 	};
-	function convert$1(stage) {
+	function convert(stage) {
 	    const { textData } = stage;
 	    const { length } = textData;
 	    const ids = [];
@@ -18439,20 +18454,6 @@ f 5/6/6 1/12/6 8/11/6`;
 	    };
 	}
 
-	function cubicInOut(t) {
-	  return ((t *= 2) <= 1 ? t * t * t : (t -= 2) * t * t + 2) / 2;
-	}
-
-	/*!
-	* Copyright (c) Microsoft Corporation.
-	* Licensed under the MIT License.
-	*/
-	function easing(t) {
-	    if (t === 0 || t === 1)
-	        return t;
-	    return cubicInOut(t);
-	}
-
 	/*!
 	* Copyright (c) Microsoft Corporation.
 	* Licensed under the MIT License.
@@ -18487,6 +18488,230 @@ f 5/6/6 1/12/6 8/11/6`;
 	        maxBoundsY,
 	    };
 	    return new ImageQuad(core, imageOptions);
+	}
+
+	/*!
+	* Copyright (c) Microsoft Corporation.
+	* Licensed under the MIT License.
+	*/
+	function createCameraDefaults() {
+	    const qModel2d = create$1();
+	    const qModel3d = Constants.QUAT_ROTATEX_MINUS_90;
+	    const qCameraRotation2d = create$1();
+	    const qCameraRotation3d = create$1();
+	    const qAngle = create$1();
+	    const vPosition = create$3();
+	    // Altitude (pitch around local right axis)
+	    setAxisAngle(qCameraRotation3d, Constants.VECTOR3_UNITX, AngleHelper.degreesToRadians(30));
+	    // Azimuth (yaw around global up axis)
+	    setAxisAngle(qAngle, Constants.VECTOR3_UNITY, AngleHelper.degreesToRadians(-25));
+	    multiply(qCameraRotation3d, qCameraRotation3d, qAngle);
+	    return {
+	        qModel2d,
+	        qModel3d,
+	        qCameraRotation2d,
+	        qCameraRotation3d,
+	        vPosition,
+	    };
+	}
+	const cameraDefaults = createCameraDefaults();
+
+	/*!
+	* Copyright (c) Microsoft Corporation.
+	* Licensed under the MIT License.
+	*/
+	function morphChartsRender(ref, prevStage, stage, height, width, preStage, colors, config) {
+	    const { qCameraRotation2d, qCameraRotation3d, qModel2d, qModel3d, vPosition } = cameraDefaults;
+	    const { core, cameraTransitioner, modelTransitioner, positionTransitioner } = ref;
+	    let cameraTo;
+	    let holdCamera;
+	    if (config.camera === 'hold') {
+	        holdCamera = true;
+	    }
+	    else {
+	        cameraTo = config.camera;
+	    }
+	    if (prevStage && (prevStage.view !== stage.view)) {
+	        modelTransitioner.shouldTransition = !holdCamera;
+	        if (stage.view === '2d') {
+	            modelTransitioner.qModelFrom = qModel3d;
+	            modelTransitioner.qModelTo = qModel2d;
+	            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
+	            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+	        }
+	        else {
+	            modelTransitioner.qModelFrom = qModel2d;
+	            modelTransitioner.qModelTo = qModel3d;
+	            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
+	            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+	        }
+	    }
+	    else {
+	        modelTransitioner.shouldTransition = false;
+	        if (stage.view === '2d') {
+	            modelTransitioner.qModelTo = qModel2d;
+	            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
+	            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+	        }
+	        else {
+	            modelTransitioner.qModelTo = qModel3d;
+	            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
+	            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+	        }
+	    }
+	    core.camera.getOrbit(cameraTransitioner.qCameraRotationFrom);
+	    core.camera.getPosition(cameraTransitioner.vCameraPositionFrom);
+	    if (!prevStage) {
+	        core.setModelRotation(modelTransitioner.qModelTo, false);
+	        core.camera.setOrbit(cameraTransitioner.qCameraRotationTo, false);
+	        core.camera.setPosition(cameraTransitioner.vCameraPositionTo, false);
+	    }
+	    else if (!holdCamera) {
+	        cameraTransitioner.begin();
+	    }
+	    positionTransitioner.begin();
+	    if (modelTransitioner.shouldTransition) {
+	        modelTransitioner.begin();
+	    }
+	    const props = { ref, stage, height, width, config };
+	    const cubeLayer = createCubeLayer(props);
+	    const lineLayer = createLineLayer(props);
+	    const textLayer = createTextLayer(props);
+	    const { backgroundImages } = stage;
+	    let contentBounds = outerBounds(outerBounds(cubeLayer === null || cubeLayer === void 0 ? void 0 : cubeLayer.bounds, lineLayer === null || lineLayer === void 0 ? void 0 : lineLayer.bounds), outerBounds(textLayer === null || textLayer === void 0 ? void 0 : textLayer.bounds, null));
+	    backgroundImages === null || backgroundImages === void 0 ? void 0 : backgroundImages.forEach(backgroundImage => {
+	        contentBounds = outerBounds(contentBounds, convertBounds(backgroundImage.bounds));
+	    });
+	    props.bounds = contentBounds;
+	    const axesLayer = createAxesLayer(props);
+	    core.config.transitionStaggering = config.transitionDurations.stagger;
+	    core.config.transitionDuration = config.transitionDurations.position;
+	    let bounds;
+	    if (axesLayer && axesLayer.bounds) {
+	        bounds = axesLayer.bounds;
+	    }
+	    else {
+	        bounds = contentBounds;
+	    }
+	    if (preStage) {
+	        preStage(stage, cubeLayer);
+	    }
+	    //add images
+	    core.renderer.images = [];
+	    if (backgroundImages) {
+	        const addImage = (imageBounds, imageData) => {
+	            const imageWidth = imageBounds.maxBoundsX - imageBounds.minBoundsX;
+	            const imageHeight = imageBounds.maxBoundsY - imageBounds.minBoundsY;
+	            const position = [imageBounds.minBoundsX + imageWidth / 2, imageBounds.minBoundsY + imageHeight / 2, 0];
+	            const imageQuad = createImageQuad(core, imageData, contentBounds, position, imageWidth, imageHeight);
+	            const imageVisual = core.renderer.createImageVisual(imageQuad);
+	            core.renderer.images.push(imageVisual);
+	        };
+	        const imageDataCache = {};
+	        backgroundImages.forEach(backgroundImage => {
+	            const imageBounds = convertBounds(backgroundImage.bounds);
+	            const imageData = imageDataCache[backgroundImage.url];
+	            if (imageData) {
+	                addImage(imageBounds, imageData);
+	            }
+	            else {
+	                getImageData(backgroundImage.url).then(imageData => {
+	                    imageDataCache[backgroundImage.url] = imageData;
+	                    addImage(imageBounds, imageData);
+	                });
+	            }
+	        });
+	    }
+	    //Now call update on each layout
+	    layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds, ref.layerStagger);
+	    ref.lastPresenterConfig = config;
+	    core.renderer.transitionTime = 0; // Set renderer transition time for this render pass to prevent rendering target buffer for single frame
+	    colorConfig(ref, colors);
+	    return {
+	        bounds,
+	        getCubeLayer: () => cubeLayer,
+	        update: layerSelection => layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds, ref.layerStagger),
+	        activate: id => core.renderer.transitionBuffers[0].activeId = id,
+	        moveCamera: (position, rotation) => {
+	            if (!(positionTransitioner.isTransitioning || modelTransitioner.isTransitioning)) {
+	                core.camera.getOrbit(cameraTransitioner.qCameraRotationFrom);
+	                core.camera.getPosition(cameraTransitioner.vCameraPositionFrom);
+	                cameraTransitioner.move(position, rotation);
+	            }
+	        },
+	    };
+	}
+	function layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds, layerStagger) {
+	    const layerItems = [
+	        {
+	            layer: cubeLayer,
+	            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.cubes,
+	            stagger: layerStagger === null || layerStagger === void 0 ? void 0 : layerStagger.cubes,
+	        },
+	        {
+	            layer: lineLayer,
+	            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.lines,
+	            stagger: layerStagger === null || layerStagger === void 0 ? void 0 : layerStagger.lines,
+	        },
+	        {
+	            layer: textLayer,
+	            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.texts,
+	            stagger: layerStagger === null || layerStagger === void 0 ? void 0 : layerStagger.texts,
+	        },
+	    ];
+	    layerItems.forEach(layerItem => { var _a; return (_a = layerItem.layer) === null || _a === void 0 ? void 0 : _a.update(bounds, layerItem.selection, layerItem.stagger); });
+	}
+	function convertBounds(bounds) {
+	    if (!bounds)
+	        return;
+	    return {
+	        minBoundsX: bounds.x1,
+	        maxBoundsX: bounds.x2,
+	        minBoundsY: -bounds.y2,
+	        maxBoundsY: -bounds.y1,
+	        minBoundsZ: minZ,
+	        maxBoundsZ: minZ,
+	    };
+	}
+
+	/*!
+	* Copyright (c) Microsoft Corporation.
+	* Licensed under the MIT License.
+	*/
+	function shouldChangeRenderer(prev, next) {
+	    var _a, _b;
+	    if (!prev || !next)
+	        return true;
+	    if (prev.advanced !== next.advanced)
+	        return true;
+	    if (!prev.advanced) {
+	        return ((_a = prev.basicOptions) === null || _a === void 0 ? void 0 : _a.antialias) != ((_b = next.basicOptions) === null || _b === void 0 ? void 0 : _b.antialias);
+	    }
+	}
+	function getRenderer(mcRendererOptions, core) {
+	    const advanced = mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advanced;
+	    const r = advanced ?
+	        new Main()
+	        :
+	            new Main$1(mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.basicOptions);
+	    core.renderer = r;
+	    setRendererOptions(r, mcRendererOptions);
+	    return r;
+	}
+	function setRendererOptions(renderer, mcRendererOptions) {
+	    const o = mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advancedOptions;
+	    if ((mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advanced) && o) {
+	        for (const key in o) {
+	            renderer.config[key] = o[key];
+	        }
+	    }
+	}
+	function rendererEnabled(advanced) {
+	    const r = advanced ?
+	        new Main()
+	        :
+	            new Main$1();
+	    return r.isSupported;
 	}
 
 	/*!
@@ -18562,6 +18787,68 @@ f 5/6/6 1/12/6 8/11/6`;
 	    };
 	}
 
+	function cubicInOut(t) {
+	  return ((t *= 2) <= 1 ? t * t * t : (t -= 2) * t * t + 2) / 2;
+	}
+
+	/*!
+	* Copyright (c) Microsoft Corporation.
+	* Licensed under the MIT License.
+	*/
+	function easing(t) {
+	    if (t === 0 || t === 1)
+	        return t;
+	    return cubicInOut(t);
+	}
+
+	/*!
+	* Copyright (c) Microsoft Corporation.
+	* Licensed under the MIT License.
+	*/
+	class Transitioner {
+	    constructor() {
+	        this.isTransitioning = false;
+	    }
+	    begin() {
+	        this.isTransitioning = true;
+	        this.time = 0;
+	    }
+	    elapse(elapsedTime, totalTime, ease = false) {
+	        this.time += elapsedTime;
+	        if (this.time >= totalTime) {
+	            this.isTransitioning = false;
+	            this.time = totalTime;
+	        }
+	        const t = this.time / totalTime;
+	        return ease ? easing(t) : t;
+	    }
+	}
+	class CameraTransitioner extends Transitioner {
+	    constructor() {
+	        super();
+	        this.qCameraRotationFrom = create$1();
+	        this.qCameraRotationTo = null;
+	        this.qCameraRotationCurrent = create$1();
+	        this.vCameraPositionFrom = create$3();
+	        this.vCameraPositionTo = null;
+	        this.vCameraPositionCurrent = create$3();
+	    }
+	    move(position, rotation) {
+	        this.begin();
+	        this.qCameraRotationTo = rotation;
+	        this.vCameraPositionTo = position;
+	    }
+	}
+	class ModelTransitioner extends Transitioner {
+	    constructor() {
+	        super();
+	        this.shouldTransition = false;
+	        this.qModelFrom = null;
+	        this.qModelTo = null;
+	        this.qModelCurrent = create$1();
+	    }
+	}
+
 	/*!
 	* Copyright (c) Microsoft Corporation.
 	* Licensed under the MIT License.
@@ -18572,6 +18859,9 @@ f 5/6/6 1/12/6 8/11/6`;
 	    getRenderer(mcRendererOptions, core);
 	    listenCanvasEvents(core, options);
 	    core.config.pickSelectDelay = 50;
+	    const cameraTransitioner = new CameraTransitioner();
+	    const modelTransitioner = new ModelTransitioner();
+	    const positionTransitioner = new Transitioner();
 	    const ref = {
 	        supportedRenders: {
 	            advanced: rendererEnabled(true),
@@ -18579,26 +18869,16 @@ f 5/6/6 1/12/6 8/11/6`;
 	        },
 	        reset: () => {
 	            core.reset(true);
-	            slerp(ref.qModelCurrent, ref.qModelTo, ref.qModelTo, 0);
-	            core.setModelRotation(ref.qModelCurrent, true);
-	            core.camera.setOrbit(ref.qCameraRotationTo, false);
-	            //core.camera.setPosition(ref.vCameraPositionTo, false);
+	            const { cameraTransitioner: cameraState, modelTransitioner: modelState } = ref;
+	            slerp(modelState.qModelCurrent, modelState.qModelTo, modelState.qModelTo, 0);
+	            core.setModelRotation(modelState.qModelCurrent, true);
+	            core.camera.setOrbit(cameraState.qCameraRotationTo, false);
+	            //core.camera.setPosition(cameraState.vCameraPositionTo, false);
 	        },
-	        transitionModel: false,
-	        qModelFrom: null,
-	        qModelTo: null,
-	        qModelCurrent: create$1(),
-	        qCameraRotationFrom: create$1(),
-	        qCameraRotationTo: null,
-	        qCameraRotationCurrent: create$1(),
-	        vCameraPositionFrom: create$3(),
-	        vCameraPositionTo: null,
-	        vCameraPositionCurrent: create$3(),
+	        cameraTransitioner,
+	        modelTransitioner,
+	        positionTransitioner,
 	        core,
-	        cameraTime: 0,
-	        isCameraMovement: false,
-	        isTransitioning: false,
-	        transitionTime: 0,
 	        setMorphChartsRendererOptions(mcRendererOptions) {
 	            if (shouldChangeRenderer(ref.lastMorphChartsRendererOptions, mcRendererOptions)) {
 	                getRenderer(mcRendererOptions, core);
@@ -18613,39 +18893,32 @@ f 5/6/6 1/12/6 8/11/6`;
 	            ref.lastMorphChartsRendererOptions = mcRendererOptions;
 	        },
 	        lastMorphChartsRendererOptions: mcRendererOptions,
+	        lastPresenterConfig: null,
+	        layerStagger: {},
 	    };
 	    const cam = (t) => {
-	        slerp(ref.qCameraRotationCurrent, ref.qCameraRotationFrom, ref.qCameraRotationTo, t);
-	        lerp(ref.vCameraPositionCurrent, ref.vCameraPositionFrom, ref.vCameraPositionTo, t);
-	        core.camera.setOrbit(ref.qCameraRotationCurrent, false);
-	        core.camera.setPosition(ref.vCameraPositionCurrent, false);
+	        slerp(cameraTransitioner.qCameraRotationCurrent, cameraTransitioner.qCameraRotationFrom, cameraTransitioner.qCameraRotationTo, t);
+	        lerp(cameraTransitioner.vCameraPositionCurrent, cameraTransitioner.vCameraPositionFrom, cameraTransitioner.vCameraPositionTo, t);
+	        core.camera.setOrbit(cameraTransitioner.qCameraRotationCurrent, false);
+	        core.camera.setPosition(cameraTransitioner.vCameraPositionCurrent, false);
 	        // disable picking during transitions, as the performance degradation could reduce the framerate
 	        core.inputManager.isPickingEnabled = false;
 	    };
 	    core.updateCallback = (elapsedTime) => {
-	        if (ref.isTransitioning) {
-	            ref.transitionTime += elapsedTime;
-	            const totalTime = core.config.transitionDuration + core.config.transitionStaggering;
-	            if (ref.transitionTime >= totalTime) {
-	                ref.isTransitioning = false;
-	                ref.transitionTime = totalTime;
-	            }
-	            const t = easing(ref.transitionTime / totalTime);
-	            core.renderer.transitionTime = t;
-	            if (ref.transitionModel) {
-	                slerp(ref.qModelCurrent, ref.qModelFrom, ref.qModelTo, t);
-	                core.setModelRotation(ref.qModelCurrent, false);
-	            }
-	            cam(t);
+	        const { transitionDurations } = ref.lastPresenterConfig;
+	        if (positionTransitioner.isTransitioning) {
+	            core.renderer.transitionTime = positionTransitioner.elapse(elapsedTime, transitionDurations.position + transitionDurations.stagger);
 	        }
-	        else if (ref.isCameraMovement) {
-	            ref.cameraTime += elapsedTime;
-	            const totalTime = core.config.transitionDuration;
-	            if (ref.cameraTime >= totalTime) {
-	                ref.isCameraMovement = false;
-	                ref.cameraTime = totalTime;
+	        if (modelTransitioner.isTransitioning) {
+	            const tm = modelTransitioner.elapse(elapsedTime, transitionDurations.view, true);
+	            if (modelTransitioner.shouldTransition) {
+	                slerp(modelTransitioner.qModelCurrent, modelTransitioner.qModelFrom, modelTransitioner.qModelTo, tm);
+	                core.setModelRotation(modelTransitioner.qModelCurrent, false);
 	            }
-	            const t = easing(ref.cameraTime / totalTime);
+	            cam(tm);
+	        }
+	        if (cameraTransitioner.isTransitioning) {
+	            const t = cameraTransitioner.elapse(elapsedTime, transitionDurations.view, true);
 	            cam(t);
 	        }
 	        else {
@@ -18653,177 +18926,6 @@ f 5/6/6 1/12/6 8/11/6`;
 	        }
 	    };
 	    return ref;
-	}
-	const qModel2d = create$1();
-	const qModel3d = Constants.QUAT_ROTATEX_MINUS_90;
-	const qCameraRotation2d = create$1();
-	const qCameraRotation3d = create$1();
-	const qAngle = create$1();
-	const vPosition = create$3();
-	// Altitude (pitch around local right axis)
-	setAxisAngle(qCameraRotation3d, Constants.VECTOR3_UNITX, AngleHelper.degreesToRadians(30));
-	// Azimuth (yaw around global up axis)
-	setAxisAngle(qAngle, Constants.VECTOR3_UNITY, AngleHelper.degreesToRadians(-25));
-	multiply(qCameraRotation3d, qCameraRotation3d, qAngle);
-	function morphChartsRender(ref, prevStage, stage, height, width, preStage, colors, config) {
-	    const cameraTo = config.getCameraTo && config.getCameraTo();
-	    if (prevStage && (prevStage.view !== stage.view)) {
-	        ref.transitionModel = true;
-	        if (stage.view === '2d') {
-	            ref.qModelFrom = qModel3d;
-	            ref.qModelTo = qModel2d;
-	            ref.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
-	            ref.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
-	        }
-	        else {
-	            ref.qModelFrom = qModel2d;
-	            ref.qModelTo = qModel3d;
-	            ref.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
-	            ref.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
-	        }
-	    }
-	    else {
-	        if (stage.view === '2d') {
-	            ref.qModelTo = qModel2d;
-	            ref.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
-	            ref.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
-	        }
-	        else {
-	            ref.qModelTo = qModel3d;
-	            ref.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
-	            ref.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
-	        }
-	        ref.transitionModel = false;
-	    }
-	    ref.core.camera.getOrbit(ref.qCameraRotationFrom);
-	    ref.core.camera.getPosition(ref.vCameraPositionFrom);
-	    if (!prevStage) {
-	        ref.core.setModelRotation(ref.qModelTo, false);
-	        ref.core.camera.setOrbit(ref.qCameraRotationTo, false);
-	        ref.core.camera.setPosition(ref.vCameraPositionTo, false);
-	    }
-	    const props = { ref, stage, height, width, config };
-	    const cubeLayer = createCubeLayer(props);
-	    const lineLayer = createLineLayer(props);
-	    const textLayer = createTextLayer(props);
-	    const { backgroundImages } = stage;
-	    let contentBounds = outerBounds(outerBounds(cubeLayer === null || cubeLayer === void 0 ? void 0 : cubeLayer.bounds, lineLayer === null || lineLayer === void 0 ? void 0 : lineLayer.bounds), outerBounds(textLayer === null || textLayer === void 0 ? void 0 : textLayer.bounds, null));
-	    backgroundImages === null || backgroundImages === void 0 ? void 0 : backgroundImages.forEach(backgroundImage => {
-	        contentBounds = outerBounds(contentBounds, convertBounds(backgroundImage.bounds));
-	    });
-	    props.bounds = contentBounds;
-	    const axesLayer = createAxesLayer(props);
-	    const { core } = ref;
-	    core.config.transitionStaggering = config.transitionDurations.stagger;
-	    core.config.transitionDuration = config.transitionDurations.position;
-	    let bounds;
-	    if (axesLayer && axesLayer.bounds) {
-	        bounds = axesLayer.bounds;
-	    }
-	    else {
-	        bounds = contentBounds;
-	    }
-	    const colorMapper = {
-	        getCubeUnitColorMap: () => cubeLayer.unitColorMap,
-	        setCubeUnitColorMap: (unitColorMap) => {
-	            cubeLayer.unitColorMap = unitColorMap;
-	        },
-	    };
-	    if (preStage) {
-	        preStage(stage, colorMapper);
-	    }
-	    //add images
-	    core.renderer.images = [];
-	    if (backgroundImages) {
-	        const addImage = (imageBounds, imageData) => {
-	            const imageWidth = imageBounds.maxBoundsX - imageBounds.minBoundsX;
-	            const imageHeight = imageBounds.maxBoundsY - imageBounds.minBoundsY;
-	            const position = [imageBounds.minBoundsX + imageWidth / 2, imageBounds.minBoundsY + imageHeight / 2, 0];
-	            const imageQuad = createImageQuad(core, imageData, contentBounds, position, imageWidth, imageHeight);
-	            const imageVisual = core.renderer.createImageVisual(imageQuad);
-	            core.renderer.images.push(imageVisual);
-	        };
-	        const imageDataCache = {};
-	        backgroundImages.forEach(backgroundImage => {
-	            const imageBounds = convertBounds(backgroundImage.bounds);
-	            const imageData = imageDataCache[backgroundImage.url];
-	            if (imageData) {
-	                addImage(imageBounds, imageData);
-	            }
-	            else {
-	                getImageData(backgroundImage.url).then(imageData => {
-	                    imageDataCache[backgroundImage.url] = imageData;
-	                    addImage(imageBounds, imageData);
-	                });
-	            }
-	        });
-	    }
-	    //Now call update on each layout
-	    layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds);
-	    ref.isTransitioning = true;
-	    ref.transitionTime = 0;
-	    core.renderer.transitionTime = 0; // Set renderer transition time for this render pass to prevent rendering target buffer for single frame
-	    colorConfig(ref, colors);
-	    return Object.assign(Object.assign({}, colorMapper), { update: layerSelection => layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds), activate: id => core.renderer.transitionBuffers[0].activeId = id, moveCamera: (position, rotation) => {
-	            if (!ref.isTransitioning) {
-	                ref.core.camera.getOrbit(ref.qCameraRotationFrom);
-	                ref.core.camera.getPosition(ref.vCameraPositionFrom);
-	                ref.isCameraMovement = true;
-	                ref.cameraTime = 0;
-	                ref.qCameraRotationTo = rotation;
-	                ref.vCameraPositionTo = position;
-	            }
-	        } });
-	}
-	function layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds) {
-	    const layers = [
-	        {
-	            layer: cubeLayer,
-	            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.cubes,
-	        },
-	        {
-	            layer: lineLayer,
-	            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.lines,
-	        },
-	        {
-	            layer: textLayer,
-	            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.texts,
-	        },
-	    ];
-	    layers.forEach(x => { var _a; return (_a = x.layer) === null || _a === void 0 ? void 0 : _a.update(bounds, x.selection); });
-	}
-	function convert(newColor) {
-	    const c = colorFromString(newColor).slice(0, 3);
-	    return c.map(v => v / 255);
-	}
-	function colorConfig(ref, colors) {
-	    if (!colors)
-	        return;
-	    const { config } = ref.core;
-	    config.activeColor = convert(colors.activeItemColor);
-	    config.backgroundColor = convert(colors.backgroundColor);
-	    config.textColor = convert(colors.textColor);
-	    config.textBorderColor = convert(colors.textBorderColor);
-	    config.axesTextColor = convert(colors.axesTextLabelColor);
-	    config.axesGridBackgroundColor = convert(colors.axesGridBackgroundColor);
-	    config.axesGridHighlightColor = convert(colors.axesGridHighlightColor);
-	    config.axesGridMinorColor = convert(colors.axesGridMinorColor);
-	    config.axesGridMajorColor = convert(colors.axesGridMajorColor);
-	    config.axesGridZeroColor = convert(colors.axesGridZeroColor);
-	    //TODO fix this - hack to reset the background color
-	    ref.core.renderer['_theme'] = null;
-	}
-	function convertBounds(bounds) {
-	    if (!bounds)
-	        return;
-	    return {
-	        minBoundsX: bounds.x1,
-	        maxBoundsX: bounds.x2,
-	        minBoundsY: -bounds.y2,
-	        maxBoundsY: -bounds.y1,
-	        minBoundsZ: minZ,
-	        maxBoundsZ: minZ,
-	    };
 	}
 
 	/*!
@@ -18941,7 +19043,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	                onCanvasClick: config === null || config === void 0 ? void 0 : config.onLayerClick,
 	                onLasso: config === null || config === void 0 ? void 0 : config.onLasso,
 	            };
-	            this.morphchartsref = init(this._morphChartsOptions, c.initialMorphChartsRendererOptions || defaultPresenterConfig.initialMorphChartsRendererOptions);
+	            this.morphchartsref = init(this._morphChartsOptions, c.renderer || defaultPresenterConfig.renderer);
 	        }
 	        let cubeCount = Math.max(this._last.cubeCount, stage.cubeData.length);
 	        if (options.maxOrdinal) {
@@ -19117,7 +19219,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	* Copyright (c) Microsoft Corporation.
 	* Licensed under the MIT License.
 	*/
-	const version = '1.0.1';
+	const version = '1.0.2';
 
 	exports.Presenter = Presenter;
 	exports.ViewGl = ViewGl;

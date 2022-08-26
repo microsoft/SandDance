@@ -41,5 +41,5 @@ var qualBarChartTest;
         chart: 'barchart',
         view: '2d'
     };
-    qualBarChartTest.viewer.render(insight, data, { columnTypes: { myColor: 'string' } });
+    qualBarChartTest.viewer.render({ insight: insight }, data, { columnTypes: { myColor: 'string' } });
 })(qualBarChartTest || (qualBarChartTest = {}));

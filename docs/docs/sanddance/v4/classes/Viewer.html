@@ -54,6 +54,7 @@ title: 'Viewer | @msrvida/sanddance'
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="Viewer.html#insight" class="tsd-kind-icon">insight</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="Viewer.html#options" class="tsd-kind-icon">options</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="Viewer.html#presenter" class="tsd-kind-icon">presenter</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class"><a href="Viewer.html#setup" class="tsd-kind-icon">setup</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="Viewer.html#specCapabilities" class="tsd-kind-icon">spec<wbr>Capabilities</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="Viewer.html#vegaSpec" class="tsd-kind-icon">vega<wbr>Spec</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="Viewer.html#vegaViewGl" class="tsd-kind-icon">vega<wbr>View<wbr>Gl</a></li>
@@ -64,6 +65,7 @@ title: 'Viewer | @msrvida/sanddance'
 						<h3>Methods</h3>
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="Viewer.html#activate" class="tsd-kind-icon">activate</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="Viewer.html#assignTransitionStagger" class="tsd-kind-icon">assign<wbr>Transition<wbr>Stagger</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="Viewer.html#deActivate" class="tsd-kind-icon">de<wbr>Activate</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="Viewer.html#deselect" class="tsd-kind-icon">deselect</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="Viewer.html#filter" class="tsd-kind-icon">filter</a></li>
@@ -95,7 +97,7 @@ title: 'Viewer | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L125">sanddance/src/viewer.ts:125</a></li>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L133">sanddance/src/viewer.ts:133</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -135,7 +137,7 @@ title: 'Viewer | @msrvida/sanddance'
 				<div class="tsd-signature tsd-kind-icon">color<wbr>Contexts<span class="tsd-signature-symbol">:</span> <a href="../interfaces/types.ColorContext.html" class="tsd-signature-type" data-tsd-kind="Interface">ColorContext</a><span class="tsd-signature-symbol">[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L103">sanddance/src/viewer.ts:103</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L111">sanddance/src/viewer.ts:111</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -150,7 +152,7 @@ title: 'Viewer | @msrvida/sanddance'
 				<div class="tsd-signature tsd-kind-icon">current<wbr>Color<wbr>Context<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L108">sanddance/src/viewer.ts:108</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L116">sanddance/src/viewer.ts:116</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -172,12 +174,12 @@ title: 'Viewer | @msrvida/sanddance'
 				<div class="tsd-signature tsd-kind-icon">insight<span class="tsd-signature-symbol">:</span> <a href="../interfaces/specs.Insight.html" class="tsd-signature-type" data-tsd-kind="Interface">Insight</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L98">sanddance/src/viewer.ts:98</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L101">sanddance/src/viewer.ts:101</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Insight object from current rendering.</p>
+						<p>Insight object for chart layout.</p>
 					</div>
 				</div>
 			</section>
@@ -187,7 +189,7 @@ title: 'Viewer | @msrvida/sanddance'
 				<div class="tsd-signature tsd-kind-icon">options<span class="tsd-signature-symbol">:</span> <a href="../interfaces/types.ViewerOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">ViewerOptions</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L78">sanddance/src/viewer.ts:78</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L81">sanddance/src/viewer.ts:81</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -202,7 +204,7 @@ title: 'Viewer | @msrvida/sanddance'
 				<div class="tsd-signature tsd-kind-icon">presenter<span class="tsd-signature-symbol">:</span> <a href="VegaMorphCharts.Presenter.html" class="tsd-signature-type" data-tsd-kind="Class">Presenter</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L93">sanddance/src/viewer.ts:93</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L96">sanddance/src/viewer.ts:96</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -212,12 +214,27 @@ title: 'Viewer | @msrvida/sanddance'
 				</div>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<a name="setup" class="tsd-anchor"></a>
+				<h3>setup</h3>
+				<div class="tsd-signature tsd-kind-icon">setup<span class="tsd-signature-symbol">:</span> <a href="../interfaces/types.Setup.html" class="tsd-signature-type" data-tsd-kind="Interface">Setup</a></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L106">sanddance/src/viewer.ts:106</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Setup object for visual rendering of Insight.</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 				<a name="specCapabilities" class="tsd-anchor"></a>
 				<h3>spec<wbr>Capabilities</h3>
 				<div class="tsd-signature tsd-kind-icon">spec<wbr>Capabilities<span class="tsd-signature-symbol">:</span> <a href="../interfaces/specs.SpecCapabilities.html" class="tsd-signature-type" data-tsd-kind="Interface">SpecCapabilities</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L73">sanddance/src/viewer.ts:73</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L76">sanddance/src/viewer.ts:76</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -232,7 +249,7 @@ title: 'Viewer | @msrvida/sanddance'
 				<div class="tsd-signature tsd-kind-icon">vega<wbr>Spec<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Spec</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L83">sanddance/src/viewer.ts:83</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L86">sanddance/src/viewer.ts:86</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -247,7 +264,7 @@ title: 'Viewer | @msrvida/sanddance'
 				<div class="tsd-signature tsd-kind-icon">vega<wbr>View<wbr>Gl<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ViewGl_Class</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L88">sanddance/src/viewer.ts:88</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L91">sanddance/src/viewer.ts:91</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -262,7 +279,7 @@ title: 'Viewer | @msrvida/sanddance'
 				<div class="tsd-signature tsd-kind-icon">default<wbr>Viewer<wbr>Options<span class="tsd-signature-symbol">:</span> <a href="../interfaces/types.ViewerOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">ViewerOptions</a><span class="tsd-signature-symbol"> = ...</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L68">sanddance/src/viewer.ts:68</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L71">sanddance/src/viewer.ts:71</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -284,7 +301,7 @@ title: 'Viewer | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L870">sanddance/src/viewer.ts:870</a></li>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L891">sanddance/src/viewer.ts:891</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -303,6 +320,29 @@ title: 'Viewer | @msrvida/sanddance'
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="assignTransitionStagger" class="tsd-anchor"></a>
+				<h3>assign<wbr>Transition<wbr>Stagger</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">assign<wbr>Transition<wbr>Stagger<span class="tsd-signature-symbol">(</span>transition<span class="tsd-signature-symbol">: </span><a href="../modules/types.html#Transition" class="tsd-signature-type" data-tsd-kind="Type alias">Transition</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L970">sanddance/src/viewer.ts:970</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>transition: <a href="../modules/types.html#Transition" class="tsd-signature-type" data-tsd-kind="Type alias">Transition</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 				<a name="deActivate" class="tsd-anchor"></a>
 				<h3>de<wbr>Activate</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -312,7 +352,7 @@ title: 'Viewer | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L883">sanddance/src/viewer.ts:883</a></li>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L904">sanddance/src/viewer.ts:904</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -334,7 +374,7 @@ title: 'Viewer | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L845">sanddance/src/viewer.ts:845</a></li>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L866">sanddance/src/viewer.ts:866</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -356,7 +396,7 @@ title: 'Viewer | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L804">sanddance/src/viewer.ts:804</a></li>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L825">sanddance/src/viewer.ts:825</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -393,7 +433,7 @@ title: 'Viewer | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L949">sanddance/src/viewer.ts:949</a></li>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L974">sanddance/src/viewer.ts:974</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -410,7 +450,7 @@ title: 'Viewer | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L901">sanddance/src/viewer.ts:901</a></li>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L922">sanddance/src/viewer.ts:922</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -441,7 +481,7 @@ title: 'Viewer | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L938">sanddance/src/viewer.ts:938</a></li>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L959">sanddance/src/viewer.ts:959</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -472,7 +512,7 @@ title: 'Viewer | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L928">sanddance/src/viewer.ts:928</a></li>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L949">sanddance/src/viewer.ts:949</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -494,7 +534,7 @@ title: 'Viewer | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L857">sanddance/src/viewer.ts:857</a></li>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L878">sanddance/src/viewer.ts:878</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -516,7 +556,7 @@ title: 'Viewer | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L945">sanddance/src/viewer.ts:945</a></li>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L966">sanddance/src/viewer.ts:966</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -532,13 +572,13 @@ title: 'Viewer | @msrvida/sanddance'
 				<a name="render" class="tsd-anchor"></a>
 				<h3>render</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">render<span class="tsd-signature-symbol">(</span>insight<span class="tsd-signature-symbol">: </span><a href="../interfaces/specs.Insight.html" class="tsd-signature-type" data-tsd-kind="Interface">Insight</a>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span>, renderOptions<span class="tsd-signature-symbol">?: </span><a href="../interfaces/types.RenderOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">RenderOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/types.RenderResult.html" class="tsd-signature-type" data-tsd-kind="Interface">RenderResult</a><span class="tsd-signature-symbol">&gt;</span></li>
+					<li class="tsd-signature tsd-kind-icon">render<span class="tsd-signature-symbol">(</span>insightSetup<span class="tsd-signature-symbol">: </span><a href="../interfaces/types.InsightSetup.html" class="tsd-signature-type" data-tsd-kind="Interface">InsightSetup</a>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span>, renderOptions<span class="tsd-signature-symbol">?: </span><a href="../interfaces/types.RenderOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">RenderOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/types.RenderResult.html" class="tsd-signature-type" data-tsd-kind="Interface">RenderResult</a><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L454">sanddance/src/viewer.ts:454</a></li>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L472">sanddance/src/viewer.ts:472</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -549,9 +589,9 @@ title: 'Viewer | @msrvida/sanddance'
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>insight: <a href="../interfaces/specs.Insight.html" class="tsd-signature-type" data-tsd-kind="Interface">Insight</a></h5>
+								<h5>insightSetup: <a href="../interfaces/types.InsightSetup.html" class="tsd-signature-type" data-tsd-kind="Interface">InsightSetup</a></h5>
 								<div class="tsd-comment tsd-typography">
-									<p>Object to create a visualization specification.</p>
+									<p>InsightSetup object to create a visualization rendering.</p>
 								</div>
 							</li>
 							<li>
@@ -581,7 +621,7 @@ title: 'Viewer | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L398">sanddance/src/viewer.ts:398</a></li>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L416">sanddance/src/viewer.ts:416</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -612,7 +652,7 @@ title: 'Viewer | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L819">sanddance/src/viewer.ts:819</a></li>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L840">sanddance/src/viewer.ts:840</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -634,7 +674,7 @@ title: 'Viewer | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L833">sanddance/src/viewer.ts:833</a></li>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L854">sanddance/src/viewer.ts:854</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -665,7 +705,7 @@ title: 'Viewer | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L921">sanddance/src/viewer.ts:921</a></li>
+								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance/src/viewer.ts#L942">sanddance/src/viewer.ts:942</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -725,6 +765,9 @@ title: 'Viewer | @msrvida/sanddance'
 							<a href="Viewer.html#presenter" class="tsd-kind-icon">presenter</a>
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-class">
+							<a href="Viewer.html#setup" class="tsd-kind-icon">setup</a>
+						</li>
+						<li class=" tsd-kind-property tsd-parent-kind-class">
 							<a href="Viewer.html#specCapabilities" class="tsd-kind-icon">spec<wbr>Capabilities</a>
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-class">
@@ -738,6 +781,9 @@ title: 'Viewer | @msrvida/sanddance'
 						</li>
 						<li class=" tsd-kind-method tsd-parent-kind-class">
 							<a href="Viewer.html#activate" class="tsd-kind-icon">activate</a>
+						</li>
+						<li class=" tsd-kind-method tsd-parent-kind-class">
+							<a href="Viewer.html#assignTransitionStagger" class="tsd-kind-icon">assign<wbr>Transition<wbr>Stagger</a>
 						</li>
 						<li class=" tsd-kind-method tsd-parent-kind-class">
 							<a href="Viewer.html#deActivate" class="tsd-kind-icon">de<wbr>Activate</a>

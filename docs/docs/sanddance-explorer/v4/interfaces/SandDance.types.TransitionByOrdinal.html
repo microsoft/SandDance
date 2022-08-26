@@ -1,6 +1,6 @@
 ---
 layout: typedoc
-title: 'TransitionDurations | @msrvida/sanddance-explorer'
+title: 'TransitionByOrdinal | @msrvida/sanddance-explorer'
 ---
 <header>
 <div class="tsd-page-title">
@@ -16,31 +16,24 @@ title: 'TransitionDurations | @msrvida/sanddance-explorer'
 				<a href="../modules/SandDance.types.html">types</a>
 			</li>
 			<li>
-				<a href="SandDance.types.TransitionDurations.html">TransitionDurations</a>
+				<a href="SandDance.types.TransitionByOrdinal.html">TransitionByOrdinal</a>
 			</li>
 		</ul>
-		<h1>Interface TransitionDurations</h1>
+		<h1>Interface TransitionByOrdinal</h1>
 	</div>
 </div>
 </header>
 <div class="container container-main">
 <div class="row">
 	<div class="col-8 col-content">
-		<section class="tsd-panel tsd-comment">
-			<div class="tsd-comment tsd-typography">
-				<div class="lead">
-					<p>Lengths of time for a transition animation.</p>
-				</div>
-			</div>
-		</section>
 		<section class="tsd-panel tsd-hierarchy">
 			<h3>Hierarchy</h3>
 			<ul class="tsd-hierarchy">
 				<li>
-					<a href="SandDance.VegaMorphCharts.types.TransitionDurations.html" class="tsd-signature-type" data-tsd-kind="Interface">TransitionDurations</a>
+					<a href="SandDance.types.TransitionBase.html" class="tsd-signature-type" data-tsd-kind="Interface">TransitionBase</a>
 					<ul class="tsd-hierarchy">
 						<li>
-							<span class="target">TransitionDurations</span>
+							<span class="target">TransitionByOrdinal</span>
 						</li>
 					</ul>
 				</li>
@@ -53,11 +46,8 @@ title: 'TransitionDurations | @msrvida/sanddance-explorer'
 					<section class="tsd-index-section ">
 						<h3>Properties</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="SandDance.types.TransitionDurations.html#color" class="tsd-kind-icon">color</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="SandDance.types.TransitionDurations.html#position" class="tsd-kind-icon">position</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="SandDance.types.TransitionDurations.html#scope" class="tsd-kind-icon">scope</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="SandDance.types.TransitionDurations.html#stagger" class="tsd-kind-icon">stagger</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="SandDance.types.TransitionDurations.html#view" class="tsd-kind-icon">view</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="SandDance.types.TransitionByOrdinal.html#reverse" class="tsd-kind-icon">reverse</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite"><a href="SandDance.types.TransitionByOrdinal.html#type" class="tsd-kind-icon">type</a></li>
 						</ul>
 					</section>
 				</div>
@@ -66,61 +56,24 @@ title: 'TransitionDurations | @msrvida/sanddance-explorer'
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Properties</h2>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-				<a name="color" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagOptional">Optional</span> color</h3>
-				<div class="tsd-signature tsd-kind-icon">color<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<a name="reverse" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> reverse</h3>
+				<div class="tsd-signature tsd-kind-icon">reverse<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 				<aside class="tsd-sources">
-					<p>Inherited from <a href="SandDance.VegaMorphCharts.types.TransitionDurations.html">TransitionDurations</a>.<a href="SandDance.VegaMorphCharts.types.TransitionDurations.html#color">color</a></p>
+					<p>Inherited from <a href="SandDance.types.TransitionBase.html">TransitionBase</a>.<a href="SandDance.types.TransitionBase.html#reverse">reverse</a></p>
 					<ul>
-						<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:137</li>
+						<li>Defined in sanddance/dist/es6/types.d.ts:283</li>
 					</ul>
 				</aside>
 			</section>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-				<a name="position" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagOptional">Optional</span> position</h3>
-				<div class="tsd-signature tsd-kind-icon">position<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite">
+				<a name="type" class="tsd-anchor"></a>
+				<h3>type</h3>
+				<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;ordinal&quot;</span></div>
 				<aside class="tsd-sources">
-					<p>Inherited from <a href="SandDance.VegaMorphCharts.types.TransitionDurations.html">TransitionDurations</a>.<a href="SandDance.VegaMorphCharts.types.TransitionDurations.html#position">position</a></p>
+					<p>Overrides <a href="SandDance.types.TransitionBase.html">TransitionBase</a>.<a href="SandDance.types.TransitionBase.html#type">type</a></p>
 					<ul>
-						<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:138</li>
-					</ul>
-				</aside>
-			</section>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-				<a name="scope" class="tsd-anchor"></a>
-				<h3>scope</h3>
-				<div class="tsd-signature tsd-kind-icon">scope<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-				<aside class="tsd-sources">
-					<ul>
-						<li>Defined in sanddance/dist/es6/types.d.ts:37</li>
-					</ul>
-				</aside>
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>Transition time when a filter is applied / removed.</p>
-					</div>
-				</div>
-			</section>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-				<a name="stagger" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagOptional">Optional</span> stagger</h3>
-				<div class="tsd-signature tsd-kind-icon">stagger<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-				<aside class="tsd-sources">
-					<p>Inherited from <a href="SandDance.VegaMorphCharts.types.TransitionDurations.html">TransitionDurations</a>.<a href="SandDance.VegaMorphCharts.types.TransitionDurations.html#stagger">stagger</a></p>
-					<ul>
-						<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:139</li>
-					</ul>
-				</aside>
-			</section>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-				<a name="view" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagOptional">Optional</span> view</h3>
-				<div class="tsd-signature tsd-kind-icon">view<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-				<aside class="tsd-sources">
-					<p>Inherited from <a href="SandDance.VegaMorphCharts.types.TransitionDurations.html">TransitionDurations</a>.<a href="SandDance.VegaMorphCharts.types.TransitionDurations.html#view">view</a></p>
-					<ul>
-						<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:140</li>
+						<li>Defined in sanddance/dist/es6/types.d.ts:286</li>
 					</ul>
 				</aside>
 			</section>
@@ -196,6 +149,9 @@ title: 'TransitionDurations | @msrvida/sanddance-explorer'
 					<a href="SandDance.types.Headers.html" class="tsd-kind-icon">Headers</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="SandDance.types.InsightSetup.html" class="tsd-kind-icon">Insight<wbr>Setup</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="SandDance.types.Language.html" class="tsd-kind-icon">Language</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
@@ -214,6 +170,9 @@ title: 'TransitionDurations | @msrvida/sanddance-explorer'
 					<a href="SandDance.types.SelectionState.html" class="tsd-kind-icon">Selection<wbr>State</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="SandDance.types.Setup.html" class="tsd-kind-icon">Setup</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="SandDance.types.Snapshot.html" class="tsd-kind-icon">Snapshot</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
@@ -225,32 +184,44 @@ title: 'TransitionDurations | @msrvida/sanddance-explorer'
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="SandDance.types.TooltipOptions.html" class="tsd-kind-icon">Tooltip<wbr>Options</a>
 				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="SandDance.types.TransitionBase.html" class="tsd-kind-icon">Transition<wbr>Base</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="SandDance.types.TransitionByColumn.html" class="tsd-kind-icon">Transition<wbr>ByColumn</a>
+				</li>
 			</ul>
 			<ul class="current">
 				<li class="current tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="SandDance.types.TransitionDurations.html" class="tsd-kind-icon">Transition<wbr>Durations</a>
+					<a href="SandDance.types.TransitionByOrdinal.html" class="tsd-kind-icon">Transition<wbr>ByOrdinal</a>
 					<ul>
 						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-							<a href="SandDance.types.TransitionDurations.html#color" class="tsd-kind-icon">color</a>
+							<a href="SandDance.types.TransitionByOrdinal.html#reverse" class="tsd-kind-icon">reverse</a>
 						</li>
-						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-							<a href="SandDance.types.TransitionDurations.html#position" class="tsd-kind-icon">position</a>
-						</li>
-						<li class=" tsd-kind-property tsd-parent-kind-interface">
-							<a href="SandDance.types.TransitionDurations.html#scope" class="tsd-kind-icon">scope</a>
-						</li>
-						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-							<a href="SandDance.types.TransitionDurations.html#stagger" class="tsd-kind-icon">stagger</a>
-						</li>
-						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-							<a href="SandDance.types.TransitionDurations.html#view" class="tsd-kind-icon">view</a>
+						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite">
+							<a href="SandDance.types.TransitionByOrdinal.html#type" class="tsd-kind-icon">type</a>
 						</li>
 					</ul>
 				</li>
 			</ul>
 			<ul class="after-current">
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="SandDance.types.TransitionByPosition.html" class="tsd-kind-icon">Transition<wbr>ByPosition</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="SandDance.types.ViewerOptions.html" class="tsd-kind-icon">Viewer<wbr>Options</a>
+				</li>
+				<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+					<a href="../modules/SandDance.types.html#Dimension2D" class="tsd-kind-icon">Dimension2D</a>
+				</li>
+				<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+					<a href="../modules/SandDance.types.html#Dimension3D" class="tsd-kind-icon">Dimension3D</a>
+				</li>
+				<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+					<a href="../modules/SandDance.types.html#Transition" class="tsd-kind-icon">Transition</a>
+				</li>
+				<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+					<a href="../modules/SandDance.types.html#TransitionType" class="tsd-kind-icon">Transition<wbr>Type</a>
 				</li>
 				<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
 					<a href="../modules/SandDance.types.html#View" class="tsd-kind-icon">View</a>

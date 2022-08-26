@@ -1663,7 +1663,24 @@
         }
         column.isColorData = true;
     }
-    function getStats(data, column) {
+    function getStats(data, ...args) {
+        let columnName;
+        let columnType;
+        let columnQuantitative;
+        let distinctValuesCallback;
+        if (args.length <= 2) {
+            const column = args[0];
+            columnName = column.name;
+            columnType = column.type;
+            columnQuantitative = column.quantitative;
+            distinctValuesCallback = args[1];
+        }
+        else {
+            columnName = args[0];
+            columnType = args[1];
+            columnQuantitative = args[2];
+            distinctValuesCallback = args[3];
+        }
         const distinctMap = {};
         const stats = {
             distinctValueCount: null,
@@ -1674,7 +1691,7 @@
         let sum = 0;
         for (let i = 0; i < data.length; i++) {
             const row = data[i];
-            const value = row[column.name];
+            const value = columnName == null ? row : row[columnName];
             const num = +value;
             distinctMap[value] = true;
             if (!isNaN(num)) {
@@ -1686,33 +1703,40 @@
                 }
                 sum += num;
             }
-            if (column.type === 'string' && !stats.hasColorData && isColor(value)) {
+            if (columnType === 'string' && !stats.hasColorData && isColor(value)) {
                 stats.hasColorData = true;
             }
         }
-        if (column.quantitative) {
+        if (columnQuantitative) {
             stats.mean = data.length > 0 && (sum / data.length);
-            stats.hasNegative = detectNegative(column, data);
-            if (column.type === 'integer') {
-                stats.isSequential = detectSequentialColumn(column, data);
+            stats.hasNegative = detectNegative(columnName, data);
+            if (columnType === 'integer') {
+                stats.isSequential = detectSequentialColumn(columnName, data);
             }
         }
-        stats.distinctValueCount = Object.keys(distinctMap).length;
+        const distinctValues = Object.keys(distinctMap);
+        if (distinctValuesCallback) {
+            distinctValues.sort();
+            distinctValuesCallback(distinctValues);
+        }
+        stats.distinctValueCount = distinctValues.length;
         return stats;
     }
-    function detectNegative(column, data) {
+    function detectNegative(columnName, data) {
         for (let i = 1; i < data.length; i++) {
-            if (data[i][column.name] < 0)
+            const value = columnName == null ? data[i] : data[i][columnName];
+            if (value < 0)
                 return true;
         }
         return false;
     }
-    function detectSequentialColumn(column, data) {
+    function detectSequentialColumn(columnName, data) {
         if (data.length < 2)
             return false;
-        const colname = column.name;
         for (let i = 1; i < data.length; i++) {
-            if (data[i][colname] !== data[i - 1][colname] + 1)
+            const curr = columnName == null ? data[i] : data[i][columnName];
+            const prev = columnName == null ? data[i - 1] : data[i - 1][columnName];
+            if (curr !== prev + 1)
                 return false;
         }
         return true;
