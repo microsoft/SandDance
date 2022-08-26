@@ -476,7 +476,7 @@ export class Viewer {
         if (!searchExpression.compare(insight.filter, this.insight.filter)) {
             const transitionDurations = setup?.transitionDurations || VegaMorphCharts.defaults.defaultPresenterConfig.transitionDurations;
             const renderTime = transitionDurations.position + transitionDurations.stagger;
-            const allowAsyncRenderTime = renderTime + 200;
+            const allowAsyncRenderTime = renderTime + this.options.filterRenderingTimerPadding;
             if (insight.filter) {
                 //refining
                 result = await this._render(insightSetup, data, renderOptions, true);
@@ -923,8 +923,8 @@ export class Viewer {
         let position: [number, number, number] = [0, 0, 0];
         let rotation: [number, number, number, number] = [0, 0, 0, 0];
         if (transitionFinal) {
-            position = Array.from(this.presenter?.morphchartsref?.vCameraPositionTo as any) as [number, number, number];
-            rotation = Array.from(this.presenter?.morphchartsref?.qCameraRotationTo as any) as [number, number, number, number];
+            position = Array.from(this.presenter?.morphchartsref?.cameraTransitioner.vCameraPositionTo as any) as [number, number, number];
+            rotation = Array.from(this.presenter?.morphchartsref?.cameraTransitioner.qCameraRotationTo as any) as [number, number, number, number];
         } else {
             const camera = this.presenter?.morphchartsref?.core?.camera;
             if (camera) {

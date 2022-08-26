@@ -16,6 +16,7 @@ import {
     MorphChartsRenderResult,
     MorphChartsColors,
     MorphChartsOptions,
+    MorphChartsRef,
 } from './interfaces';
 import { LegendView } from './legend';
 import { MarkStagerOptions } from './marks/interfaces';
@@ -24,7 +25,7 @@ import { patchCubeArray } from './patchedCubeArray';
 import { sceneToStage } from './stagers';
 import { View } from '@msrvida/chart-types';
 import { getActiveElementInfo, mount, setActiveElement } from 'tsx-create-element';
-import { colorConfig, init, morphChartsRender, MorphChartsRef } from './morphcharts';
+import { colorConfig, init, morphChartsRender } from './morphcharts';
 
 interface IBounds {
     view: View;

@@ -66,7 +66,7 @@ export const defaultViewerOptions: ViewerOptions = {
     onError: (errors) => {
         //console.log(`UnitVisViewer errors: ${errors.join('\n')}`);
     },
-
+    filterRenderingTimerPadding: 200,
     selectionPolygonZ: -1,
     tickSize: 10,
 };

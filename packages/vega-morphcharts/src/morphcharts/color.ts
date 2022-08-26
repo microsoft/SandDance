@@ -3,7 +3,8 @@
 * Licensed under the MIT License.
 */
 
-import { RGBAColor } from '../interfaces';
+import { colorFromString } from '../color';
+import { MorphChartsColor, MorphChartsColors, MorphChartsRef, RGBAColor } from '../interfaces';
 
 export class ColorMap {
     private colorMap: { [key: string]: { index: number, rgbaColor: RGBAColor } };
@@ -38,4 +39,27 @@ export class ColorMap {
             maxColor: this.colorArray.length - 1,
         };
     }
+}
+
+function convert(newColor: string): MorphChartsColor {
+    const c = colorFromString(newColor).slice(0, 3);
+    return c.map(v => v / 255) as MorphChartsColor;
+}
+
+export function colorConfig(ref: MorphChartsRef, colors: MorphChartsColors) {
+    if (!colors) return;
+    const { config } = ref.core;
+    config.activeColor = convert(colors.activeItemColor);
+    config.backgroundColor = convert(colors.backgroundColor);
+    config.textColor = convert(colors.textColor);
+    config.textBorderColor = convert(colors.textBorderColor);
+    config.axesTextColor = convert(colors.axesTextLabelColor);
+    config.axesGridBackgroundColor = convert(colors.axesGridBackgroundColor);
+    config.axesGridHighlightColor = convert(colors.axesGridHighlightColor);
+    config.axesGridMinorColor = convert(colors.axesGridMinorColor);
+    config.axesGridMajorColor = convert(colors.axesGridMajorColor);
+    config.axesGridZeroColor = convert(colors.axesGridZeroColor);
+
+    //TODO fix this - hack to reset the background color
+    ref.core.renderer['_theme'] = null;
 }

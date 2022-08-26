@@ -113,11 +113,12 @@ function _SnapshotEditor(_props: Props) {
                                     insight: this.state.insight,
                                     image: this.state.image,
                                     bgColor: this.state.bgColor,
-                                    setup: {
-                                        camera: explorer.viewer.getCamera(),
+                                    setup: SandDance.VegaMorphCharts.util.clone({
+                                        camera: explorer.state.holdCamera ? 'hold' : explorer.viewer.getCamera(),
                                         renderer: explorer.state.renderer,
                                         transition: getTransition(explorer.state),
-                                    },
+                                        transitionDurations: explorer.state.transitionDurations,
+                                    }),
                                 };
                                 this.props.modifySnapShot && this.props.modifySnapShot(snapshot);
                                 this.props.onWriteSnapshot(snapshot, this.state.editIndex);

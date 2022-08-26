@@ -60,11 +60,12 @@ function _SandDanceReact(_props: Props) {
                 }
             }
             if (!didLayout && props.setup) {
+                const { camera } = props.setup;
                 //compare setup, move camera
-                if (props.setup.camera) {
-                    if (!deepCompare(this.viewer.getCamera(), props.setup.camera)) {
+                if (camera && camera !== 'hold') {
+                    if (!deepCompare(this.viewer.getCamera(), camera)) {
                         //camera is different
-                        this.viewer.setCamera(props.setup.camera);
+                        this.viewer.setCamera(camera);
                     }
                 }
                 if (props.setup.renderer) {
