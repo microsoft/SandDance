@@ -179,7 +179,9 @@ const insight = {
     chart: "scatterplot",
     view: "3d"
 };
-viewer.render(insight, data);
+viewer.render({
+    insight
+}, data);
 
 },{"vega":"2BRQe","@msrvida/sanddance":"4LXyM"}],"2BRQe":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -47047,7 +47049,23 @@ function checkIsColorData(data, column) {
     }
     column.isColorData = true;
 }
-function getStats(data, column) {
+function getStats(data, ...args) {
+    let columnName;
+    let columnType;
+    let columnQuantitative;
+    let distinctValuesCallback;
+    if (args.length <= 2) {
+        const column = args[0];
+        columnName = column.name;
+        columnType = column.type;
+        columnQuantitative = column.quantitative;
+        distinctValuesCallback = args[1];
+    } else {
+        columnName = args[0];
+        columnType = args[1];
+        columnQuantitative = args[2];
+        distinctValuesCallback = args[3];
+    }
     const distinctMap = {};
     const stats = {
         distinctValueCount: null,
@@ -47058,7 +47076,7 @@ function getStats(data, column) {
     let sum = 0;
     for(let i = 0; i < data.length; i++){
         const row = data[i];
-        const value = row[column.name];
+        const value = columnName == null ? row : row[columnName];
         const num = +value;
         distinctMap[value] = true;
         if (!isNaN(num)) {
@@ -47066,27 +47084,34 @@ function getStats(data, column) {
             if (stats.min === null || num < stats.min) stats.min = num;
             sum += num;
         }
-        if (column.type === "string" && !stats.hasColorData && isColor(value)) stats.hasColorData = true;
+        if (columnType === "string" && !stats.hasColorData && isColor(value)) stats.hasColorData = true;
     }
-    if (column.quantitative) {
+    if (columnQuantitative) {
         stats.mean = data.length > 0 && sum / data.length;
-        stats.hasNegative = detectNegative(column, data);
-        if (column.type === "integer") stats.isSequential = detectSequentialColumn(column, data);
+        stats.hasNegative = detectNegative(columnName, data);
+        if (columnType === "integer") stats.isSequential = detectSequentialColumn(columnName, data);
     }
-    stats.distinctValueCount = Object.keys(distinctMap).length;
+    const distinctValues = Object.keys(distinctMap);
+    if (distinctValuesCallback) {
+        distinctValues.sort();
+        distinctValuesCallback(distinctValues);
+    }
+    stats.distinctValueCount = distinctValues.length;
     return stats;
 }
-function detectNegative(column, data) {
+function detectNegative(columnName, data) {
     for(let i = 1; i < data.length; i++){
-        if (data[i][column.name] < 0) return true;
+        const value = columnName == null ? data[i] : data[i][columnName];
+        if (value < 0) return true;
     }
     return false;
 }
-function detectSequentialColumn(column, data) {
+function detectSequentialColumn(columnName, data) {
     if (data.length < 2) return false;
-    const colname = column.name;
     for(let i = 1; i < data.length; i++){
-        if (data[i][colname] !== data[i - 1][colname] + 1) return false;
+        const curr = columnName == null ? data[i] : data[i][columnName];
+        const prev = columnName == null ? data[i - 1] : data[i - 1][columnName];
+        if (curr !== prev + 1) return false;
     }
     return true;
 }
@@ -51621,7 +51646,7 @@ parcelHelpers.export(exports, "dualColorSchemeColors", ()=>dualColorSchemeColors
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
 */ var _vegaMorphcharts = require("@msrvida/vega-morphcharts");
-const { defaultPresenterConfig , defaultPresenterStyle  } = _vegaMorphcharts.defaults;
+const { defaultPresenterStyle  } = _vegaMorphcharts.defaults;
 const defaultViewerOptions = {
     colors: {
         activeCube: "purple",
@@ -51685,9 +51710,7 @@ const defaultViewerOptions = {
     onError: (errors)=>{
     //console.log(`UnitVisViewer errors: ${errors.join('\n')}`);
     },
-    transitionDurations: Object.assign(Object.assign({}, defaultPresenterConfig.transitionDurations), {
-        scope: 600
-    }),
+    filterRenderingTimerPadding: 200,
     selectionPolygonZ: -1,
     tickSize: 10
 };
@@ -82193,34 +82216,7 @@ var _defineJsDefault = parcelHelpers.interopDefault(_defineJs);
 function Color() {}
 var darker = 0.7;
 var brighter = 1 / darker;
-var reI = "\\s*([+-]?\\d+)\\s*", reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*", reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*", reHex = /^#([0-9a-f]{3,8})$/, reRgbInteger = new RegExp("^rgb\\(" + [
-    reI,
-    reI,
-    reI
-] + "\\)$"), reRgbPercent = new RegExp("^rgb\\(" + [
-    reP,
-    reP,
-    reP
-] + "\\)$"), reRgbaInteger = new RegExp("^rgba\\(" + [
-    reI,
-    reI,
-    reI,
-    reN
-] + "\\)$"), reRgbaPercent = new RegExp("^rgba\\(" + [
-    reP,
-    reP,
-    reP,
-    reN
-] + "\\)$"), reHslPercent = new RegExp("^hsl\\(" + [
-    reN,
-    reP,
-    reP
-] + "\\)$"), reHslaPercent = new RegExp("^hsla\\(" + [
-    reN,
-    reP,
-    reP,
-    reN
-] + "\\)$");
+var reI = "\\s*([+-]?\\d+)\\s*", reN = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*", reP = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*", reHex = /^#([0-9a-f]{3,8})$/, reRgbInteger = new RegExp(`^rgb\\(${reI},${reI},${reI}\\)$`), reRgbPercent = new RegExp(`^rgb\\(${reP},${reP},${reP}\\)$`), reRgbaInteger = new RegExp(`^rgba\\(${reI},${reI},${reI},${reN}\\)$`), reRgbaPercent = new RegExp(`^rgba\\(${reP},${reP},${reP},${reN}\\)$`), reHslPercent = new RegExp(`^hsl\\(${reN},${reP},${reP}\\)$`), reHslaPercent = new RegExp(`^hsla\\(${reN},${reP},${reP},${reN}\\)$`);
 var named = {
     aliceblue: 0xf0f8ff,
     antiquewhite: 0xfaebd7,
@@ -82372,20 +82368,24 @@ var named = {
     yellowgreen: 0x9acd32
 };
 (0, _defineJsDefault.default)(Color, color, {
-    copy: function(channels) {
+    copy (channels) {
         return Object.assign(new this.constructor, this, channels);
     },
-    displayable: function() {
+    displayable () {
         return this.rgb().displayable();
     },
     hex: color_formatHex,
     formatHex: color_formatHex,
+    formatHex8: color_formatHex8,
     formatHsl: color_formatHsl,
     formatRgb: color_formatRgb,
     toString: color_formatRgb
 });
 function color_formatHex() {
     return this.rgb().formatHex();
+}
+function color_formatHex8() {
+    return this.rgb().formatHex8();
 }
 function color_formatHsl() {
     return hslConvert(this).formatHsl();
@@ -82434,35 +82434,47 @@ function Rgb(r, g, b, opacity) {
     this.opacity = +opacity;
 }
 (0, _defineJsDefault.default)(Rgb, rgb, (0, _defineJs.extend)(Color, {
-    brighter: function(k) {
+    brighter (k) {
         k = k == null ? brighter : Math.pow(brighter, k);
         return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
     },
-    darker: function(k) {
+    darker (k) {
         k = k == null ? darker : Math.pow(darker, k);
         return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
     },
-    rgb: function() {
+    rgb () {
         return this;
     },
-    displayable: function() {
+    clamp () {
+        return new Rgb(clampi(this.r), clampi(this.g), clampi(this.b), clampa(this.opacity));
+    },
+    displayable () {
         return -0.5 <= this.r && this.r < 255.5 && -0.5 <= this.g && this.g < 255.5 && -0.5 <= this.b && this.b < 255.5 && 0 <= this.opacity && this.opacity <= 1;
     },
     hex: rgb_formatHex,
     formatHex: rgb_formatHex,
+    formatHex8: rgb_formatHex8,
     formatRgb: rgb_formatRgb,
     toString: rgb_formatRgb
 }));
 function rgb_formatHex() {
-    return "#" + hex(this.r) + hex(this.g) + hex(this.b);
+    return `#${hex(this.r)}${hex(this.g)}${hex(this.b)}`;
+}
+function rgb_formatHex8() {
+    return `#${hex(this.r)}${hex(this.g)}${hex(this.b)}${hex((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
 }
 function rgb_formatRgb() {
-    var a = this.opacity;
-    a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-    return (a === 1 ? "rgb(" : "rgba(") + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.b) || 0)) + (a === 1 ? ")" : ", " + a + ")");
+    const a = clampa(this.opacity);
+    return `${a === 1 ? "rgb(" : "rgba("}${clampi(this.r)}, ${clampi(this.g)}, ${clampi(this.b)}${a === 1 ? ")" : `, ${a})`}`;
+}
+function clampa(opacity) {
+    return isNaN(opacity) ? 1 : Math.max(0, Math.min(1, opacity));
+}
+function clampi(value) {
+    return Math.max(0, Math.min(255, Math.round(value) || 0));
 }
 function hex(value) {
-    value = Math.max(0, Math.min(255, Math.round(value) || 0));
+    value = clampi(value);
     return (value < 16 ? "0" : "") + value.toString(16);
 }
 function hsla(h, s, l, a) {
@@ -82497,27 +82509,36 @@ function Hsl(h, s, l, opacity) {
     this.opacity = +opacity;
 }
 (0, _defineJsDefault.default)(Hsl, hsl, (0, _defineJs.extend)(Color, {
-    brighter: function(k) {
+    brighter (k) {
         k = k == null ? brighter : Math.pow(brighter, k);
         return new Hsl(this.h, this.s, this.l * k, this.opacity);
     },
-    darker: function(k) {
+    darker (k) {
         k = k == null ? darker : Math.pow(darker, k);
         return new Hsl(this.h, this.s, this.l * k, this.opacity);
     },
-    rgb: function() {
+    rgb () {
         var h = this.h % 360 + (this.h < 0) * 360, s = isNaN(h) || isNaN(this.s) ? 0 : this.s, l = this.l, m2 = l + (l < 0.5 ? l : 1 - l) * s, m1 = 2 * l - m2;
         return new Rgb(hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), hsl2rgb(h, m1, m2), hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
     },
-    displayable: function() {
+    clamp () {
+        return new Hsl(clamph(this.h), clampt(this.s), clampt(this.l), clampa(this.opacity));
+    },
+    displayable () {
         return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && 0 <= this.l && this.l <= 1 && 0 <= this.opacity && this.opacity <= 1;
     },
-    formatHsl: function() {
-        var a = this.opacity;
-        a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-        return (a === 1 ? "hsl(" : "hsla(") + (this.h || 0) + ", " + (this.s || 0) * 100 + "%, " + (this.l || 0) * 100 + "%" + (a === 1 ? ")" : ", " + a + ")");
+    formatHsl () {
+        const a = clampa(this.opacity);
+        return `${a === 1 ? "hsl(" : "hsla("}${clamph(this.h)}, ${clampt(this.s) * 100}%, ${clampt(this.l) * 100}%${a === 1 ? ")" : `, ${a})`}`;
     }
 }));
+function clamph(value) {
+    value = (value || 0) % 360;
+    return value < 0 ? value + 360 : value;
+}
+function clampt(value) {
+    return Math.max(0, Math.min(1, value || 0));
+}
 /* From FvD 13.37, CSS Color Module Level 3 */ function hsl2rgb(h, m1, m2) {
     return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
 }
@@ -82576,12 +82597,11 @@ const defaultPresenterConfig = {
     onCubeClick: (e, cube)=>{},
     onCubeHover: (e, cube)=>{},
     transitionDurations: {
-        color: 100,
         position: 600,
         stagger: 600,
         view: 600
     },
-    initialMorphChartsRendererOptions: {
+    renderer: {
         advanced: false,
         advancedOptions: {},
         basicOptions: {
@@ -82803,7 +82823,7 @@ class Presenter {
                 onCanvasClick: config === null || config === void 0 ? void 0 : config.onLayerClick,
                 onLasso: config === null || config === void 0 ? void 0 : config.onLasso
             };
-            this.morphchartsref = (0, _morphcharts.init)(this._morphChartsOptions, c.initialMorphChartsRendererOptions || (0, _defaults.defaultPresenterConfig).initialMorphChartsRendererOptions);
+            this.morphchartsref = (0, _morphcharts.init)(this._morphChartsOptions, c.renderer || (0, _defaults.defaultPresenterConfig).renderer);
         }
         let cubeCount = Math.max(this._last.cubeCount, stage.cubeData.length);
         if (options.maxOrdinal) {
@@ -83386,151 +83406,73 @@ var GroupType;
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"gGHdI":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "init", ()=>init);
-parcelHelpers.export(exports, "morphChartsRender", ()=>morphChartsRender);
-parcelHelpers.export(exports, "colorConfig", ()=>colorConfig);
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
-*/ var _morphcharts = require("morphcharts");
-var _color = require("../color");
-var _axes = require("./axes");
+*/ var _render = require("./render");
+parcelHelpers.exportAll(_render, exports);
+var _color = require("./color");
+parcelHelpers.exportAll(_color, exports);
+var _init = require("./init");
+parcelHelpers.exportAll(_init, exports);
+
+},{"./render":"fjsYU","./color":"4Hopn","./init":"9V139","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fjsYU":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "morphChartsRender", ()=>morphChartsRender);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _axes = require("./axes");
 var _bounds = require("./bounds");
 var _cubes = require("./cubes");
 var _lines = require("./lines");
-var _renderer = require("./renderer");
 var _text = require("./text");
-var _glMatrix = require("gl-matrix");
-var _easing = require("../easing");
 var _image = require("./image");
 var _defaults = require("../defaults");
-var _canvas = require("./canvas");
-function init(options, mcRendererOptions) {
-    const { container  } = options;
-    const core = new (0, _morphcharts.Core)({
-        container
-    });
-    (0, _renderer.getRenderer)(mcRendererOptions, core);
-    (0, _canvas.listenCanvasEvents)(core, options);
-    core.config.pickSelectDelay = 50;
-    const ref = {
-        supportedRenders: {
-            advanced: (0, _renderer.rendererEnabled)(true),
-            basic: (0, _renderer.rendererEnabled)(false)
-        },
-        reset: ()=>{
-            core.reset(true);
-            (0, _glMatrix.quat).slerp(ref.qModelCurrent, ref.qModelTo, ref.qModelTo, 0);
-            core.setModelRotation(ref.qModelCurrent, true);
-            core.camera.setOrbit(ref.qCameraRotationTo, false);
-        //core.camera.setPosition(ref.vCameraPositionTo, false);
-        },
-        transitionModel: false,
-        qModelFrom: null,
-        qModelTo: null,
-        qModelCurrent: (0, _glMatrix.quat).create(),
-        qCameraRotationFrom: (0, _glMatrix.quat).create(),
-        qCameraRotationTo: null,
-        qCameraRotationCurrent: (0, _glMatrix.quat).create(),
-        vCameraPositionFrom: (0, _glMatrix.vec3).create(),
-        vCameraPositionTo: null,
-        vCameraPositionCurrent: (0, _glMatrix.vec3).create(),
-        core,
-        cameraTime: 0,
-        isCameraMovement: false,
-        isTransitioning: false,
-        transitionTime: 0,
-        setMorphChartsRendererOptions (mcRendererOptions) {
-            if ((0, _renderer.shouldChangeRenderer)(ref.lastMorphChartsRendererOptions, mcRendererOptions)) {
-                (0, _renderer.getRenderer)(mcRendererOptions, core);
-                (0, _canvas.listenCanvasEvents)(core, options);
-            } else if (mcRendererOptions.advanced) //same renderer, poke the config
-            (0, _renderer.setRendererOptions)(core.renderer, mcRendererOptions);
-            ref.lastMorphChartsRendererOptions = mcRendererOptions;
-        },
-        lastMorphChartsRendererOptions: mcRendererOptions
-    };
-    const cam = (t)=>{
-        (0, _glMatrix.quat).slerp(ref.qCameraRotationCurrent, ref.qCameraRotationFrom, ref.qCameraRotationTo, t);
-        (0, _glMatrix.vec3).lerp(ref.vCameraPositionCurrent, ref.vCameraPositionFrom, ref.vCameraPositionTo, t);
-        core.camera.setOrbit(ref.qCameraRotationCurrent, false);
-        core.camera.setPosition(ref.vCameraPositionCurrent, false);
-        // disable picking during transitions, as the performance degradation could reduce the framerate
-        core.inputManager.isPickingEnabled = false;
-    };
-    core.updateCallback = (elapsedTime)=>{
-        if (ref.isTransitioning) {
-            ref.transitionTime += elapsedTime;
-            const totalTime = core.config.transitionDuration + core.config.transitionStaggering;
-            if (ref.transitionTime >= totalTime) {
-                ref.isTransitioning = false;
-                ref.transitionTime = totalTime;
-            }
-            const t = (0, _easing.easing)(ref.transitionTime / totalTime);
-            core.renderer.transitionTime = t;
-            if (ref.transitionModel) {
-                (0, _glMatrix.quat).slerp(ref.qModelCurrent, ref.qModelFrom, ref.qModelTo, t);
-                core.setModelRotation(ref.qModelCurrent, false);
-            }
-            cam(t);
-        } else if (ref.isCameraMovement) {
-            ref.cameraTime += elapsedTime;
-            const totalTime1 = core.config.transitionDuration;
-            if (ref.cameraTime >= totalTime1) {
-                ref.isCameraMovement = false;
-                ref.cameraTime = totalTime1;
-            }
-            const t1 = (0, _easing.easing)(ref.cameraTime / totalTime1);
-            cam(t1);
-        } else core.inputManager.isPickingEnabled = true;
-    };
-    return ref;
-}
-const qModel2d = (0, _glMatrix.quat).create();
-const qModel3d = (0, _morphcharts.Constants).QUAT_ROTATEX_MINUS_90;
-const qCameraRotation2d = (0, _glMatrix.quat).create();
-const qCameraRotation3d = (0, _glMatrix.quat).create();
-const qAngle = (0, _glMatrix.quat).create();
-const vPosition = (0, _glMatrix.vec3).create();
-// Altitude (pitch around local right axis)
-(0, _glMatrix.quat).setAxisAngle(qCameraRotation3d, (0, _morphcharts.Constants).VECTOR3_UNITX, (0, _morphcharts.Helpers).AngleHelper.degreesToRadians(30));
-// Azimuth (yaw around global up axis)
-(0, _glMatrix.quat).setAxisAngle(qAngle, (0, _morphcharts.Constants).VECTOR3_UNITY, (0, _morphcharts.Helpers).AngleHelper.degreesToRadians(-25));
-(0, _glMatrix.quat).multiply(qCameraRotation3d, qCameraRotation3d, qAngle);
+var _color = require("./color");
+var _defaults1 = require("./defaults");
 function morphChartsRender(ref, prevStage, stage, height, width, preStage, colors, config) {
-    const cameraTo = config.getCameraTo && config.getCameraTo();
+    const { qCameraRotation2d , qCameraRotation3d , qModel2d , qModel3d , vPosition  } = (0, _defaults1.cameraDefaults);
+    const { core , cameraTransitioner , modelTransitioner , positionTransitioner  } = ref;
+    let cameraTo;
+    let holdCamera;
+    if (config.camera === "hold") holdCamera = true;
+    else cameraTo = config.camera;
     if (prevStage && prevStage.view !== stage.view) {
-        ref.transitionModel = true;
+        modelTransitioner.shouldTransition = !holdCamera;
         if (stage.view === "2d") {
-            ref.qModelFrom = qModel3d;
-            ref.qModelTo = qModel2d;
-            ref.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
-            ref.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+            modelTransitioner.qModelFrom = qModel3d;
+            modelTransitioner.qModelTo = qModel2d;
+            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
+            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
         } else {
-            ref.qModelFrom = qModel2d;
-            ref.qModelTo = qModel3d;
-            ref.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
-            ref.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+            modelTransitioner.qModelFrom = qModel2d;
+            modelTransitioner.qModelTo = qModel3d;
+            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
+            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
         }
     } else {
+        modelTransitioner.shouldTransition = false;
         if (stage.view === "2d") {
-            ref.qModelTo = qModel2d;
-            ref.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
-            ref.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+            modelTransitioner.qModelTo = qModel2d;
+            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
+            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
         } else {
-            ref.qModelTo = qModel3d;
-            ref.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
-            ref.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+            modelTransitioner.qModelTo = qModel3d;
+            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
+            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
         }
-        ref.transitionModel = false;
     }
-    ref.core.camera.getOrbit(ref.qCameraRotationFrom);
-    ref.core.camera.getPosition(ref.vCameraPositionFrom);
+    core.camera.getOrbit(cameraTransitioner.qCameraRotationFrom);
+    core.camera.getPosition(cameraTransitioner.vCameraPositionFrom);
     if (!prevStage) {
-        ref.core.setModelRotation(ref.qModelTo, false);
-        ref.core.camera.setOrbit(ref.qCameraRotationTo, false);
-        ref.core.camera.setPosition(ref.vCameraPositionTo, false);
-    }
+        core.setModelRotation(modelTransitioner.qModelTo, false);
+        core.camera.setOrbit(cameraTransitioner.qCameraRotationTo, false);
+        core.camera.setPosition(cameraTransitioner.vCameraPositionTo, false);
+    } else if (!holdCamera) cameraTransitioner.begin();
+    positionTransitioner.begin();
+    if (modelTransitioner.shouldTransition) modelTransitioner.begin();
     const props = {
         ref,
         stage,
@@ -83548,19 +83490,12 @@ function morphChartsRender(ref, prevStage, stage, height, width, preStage, color
     });
     props.bounds = contentBounds;
     const axesLayer = (0, _axes.createAxesLayer)(props);
-    const { core  } = ref;
     core.config.transitionStaggering = config.transitionDurations.stagger;
     core.config.transitionDuration = config.transitionDurations.position;
     let bounds;
     if (axesLayer && axesLayer.bounds) bounds = axesLayer.bounds;
     else bounds = contentBounds;
-    const colorMapper = {
-        getCubeUnitColorMap: ()=>cubeLayer.unitColorMap,
-        setCubeUnitColorMap: (unitColorMap)=>{
-            cubeLayer.unitColorMap = unitColorMap;
-        }
-    };
-    if (preStage) preStage(stage, colorMapper);
+    if (preStage) preStage(stage, cubeLayer);
     //add images
     core.renderer.images = [];
     if (backgroundImages) {
@@ -83588,65 +83523,46 @@ function morphChartsRender(ref, prevStage, stage, height, width, preStage, color
         });
     }
     //Now call update on each layout
-    layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds);
-    ref.isTransitioning = true;
-    ref.transitionTime = 0;
+    layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds, ref.layerStagger);
+    ref.lastPresenterConfig = config;
     core.renderer.transitionTime = 0; // Set renderer transition time for this render pass to prevent rendering target buffer for single frame
-    colorConfig(ref, colors);
-    return Object.assign(Object.assign({}, colorMapper), {
-        update: (layerSelection)=>layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds),
+    (0, _color.colorConfig)(ref, colors);
+    return {
+        bounds,
+        getCubeLayer: ()=>cubeLayer,
+        update: (layerSelection)=>layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds, ref.layerStagger),
         activate: (id)=>core.renderer.transitionBuffers[0].activeId = id,
         moveCamera: (position, rotation)=>{
-            if (!ref.isTransitioning) {
-                ref.core.camera.getOrbit(ref.qCameraRotationFrom);
-                ref.core.camera.getPosition(ref.vCameraPositionFrom);
-                ref.isCameraMovement = true;
-                ref.cameraTime = 0;
-                ref.qCameraRotationTo = rotation;
-                ref.vCameraPositionTo = position;
+            if (!(positionTransitioner.isTransitioning || modelTransitioner.isTransitioning)) {
+                core.camera.getOrbit(cameraTransitioner.qCameraRotationFrom);
+                core.camera.getPosition(cameraTransitioner.vCameraPositionFrom);
+                cameraTransitioner.move(position, rotation);
             }
         }
-    });
+    };
 }
-function layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds) {
-    const layers = [
+function layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds, layerStagger) {
+    const layerItems = [
         {
             layer: cubeLayer,
-            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.cubes
+            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.cubes,
+            stagger: layerStagger === null || layerStagger === void 0 ? void 0 : layerStagger.cubes
         },
         {
             layer: lineLayer,
-            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.lines
+            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.lines,
+            stagger: layerStagger === null || layerStagger === void 0 ? void 0 : layerStagger.lines
         },
         {
             layer: textLayer,
-            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.texts
+            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.texts,
+            stagger: layerStagger === null || layerStagger === void 0 ? void 0 : layerStagger.texts
         }, 
     ];
-    layers.forEach((x)=>{
+    layerItems.forEach((layerItem)=>{
         var _a;
-        return (_a = x.layer) === null || _a === void 0 ? void 0 : _a.update(bounds, x.selection);
+        return (_a = layerItem.layer) === null || _a === void 0 ? void 0 : _a.update(bounds, layerItem.selection, layerItem.stagger);
     });
-}
-function convert(newColor) {
-    const c = (0, _color.colorFromString)(newColor).slice(0, 3);
-    return c.map((v)=>v / 255);
-}
-function colorConfig(ref, colors) {
-    if (!colors) return;
-    const { config  } = ref.core;
-    config.activeColor = convert(colors.activeItemColor);
-    config.backgroundColor = convert(colors.backgroundColor);
-    config.textColor = convert(colors.textColor);
-    config.textBorderColor = convert(colors.textBorderColor);
-    config.axesTextColor = convert(colors.axesTextLabelColor);
-    config.axesGridBackgroundColor = convert(colors.axesGridBackgroundColor);
-    config.axesGridHighlightColor = convert(colors.axesGridHighlightColor);
-    config.axesGridMinorColor = convert(colors.axesGridMinorColor);
-    config.axesGridMajorColor = convert(colors.axesGridMajorColor);
-    config.axesGridZeroColor = convert(colors.axesGridZeroColor);
-    //TODO fix this - hack to reset the background color
-    ref.core.renderer["_theme"] = null;
 }
 function convertBounds(bounds) {
     if (!bounds) return;
@@ -83660,7 +83576,7 @@ function convertBounds(bounds) {
     };
 }
 
-},{"morphcharts":"dzm75","../color":"cXyMC","./axes":"cqVLQ","./bounds":"ipKbZ","./cubes":"8Swgd","./lines":"1NssX","./renderer":"aQlAd","./text":"gXSar","gl-matrix":"3mrln","../easing":"aJG37","./image":"82mLv","../defaults":"rYstm","./canvas":"keiIA","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"cqVLQ":[function(require,module,exports) {
+},{"./axes":"cqVLQ","./bounds":"ipKbZ","./cubes":"8Swgd","./lines":"1NssX","./text":"gXSar","./image":"82mLv","../defaults":"rYstm","./color":"4Hopn","./defaults":"lUHd0","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"cqVLQ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "createAxesLayer", ()=>createAxesLayer);
@@ -84059,13 +83975,16 @@ const createCubeLayer = (props)=>{
         positionsZ
     });
     const layer = {
-        update: (newBounds, selected)=>{
+        positionsX,
+        positionsY,
+        positionsZ,
+        update: (newBounds, selected, stagger)=>{
             const { colors , maxColor , minColor , palette  } = layer.unitColorMap;
             // reference off of core.renderer to get the actual buffer
             const currCubeTransitionBuffer = core.renderer.transitionBuffers.find((t)=>t.key === key);
             currCubeTransitionBuffer.currentBuffer.unitType = (0, _morphcharts.UnitType).block;
             currCubeTransitionBuffer.currentPalette.colors = palette;
-            scatter.update(currCubeTransitionBuffer.currentBuffer, ids, Object.assign({
+            let options = Object.assign({
                 selected,
                 colors,
                 minColor,
@@ -84073,7 +83992,16 @@ const createCubeLayer = (props)=>{
                 sizesX,
                 sizesY,
                 sizesZ
-            }, newBounds));
+            }, newBounds);
+            if (stagger === null || stagger === void 0 ? void 0 : stagger.staggerOrders) {
+                const { maxStaggerOrder , minStaggerOrder , staggerOrders  } = stagger;
+                options = Object.assign(Object.assign({}, options), {
+                    maxStaggerOrder,
+                    minStaggerOrder,
+                    staggerOrders
+                });
+            }
+            scatter.update(currCubeTransitionBuffer.currentBuffer, ids, options);
         },
         bounds,
         unitColorMap: {
@@ -84140,10 +84068,12 @@ function convert(stage) {
 },{"morphcharts":"dzm75","./bounds":"ipKbZ","./color":"4Hopn","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"4Hopn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "ColorMap", ()=>ColorMap);
+parcelHelpers.export(exports, "colorConfig", ()=>colorConfig);
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
-*/ parcelHelpers.export(exports, "ColorMap", ()=>ColorMap);
+*/ var _color = require("../color");
 class ColorMap {
     constructor(quant = 5){
         this.quant = quant;
@@ -84173,8 +84103,28 @@ class ColorMap {
         };
     }
 }
+function convert(newColor) {
+    const c = (0, _color.colorFromString)(newColor).slice(0, 3);
+    return c.map((v)=>v / 255);
+}
+function colorConfig(ref, colors) {
+    if (!colors) return;
+    const { config  } = ref.core;
+    config.activeColor = convert(colors.activeItemColor);
+    config.backgroundColor = convert(colors.backgroundColor);
+    config.textColor = convert(colors.textColor);
+    config.textBorderColor = convert(colors.textBorderColor);
+    config.axesTextColor = convert(colors.axesTextLabelColor);
+    config.axesGridBackgroundColor = convert(colors.axesGridBackgroundColor);
+    config.axesGridHighlightColor = convert(colors.axesGridHighlightColor);
+    config.axesGridMinorColor = convert(colors.axesGridMinorColor);
+    config.axesGridMajorColor = convert(colors.axesGridMajorColor);
+    config.axesGridZeroColor = convert(colors.axesGridZeroColor);
+    //TODO fix this - hack to reset the background color
+    ref.core.renderer["_theme"] = null;
+}
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1NssX":[function(require,module,exports) {
+},{"../color":"cXyMC","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1NssX":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "createLineLayer", ()=>createLineLayer);
@@ -84290,40 +84240,7 @@ function convert(stage, height, width) {
     };
 }
 
-},{"morphcharts":"dzm75","./bounds":"ipKbZ","./color":"4Hopn","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"aQlAd":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "shouldChangeRenderer", ()=>shouldChangeRenderer);
-parcelHelpers.export(exports, "getRenderer", ()=>getRenderer);
-parcelHelpers.export(exports, "setRendererOptions", ()=>setRendererOptions);
-parcelHelpers.export(exports, "rendererEnabled", ()=>rendererEnabled);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _morphcharts = require("morphcharts");
-function shouldChangeRenderer(prev, next) {
-    var _a, _b;
-    if (!prev || !next) return true;
-    if (prev.advanced !== next.advanced) return true;
-    if (!prev.advanced) return ((_a = prev.basicOptions) === null || _a === void 0 ? void 0 : _a.antialias) != ((_b = next.basicOptions) === null || _b === void 0 ? void 0 : _b.antialias);
-}
-function getRenderer(mcRendererOptions, core) {
-    const advanced = mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advanced;
-    const r = advanced ? new (0, _morphcharts.Renderers).Advanced.Main() : new (0, _morphcharts.Renderers).Basic.Main(mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.basicOptions);
-    core.renderer = r;
-    setRendererOptions(r, mcRendererOptions);
-    return r;
-}
-function setRendererOptions(renderer, mcRendererOptions) {
-    const o = mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advancedOptions;
-    if ((mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advanced) && o) for(const key in o)renderer.config[key] = o[key];
-}
-function rendererEnabled(advanced) {
-    const r = advanced ? new (0, _morphcharts.Renderers).Advanced.Main() : new (0, _morphcharts.Renderers).Basic.Main();
-    return r.isSupported;
-}
-
-},{"morphcharts":"dzm75","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"gXSar":[function(require,module,exports) {
+},{"morphcharts":"dzm75","./bounds":"ipKbZ","./color":"4Hopn","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"gXSar":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "createTextLayer", ()=>createTextLayer);
@@ -84410,7 +84327,321 @@ function convert(stage) {
     };
 }
 
-},{"morphcharts":"dzm75","./bounds":"ipKbZ","./color":"4Hopn","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"aJG37":[function(require,module,exports) {
+},{"morphcharts":"dzm75","./bounds":"ipKbZ","./color":"4Hopn","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"82mLv":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "getImageData", ()=>getImageData);
+parcelHelpers.export(exports, "createImageQuad", ()=>createImageQuad);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _morphcharts = require("morphcharts");
+function getImageData(url) {
+    return new Promise((resolve, reject)=>{
+        const imageElement = document.createElement("img");
+        imageElement.onload = ()=>{
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+            const { height , width  } = imageElement;
+            canvas.width = width;
+            canvas.height = height;
+            ctx.drawImage(imageElement, 0, 0);
+            resolve(ctx.getImageData(0, 0, width, height));
+        };
+        imageElement.src = url;
+    });
+}
+function createImageQuad(core, imageData, bounds, position, width, height) {
+    const { maxBoundsX , maxBoundsY , maxBoundsZ , minBoundsX , minBoundsY , minBoundsZ  } = bounds;
+    const imageOptions = {
+        imageData,
+        position,
+        height,
+        width,
+        minBoundsX,
+        maxBoundsX,
+        minBoundsZ,
+        maxBoundsZ,
+        minBoundsY,
+        maxBoundsY
+    };
+    return new (0, _morphcharts.Components).ImageQuad(core, imageOptions);
+}
+
+},{"morphcharts":"dzm75","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"lUHd0":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "cameraDefaults", ()=>cameraDefaults);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _glMatrix = require("gl-matrix");
+var _morphcharts = require("morphcharts");
+function createCameraDefaults() {
+    const qModel2d = (0, _glMatrix.quat).create();
+    const qModel3d = (0, _morphcharts.Constants).QUAT_ROTATEX_MINUS_90;
+    const qCameraRotation2d = (0, _glMatrix.quat).create();
+    const qCameraRotation3d = (0, _glMatrix.quat).create();
+    const qAngle = (0, _glMatrix.quat).create();
+    const vPosition = (0, _glMatrix.vec3).create();
+    // Altitude (pitch around local right axis)
+    (0, _glMatrix.quat).setAxisAngle(qCameraRotation3d, (0, _morphcharts.Constants).VECTOR3_UNITX, (0, _morphcharts.Helpers).AngleHelper.degreesToRadians(30));
+    // Azimuth (yaw around global up axis)
+    (0, _glMatrix.quat).setAxisAngle(qAngle, (0, _morphcharts.Constants).VECTOR3_UNITY, (0, _morphcharts.Helpers).AngleHelper.degreesToRadians(-25));
+    (0, _glMatrix.quat).multiply(qCameraRotation3d, qCameraRotation3d, qAngle);
+    return {
+        qModel2d,
+        qModel3d,
+        qCameraRotation2d,
+        qCameraRotation3d,
+        vPosition
+    };
+}
+const cameraDefaults = createCameraDefaults();
+
+},{"gl-matrix":"3mrln","morphcharts":"dzm75","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"9V139":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "init", ()=>init);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _morphcharts = require("morphcharts");
+var _renderer = require("./renderer");
+var _glMatrix = require("gl-matrix");
+var _canvas = require("./canvas");
+var _transition = require("../transition");
+function init(options, mcRendererOptions) {
+    const { container  } = options;
+    const core = new (0, _morphcharts.Core)({
+        container
+    });
+    (0, _renderer.getRenderer)(mcRendererOptions, core);
+    (0, _canvas.listenCanvasEvents)(core, options);
+    core.config.pickSelectDelay = 50;
+    const cameraTransitioner = new (0, _transition.CameraTransitioner)();
+    const modelTransitioner = new (0, _transition.ModelTransitioner)();
+    const positionTransitioner = new (0, _transition.Transitioner)();
+    const ref = {
+        supportedRenders: {
+            advanced: (0, _renderer.rendererEnabled)(true),
+            basic: (0, _renderer.rendererEnabled)(false)
+        },
+        reset: ()=>{
+            core.reset(true);
+            const { cameraTransitioner: cameraState , modelTransitioner: modelState  } = ref;
+            (0, _glMatrix.quat).slerp(modelState.qModelCurrent, modelState.qModelTo, modelState.qModelTo, 0);
+            core.setModelRotation(modelState.qModelCurrent, true);
+            core.camera.setOrbit(cameraState.qCameraRotationTo, false);
+        //core.camera.setPosition(cameraState.vCameraPositionTo, false);
+        },
+        cameraTransitioner,
+        modelTransitioner,
+        positionTransitioner,
+        core,
+        setMorphChartsRendererOptions (mcRendererOptions) {
+            if ((0, _renderer.shouldChangeRenderer)(ref.lastMorphChartsRendererOptions, mcRendererOptions)) {
+                (0, _renderer.getRenderer)(mcRendererOptions, core);
+                (0, _canvas.listenCanvasEvents)(core, options);
+            } else if (mcRendererOptions.advanced) //same renderer, poke the config
+            (0, _renderer.setRendererOptions)(core.renderer, mcRendererOptions);
+            ref.lastMorphChartsRendererOptions = mcRendererOptions;
+        },
+        lastMorphChartsRendererOptions: mcRendererOptions,
+        lastPresenterConfig: null,
+        layerStagger: {}
+    };
+    const cam = (t)=>{
+        (0, _glMatrix.quat).slerp(cameraTransitioner.qCameraRotationCurrent, cameraTransitioner.qCameraRotationFrom, cameraTransitioner.qCameraRotationTo, t);
+        (0, _glMatrix.vec3).lerp(cameraTransitioner.vCameraPositionCurrent, cameraTransitioner.vCameraPositionFrom, cameraTransitioner.vCameraPositionTo, t);
+        core.camera.setOrbit(cameraTransitioner.qCameraRotationCurrent, false);
+        core.camera.setPosition(cameraTransitioner.vCameraPositionCurrent, false);
+        // disable picking during transitions, as the performance degradation could reduce the framerate
+        core.inputManager.isPickingEnabled = false;
+    };
+    core.updateCallback = (elapsedTime)=>{
+        const { transitionDurations  } = ref.lastPresenterConfig;
+        if (positionTransitioner.isTransitioning) core.renderer.transitionTime = positionTransitioner.elapse(elapsedTime, transitionDurations.position + transitionDurations.stagger);
+        if (modelTransitioner.isTransitioning) {
+            const tm = modelTransitioner.elapse(elapsedTime, transitionDurations.view, true);
+            if (modelTransitioner.shouldTransition) {
+                (0, _glMatrix.quat).slerp(modelTransitioner.qModelCurrent, modelTransitioner.qModelFrom, modelTransitioner.qModelTo, tm);
+                core.setModelRotation(modelTransitioner.qModelCurrent, false);
+            }
+            cam(tm);
+        }
+        if (cameraTransitioner.isTransitioning) {
+            const t = cameraTransitioner.elapse(elapsedTime, transitionDurations.view, true);
+            cam(t);
+        } else core.inputManager.isPickingEnabled = true;
+    };
+    return ref;
+}
+
+},{"morphcharts":"dzm75","./renderer":"aQlAd","gl-matrix":"3mrln","./canvas":"keiIA","../transition":"eZK1M","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"aQlAd":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "shouldChangeRenderer", ()=>shouldChangeRenderer);
+parcelHelpers.export(exports, "getRenderer", ()=>getRenderer);
+parcelHelpers.export(exports, "setRendererOptions", ()=>setRendererOptions);
+parcelHelpers.export(exports, "rendererEnabled", ()=>rendererEnabled);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _morphcharts = require("morphcharts");
+function shouldChangeRenderer(prev, next) {
+    var _a, _b;
+    if (!prev || !next) return true;
+    if (prev.advanced !== next.advanced) return true;
+    if (!prev.advanced) return ((_a = prev.basicOptions) === null || _a === void 0 ? void 0 : _a.antialias) != ((_b = next.basicOptions) === null || _b === void 0 ? void 0 : _b.antialias);
+}
+function getRenderer(mcRendererOptions, core) {
+    const advanced = mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advanced;
+    const r = advanced ? new (0, _morphcharts.Renderers).Advanced.Main() : new (0, _morphcharts.Renderers).Basic.Main(mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.basicOptions);
+    core.renderer = r;
+    setRendererOptions(r, mcRendererOptions);
+    return r;
+}
+function setRendererOptions(renderer, mcRendererOptions) {
+    const o = mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advancedOptions;
+    if ((mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advanced) && o) for(const key in o)renderer.config[key] = o[key];
+}
+function rendererEnabled(advanced) {
+    const r = advanced ? new (0, _morphcharts.Renderers).Advanced.Main() : new (0, _morphcharts.Renderers).Basic.Main();
+    return r.isSupported;
+}
+
+},{"morphcharts":"dzm75","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"keiIA":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "listenCanvasEvents", ()=>listenCanvasEvents);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _morphcharts = require("morphcharts");
+const rightButton = 2;
+function listenCanvasEvents(core, options) {
+    const { container , pickGridCallback  } = options;
+    const { inputManager  } = core;
+    if (options.onLasso) inputManager.pickLassoCallback = (result)=>{
+        options.onLasso(result.ids[0], result.manipulator.event);
+    };
+    inputManager.singleTouchAction = (manipulator)=>{
+        if (manipulator.button == rightButton || manipulator.shiftKey || manipulator.ctrlKey) return (0, _morphcharts.SingleTouchAction).rotate;
+        else if (manipulator.altKey) return (0, _morphcharts.SingleTouchAction).lasso;
+        else return (0, _morphcharts.SingleTouchAction).translate;
+    };
+    inputManager.pickAxesGridCallback = ({ divisionX , divisionY , divisionZ , manipulator  })=>{
+        clearClickTimeout();
+        const { altKey , button , shiftKey  } = manipulator;
+        const me = {
+            altKey,
+            shiftKey,
+            button
+        };
+        const e = me;
+        pickGridCallback([
+            divisionX,
+            divisionY,
+            divisionZ
+        ], e);
+    };
+    const canvas = container.getElementsByTagName("canvas")[0];
+    let pickedId;
+    const hover = (e)=>{
+        if (core.renderer.pickedId !== pickedId) {
+            pickedId = core.renderer.pickedId;
+            const ordinal = core.renderer.transitionBuffers[0].pickIdLookup[pickedId];
+            options.onCubeHover(e, ordinal);
+        }
+    };
+    canvas.addEventListener("mousemove", (e)=>{
+        clearClickTimeout();
+        if (mousedown) options.onCubeHover(e, null);
+        hover(e);
+    });
+    canvas.addEventListener("mouseout", hover);
+    canvas.addEventListener("mouseover", hover);
+    let mousedown;
+    canvas.addEventListener("mousedown", ()=>{
+        mousedown = true;
+    });
+    canvas.addEventListener("mouseup", (e)=>{
+        mousedown = false;
+    });
+    let canvasClickTimeout;
+    const clearClickTimeout = ()=>{
+        clearTimeout(canvasClickTimeout);
+        canvasClickTimeout = null;
+    };
+    canvas.addEventListener("click", (e)=>{
+        canvasClickTimeout = setTimeout(()=>{
+            options.onCanvasClick(e);
+        }, 50);
+    });
+    inputManager.pickItemCallback = ({ manipulator  })=>{
+        clearClickTimeout();
+        const ordinal = core.renderer.transitionBuffers[0].pickIdLookup[pickedId];
+        options.onCubeClick(manipulator.event, ordinal);
+    };
+}
+
+},{"morphcharts":"dzm75","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"eZK1M":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Transitioner", ()=>Transitioner);
+parcelHelpers.export(exports, "CameraTransitioner", ()=>CameraTransitioner);
+parcelHelpers.export(exports, "ModelTransitioner", ()=>ModelTransitioner);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _glMatrix = require("gl-matrix");
+var _easing = require("./easing");
+class Transitioner {
+    constructor(){
+        this.isTransitioning = false;
+    }
+    begin() {
+        this.isTransitioning = true;
+        this.time = 0;
+    }
+    elapse(elapsedTime, totalTime, ease = false) {
+        this.time += elapsedTime;
+        if (this.time >= totalTime) {
+            this.isTransitioning = false;
+            this.time = totalTime;
+        }
+        const t = this.time / totalTime;
+        return ease ? (0, _easing.easing)(t) : t;
+    }
+}
+class CameraTransitioner extends Transitioner {
+    constructor(){
+        super();
+        this.qCameraRotationFrom = (0, _glMatrix.quat).create();
+        this.qCameraRotationTo = null;
+        this.qCameraRotationCurrent = (0, _glMatrix.quat).create();
+        this.vCameraPositionFrom = (0, _glMatrix.vec3).create();
+        this.vCameraPositionTo = null;
+        this.vCameraPositionCurrent = (0, _glMatrix.vec3).create();
+    }
+    move(position, rotation) {
+        this.begin();
+        this.qCameraRotationTo = rotation;
+        this.vCameraPositionTo = position;
+    }
+}
+class ModelTransitioner extends Transitioner {
+    constructor(){
+        super();
+        this.shouldTransition = false;
+        this.qModelFrom = null;
+        this.qModelTo = null;
+        this.qModelCurrent = (0, _glMatrix.quat).create();
+    }
+}
+
+},{"gl-matrix":"3mrln","./easing":"aJG37","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"aJG37":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "easing", ()=>easing);
@@ -84490,123 +84721,7 @@ function cubicInOut(t) {
     return ((t *= 2) <= 1 ? t * t * t : (t -= 2) * t * t + 2) / 2;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"82mLv":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "getImageData", ()=>getImageData);
-parcelHelpers.export(exports, "createImageQuad", ()=>createImageQuad);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _morphcharts = require("morphcharts");
-function getImageData(url) {
-    return new Promise((resolve, reject)=>{
-        const imageElement = document.createElement("img");
-        imageElement.onload = ()=>{
-            const canvas = document.createElement("canvas");
-            const ctx = canvas.getContext("2d");
-            const { height , width  } = imageElement;
-            canvas.width = width;
-            canvas.height = height;
-            ctx.drawImage(imageElement, 0, 0);
-            resolve(ctx.getImageData(0, 0, width, height));
-        };
-        imageElement.src = url;
-    });
-}
-function createImageQuad(core, imageData, bounds, position, width, height) {
-    const { maxBoundsX , maxBoundsY , maxBoundsZ , minBoundsX , minBoundsY , minBoundsZ  } = bounds;
-    const imageOptions = {
-        imageData,
-        position,
-        height,
-        width,
-        minBoundsX,
-        maxBoundsX,
-        minBoundsZ,
-        maxBoundsZ,
-        minBoundsY,
-        maxBoundsY
-    };
-    return new (0, _morphcharts.Components).ImageQuad(core, imageOptions);
-}
-
-},{"morphcharts":"dzm75","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"keiIA":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "listenCanvasEvents", ()=>listenCanvasEvents);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _morphcharts = require("morphcharts");
-const rightButton = 2;
-function listenCanvasEvents(core, options) {
-    const { container , pickGridCallback  } = options;
-    const { inputManager  } = core;
-    if (options.onLasso) inputManager.pickLassoCallback = (result)=>{
-        options.onLasso(result.ids[0], result.manipulator.event);
-    };
-    inputManager.singleTouchAction = (manipulator)=>{
-        if (manipulator.button == rightButton || manipulator.shiftKey || manipulator.ctrlKey) return (0, _morphcharts.SingleTouchAction).rotate;
-        else if (manipulator.altKey) return (0, _morphcharts.SingleTouchAction).lasso;
-        else return (0, _morphcharts.SingleTouchAction).translate;
-    };
-    inputManager.pickAxesGridCallback = ({ divisionX , divisionY , divisionZ , manipulator  })=>{
-        clearClickTimeout();
-        const { altKey , button , shiftKey  } = manipulator;
-        const me = {
-            altKey,
-            shiftKey,
-            button
-        };
-        const e = me;
-        pickGridCallback([
-            divisionX,
-            divisionY,
-            divisionZ
-        ], e);
-    };
-    const canvas = container.getElementsByTagName("canvas")[0];
-    let pickedId;
-    const hover = (e)=>{
-        if (core.renderer.pickedId !== pickedId) {
-            pickedId = core.renderer.pickedId;
-            const ordinal = core.renderer.transitionBuffers[0].pickIdLookup[pickedId];
-            options.onCubeHover(e, ordinal);
-        }
-    };
-    canvas.addEventListener("mousemove", (e)=>{
-        clearClickTimeout();
-        if (mousedown) options.onCubeHover(e, null);
-        hover(e);
-    });
-    canvas.addEventListener("mouseout", hover);
-    canvas.addEventListener("mouseover", hover);
-    let mousedown;
-    canvas.addEventListener("mousedown", ()=>{
-        mousedown = true;
-    });
-    canvas.addEventListener("mouseup", (e)=>{
-        mousedown = false;
-    });
-    let canvasClickTimeout;
-    const clearClickTimeout = ()=>{
-        clearTimeout(canvasClickTimeout);
-        canvasClickTimeout = null;
-    };
-    canvas.addEventListener("click", (e)=>{
-        canvasClickTimeout = setTimeout(()=>{
-            options.onCanvasClick(e);
-        }, 50);
-    });
-    inputManager.pickItemCallback = ({ manipulator  })=>{
-        clearClickTimeout();
-        const ordinal = core.renderer.transitionBuffers[0].pickIdLookup[pickedId];
-        options.onCubeClick(manipulator.event, ordinal);
-    };
-}
-
-},{"morphcharts":"dzm75","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fQ572":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fQ572":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ViewGl", ()=>ViewGl);
@@ -84709,7 +84824,7 @@ const RendererGl = _RendererGl;
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "version", ()=>version);
-const version = "1.0.1";
+const version = "1.0.2";
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"bPdl3":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -84807,6 +84922,7 @@ var _sanddanceSpecs = require("@msrvida/sanddance-specs");
 var _searchExpression = require("@msrvida/search-expression");
 var _vegaMorphcharts = require("@msrvida/vega-morphcharts");
 var _characterSet = require("./characterSet");
+var _transition = require("./transition");
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -84873,32 +84989,39 @@ class Viewer {
         _vegaMorphcharts.util.setActiveElement(a);
         this.presenter.stage.legend = colorContext.legend;
     }
-    onAnimateDataChange(dataChange, waitingLabel, handlerLabel, time = this.options.transitionDurations.position + this.options.transitionDurations.stagger) {
+    onAnimateDataChange(dataChange, waitingLabel, handlerLabel, time) {
+        var _a;
+        if (time === undefined) {
+            const transitionDurations = ((_a = this.setup) === null || _a === void 0 ? void 0 : _a.transitionDurations) || _vegaMorphcharts.defaults.defaultPresenterConfig.transitionDurations;
+            time = transitionDurations.position + transitionDurations.stagger;
+        }
         return new Promise((resolve, reject)=>{
             let innerPromise;
             if (dataChange === (0, _animator.DataLayoutChange).refine) {
                 const oldColorContext = this.colorContexts[this.currentColorContext];
                 innerPromise = new Promise((innerResolve)=>{
-                    this.renderNewLayout({}, {
-                        preStage: (stage, colorMapper)=>{
+                    this.renderNewLayout({}, Object.assign(Object.assign({}, this.setup || {}), {
+                        onPresent: ()=>this.options.onPresent(),
+                        preStage: (stage, cubeLayer)=>{
                             (0, _legend.finalizeLegend)(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                             this.overrideAxisLabels(stage);
-                            colorMapper.setCubeUnitColorMap(oldColorContext.colorMap);
+                            cubeLayer.unitColorMap = oldColorContext.colorMap;
                             if (this.options.onStage) this.options.onStage(stage);
                         }
-                    }).then(()=>{
+                    })).then(()=>{
                         //apply old legend
                         this.applyLegendColorContext(oldColorContext);
                         innerResolve();
                     });
                 });
-            } else innerPromise = this.renderNewLayout({}, {
+            } else innerPromise = this.renderNewLayout({}, Object.assign(Object.assign({}, this.setup || {}), {
+                onPresent: ()=>this.options.onPresent(),
                 preStage: (stage, colorMapper)=>{
                     (0, _legend.finalizeLegend)(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                     this.overrideAxisLabels(stage);
                     if (this.options.onStage) this.options.onStage(stage);
                 }
-            });
+            }));
             innerPromise.then(()=>{
                 this.presenter.animationQueue(resolve, time, {
                     waitingLabel,
@@ -84931,12 +85054,12 @@ class Viewer {
                         this.presenter.morphChartsRenderResult.update({
                             cubes: null
                         });
-                        yield this.renderNewLayout({}, {
-                            preStage: (stage, colorMapper)=>{
+                        yield this.renderNewLayout({}, Object.assign(Object.assign({}, this.setup || {}), {
+                            preStage: (stage, cubeLayer)=>{
                                 //save off the spec colors
-                                colorMap = colorMapper.getCubeUnitColorMap();
-                                colorMapper.setCubeUnitColorMap(oldColorContext.colorMap);
-                                this.preStage(stage, colorMapper);
+                                colorMap = cubeLayer.unitColorMap;
+                                cubeLayer.unitColorMap = oldColorContext.colorMap;
+                                this.preStage(stage, cubeLayer);
                             },
                             onPresent: ()=>{
                                 //save new legend
@@ -84953,7 +85076,7 @@ class Viewer {
                                 ]);
                                 this.options.onPresent && this.options.onPresent();
                             }
-                        });
+                        }));
                         //narrow the filter only if it is different
                         if (!_searchExpression.compare(this.insight.filter, filter)) this.insight.filter = _searchExpression.narrow(this.insight.filter, filter);
                         if (this.options.onDataFilter) this.options.onDataFilter(this.insight.filter, this._dataScope.currentData());
@@ -84972,13 +85095,13 @@ class Viewer {
                         this.presenter.morphChartsRenderResult.update({
                             cubes: null
                         });
-                        yield this.renderNewLayout({}, {
+                        yield this.renderNewLayout({}, Object.assign(Object.assign({}, this.setup || {}), {
                             onPresent: ()=>{
                                 //color needs to change instantly
                                 (0, _colorCubes.populateColorContext)(colorContext, this.presenter);
                                 this.options.onPresent && this.options.onPresent();
                             }
-                        });
+                        }));
                         delete this.insight.filter;
                         if (this.options.onDataFilter) this.options.onDataFilter(null, null);
                         break;
@@ -85110,7 +85233,7 @@ class Viewer {
             }
             this.options = _vegaMorphcharts.util.deepMerge(this.options, newViewerOptions);
         }
-        this.presenter.morphChartsRenderResult.setCubeUnitColorMap(colorContext.colorMap);
+        this.presenter.morphChartsRenderResult.getCubeLayer().unitColorMap = colorContext.colorMap;
         this.presenter.morphChartsRenderResult.update({
             cubes: this.convertSearchToSet()
         });
@@ -85141,19 +85264,21 @@ class Viewer {
     }
     /**
      * Render data into a visualization.
-     * @param insight Object to create a visualization specification.
+     * @param insightSetup InsightSetup object to create a visualization rendering.
      * @param data Array of data objects.
      * @param renderOptions Optional RenderOptions object.
-     */ render(insight, data, renderOptions = {}) {
+     */ render(insightSetup, data, renderOptions = {}) {
         return __awaiter(this, void 0, void 0, function*() {
+            const { insight , setup  } = insightSetup;
             let result;
             //see if refine expression has changed
             if (!_searchExpression.compare(insight.filter, this.insight.filter)) {
-                const renderTime = this.options.transitionDurations.position + this.options.transitionDurations.stagger;
-                const allowAsyncRenderTime = renderTime + 200;
+                const transitionDurations = (setup === null || setup === void 0 ? void 0 : setup.transitionDurations) || _vegaMorphcharts.defaults.defaultPresenterConfig.transitionDurations;
+                const renderTime = transitionDurations.position + transitionDurations.stagger;
+                const allowAsyncRenderTime = renderTime + this.options.filterRenderingTimerPadding;
                 if (insight.filter) {
                     //refining
-                    result = yield this._render(insight, data, renderOptions, true);
+                    result = yield this._render(insightSetup, data, renderOptions, true);
                     this.presenter.animationQueue(()=>{
                         this.filter(insight.filter, renderOptions.rebaseFilter && renderOptions.rebaseFilter());
                     }, allowAsyncRenderTime, {
@@ -85163,7 +85288,7 @@ class Viewer {
                 } else {
                     //not refining
                     this._dataScope.setFilteredData(null);
-                    result = yield this._render(insight, data, renderOptions, true);
+                    result = yield this._render(insightSetup, data, renderOptions, true);
                     this.presenter.animationQueue(()=>{
                         this.reset();
                     }, allowAsyncRenderTime, {
@@ -85171,7 +85296,7 @@ class Viewer {
                         handlerLabel: "reset after layout"
                     });
                 }
-            } else result = yield this._render(insight, data, renderOptions, false);
+            } else result = yield this._render(insightSetup, data, renderOptions, false);
             return result;
         });
     }
@@ -85190,10 +85315,10 @@ class Viewer {
             legendElement: null
         };
         //now be ready to capture color changing signals 
-        presenterConfig.preStage = (stage, colorMapper)=>{
+        presenterConfig.preStage = (stage, cubeLayer)=>{
             if (this._shouldSaveColorContext()) //save off the colors from Vega layout
-            colorContext.colorMap = colorMapper.getCubeUnitColorMap();
-            this.preStage(stage, colorMapper);
+            colorContext.colorMap = cubeLayer.unitColorMap;
+            this.preStage(stage, cubeLayer);
         };
         presenterConfig.onPresent = ()=>{
             if (this._shouldSaveColorContext()) {
@@ -85206,8 +85331,9 @@ class Viewer {
             this.options.onPresent && this.options.onPresent();
         };
     }
-    _render(insight, data, renderOptions, forceNewCharacterSet) {
+    _render(insightSetup, data, renderOptions, forceNewCharacterSet) {
         return __awaiter(this, void 0, void 0, function*() {
+            const { insight , setup  } = insightSetup;
             if (this._tooltip) {
                 this._tooltip.destroy();
                 this._tooltip = null;
@@ -85218,23 +85344,23 @@ class Viewer {
             const ordinalMap = (0, _ordinal.assignOrdinals)(this._specColumns, data, renderOptions.ordinalMap);
             this._characterSet.resetCharacterSet(forceNewCharacterSet, this.insight, insight);
             this.insight = _vegaMorphcharts.util.clone(insight);
+            this.setup = setup;
             this._shouldSaveColorContext = ()=>!renderOptions.initialColorContext;
             const colorContext = renderOptions.initialColorContext || {
                 colorMap: null,
                 legend: null,
                 legendElement: null
             };
-            const specResult = yield this.renderNewLayout(insight.signalValues, {
-                getCameraTo: renderOptions.getCameraTo,
-                preStage: (stage, colorMapper)=>{
+            const specResult = yield this.renderNewLayout(insight.signalValues, Object.assign(Object.assign({}, setup || {}), {
+                preStage: (stage, cubeLayer)=>{
                     if (this._shouldSaveColorContext()) //save off the colors from Vega layout
-                    colorContext.colorMap = colorMapper.getCubeUnitColorMap(); //colorMapFromCubes(colorMapper);
+                    colorContext.colorMap = cubeLayer.unitColorMap;
                     else //apply passed colorContext
-                    colorMapper.setCubeUnitColorMap(colorContext.colorMap);
+                    cubeLayer.unitColorMap = colorContext.colorMap;
                     //if items are selected, repaint
                     const hasSelectedData = !!this._dataScope.hasSelectedData();
                     hasSelectedData || this._dataScope.active;
-                    this.preStage(stage, colorMapper);
+                    this.preStage(stage, cubeLayer);
                 },
                 onPresent: ()=>{
                     if (this._shouldSaveColorContext()) {
@@ -85246,9 +85372,8 @@ class Viewer {
                     this.applyLegendColorContext(colorContext);
                     this.options.onPresent && this.options.onPresent();
                 },
-                initialMorphChartsRendererOptions: renderOptions.initialMorphChartsRendererOptions,
                 shouldViewstateTransition: ()=>this.shouldViewstateTransition(insight, this.insight)
-            }, this.getView(insight.view));
+            }), this.getView(insight.view));
             //future signal changes should save the color context
             this._shouldSaveColorContext = ()=>!renderOptions.discardColorContextUpdates || !renderOptions.discardColorContextUpdates();
             this._details.render();
@@ -85281,7 +85406,7 @@ class Viewer {
             if (capability && (capability.axisSelectionBetweenTicks || capability.axisSelection === "exact")) (0, _axisSelection.moveTicksBetween)(stage.axes[axisRole]);
         }
     }
-    preStage(stage, colorMapper) {
+    preStage(stage, cubeLayer) {
         this.overrideAxisLabels(stage);
         this._axisSelection = new (0, _axisSelection.AxisSelection)(this.specCapabilities, this._specColumns, stage);
         (0, _legend.finalizeLegend)(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
@@ -85358,6 +85483,7 @@ class Viewer {
         };
     }
     createConfig(c) {
+        var _a;
         const { getTextColor , getTextHighlightColor , onTextClick  } = this.options;
         const defaultPresenterConfig = {
             morphChartsColors: this.getMorphChartsColors(),
@@ -85441,7 +85567,7 @@ class Viewer {
             presenter: this.presenter,
             presenterConfig: Object.assign(defaultPresenterConfig, c)
         };
-        if (this.options.transitionDurations) config.presenterConfig.transitionDurations = this.options.transitionDurations;
+        if ((_a = this.setup) === null || _a === void 0 ? void 0 : _a.transitionDurations) config.presenterConfig.transitionDurations = this.setup.transitionDurations;
         return config;
     }
     /**
@@ -85542,8 +85668,8 @@ class Viewer {
             0
         ];
         if (transitionFinal) {
-            position = Array.from((_b = (_a = this.presenter) === null || _a === void 0 ? void 0 : _a.morphchartsref) === null || _b === void 0 ? void 0 : _b.vCameraPositionTo);
-            rotation = Array.from((_d = (_c = this.presenter) === null || _c === void 0 ? void 0 : _c.morphchartsref) === null || _d === void 0 ? void 0 : _d.qCameraRotationTo);
+            position = Array.from((_b = (_a = this.presenter) === null || _a === void 0 ? void 0 : _a.morphchartsref) === null || _b === void 0 ? void 0 : _b.cameraTransitioner.vCameraPositionTo);
+            rotation = Array.from((_d = (_c = this.presenter) === null || _c === void 0 ? void 0 : _c.morphchartsref) === null || _d === void 0 ? void 0 : _d.cameraTransitioner.qCameraRotationTo);
         } else {
             const camera = (_g = (_f = (_e = this.presenter) === null || _e === void 0 ? void 0 : _e.morphchartsref) === null || _f === void 0 ? void 0 : _f.core) === null || _g === void 0 ? void 0 : _g.camera;
             if (camera) {
@@ -85582,6 +85708,9 @@ class Viewer {
      */ getSignalValues() {
         return (0, _signals.extractSignalValuesFromView)(this.vegaViewGl, this.vegaSpec);
     }
+    assignTransitionStagger(transition) {
+        (0, _transition.assignTransitionStagger)(transition, this._dataScope.currentData(), this.convertSearchToSet(), this.presenter);
+    }
     finalize() {
         if (this._dataScope) this._dataScope.finalize();
         if (this._details) this._details.finalize();
@@ -85605,7 +85734,7 @@ class Viewer {
  * Default Viewer options.
  */ Viewer.defaultViewerOptions = (0, _defaults.defaultViewerOptions);
 
-},{"./animator":"82S4R","./axisSelection":"cK1oO","./colorCubes":"ijIyP","./colorSchemes":"bPdl3","./constants":"2SlZI","./dataScope":"aOagG","./defaults":"doogP","./details":"jmS4n","./headers":"kKnIm","./legend":"je7e0","./ordinal":"fMfsn","./search":"160ba","./signals":"4zIGL","./tooltip":"h84Gn","@msrvida/sanddance-specs":"aBhpQ","@msrvida/search-expression":"3EP3i","@msrvida/vega-morphcharts":"dysWg","./characterSet":"e6qKV","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"82S4R":[function(require,module,exports) {
+},{"./animator":"82S4R","./axisSelection":"cK1oO","./colorCubes":"ijIyP","./colorSchemes":"bPdl3","./constants":"2SlZI","./dataScope":"aOagG","./defaults":"doogP","./details":"jmS4n","./headers":"kKnIm","./legend":"je7e0","./ordinal":"fMfsn","./search":"160ba","./signals":"4zIGL","./tooltip":"h84Gn","@msrvida/sanddance-specs":"aBhpQ","@msrvida/search-expression":"3EP3i","@msrvida/vega-morphcharts":"dysWg","./characterSet":"e6qKV","./transition":"aetSO","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"82S4R":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "DataLayoutChange", ()=>DataLayoutChange);
@@ -85870,7 +85999,7 @@ parcelHelpers.export(exports, "populateColorContext", ()=>populateColorContext);
 * Licensed under the MIT License.
 */ var _vegaMorphcharts = require("@msrvida/vega-morphcharts");
 function populateColorContext(colorContext, presenter) {
-    if (!colorContext.colorMap) colorContext.colorMap = presenter.morphChartsRenderResult.getCubeUnitColorMap();
+    if (!colorContext.colorMap) colorContext.colorMap = presenter.morphChartsRenderResult.getCubeLayer().unitColorMap;
     colorContext.legend = _vegaMorphcharts.util.clone(presenter.stage.legend);
     colorContext.legendElement = presenter.getElement(_vegaMorphcharts.PresenterElement.legend).children[0];
 }
@@ -86596,7 +86725,1878 @@ function differentObjectValues(a, b) {
     return false;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"cwHcu":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"aetSO":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "assignTransitionStagger", ()=>assignTransitionStagger);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _sanddanceSpecs = require("@msrvida/sanddance-specs");
+var _d3Scale = require("d3-scale");
+var _constants = require("./constants");
+function assignTransitionStagger(transition, currentData, selection, presenter) {
+    const { layerStagger  } = presenter.morphchartsref;
+    const { morphChartsRenderResult  } = presenter;
+    const cubelayer = morphChartsRenderResult.getCubeLayer();
+    const range = transition.reverse ? [
+        1,
+        0
+    ] : [
+        0,
+        1
+    ];
+    if (!transition || transition.type === "ordinal" && !transition.reverse) delete layerStagger.cubes;
+    else {
+        const staggerOrders = new Float64Array(cubelayer.positionsX.length);
+        switch(transition.type){
+            case "ordinal":
+                {
+                    //reverse ordinal
+                    const scale = (0, _d3Scale.scaleLinear)(range).domain([
+                        0,
+                        currentData.length
+                    ]);
+                    currentData.forEach((datum, i)=>{
+                        const glOrdinal = datum[0, _constants.GL_ORDINAL];
+                        staggerOrders[glOrdinal] = scale(i);
+                    });
+                    break;
+                }
+            case "column":
+                if (transition.column.quantitative) {
+                    const values = new Float64Array(currentData.length);
+                    currentData.forEach((datum, i)=>{
+                        values[i] = datum[transition.column.name];
+                    });
+                    const stats = (0, _sanddanceSpecs.getStats)(currentData, transition.column);
+                    const scale1 = (0, _d3Scale.scaleLinear)(range).domain([
+                        stats.min,
+                        stats.max
+                    ]);
+                    currentData.forEach((datum, i)=>{
+                        const glOrdinal = datum[0, _constants.GL_ORDINAL];
+                        staggerOrders[glOrdinal] = scale1(values[i]);
+                    });
+                } else {
+                    const strings = new Array(currentData.length);
+                    currentData.forEach((datum, i)=>{
+                        strings[i] = datum[transition.column.name];
+                    });
+                    (0, _sanddanceSpecs.getStats)(currentData, transition.column, (distictValues)=>{
+                        currentData.forEach((datum, i)=>{
+                            const glOrdinal = datum[0, _constants.GL_ORDINAL];
+                            const index = distictValues.indexOf(strings[i]);
+                            const staggerOrder = index / distictValues.length;
+                            staggerOrders[glOrdinal] = transition.reverse ? 1 - staggerOrder : staggerOrder;
+                        });
+                    });
+                }
+                break;
+            case "position":
+                {
+                    const dimensions = {
+                        "x": cubelayer.positionsX,
+                        "y": cubelayer.positionsY,
+                        "z": cubelayer.positionsZ
+                    };
+                    const positions = dimensions[transition.dimension];
+                    const values1 = new Float64Array(currentData.length);
+                    currentData.forEach((datum, i)=>{
+                        const glOrdinal = datum[0, _constants.GL_ORDINAL];
+                        values1[i] = positions[glOrdinal];
+                    });
+                    const stats1 = (0, _sanddanceSpecs.getStats)(values1, null, "number", true);
+                    const scale2 = (0, _d3Scale.scaleLinear)(range).domain([
+                        stats1.min,
+                        stats1.max
+                    ]);
+                    currentData.forEach((datum, i)=>{
+                        const glOrdinal = datum[0, _constants.GL_ORDINAL];
+                        staggerOrders[glOrdinal] = scale2(values1[i]);
+                    });
+                    break;
+                }
+        }
+        layerStagger.cubes = {
+            staggerOrders,
+            maxStaggerOrder: 1,
+            minStaggerOrder: 0
+        };
+    }
+    cubelayer.update(morphChartsRenderResult.bounds, selection, layerStagger.cubes);
+}
+
+},{"@msrvida/sanddance-specs":"aBhpQ","d3-scale":"1RNdW","./constants":"2SlZI","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1RNdW":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "scaleBand", ()=>(0, _bandJsDefault.default));
+parcelHelpers.export(exports, "scalePoint", ()=>(0, _bandJs.point));
+parcelHelpers.export(exports, "scaleIdentity", ()=>(0, _identityJsDefault.default));
+parcelHelpers.export(exports, "scaleLinear", ()=>(0, _linearJsDefault.default));
+parcelHelpers.export(exports, "scaleLog", ()=>(0, _logJsDefault.default));
+parcelHelpers.export(exports, "scaleSymlog", ()=>(0, _symlogJsDefault.default));
+parcelHelpers.export(exports, "scaleOrdinal", ()=>(0, _ordinalJsDefault.default));
+parcelHelpers.export(exports, "scaleImplicit", ()=>(0, _ordinalJs.implicit));
+parcelHelpers.export(exports, "scalePow", ()=>(0, _powJsDefault.default));
+parcelHelpers.export(exports, "scaleSqrt", ()=>(0, _powJs.sqrt));
+parcelHelpers.export(exports, "scaleRadial", ()=>(0, _radialJsDefault.default));
+parcelHelpers.export(exports, "scaleQuantile", ()=>(0, _quantileJsDefault.default));
+parcelHelpers.export(exports, "scaleQuantize", ()=>(0, _quantizeJsDefault.default));
+parcelHelpers.export(exports, "scaleThreshold", ()=>(0, _thresholdJsDefault.default));
+parcelHelpers.export(exports, "scaleTime", ()=>(0, _timeJsDefault.default));
+parcelHelpers.export(exports, "scaleUtc", ()=>(0, _utcTimeJsDefault.default));
+parcelHelpers.export(exports, "scaleSequential", ()=>(0, _sequentialJsDefault.default));
+parcelHelpers.export(exports, "scaleSequentialLog", ()=>(0, _sequentialJs.sequentialLog));
+parcelHelpers.export(exports, "scaleSequentialPow", ()=>(0, _sequentialJs.sequentialPow));
+parcelHelpers.export(exports, "scaleSequentialSqrt", ()=>(0, _sequentialJs.sequentialSqrt));
+parcelHelpers.export(exports, "scaleSequentialSymlog", ()=>(0, _sequentialJs.sequentialSymlog));
+parcelHelpers.export(exports, "scaleSequentialQuantile", ()=>(0, _sequentialQuantileJsDefault.default));
+parcelHelpers.export(exports, "scaleDiverging", ()=>(0, _divergingJsDefault.default));
+parcelHelpers.export(exports, "scaleDivergingLog", ()=>(0, _divergingJs.divergingLog));
+parcelHelpers.export(exports, "scaleDivergingPow", ()=>(0, _divergingJs.divergingPow));
+parcelHelpers.export(exports, "scaleDivergingSqrt", ()=>(0, _divergingJs.divergingSqrt));
+parcelHelpers.export(exports, "scaleDivergingSymlog", ()=>(0, _divergingJs.divergingSymlog));
+parcelHelpers.export(exports, "tickFormat", ()=>(0, _tickFormatJsDefault.default));
+var _bandJs = require("./band.js");
+var _bandJsDefault = parcelHelpers.interopDefault(_bandJs);
+var _identityJs = require("./identity.js");
+var _identityJsDefault = parcelHelpers.interopDefault(_identityJs);
+var _linearJs = require("./linear.js");
+var _linearJsDefault = parcelHelpers.interopDefault(_linearJs);
+var _logJs = require("./log.js");
+var _logJsDefault = parcelHelpers.interopDefault(_logJs);
+var _symlogJs = require("./symlog.js");
+var _symlogJsDefault = parcelHelpers.interopDefault(_symlogJs);
+var _ordinalJs = require("./ordinal.js");
+var _ordinalJsDefault = parcelHelpers.interopDefault(_ordinalJs);
+var _powJs = require("./pow.js");
+var _powJsDefault = parcelHelpers.interopDefault(_powJs);
+var _radialJs = require("./radial.js");
+var _radialJsDefault = parcelHelpers.interopDefault(_radialJs);
+var _quantileJs = require("./quantile.js");
+var _quantileJsDefault = parcelHelpers.interopDefault(_quantileJs);
+var _quantizeJs = require("./quantize.js");
+var _quantizeJsDefault = parcelHelpers.interopDefault(_quantizeJs);
+var _thresholdJs = require("./threshold.js");
+var _thresholdJsDefault = parcelHelpers.interopDefault(_thresholdJs);
+var _timeJs = require("./time.js");
+var _timeJsDefault = parcelHelpers.interopDefault(_timeJs);
+var _utcTimeJs = require("./utcTime.js");
+var _utcTimeJsDefault = parcelHelpers.interopDefault(_utcTimeJs);
+var _sequentialJs = require("./sequential.js");
+var _sequentialJsDefault = parcelHelpers.interopDefault(_sequentialJs);
+var _sequentialQuantileJs = require("./sequentialQuantile.js");
+var _sequentialQuantileJsDefault = parcelHelpers.interopDefault(_sequentialQuantileJs);
+var _divergingJs = require("./diverging.js");
+var _divergingJsDefault = parcelHelpers.interopDefault(_divergingJs);
+var _tickFormatJs = require("./tickFormat.js");
+var _tickFormatJsDefault = parcelHelpers.interopDefault(_tickFormatJs);
+
+},{"./band.js":false,"./identity.js":false,"./linear.js":"a80HY","./log.js":false,"./symlog.js":false,"./ordinal.js":false,"./pow.js":false,"./radial.js":false,"./quantile.js":false,"./quantize.js":false,"./threshold.js":false,"./time.js":false,"./utcTime.js":false,"./sequential.js":false,"./sequentialQuantile.js":false,"./diverging.js":false,"./tickFormat.js":"2waV2","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"a80HY":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "linearish", ()=>linearish);
+var _d3Array = require("d3-array");
+var _continuousJs = require("./continuous.js");
+var _continuousJsDefault = parcelHelpers.interopDefault(_continuousJs);
+var _initJs = require("./init.js");
+var _tickFormatJs = require("./tickFormat.js");
+var _tickFormatJsDefault = parcelHelpers.interopDefault(_tickFormatJs);
+function linearish(scale) {
+    var domain = scale.domain;
+    scale.ticks = function(count) {
+        var d = domain();
+        return (0, _d3Array.ticks)(d[0], d[d.length - 1], count == null ? 10 : count);
+    };
+    scale.tickFormat = function(count, specifier) {
+        var d = domain();
+        return (0, _tickFormatJsDefault.default)(d[0], d[d.length - 1], count == null ? 10 : count, specifier);
+    };
+    scale.nice = function(count) {
+        if (count == null) count = 10;
+        var d = domain();
+        var i0 = 0;
+        var i1 = d.length - 1;
+        var start = d[i0];
+        var stop = d[i1];
+        var prestep;
+        var step;
+        var maxIter = 10;
+        if (stop < start) {
+            step = start, start = stop, stop = step;
+            step = i0, i0 = i1, i1 = step;
+        }
+        while(maxIter-- > 0){
+            step = (0, _d3Array.tickIncrement)(start, stop, count);
+            if (step === prestep) {
+                d[i0] = start;
+                d[i1] = stop;
+                return domain(d);
+            } else if (step > 0) {
+                start = Math.floor(start / step) * step;
+                stop = Math.ceil(stop / step) * step;
+            } else if (step < 0) {
+                start = Math.ceil(start * step) / step;
+                stop = Math.floor(stop * step) / step;
+            } else break;
+            prestep = step;
+        }
+        return scale;
+    };
+    return scale;
+}
+function linear() {
+    var scale = (0, _continuousJsDefault.default)();
+    scale.copy = function() {
+        return (0, _continuousJs.copy)(scale, linear());
+    };
+    (0, _initJs.initRange).apply(scale, arguments);
+    return linearish(scale);
+}
+exports.default = linear;
+
+},{"d3-array":"dZbmV","./continuous.js":"2Eu9h","./init.js":"9fTkO","./tickFormat.js":"2waV2","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"dZbmV":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "bisect", ()=>(0, _bisectJsDefault.default));
+parcelHelpers.export(exports, "bisectRight", ()=>(0, _bisectJs.bisectRight));
+parcelHelpers.export(exports, "bisectLeft", ()=>(0, _bisectJs.bisectLeft));
+parcelHelpers.export(exports, "bisectCenter", ()=>(0, _bisectJs.bisectCenter));
+parcelHelpers.export(exports, "ascending", ()=>(0, _ascendingJsDefault.default));
+parcelHelpers.export(exports, "bisector", ()=>(0, _bisectorJsDefault.default));
+parcelHelpers.export(exports, "blur", ()=>(0, _blurJs.blur));
+parcelHelpers.export(exports, "blur2", ()=>(0, _blurJs.blur2));
+parcelHelpers.export(exports, "blurImage", ()=>(0, _blurJs.blurImage));
+parcelHelpers.export(exports, "count", ()=>(0, _countJsDefault.default));
+parcelHelpers.export(exports, "cross", ()=>(0, _crossJsDefault.default));
+parcelHelpers.export(exports, "cumsum", ()=>(0, _cumsumJsDefault.default));
+parcelHelpers.export(exports, "descending", ()=>(0, _descendingJsDefault.default));
+parcelHelpers.export(exports, "deviation", ()=>(0, _deviationJsDefault.default));
+parcelHelpers.export(exports, "extent", ()=>(0, _extentJsDefault.default));
+parcelHelpers.export(exports, "Adder", ()=>(0, _fsumJs.Adder));
+parcelHelpers.export(exports, "fsum", ()=>(0, _fsumJs.fsum));
+parcelHelpers.export(exports, "fcumsum", ()=>(0, _fsumJs.fcumsum));
+parcelHelpers.export(exports, "group", ()=>(0, _groupJsDefault.default));
+parcelHelpers.export(exports, "flatGroup", ()=>(0, _groupJs.flatGroup));
+parcelHelpers.export(exports, "flatRollup", ()=>(0, _groupJs.flatRollup));
+parcelHelpers.export(exports, "groups", ()=>(0, _groupJs.groups));
+parcelHelpers.export(exports, "index", ()=>(0, _groupJs.index));
+parcelHelpers.export(exports, "indexes", ()=>(0, _groupJs.indexes));
+parcelHelpers.export(exports, "rollup", ()=>(0, _groupJs.rollup));
+parcelHelpers.export(exports, "rollups", ()=>(0, _groupJs.rollups));
+parcelHelpers.export(exports, "groupSort", ()=>(0, _groupSortJsDefault.default));
+parcelHelpers.export(exports, "bin", ()=>(0, _binJsDefault.default)) // Deprecated; use bin.
+;
+parcelHelpers.export(exports, "histogram", ()=>(0, _binJsDefault.default));
+parcelHelpers.export(exports, "thresholdFreedmanDiaconis", ()=>(0, _freedmanDiaconisJsDefault.default));
+parcelHelpers.export(exports, "thresholdScott", ()=>(0, _scottJsDefault.default));
+parcelHelpers.export(exports, "thresholdSturges", ()=>(0, _sturgesJsDefault.default));
+parcelHelpers.export(exports, "max", ()=>(0, _maxJsDefault.default));
+parcelHelpers.export(exports, "maxIndex", ()=>(0, _maxIndexJsDefault.default));
+parcelHelpers.export(exports, "mean", ()=>(0, _meanJsDefault.default));
+parcelHelpers.export(exports, "median", ()=>(0, _medianJsDefault.default));
+parcelHelpers.export(exports, "medianIndex", ()=>(0, _medianJs.medianIndex));
+parcelHelpers.export(exports, "merge", ()=>(0, _mergeJsDefault.default));
+parcelHelpers.export(exports, "min", ()=>(0, _minJsDefault.default));
+parcelHelpers.export(exports, "minIndex", ()=>(0, _minIndexJsDefault.default));
+parcelHelpers.export(exports, "mode", ()=>(0, _modeJsDefault.default));
+parcelHelpers.export(exports, "nice", ()=>(0, _niceJsDefault.default));
+parcelHelpers.export(exports, "pairs", ()=>(0, _pairsJsDefault.default));
+parcelHelpers.export(exports, "permute", ()=>(0, _permuteJsDefault.default));
+parcelHelpers.export(exports, "quantile", ()=>(0, _quantileJsDefault.default));
+parcelHelpers.export(exports, "quantileIndex", ()=>(0, _quantileJs.quantileIndex));
+parcelHelpers.export(exports, "quantileSorted", ()=>(0, _quantileJs.quantileSorted));
+parcelHelpers.export(exports, "quickselect", ()=>(0, _quickselectJsDefault.default));
+parcelHelpers.export(exports, "range", ()=>(0, _rangeJsDefault.default));
+parcelHelpers.export(exports, "rank", ()=>(0, _rankJsDefault.default));
+parcelHelpers.export(exports, "least", ()=>(0, _leastJsDefault.default));
+parcelHelpers.export(exports, "leastIndex", ()=>(0, _leastIndexJsDefault.default));
+parcelHelpers.export(exports, "greatest", ()=>(0, _greatestJsDefault.default));
+parcelHelpers.export(exports, "greatestIndex", ()=>(0, _greatestIndexJsDefault.default));
+parcelHelpers.export(exports, "scan", ()=>(0, _scanJsDefault.default)) // Deprecated; use leastIndex.
+;
+parcelHelpers.export(exports, "shuffle", ()=>(0, _shuffleJsDefault.default));
+parcelHelpers.export(exports, "shuffler", ()=>(0, _shuffleJs.shuffler));
+parcelHelpers.export(exports, "sum", ()=>(0, _sumJsDefault.default));
+parcelHelpers.export(exports, "ticks", ()=>(0, _ticksJsDefault.default));
+parcelHelpers.export(exports, "tickIncrement", ()=>(0, _ticksJs.tickIncrement));
+parcelHelpers.export(exports, "tickStep", ()=>(0, _ticksJs.tickStep));
+parcelHelpers.export(exports, "transpose", ()=>(0, _transposeJsDefault.default));
+parcelHelpers.export(exports, "variance", ()=>(0, _varianceJsDefault.default));
+parcelHelpers.export(exports, "zip", ()=>(0, _zipJsDefault.default));
+parcelHelpers.export(exports, "every", ()=>(0, _everyJsDefault.default));
+parcelHelpers.export(exports, "some", ()=>(0, _someJsDefault.default));
+parcelHelpers.export(exports, "filter", ()=>(0, _filterJsDefault.default));
+parcelHelpers.export(exports, "map", ()=>(0, _mapJsDefault.default));
+parcelHelpers.export(exports, "reduce", ()=>(0, _reduceJsDefault.default));
+parcelHelpers.export(exports, "reverse", ()=>(0, _reverseJsDefault.default));
+parcelHelpers.export(exports, "sort", ()=>(0, _sortJsDefault.default));
+parcelHelpers.export(exports, "difference", ()=>(0, _differenceJsDefault.default));
+parcelHelpers.export(exports, "disjoint", ()=>(0, _disjointJsDefault.default));
+parcelHelpers.export(exports, "intersection", ()=>(0, _intersectionJsDefault.default));
+parcelHelpers.export(exports, "subset", ()=>(0, _subsetJsDefault.default));
+parcelHelpers.export(exports, "superset", ()=>(0, _supersetJsDefault.default));
+parcelHelpers.export(exports, "union", ()=>(0, _unionJsDefault.default));
+parcelHelpers.export(exports, "InternMap", ()=>(0, _internmap.InternMap));
+parcelHelpers.export(exports, "InternSet", ()=>(0, _internmap.InternSet));
+var _bisectJs = require("./bisect.js");
+var _bisectJsDefault = parcelHelpers.interopDefault(_bisectJs);
+var _ascendingJs = require("./ascending.js");
+var _ascendingJsDefault = parcelHelpers.interopDefault(_ascendingJs);
+var _bisectorJs = require("./bisector.js");
+var _bisectorJsDefault = parcelHelpers.interopDefault(_bisectorJs);
+var _blurJs = require("./blur.js");
+var _countJs = require("./count.js");
+var _countJsDefault = parcelHelpers.interopDefault(_countJs);
+var _crossJs = require("./cross.js");
+var _crossJsDefault = parcelHelpers.interopDefault(_crossJs);
+var _cumsumJs = require("./cumsum.js");
+var _cumsumJsDefault = parcelHelpers.interopDefault(_cumsumJs);
+var _descendingJs = require("./descending.js");
+var _descendingJsDefault = parcelHelpers.interopDefault(_descendingJs);
+var _deviationJs = require("./deviation.js");
+var _deviationJsDefault = parcelHelpers.interopDefault(_deviationJs);
+var _extentJs = require("./extent.js");
+var _extentJsDefault = parcelHelpers.interopDefault(_extentJs);
+var _fsumJs = require("./fsum.js");
+var _groupJs = require("./group.js");
+var _groupJsDefault = parcelHelpers.interopDefault(_groupJs);
+var _groupSortJs = require("./groupSort.js");
+var _groupSortJsDefault = parcelHelpers.interopDefault(_groupSortJs);
+var _binJs = require("./bin.js");
+var _binJsDefault = parcelHelpers.interopDefault(_binJs);
+var _freedmanDiaconisJs = require("./threshold/freedmanDiaconis.js");
+var _freedmanDiaconisJsDefault = parcelHelpers.interopDefault(_freedmanDiaconisJs);
+var _scottJs = require("./threshold/scott.js");
+var _scottJsDefault = parcelHelpers.interopDefault(_scottJs);
+var _sturgesJs = require("./threshold/sturges.js");
+var _sturgesJsDefault = parcelHelpers.interopDefault(_sturgesJs);
+var _maxJs = require("./max.js");
+var _maxJsDefault = parcelHelpers.interopDefault(_maxJs);
+var _maxIndexJs = require("./maxIndex.js");
+var _maxIndexJsDefault = parcelHelpers.interopDefault(_maxIndexJs);
+var _meanJs = require("./mean.js");
+var _meanJsDefault = parcelHelpers.interopDefault(_meanJs);
+var _medianJs = require("./median.js");
+var _medianJsDefault = parcelHelpers.interopDefault(_medianJs);
+var _mergeJs = require("./merge.js");
+var _mergeJsDefault = parcelHelpers.interopDefault(_mergeJs);
+var _minJs = require("./min.js");
+var _minJsDefault = parcelHelpers.interopDefault(_minJs);
+var _minIndexJs = require("./minIndex.js");
+var _minIndexJsDefault = parcelHelpers.interopDefault(_minIndexJs);
+var _modeJs = require("./mode.js");
+var _modeJsDefault = parcelHelpers.interopDefault(_modeJs);
+var _niceJs = require("./nice.js");
+var _niceJsDefault = parcelHelpers.interopDefault(_niceJs);
+var _pairsJs = require("./pairs.js");
+var _pairsJsDefault = parcelHelpers.interopDefault(_pairsJs);
+var _permuteJs = require("./permute.js");
+var _permuteJsDefault = parcelHelpers.interopDefault(_permuteJs);
+var _quantileJs = require("./quantile.js");
+var _quantileJsDefault = parcelHelpers.interopDefault(_quantileJs);
+var _quickselectJs = require("./quickselect.js");
+var _quickselectJsDefault = parcelHelpers.interopDefault(_quickselectJs);
+var _rangeJs = require("./range.js");
+var _rangeJsDefault = parcelHelpers.interopDefault(_rangeJs);
+var _rankJs = require("./rank.js");
+var _rankJsDefault = parcelHelpers.interopDefault(_rankJs);
+var _leastJs = require("./least.js");
+var _leastJsDefault = parcelHelpers.interopDefault(_leastJs);
+var _leastIndexJs = require("./leastIndex.js");
+var _leastIndexJsDefault = parcelHelpers.interopDefault(_leastIndexJs);
+var _greatestJs = require("./greatest.js");
+var _greatestJsDefault = parcelHelpers.interopDefault(_greatestJs);
+var _greatestIndexJs = require("./greatestIndex.js");
+var _greatestIndexJsDefault = parcelHelpers.interopDefault(_greatestIndexJs);
+var _scanJs = require("./scan.js");
+var _scanJsDefault = parcelHelpers.interopDefault(_scanJs);
+var _shuffleJs = require("./shuffle.js");
+var _shuffleJsDefault = parcelHelpers.interopDefault(_shuffleJs);
+var _sumJs = require("./sum.js");
+var _sumJsDefault = parcelHelpers.interopDefault(_sumJs);
+var _ticksJs = require("./ticks.js");
+var _ticksJsDefault = parcelHelpers.interopDefault(_ticksJs);
+var _transposeJs = require("./transpose.js");
+var _transposeJsDefault = parcelHelpers.interopDefault(_transposeJs);
+var _varianceJs = require("./variance.js");
+var _varianceJsDefault = parcelHelpers.interopDefault(_varianceJs);
+var _zipJs = require("./zip.js");
+var _zipJsDefault = parcelHelpers.interopDefault(_zipJs);
+var _everyJs = require("./every.js");
+var _everyJsDefault = parcelHelpers.interopDefault(_everyJs);
+var _someJs = require("./some.js");
+var _someJsDefault = parcelHelpers.interopDefault(_someJs);
+var _filterJs = require("./filter.js");
+var _filterJsDefault = parcelHelpers.interopDefault(_filterJs);
+var _mapJs = require("./map.js");
+var _mapJsDefault = parcelHelpers.interopDefault(_mapJs);
+var _reduceJs = require("./reduce.js");
+var _reduceJsDefault = parcelHelpers.interopDefault(_reduceJs);
+var _reverseJs = require("./reverse.js");
+var _reverseJsDefault = parcelHelpers.interopDefault(_reverseJs);
+var _sortJs = require("./sort.js");
+var _sortJsDefault = parcelHelpers.interopDefault(_sortJs);
+var _differenceJs = require("./difference.js");
+var _differenceJsDefault = parcelHelpers.interopDefault(_differenceJs);
+var _disjointJs = require("./disjoint.js");
+var _disjointJsDefault = parcelHelpers.interopDefault(_disjointJs);
+var _intersectionJs = require("./intersection.js");
+var _intersectionJsDefault = parcelHelpers.interopDefault(_intersectionJs);
+var _subsetJs = require("./subset.js");
+var _subsetJsDefault = parcelHelpers.interopDefault(_subsetJs);
+var _supersetJs = require("./superset.js");
+var _supersetJsDefault = parcelHelpers.interopDefault(_supersetJs);
+var _unionJs = require("./union.js");
+var _unionJsDefault = parcelHelpers.interopDefault(_unionJs);
+var _internmap = require("internmap");
+
+},{"./bisect.js":"gf4cg","./ascending.js":"7Yub6","./bisector.js":"J7sDw","./blur.js":false,"./count.js":false,"./cross.js":false,"./cumsum.js":false,"./descending.js":"crmms","./deviation.js":false,"./extent.js":false,"./fsum.js":false,"./group.js":false,"./groupSort.js":false,"./bin.js":false,"./threshold/freedmanDiaconis.js":false,"./threshold/scott.js":false,"./threshold/sturges.js":false,"./max.js":false,"./maxIndex.js":false,"./mean.js":false,"./median.js":false,"./merge.js":false,"./min.js":false,"./minIndex.js":false,"./mode.js":false,"./nice.js":false,"./pairs.js":false,"./permute.js":false,"./quantile.js":false,"./quickselect.js":false,"./range.js":false,"./rank.js":false,"./least.js":false,"./leastIndex.js":false,"./greatest.js":false,"./greatestIndex.js":false,"./scan.js":false,"./shuffle.js":false,"./sum.js":false,"./ticks.js":"iUCGO","./transpose.js":false,"./variance.js":false,"./zip.js":false,"./every.js":false,"./some.js":false,"./filter.js":false,"./map.js":false,"./reduce.js":false,"./reverse.js":false,"./sort.js":false,"./difference.js":false,"./disjoint.js":false,"./intersection.js":false,"./subset.js":false,"./superset.js":false,"./union.js":false,"internmap":false,"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"gf4cg":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "bisectRight", ()=>bisectRight);
+parcelHelpers.export(exports, "bisectLeft", ()=>bisectLeft);
+parcelHelpers.export(exports, "bisectCenter", ()=>bisectCenter);
+var _ascendingJs = require("./ascending.js");
+var _ascendingJsDefault = parcelHelpers.interopDefault(_ascendingJs);
+var _bisectorJs = require("./bisector.js");
+var _bisectorJsDefault = parcelHelpers.interopDefault(_bisectorJs);
+var _numberJs = require("./number.js");
+var _numberJsDefault = parcelHelpers.interopDefault(_numberJs);
+const ascendingBisect = (0, _bisectorJsDefault.default)((0, _ascendingJsDefault.default));
+const bisectRight = ascendingBisect.right;
+const bisectLeft = ascendingBisect.left;
+const bisectCenter = (0, _bisectorJsDefault.default)((0, _numberJsDefault.default)).center;
+exports.default = bisectRight;
+
+},{"./ascending.js":"7Yub6","./bisector.js":"J7sDw","./number.js":"22xsZ","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7Yub6":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+function ascending(a, b) {
+    return a == null || b == null ? NaN : a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+}
+exports.default = ascending;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"J7sDw":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _ascendingJs = require("./ascending.js");
+var _ascendingJsDefault = parcelHelpers.interopDefault(_ascendingJs);
+var _descendingJs = require("./descending.js");
+var _descendingJsDefault = parcelHelpers.interopDefault(_descendingJs);
+function bisector(f) {
+    let compare1, compare2, delta;
+    // If an accessor is specified, promote it to a comparator. In this case we
+    // can test whether the search value is (self-) comparable. We can’t do this
+    // for a comparator (except for specific, known comparators) because we can’t
+    // tell if the comparator is symmetric, and an asymmetric comparator can’t be
+    // used to test whether a single value is comparable.
+    if (f.length !== 2) {
+        compare1 = (0, _ascendingJsDefault.default);
+        compare2 = (d, x)=>(0, _ascendingJsDefault.default)(f(d), x);
+        delta = (d, x)=>f(d) - x;
+    } else {
+        compare1 = f === (0, _ascendingJsDefault.default) || f === (0, _descendingJsDefault.default) ? f : zero;
+        compare2 = f;
+        delta = f;
+    }
+    function left(a, x, lo = 0, hi = a.length) {
+        if (lo < hi) {
+            if (compare1(x, x) !== 0) return hi;
+            do {
+                const mid = lo + hi >>> 1;
+                if (compare2(a[mid], x) < 0) lo = mid + 1;
+                else hi = mid;
+            }while (lo < hi);
+        }
+        return lo;
+    }
+    function right(a, x, lo = 0, hi = a.length) {
+        if (lo < hi) {
+            if (compare1(x, x) !== 0) return hi;
+            do {
+                const mid = lo + hi >>> 1;
+                if (compare2(a[mid], x) <= 0) lo = mid + 1;
+                else hi = mid;
+            }while (lo < hi);
+        }
+        return lo;
+    }
+    function center(a, x, lo = 0, hi = a.length) {
+        const i = left(a, x, lo, hi - 1);
+        return i > lo && delta(a[i - 1], x) > -delta(a[i], x) ? i - 1 : i;
+    }
+    return {
+        left,
+        center,
+        right
+    };
+}
+exports.default = bisector;
+function zero() {
+    return 0;
+}
+
+},{"./ascending.js":"7Yub6","./descending.js":"crmms","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"crmms":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+function descending(a, b) {
+    return a == null || b == null ? NaN : b < a ? -1 : b > a ? 1 : b >= a ? 0 : NaN;
+}
+exports.default = descending;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"22xsZ":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "numbers", ()=>numbers);
+function number(x) {
+    return x === null ? NaN : +x;
+}
+exports.default = number;
+function* numbers(values, valueof) {
+    if (valueof === undefined) {
+        for (let value of values)if (value != null && (value = +value) >= value) yield value;
+    } else {
+        let index = -1;
+        for (let value1 of values)if ((value1 = valueof(value1, ++index, values)) != null && (value1 = +value1) >= value1) yield value1;
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"iUCGO":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "tickIncrement", ()=>tickIncrement);
+parcelHelpers.export(exports, "tickStep", ()=>tickStep);
+var e10 = Math.sqrt(50), e5 = Math.sqrt(10), e2 = Math.sqrt(2);
+function ticks(start, stop, count) {
+    var reverse, i = -1, n, ticks, step;
+    stop = +stop, start = +start, count = +count;
+    if (start === stop && count > 0) return [
+        start
+    ];
+    if (reverse = stop < start) n = start, start = stop, stop = n;
+    if ((step = tickIncrement(start, stop, count)) === 0 || !isFinite(step)) return [];
+    if (step > 0) {
+        let r0 = Math.round(start / step), r1 = Math.round(stop / step);
+        if (r0 * step < start) ++r0;
+        if (r1 * step > stop) --r1;
+        ticks = new Array(n = r1 - r0 + 1);
+        while(++i < n)ticks[i] = (r0 + i) * step;
+    } else {
+        step = -step;
+        let r01 = Math.round(start * step), r11 = Math.round(stop * step);
+        if (r01 / step < start) ++r01;
+        if (r11 / step > stop) --r11;
+        ticks = new Array(n = r11 - r01 + 1);
+        while(++i < n)ticks[i] = (r01 + i) / step;
+    }
+    if (reverse) ticks.reverse();
+    return ticks;
+}
+exports.default = ticks;
+function tickIncrement(start, stop, count) {
+    var step = (stop - start) / Math.max(0, count), power = Math.floor(Math.log(step) / Math.LN10), error = step / Math.pow(10, power);
+    return power >= 0 ? (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1) * Math.pow(10, power) : -Math.pow(10, -power) / (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1);
+}
+function tickStep(start, stop, count) {
+    var step0 = Math.abs(stop - start) / Math.max(0, count), step1 = Math.pow(10, Math.floor(Math.log(step0) / Math.LN10)), error = step0 / step1;
+    if (error >= e10) step1 *= 10;
+    else if (error >= e5) step1 *= 5;
+    else if (error >= e2) step1 *= 2;
+    return stop < start ? -step1 : step1;
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"2Eu9h":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "identity", ()=>identity);
+parcelHelpers.export(exports, "copy", ()=>copy);
+parcelHelpers.export(exports, "transformer", ()=>transformer);
+var _d3Array = require("d3-array");
+var _d3Interpolate = require("d3-interpolate");
+var _constantJs = require("./constant.js");
+var _constantJsDefault = parcelHelpers.interopDefault(_constantJs);
+var _numberJs = require("./number.js");
+var _numberJsDefault = parcelHelpers.interopDefault(_numberJs);
+var unit = [
+    0,
+    1
+];
+function identity(x) {
+    return x;
+}
+function normalize(a, b) {
+    return (b -= a = +a) ? function(x) {
+        return (x - a) / b;
+    } : (0, _constantJsDefault.default)(isNaN(b) ? NaN : 0.5);
+}
+function clamper(a, b) {
+    var t;
+    if (a > b) t = a, a = b, b = t;
+    return function(x) {
+        return Math.max(a, Math.min(b, x));
+    };
+}
+// normalize(a, b)(x) takes a domain value x in [a,b] and returns the corresponding parameter t in [0,1].
+// interpolate(a, b)(t) takes a parameter t in [0,1] and returns the corresponding range value x in [a,b].
+function bimap(domain, range, interpolate) {
+    var d0 = domain[0], d1 = domain[1], r0 = range[0], r1 = range[1];
+    if (d1 < d0) d0 = normalize(d1, d0), r0 = interpolate(r1, r0);
+    else d0 = normalize(d0, d1), r0 = interpolate(r0, r1);
+    return function(x) {
+        return r0(d0(x));
+    };
+}
+function polymap(domain, range, interpolate) {
+    var j = Math.min(domain.length, range.length) - 1, d = new Array(j), r = new Array(j), i = -1;
+    // Reverse descending domains.
+    if (domain[j] < domain[0]) {
+        domain = domain.slice().reverse();
+        range = range.slice().reverse();
+    }
+    while(++i < j){
+        d[i] = normalize(domain[i], domain[i + 1]);
+        r[i] = interpolate(range[i], range[i + 1]);
+    }
+    return function(x) {
+        var i = (0, _d3Array.bisect)(domain, x, 1, j) - 1;
+        return r[i](d[i](x));
+    };
+}
+function copy(source, target) {
+    return target.domain(source.domain()).range(source.range()).interpolate(source.interpolate()).clamp(source.clamp()).unknown(source.unknown());
+}
+function transformer() {
+    var domain = unit, range = unit, interpolate = (0, _d3Interpolate.interpolate), transform, untransform, unknown, clamp = identity, piecewise, output, input;
+    function rescale() {
+        var n = Math.min(domain.length, range.length);
+        if (clamp !== identity) clamp = clamper(domain[0], domain[n - 1]);
+        piecewise = n > 2 ? polymap : bimap;
+        output = input = null;
+        return scale;
+    }
+    function scale(x) {
+        return x == null || isNaN(x = +x) ? unknown : (output || (output = piecewise(domain.map(transform), range, interpolate)))(transform(clamp(x)));
+    }
+    scale.invert = function(y) {
+        return clamp(untransform((input || (input = piecewise(range, domain.map(transform), (0, _d3Interpolate.interpolateNumber))))(y)));
+    };
+    scale.domain = function(_) {
+        return arguments.length ? (domain = Array.from(_, (0, _numberJsDefault.default)), rescale()) : domain.slice();
+    };
+    scale.range = function(_) {
+        return arguments.length ? (range = Array.from(_), rescale()) : range.slice();
+    };
+    scale.rangeRound = function(_) {
+        return range = Array.from(_), interpolate = (0, _d3Interpolate.interpolateRound), rescale();
+    };
+    scale.clamp = function(_) {
+        return arguments.length ? (clamp = _ ? true : identity, rescale()) : clamp !== identity;
+    };
+    scale.interpolate = function(_) {
+        return arguments.length ? (interpolate = _, rescale()) : interpolate;
+    };
+    scale.unknown = function(_) {
+        return arguments.length ? (unknown = _, scale) : unknown;
+    };
+    return function(t, u) {
+        transform = t, untransform = u;
+        return rescale();
+    };
+}
+function continuous() {
+    return transformer()(identity, identity);
+}
+exports.default = continuous;
+
+},{"d3-array":"dZbmV","d3-interpolate":"lUcrE","./constant.js":"5xprG","./number.js":"fvpO8","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"lUcrE":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "interpolate", ()=>(0, _valueJsDefault.default));
+parcelHelpers.export(exports, "interpolateArray", ()=>(0, _arrayJsDefault.default));
+parcelHelpers.export(exports, "interpolateBasis", ()=>(0, _basisJsDefault.default));
+parcelHelpers.export(exports, "interpolateBasisClosed", ()=>(0, _basisClosedJsDefault.default));
+parcelHelpers.export(exports, "interpolateDate", ()=>(0, _dateJsDefault.default));
+parcelHelpers.export(exports, "interpolateDiscrete", ()=>(0, _discreteJsDefault.default));
+parcelHelpers.export(exports, "interpolateHue", ()=>(0, _hueJsDefault.default));
+parcelHelpers.export(exports, "interpolateNumber", ()=>(0, _numberJsDefault.default));
+parcelHelpers.export(exports, "interpolateNumberArray", ()=>(0, _numberArrayJsDefault.default));
+parcelHelpers.export(exports, "interpolateObject", ()=>(0, _objectJsDefault.default));
+parcelHelpers.export(exports, "interpolateRound", ()=>(0, _roundJsDefault.default));
+parcelHelpers.export(exports, "interpolateString", ()=>(0, _stringJsDefault.default));
+parcelHelpers.export(exports, "interpolateTransformCss", ()=>(0, _indexJs.interpolateTransformCss));
+parcelHelpers.export(exports, "interpolateTransformSvg", ()=>(0, _indexJs.interpolateTransformSvg));
+parcelHelpers.export(exports, "interpolateZoom", ()=>(0, _zoomJsDefault.default));
+parcelHelpers.export(exports, "interpolateRgb", ()=>(0, _rgbJsDefault.default));
+parcelHelpers.export(exports, "interpolateRgbBasis", ()=>(0, _rgbJs.rgbBasis));
+parcelHelpers.export(exports, "interpolateRgbBasisClosed", ()=>(0, _rgbJs.rgbBasisClosed));
+parcelHelpers.export(exports, "interpolateHsl", ()=>(0, _hslJsDefault.default));
+parcelHelpers.export(exports, "interpolateHslLong", ()=>(0, _hslJs.hslLong));
+parcelHelpers.export(exports, "interpolateLab", ()=>(0, _labJsDefault.default));
+parcelHelpers.export(exports, "interpolateHcl", ()=>(0, _hclJsDefault.default));
+parcelHelpers.export(exports, "interpolateHclLong", ()=>(0, _hclJs.hclLong));
+parcelHelpers.export(exports, "interpolateCubehelix", ()=>(0, _cubehelixJsDefault.default));
+parcelHelpers.export(exports, "interpolateCubehelixLong", ()=>(0, _cubehelixJs.cubehelixLong));
+parcelHelpers.export(exports, "piecewise", ()=>(0, _piecewiseJsDefault.default));
+parcelHelpers.export(exports, "quantize", ()=>(0, _quantizeJsDefault.default));
+var _valueJs = require("./value.js");
+var _valueJsDefault = parcelHelpers.interopDefault(_valueJs);
+var _arrayJs = require("./array.js");
+var _arrayJsDefault = parcelHelpers.interopDefault(_arrayJs);
+var _basisJs = require("./basis.js");
+var _basisJsDefault = parcelHelpers.interopDefault(_basisJs);
+var _basisClosedJs = require("./basisClosed.js");
+var _basisClosedJsDefault = parcelHelpers.interopDefault(_basisClosedJs);
+var _dateJs = require("./date.js");
+var _dateJsDefault = parcelHelpers.interopDefault(_dateJs);
+var _discreteJs = require("./discrete.js");
+var _discreteJsDefault = parcelHelpers.interopDefault(_discreteJs);
+var _hueJs = require("./hue.js");
+var _hueJsDefault = parcelHelpers.interopDefault(_hueJs);
+var _numberJs = require("./number.js");
+var _numberJsDefault = parcelHelpers.interopDefault(_numberJs);
+var _numberArrayJs = require("./numberArray.js");
+var _numberArrayJsDefault = parcelHelpers.interopDefault(_numberArrayJs);
+var _objectJs = require("./object.js");
+var _objectJsDefault = parcelHelpers.interopDefault(_objectJs);
+var _roundJs = require("./round.js");
+var _roundJsDefault = parcelHelpers.interopDefault(_roundJs);
+var _stringJs = require("./string.js");
+var _stringJsDefault = parcelHelpers.interopDefault(_stringJs);
+var _indexJs = require("./transform/index.js");
+var _zoomJs = require("./zoom.js");
+var _zoomJsDefault = parcelHelpers.interopDefault(_zoomJs);
+var _rgbJs = require("./rgb.js");
+var _rgbJsDefault = parcelHelpers.interopDefault(_rgbJs);
+var _hslJs = require("./hsl.js");
+var _hslJsDefault = parcelHelpers.interopDefault(_hslJs);
+var _labJs = require("./lab.js");
+var _labJsDefault = parcelHelpers.interopDefault(_labJs);
+var _hclJs = require("./hcl.js");
+var _hclJsDefault = parcelHelpers.interopDefault(_hclJs);
+var _cubehelixJs = require("./cubehelix.js");
+var _cubehelixJsDefault = parcelHelpers.interopDefault(_cubehelixJs);
+var _piecewiseJs = require("./piecewise.js");
+var _piecewiseJsDefault = parcelHelpers.interopDefault(_piecewiseJs);
+var _quantizeJs = require("./quantize.js");
+var _quantizeJsDefault = parcelHelpers.interopDefault(_quantizeJs);
+
+},{"./value.js":"2yQQa","./array.js":"bY1ne","./basis.js":"fNIPE","./basisClosed.js":"eL8JE","./date.js":"5qyQA","./discrete.js":false,"./hue.js":false,"./number.js":"a7XRK","./numberArray.js":"iA0cO","./object.js":"j56Cn","./round.js":"aQfkY","./string.js":"6oiwQ","./transform/index.js":false,"./zoom.js":false,"./rgb.js":"cWZPu","./hsl.js":false,"./lab.js":false,"./hcl.js":false,"./cubehelix.js":false,"./piecewise.js":false,"./quantize.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"2yQQa":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _d3Color = require("d3-color");
+var _rgbJs = require("./rgb.js");
+var _rgbJsDefault = parcelHelpers.interopDefault(_rgbJs);
+var _arrayJs = require("./array.js");
+var _dateJs = require("./date.js");
+var _dateJsDefault = parcelHelpers.interopDefault(_dateJs);
+var _numberJs = require("./number.js");
+var _numberJsDefault = parcelHelpers.interopDefault(_numberJs);
+var _objectJs = require("./object.js");
+var _objectJsDefault = parcelHelpers.interopDefault(_objectJs);
+var _stringJs = require("./string.js");
+var _stringJsDefault = parcelHelpers.interopDefault(_stringJs);
+var _constantJs = require("./constant.js");
+var _constantJsDefault = parcelHelpers.interopDefault(_constantJs);
+var _numberArrayJs = require("./numberArray.js");
+var _numberArrayJsDefault = parcelHelpers.interopDefault(_numberArrayJs);
+exports.default = function(a, b) {
+    var t = typeof b, c;
+    return b == null || t === "boolean" ? (0, _constantJsDefault.default)(b) : (t === "number" ? (0, _numberJsDefault.default) : t === "string" ? (c = (0, _d3Color.color)(b)) ? (b = c, _rgbJsDefault.default) : (0, _stringJsDefault.default) : b instanceof (0, _d3Color.color) ? (0, _rgbJsDefault.default) : b instanceof Date ? (0, _dateJsDefault.default) : (0, _numberArrayJs.isNumberArray)(b) ? (0, _numberArrayJsDefault.default) : Array.isArray(b) ? (0, _arrayJs.genericArray) : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? (0, _objectJsDefault.default) : (0, _numberJsDefault.default))(a, b);
+};
+
+},{"d3-color":"cqCBM","./rgb.js":"cWZPu","./array.js":"bY1ne","./date.js":"5qyQA","./number.js":"a7XRK","./object.js":"j56Cn","./string.js":"6oiwQ","./constant.js":"jmq1s","./numberArray.js":"iA0cO","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"cqCBM":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "color", ()=>(0, _colorJsDefault.default));
+parcelHelpers.export(exports, "rgb", ()=>(0, _colorJs.rgb));
+parcelHelpers.export(exports, "hsl", ()=>(0, _colorJs.hsl));
+parcelHelpers.export(exports, "lab", ()=>(0, _labJsDefault.default));
+parcelHelpers.export(exports, "hcl", ()=>(0, _labJs.hcl));
+parcelHelpers.export(exports, "lch", ()=>(0, _labJs.lch));
+parcelHelpers.export(exports, "gray", ()=>(0, _labJs.gray));
+parcelHelpers.export(exports, "cubehelix", ()=>(0, _cubehelixJsDefault.default));
+var _colorJs = require("./color.js");
+var _colorJsDefault = parcelHelpers.interopDefault(_colorJs);
+var _labJs = require("./lab.js");
+var _labJsDefault = parcelHelpers.interopDefault(_labJs);
+var _cubehelixJs = require("./cubehelix.js");
+var _cubehelixJsDefault = parcelHelpers.interopDefault(_cubehelixJs);
+
+},{"./color.js":"8FoZn","./lab.js":false,"./cubehelix.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8FoZn":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Color", ()=>Color);
+parcelHelpers.export(exports, "darker", ()=>darker);
+parcelHelpers.export(exports, "brighter", ()=>brighter);
+parcelHelpers.export(exports, "rgbConvert", ()=>rgbConvert);
+parcelHelpers.export(exports, "rgb", ()=>rgb);
+parcelHelpers.export(exports, "Rgb", ()=>Rgb);
+parcelHelpers.export(exports, "hslConvert", ()=>hslConvert);
+parcelHelpers.export(exports, "hsl", ()=>hsl);
+var _defineJs = require("./define.js");
+var _defineJsDefault = parcelHelpers.interopDefault(_defineJs);
+function Color() {}
+var darker = 0.7;
+var brighter = 1 / darker;
+var reI = "\\s*([+-]?\\d+)\\s*", reN = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*", reP = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*", reHex = /^#([0-9a-f]{3,8})$/, reRgbInteger = new RegExp(`^rgb\\(${reI},${reI},${reI}\\)$`), reRgbPercent = new RegExp(`^rgb\\(${reP},${reP},${reP}\\)$`), reRgbaInteger = new RegExp(`^rgba\\(${reI},${reI},${reI},${reN}\\)$`), reRgbaPercent = new RegExp(`^rgba\\(${reP},${reP},${reP},${reN}\\)$`), reHslPercent = new RegExp(`^hsl\\(${reN},${reP},${reP}\\)$`), reHslaPercent = new RegExp(`^hsla\\(${reN},${reP},${reP},${reN}\\)$`);
+var named = {
+    aliceblue: 0xf0f8ff,
+    antiquewhite: 0xfaebd7,
+    aqua: 0x00ffff,
+    aquamarine: 0x7fffd4,
+    azure: 0xf0ffff,
+    beige: 0xf5f5dc,
+    bisque: 0xffe4c4,
+    black: 0x000000,
+    blanchedalmond: 0xffebcd,
+    blue: 0x0000ff,
+    blueviolet: 0x8a2be2,
+    brown: 0xa52a2a,
+    burlywood: 0xdeb887,
+    cadetblue: 0x5f9ea0,
+    chartreuse: 0x7fff00,
+    chocolate: 0xd2691e,
+    coral: 0xff7f50,
+    cornflowerblue: 0x6495ed,
+    cornsilk: 0xfff8dc,
+    crimson: 0xdc143c,
+    cyan: 0x00ffff,
+    darkblue: 0x00008b,
+    darkcyan: 0x008b8b,
+    darkgoldenrod: 0xb8860b,
+    darkgray: 0xa9a9a9,
+    darkgreen: 0x006400,
+    darkgrey: 0xa9a9a9,
+    darkkhaki: 0xbdb76b,
+    darkmagenta: 0x8b008b,
+    darkolivegreen: 0x556b2f,
+    darkorange: 0xff8c00,
+    darkorchid: 0x9932cc,
+    darkred: 0x8b0000,
+    darksalmon: 0xe9967a,
+    darkseagreen: 0x8fbc8f,
+    darkslateblue: 0x483d8b,
+    darkslategray: 0x2f4f4f,
+    darkslategrey: 0x2f4f4f,
+    darkturquoise: 0x00ced1,
+    darkviolet: 0x9400d3,
+    deeppink: 0xff1493,
+    deepskyblue: 0x00bfff,
+    dimgray: 0x696969,
+    dimgrey: 0x696969,
+    dodgerblue: 0x1e90ff,
+    firebrick: 0xb22222,
+    floralwhite: 0xfffaf0,
+    forestgreen: 0x228b22,
+    fuchsia: 0xff00ff,
+    gainsboro: 0xdcdcdc,
+    ghostwhite: 0xf8f8ff,
+    gold: 0xffd700,
+    goldenrod: 0xdaa520,
+    gray: 0x808080,
+    green: 0x008000,
+    greenyellow: 0xadff2f,
+    grey: 0x808080,
+    honeydew: 0xf0fff0,
+    hotpink: 0xff69b4,
+    indianred: 0xcd5c5c,
+    indigo: 0x4b0082,
+    ivory: 0xfffff0,
+    khaki: 0xf0e68c,
+    lavender: 0xe6e6fa,
+    lavenderblush: 0xfff0f5,
+    lawngreen: 0x7cfc00,
+    lemonchiffon: 0xfffacd,
+    lightblue: 0xadd8e6,
+    lightcoral: 0xf08080,
+    lightcyan: 0xe0ffff,
+    lightgoldenrodyellow: 0xfafad2,
+    lightgray: 0xd3d3d3,
+    lightgreen: 0x90ee90,
+    lightgrey: 0xd3d3d3,
+    lightpink: 0xffb6c1,
+    lightsalmon: 0xffa07a,
+    lightseagreen: 0x20b2aa,
+    lightskyblue: 0x87cefa,
+    lightslategray: 0x778899,
+    lightslategrey: 0x778899,
+    lightsteelblue: 0xb0c4de,
+    lightyellow: 0xffffe0,
+    lime: 0x00ff00,
+    limegreen: 0x32cd32,
+    linen: 0xfaf0e6,
+    magenta: 0xff00ff,
+    maroon: 0x800000,
+    mediumaquamarine: 0x66cdaa,
+    mediumblue: 0x0000cd,
+    mediumorchid: 0xba55d3,
+    mediumpurple: 0x9370db,
+    mediumseagreen: 0x3cb371,
+    mediumslateblue: 0x7b68ee,
+    mediumspringgreen: 0x00fa9a,
+    mediumturquoise: 0x48d1cc,
+    mediumvioletred: 0xc71585,
+    midnightblue: 0x191970,
+    mintcream: 0xf5fffa,
+    mistyrose: 0xffe4e1,
+    moccasin: 0xffe4b5,
+    navajowhite: 0xffdead,
+    navy: 0x000080,
+    oldlace: 0xfdf5e6,
+    olive: 0x808000,
+    olivedrab: 0x6b8e23,
+    orange: 0xffa500,
+    orangered: 0xff4500,
+    orchid: 0xda70d6,
+    palegoldenrod: 0xeee8aa,
+    palegreen: 0x98fb98,
+    paleturquoise: 0xafeeee,
+    palevioletred: 0xdb7093,
+    papayawhip: 0xffefd5,
+    peachpuff: 0xffdab9,
+    peru: 0xcd853f,
+    pink: 0xffc0cb,
+    plum: 0xdda0dd,
+    powderblue: 0xb0e0e6,
+    purple: 0x800080,
+    rebeccapurple: 0x663399,
+    red: 0xff0000,
+    rosybrown: 0xbc8f8f,
+    royalblue: 0x4169e1,
+    saddlebrown: 0x8b4513,
+    salmon: 0xfa8072,
+    sandybrown: 0xf4a460,
+    seagreen: 0x2e8b57,
+    seashell: 0xfff5ee,
+    sienna: 0xa0522d,
+    silver: 0xc0c0c0,
+    skyblue: 0x87ceeb,
+    slateblue: 0x6a5acd,
+    slategray: 0x708090,
+    slategrey: 0x708090,
+    snow: 0xfffafa,
+    springgreen: 0x00ff7f,
+    steelblue: 0x4682b4,
+    tan: 0xd2b48c,
+    teal: 0x008080,
+    thistle: 0xd8bfd8,
+    tomato: 0xff6347,
+    turquoise: 0x40e0d0,
+    violet: 0xee82ee,
+    wheat: 0xf5deb3,
+    white: 0xffffff,
+    whitesmoke: 0xf5f5f5,
+    yellow: 0xffff00,
+    yellowgreen: 0x9acd32
+};
+(0, _defineJsDefault.default)(Color, color, {
+    copy (channels) {
+        return Object.assign(new this.constructor, this, channels);
+    },
+    displayable () {
+        return this.rgb().displayable();
+    },
+    hex: color_formatHex,
+    formatHex: color_formatHex,
+    formatHex8: color_formatHex8,
+    formatHsl: color_formatHsl,
+    formatRgb: color_formatRgb,
+    toString: color_formatRgb
+});
+function color_formatHex() {
+    return this.rgb().formatHex();
+}
+function color_formatHex8() {
+    return this.rgb().formatHex8();
+}
+function color_formatHsl() {
+    return hslConvert(this).formatHsl();
+}
+function color_formatRgb() {
+    return this.rgb().formatRgb();
+}
+function color(format) {
+    var m, l;
+    format = (format + "").trim().toLowerCase();
+    return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
+     : l === 3 ? new Rgb(m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, (m & 0xf) << 4 | m & 0xf, 1) // #f00
+     : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+     : l === 4 ? rgba(m >> 12 & 0xf | m >> 8 & 0xf0, m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, ((m & 0xf) << 4 | m & 0xf) / 0xff) // #f000
+     : null // invalid hex
+    ) : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+     : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+     : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+     : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+     : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+     : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+     : named.hasOwnProperty(format) ? rgbn(named[format]) // eslint-disable-line no-prototype-builtins
+     : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0) : null;
+}
+exports.default = color;
+function rgbn(n) {
+    return new Rgb(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+}
+function rgba(r, g, b, a) {
+    if (a <= 0) r = g = b = NaN;
+    return new Rgb(r, g, b, a);
+}
+function rgbConvert(o) {
+    if (!(o instanceof Color)) o = color(o);
+    if (!o) return new Rgb;
+    o = o.rgb();
+    return new Rgb(o.r, o.g, o.b, o.opacity);
+}
+function rgb(r, g, b, opacity) {
+    return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
+}
+function Rgb(r, g, b, opacity) {
+    this.r = +r;
+    this.g = +g;
+    this.b = +b;
+    this.opacity = +opacity;
+}
+(0, _defineJsDefault.default)(Rgb, rgb, (0, _defineJs.extend)(Color, {
+    brighter (k) {
+        k = k == null ? brighter : Math.pow(brighter, k);
+        return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    darker (k) {
+        k = k == null ? darker : Math.pow(darker, k);
+        return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    rgb () {
+        return this;
+    },
+    clamp () {
+        return new Rgb(clampi(this.r), clampi(this.g), clampi(this.b), clampa(this.opacity));
+    },
+    displayable () {
+        return -0.5 <= this.r && this.r < 255.5 && -0.5 <= this.g && this.g < 255.5 && -0.5 <= this.b && this.b < 255.5 && 0 <= this.opacity && this.opacity <= 1;
+    },
+    hex: rgb_formatHex,
+    formatHex: rgb_formatHex,
+    formatHex8: rgb_formatHex8,
+    formatRgb: rgb_formatRgb,
+    toString: rgb_formatRgb
+}));
+function rgb_formatHex() {
+    return `#${hex(this.r)}${hex(this.g)}${hex(this.b)}`;
+}
+function rgb_formatHex8() {
+    return `#${hex(this.r)}${hex(this.g)}${hex(this.b)}${hex((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
+}
+function rgb_formatRgb() {
+    const a = clampa(this.opacity);
+    return `${a === 1 ? "rgb(" : "rgba("}${clampi(this.r)}, ${clampi(this.g)}, ${clampi(this.b)}${a === 1 ? ")" : `, ${a})`}`;
+}
+function clampa(opacity) {
+    return isNaN(opacity) ? 1 : Math.max(0, Math.min(1, opacity));
+}
+function clampi(value) {
+    return Math.max(0, Math.min(255, Math.round(value) || 0));
+}
+function hex(value) {
+    value = clampi(value);
+    return (value < 16 ? "0" : "") + value.toString(16);
+}
+function hsla(h, s, l, a) {
+    if (a <= 0) h = s = l = NaN;
+    else if (l <= 0 || l >= 1) h = s = NaN;
+    else if (s <= 0) h = NaN;
+    return new Hsl(h, s, l, a);
+}
+function hslConvert(o) {
+    if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof Color)) o = color(o);
+    if (!o) return new Hsl;
+    if (o instanceof Hsl) return o;
+    o = o.rgb();
+    var r = o.r / 255, g = o.g / 255, b = o.b / 255, min = Math.min(r, g, b), max = Math.max(r, g, b), h = NaN, s = max - min, l = (max + min) / 2;
+    if (s) {
+        if (r === max) h = (g - b) / s + (g < b) * 6;
+        else if (g === max) h = (b - r) / s + 2;
+        else h = (r - g) / s + 4;
+        s /= l < 0.5 ? max + min : 2 - max - min;
+        h *= 60;
+    } else s = l > 0 && l < 1 ? 0 : h;
+    return new Hsl(h, s, l, o.opacity);
+}
+function hsl(h, s, l, opacity) {
+    return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
+}
+function Hsl(h, s, l, opacity) {
+    this.h = +h;
+    this.s = +s;
+    this.l = +l;
+    this.opacity = +opacity;
+}
+(0, _defineJsDefault.default)(Hsl, hsl, (0, _defineJs.extend)(Color, {
+    brighter (k) {
+        k = k == null ? brighter : Math.pow(brighter, k);
+        return new Hsl(this.h, this.s, this.l * k, this.opacity);
+    },
+    darker (k) {
+        k = k == null ? darker : Math.pow(darker, k);
+        return new Hsl(this.h, this.s, this.l * k, this.opacity);
+    },
+    rgb () {
+        var h = this.h % 360 + (this.h < 0) * 360, s = isNaN(h) || isNaN(this.s) ? 0 : this.s, l = this.l, m2 = l + (l < 0.5 ? l : 1 - l) * s, m1 = 2 * l - m2;
+        return new Rgb(hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), hsl2rgb(h, m1, m2), hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
+    },
+    clamp () {
+        return new Hsl(clamph(this.h), clampt(this.s), clampt(this.l), clampa(this.opacity));
+    },
+    displayable () {
+        return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && 0 <= this.l && this.l <= 1 && 0 <= this.opacity && this.opacity <= 1;
+    },
+    formatHsl () {
+        const a = clampa(this.opacity);
+        return `${a === 1 ? "hsl(" : "hsla("}${clamph(this.h)}, ${clampt(this.s) * 100}%, ${clampt(this.l) * 100}%${a === 1 ? ")" : `, ${a})`}`;
+    }
+}));
+function clamph(value) {
+    value = (value || 0) % 360;
+    return value < 0 ? value + 360 : value;
+}
+function clampt(value) {
+    return Math.max(0, Math.min(1, value || 0));
+}
+/* From FvD 13.37, CSS Color Module Level 3 */ function hsl2rgb(h, m1, m2) {
+    return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
+}
+
+},{"./define.js":"5QASU","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"5QASU":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "extend", ()=>extend);
+exports.default = function(constructor, factory, prototype) {
+    constructor.prototype = factory.prototype = prototype;
+    prototype.constructor = constructor;
+};
+function extend(parent, definition) {
+    var prototype = Object.create(parent.prototype);
+    for(var key in definition)prototype[key] = definition[key];
+    return prototype;
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"cWZPu":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "rgbBasis", ()=>rgbBasis);
+parcelHelpers.export(exports, "rgbBasisClosed", ()=>rgbBasisClosed);
+var _d3Color = require("d3-color");
+var _basisJs = require("./basis.js");
+var _basisJsDefault = parcelHelpers.interopDefault(_basisJs);
+var _basisClosedJs = require("./basisClosed.js");
+var _basisClosedJsDefault = parcelHelpers.interopDefault(_basisClosedJs);
+var _colorJs = require("./color.js");
+var _colorJsDefault = parcelHelpers.interopDefault(_colorJs);
+exports.default = function rgbGamma(y) {
+    var color = (0, _colorJs.gamma)(y);
+    function rgb(start, end) {
+        var r = color((start = (0, _d3Color.rgb)(start)).r, (end = (0, _d3Color.rgb)(end)).r), g = color(start.g, end.g), b = color(start.b, end.b), opacity = (0, _colorJsDefault.default)(start.opacity, end.opacity);
+        return function(t) {
+            start.r = r(t);
+            start.g = g(t);
+            start.b = b(t);
+            start.opacity = opacity(t);
+            return start + "";
+        };
+    }
+    rgb.gamma = rgbGamma;
+    return rgb;
+}(1);
+function rgbSpline(spline) {
+    return function(colors) {
+        var n = colors.length, r = new Array(n), g = new Array(n), b = new Array(n), i, color;
+        for(i = 0; i < n; ++i){
+            color = (0, _d3Color.rgb)(colors[i]);
+            r[i] = color.r || 0;
+            g[i] = color.g || 0;
+            b[i] = color.b || 0;
+        }
+        r = spline(r);
+        g = spline(g);
+        b = spline(b);
+        color.opacity = 1;
+        return function(t) {
+            color.r = r(t);
+            color.g = g(t);
+            color.b = b(t);
+            return color + "";
+        };
+    };
+}
+var rgbBasis = rgbSpline((0, _basisJsDefault.default));
+var rgbBasisClosed = rgbSpline((0, _basisClosedJsDefault.default));
+
+},{"d3-color":"cqCBM","./basis.js":"fNIPE","./basisClosed.js":"eL8JE","./color.js":"cmghy","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fNIPE":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "basis", ()=>basis);
+function basis(t1, v0, v1, v2, v3) {
+    var t2 = t1 * t1, t3 = t2 * t1;
+    return ((1 - 3 * t1 + 3 * t2 - t3) * v0 + (4 - 6 * t2 + 3 * t3) * v1 + (1 + 3 * t1 + 3 * t2 - 3 * t3) * v2 + t3 * v3) / 6;
+}
+exports.default = function(values) {
+    var n = values.length - 1;
+    return function(t) {
+        var i = t <= 0 ? t = 0 : t >= 1 ? (t = 1, n - 1) : Math.floor(t * n), v1 = values[i], v2 = values[i + 1], v0 = i > 0 ? values[i - 1] : 2 * v1 - v2, v3 = i < n - 1 ? values[i + 2] : 2 * v2 - v1;
+        return basis((t - i / n) * n, v0, v1, v2, v3);
+    };
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"eL8JE":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _basisJs = require("./basis.js");
+exports.default = function(values) {
+    var n = values.length;
+    return function(t) {
+        var i = Math.floor(((t %= 1) < 0 ? ++t : t) * n), v0 = values[(i + n - 1) % n], v1 = values[i % n], v2 = values[(i + 1) % n], v3 = values[(i + 2) % n];
+        return (0, _basisJs.basis)((t - i / n) * n, v0, v1, v2, v3);
+    };
+};
+
+},{"./basis.js":"fNIPE","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"cmghy":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "hue", ()=>hue);
+parcelHelpers.export(exports, "gamma", ()=>gamma);
+var _constantJs = require("./constant.js");
+var _constantJsDefault = parcelHelpers.interopDefault(_constantJs);
+function linear(a, d) {
+    return function(t) {
+        return a + t * d;
+    };
+}
+function exponential(a, b, y) {
+    return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function(t) {
+        return Math.pow(a + t * b, y);
+    };
+}
+function hue(a, b) {
+    var d = b - a;
+    return d ? linear(a, d > 180 || d < -180 ? d - 360 * Math.round(d / 360) : d) : (0, _constantJsDefault.default)(isNaN(a) ? b : a);
+}
+function gamma(y) {
+    return (y = +y) === 1 ? nogamma : function(a, b) {
+        return b - a ? exponential(a, b, y) : (0, _constantJsDefault.default)(isNaN(a) ? b : a);
+    };
+}
+function nogamma(a, b) {
+    var d = b - a;
+    return d ? linear(a, d) : (0, _constantJsDefault.default)(isNaN(a) ? b : a);
+}
+exports.default = nogamma;
+
+},{"./constant.js":"jmq1s","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jmq1s":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+exports.default = (x)=>()=>x;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"bY1ne":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "genericArray", ()=>genericArray);
+var _valueJs = require("./value.js");
+var _valueJsDefault = parcelHelpers.interopDefault(_valueJs);
+var _numberArrayJs = require("./numberArray.js");
+var _numberArrayJsDefault = parcelHelpers.interopDefault(_numberArrayJs);
+exports.default = function(a, b) {
+    return ((0, _numberArrayJs.isNumberArray)(b) ? (0, _numberArrayJsDefault.default) : genericArray)(a, b);
+};
+function genericArray(a, b) {
+    var nb = b ? b.length : 0, na = a ? Math.min(nb, a.length) : 0, x = new Array(na), c = new Array(nb), i;
+    for(i = 0; i < na; ++i)x[i] = (0, _valueJsDefault.default)(a[i], b[i]);
+    for(; i < nb; ++i)c[i] = b[i];
+    return function(t) {
+        for(i = 0; i < na; ++i)c[i] = x[i](t);
+        return c;
+    };
+}
+
+},{"./value.js":"2yQQa","./numberArray.js":"iA0cO","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"iA0cO":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "isNumberArray", ()=>isNumberArray);
+exports.default = function(a, b) {
+    if (!b) b = [];
+    var n = a ? Math.min(b.length, a.length) : 0, c = b.slice(), i;
+    return function(t) {
+        for(i = 0; i < n; ++i)c[i] = a[i] * (1 - t) + b[i] * t;
+        return c;
+    };
+};
+function isNumberArray(x) {
+    return ArrayBuffer.isView(x) && !(x instanceof DataView);
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"5qyQA":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+exports.default = function(a, b) {
+    var d = new Date;
+    return a = +a, b = +b, function(t) {
+        return d.setTime(a * (1 - t) + b * t), d;
+    };
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"a7XRK":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+exports.default = function(a, b) {
+    return a = +a, b = +b, function(t) {
+        return a * (1 - t) + b * t;
+    };
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"j56Cn":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _valueJs = require("./value.js");
+var _valueJsDefault = parcelHelpers.interopDefault(_valueJs);
+exports.default = function(a, b) {
+    var i = {}, c = {}, k;
+    if (a === null || typeof a !== "object") a = {};
+    if (b === null || typeof b !== "object") b = {};
+    for(k in b)if (k in a) i[k] = (0, _valueJsDefault.default)(a[k], b[k]);
+    else c[k] = b[k];
+    return function(t) {
+        for(k in i)c[k] = i[k](t);
+        return c;
+    };
+};
+
+},{"./value.js":"2yQQa","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"6oiwQ":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _numberJs = require("./number.js");
+var _numberJsDefault = parcelHelpers.interopDefault(_numberJs);
+var reA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g, reB = new RegExp(reA.source, "g");
+function zero(b) {
+    return function() {
+        return b;
+    };
+}
+function one(b) {
+    return function(t) {
+        return b(t) + "";
+    };
+}
+exports.default = function(a, b) {
+    var bi = reA.lastIndex = reB.lastIndex = 0, am, bm, bs, i = -1, s = [], q = []; // number interpolators
+    // Coerce inputs to strings.
+    a = a + "", b = b + "";
+    // Interpolate pairs of numbers in a & b.
+    while((am = reA.exec(a)) && (bm = reB.exec(b))){
+        if ((bs = bm.index) > bi) {
+            bs = b.slice(bi, bs);
+            if (s[i]) s[i] += bs; // coalesce with previous string
+            else s[++i] = bs;
+        }
+        if ((am = am[0]) === (bm = bm[0])) {
+            if (s[i]) s[i] += bm; // coalesce with previous string
+            else s[++i] = bm;
+        } else {
+            s[++i] = null;
+            q.push({
+                i: i,
+                x: (0, _numberJsDefault.default)(am, bm)
+            });
+        }
+        bi = reB.lastIndex;
+    }
+    // Add remains of b.
+    if (bi < b.length) {
+        bs = b.slice(bi);
+        if (s[i]) s[i] += bs; // coalesce with previous string
+        else s[++i] = bs;
+    }
+    // Special optimization for only a single match.
+    // Otherwise, interpolate each of the numbers and rejoin the string.
+    return s.length < 2 ? q[0] ? one(q[0].x) : zero(b) : (b = q.length, function(t) {
+        for(var i = 0, o; i < b; ++i)s[(o = q[i]).i] = o.x(t);
+        return s.join("");
+    });
+};
+
+},{"./number.js":"a7XRK","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"aQfkY":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+exports.default = function(a, b) {
+    return a = +a, b = +b, function(t) {
+        return Math.round(a * (1 - t) + b * t);
+    };
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"5xprG":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+function constants(x) {
+    return function() {
+        return x;
+    };
+}
+exports.default = constants;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fvpO8":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+function number(x) {
+    return +x;
+}
+exports.default = number;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"9fTkO":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "initRange", ()=>initRange);
+parcelHelpers.export(exports, "initInterpolator", ()=>initInterpolator);
+function initRange(domain, range) {
+    switch(arguments.length){
+        case 0:
+            break;
+        case 1:
+            this.range(domain);
+            break;
+        default:
+            this.range(range).domain(domain);
+            break;
+    }
+    return this;
+}
+function initInterpolator(domain, interpolator) {
+    switch(arguments.length){
+        case 0:
+            break;
+        case 1:
+            if (typeof domain === "function") this.interpolator(domain);
+            else this.range(domain);
+            break;
+        default:
+            this.domain(domain);
+            if (typeof interpolator === "function") this.interpolator(interpolator);
+            else this.range(interpolator);
+            break;
+    }
+    return this;
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"2waV2":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _d3Array = require("d3-array");
+var _d3Format = require("d3-format");
+function tickFormat(start, stop, count, specifier) {
+    var step = (0, _d3Array.tickStep)(start, stop, count), precision;
+    specifier = (0, _d3Format.formatSpecifier)(specifier == null ? ",f" : specifier);
+    switch(specifier.type){
+        case "s":
+            var value = Math.max(Math.abs(start), Math.abs(stop));
+            if (specifier.precision == null && !isNaN(precision = (0, _d3Format.precisionPrefix)(step, value))) specifier.precision = precision;
+            return (0, _d3Format.formatPrefix)(specifier, value);
+        case "":
+        case "e":
+        case "g":
+        case "p":
+        case "r":
+            if (specifier.precision == null && !isNaN(precision = (0, _d3Format.precisionRound)(step, Math.max(Math.abs(start), Math.abs(stop))))) specifier.precision = precision - (specifier.type === "e");
+            break;
+        case "f":
+        case "%":
+            if (specifier.precision == null && !isNaN(precision = (0, _d3Format.precisionFixed)(step))) specifier.precision = precision - (specifier.type === "%") * 2;
+            break;
+    }
+    return (0, _d3Format.format)(specifier);
+}
+exports.default = tickFormat;
+
+},{"d3-array":"dZbmV","d3-format":"85iWN","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"85iWN":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "formatDefaultLocale", ()=>(0, _defaultLocaleJsDefault.default));
+parcelHelpers.export(exports, "format", ()=>(0, _defaultLocaleJs.format));
+parcelHelpers.export(exports, "formatPrefix", ()=>(0, _defaultLocaleJs.formatPrefix));
+parcelHelpers.export(exports, "formatLocale", ()=>(0, _localeJsDefault.default));
+parcelHelpers.export(exports, "formatSpecifier", ()=>(0, _formatSpecifierJsDefault.default));
+parcelHelpers.export(exports, "FormatSpecifier", ()=>(0, _formatSpecifierJs.FormatSpecifier));
+parcelHelpers.export(exports, "precisionFixed", ()=>(0, _precisionFixedJsDefault.default));
+parcelHelpers.export(exports, "precisionPrefix", ()=>(0, _precisionPrefixJsDefault.default));
+parcelHelpers.export(exports, "precisionRound", ()=>(0, _precisionRoundJsDefault.default));
+var _defaultLocaleJs = require("./defaultLocale.js");
+var _defaultLocaleJsDefault = parcelHelpers.interopDefault(_defaultLocaleJs);
+var _localeJs = require("./locale.js");
+var _localeJsDefault = parcelHelpers.interopDefault(_localeJs);
+var _formatSpecifierJs = require("./formatSpecifier.js");
+var _formatSpecifierJsDefault = parcelHelpers.interopDefault(_formatSpecifierJs);
+var _precisionFixedJs = require("./precisionFixed.js");
+var _precisionFixedJsDefault = parcelHelpers.interopDefault(_precisionFixedJs);
+var _precisionPrefixJs = require("./precisionPrefix.js");
+var _precisionPrefixJsDefault = parcelHelpers.interopDefault(_precisionPrefixJs);
+var _precisionRoundJs = require("./precisionRound.js");
+var _precisionRoundJsDefault = parcelHelpers.interopDefault(_precisionRoundJs);
+
+},{"./defaultLocale.js":"aRVvm","./locale.js":"45bmf","./formatSpecifier.js":"8bBw7","./precisionFixed.js":"i5nxN","./precisionPrefix.js":"fpe0N","./precisionRound.js":"kHB0B","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"aRVvm":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "format", ()=>format);
+parcelHelpers.export(exports, "formatPrefix", ()=>formatPrefix);
+var _localeJs = require("./locale.js");
+var _localeJsDefault = parcelHelpers.interopDefault(_localeJs);
+var locale;
+var format;
+var formatPrefix;
+defaultLocale({
+    thousands: ",",
+    grouping: [
+        3
+    ],
+    currency: [
+        "$",
+        ""
+    ]
+});
+function defaultLocale(definition) {
+    locale = (0, _localeJsDefault.default)(definition);
+    format = locale.format;
+    formatPrefix = locale.formatPrefix;
+    return locale;
+}
+exports.default = defaultLocale;
+
+},{"./locale.js":"45bmf","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"45bmf":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _exponentJs = require("./exponent.js");
+var _exponentJsDefault = parcelHelpers.interopDefault(_exponentJs);
+var _formatGroupJs = require("./formatGroup.js");
+var _formatGroupJsDefault = parcelHelpers.interopDefault(_formatGroupJs);
+var _formatNumeralsJs = require("./formatNumerals.js");
+var _formatNumeralsJsDefault = parcelHelpers.interopDefault(_formatNumeralsJs);
+var _formatSpecifierJs = require("./formatSpecifier.js");
+var _formatSpecifierJsDefault = parcelHelpers.interopDefault(_formatSpecifierJs);
+var _formatTrimJs = require("./formatTrim.js");
+var _formatTrimJsDefault = parcelHelpers.interopDefault(_formatTrimJs);
+var _formatTypesJs = require("./formatTypes.js");
+var _formatTypesJsDefault = parcelHelpers.interopDefault(_formatTypesJs);
+var _formatPrefixAutoJs = require("./formatPrefixAuto.js");
+var _identityJs = require("./identity.js");
+var _identityJsDefault = parcelHelpers.interopDefault(_identityJs);
+var map = Array.prototype.map, prefixes = [
+    "y",
+    "z",
+    "a",
+    "f",
+    "p",
+    "n",
+    "\xb5",
+    "m",
+    "",
+    "k",
+    "M",
+    "G",
+    "T",
+    "P",
+    "E",
+    "Z",
+    "Y"
+];
+exports.default = function(locale) {
+    var group = locale.grouping === undefined || locale.thousands === undefined ? (0, _identityJsDefault.default) : (0, _formatGroupJsDefault.default)(map.call(locale.grouping, Number), locale.thousands + ""), currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "", currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "", decimal = locale.decimal === undefined ? "." : locale.decimal + "", numerals = locale.numerals === undefined ? (0, _identityJsDefault.default) : (0, _formatNumeralsJsDefault.default)(map.call(locale.numerals, String)), percent = locale.percent === undefined ? "%" : locale.percent + "", minus = locale.minus === undefined ? "−" : locale.minus + "", nan = locale.nan === undefined ? "NaN" : locale.nan + "";
+    function newFormat(specifier) {
+        specifier = (0, _formatSpecifierJsDefault.default)(specifier);
+        var fill = specifier.fill, align = specifier.align, sign = specifier.sign, symbol = specifier.symbol, zero = specifier.zero, width = specifier.width, comma = specifier.comma, precision = specifier.precision, trim = specifier.trim, type = specifier.type;
+        // The "n" type is an alias for ",g".
+        if (type === "n") comma = true, type = "g";
+        else if (!(0, _formatTypesJsDefault.default)[type]) precision === undefined && (precision = 12), trim = true, type = "g";
+        // If zero fill is specified, padding goes after sign and before digits.
+        if (zero || fill === "0" && align === "=") zero = true, fill = "0", align = "=";
+        // Compute the prefix and suffix.
+        // For SI-prefix, the suffix is lazily computed.
+        var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "", suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type) ? percent : "";
+        // What format function should we use?
+        // Is this an integer type?
+        // Can this type generate exponential notation?
+        var formatType = (0, _formatTypesJsDefault.default)[type], maybeSuffix = /[defgprs%]/.test(type);
+        // Set the default precision if not specified,
+        // or clamp the specified precision to the supported range.
+        // For significant precision, it must be in [1, 21].
+        // For fixed precision, it must be in [0, 20].
+        precision = precision === undefined ? 6 : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision)) : Math.max(0, Math.min(20, precision));
+        function format(value) {
+            var valuePrefix = prefix, valueSuffix = suffix, i, n, c;
+            if (type === "c") {
+                valueSuffix = formatType(value) + valueSuffix;
+                value = "";
+            } else {
+                value = +value;
+                // Determine the sign. -0 is not less than 0, but 1 / -0 is!
+                var valueNegative = value < 0 || 1 / value < 0;
+                // Perform the initial formatting.
+                value = isNaN(value) ? nan : formatType(Math.abs(value), precision);
+                // Trim insignificant zeros.
+                if (trim) value = (0, _formatTrimJsDefault.default)(value);
+                // If a negative value rounds to zero after formatting, and no explicit positive sign is requested, hide the sign.
+                if (valueNegative && +value === 0 && sign !== "+") valueNegative = false;
+                // Compute the prefix and suffix.
+                valuePrefix = (valueNegative ? sign === "(" ? sign : minus : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
+                valueSuffix = (type === "s" ? prefixes[8 + (0, _formatPrefixAutoJs.prefixExponent) / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
+                // Break the formatted value into the integer “value” part that can be
+                // grouped, and fractional or exponential “suffix” part that is not.
+                if (maybeSuffix) {
+                    i = -1, n = value.length;
+                    while(++i < n)if (c = value.charCodeAt(i), 48 > c || c > 57) {
+                        valueSuffix = (c === 46 ? decimal + value.slice(i + 1) : value.slice(i)) + valueSuffix;
+                        value = value.slice(0, i);
+                        break;
+                    }
+                }
+            }
+            // If the fill character is not "0", grouping is applied before padding.
+            if (comma && !zero) value = group(value, Infinity);
+            // Compute the padding.
+            var length = valuePrefix.length + value.length + valueSuffix.length, padding = length < width ? new Array(width - length + 1).join(fill) : "";
+            // If the fill character is "0", grouping is applied after padding.
+            if (comma && zero) value = group(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = "";
+            // Reconstruct the final output based on the desired alignment.
+            switch(align){
+                case "<":
+                    value = valuePrefix + value + valueSuffix + padding;
+                    break;
+                case "=":
+                    value = valuePrefix + padding + value + valueSuffix;
+                    break;
+                case "^":
+                    value = padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length);
+                    break;
+                default:
+                    value = padding + valuePrefix + value + valueSuffix;
+                    break;
+            }
+            return numerals(value);
+        }
+        format.toString = function() {
+            return specifier + "";
+        };
+        return format;
+    }
+    function formatPrefix(specifier, value) {
+        var f = newFormat((specifier = (0, _formatSpecifierJsDefault.default)(specifier), specifier.type = "f", specifier)), e = Math.max(-8, Math.min(8, Math.floor((0, _exponentJsDefault.default)(value) / 3))) * 3, k = Math.pow(10, -e), prefix = prefixes[8 + e / 3];
+        return function(value) {
+            return f(k * value) + prefix;
+        };
+    }
+    return {
+        format: newFormat,
+        formatPrefix: formatPrefix
+    };
+};
+
+},{"./exponent.js":"ay0Pk","./formatGroup.js":"f085O","./formatNumerals.js":"lb0HK","./formatSpecifier.js":"8bBw7","./formatTrim.js":"8x8Og","./formatTypes.js":"fy3bF","./formatPrefixAuto.js":"eOR98","./identity.js":"hYh5S","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"ay0Pk":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _formatDecimalJs = require("./formatDecimal.js");
+exports.default = function(x) {
+    return x = (0, _formatDecimalJs.formatDecimalParts)(Math.abs(x)), x ? x[1] : NaN;
+};
+
+},{"./formatDecimal.js":"gu3up","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"gu3up":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+// Computes the decimal coefficient and exponent of the specified number x with
+// significant digits p, where x is positive and p is in [1, 21] or undefined.
+// For example, formatDecimalParts(1.23) returns ["123", 0].
+parcelHelpers.export(exports, "formatDecimalParts", ()=>formatDecimalParts);
+exports.default = function(x) {
+    return Math.abs(x = Math.round(x)) >= 1e21 ? x.toLocaleString("en").replace(/,/g, "") : x.toString(10);
+};
+function formatDecimalParts(x, p) {
+    if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
+    var i, coefficient = x.slice(0, i);
+    // The string returned by toExponential either has the form \d\.\d+e[-+]\d+
+    // (e.g., 1.2e+3) or the form \de[-+]\d+ (e.g., 1e+3).
+    return [
+        coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient,
+        +x.slice(i + 1)
+    ];
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"f085O":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+exports.default = function(grouping, thousands) {
+    return function(value, width) {
+        var i = value.length, t = [], j = 0, g = grouping[0], length = 0;
+        while(i > 0 && g > 0){
+            if (length + g + 1 > width) g = Math.max(1, width - length);
+            t.push(value.substring(i -= g, i + g));
+            if ((length += g + 1) > width) break;
+            g = grouping[j = (j + 1) % grouping.length];
+        }
+        return t.reverse().join(thousands);
+    };
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"lb0HK":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+exports.default = function(numerals) {
+    return function(value) {
+        return value.replace(/[0-9]/g, function(i) {
+            return numerals[+i];
+        });
+    };
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8bBw7":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "FormatSpecifier", ()=>FormatSpecifier);
+// [[fill]align][sign][symbol][0][width][,][.precision][~][type]
+var re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
+function formatSpecifier(specifier) {
+    if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
+    var match;
+    return new FormatSpecifier({
+        fill: match[1],
+        align: match[2],
+        sign: match[3],
+        symbol: match[4],
+        zero: match[5],
+        width: match[6],
+        comma: match[7],
+        precision: match[8] && match[8].slice(1),
+        trim: match[9],
+        type: match[10]
+    });
+}
+exports.default = formatSpecifier;
+formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
+function FormatSpecifier(specifier) {
+    this.fill = specifier.fill === undefined ? " " : specifier.fill + "";
+    this.align = specifier.align === undefined ? ">" : specifier.align + "";
+    this.sign = specifier.sign === undefined ? "-" : specifier.sign + "";
+    this.symbol = specifier.symbol === undefined ? "" : specifier.symbol + "";
+    this.zero = !!specifier.zero;
+    this.width = specifier.width === undefined ? undefined : +specifier.width;
+    this.comma = !!specifier.comma;
+    this.precision = specifier.precision === undefined ? undefined : +specifier.precision;
+    this.trim = !!specifier.trim;
+    this.type = specifier.type === undefined ? "" : specifier.type + "";
+}
+FormatSpecifier.prototype.toString = function() {
+    return this.fill + this.align + this.sign + this.symbol + (this.zero ? "0" : "") + (this.width === undefined ? "" : Math.max(1, this.width | 0)) + (this.comma ? "," : "") + (this.precision === undefined ? "" : "." + Math.max(0, this.precision | 0)) + (this.trim ? "~" : "") + this.type;
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8x8Og":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+// Trims insignificant zeros, e.g., replaces 1.2000k with 1.2k.
+exports.default = function(s) {
+    out: for(var n = s.length, i = 1, i0 = -1, i1; i < n; ++i)switch(s[i]){
+        case ".":
+            i0 = i1 = i;
+            break;
+        case "0":
+            if (i0 === 0) i0 = i;
+            i1 = i;
+            break;
+        default:
+            if (!+s[i]) break out;
+            if (i0 > 0) i0 = 0;
+            break;
+    }
+    return i0 > 0 ? s.slice(0, i0) + s.slice(i1 + 1) : s;
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fy3bF":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _formatDecimalJs = require("./formatDecimal.js");
+var _formatDecimalJsDefault = parcelHelpers.interopDefault(_formatDecimalJs);
+var _formatPrefixAutoJs = require("./formatPrefixAuto.js");
+var _formatPrefixAutoJsDefault = parcelHelpers.interopDefault(_formatPrefixAutoJs);
+var _formatRoundedJs = require("./formatRounded.js");
+var _formatRoundedJsDefault = parcelHelpers.interopDefault(_formatRoundedJs);
+exports.default = {
+    "%": (x, p)=>(x * 100).toFixed(p),
+    "b": (x)=>Math.round(x).toString(2),
+    "c": (x)=>x + "",
+    "d": (0, _formatDecimalJsDefault.default),
+    "e": (x, p)=>x.toExponential(p),
+    "f": (x, p)=>x.toFixed(p),
+    "g": (x, p)=>x.toPrecision(p),
+    "o": (x)=>Math.round(x).toString(8),
+    "p": (x, p)=>(0, _formatRoundedJsDefault.default)(x * 100, p),
+    "r": (0, _formatRoundedJsDefault.default),
+    "s": (0, _formatPrefixAutoJsDefault.default),
+    "X": (x)=>Math.round(x).toString(16).toUpperCase(),
+    "x": (x)=>Math.round(x).toString(16)
+};
+
+},{"./formatDecimal.js":"gu3up","./formatPrefixAuto.js":"eOR98","./formatRounded.js":"iOj0e","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"eOR98":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "prefixExponent", ()=>prefixExponent);
+var _formatDecimalJs = require("./formatDecimal.js");
+var prefixExponent;
+exports.default = function(x, p) {
+    var d = (0, _formatDecimalJs.formatDecimalParts)(x, p);
+    if (!d) return x + "";
+    var coefficient = d[0], exponent = d[1], i = exponent - (prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1, n = coefficient.length;
+    return i === n ? coefficient : i > n ? coefficient + new Array(i - n + 1).join("0") : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i) : "0." + new Array(1 - i).join("0") + (0, _formatDecimalJs.formatDecimalParts)(x, Math.max(0, p + i - 1))[0]; // less than 1y!
+};
+
+},{"./formatDecimal.js":"gu3up","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"iOj0e":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _formatDecimalJs = require("./formatDecimal.js");
+exports.default = function(x, p) {
+    var d = (0, _formatDecimalJs.formatDecimalParts)(x, p);
+    if (!d) return x + "";
+    var coefficient = d[0], exponent = d[1];
+    return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1) : coefficient + new Array(exponent - coefficient.length + 2).join("0");
+};
+
+},{"./formatDecimal.js":"gu3up","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"hYh5S":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+exports.default = function(x) {
+    return x;
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"i5nxN":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _exponentJs = require("./exponent.js");
+var _exponentJsDefault = parcelHelpers.interopDefault(_exponentJs);
+exports.default = function(step) {
+    return Math.max(0, -(0, _exponentJsDefault.default)(Math.abs(step)));
+};
+
+},{"./exponent.js":"ay0Pk","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fpe0N":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _exponentJs = require("./exponent.js");
+var _exponentJsDefault = parcelHelpers.interopDefault(_exponentJs);
+exports.default = function(step, value) {
+    return Math.max(0, Math.max(-8, Math.min(8, Math.floor((0, _exponentJsDefault.default)(value) / 3))) * 3 - (0, _exponentJsDefault.default)(Math.abs(step)));
+};
+
+},{"./exponent.js":"ay0Pk","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"kHB0B":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _exponentJs = require("./exponent.js");
+var _exponentJsDefault = parcelHelpers.interopDefault(_exponentJs);
+exports.default = function(step, max) {
+    step = Math.abs(step), max = Math.abs(max) - step;
+    return Math.max(0, (0, _exponentJsDefault.default)(max) - (0, _exponentJsDefault.default)(step)) + 1;
+};
+
+},{"./exponent.js":"ay0Pk","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"cwHcu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "version", ()=>version);

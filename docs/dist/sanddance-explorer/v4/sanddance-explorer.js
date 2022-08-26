@@ -2072,7 +2072,23 @@ function $ae86bb470afa6626$var$checkIsColorData(data, column) {
     }
     column.isColorData = true;
 }
-function $ae86bb470afa6626$export$432f698644f45d1(data, column) {
+function $ae86bb470afa6626$export$432f698644f45d1(data, ...args) {
+    let columnName;
+    let columnType;
+    let columnQuantitative;
+    let distinctValuesCallback;
+    if (args.length <= 2) {
+        const column = args[0];
+        columnName = column.name;
+        columnType = column.type;
+        columnQuantitative = column.quantitative;
+        distinctValuesCallback = args[1];
+    } else {
+        columnName = args[0];
+        columnType = args[1];
+        columnQuantitative = args[2];
+        distinctValuesCallback = args[3];
+    }
     const distinctMap = {};
     const stats = {
         distinctValueCount: null,
@@ -2083,7 +2099,7 @@ function $ae86bb470afa6626$export$432f698644f45d1(data, column) {
     let sum = 0;
     for(let i = 0; i < data.length; i++){
         const row = data[i];
-        const value = row[column.name];
+        const value = columnName == null ? row : row[columnName];
         const num = +value;
         distinctMap[value] = true;
         if (!isNaN(num)) {
@@ -2091,27 +2107,34 @@ function $ae86bb470afa6626$export$432f698644f45d1(data, column) {
             if (stats.min === null || num < stats.min) stats.min = num;
             sum += num;
         }
-        if (column.type === "string" && !stats.hasColorData && $ae86bb470afa6626$var$isColor(value)) stats.hasColorData = true;
+        if (columnType === "string" && !stats.hasColorData && $ae86bb470afa6626$var$isColor(value)) stats.hasColorData = true;
     }
-    if (column.quantitative) {
+    if (columnQuantitative) {
         stats.mean = data.length > 0 && sum / data.length;
-        stats.hasNegative = $ae86bb470afa6626$var$detectNegative(column, data);
-        if (column.type === "integer") stats.isSequential = $ae86bb470afa6626$var$detectSequentialColumn(column, data);
+        stats.hasNegative = $ae86bb470afa6626$var$detectNegative(columnName, data);
+        if (columnType === "integer") stats.isSequential = $ae86bb470afa6626$var$detectSequentialColumn(columnName, data);
     }
-    stats.distinctValueCount = Object.keys(distinctMap).length;
+    const distinctValues = Object.keys(distinctMap);
+    if (distinctValuesCallback) {
+        distinctValues.sort();
+        distinctValuesCallback(distinctValues);
+    }
+    stats.distinctValueCount = distinctValues.length;
     return stats;
 }
-function $ae86bb470afa6626$var$detectNegative(column, data) {
+function $ae86bb470afa6626$var$detectNegative(columnName, data) {
     for(let i = 1; i < data.length; i++){
-        if (data[i][column.name] < 0) return true;
+        const value = columnName == null ? data[i] : data[i][columnName];
+        if (value < 0) return true;
     }
     return false;
 }
-function $ae86bb470afa6626$var$detectSequentialColumn(column, data) {
+function $ae86bb470afa6626$var$detectSequentialColumn(columnName, data) {
     if (data.length < 2) return false;
-    const colname = column.name;
     for(let i = 1; i < data.length; i++){
-        if (data[i][colname] !== data[i - 1][colname] + 1) return false;
+        const curr = columnName == null ? data[i] : data[i][columnName];
+        const prev = columnName == null ? data[i - 1] : data[i - 1][columnName];
+        if (curr !== prev + 1) return false;
     }
     return true;
 }
@@ -32121,34 +32144,7 @@ function $a057b1de5980a654$export$8b58be045bf06082(parent, definition) {
 function $6340087141d9da37$export$892596cec99bc70e() {}
 var $6340087141d9da37$export$4adafc6ed0600c10 = 0.7;
 var $6340087141d9da37$export$9eace2cc0d12c98d = 1 / $6340087141d9da37$export$4adafc6ed0600c10;
-var $6340087141d9da37$var$reI = "\\s*([+-]?\\d+)\\s*", $6340087141d9da37$var$reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*", $6340087141d9da37$var$reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*", $6340087141d9da37$var$reHex = /^#([0-9a-f]{3,8})$/, $6340087141d9da37$var$reRgbInteger = new RegExp("^rgb\\(" + [
-    $6340087141d9da37$var$reI,
-    $6340087141d9da37$var$reI,
-    $6340087141d9da37$var$reI
-] + "\\)$"), $6340087141d9da37$var$reRgbPercent = new RegExp("^rgb\\(" + [
-    $6340087141d9da37$var$reP,
-    $6340087141d9da37$var$reP,
-    $6340087141d9da37$var$reP
-] + "\\)$"), $6340087141d9da37$var$reRgbaInteger = new RegExp("^rgba\\(" + [
-    $6340087141d9da37$var$reI,
-    $6340087141d9da37$var$reI,
-    $6340087141d9da37$var$reI,
-    $6340087141d9da37$var$reN
-] + "\\)$"), $6340087141d9da37$var$reRgbaPercent = new RegExp("^rgba\\(" + [
-    $6340087141d9da37$var$reP,
-    $6340087141d9da37$var$reP,
-    $6340087141d9da37$var$reP,
-    $6340087141d9da37$var$reN
-] + "\\)$"), $6340087141d9da37$var$reHslPercent = new RegExp("^hsl\\(" + [
-    $6340087141d9da37$var$reN,
-    $6340087141d9da37$var$reP,
-    $6340087141d9da37$var$reP
-] + "\\)$"), $6340087141d9da37$var$reHslaPercent = new RegExp("^hsla\\(" + [
-    $6340087141d9da37$var$reN,
-    $6340087141d9da37$var$reP,
-    $6340087141d9da37$var$reP,
-    $6340087141d9da37$var$reN
-] + "\\)$");
+var $6340087141d9da37$var$reI = "\\s*([+-]?\\d+)\\s*", $6340087141d9da37$var$reN = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*", $6340087141d9da37$var$reP = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*", $6340087141d9da37$var$reHex = /^#([0-9a-f]{3,8})$/, $6340087141d9da37$var$reRgbInteger = new RegExp(`^rgb\\(${$6340087141d9da37$var$reI},${$6340087141d9da37$var$reI},${$6340087141d9da37$var$reI}\\)$`), $6340087141d9da37$var$reRgbPercent = new RegExp(`^rgb\\(${$6340087141d9da37$var$reP},${$6340087141d9da37$var$reP},${$6340087141d9da37$var$reP}\\)$`), $6340087141d9da37$var$reRgbaInteger = new RegExp(`^rgba\\(${$6340087141d9da37$var$reI},${$6340087141d9da37$var$reI},${$6340087141d9da37$var$reI},${$6340087141d9da37$var$reN}\\)$`), $6340087141d9da37$var$reRgbaPercent = new RegExp(`^rgba\\(${$6340087141d9da37$var$reP},${$6340087141d9da37$var$reP},${$6340087141d9da37$var$reP},${$6340087141d9da37$var$reN}\\)$`), $6340087141d9da37$var$reHslPercent = new RegExp(`^hsl\\(${$6340087141d9da37$var$reN},${$6340087141d9da37$var$reP},${$6340087141d9da37$var$reP}\\)$`), $6340087141d9da37$var$reHslaPercent = new RegExp(`^hsla\\(${$6340087141d9da37$var$reN},${$6340087141d9da37$var$reP},${$6340087141d9da37$var$reP},${$6340087141d9da37$var$reN}\\)$`);
 var $6340087141d9da37$var$named = {
     aliceblue: 0xf0f8ff,
     antiquewhite: 0xfaebd7,
@@ -32300,20 +32296,24 @@ var $6340087141d9da37$var$named = {
     yellowgreen: 0x9acd32
 };
 (0, $a057b1de5980a654$export$2e2bcd8739ae039)($6340087141d9da37$export$892596cec99bc70e, $6340087141d9da37$export$2e2bcd8739ae039, {
-    copy: function(channels) {
+    copy (channels) {
         return Object.assign(new this.constructor, this, channels);
     },
-    displayable: function() {
+    displayable () {
         return this.rgb().displayable();
     },
     hex: $6340087141d9da37$var$color_formatHex,
     formatHex: $6340087141d9da37$var$color_formatHex,
+    formatHex8: $6340087141d9da37$var$color_formatHex8,
     formatHsl: $6340087141d9da37$var$color_formatHsl,
     formatRgb: $6340087141d9da37$var$color_formatRgb,
     toString: $6340087141d9da37$var$color_formatRgb
 });
 function $6340087141d9da37$var$color_formatHex() {
     return this.rgb().formatHex();
+}
+function $6340087141d9da37$var$color_formatHex8() {
+    return this.rgb().formatHex8();
 }
 function $6340087141d9da37$var$color_formatHsl() {
     return $6340087141d9da37$export$8133dc3fa904d6d1(this).formatHsl();
@@ -32361,35 +32361,47 @@ function $6340087141d9da37$export$5e05a94393ac29e3(r, g, b, opacity) {
     this.opacity = +opacity;
 }
 (0, $a057b1de5980a654$export$2e2bcd8739ae039)($6340087141d9da37$export$5e05a94393ac29e3, $6340087141d9da37$export$8972dc0e6ad9238f, (0, $a057b1de5980a654$export$8b58be045bf06082)($6340087141d9da37$export$892596cec99bc70e, {
-    brighter: function(k) {
+    brighter (k) {
         k = k == null ? $6340087141d9da37$export$9eace2cc0d12c98d : Math.pow($6340087141d9da37$export$9eace2cc0d12c98d, k);
         return new $6340087141d9da37$export$5e05a94393ac29e3(this.r * k, this.g * k, this.b * k, this.opacity);
     },
-    darker: function(k) {
+    darker (k) {
         k = k == null ? $6340087141d9da37$export$4adafc6ed0600c10 : Math.pow($6340087141d9da37$export$4adafc6ed0600c10, k);
         return new $6340087141d9da37$export$5e05a94393ac29e3(this.r * k, this.g * k, this.b * k, this.opacity);
     },
-    rgb: function() {
+    rgb () {
         return this;
     },
-    displayable: function() {
+    clamp () {
+        return new $6340087141d9da37$export$5e05a94393ac29e3($6340087141d9da37$var$clampi(this.r), $6340087141d9da37$var$clampi(this.g), $6340087141d9da37$var$clampi(this.b), $6340087141d9da37$var$clampa(this.opacity));
+    },
+    displayable () {
         return -0.5 <= this.r && this.r < 255.5 && -0.5 <= this.g && this.g < 255.5 && -0.5 <= this.b && this.b < 255.5 && 0 <= this.opacity && this.opacity <= 1;
     },
     hex: $6340087141d9da37$var$rgb_formatHex,
     formatHex: $6340087141d9da37$var$rgb_formatHex,
+    formatHex8: $6340087141d9da37$var$rgb_formatHex8,
     formatRgb: $6340087141d9da37$var$rgb_formatRgb,
     toString: $6340087141d9da37$var$rgb_formatRgb
 }));
 function $6340087141d9da37$var$rgb_formatHex() {
-    return "#" + $6340087141d9da37$var$hex(this.r) + $6340087141d9da37$var$hex(this.g) + $6340087141d9da37$var$hex(this.b);
+    return `#${$6340087141d9da37$var$hex(this.r)}${$6340087141d9da37$var$hex(this.g)}${$6340087141d9da37$var$hex(this.b)}`;
+}
+function $6340087141d9da37$var$rgb_formatHex8() {
+    return `#${$6340087141d9da37$var$hex(this.r)}${$6340087141d9da37$var$hex(this.g)}${$6340087141d9da37$var$hex(this.b)}${$6340087141d9da37$var$hex((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
 }
 function $6340087141d9da37$var$rgb_formatRgb() {
-    var a = this.opacity;
-    a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-    return (a === 1 ? "rgb(" : "rgba(") + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.b) || 0)) + (a === 1 ? ")" : ", " + a + ")");
+    const a = $6340087141d9da37$var$clampa(this.opacity);
+    return `${a === 1 ? "rgb(" : "rgba("}${$6340087141d9da37$var$clampi(this.r)}, ${$6340087141d9da37$var$clampi(this.g)}, ${$6340087141d9da37$var$clampi(this.b)}${a === 1 ? ")" : `, ${a})`}`;
+}
+function $6340087141d9da37$var$clampa(opacity) {
+    return isNaN(opacity) ? 1 : Math.max(0, Math.min(1, opacity));
+}
+function $6340087141d9da37$var$clampi(value) {
+    return Math.max(0, Math.min(255, Math.round(value) || 0));
 }
 function $6340087141d9da37$var$hex(value) {
-    value = Math.max(0, Math.min(255, Math.round(value) || 0));
+    value = $6340087141d9da37$var$clampi(value);
     return (value < 16 ? "0" : "") + value.toString(16);
 }
 function $6340087141d9da37$var$hsla(h, s, l, a) {
@@ -32424,27 +32436,36 @@ function $6340087141d9da37$var$Hsl(h, s, l, opacity) {
     this.opacity = +opacity;
 }
 (0, $a057b1de5980a654$export$2e2bcd8739ae039)($6340087141d9da37$var$Hsl, $6340087141d9da37$export$8f4a7c0bb78e6ea8, (0, $a057b1de5980a654$export$8b58be045bf06082)($6340087141d9da37$export$892596cec99bc70e, {
-    brighter: function(k) {
+    brighter (k) {
         k = k == null ? $6340087141d9da37$export$9eace2cc0d12c98d : Math.pow($6340087141d9da37$export$9eace2cc0d12c98d, k);
         return new $6340087141d9da37$var$Hsl(this.h, this.s, this.l * k, this.opacity);
     },
-    darker: function(k) {
+    darker (k) {
         k = k == null ? $6340087141d9da37$export$4adafc6ed0600c10 : Math.pow($6340087141d9da37$export$4adafc6ed0600c10, k);
         return new $6340087141d9da37$var$Hsl(this.h, this.s, this.l * k, this.opacity);
     },
-    rgb: function() {
+    rgb () {
         var h = this.h % 360 + (this.h < 0) * 360, s = isNaN(h) || isNaN(this.s) ? 0 : this.s, l = this.l, m2 = l + (l < 0.5 ? l : 1 - l) * s, m1 = 2 * l - m2;
         return new $6340087141d9da37$export$5e05a94393ac29e3($6340087141d9da37$var$hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), $6340087141d9da37$var$hsl2rgb(h, m1, m2), $6340087141d9da37$var$hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
     },
-    displayable: function() {
+    clamp () {
+        return new $6340087141d9da37$var$Hsl($6340087141d9da37$var$clamph(this.h), $6340087141d9da37$var$clampt(this.s), $6340087141d9da37$var$clampt(this.l), $6340087141d9da37$var$clampa(this.opacity));
+    },
+    displayable () {
         return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && 0 <= this.l && this.l <= 1 && 0 <= this.opacity && this.opacity <= 1;
     },
-    formatHsl: function() {
-        var a = this.opacity;
-        a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-        return (a === 1 ? "hsl(" : "hsla(") + (this.h || 0) + ", " + (this.s || 0) * 100 + "%, " + (this.l || 0) * 100 + "%" + (a === 1 ? ")" : ", " + a + ")");
+    formatHsl () {
+        const a = $6340087141d9da37$var$clampa(this.opacity);
+        return `${a === 1 ? "hsl(" : "hsla("}${$6340087141d9da37$var$clamph(this.h)}, ${$6340087141d9da37$var$clampt(this.s) * 100}%, ${$6340087141d9da37$var$clampt(this.l) * 100}%${a === 1 ? ")" : `, ${a})`}`;
     }
 }));
+function $6340087141d9da37$var$clamph(value) {
+    value = (value || 0) % 360;
+    return value < 0 ? value + 360 : value;
+}
+function $6340087141d9da37$var$clampt(value) {
+    return Math.max(0, Math.min(1, value || 0));
+}
 /* From FvD 13.37, CSS Color Module Level 3 */ function $6340087141d9da37$var$hsl2rgb(h, m1, m2) {
     return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
 }
@@ -32530,12 +32551,11 @@ const $8c2135bbc56de0f6$export$200f593236aebbdc = {
     onCubeClick: (e, cube)=>{},
     onCubeHover: (e, cube)=>{},
     transitionDurations: {
-        color: 100,
         position: 600,
         stagger: 600,
         view: 600
     },
-    initialMorphChartsRendererOptions: {
+    renderer: {
         advanced: false,
         advancedOptions: {},
         basicOptions: {
@@ -33074,8 +33094,6 @@ function $bb91810db7b118fc$var$orderDomain(domain, dim) {
 
 
 
-
-
 function $517d92450a535487$export$b1d52f954c5faa57(b1, b2) {
     if (!b1 && !b2) return;
     if (!b1) return b2;
@@ -33433,6 +33451,7 @@ function $b29bcea612a8cd83$var$convertAxis(axis, domain, dim, height) {
 
 
 
+
 class $b535d7ad927c78f3$export$7cefaad7e81641ff {
     constructor(quant = 5){
         this.quant = quant;
@@ -33462,6 +33481,26 @@ class $b535d7ad927c78f3$export$7cefaad7e81641ff {
         };
     }
 }
+function $b535d7ad927c78f3$var$convert(newColor) {
+    const c = (0, $5d96e5cf164748a4$export$78ed65bc9abd64b1)(newColor).slice(0, 3);
+    return c.map((v)=>v / 255);
+}
+function $b535d7ad927c78f3$export$419c579437571e95(ref, colors) {
+    if (!colors) return;
+    const { config: config  } = ref.core;
+    config.activeColor = $b535d7ad927c78f3$var$convert(colors.activeItemColor);
+    config.backgroundColor = $b535d7ad927c78f3$var$convert(colors.backgroundColor);
+    config.textColor = $b535d7ad927c78f3$var$convert(colors.textColor);
+    config.textBorderColor = $b535d7ad927c78f3$var$convert(colors.textBorderColor);
+    config.axesTextColor = $b535d7ad927c78f3$var$convert(colors.axesTextLabelColor);
+    config.axesGridBackgroundColor = $b535d7ad927c78f3$var$convert(colors.axesGridBackgroundColor);
+    config.axesGridHighlightColor = $b535d7ad927c78f3$var$convert(colors.axesGridHighlightColor);
+    config.axesGridMinorColor = $b535d7ad927c78f3$var$convert(colors.axesGridMinorColor);
+    config.axesGridMajorColor = $b535d7ad927c78f3$var$convert(colors.axesGridMajorColor);
+    config.axesGridZeroColor = $b535d7ad927c78f3$var$convert(colors.axesGridZeroColor);
+    //TODO fix this - hack to reset the background color
+    ref.core.renderer["_theme"] = null;
+}
 
 
 const $49daf541f0b809d4$var$key = "cube";
@@ -33484,13 +33523,16 @@ const $49daf541f0b809d4$export$1858923cd0c63ab5 = (props)=>{
         positionsZ: positionsZ
     });
     const layer = {
-        update: (newBounds, selected)=>{
+        positionsX: positionsX,
+        positionsY: positionsY,
+        positionsZ: positionsZ,
+        update: (newBounds, selected, stagger)=>{
             const { colors: colors , maxColor: maxColor , minColor: minColor , palette: palette  } = layer.unitColorMap;
             // reference off of core.renderer to get the actual buffer
             const currCubeTransitionBuffer = core.renderer.transitionBuffers.find((t)=>t.key === $49daf541f0b809d4$var$key);
             currCubeTransitionBuffer.currentBuffer.unitType = (0, $b0e0bae684e98192$export$80d48287646c9e3b).block;
             currCubeTransitionBuffer.currentPalette.colors = palette;
-            scatter.update(currCubeTransitionBuffer.currentBuffer, ids, Object.assign({
+            let options = Object.assign({
                 selected: selected,
                 colors: colors,
                 minColor: minColor,
@@ -33498,7 +33540,16 @@ const $49daf541f0b809d4$export$1858923cd0c63ab5 = (props)=>{
                 sizesX: sizesX,
                 sizesY: sizesY,
                 sizesZ: sizesZ
-            }, newBounds));
+            }, newBounds);
+            if (stagger === null || stagger === void 0 ? void 0 : stagger.staggerOrders) {
+                const { maxStaggerOrder: maxStaggerOrder , minStaggerOrder: minStaggerOrder , staggerOrders: staggerOrders  } = stagger;
+                options = Object.assign(Object.assign({}, options), {
+                    maxStaggerOrder: maxStaggerOrder,
+                    minStaggerOrder: minStaggerOrder,
+                    staggerOrders: staggerOrders
+                });
+            }
+            scatter.update(currCubeTransitionBuffer.currentBuffer, ids, options);
         },
         bounds: bounds,
         unitColorMap: {
@@ -33674,30 +33725,6 @@ function $5fd5cbeaa094ff23$var$convert(stage, height, width) {
 
 
 
-function $eed32355f965d77a$export$9d095798a92180d1(prev, next) {
-    var _a, _b;
-    if (!prev || !next) return true;
-    if (prev.advanced !== next.advanced) return true;
-    if (!prev.advanced) return ((_a = prev.basicOptions) === null || _a === void 0 ? void 0 : _a.antialias) != ((_b = next.basicOptions) === null || _b === void 0 ? void 0 : _b.antialias);
-}
-function $eed32355f965d77a$export$4aa259f2a0167a49(mcRendererOptions, core) {
-    const advanced = mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advanced;
-    const r = advanced ? new (0, $ca06aeb8e9870a42$exports).Advanced.Main() : new (0, $ca06aeb8e9870a42$exports).Basic.Main(mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.basicOptions);
-    core.renderer = r;
-    $eed32355f965d77a$export$cfea0671ae41cdf(r, mcRendererOptions);
-    return r;
-}
-function $eed32355f965d77a$export$cfea0671ae41cdf(renderer, mcRendererOptions) {
-    const o = mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advancedOptions;
-    if ((mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advanced) && o) for(const key in o)renderer.config[key] = o[key];
-}
-function $eed32355f965d77a$export$12cca049a4826e61(advanced) {
-    const r = advanced ? new (0, $ca06aeb8e9870a42$exports).Advanced.Main() : new (0, $ca06aeb8e9870a42$exports).Basic.Main();
-    return r.isSupported;
-}
-
-
-
 
 
 const $3fd62b3715bd2081$export$bbc48f7bb3ba03ac = (props)=>{
@@ -33779,25 +33806,6 @@ function $3fd62b3715bd2081$var$convert(stage) {
 
 
 
-function $fe9700fbdbd82aa0$export$b1a09cb1b71f86aa(t) {
-    return t * t * t;
-}
-function $fe9700fbdbd82aa0$export$68d528839c701b6(t) {
-    return --t * t * t + 1;
-}
-function $fe9700fbdbd82aa0$export$89238d3bc79d3ada(t) {
-    return ((t *= 2) <= 1 ? t * t * t : (t -= 2) * t * t + 2) / 2;
-}
-
-
-
-function $930e0e0dfc69f257$export$24c5ac7c37452e7d(t) {
-    if (t === 0 || t === 1) return t;
-    return (0, $fe9700fbdbd82aa0$export$89238d3bc79d3ada)(t);
-}
-
-
-
 function $33223c7a8c3f4e85$export$d93c68e129326488(url) {
     return new Promise((resolve, reject)=>{
         const imageElement = document.createElement("img");
@@ -33830,6 +33838,203 @@ function $33223c7a8c3f4e85$export$9d5d32bc62ddf581(core, imageData, bounds, posi
     return new (0, $68f992bb0a4db355$exports).ImageQuad(core, imageOptions);
 }
 
+
+
+
+
+
+function $3106e5aac5bdcc98$var$createCameraDefaults() {
+    const qModel2d = (0, $a75e1c0eea6f029a$exports).create();
+    const qModel3d = (0, $87037c674fbf0952$export$a002182e51710d39).QUAT_ROTATEX_MINUS_90;
+    const qCameraRotation2d = (0, $a75e1c0eea6f029a$exports).create();
+    const qCameraRotation3d = (0, $a75e1c0eea6f029a$exports).create();
+    const qAngle = (0, $a75e1c0eea6f029a$exports).create();
+    const vPosition = (0, $3060130e3101af24$exports).create();
+    // Altitude (pitch around local right axis)
+    (0, $a75e1c0eea6f029a$exports).setAxisAngle(qCameraRotation3d, (0, $87037c674fbf0952$export$a002182e51710d39).VECTOR3_UNITX, (0, $e479da36f2886193$exports).AngleHelper.degreesToRadians(30));
+    // Azimuth (yaw around global up axis)
+    (0, $a75e1c0eea6f029a$exports).setAxisAngle(qAngle, (0, $87037c674fbf0952$export$a002182e51710d39).VECTOR3_UNITY, (0, $e479da36f2886193$exports).AngleHelper.degreesToRadians(-25));
+    (0, $a75e1c0eea6f029a$exports).multiply(qCameraRotation3d, qCameraRotation3d, qAngle);
+    return {
+        qModel2d: qModel2d,
+        qModel3d: qModel3d,
+        qCameraRotation2d: qCameraRotation2d,
+        qCameraRotation3d: qCameraRotation3d,
+        vPosition: vPosition
+    };
+}
+const $3106e5aac5bdcc98$export$504e5adc1166f08a = $3106e5aac5bdcc98$var$createCameraDefaults();
+
+
+function $41fb9e253980bfb2$export$bd1c7209c525d9d0(ref, prevStage, stage, height, width, preStage, colors, config) {
+    const { qCameraRotation2d: qCameraRotation2d , qCameraRotation3d: qCameraRotation3d , qModel2d: qModel2d , qModel3d: qModel3d , vPosition: vPosition  } = (0, $3106e5aac5bdcc98$export$504e5adc1166f08a);
+    const { core: core , cameraTransitioner: cameraTransitioner , modelTransitioner: modelTransitioner , positionTransitioner: positionTransitioner  } = ref;
+    let cameraTo;
+    let holdCamera;
+    if (config.camera === "hold") holdCamera = true;
+    else cameraTo = config.camera;
+    if (prevStage && prevStage.view !== stage.view) {
+        modelTransitioner.shouldTransition = !holdCamera;
+        if (stage.view === "2d") {
+            modelTransitioner.qModelFrom = qModel3d;
+            modelTransitioner.qModelTo = qModel2d;
+            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
+            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+        } else {
+            modelTransitioner.qModelFrom = qModel2d;
+            modelTransitioner.qModelTo = qModel3d;
+            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
+            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+        }
+    } else {
+        modelTransitioner.shouldTransition = false;
+        if (stage.view === "2d") {
+            modelTransitioner.qModelTo = qModel2d;
+            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
+            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+        } else {
+            modelTransitioner.qModelTo = qModel3d;
+            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
+            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+        }
+    }
+    core.camera.getOrbit(cameraTransitioner.qCameraRotationFrom);
+    core.camera.getPosition(cameraTransitioner.vCameraPositionFrom);
+    if (!prevStage) {
+        core.setModelRotation(modelTransitioner.qModelTo, false);
+        core.camera.setOrbit(cameraTransitioner.qCameraRotationTo, false);
+        core.camera.setPosition(cameraTransitioner.vCameraPositionTo, false);
+    } else if (!holdCamera) cameraTransitioner.begin();
+    positionTransitioner.begin();
+    if (modelTransitioner.shouldTransition) modelTransitioner.begin();
+    const props = {
+        ref: ref,
+        stage: stage,
+        height: height,
+        width: width,
+        config: config
+    };
+    const cubeLayer = (0, $49daf541f0b809d4$export$1858923cd0c63ab5)(props);
+    const lineLayer = (0, $5fd5cbeaa094ff23$export$9c2bb35a54d315bd)(props);
+    const textLayer = (0, $3fd62b3715bd2081$export$bbc48f7bb3ba03ac)(props);
+    const { backgroundImages: backgroundImages  } = stage;
+    let contentBounds = (0, $517d92450a535487$export$b1d52f954c5faa57)((0, $517d92450a535487$export$b1d52f954c5faa57)(cubeLayer === null || cubeLayer === void 0 ? void 0 : cubeLayer.bounds, lineLayer === null || lineLayer === void 0 ? void 0 : lineLayer.bounds), (0, $517d92450a535487$export$b1d52f954c5faa57)(textLayer === null || textLayer === void 0 ? void 0 : textLayer.bounds, null));
+    backgroundImages === null || backgroundImages === void 0 || backgroundImages.forEach((backgroundImage)=>{
+        contentBounds = (0, $517d92450a535487$export$b1d52f954c5faa57)(contentBounds, $41fb9e253980bfb2$var$convertBounds(backgroundImage.bounds));
+    });
+    props.bounds = contentBounds;
+    const axesLayer = (0, $b29bcea612a8cd83$export$b820fac18d588132)(props);
+    core.config.transitionStaggering = config.transitionDurations.stagger;
+    core.config.transitionDuration = config.transitionDurations.position;
+    let bounds;
+    if (axesLayer && axesLayer.bounds) bounds = axesLayer.bounds;
+    else bounds = contentBounds;
+    if (preStage) preStage(stage, cubeLayer);
+    //add images
+    core.renderer.images = [];
+    if (backgroundImages) {
+        const addImage = (imageBounds, imageData)=>{
+            const imageWidth = imageBounds.maxBoundsX - imageBounds.minBoundsX;
+            const imageHeight = imageBounds.maxBoundsY - imageBounds.minBoundsY;
+            const position = [
+                imageBounds.minBoundsX + imageWidth / 2,
+                imageBounds.minBoundsY + imageHeight / 2,
+                0
+            ];
+            const imageQuad = (0, $33223c7a8c3f4e85$export$9d5d32bc62ddf581)(core, imageData, contentBounds, position, imageWidth, imageHeight);
+            const imageVisual = core.renderer.createImageVisual(imageQuad);
+            core.renderer.images.push(imageVisual);
+        };
+        const imageDataCache = {};
+        backgroundImages.forEach((backgroundImage)=>{
+            const imageBounds = $41fb9e253980bfb2$var$convertBounds(backgroundImage.bounds);
+            const imageData = imageDataCache[backgroundImage.url];
+            if (imageData) addImage(imageBounds, imageData);
+            else (0, $33223c7a8c3f4e85$export$d93c68e129326488)(backgroundImage.url).then((imageData)=>{
+                imageDataCache[backgroundImage.url] = imageData;
+                addImage(imageBounds, imageData);
+            });
+        });
+    }
+    //Now call update on each layout
+    $41fb9e253980bfb2$var$layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds, ref.layerStagger);
+    ref.lastPresenterConfig = config;
+    core.renderer.transitionTime = 0; // Set renderer transition time for this render pass to prevent rendering target buffer for single frame
+    (0, $b535d7ad927c78f3$export$419c579437571e95)(ref, colors);
+    return {
+        bounds: bounds,
+        getCubeLayer: ()=>cubeLayer,
+        update: (layerSelection)=>$41fb9e253980bfb2$var$layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds, ref.layerStagger),
+        activate: (id)=>core.renderer.transitionBuffers[0].activeId = id,
+        moveCamera: (position, rotation)=>{
+            if (!(positionTransitioner.isTransitioning || modelTransitioner.isTransitioning)) {
+                core.camera.getOrbit(cameraTransitioner.qCameraRotationFrom);
+                core.camera.getPosition(cameraTransitioner.vCameraPositionFrom);
+                cameraTransitioner.move(position, rotation);
+            }
+        }
+    };
+}
+function $41fb9e253980bfb2$var$layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds, layerStagger) {
+    const layerItems = [
+        {
+            layer: cubeLayer,
+            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.cubes,
+            stagger: layerStagger === null || layerStagger === void 0 ? void 0 : layerStagger.cubes
+        },
+        {
+            layer: lineLayer,
+            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.lines,
+            stagger: layerStagger === null || layerStagger === void 0 ? void 0 : layerStagger.lines
+        },
+        {
+            layer: textLayer,
+            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.texts,
+            stagger: layerStagger === null || layerStagger === void 0 ? void 0 : layerStagger.texts
+        }, 
+    ];
+    layerItems.forEach((layerItem)=>{
+        var _a;
+        return (_a = layerItem.layer) === null || _a === void 0 ? void 0 : _a.update(bounds, layerItem.selection, layerItem.stagger);
+    });
+}
+function $41fb9e253980bfb2$var$convertBounds(bounds) {
+    if (!bounds) return;
+    return {
+        minBoundsX: bounds.x1,
+        maxBoundsX: bounds.x2,
+        minBoundsY: -bounds.y2,
+        maxBoundsY: -bounds.y1,
+        minBoundsZ: (0, $8c2135bbc56de0f6$export$ce94e349d95a214c),
+        maxBoundsZ: (0, $8c2135bbc56de0f6$export$ce94e349d95a214c)
+    };
+}
+
+
+
+
+
+function $eed32355f965d77a$export$9d095798a92180d1(prev, next) {
+    var _a, _b;
+    if (!prev || !next) return true;
+    if (prev.advanced !== next.advanced) return true;
+    if (!prev.advanced) return ((_a = prev.basicOptions) === null || _a === void 0 ? void 0 : _a.antialias) != ((_b = next.basicOptions) === null || _b === void 0 ? void 0 : _b.antialias);
+}
+function $eed32355f965d77a$export$4aa259f2a0167a49(mcRendererOptions, core) {
+    const advanced = mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advanced;
+    const r = advanced ? new (0, $ca06aeb8e9870a42$exports).Advanced.Main() : new (0, $ca06aeb8e9870a42$exports).Basic.Main(mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.basicOptions);
+    core.renderer = r;
+    $eed32355f965d77a$export$cfea0671ae41cdf(r, mcRendererOptions);
+    return r;
+}
+function $eed32355f965d77a$export$cfea0671ae41cdf(renderer, mcRendererOptions) {
+    const o = mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advancedOptions;
+    if ((mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advanced) && o) for(const key in o)renderer.config[key] = o[key];
+}
+function $eed32355f965d77a$export$12cca049a4826e61(advanced) {
+    const r = advanced ? new (0, $ca06aeb8e9870a42$exports).Advanced.Main() : new (0, $ca06aeb8e9870a42$exports).Basic.Main();
+    return r.isSupported;
+}
 
 
 
@@ -33902,7 +34107,71 @@ function $59dd6522201d03c1$export$63db8d52413993da(core, options) {
 }
 
 
-function $129c4fedfb092cf6$export$2cd8252107eb640b(options, mcRendererOptions) {
+
+function $fe9700fbdbd82aa0$export$b1a09cb1b71f86aa(t) {
+    return t * t * t;
+}
+function $fe9700fbdbd82aa0$export$68d528839c701b6(t) {
+    return --t * t * t + 1;
+}
+function $fe9700fbdbd82aa0$export$89238d3bc79d3ada(t) {
+    return ((t *= 2) <= 1 ? t * t * t : (t -= 2) * t * t + 2) / 2;
+}
+
+
+
+function $930e0e0dfc69f257$export$24c5ac7c37452e7d(t) {
+    if (t === 0 || t === 1) return t;
+    return (0, $fe9700fbdbd82aa0$export$89238d3bc79d3ada)(t);
+}
+
+
+class $c010ff92a7e33cbd$export$935eb9f0b5d28fbb {
+    constructor(){
+        this.isTransitioning = false;
+    }
+    begin() {
+        this.isTransitioning = true;
+        this.time = 0;
+    }
+    elapse(elapsedTime, totalTime, ease = false) {
+        this.time += elapsedTime;
+        if (this.time >= totalTime) {
+            this.isTransitioning = false;
+            this.time = totalTime;
+        }
+        const t = this.time / totalTime;
+        return ease ? (0, $930e0e0dfc69f257$export$24c5ac7c37452e7d)(t) : t;
+    }
+}
+class $c010ff92a7e33cbd$export$8498d8ad19b48a8b extends $c010ff92a7e33cbd$export$935eb9f0b5d28fbb {
+    constructor(){
+        super();
+        this.qCameraRotationFrom = (0, $a75e1c0eea6f029a$exports).create();
+        this.qCameraRotationTo = null;
+        this.qCameraRotationCurrent = (0, $a75e1c0eea6f029a$exports).create();
+        this.vCameraPositionFrom = (0, $3060130e3101af24$exports).create();
+        this.vCameraPositionTo = null;
+        this.vCameraPositionCurrent = (0, $3060130e3101af24$exports).create();
+    }
+    move(position, rotation) {
+        this.begin();
+        this.qCameraRotationTo = rotation;
+        this.vCameraPositionTo = position;
+    }
+}
+class $c010ff92a7e33cbd$export$e4008bc37533ca62 extends $c010ff92a7e33cbd$export$935eb9f0b5d28fbb {
+    constructor(){
+        super();
+        this.shouldTransition = false;
+        this.qModelFrom = null;
+        this.qModelTo = null;
+        this.qModelCurrent = (0, $a75e1c0eea6f029a$exports).create();
+    }
+}
+
+
+function $7df34aee694c1c2f$export$2cd8252107eb640b(options, mcRendererOptions) {
     const { container: container  } = options;
     const core = new (0, $b0e0bae684e98192$export$4143ab5b91744744)({
         container: container
@@ -33910,6 +34179,9 @@ function $129c4fedfb092cf6$export$2cd8252107eb640b(options, mcRendererOptions) {
     (0, $eed32355f965d77a$export$4aa259f2a0167a49)(mcRendererOptions, core);
     (0, $59dd6522201d03c1$export$63db8d52413993da)(core, options);
     core.config.pickSelectDelay = 50;
+    const cameraTransitioner = new (0, $c010ff92a7e33cbd$export$8498d8ad19b48a8b)();
+    const modelTransitioner = new (0, $c010ff92a7e33cbd$export$e4008bc37533ca62)();
+    const positionTransitioner = new (0, $c010ff92a7e33cbd$export$935eb9f0b5d28fbb)();
     const ref = {
         supportedRenders: {
             advanced: (0, $eed32355f965d77a$export$12cca049a4826e61)(true),
@@ -33917,26 +34189,16 @@ function $129c4fedfb092cf6$export$2cd8252107eb640b(options, mcRendererOptions) {
         },
         reset: ()=>{
             core.reset(true);
-            (0, $a75e1c0eea6f029a$exports).slerp(ref.qModelCurrent, ref.qModelTo, ref.qModelTo, 0);
-            core.setModelRotation(ref.qModelCurrent, true);
-            core.camera.setOrbit(ref.qCameraRotationTo, false);
-        //core.camera.setPosition(ref.vCameraPositionTo, false);
+            const { cameraTransitioner: cameraState , modelTransitioner: modelState  } = ref;
+            (0, $a75e1c0eea6f029a$exports).slerp(modelState.qModelCurrent, modelState.qModelTo, modelState.qModelTo, 0);
+            core.setModelRotation(modelState.qModelCurrent, true);
+            core.camera.setOrbit(cameraState.qCameraRotationTo, false);
+        //core.camera.setPosition(cameraState.vCameraPositionTo, false);
         },
-        transitionModel: false,
-        qModelFrom: null,
-        qModelTo: null,
-        qModelCurrent: (0, $a75e1c0eea6f029a$exports).create(),
-        qCameraRotationFrom: (0, $a75e1c0eea6f029a$exports).create(),
-        qCameraRotationTo: null,
-        qCameraRotationCurrent: (0, $a75e1c0eea6f029a$exports).create(),
-        vCameraPositionFrom: (0, $3060130e3101af24$exports).create(),
-        vCameraPositionTo: null,
-        vCameraPositionCurrent: (0, $3060130e3101af24$exports).create(),
+        cameraTransitioner: cameraTransitioner,
+        modelTransitioner: modelTransitioner,
+        positionTransitioner: positionTransitioner,
         core: core,
-        cameraTime: 0,
-        isCameraMovement: false,
-        isTransitioning: false,
-        transitionTime: 0,
         setMorphChartsRendererOptions (mcRendererOptions) {
             if ((0, $eed32355f965d77a$export$9d095798a92180d1)(ref.lastMorphChartsRendererOptions, mcRendererOptions)) {
                 (0, $eed32355f965d77a$export$4aa259f2a0167a49)(mcRendererOptions, core);
@@ -33945,217 +34207,38 @@ function $129c4fedfb092cf6$export$2cd8252107eb640b(options, mcRendererOptions) {
             (0, $eed32355f965d77a$export$cfea0671ae41cdf)(core.renderer, mcRendererOptions);
             ref.lastMorphChartsRendererOptions = mcRendererOptions;
         },
-        lastMorphChartsRendererOptions: mcRendererOptions
+        lastMorphChartsRendererOptions: mcRendererOptions,
+        lastPresenterConfig: null,
+        layerStagger: {}
     };
     const cam = (t)=>{
-        (0, $a75e1c0eea6f029a$exports).slerp(ref.qCameraRotationCurrent, ref.qCameraRotationFrom, ref.qCameraRotationTo, t);
-        (0, $3060130e3101af24$exports).lerp(ref.vCameraPositionCurrent, ref.vCameraPositionFrom, ref.vCameraPositionTo, t);
-        core.camera.setOrbit(ref.qCameraRotationCurrent, false);
-        core.camera.setPosition(ref.vCameraPositionCurrent, false);
+        (0, $a75e1c0eea6f029a$exports).slerp(cameraTransitioner.qCameraRotationCurrent, cameraTransitioner.qCameraRotationFrom, cameraTransitioner.qCameraRotationTo, t);
+        (0, $3060130e3101af24$exports).lerp(cameraTransitioner.vCameraPositionCurrent, cameraTransitioner.vCameraPositionFrom, cameraTransitioner.vCameraPositionTo, t);
+        core.camera.setOrbit(cameraTransitioner.qCameraRotationCurrent, false);
+        core.camera.setPosition(cameraTransitioner.vCameraPositionCurrent, false);
         // disable picking during transitions, as the performance degradation could reduce the framerate
         core.inputManager.isPickingEnabled = false;
     };
     core.updateCallback = (elapsedTime)=>{
-        if (ref.isTransitioning) {
-            ref.transitionTime += elapsedTime;
-            const totalTime = core.config.transitionDuration + core.config.transitionStaggering;
-            if (ref.transitionTime >= totalTime) {
-                ref.isTransitioning = false;
-                ref.transitionTime = totalTime;
+        const { transitionDurations: transitionDurations  } = ref.lastPresenterConfig;
+        if (positionTransitioner.isTransitioning) core.renderer.transitionTime = positionTransitioner.elapse(elapsedTime, transitionDurations.position + transitionDurations.stagger);
+        if (modelTransitioner.isTransitioning) {
+            const tm = modelTransitioner.elapse(elapsedTime, transitionDurations.view, true);
+            if (modelTransitioner.shouldTransition) {
+                (0, $a75e1c0eea6f029a$exports).slerp(modelTransitioner.qModelCurrent, modelTransitioner.qModelFrom, modelTransitioner.qModelTo, tm);
+                core.setModelRotation(modelTransitioner.qModelCurrent, false);
             }
-            const t = (0, $930e0e0dfc69f257$export$24c5ac7c37452e7d)(ref.transitionTime / totalTime);
-            core.renderer.transitionTime = t;
-            if (ref.transitionModel) {
-                (0, $a75e1c0eea6f029a$exports).slerp(ref.qModelCurrent, ref.qModelFrom, ref.qModelTo, t);
-                core.setModelRotation(ref.qModelCurrent, false);
-            }
+            cam(tm);
+        }
+        if (cameraTransitioner.isTransitioning) {
+            const t = cameraTransitioner.elapse(elapsedTime, transitionDurations.view, true);
             cam(t);
-        } else if (ref.isCameraMovement) {
-            ref.cameraTime += elapsedTime;
-            const totalTime1 = core.config.transitionDuration;
-            if (ref.cameraTime >= totalTime1) {
-                ref.isCameraMovement = false;
-                ref.cameraTime = totalTime1;
-            }
-            const t1 = (0, $930e0e0dfc69f257$export$24c5ac7c37452e7d)(ref.cameraTime / totalTime1);
-            cam(t1);
         } else core.inputManager.isPickingEnabled = true;
     };
     return ref;
 }
-const $129c4fedfb092cf6$var$qModel2d = (0, $a75e1c0eea6f029a$exports).create();
-const $129c4fedfb092cf6$var$qModel3d = (0, $87037c674fbf0952$export$a002182e51710d39).QUAT_ROTATEX_MINUS_90;
-const $129c4fedfb092cf6$var$qCameraRotation2d = (0, $a75e1c0eea6f029a$exports).create();
-const $129c4fedfb092cf6$var$qCameraRotation3d = (0, $a75e1c0eea6f029a$exports).create();
-const $129c4fedfb092cf6$var$qAngle = (0, $a75e1c0eea6f029a$exports).create();
-const $129c4fedfb092cf6$var$vPosition = (0, $3060130e3101af24$exports).create();
-// Altitude (pitch around local right axis)
-(0, $a75e1c0eea6f029a$exports).setAxisAngle($129c4fedfb092cf6$var$qCameraRotation3d, (0, $87037c674fbf0952$export$a002182e51710d39).VECTOR3_UNITX, (0, $e479da36f2886193$exports).AngleHelper.degreesToRadians(30));
-// Azimuth (yaw around global up axis)
-(0, $a75e1c0eea6f029a$exports).setAxisAngle($129c4fedfb092cf6$var$qAngle, (0, $87037c674fbf0952$export$a002182e51710d39).VECTOR3_UNITY, (0, $e479da36f2886193$exports).AngleHelper.degreesToRadians(-25));
-(0, $a75e1c0eea6f029a$exports).multiply($129c4fedfb092cf6$var$qCameraRotation3d, $129c4fedfb092cf6$var$qCameraRotation3d, $129c4fedfb092cf6$var$qAngle);
-function $129c4fedfb092cf6$export$bd1c7209c525d9d0(ref, prevStage, stage, height, width, preStage, colors, config) {
-    const cameraTo = config.getCameraTo && config.getCameraTo();
-    if (prevStage && prevStage.view !== stage.view) {
-        ref.transitionModel = true;
-        if (stage.view === "2d") {
-            ref.qModelFrom = $129c4fedfb092cf6$var$qModel3d;
-            ref.qModelTo = $129c4fedfb092cf6$var$qModel2d;
-            ref.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || $129c4fedfb092cf6$var$qCameraRotation2d;
-            ref.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || $129c4fedfb092cf6$var$vPosition;
-        } else {
-            ref.qModelFrom = $129c4fedfb092cf6$var$qModel2d;
-            ref.qModelTo = $129c4fedfb092cf6$var$qModel3d;
-            ref.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || $129c4fedfb092cf6$var$qCameraRotation3d;
-            ref.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || $129c4fedfb092cf6$var$vPosition;
-        }
-    } else {
-        if (stage.view === "2d") {
-            ref.qModelTo = $129c4fedfb092cf6$var$qModel2d;
-            ref.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || $129c4fedfb092cf6$var$qCameraRotation2d;
-            ref.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || $129c4fedfb092cf6$var$vPosition;
-        } else {
-            ref.qModelTo = $129c4fedfb092cf6$var$qModel3d;
-            ref.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || $129c4fedfb092cf6$var$qCameraRotation3d;
-            ref.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || $129c4fedfb092cf6$var$vPosition;
-        }
-        ref.transitionModel = false;
-    }
-    ref.core.camera.getOrbit(ref.qCameraRotationFrom);
-    ref.core.camera.getPosition(ref.vCameraPositionFrom);
-    if (!prevStage) {
-        ref.core.setModelRotation(ref.qModelTo, false);
-        ref.core.camera.setOrbit(ref.qCameraRotationTo, false);
-        ref.core.camera.setPosition(ref.vCameraPositionTo, false);
-    }
-    const props = {
-        ref: ref,
-        stage: stage,
-        height: height,
-        width: width,
-        config: config
-    };
-    const cubeLayer = (0, $49daf541f0b809d4$export$1858923cd0c63ab5)(props);
-    const lineLayer = (0, $5fd5cbeaa094ff23$export$9c2bb35a54d315bd)(props);
-    const textLayer = (0, $3fd62b3715bd2081$export$bbc48f7bb3ba03ac)(props);
-    const { backgroundImages: backgroundImages  } = stage;
-    let contentBounds = (0, $517d92450a535487$export$b1d52f954c5faa57)((0, $517d92450a535487$export$b1d52f954c5faa57)(cubeLayer === null || cubeLayer === void 0 ? void 0 : cubeLayer.bounds, lineLayer === null || lineLayer === void 0 ? void 0 : lineLayer.bounds), (0, $517d92450a535487$export$b1d52f954c5faa57)(textLayer === null || textLayer === void 0 ? void 0 : textLayer.bounds, null));
-    backgroundImages === null || backgroundImages === void 0 || backgroundImages.forEach((backgroundImage)=>{
-        contentBounds = (0, $517d92450a535487$export$b1d52f954c5faa57)(contentBounds, $129c4fedfb092cf6$var$convertBounds(backgroundImage.bounds));
-    });
-    props.bounds = contentBounds;
-    const axesLayer = (0, $b29bcea612a8cd83$export$b820fac18d588132)(props);
-    const { core: core  } = ref;
-    core.config.transitionStaggering = config.transitionDurations.stagger;
-    core.config.transitionDuration = config.transitionDurations.position;
-    let bounds;
-    if (axesLayer && axesLayer.bounds) bounds = axesLayer.bounds;
-    else bounds = contentBounds;
-    const colorMapper = {
-        getCubeUnitColorMap: ()=>cubeLayer.unitColorMap,
-        setCubeUnitColorMap: (unitColorMap)=>{
-            cubeLayer.unitColorMap = unitColorMap;
-        }
-    };
-    if (preStage) preStage(stage, colorMapper);
-    //add images
-    core.renderer.images = [];
-    if (backgroundImages) {
-        const addImage = (imageBounds, imageData)=>{
-            const imageWidth = imageBounds.maxBoundsX - imageBounds.minBoundsX;
-            const imageHeight = imageBounds.maxBoundsY - imageBounds.minBoundsY;
-            const position = [
-                imageBounds.minBoundsX + imageWidth / 2,
-                imageBounds.minBoundsY + imageHeight / 2,
-                0
-            ];
-            const imageQuad = (0, $33223c7a8c3f4e85$export$9d5d32bc62ddf581)(core, imageData, contentBounds, position, imageWidth, imageHeight);
-            const imageVisual = core.renderer.createImageVisual(imageQuad);
-            core.renderer.images.push(imageVisual);
-        };
-        const imageDataCache = {};
-        backgroundImages.forEach((backgroundImage)=>{
-            const imageBounds = $129c4fedfb092cf6$var$convertBounds(backgroundImage.bounds);
-            const imageData = imageDataCache[backgroundImage.url];
-            if (imageData) addImage(imageBounds, imageData);
-            else (0, $33223c7a8c3f4e85$export$d93c68e129326488)(backgroundImage.url).then((imageData)=>{
-                imageDataCache[backgroundImage.url] = imageData;
-                addImage(imageBounds, imageData);
-            });
-        });
-    }
-    //Now call update on each layout
-    $129c4fedfb092cf6$var$layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds);
-    ref.isTransitioning = true;
-    ref.transitionTime = 0;
-    core.renderer.transitionTime = 0; // Set renderer transition time for this render pass to prevent rendering target buffer for single frame
-    $129c4fedfb092cf6$export$419c579437571e95(ref, colors);
-    return Object.assign(Object.assign({}, colorMapper), {
-        update: (layerSelection)=>$129c4fedfb092cf6$var$layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds),
-        activate: (id)=>core.renderer.transitionBuffers[0].activeId = id,
-        moveCamera: (position, rotation)=>{
-            if (!ref.isTransitioning) {
-                ref.core.camera.getOrbit(ref.qCameraRotationFrom);
-                ref.core.camera.getPosition(ref.vCameraPositionFrom);
-                ref.isCameraMovement = true;
-                ref.cameraTime = 0;
-                ref.qCameraRotationTo = rotation;
-                ref.vCameraPositionTo = position;
-            }
-        }
-    });
-}
-function $129c4fedfb092cf6$var$layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds) {
-    const layers = [
-        {
-            layer: cubeLayer,
-            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.cubes
-        },
-        {
-            layer: lineLayer,
-            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.lines
-        },
-        {
-            layer: textLayer,
-            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.texts
-        }, 
-    ];
-    layers.forEach((x)=>{
-        var _a;
-        return (_a = x.layer) === null || _a === void 0 ? void 0 : _a.update(bounds, x.selection);
-    });
-}
-function $129c4fedfb092cf6$var$convert(newColor) {
-    const c = (0, $5d96e5cf164748a4$export$78ed65bc9abd64b1)(newColor).slice(0, 3);
-    return c.map((v)=>v / 255);
-}
-function $129c4fedfb092cf6$export$419c579437571e95(ref, colors) {
-    if (!colors) return;
-    const { config: config  } = ref.core;
-    config.activeColor = $129c4fedfb092cf6$var$convert(colors.activeItemColor);
-    config.backgroundColor = $129c4fedfb092cf6$var$convert(colors.backgroundColor);
-    config.textColor = $129c4fedfb092cf6$var$convert(colors.textColor);
-    config.textBorderColor = $129c4fedfb092cf6$var$convert(colors.textBorderColor);
-    config.axesTextColor = $129c4fedfb092cf6$var$convert(colors.axesTextLabelColor);
-    config.axesGridBackgroundColor = $129c4fedfb092cf6$var$convert(colors.axesGridBackgroundColor);
-    config.axesGridHighlightColor = $129c4fedfb092cf6$var$convert(colors.axesGridHighlightColor);
-    config.axesGridMinorColor = $129c4fedfb092cf6$var$convert(colors.axesGridMinorColor);
-    config.axesGridMajorColor = $129c4fedfb092cf6$var$convert(colors.axesGridMajorColor);
-    config.axesGridZeroColor = $129c4fedfb092cf6$var$convert(colors.axesGridZeroColor);
-    //TODO fix this - hack to reset the background color
-    ref.core.renderer["_theme"] = null;
-}
-function $129c4fedfb092cf6$var$convertBounds(bounds) {
-    if (!bounds) return;
-    return {
-        minBoundsX: bounds.x1,
-        maxBoundsX: bounds.x2,
-        minBoundsY: -bounds.y2,
-        maxBoundsY: -bounds.y1,
-        minBoundsZ: (0, $8c2135bbc56de0f6$export$ce94e349d95a214c),
-        maxBoundsZ: (0, $8c2135bbc56de0f6$export$ce94e349d95a214c)
-    };
-}
+
+
 
 
 class $1d6d9863c8523f0b$export$893c88c42e3630f9 {
@@ -34262,7 +34345,7 @@ class $1d6d9863c8523f0b$export$893c88c42e3630f9 {
                 onCanvasClick: config === null || config === void 0 ? void 0 : config.onLayerClick,
                 onLasso: config === null || config === void 0 ? void 0 : config.onLasso
             };
-            this.morphchartsref = (0, $129c4fedfb092cf6$export$2cd8252107eb640b)(this._morphChartsOptions, c.initialMorphChartsRendererOptions || (0, $8c2135bbc56de0f6$export$200f593236aebbdc).initialMorphChartsRendererOptions);
+            this.morphchartsref = (0, $7df34aee694c1c2f$export$2cd8252107eb640b)(this._morphChartsOptions, c.renderer || (0, $8c2135bbc56de0f6$export$200f593236aebbdc).renderer);
         }
         let cubeCount = Math.max(this._last.cubeCount, stage.cubeData.length);
         if (options.maxOrdinal) {
@@ -34273,7 +34356,7 @@ class $1d6d9863c8523f0b$export$893c88c42e3630f9 {
             stage.cubeData = (0, $174640c8df0e6f7c$export$9a79ca9001afcc6d)(cubeCount, empty, stage.cubeData);
         }
         config.preLayer && config.preLayer(stage);
-        this.morphChartsRenderResult = (0, $129c4fedfb092cf6$export$bd1c7209c525d9d0)(this.morphchartsref, this._last.stage, stage, height, width, config && config.preStage, config && config.morphChartsColors, c);
+        this.morphChartsRenderResult = (0, $41fb9e253980bfb2$export$bd1c7209c525d9d0)(this.morphchartsref, this._last.stage, stage, height, width, config && config.preStage, config && config.morphChartsColors, c);
         delete stage.cubeData;
         delete stage.redraw;
         this._last = {
@@ -34302,7 +34385,7 @@ class $1d6d9863c8523f0b$export$893c88c42e3630f9 {
         });
     }
     configColors(mcColors) {
-        (0, $129c4fedfb092cf6$export$419c579437571e95)(this.morphchartsref, mcColors);
+        (0, $b535d7ad927c78f3$export$419c579437571e95)(this.morphchartsref, mcColors);
     }
     /**
      * Home the camera to the last initial position.
@@ -34416,13 +34499,13 @@ const $d35dded7832c8625$export$6d8f9057dcd7f9e6 = $d35dded7832c8625$var$_ViewGl;
 
 
 
-const $6cb4b91d47e414da$export$83d89fbfd8236492 = "1.0.1";
+const $6cb4b91d47e414da$export$83d89fbfd8236492 = "1.0.2";
 
 
 $parcel$exportWildcard($77c6d719b6f16e7d$exports, $20fbdb0de5c041fa$exports);
 
 
-const { defaultPresenterConfig: $74c2763994d75bb8$var$defaultPresenterConfig , defaultPresenterStyle: $74c2763994d75bb8$var$defaultPresenterStyle  } = $8c2135bbc56de0f6$exports;
+const { defaultPresenterStyle: $74c2763994d75bb8$var$defaultPresenterStyle  } = $8c2135bbc56de0f6$exports;
 const $74c2763994d75bb8$export$fb736e4909afb3d7 = {
     colors: {
         activeCube: "purple",
@@ -34486,9 +34569,7 @@ const $74c2763994d75bb8$export$fb736e4909afb3d7 = {
     onError: (errors)=>{
     //console.log(`UnitVisViewer errors: ${errors.join('\n')}`);
     },
-    transitionDurations: Object.assign(Object.assign({}, $74c2763994d75bb8$var$defaultPresenterConfig.transitionDurations), {
-        scope: 600
-    }),
+    filterRenderingTimerPadding: 200,
     selectionPolygonZ: -1,
     tickSize: 10
 };
@@ -34830,7 +34911,7 @@ function $04c641c9701e126c$export$abaa25886c91cb0e(axes) {
 
 
 function $0fd54a544f9d2363$export$44addeff9a96c1e7(colorContext, presenter) {
-    if (!colorContext.colorMap) colorContext.colorMap = presenter.morphChartsRenderResult.getCubeUnitColorMap();
+    if (!colorContext.colorMap) colorContext.colorMap = presenter.morphChartsRenderResult.getCubeLayer().unitColorMap;
     colorContext.legend = $74bd06e68a152316$exports.clone(presenter.stage.legend);
     colorContext.legendElement = presenter.getElement($20fbdb0de5c041fa$export$79420be32f83a5b0.legend).children[0];
 }
@@ -35497,6 +35578,1283 @@ function $a69b4de50b0b6b13$var$differentObjectValues(a, b) {
 }
 
 
+
+function $7fbbe93d43921c46$export$2e2bcd8739ae039(a, b) {
+    return a == null || b == null ? NaN : a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+}
+
+
+
+function $af5d72004a57b80e$export$2e2bcd8739ae039(a, b) {
+    return a == null || b == null ? NaN : b < a ? -1 : b > a ? 1 : b >= a ? 0 : NaN;
+}
+
+
+function $d31e3aafe5da5ba2$export$2e2bcd8739ae039(f) {
+    let compare1, compare2, delta;
+    // If an accessor is specified, promote it to a comparator. In this case we
+    // can test whether the search value is (self-) comparable. We can’t do this
+    // for a comparator (except for specific, known comparators) because we can’t
+    // tell if the comparator is symmetric, and an asymmetric comparator can’t be
+    // used to test whether a single value is comparable.
+    if (f.length !== 2) {
+        compare1 = (0, $7fbbe93d43921c46$export$2e2bcd8739ae039);
+        compare2 = (d, x)=>(0, $7fbbe93d43921c46$export$2e2bcd8739ae039)(f(d), x);
+        delta = (d, x)=>f(d) - x;
+    } else {
+        compare1 = f === (0, $7fbbe93d43921c46$export$2e2bcd8739ae039) || f === (0, $af5d72004a57b80e$export$2e2bcd8739ae039) ? f : $d31e3aafe5da5ba2$var$zero;
+        compare2 = f;
+        delta = f;
+    }
+    function left(a, x, lo = 0, hi = a.length) {
+        if (lo < hi) {
+            if (compare1(x, x) !== 0) return hi;
+            do {
+                const mid = lo + hi >>> 1;
+                if (compare2(a[mid], x) < 0) lo = mid + 1;
+                else hi = mid;
+            }while (lo < hi);
+        }
+        return lo;
+    }
+    function right(a, x, lo = 0, hi = a.length) {
+        if (lo < hi) {
+            if (compare1(x, x) !== 0) return hi;
+            do {
+                const mid = lo + hi >>> 1;
+                if (compare2(a[mid], x) <= 0) lo = mid + 1;
+                else hi = mid;
+            }while (lo < hi);
+        }
+        return lo;
+    }
+    function center(a, x, lo = 0, hi = a.length) {
+        const i = left(a, x, lo, hi - 1);
+        return i > lo && delta(a[i - 1], x) > -delta(a[i], x) ? i - 1 : i;
+    }
+    return {
+        left: left,
+        center: center,
+        right: right
+    };
+}
+function $d31e3aafe5da5ba2$var$zero() {
+    return 0;
+}
+
+
+function $2e7c5dbdfe290956$export$2e2bcd8739ae039(x) {
+    return x === null ? NaN : +x;
+}
+function* $2e7c5dbdfe290956$export$1f6c9cc012ebacae(values, valueof) {
+    if (valueof === undefined) {
+        for (let value of values)if (value != null && (value = +value) >= value) yield value;
+    } else {
+        let index = -1;
+        for (let value1 of values)if ((value1 = valueof(value1, ++index, values)) != null && (value1 = +value1) >= value1) yield value1;
+    }
+}
+
+
+const $30a8de2d3e679e73$var$ascendingBisect = (0, $d31e3aafe5da5ba2$export$2e2bcd8739ae039)((0, $7fbbe93d43921c46$export$2e2bcd8739ae039));
+const $30a8de2d3e679e73$export$4d945ad3ad5751b0 = $30a8de2d3e679e73$var$ascendingBisect.right;
+const $30a8de2d3e679e73$export$df7d25c84ebd12a5 = $30a8de2d3e679e73$var$ascendingBisect.left;
+const $30a8de2d3e679e73$export$c1cb828b1117c77b = (0, $d31e3aafe5da5ba2$export$2e2bcd8739ae039)((0, $2e7c5dbdfe290956$export$2e2bcd8739ae039)).center;
+var $30a8de2d3e679e73$export$2e2bcd8739ae039 = $30a8de2d3e679e73$export$4d945ad3ad5751b0;
+
+var $eea1c81c19f28e56$var$e10 = Math.sqrt(50), $eea1c81c19f28e56$var$e5 = Math.sqrt(10), $eea1c81c19f28e56$var$e2 = Math.sqrt(2);
+function $eea1c81c19f28e56$export$2e2bcd8739ae039(start, stop, count) {
+    var reverse, i = -1, n, ticks, step;
+    stop = +stop, start = +start, count = +count;
+    if (start === stop && count > 0) return [
+        start
+    ];
+    if (reverse = stop < start) n = start, start = stop, stop = n;
+    if ((step = $eea1c81c19f28e56$export$bc64d00cc98e7e95(start, stop, count)) === 0 || !isFinite(step)) return [];
+    if (step > 0) {
+        let r0 = Math.round(start / step), r1 = Math.round(stop / step);
+        if (r0 * step < start) ++r0;
+        if (r1 * step > stop) --r1;
+        ticks = new Array(n = r1 - r0 + 1);
+        while(++i < n)ticks[i] = (r0 + i) * step;
+    } else {
+        step = -step;
+        let r01 = Math.round(start * step), r11 = Math.round(stop * step);
+        if (r01 / step < start) ++r01;
+        if (r11 / step > stop) --r11;
+        ticks = new Array(n = r11 - r01 + 1);
+        while(++i < n)ticks[i] = (r01 + i) / step;
+    }
+    if (reverse) ticks.reverse();
+    return ticks;
+}
+function $eea1c81c19f28e56$export$bc64d00cc98e7e95(start, stop, count) {
+    var step = (stop - start) / Math.max(0, count), power = Math.floor(Math.log(step) / Math.LN10), error = step / Math.pow(10, power);
+    return power >= 0 ? (error >= $eea1c81c19f28e56$var$e10 ? 10 : error >= $eea1c81c19f28e56$var$e5 ? 5 : error >= $eea1c81c19f28e56$var$e2 ? 2 : 1) * Math.pow(10, power) : -Math.pow(10, -power) / (error >= $eea1c81c19f28e56$var$e10 ? 10 : error >= $eea1c81c19f28e56$var$e5 ? 5 : error >= $eea1c81c19f28e56$var$e2 ? 2 : 1);
+}
+function $eea1c81c19f28e56$export$81087d9b915d4ede(start, stop, count) {
+    var step0 = Math.abs(stop - start) / Math.max(0, count), step1 = Math.pow(10, Math.floor(Math.log(step0) / Math.LN10)), error = step0 / step1;
+    if (error >= $eea1c81c19f28e56$var$e10) step1 *= 10;
+    else if (error >= $eea1c81c19f28e56$var$e5) step1 *= 5;
+    else if (error >= $eea1c81c19f28e56$var$e2) step1 *= 2;
+    return stop < start ? -step1 : step1;
+}
+
+
+
+
+function $dc8e5110f7214f52$export$2e2bcd8739ae039(constructor, factory, prototype) {
+    constructor.prototype = factory.prototype = prototype;
+    prototype.constructor = constructor;
+}
+function $dc8e5110f7214f52$export$8b58be045bf06082(parent, definition) {
+    var prototype = Object.create(parent.prototype);
+    for(var key in definition)prototype[key] = definition[key];
+    return prototype;
+}
+
+
+function $f93f5f7c0b27fbb6$export$892596cec99bc70e() {}
+var $f93f5f7c0b27fbb6$export$4adafc6ed0600c10 = 0.7;
+var $f93f5f7c0b27fbb6$export$9eace2cc0d12c98d = 1 / $f93f5f7c0b27fbb6$export$4adafc6ed0600c10;
+var $f93f5f7c0b27fbb6$var$reI = "\\s*([+-]?\\d+)\\s*", $f93f5f7c0b27fbb6$var$reN = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*", $f93f5f7c0b27fbb6$var$reP = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*", $f93f5f7c0b27fbb6$var$reHex = /^#([0-9a-f]{3,8})$/, $f93f5f7c0b27fbb6$var$reRgbInteger = new RegExp(`^rgb\\(${$f93f5f7c0b27fbb6$var$reI},${$f93f5f7c0b27fbb6$var$reI},${$f93f5f7c0b27fbb6$var$reI}\\)$`), $f93f5f7c0b27fbb6$var$reRgbPercent = new RegExp(`^rgb\\(${$f93f5f7c0b27fbb6$var$reP},${$f93f5f7c0b27fbb6$var$reP},${$f93f5f7c0b27fbb6$var$reP}\\)$`), $f93f5f7c0b27fbb6$var$reRgbaInteger = new RegExp(`^rgba\\(${$f93f5f7c0b27fbb6$var$reI},${$f93f5f7c0b27fbb6$var$reI},${$f93f5f7c0b27fbb6$var$reI},${$f93f5f7c0b27fbb6$var$reN}\\)$`), $f93f5f7c0b27fbb6$var$reRgbaPercent = new RegExp(`^rgba\\(${$f93f5f7c0b27fbb6$var$reP},${$f93f5f7c0b27fbb6$var$reP},${$f93f5f7c0b27fbb6$var$reP},${$f93f5f7c0b27fbb6$var$reN}\\)$`), $f93f5f7c0b27fbb6$var$reHslPercent = new RegExp(`^hsl\\(${$f93f5f7c0b27fbb6$var$reN},${$f93f5f7c0b27fbb6$var$reP},${$f93f5f7c0b27fbb6$var$reP}\\)$`), $f93f5f7c0b27fbb6$var$reHslaPercent = new RegExp(`^hsla\\(${$f93f5f7c0b27fbb6$var$reN},${$f93f5f7c0b27fbb6$var$reP},${$f93f5f7c0b27fbb6$var$reP},${$f93f5f7c0b27fbb6$var$reN}\\)$`);
+var $f93f5f7c0b27fbb6$var$named = {
+    aliceblue: 0xf0f8ff,
+    antiquewhite: 0xfaebd7,
+    aqua: 0x00ffff,
+    aquamarine: 0x7fffd4,
+    azure: 0xf0ffff,
+    beige: 0xf5f5dc,
+    bisque: 0xffe4c4,
+    black: 0x000000,
+    blanchedalmond: 0xffebcd,
+    blue: 0x0000ff,
+    blueviolet: 0x8a2be2,
+    brown: 0xa52a2a,
+    burlywood: 0xdeb887,
+    cadetblue: 0x5f9ea0,
+    chartreuse: 0x7fff00,
+    chocolate: 0xd2691e,
+    coral: 0xff7f50,
+    cornflowerblue: 0x6495ed,
+    cornsilk: 0xfff8dc,
+    crimson: 0xdc143c,
+    cyan: 0x00ffff,
+    darkblue: 0x00008b,
+    darkcyan: 0x008b8b,
+    darkgoldenrod: 0xb8860b,
+    darkgray: 0xa9a9a9,
+    darkgreen: 0x006400,
+    darkgrey: 0xa9a9a9,
+    darkkhaki: 0xbdb76b,
+    darkmagenta: 0x8b008b,
+    darkolivegreen: 0x556b2f,
+    darkorange: 0xff8c00,
+    darkorchid: 0x9932cc,
+    darkred: 0x8b0000,
+    darksalmon: 0xe9967a,
+    darkseagreen: 0x8fbc8f,
+    darkslateblue: 0x483d8b,
+    darkslategray: 0x2f4f4f,
+    darkslategrey: 0x2f4f4f,
+    darkturquoise: 0x00ced1,
+    darkviolet: 0x9400d3,
+    deeppink: 0xff1493,
+    deepskyblue: 0x00bfff,
+    dimgray: 0x696969,
+    dimgrey: 0x696969,
+    dodgerblue: 0x1e90ff,
+    firebrick: 0xb22222,
+    floralwhite: 0xfffaf0,
+    forestgreen: 0x228b22,
+    fuchsia: 0xff00ff,
+    gainsboro: 0xdcdcdc,
+    ghostwhite: 0xf8f8ff,
+    gold: 0xffd700,
+    goldenrod: 0xdaa520,
+    gray: 0x808080,
+    green: 0x008000,
+    greenyellow: 0xadff2f,
+    grey: 0x808080,
+    honeydew: 0xf0fff0,
+    hotpink: 0xff69b4,
+    indianred: 0xcd5c5c,
+    indigo: 0x4b0082,
+    ivory: 0xfffff0,
+    khaki: 0xf0e68c,
+    lavender: 0xe6e6fa,
+    lavenderblush: 0xfff0f5,
+    lawngreen: 0x7cfc00,
+    lemonchiffon: 0xfffacd,
+    lightblue: 0xadd8e6,
+    lightcoral: 0xf08080,
+    lightcyan: 0xe0ffff,
+    lightgoldenrodyellow: 0xfafad2,
+    lightgray: 0xd3d3d3,
+    lightgreen: 0x90ee90,
+    lightgrey: 0xd3d3d3,
+    lightpink: 0xffb6c1,
+    lightsalmon: 0xffa07a,
+    lightseagreen: 0x20b2aa,
+    lightskyblue: 0x87cefa,
+    lightslategray: 0x778899,
+    lightslategrey: 0x778899,
+    lightsteelblue: 0xb0c4de,
+    lightyellow: 0xffffe0,
+    lime: 0x00ff00,
+    limegreen: 0x32cd32,
+    linen: 0xfaf0e6,
+    magenta: 0xff00ff,
+    maroon: 0x800000,
+    mediumaquamarine: 0x66cdaa,
+    mediumblue: 0x0000cd,
+    mediumorchid: 0xba55d3,
+    mediumpurple: 0x9370db,
+    mediumseagreen: 0x3cb371,
+    mediumslateblue: 0x7b68ee,
+    mediumspringgreen: 0x00fa9a,
+    mediumturquoise: 0x48d1cc,
+    mediumvioletred: 0xc71585,
+    midnightblue: 0x191970,
+    mintcream: 0xf5fffa,
+    mistyrose: 0xffe4e1,
+    moccasin: 0xffe4b5,
+    navajowhite: 0xffdead,
+    navy: 0x000080,
+    oldlace: 0xfdf5e6,
+    olive: 0x808000,
+    olivedrab: 0x6b8e23,
+    orange: 0xffa500,
+    orangered: 0xff4500,
+    orchid: 0xda70d6,
+    palegoldenrod: 0xeee8aa,
+    palegreen: 0x98fb98,
+    paleturquoise: 0xafeeee,
+    palevioletred: 0xdb7093,
+    papayawhip: 0xffefd5,
+    peachpuff: 0xffdab9,
+    peru: 0xcd853f,
+    pink: 0xffc0cb,
+    plum: 0xdda0dd,
+    powderblue: 0xb0e0e6,
+    purple: 0x800080,
+    rebeccapurple: 0x663399,
+    red: 0xff0000,
+    rosybrown: 0xbc8f8f,
+    royalblue: 0x4169e1,
+    saddlebrown: 0x8b4513,
+    salmon: 0xfa8072,
+    sandybrown: 0xf4a460,
+    seagreen: 0x2e8b57,
+    seashell: 0xfff5ee,
+    sienna: 0xa0522d,
+    silver: 0xc0c0c0,
+    skyblue: 0x87ceeb,
+    slateblue: 0x6a5acd,
+    slategray: 0x708090,
+    slategrey: 0x708090,
+    snow: 0xfffafa,
+    springgreen: 0x00ff7f,
+    steelblue: 0x4682b4,
+    tan: 0xd2b48c,
+    teal: 0x008080,
+    thistle: 0xd8bfd8,
+    tomato: 0xff6347,
+    turquoise: 0x40e0d0,
+    violet: 0xee82ee,
+    wheat: 0xf5deb3,
+    white: 0xffffff,
+    whitesmoke: 0xf5f5f5,
+    yellow: 0xffff00,
+    yellowgreen: 0x9acd32
+};
+(0, $dc8e5110f7214f52$export$2e2bcd8739ae039)($f93f5f7c0b27fbb6$export$892596cec99bc70e, $f93f5f7c0b27fbb6$export$2e2bcd8739ae039, {
+    copy (channels) {
+        return Object.assign(new this.constructor, this, channels);
+    },
+    displayable () {
+        return this.rgb().displayable();
+    },
+    hex: $f93f5f7c0b27fbb6$var$color_formatHex,
+    formatHex: $f93f5f7c0b27fbb6$var$color_formatHex,
+    formatHex8: $f93f5f7c0b27fbb6$var$color_formatHex8,
+    formatHsl: $f93f5f7c0b27fbb6$var$color_formatHsl,
+    formatRgb: $f93f5f7c0b27fbb6$var$color_formatRgb,
+    toString: $f93f5f7c0b27fbb6$var$color_formatRgb
+});
+function $f93f5f7c0b27fbb6$var$color_formatHex() {
+    return this.rgb().formatHex();
+}
+function $f93f5f7c0b27fbb6$var$color_formatHex8() {
+    return this.rgb().formatHex8();
+}
+function $f93f5f7c0b27fbb6$var$color_formatHsl() {
+    return $f93f5f7c0b27fbb6$export$8133dc3fa904d6d1(this).formatHsl();
+}
+function $f93f5f7c0b27fbb6$var$color_formatRgb() {
+    return this.rgb().formatRgb();
+}
+function $f93f5f7c0b27fbb6$export$2e2bcd8739ae039(format) {
+    var m, l;
+    format = (format + "").trim().toLowerCase();
+    return (m = $f93f5f7c0b27fbb6$var$reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? $f93f5f7c0b27fbb6$var$rgbn(m) // #ff0000
+     : l === 3 ? new $f93f5f7c0b27fbb6$export$5e05a94393ac29e3(m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, (m & 0xf) << 4 | m & 0xf, 1) // #f00
+     : l === 8 ? $f93f5f7c0b27fbb6$var$rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+     : l === 4 ? $f93f5f7c0b27fbb6$var$rgba(m >> 12 & 0xf | m >> 8 & 0xf0, m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, ((m & 0xf) << 4 | m & 0xf) / 0xff) // #f000
+     : null // invalid hex
+    ) : (m = $f93f5f7c0b27fbb6$var$reRgbInteger.exec(format)) ? new $f93f5f7c0b27fbb6$export$5e05a94393ac29e3(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+     : (m = $f93f5f7c0b27fbb6$var$reRgbPercent.exec(format)) ? new $f93f5f7c0b27fbb6$export$5e05a94393ac29e3(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+     : (m = $f93f5f7c0b27fbb6$var$reRgbaInteger.exec(format)) ? $f93f5f7c0b27fbb6$var$rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+     : (m = $f93f5f7c0b27fbb6$var$reRgbaPercent.exec(format)) ? $f93f5f7c0b27fbb6$var$rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+     : (m = $f93f5f7c0b27fbb6$var$reHslPercent.exec(format)) ? $f93f5f7c0b27fbb6$var$hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+     : (m = $f93f5f7c0b27fbb6$var$reHslaPercent.exec(format)) ? $f93f5f7c0b27fbb6$var$hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+     : $f93f5f7c0b27fbb6$var$named.hasOwnProperty(format) ? $f93f5f7c0b27fbb6$var$rgbn($f93f5f7c0b27fbb6$var$named[format]) // eslint-disable-line no-prototype-builtins
+     : format === "transparent" ? new $f93f5f7c0b27fbb6$export$5e05a94393ac29e3(NaN, NaN, NaN, 0) : null;
+}
+function $f93f5f7c0b27fbb6$var$rgbn(n) {
+    return new $f93f5f7c0b27fbb6$export$5e05a94393ac29e3(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+}
+function $f93f5f7c0b27fbb6$var$rgba(r, g, b, a) {
+    if (a <= 0) r = g = b = NaN;
+    return new $f93f5f7c0b27fbb6$export$5e05a94393ac29e3(r, g, b, a);
+}
+function $f93f5f7c0b27fbb6$export$42da0a331c2802f5(o) {
+    if (!(o instanceof $f93f5f7c0b27fbb6$export$892596cec99bc70e)) o = $f93f5f7c0b27fbb6$export$2e2bcd8739ae039(o);
+    if (!o) return new $f93f5f7c0b27fbb6$export$5e05a94393ac29e3;
+    o = o.rgb();
+    return new $f93f5f7c0b27fbb6$export$5e05a94393ac29e3(o.r, o.g, o.b, o.opacity);
+}
+function $f93f5f7c0b27fbb6$export$8972dc0e6ad9238f(r, g, b, opacity) {
+    return arguments.length === 1 ? $f93f5f7c0b27fbb6$export$42da0a331c2802f5(r) : new $f93f5f7c0b27fbb6$export$5e05a94393ac29e3(r, g, b, opacity == null ? 1 : opacity);
+}
+function $f93f5f7c0b27fbb6$export$5e05a94393ac29e3(r, g, b, opacity) {
+    this.r = +r;
+    this.g = +g;
+    this.b = +b;
+    this.opacity = +opacity;
+}
+(0, $dc8e5110f7214f52$export$2e2bcd8739ae039)($f93f5f7c0b27fbb6$export$5e05a94393ac29e3, $f93f5f7c0b27fbb6$export$8972dc0e6ad9238f, (0, $dc8e5110f7214f52$export$8b58be045bf06082)($f93f5f7c0b27fbb6$export$892596cec99bc70e, {
+    brighter (k) {
+        k = k == null ? $f93f5f7c0b27fbb6$export$9eace2cc0d12c98d : Math.pow($f93f5f7c0b27fbb6$export$9eace2cc0d12c98d, k);
+        return new $f93f5f7c0b27fbb6$export$5e05a94393ac29e3(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    darker (k) {
+        k = k == null ? $f93f5f7c0b27fbb6$export$4adafc6ed0600c10 : Math.pow($f93f5f7c0b27fbb6$export$4adafc6ed0600c10, k);
+        return new $f93f5f7c0b27fbb6$export$5e05a94393ac29e3(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    rgb () {
+        return this;
+    },
+    clamp () {
+        return new $f93f5f7c0b27fbb6$export$5e05a94393ac29e3($f93f5f7c0b27fbb6$var$clampi(this.r), $f93f5f7c0b27fbb6$var$clampi(this.g), $f93f5f7c0b27fbb6$var$clampi(this.b), $f93f5f7c0b27fbb6$var$clampa(this.opacity));
+    },
+    displayable () {
+        return -0.5 <= this.r && this.r < 255.5 && -0.5 <= this.g && this.g < 255.5 && -0.5 <= this.b && this.b < 255.5 && 0 <= this.opacity && this.opacity <= 1;
+    },
+    hex: $f93f5f7c0b27fbb6$var$rgb_formatHex,
+    formatHex: $f93f5f7c0b27fbb6$var$rgb_formatHex,
+    formatHex8: $f93f5f7c0b27fbb6$var$rgb_formatHex8,
+    formatRgb: $f93f5f7c0b27fbb6$var$rgb_formatRgb,
+    toString: $f93f5f7c0b27fbb6$var$rgb_formatRgb
+}));
+function $f93f5f7c0b27fbb6$var$rgb_formatHex() {
+    return `#${$f93f5f7c0b27fbb6$var$hex(this.r)}${$f93f5f7c0b27fbb6$var$hex(this.g)}${$f93f5f7c0b27fbb6$var$hex(this.b)}`;
+}
+function $f93f5f7c0b27fbb6$var$rgb_formatHex8() {
+    return `#${$f93f5f7c0b27fbb6$var$hex(this.r)}${$f93f5f7c0b27fbb6$var$hex(this.g)}${$f93f5f7c0b27fbb6$var$hex(this.b)}${$f93f5f7c0b27fbb6$var$hex((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
+}
+function $f93f5f7c0b27fbb6$var$rgb_formatRgb() {
+    const a = $f93f5f7c0b27fbb6$var$clampa(this.opacity);
+    return `${a === 1 ? "rgb(" : "rgba("}${$f93f5f7c0b27fbb6$var$clampi(this.r)}, ${$f93f5f7c0b27fbb6$var$clampi(this.g)}, ${$f93f5f7c0b27fbb6$var$clampi(this.b)}${a === 1 ? ")" : `, ${a})`}`;
+}
+function $f93f5f7c0b27fbb6$var$clampa(opacity) {
+    return isNaN(opacity) ? 1 : Math.max(0, Math.min(1, opacity));
+}
+function $f93f5f7c0b27fbb6$var$clampi(value) {
+    return Math.max(0, Math.min(255, Math.round(value) || 0));
+}
+function $f93f5f7c0b27fbb6$var$hex(value) {
+    value = $f93f5f7c0b27fbb6$var$clampi(value);
+    return (value < 16 ? "0" : "") + value.toString(16);
+}
+function $f93f5f7c0b27fbb6$var$hsla(h, s, l, a) {
+    if (a <= 0) h = s = l = NaN;
+    else if (l <= 0 || l >= 1) h = s = NaN;
+    else if (s <= 0) h = NaN;
+    return new $f93f5f7c0b27fbb6$var$Hsl(h, s, l, a);
+}
+function $f93f5f7c0b27fbb6$export$8133dc3fa904d6d1(o) {
+    if (o instanceof $f93f5f7c0b27fbb6$var$Hsl) return new $f93f5f7c0b27fbb6$var$Hsl(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof $f93f5f7c0b27fbb6$export$892596cec99bc70e)) o = $f93f5f7c0b27fbb6$export$2e2bcd8739ae039(o);
+    if (!o) return new $f93f5f7c0b27fbb6$var$Hsl;
+    if (o instanceof $f93f5f7c0b27fbb6$var$Hsl) return o;
+    o = o.rgb();
+    var r = o.r / 255, g = o.g / 255, b = o.b / 255, min = Math.min(r, g, b), max = Math.max(r, g, b), h = NaN, s = max - min, l = (max + min) / 2;
+    if (s) {
+        if (r === max) h = (g - b) / s + (g < b) * 6;
+        else if (g === max) h = (b - r) / s + 2;
+        else h = (r - g) / s + 4;
+        s /= l < 0.5 ? max + min : 2 - max - min;
+        h *= 60;
+    } else s = l > 0 && l < 1 ? 0 : h;
+    return new $f93f5f7c0b27fbb6$var$Hsl(h, s, l, o.opacity);
+}
+function $f93f5f7c0b27fbb6$export$8f4a7c0bb78e6ea8(h, s, l, opacity) {
+    return arguments.length === 1 ? $f93f5f7c0b27fbb6$export$8133dc3fa904d6d1(h) : new $f93f5f7c0b27fbb6$var$Hsl(h, s, l, opacity == null ? 1 : opacity);
+}
+function $f93f5f7c0b27fbb6$var$Hsl(h, s, l, opacity) {
+    this.h = +h;
+    this.s = +s;
+    this.l = +l;
+    this.opacity = +opacity;
+}
+(0, $dc8e5110f7214f52$export$2e2bcd8739ae039)($f93f5f7c0b27fbb6$var$Hsl, $f93f5f7c0b27fbb6$export$8f4a7c0bb78e6ea8, (0, $dc8e5110f7214f52$export$8b58be045bf06082)($f93f5f7c0b27fbb6$export$892596cec99bc70e, {
+    brighter (k) {
+        k = k == null ? $f93f5f7c0b27fbb6$export$9eace2cc0d12c98d : Math.pow($f93f5f7c0b27fbb6$export$9eace2cc0d12c98d, k);
+        return new $f93f5f7c0b27fbb6$var$Hsl(this.h, this.s, this.l * k, this.opacity);
+    },
+    darker (k) {
+        k = k == null ? $f93f5f7c0b27fbb6$export$4adafc6ed0600c10 : Math.pow($f93f5f7c0b27fbb6$export$4adafc6ed0600c10, k);
+        return new $f93f5f7c0b27fbb6$var$Hsl(this.h, this.s, this.l * k, this.opacity);
+    },
+    rgb () {
+        var h = this.h % 360 + (this.h < 0) * 360, s = isNaN(h) || isNaN(this.s) ? 0 : this.s, l = this.l, m2 = l + (l < 0.5 ? l : 1 - l) * s, m1 = 2 * l - m2;
+        return new $f93f5f7c0b27fbb6$export$5e05a94393ac29e3($f93f5f7c0b27fbb6$var$hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), $f93f5f7c0b27fbb6$var$hsl2rgb(h, m1, m2), $f93f5f7c0b27fbb6$var$hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
+    },
+    clamp () {
+        return new $f93f5f7c0b27fbb6$var$Hsl($f93f5f7c0b27fbb6$var$clamph(this.h), $f93f5f7c0b27fbb6$var$clampt(this.s), $f93f5f7c0b27fbb6$var$clampt(this.l), $f93f5f7c0b27fbb6$var$clampa(this.opacity));
+    },
+    displayable () {
+        return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && 0 <= this.l && this.l <= 1 && 0 <= this.opacity && this.opacity <= 1;
+    },
+    formatHsl () {
+        const a = $f93f5f7c0b27fbb6$var$clampa(this.opacity);
+        return `${a === 1 ? "hsl(" : "hsla("}${$f93f5f7c0b27fbb6$var$clamph(this.h)}, ${$f93f5f7c0b27fbb6$var$clampt(this.s) * 100}%, ${$f93f5f7c0b27fbb6$var$clampt(this.l) * 100}%${a === 1 ? ")" : `, ${a})`}`;
+    }
+}));
+function $f93f5f7c0b27fbb6$var$clamph(value) {
+    value = (value || 0) % 360;
+    return value < 0 ? value + 360 : value;
+}
+function $f93f5f7c0b27fbb6$var$clampt(value) {
+    return Math.max(0, Math.min(1, value || 0));
+}
+/* From FvD 13.37, CSS Color Module Level 3 */ function $f93f5f7c0b27fbb6$var$hsl2rgb(h, m1, m2) {
+    return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
+}
+
+
+
+
+function $040ae02540c55149$export$4e41033bfeec1a4c(t1, v0, v1, v2, v3) {
+    var t2 = t1 * t1, t3 = t2 * t1;
+    return ((1 - 3 * t1 + 3 * t2 - t3) * v0 + (4 - 6 * t2 + 3 * t3) * v1 + (1 + 3 * t1 + 3 * t2 - 3 * t3) * v2 + t3 * v3) / 6;
+}
+function $040ae02540c55149$export$2e2bcd8739ae039(values) {
+    var n = values.length - 1;
+    return function(t) {
+        var i = t <= 0 ? t = 0 : t >= 1 ? (t = 1, n - 1) : Math.floor(t * n), v1 = values[i], v2 = values[i + 1], v0 = i > 0 ? values[i - 1] : 2 * v1 - v2, v3 = i < n - 1 ? values[i + 2] : 2 * v2 - v1;
+        return $040ae02540c55149$export$4e41033bfeec1a4c((t - i / n) * n, v0, v1, v2, v3);
+    };
+}
+
+
+
+function $a75ded073b28d64f$export$2e2bcd8739ae039(values) {
+    var n = values.length;
+    return function(t) {
+        var i = Math.floor(((t %= 1) < 0 ? ++t : t) * n), v0 = values[(i + n - 1) % n], v1 = values[i % n], v2 = values[(i + 1) % n], v3 = values[(i + 2) % n];
+        return (0, $040ae02540c55149$export$4e41033bfeec1a4c)((t - i / n) * n, v0, v1, v2, v3);
+    };
+}
+
+
+var $6ad7cf63edd03697$export$2e2bcd8739ae039 = (x)=>()=>x;
+
+
+function $6021c5f7f98a7a07$var$linear(a, d) {
+    return function(t) {
+        return a + t * d;
+    };
+}
+function $6021c5f7f98a7a07$var$exponential(a, b, y) {
+    return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function(t) {
+        return Math.pow(a + t * b, y);
+    };
+}
+function $6021c5f7f98a7a07$export$97d7b0c7ddb78dcf(a, b) {
+    var d = b - a;
+    return d ? $6021c5f7f98a7a07$var$linear(a, d > 180 || d < -180 ? d - 360 * Math.round(d / 360) : d) : (0, $6ad7cf63edd03697$export$2e2bcd8739ae039)(isNaN(a) ? b : a);
+}
+function $6021c5f7f98a7a07$export$a7ebe8cc6aaf8d37(y) {
+    return (y = +y) === 1 ? $6021c5f7f98a7a07$export$2e2bcd8739ae039 : function(a, b) {
+        return b - a ? $6021c5f7f98a7a07$var$exponential(a, b, y) : (0, $6ad7cf63edd03697$export$2e2bcd8739ae039)(isNaN(a) ? b : a);
+    };
+}
+function $6021c5f7f98a7a07$export$2e2bcd8739ae039(a, b) {
+    var d = b - a;
+    return d ? $6021c5f7f98a7a07$var$linear(a, d) : (0, $6ad7cf63edd03697$export$2e2bcd8739ae039)(isNaN(a) ? b : a);
+}
+
+
+var $646a0291bef9ecc1$export$2e2bcd8739ae039 = function rgbGamma(y) {
+    var color = (0, $6021c5f7f98a7a07$export$a7ebe8cc6aaf8d37)(y);
+    function rgb(start, end) {
+        var r = color((start = (0, $f93f5f7c0b27fbb6$export$8972dc0e6ad9238f)(start)).r, (end = (0, $f93f5f7c0b27fbb6$export$8972dc0e6ad9238f)(end)).r), g = color(start.g, end.g), b = color(start.b, end.b), opacity = (0, $6021c5f7f98a7a07$export$2e2bcd8739ae039)(start.opacity, end.opacity);
+        return function(t) {
+            start.r = r(t);
+            start.g = g(t);
+            start.b = b(t);
+            start.opacity = opacity(t);
+            return start + "";
+        };
+    }
+    rgb.gamma = rgbGamma;
+    return rgb;
+}(1);
+function $646a0291bef9ecc1$var$rgbSpline(spline) {
+    return function(colors) {
+        var n = colors.length, r = new Array(n), g = new Array(n), b = new Array(n), i, color;
+        for(i = 0; i < n; ++i){
+            color = (0, $f93f5f7c0b27fbb6$export$8972dc0e6ad9238f)(colors[i]);
+            r[i] = color.r || 0;
+            g[i] = color.g || 0;
+            b[i] = color.b || 0;
+        }
+        r = spline(r);
+        g = spline(g);
+        b = spline(b);
+        color.opacity = 1;
+        return function(t) {
+            color.r = r(t);
+            color.g = g(t);
+            color.b = b(t);
+            return color + "";
+        };
+    };
+}
+var $646a0291bef9ecc1$export$2c0e28f2e2852d3f = $646a0291bef9ecc1$var$rgbSpline((0, $040ae02540c55149$export$2e2bcd8739ae039));
+var $646a0291bef9ecc1$export$53d5214f625ccd4c = $646a0291bef9ecc1$var$rgbSpline((0, $a75ded073b28d64f$export$2e2bcd8739ae039));
+
+
+
+function $73464adea59b76a1$export$2e2bcd8739ae039(a, b) {
+    if (!b) b = [];
+    var n = a ? Math.min(b.length, a.length) : 0, c = b.slice(), i;
+    return function(t) {
+        for(i = 0; i < n; ++i)c[i] = a[i] * (1 - t) + b[i] * t;
+        return c;
+    };
+}
+function $73464adea59b76a1$export$5cd576d1827d40c8(x) {
+    return ArrayBuffer.isView(x) && !(x instanceof DataView);
+}
+
+
+function $a9c52bca048ef11e$export$2e2bcd8739ae039(a, b) {
+    return ((0, $73464adea59b76a1$export$5cd576d1827d40c8)(b) ? (0, $73464adea59b76a1$export$2e2bcd8739ae039) : $a9c52bca048ef11e$export$15d09067c6a5ee49)(a, b);
+}
+function $a9c52bca048ef11e$export$15d09067c6a5ee49(a, b) {
+    var nb = b ? b.length : 0, na = a ? Math.min(nb, a.length) : 0, x = new Array(na), c = new Array(nb), i;
+    for(i = 0; i < na; ++i)x[i] = (0, $173bc90c2e2ac5d2$export$2e2bcd8739ae039)(a[i], b[i]);
+    for(; i < nb; ++i)c[i] = b[i];
+    return function(t) {
+        for(i = 0; i < na; ++i)c[i] = x[i](t);
+        return c;
+    };
+}
+
+
+function $95d77784d833a48f$export$2e2bcd8739ae039(a, b) {
+    var d = new Date;
+    return a = +a, b = +b, function(t) {
+        return d.setTime(a * (1 - t) + b * t), d;
+    };
+}
+
+
+function $16d97e740aded0c5$export$2e2bcd8739ae039(a, b) {
+    return a = +a, b = +b, function(t) {
+        return a * (1 - t) + b * t;
+    };
+}
+
+
+
+function $487d6bf78288ddfd$export$2e2bcd8739ae039(a, b) {
+    var i = {}, c = {}, k;
+    if (a === null || typeof a !== "object") a = {};
+    if (b === null || typeof b !== "object") b = {};
+    for(k in b)if (k in a) i[k] = (0, $173bc90c2e2ac5d2$export$2e2bcd8739ae039)(a[k], b[k]);
+    else c[k] = b[k];
+    return function(t) {
+        for(k in i)c[k] = i[k](t);
+        return c;
+    };
+}
+
+
+
+var $c19f414667cd861f$var$reA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g, $c19f414667cd861f$var$reB = new RegExp($c19f414667cd861f$var$reA.source, "g");
+function $c19f414667cd861f$var$zero(b) {
+    return function() {
+        return b;
+    };
+}
+function $c19f414667cd861f$var$one(b) {
+    return function(t) {
+        return b(t) + "";
+    };
+}
+function $c19f414667cd861f$export$2e2bcd8739ae039(a, b) {
+    var bi = $c19f414667cd861f$var$reA.lastIndex = $c19f414667cd861f$var$reB.lastIndex = 0, am, bm, bs, i = -1, s = [], q = []; // number interpolators
+    // Coerce inputs to strings.
+    a = a + "", b = b + "";
+    // Interpolate pairs of numbers in a & b.
+    while((am = $c19f414667cd861f$var$reA.exec(a)) && (bm = $c19f414667cd861f$var$reB.exec(b))){
+        if ((bs = bm.index) > bi) {
+            bs = b.slice(bi, bs);
+            if (s[i]) s[i] += bs; // coalesce with previous string
+            else s[++i] = bs;
+        }
+        if ((am = am[0]) === (bm = bm[0])) {
+            if (s[i]) s[i] += bm; // coalesce with previous string
+            else s[++i] = bm;
+        } else {
+            s[++i] = null;
+            q.push({
+                i: i,
+                x: (0, $16d97e740aded0c5$export$2e2bcd8739ae039)(am, bm)
+            });
+        }
+        bi = $c19f414667cd861f$var$reB.lastIndex;
+    }
+    // Add remains of b.
+    if (bi < b.length) {
+        bs = b.slice(bi);
+        if (s[i]) s[i] += bs; // coalesce with previous string
+        else s[++i] = bs;
+    }
+    // Special optimization for only a single match.
+    // Otherwise, interpolate each of the numbers and rejoin the string.
+    return s.length < 2 ? q[0] ? $c19f414667cd861f$var$one(q[0].x) : $c19f414667cd861f$var$zero(b) : (b = q.length, function(t) {
+        for(var i = 0, o; i < b; ++i)s[(o = q[i]).i] = o.x(t);
+        return s.join("");
+    });
+}
+
+
+
+
+function $173bc90c2e2ac5d2$export$2e2bcd8739ae039(a, b) {
+    var t = typeof b, c;
+    return b == null || t === "boolean" ? (0, $6ad7cf63edd03697$export$2e2bcd8739ae039)(b) : (t === "number" ? (0, $16d97e740aded0c5$export$2e2bcd8739ae039) : t === "string" ? (c = (0, $f93f5f7c0b27fbb6$export$2e2bcd8739ae039)(b)) ? (b = c, $646a0291bef9ecc1$export$2e2bcd8739ae039) : (0, $c19f414667cd861f$export$2e2bcd8739ae039) : b instanceof (0, $f93f5f7c0b27fbb6$export$2e2bcd8739ae039) ? (0, $646a0291bef9ecc1$export$2e2bcd8739ae039) : b instanceof Date ? (0, $95d77784d833a48f$export$2e2bcd8739ae039) : (0, $73464adea59b76a1$export$5cd576d1827d40c8)(b) ? (0, $73464adea59b76a1$export$2e2bcd8739ae039) : Array.isArray(b) ? (0, $a9c52bca048ef11e$export$15d09067c6a5ee49) : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? (0, $487d6bf78288ddfd$export$2e2bcd8739ae039) : (0, $16d97e740aded0c5$export$2e2bcd8739ae039))(a, b);
+}
+
+function $947679fe8605d6a2$export$2e2bcd8739ae039(a, b) {
+    return a = +a, b = +b, function(t) {
+        return Math.round(a * (1 - t) + b * t);
+    };
+}
+
+
+
+function $3cf99e83c3a771ac$export$2e2bcd8739ae039(x) {
+    return function() {
+        return x;
+    };
+}
+
+
+function $a48858bea9b76613$export$2e2bcd8739ae039(x) {
+    return +x;
+}
+
+
+var $1f969fe7f86ab54e$var$unit = [
+    0,
+    1
+];
+function $1f969fe7f86ab54e$export$f0954fd7d5368655(x) {
+    return x;
+}
+function $1f969fe7f86ab54e$var$normalize(a, b) {
+    return (b -= a = +a) ? function(x) {
+        return (x - a) / b;
+    } : (0, $3cf99e83c3a771ac$export$2e2bcd8739ae039)(isNaN(b) ? NaN : 0.5);
+}
+function $1f969fe7f86ab54e$var$clamper(a, b) {
+    var t;
+    if (a > b) t = a, a = b, b = t;
+    return function(x) {
+        return Math.max(a, Math.min(b, x));
+    };
+}
+// normalize(a, b)(x) takes a domain value x in [a,b] and returns the corresponding parameter t in [0,1].
+// interpolate(a, b)(t) takes a parameter t in [0,1] and returns the corresponding range value x in [a,b].
+function $1f969fe7f86ab54e$var$bimap(domain, range, interpolate) {
+    var d0 = domain[0], d1 = domain[1], r0 = range[0], r1 = range[1];
+    if (d1 < d0) d0 = $1f969fe7f86ab54e$var$normalize(d1, d0), r0 = interpolate(r1, r0);
+    else d0 = $1f969fe7f86ab54e$var$normalize(d0, d1), r0 = interpolate(r0, r1);
+    return function(x) {
+        return r0(d0(x));
+    };
+}
+function $1f969fe7f86ab54e$var$polymap(domain, range, interpolate) {
+    var j = Math.min(domain.length, range.length) - 1, d = new Array(j), r = new Array(j), i = -1;
+    // Reverse descending domains.
+    if (domain[j] < domain[0]) {
+        domain = domain.slice().reverse();
+        range = range.slice().reverse();
+    }
+    while(++i < j){
+        d[i] = $1f969fe7f86ab54e$var$normalize(domain[i], domain[i + 1]);
+        r[i] = interpolate(range[i], range[i + 1]);
+    }
+    return function(x) {
+        var i = (0, $30a8de2d3e679e73$export$2e2bcd8739ae039)(domain, x, 1, j) - 1;
+        return r[i](d[i](x));
+    };
+}
+function $1f969fe7f86ab54e$export$784d13d8ee351f07(source, target) {
+    return target.domain(source.domain()).range(source.range()).interpolate(source.interpolate()).clamp(source.clamp()).unknown(source.unknown());
+}
+function $1f969fe7f86ab54e$export$6b468dcfb64c653c() {
+    var domain = $1f969fe7f86ab54e$var$unit, range = $1f969fe7f86ab54e$var$unit, interpolate = (0, $173bc90c2e2ac5d2$export$2e2bcd8739ae039), transform, untransform, unknown, clamp = $1f969fe7f86ab54e$export$f0954fd7d5368655, piecewise, output, input;
+    function rescale() {
+        var n = Math.min(domain.length, range.length);
+        if (clamp !== $1f969fe7f86ab54e$export$f0954fd7d5368655) clamp = $1f969fe7f86ab54e$var$clamper(domain[0], domain[n - 1]);
+        piecewise = n > 2 ? $1f969fe7f86ab54e$var$polymap : $1f969fe7f86ab54e$var$bimap;
+        output = input = null;
+        return scale;
+    }
+    function scale(x) {
+        return x == null || isNaN(x = +x) ? unknown : (output || (output = piecewise(domain.map(transform), range, interpolate)))(transform(clamp(x)));
+    }
+    scale.invert = function(y) {
+        return clamp(untransform((input || (input = piecewise(range, domain.map(transform), (0, $16d97e740aded0c5$export$2e2bcd8739ae039))))(y)));
+    };
+    scale.domain = function(_) {
+        return arguments.length ? (domain = Array.from(_, (0, $a48858bea9b76613$export$2e2bcd8739ae039)), rescale()) : domain.slice();
+    };
+    scale.range = function(_) {
+        return arguments.length ? (range = Array.from(_), rescale()) : range.slice();
+    };
+    scale.rangeRound = function(_) {
+        return range = Array.from(_), interpolate = (0, $947679fe8605d6a2$export$2e2bcd8739ae039), rescale();
+    };
+    scale.clamp = function(_) {
+        return arguments.length ? (clamp = _ ? true : $1f969fe7f86ab54e$export$f0954fd7d5368655, rescale()) : clamp !== $1f969fe7f86ab54e$export$f0954fd7d5368655;
+    };
+    scale.interpolate = function(_) {
+        return arguments.length ? (interpolate = _, rescale()) : interpolate;
+    };
+    scale.unknown = function(_) {
+        return arguments.length ? (unknown = _, scale) : unknown;
+    };
+    return function(t, u) {
+        transform = t, untransform = u;
+        return rescale();
+    };
+}
+function $1f969fe7f86ab54e$export$2e2bcd8739ae039() {
+    return $1f969fe7f86ab54e$export$6b468dcfb64c653c()($1f969fe7f86ab54e$export$f0954fd7d5368655, $1f969fe7f86ab54e$export$f0954fd7d5368655);
+}
+
+
+function $87ac27c065b7746b$export$23c7bb9e6558da2a(domain, range) {
+    switch(arguments.length){
+        case 0:
+            break;
+        case 1:
+            this.range(domain);
+            break;
+        default:
+            this.range(range).domain(domain);
+            break;
+    }
+    return this;
+}
+function $87ac27c065b7746b$export$7d6b419e59e83f3d(domain, interpolator) {
+    switch(arguments.length){
+        case 0:
+            break;
+        case 1:
+            if (typeof domain === "function") this.interpolator(domain);
+            else this.range(domain);
+            break;
+        default:
+            this.domain(domain);
+            if (typeof interpolator === "function") this.interpolator(interpolator);
+            else this.range(interpolator);
+            break;
+    }
+    return this;
+}
+
+
+
+function $c451933e1821abea$export$2e2bcd8739ae039(x) {
+    return Math.abs(x = Math.round(x)) >= 1e21 ? x.toLocaleString("en").replace(/,/g, "") : x.toString(10);
+}
+function $c451933e1821abea$export$8f8e23dd27dc19f5(x, p) {
+    if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
+    var i, coefficient = x.slice(0, i);
+    // The string returned by toExponential either has the form \d\.\d+e[-+]\d+
+    // (e.g., 1.2e+3) or the form \de[-+]\d+ (e.g., 1e+3).
+    return [
+        coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient,
+        +x.slice(i + 1)
+    ];
+}
+
+
+function $442afb4ee08e510b$export$2e2bcd8739ae039(x) {
+    return x = (0, $c451933e1821abea$export$8f8e23dd27dc19f5)(Math.abs(x)), x ? x[1] : NaN;
+}
+
+
+function $5db9a8236ec6b48a$export$2e2bcd8739ae039(grouping, thousands) {
+    return function(value, width) {
+        var i = value.length, t = [], j = 0, g = grouping[0], length = 0;
+        while(i > 0 && g > 0){
+            if (length + g + 1 > width) g = Math.max(1, width - length);
+            t.push(value.substring(i -= g, i + g));
+            if ((length += g + 1) > width) break;
+            g = grouping[j = (j + 1) % grouping.length];
+        }
+        return t.reverse().join(thousands);
+    };
+}
+
+
+function $61af21e0d7a91baf$export$2e2bcd8739ae039(numerals) {
+    return function(value) {
+        return value.replace(/[0-9]/g, function(i) {
+            return numerals[+i];
+        });
+    };
+}
+
+
+// [[fill]align][sign][symbol][0][width][,][.precision][~][type]
+var $3fb484f7a9a75ffe$var$re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
+function $3fb484f7a9a75ffe$export$2e2bcd8739ae039(specifier) {
+    if (!(match = $3fb484f7a9a75ffe$var$re.exec(specifier))) throw new Error("invalid format: " + specifier);
+    var match;
+    return new $3fb484f7a9a75ffe$export$963aac351db36ed4({
+        fill: match[1],
+        align: match[2],
+        sign: match[3],
+        symbol: match[4],
+        zero: match[5],
+        width: match[6],
+        comma: match[7],
+        precision: match[8] && match[8].slice(1),
+        trim: match[9],
+        type: match[10]
+    });
+}
+$3fb484f7a9a75ffe$export$2e2bcd8739ae039.prototype = $3fb484f7a9a75ffe$export$963aac351db36ed4.prototype; // instanceof
+function $3fb484f7a9a75ffe$export$963aac351db36ed4(specifier) {
+    this.fill = specifier.fill === undefined ? " " : specifier.fill + "";
+    this.align = specifier.align === undefined ? ">" : specifier.align + "";
+    this.sign = specifier.sign === undefined ? "-" : specifier.sign + "";
+    this.symbol = specifier.symbol === undefined ? "" : specifier.symbol + "";
+    this.zero = !!specifier.zero;
+    this.width = specifier.width === undefined ? undefined : +specifier.width;
+    this.comma = !!specifier.comma;
+    this.precision = specifier.precision === undefined ? undefined : +specifier.precision;
+    this.trim = !!specifier.trim;
+    this.type = specifier.type === undefined ? "" : specifier.type + "";
+}
+$3fb484f7a9a75ffe$export$963aac351db36ed4.prototype.toString = function() {
+    return this.fill + this.align + this.sign + this.symbol + (this.zero ? "0" : "") + (this.width === undefined ? "" : Math.max(1, this.width | 0)) + (this.comma ? "," : "") + (this.precision === undefined ? "" : "." + Math.max(0, this.precision | 0)) + (this.trim ? "~" : "") + this.type;
+};
+
+
+function $fa5f057d2b7fe541$export$2e2bcd8739ae039(s) {
+    out: for(var n = s.length, i = 1, i0 = -1, i1; i < n; ++i)switch(s[i]){
+        case ".":
+            i0 = i1 = i;
+            break;
+        case "0":
+            if (i0 === 0) i0 = i;
+            i1 = i;
+            break;
+        default:
+            if (!+s[i]) break out;
+            if (i0 > 0) i0 = 0;
+            break;
+    }
+    return i0 > 0 ? s.slice(0, i0) + s.slice(i1 + 1) : s;
+}
+
+
+
+
+var $dde69854b2f0a704$export$6863724d9a42263;
+function $dde69854b2f0a704$export$2e2bcd8739ae039(x, p) {
+    var d = (0, $c451933e1821abea$export$8f8e23dd27dc19f5)(x, p);
+    if (!d) return x + "";
+    var coefficient = d[0], exponent = d[1], i = exponent - ($dde69854b2f0a704$export$6863724d9a42263 = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1, n = coefficient.length;
+    return i === n ? coefficient : i > n ? coefficient + new Array(i - n + 1).join("0") : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i) : "0." + new Array(1 - i).join("0") + (0, $c451933e1821abea$export$8f8e23dd27dc19f5)(x, Math.max(0, p + i - 1))[0]; // less than 1y!
+}
+
+
+
+function $d31054296bcdc7da$export$2e2bcd8739ae039(x, p) {
+    var d = (0, $c451933e1821abea$export$8f8e23dd27dc19f5)(x, p);
+    if (!d) return x + "";
+    var coefficient = d[0], exponent = d[1];
+    return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1) : coefficient + new Array(exponent - coefficient.length + 2).join("0");
+}
+
+
+var $43d1c0322b8d4a57$export$2e2bcd8739ae039 = {
+    "%": (x, p)=>(x * 100).toFixed(p),
+    "b": (x)=>Math.round(x).toString(2),
+    "c": (x)=>x + "",
+    "d": (0, $c451933e1821abea$export$2e2bcd8739ae039),
+    "e": (x, p)=>x.toExponential(p),
+    "f": (x, p)=>x.toFixed(p),
+    "g": (x, p)=>x.toPrecision(p),
+    "o": (x)=>Math.round(x).toString(8),
+    "p": (x, p)=>(0, $d31054296bcdc7da$export$2e2bcd8739ae039)(x * 100, p),
+    "r": (0, $d31054296bcdc7da$export$2e2bcd8739ae039),
+    "s": (0, $dde69854b2f0a704$export$2e2bcd8739ae039),
+    "X": (x)=>Math.round(x).toString(16).toUpperCase(),
+    "x": (x)=>Math.round(x).toString(16)
+};
+
+
+
+function $afb3d6387d4ff4b3$export$2e2bcd8739ae039(x) {
+    return x;
+}
+
+
+var $e8c35d7df6b7887d$var$map = Array.prototype.map, $e8c35d7df6b7887d$var$prefixes = [
+    "y",
+    "z",
+    "a",
+    "f",
+    "p",
+    "n",
+    "\xb5",
+    "m",
+    "",
+    "k",
+    "M",
+    "G",
+    "T",
+    "P",
+    "E",
+    "Z",
+    "Y"
+];
+function $e8c35d7df6b7887d$export$2e2bcd8739ae039(locale) {
+    var group = locale.grouping === undefined || locale.thousands === undefined ? (0, $afb3d6387d4ff4b3$export$2e2bcd8739ae039) : (0, $5db9a8236ec6b48a$export$2e2bcd8739ae039)($e8c35d7df6b7887d$var$map.call(locale.grouping, Number), locale.thousands + ""), currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "", currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "", decimal = locale.decimal === undefined ? "." : locale.decimal + "", numerals = locale.numerals === undefined ? (0, $afb3d6387d4ff4b3$export$2e2bcd8739ae039) : (0, $61af21e0d7a91baf$export$2e2bcd8739ae039)($e8c35d7df6b7887d$var$map.call(locale.numerals, String)), percent = locale.percent === undefined ? "%" : locale.percent + "", minus = locale.minus === undefined ? "−" : locale.minus + "", nan = locale.nan === undefined ? "NaN" : locale.nan + "";
+    function newFormat(specifier) {
+        specifier = (0, $3fb484f7a9a75ffe$export$2e2bcd8739ae039)(specifier);
+        var fill = specifier.fill, align = specifier.align, sign = specifier.sign, symbol = specifier.symbol, zero = specifier.zero, width = specifier.width, comma = specifier.comma, precision = specifier.precision, trim = specifier.trim, type = specifier.type;
+        // The "n" type is an alias for ",g".
+        if (type === "n") comma = true, type = "g";
+        else if (!(0, $43d1c0322b8d4a57$export$2e2bcd8739ae039)[type]) precision === undefined && (precision = 12), trim = true, type = "g";
+        // If zero fill is specified, padding goes after sign and before digits.
+        if (zero || fill === "0" && align === "=") zero = true, fill = "0", align = "=";
+        // Compute the prefix and suffix.
+        // For SI-prefix, the suffix is lazily computed.
+        var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "", suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type) ? percent : "";
+        // What format function should we use?
+        // Is this an integer type?
+        // Can this type generate exponential notation?
+        var formatType = (0, $43d1c0322b8d4a57$export$2e2bcd8739ae039)[type], maybeSuffix = /[defgprs%]/.test(type);
+        // Set the default precision if not specified,
+        // or clamp the specified precision to the supported range.
+        // For significant precision, it must be in [1, 21].
+        // For fixed precision, it must be in [0, 20].
+        precision = precision === undefined ? 6 : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision)) : Math.max(0, Math.min(20, precision));
+        function format(value) {
+            var valuePrefix = prefix, valueSuffix = suffix, i, n, c;
+            if (type === "c") {
+                valueSuffix = formatType(value) + valueSuffix;
+                value = "";
+            } else {
+                value = +value;
+                // Determine the sign. -0 is not less than 0, but 1 / -0 is!
+                var valueNegative = value < 0 || 1 / value < 0;
+                // Perform the initial formatting.
+                value = isNaN(value) ? nan : formatType(Math.abs(value), precision);
+                // Trim insignificant zeros.
+                if (trim) value = (0, $fa5f057d2b7fe541$export$2e2bcd8739ae039)(value);
+                // If a negative value rounds to zero after formatting, and no explicit positive sign is requested, hide the sign.
+                if (valueNegative && +value === 0 && sign !== "+") valueNegative = false;
+                // Compute the prefix and suffix.
+                valuePrefix = (valueNegative ? sign === "(" ? sign : minus : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
+                valueSuffix = (type === "s" ? $e8c35d7df6b7887d$var$prefixes[8 + (0, $dde69854b2f0a704$export$6863724d9a42263) / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
+                // Break the formatted value into the integer “value” part that can be
+                // grouped, and fractional or exponential “suffix” part that is not.
+                if (maybeSuffix) {
+                    i = -1, n = value.length;
+                    while(++i < n)if (c = value.charCodeAt(i), 48 > c || c > 57) {
+                        valueSuffix = (c === 46 ? decimal + value.slice(i + 1) : value.slice(i)) + valueSuffix;
+                        value = value.slice(0, i);
+                        break;
+                    }
+                }
+            }
+            // If the fill character is not "0", grouping is applied before padding.
+            if (comma && !zero) value = group(value, Infinity);
+            // Compute the padding.
+            var length = valuePrefix.length + value.length + valueSuffix.length, padding = length < width ? new Array(width - length + 1).join(fill) : "";
+            // If the fill character is "0", grouping is applied after padding.
+            if (comma && zero) value = group(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = "";
+            // Reconstruct the final output based on the desired alignment.
+            switch(align){
+                case "<":
+                    value = valuePrefix + value + valueSuffix + padding;
+                    break;
+                case "=":
+                    value = valuePrefix + padding + value + valueSuffix;
+                    break;
+                case "^":
+                    value = padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length);
+                    break;
+                default:
+                    value = padding + valuePrefix + value + valueSuffix;
+                    break;
+            }
+            return numerals(value);
+        }
+        format.toString = function() {
+            return specifier + "";
+        };
+        return format;
+    }
+    function formatPrefix(specifier, value) {
+        var f = newFormat((specifier = (0, $3fb484f7a9a75ffe$export$2e2bcd8739ae039)(specifier), specifier.type = "f", specifier)), e = Math.max(-8, Math.min(8, Math.floor((0, $442afb4ee08e510b$export$2e2bcd8739ae039)(value) / 3))) * 3, k = Math.pow(10, -e), prefix = $e8c35d7df6b7887d$var$prefixes[8 + e / 3];
+        return function(value) {
+            return f(k * value) + prefix;
+        };
+    }
+    return {
+        format: newFormat,
+        formatPrefix: formatPrefix
+    };
+}
+
+
+var $42af55553657f006$var$locale;
+var $42af55553657f006$export$d9468344d3651243;
+var $42af55553657f006$export$8d85692a469dde6f;
+$42af55553657f006$export$2e2bcd8739ae039({
+    thousands: ",",
+    grouping: [
+        3
+    ],
+    currency: [
+        "$",
+        ""
+    ]
+});
+function $42af55553657f006$export$2e2bcd8739ae039(definition) {
+    $42af55553657f006$var$locale = (0, $e8c35d7df6b7887d$export$2e2bcd8739ae039)(definition);
+    $42af55553657f006$export$d9468344d3651243 = $42af55553657f006$var$locale.format;
+    $42af55553657f006$export$8d85692a469dde6f = $42af55553657f006$var$locale.formatPrefix;
+    return $42af55553657f006$var$locale;
+}
+
+
+function $18401e3744ad968e$export$2e2bcd8739ae039(step) {
+    return Math.max(0, -(0, $442afb4ee08e510b$export$2e2bcd8739ae039)(Math.abs(step)));
+}
+
+
+function $15477256abbd37e3$export$2e2bcd8739ae039(step, value) {
+    return Math.max(0, Math.max(-8, Math.min(8, Math.floor((0, $442afb4ee08e510b$export$2e2bcd8739ae039)(value) / 3))) * 3 - (0, $442afb4ee08e510b$export$2e2bcd8739ae039)(Math.abs(step)));
+}
+
+
+function $2a75ba79aaaecbd2$export$2e2bcd8739ae039(step, max) {
+    step = Math.abs(step), max = Math.abs(max) - step;
+    return Math.max(0, (0, $442afb4ee08e510b$export$2e2bcd8739ae039)(max) - (0, $442afb4ee08e510b$export$2e2bcd8739ae039)(step)) + 1;
+}
+
+
+
+function $321eb1534eebe8ee$export$2e2bcd8739ae039(start, stop, count, specifier) {
+    var step = (0, $eea1c81c19f28e56$export$81087d9b915d4ede)(start, stop, count), precision;
+    specifier = (0, $3fb484f7a9a75ffe$export$2e2bcd8739ae039)(specifier == null ? ",f" : specifier);
+    switch(specifier.type){
+        case "s":
+            var value = Math.max(Math.abs(start), Math.abs(stop));
+            if (specifier.precision == null && !isNaN(precision = (0, $15477256abbd37e3$export$2e2bcd8739ae039)(step, value))) specifier.precision = precision;
+            return (0, $42af55553657f006$export$8d85692a469dde6f)(specifier, value);
+        case "":
+        case "e":
+        case "g":
+        case "p":
+        case "r":
+            if (specifier.precision == null && !isNaN(precision = (0, $2a75ba79aaaecbd2$export$2e2bcd8739ae039)(step, Math.max(Math.abs(start), Math.abs(stop))))) specifier.precision = precision - (specifier.type === "e");
+            break;
+        case "f":
+        case "%":
+            if (specifier.precision == null && !isNaN(precision = (0, $18401e3744ad968e$export$2e2bcd8739ae039)(step))) specifier.precision = precision - (specifier.type === "%") * 2;
+            break;
+    }
+    return (0, $42af55553657f006$export$d9468344d3651243)(specifier);
+}
+
+
+function $815f06c57556bedf$export$16a5d4b4a61a274d(scale) {
+    var domain = scale.domain;
+    scale.ticks = function(count) {
+        var d = domain();
+        return (0, $eea1c81c19f28e56$export$2e2bcd8739ae039)(d[0], d[d.length - 1], count == null ? 10 : count);
+    };
+    scale.tickFormat = function(count, specifier) {
+        var d = domain();
+        return (0, $321eb1534eebe8ee$export$2e2bcd8739ae039)(d[0], d[d.length - 1], count == null ? 10 : count, specifier);
+    };
+    scale.nice = function(count) {
+        if (count == null) count = 10;
+        var d = domain();
+        var i0 = 0;
+        var i1 = d.length - 1;
+        var start = d[i0];
+        var stop = d[i1];
+        var prestep;
+        var step;
+        var maxIter = 10;
+        if (stop < start) {
+            step = start, start = stop, stop = step;
+            step = i0, i0 = i1, i1 = step;
+        }
+        while(maxIter-- > 0){
+            step = (0, $eea1c81c19f28e56$export$bc64d00cc98e7e95)(start, stop, count);
+            if (step === prestep) {
+                d[i0] = start;
+                d[i1] = stop;
+                return domain(d);
+            } else if (step > 0) {
+                start = Math.floor(start / step) * step;
+                stop = Math.ceil(stop / step) * step;
+            } else if (step < 0) {
+                start = Math.ceil(start * step) / step;
+                stop = Math.floor(stop * step) / step;
+            } else break;
+            prestep = step;
+        }
+        return scale;
+    };
+    return scale;
+}
+function $815f06c57556bedf$export$2e2bcd8739ae039() {
+    var scale = (0, $1f969fe7f86ab54e$export$2e2bcd8739ae039)();
+    scale.copy = function() {
+        return (0, $1f969fe7f86ab54e$export$784d13d8ee351f07)(scale, $815f06c57556bedf$export$2e2bcd8739ae039());
+    };
+    (0, $87ac27c065b7746b$export$23c7bb9e6558da2a).apply(scale, arguments);
+    return $815f06c57556bedf$export$16a5d4b4a61a274d(scale);
+}
+
+
+
+
+function $09e8510904f131d2$export$2be97f482a239d30(transition, currentData, selection, presenter) {
+    const { layerStagger: layerStagger  } = presenter.morphchartsref;
+    const { morphChartsRenderResult: morphChartsRenderResult  } = presenter;
+    const cubelayer = morphChartsRenderResult.getCubeLayer();
+    const range = transition.reverse ? [
+        1,
+        0
+    ] : [
+        0,
+        1
+    ];
+    if (!transition || transition.type === "ordinal" && !transition.reverse) delete layerStagger.cubes;
+    else {
+        const staggerOrders = new Float64Array(cubelayer.positionsX.length);
+        switch(transition.type){
+            case "ordinal":
+                {
+                    //reverse ordinal
+                    const scale = (0, $815f06c57556bedf$export$2e2bcd8739ae039)(range).domain([
+                        0,
+                        currentData.length
+                    ]);
+                    currentData.forEach((datum, i)=>{
+                        const glOrdinal = datum[0, $4d0539c68a8de77f$export$5672246984822a29];
+                        staggerOrders[glOrdinal] = scale(i);
+                    });
+                    break;
+                }
+            case "column":
+                if (transition.column.quantitative) {
+                    const values = new Float64Array(currentData.length);
+                    currentData.forEach((datum, i)=>{
+                        values[i] = datum[transition.column.name];
+                    });
+                    const stats = (0, $ae86bb470afa6626$export$432f698644f45d1)(currentData, transition.column);
+                    const scale1 = (0, $815f06c57556bedf$export$2e2bcd8739ae039)(range).domain([
+                        stats.min,
+                        stats.max
+                    ]);
+                    currentData.forEach((datum, i)=>{
+                        const glOrdinal = datum[0, $4d0539c68a8de77f$export$5672246984822a29];
+                        staggerOrders[glOrdinal] = scale1(values[i]);
+                    });
+                } else {
+                    const strings = new Array(currentData.length);
+                    currentData.forEach((datum, i)=>{
+                        strings[i] = datum[transition.column.name];
+                    });
+                    (0, $ae86bb470afa6626$export$432f698644f45d1)(currentData, transition.column, (distictValues)=>{
+                        currentData.forEach((datum, i)=>{
+                            const glOrdinal = datum[0, $4d0539c68a8de77f$export$5672246984822a29];
+                            const index = distictValues.indexOf(strings[i]);
+                            const staggerOrder = index / distictValues.length;
+                            staggerOrders[glOrdinal] = transition.reverse ? 1 - staggerOrder : staggerOrder;
+                        });
+                    });
+                }
+                break;
+            case "position":
+                {
+                    const dimensions = {
+                        "x": cubelayer.positionsX,
+                        "y": cubelayer.positionsY,
+                        "z": cubelayer.positionsZ
+                    };
+                    const positions = dimensions[transition.dimension];
+                    const values1 = new Float64Array(currentData.length);
+                    currentData.forEach((datum, i)=>{
+                        const glOrdinal = datum[0, $4d0539c68a8de77f$export$5672246984822a29];
+                        values1[i] = positions[glOrdinal];
+                    });
+                    const stats1 = (0, $ae86bb470afa6626$export$432f698644f45d1)(values1, null, "number", true);
+                    const scale2 = (0, $815f06c57556bedf$export$2e2bcd8739ae039)(range).domain([
+                        stats1.min,
+                        stats1.max
+                    ]);
+                    currentData.forEach((datum, i)=>{
+                        const glOrdinal = datum[0, $4d0539c68a8de77f$export$5672246984822a29];
+                        staggerOrders[glOrdinal] = scale2(values1[i]);
+                    });
+                    break;
+                }
+        }
+        layerStagger.cubes = {
+            staggerOrders: staggerOrders,
+            maxStaggerOrder: 1,
+            minStaggerOrder: 0
+        };
+    }
+    cubelayer.update(morphChartsRenderResult.bounds, selection, layerStagger.cubes);
+}
+
+
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -35563,32 +36921,39 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
         $74bd06e68a152316$exports.setActiveElement(a);
         this.presenter.stage.legend = colorContext.legend;
     }
-    onAnimateDataChange(dataChange, waitingLabel, handlerLabel, time = this.options.transitionDurations.position + this.options.transitionDurations.stagger) {
+    onAnimateDataChange(dataChange, waitingLabel, handlerLabel, time) {
+        var _a;
+        if (time === undefined) {
+            const transitionDurations = ((_a = this.setup) === null || _a === void 0 ? void 0 : _a.transitionDurations) || $8c2135bbc56de0f6$exports.defaultPresenterConfig.transitionDurations;
+            time = transitionDurations.position + transitionDurations.stagger;
+        }
         return new Promise((resolve, reject)=>{
             let innerPromise;
             if (dataChange === (0, $57be1fa2f8a8b996$export$d9e571576e98a7ab).refine) {
                 const oldColorContext = this.colorContexts[this.currentColorContext];
                 innerPromise = new Promise((innerResolve)=>{
-                    this.renderNewLayout({}, {
-                        preStage: (stage, colorMapper)=>{
+                    this.renderNewLayout({}, Object.assign(Object.assign({}, this.setup || {}), {
+                        onPresent: ()=>this.options.onPresent(),
+                        preStage: (stage, cubeLayer)=>{
                             (0, $d50aa7ce26a6d6ed$export$71ab65a966760ac3)(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                             this.overrideAxisLabels(stage);
-                            colorMapper.setCubeUnitColorMap(oldColorContext.colorMap);
+                            cubeLayer.unitColorMap = oldColorContext.colorMap;
                             if (this.options.onStage) this.options.onStage(stage);
                         }
-                    }).then(()=>{
+                    })).then(()=>{
                         //apply old legend
                         this.applyLegendColorContext(oldColorContext);
                         innerResolve();
                     });
                 });
-            } else innerPromise = this.renderNewLayout({}, {
+            } else innerPromise = this.renderNewLayout({}, Object.assign(Object.assign({}, this.setup || {}), {
+                onPresent: ()=>this.options.onPresent(),
                 preStage: (stage, colorMapper)=>{
                     (0, $d50aa7ce26a6d6ed$export$71ab65a966760ac3)(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                     this.overrideAxisLabels(stage);
                     if (this.options.onStage) this.options.onStage(stage);
                 }
-            });
+            }));
             innerPromise.then(()=>{
                 this.presenter.animationQueue(resolve, time, {
                     waitingLabel: waitingLabel,
@@ -35621,12 +36986,12 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
                         this.presenter.morphChartsRenderResult.update({
                             cubes: null
                         });
-                        yield this.renderNewLayout({}, {
-                            preStage: (stage, colorMapper)=>{
+                        yield this.renderNewLayout({}, Object.assign(Object.assign({}, this.setup || {}), {
+                            preStage: (stage, cubeLayer)=>{
                                 //save off the spec colors
-                                colorMap = colorMapper.getCubeUnitColorMap();
-                                colorMapper.setCubeUnitColorMap(oldColorContext.colorMap);
-                                this.preStage(stage, colorMapper);
+                                colorMap = cubeLayer.unitColorMap;
+                                cubeLayer.unitColorMap = oldColorContext.colorMap;
+                                this.preStage(stage, cubeLayer);
                             },
                             onPresent: ()=>{
                                 //save new legend
@@ -35643,7 +37008,7 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
                                 ]);
                                 this.options.onPresent && this.options.onPresent();
                             }
-                        });
+                        }));
                         //narrow the filter only if it is different
                         if (!$93e9fd90e1c55c05$export$398604a469f7de9a(this.insight.filter, filter)) this.insight.filter = $8cda325438b8cb6f$export$ec67f55c222e1546(this.insight.filter, filter);
                         if (this.options.onDataFilter) this.options.onDataFilter(this.insight.filter, this._dataScope.currentData());
@@ -35662,13 +37027,13 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
                         this.presenter.morphChartsRenderResult.update({
                             cubes: null
                         });
-                        yield this.renderNewLayout({}, {
+                        yield this.renderNewLayout({}, Object.assign(Object.assign({}, this.setup || {}), {
                             onPresent: ()=>{
                                 //color needs to change instantly
                                 (0, $0fd54a544f9d2363$export$44addeff9a96c1e7)(colorContext, this.presenter);
                                 this.options.onPresent && this.options.onPresent();
                             }
-                        });
+                        }));
                         delete this.insight.filter;
                         if (this.options.onDataFilter) this.options.onDataFilter(null, null);
                         break;
@@ -35800,7 +37165,7 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
             }
             this.options = $74bd06e68a152316$exports.deepMerge(this.options, newViewerOptions);
         }
-        this.presenter.morphChartsRenderResult.setCubeUnitColorMap(colorContext.colorMap);
+        this.presenter.morphChartsRenderResult.getCubeLayer().unitColorMap = colorContext.colorMap;
         this.presenter.morphChartsRenderResult.update({
             cubes: this.convertSearchToSet()
         });
@@ -35831,19 +37196,21 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
     }
     /**
      * Render data into a visualization.
-     * @param insight Object to create a visualization specification.
+     * @param insightSetup InsightSetup object to create a visualization rendering.
      * @param data Array of data objects.
      * @param renderOptions Optional RenderOptions object.
-     */ render(insight, data, renderOptions = {}) {
+     */ render(insightSetup, data, renderOptions = {}) {
         return $0000a41cc7b5918f$var$__awaiter(this, void 0, void 0, function*() {
+            const { insight: insight , setup: setup  } = insightSetup;
             let result;
             //see if refine expression has changed
             if (!$93e9fd90e1c55c05$export$398604a469f7de9a(insight.filter, this.insight.filter)) {
-                const renderTime = this.options.transitionDurations.position + this.options.transitionDurations.stagger;
-                const allowAsyncRenderTime = renderTime + 200;
+                const transitionDurations = (setup === null || setup === void 0 ? void 0 : setup.transitionDurations) || $8c2135bbc56de0f6$exports.defaultPresenterConfig.transitionDurations;
+                const renderTime = transitionDurations.position + transitionDurations.stagger;
+                const allowAsyncRenderTime = renderTime + this.options.filterRenderingTimerPadding;
                 if (insight.filter) {
                     //refining
-                    result = yield this._render(insight, data, renderOptions, true);
+                    result = yield this._render(insightSetup, data, renderOptions, true);
                     this.presenter.animationQueue(()=>{
                         this.filter(insight.filter, renderOptions.rebaseFilter && renderOptions.rebaseFilter());
                     }, allowAsyncRenderTime, {
@@ -35853,7 +37220,7 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
                 } else {
                     //not refining
                     this._dataScope.setFilteredData(null);
-                    result = yield this._render(insight, data, renderOptions, true);
+                    result = yield this._render(insightSetup, data, renderOptions, true);
                     this.presenter.animationQueue(()=>{
                         this.reset();
                     }, allowAsyncRenderTime, {
@@ -35861,7 +37228,7 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
                         handlerLabel: "reset after layout"
                     });
                 }
-            } else result = yield this._render(insight, data, renderOptions, false);
+            } else result = yield this._render(insightSetup, data, renderOptions, false);
             return result;
         });
     }
@@ -35880,10 +37247,10 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
             legendElement: null
         };
         //now be ready to capture color changing signals 
-        presenterConfig.preStage = (stage, colorMapper)=>{
+        presenterConfig.preStage = (stage, cubeLayer)=>{
             if (this._shouldSaveColorContext()) //save off the colors from Vega layout
-            colorContext.colorMap = colorMapper.getCubeUnitColorMap();
-            this.preStage(stage, colorMapper);
+            colorContext.colorMap = cubeLayer.unitColorMap;
+            this.preStage(stage, cubeLayer);
         };
         presenterConfig.onPresent = ()=>{
             if (this._shouldSaveColorContext()) {
@@ -35896,8 +37263,9 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
             this.options.onPresent && this.options.onPresent();
         };
     }
-    _render(insight, data, renderOptions, forceNewCharacterSet) {
+    _render(insightSetup, data, renderOptions, forceNewCharacterSet) {
         return $0000a41cc7b5918f$var$__awaiter(this, void 0, void 0, function*() {
+            const { insight: insight , setup: setup  } = insightSetup;
             if (this._tooltip) {
                 this._tooltip.destroy();
                 this._tooltip = null;
@@ -35908,23 +37276,23 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
             const ordinalMap = (0, $2de8589006f21d6f$export$f03cc77b21b3a2b2)(this._specColumns, data, renderOptions.ordinalMap);
             this._characterSet.resetCharacterSet(forceNewCharacterSet, this.insight, insight);
             this.insight = $74bd06e68a152316$exports.clone(insight);
+            this.setup = setup;
             this._shouldSaveColorContext = ()=>!renderOptions.initialColorContext;
             const colorContext = renderOptions.initialColorContext || {
                 colorMap: null,
                 legend: null,
                 legendElement: null
             };
-            const specResult = yield this.renderNewLayout(insight.signalValues, {
-                getCameraTo: renderOptions.getCameraTo,
-                preStage: (stage, colorMapper)=>{
+            const specResult = yield this.renderNewLayout(insight.signalValues, Object.assign(Object.assign({}, setup || {}), {
+                preStage: (stage, cubeLayer)=>{
                     if (this._shouldSaveColorContext()) //save off the colors from Vega layout
-                    colorContext.colorMap = colorMapper.getCubeUnitColorMap(); //colorMapFromCubes(colorMapper);
+                    colorContext.colorMap = cubeLayer.unitColorMap;
                     else //apply passed colorContext
-                    colorMapper.setCubeUnitColorMap(colorContext.colorMap);
+                    cubeLayer.unitColorMap = colorContext.colorMap;
                     //if items are selected, repaint
                     const hasSelectedData = !!this._dataScope.hasSelectedData();
                     hasSelectedData || this._dataScope.active;
-                    this.preStage(stage, colorMapper);
+                    this.preStage(stage, cubeLayer);
                 },
                 onPresent: ()=>{
                     if (this._shouldSaveColorContext()) {
@@ -35936,9 +37304,8 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
                     this.applyLegendColorContext(colorContext);
                     this.options.onPresent && this.options.onPresent();
                 },
-                initialMorphChartsRendererOptions: renderOptions.initialMorphChartsRendererOptions,
                 shouldViewstateTransition: ()=>this.shouldViewstateTransition(insight, this.insight)
-            }, this.getView(insight.view));
+            }), this.getView(insight.view));
             //future signal changes should save the color context
             this._shouldSaveColorContext = ()=>!renderOptions.discardColorContextUpdates || !renderOptions.discardColorContextUpdates();
             this._details.render();
@@ -35971,7 +37338,7 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
             if (capability && (capability.axisSelectionBetweenTicks || capability.axisSelection === "exact")) (0, $04c641c9701e126c$export$abaa25886c91cb0e)(stage.axes[axisRole]);
         }
     }
-    preStage(stage, colorMapper) {
+    preStage(stage, cubeLayer) {
         this.overrideAxisLabels(stage);
         this._axisSelection = new (0, $04c641c9701e126c$export$b4d41fd4fcc19c)(this.specCapabilities, this._specColumns, stage);
         (0, $d50aa7ce26a6d6ed$export$71ab65a966760ac3)(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
@@ -36048,6 +37415,7 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
         };
     }
     createConfig(c) {
+        var _a;
         const { getTextColor: getTextColor , getTextHighlightColor: getTextHighlightColor , onTextClick: onTextClick  } = this.options;
         const defaultPresenterConfig = {
             morphChartsColors: this.getMorphChartsColors(),
@@ -36131,7 +37499,7 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
             presenter: this.presenter,
             presenterConfig: Object.assign(defaultPresenterConfig, c)
         };
-        if (this.options.transitionDurations) config.presenterConfig.transitionDurations = this.options.transitionDurations;
+        if ((_a = this.setup) === null || _a === void 0 ? void 0 : _a.transitionDurations) config.presenterConfig.transitionDurations = this.setup.transitionDurations;
         return config;
     }
     /**
@@ -36232,8 +37600,8 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
             0
         ];
         if (transitionFinal) {
-            position = Array.from((_b = (_a = this.presenter) === null || _a === void 0 ? void 0 : _a.morphchartsref) === null || _b === void 0 ? void 0 : _b.vCameraPositionTo);
-            rotation = Array.from((_d = (_c = this.presenter) === null || _c === void 0 ? void 0 : _c.morphchartsref) === null || _d === void 0 ? void 0 : _d.qCameraRotationTo);
+            position = Array.from((_b = (_a = this.presenter) === null || _a === void 0 ? void 0 : _a.morphchartsref) === null || _b === void 0 ? void 0 : _b.cameraTransitioner.vCameraPositionTo);
+            rotation = Array.from((_d = (_c = this.presenter) === null || _c === void 0 ? void 0 : _c.morphchartsref) === null || _d === void 0 ? void 0 : _d.cameraTransitioner.qCameraRotationTo);
         } else {
             const camera = (_g = (_f = (_e = this.presenter) === null || _e === void 0 ? void 0 : _e.morphchartsref) === null || _f === void 0 ? void 0 : _f.core) === null || _g === void 0 ? void 0 : _g.camera;
             if (camera) {
@@ -36271,6 +37639,9 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
      * Gets current signal values.
      */ getSignalValues() {
         return (0, $7f509bc53ab5b2b2$export$764590c093441ac7)(this.vegaViewGl, this.vegaSpec);
+    }
+    assignTransitionStagger(transition) {
+        (0, $09e8510904f131d2$export$2be97f482a239d30)(transition, this._dataScope.currentData(), this.convertSearchToSet(), this.presenter);
     }
     finalize() {
         if (this._dataScope) this._dataScope.finalize();
@@ -36414,7 +37785,10 @@ function $81745c046077d503$var$_SandDanceReact(_props) {
         layout() {
             const { props: props  } = this;
             this.lastData = props.data;
-            this.viewer.render(props.insight, props.data, props.renderOptions).then((renderResult)=>{
+            this.viewer.render({
+                insight: props.insight,
+                setup: props.setup
+            }, props.data, props.renderOptions).then((renderResult)=>{
                 //TODO: show errors if any
                 //console.log('viewer render');
                 props.onView && props.onView(renderResult);
@@ -36425,10 +37799,23 @@ function $81745c046077d503$var$_SandDanceReact(_props) {
         }
         view() {
             const { props: props  } = this;
+            let didLayout = false;
             if (props.insight && props.data) {
                 const c = (0, $a1d9524814b1e23a$export$62baf1cd3780635c)(this.viewer, props.insight);
                 const sameDataRef = props.data === this.lastData;
-                if (!c.compare || !sameDataRef) this.layout();
+                if (!c.compare || !sameDataRef) {
+                    this.layout();
+                    didLayout = true;
+                }
+            }
+            if (!didLayout && props.setup) {
+                const { camera: camera  } = props.setup;
+                //compare setup, move camera
+                if (camera && camera !== "hold") {
+                    if (!(0, $a1d9524814b1e23a$export$e12301e595e16ad8)(this.viewer.getCamera(), camera)) //camera is different
+                    this.viewer.setCamera(camera);
+                }
+                if (props.setup.renderer) this.viewer.presenter.morphchartsref.setMorphChartsRendererOptions(props.setup.renderer);
             }
         }
         componentDidMount() {
@@ -36505,8 +37892,12 @@ const $0db66385c00a3f15$export$21c51bc433c16634 = {
     buttonCameraHome: "Center chart in window",
     buttonTooltipMapping: "Tooltip columns...",
     buttonBackgroundImage: "Background image...",
+    buttonTransitionReverse: "Play Reverse",
+    buttonTransitionPause: "Pause",
+    buttonTransitionPlay: "Play",
     buttonUndo: "Undo",
     buttonRedo: "Redo",
+    buttonResetToDefault: "Reset to default",
     chartTypeBarChartH: "Bar",
     chartTypeBarChartV: "Column",
     chartTypeDensity: "Density",
@@ -36545,6 +37936,7 @@ const $0db66385c00a3f15$export$21c51bc433c16634 = {
     labelExportTSV: ".TSV - Tab separated values",
     labelHistory: "History",
     labelTools: "Tools",
+    labelHoldCamera: "Hold camera position",
     labelVegaSpec: "Vega specification",
     labelColor: "Chart color",
     labelError: "Error",
@@ -36618,7 +38010,7 @@ const $0db66385c00a3f15$export$21c51bc433c16634 = {
     labelRendererOptions: "Renderer options ...",
     labelRendererOptionsDialogTitle: "Renderer options",
     labelRendererOptionsAntialias: "Antialias",
-    labelRendererOptionsBloom: "Bloom highlighting",
+    labelRendererOptionsBloom: "Bloom highlighting (for selections)",
     labelRendererOptionsBloomIntensity: "Intensity",
     labelRendererOptionsDof: "Depth of Field",
     labelRendererOptionsDofRange: "Focus Range",
@@ -36630,10 +38022,18 @@ const $0db66385c00a3f15$export$21c51bc433c16634 = {
     labelSnapshotTitle: "Title",
     labelSnapshotDescription: "Note (optional)",
     labelTooltipMapping: "Tooltip columns",
+    labelTransition: "Transition",
+    labelTransitionOptions: "Transition options",
+    labelTransitionScrubber: "Scrub transition",
+    labelTransitionStaggerBy: "Stagger by",
+    labelTransitionStaggerByOrdinal: "Data order",
+    labelTransitionStaggerByColumn: "Column",
+    labelTransitionStaggerByPosition: "Axis position",
+    labelTransitionStaggerOptions: "Stagger options",
+    labelTransitionStaggerReverse: "Reverse",
     labelTransitionDurations: "Transition durations",
     labelTransitionCamera: "2D / 3D view",
-    labelTransitionColor: "Color",
-    labelTransitionPosition: "Position",
+    labelTransitionDuration: "Duration",
     labelTransitionStagger: "Stagger",
     labelVegaSpecData: "Data reference",
     labelVegaSpecNotes: "Note: You may need to change the color scheme to make this visible in Vega.",
@@ -36723,7 +38123,8 @@ const $0db66385c00a3f15$export$21c51bc433c16634 = {
             prefix: "*",
             label: "Options"
         }, 
-    ]
+    ],
+    percentValueFormat: (value)=>`${value}%`
 };
 
 
@@ -36991,6 +38392,48 @@ function $26f1c3755ae0f685$var$_BackgroundImageEditor(_props) {
     return new __BackgroundImageEditor(_props);
 }
 const $26f1c3755ae0f685$export$5696019163aa3cca = $26f1c3755ae0f685$var$_BackgroundImageEditor;
+function $26f1c3755ae0f685$export$5aa9f35b88971754(insight, imageHolder, columns) {
+    if (!imageHolder.showBackgroundImage || !columns.x || !columns.y) return;
+    const { backgroundImageColumnBounds: backgroundImageColumnBounds  } = imageHolder;
+    const xBounds = backgroundImageColumnBounds.filter((b)=>b.columnName === columns.x && b.dimension === "x");
+    const yBounds = backgroundImageColumnBounds.filter((b)=>b.columnName === columns.y && b.dimension === "y");
+    if (!xBounds.length || !yBounds.length) return;
+    const allBounds = [
+        ...xBounds,
+        ...yBounds
+    ];
+    for(let i = 0; i < allBounds.length; i++){
+        if (!allBounds[i].valid) return;
+    }
+    const bottom = yBounds.filter((b)=>b.dataExtent === "min")[0];
+    const left = xBounds.filter((b)=>b.dataExtent === "min")[0];
+    const right = xBounds.filter((b)=>b.dataExtent === "max")[0];
+    const top = yBounds.filter((b)=>b.dataExtent === "max")[0];
+    const all = [
+        bottom,
+        left,
+        right,
+        top
+    ];
+    for(let i1 = 0; i1 < all.length; i1++){
+        if (!all[i1]) return;
+    }
+    const { src: src , height: height , width: width  } = imageHolder.img;
+    insight.backgroundImage = {
+        url: src,
+        size: {
+            height: height,
+            width: width
+        },
+        extents: {
+            bottom: bottom.numericValue,
+            left: left.numericValue,
+            right: right.numericValue,
+            top: top.numericValue
+        }
+    };
+    insight.size = insight.backgroundImage.size;
+}
 
 
 
@@ -37243,7 +38686,7 @@ function $f3c9564b99b49be4$export$83b9e0badda50eeb(props) {
 
 
 
-function $1f0c6e0f0abb4f2d$export$dd264fd5c92b73c6(stage, specCapabilities) {
+function $1f0c6e0f0abb4f2d$export$48e4a8ab7f4530ac(stage, specCapabilities) {
     for(const axisName in stage.axes)specCapabilities.roles.forEach((specRole)=>{
         if (specRole.role === axisName) {
             const axes = stage.axes[axisName];
@@ -38771,40 +40214,6 @@ function $4805700d8b417596$var$_Settings(_props) {
                 min: 100,
                 max: 800,
                 defaultValue: this.props.explorer.snapshotThumbWidth
-            })), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8d43140d74b3b13d$export$eb2fcfdbd7ba97d4), {
-                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionDurations
-            }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Slider, {
-                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionColor,
-                onChange: (value)=>{
-                    this.props.explorer.viewerOptions.transitionDurations.color = value;
-                },
-                min: 0,
-                max: 10000,
-                defaultValue: this.props.explorer.viewerOptions.transitionDurations.color
-            }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Slider, {
-                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionPosition,
-                onChange: (value)=>{
-                    this.props.explorer.viewerOptions.transitionDurations.position = value;
-                },
-                min: 0,
-                max: 10000,
-                defaultValue: this.props.explorer.viewerOptions.transitionDurations.position
-            }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Slider, {
-                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionStagger,
-                onChange: (value)=>{
-                    this.props.explorer.viewerOptions.transitionDurations.stagger = value;
-                },
-                min: 0,
-                max: 10000,
-                defaultValue: this.props.explorer.viewerOptions.transitionDurations.stagger
-            }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Slider, {
-                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionCamera,
-                onChange: (value)=>{
-                    this.props.explorer.viewerOptions.transitionDurations.view = value;
-                },
-                min: 0,
-                max: 10000,
-                defaultValue: this.props.explorer.viewerOptions.transitionDurations.view
             })), props.additionalSettings && props.additionalSettings.map((g, i)=>(0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8d43140d74b3b13d$export$eb2fcfdbd7ba97d4), {
                     key: i,
                     label: g.groupLabel
@@ -38872,6 +40281,356 @@ const $4805700d8b417596$export$c72f6eaae7b9adff = $4805700d8b417596$var$_Setting
 
 
 
+
+
+
+
+
+
+
+
+
+const $92486479f357636c$var$positions = [
+    [
+        "x",
+        (0, $0db66385c00a3f15$export$21c51bc433c16634).labelAliasX
+    ],
+    [
+        "y",
+        (0, $0db66385c00a3f15$export$21c51bc433c16634).labelAliasY
+    ],
+    [
+        "z",
+        (0, $0db66385c00a3f15$export$21c51bc433c16634).labelAliasZ
+    ], 
+];
+const $92486479f357636c$var$autoScrubInterval = 50; //tune to get the smoothest animation while able to do an update pass through React
+function $92486479f357636c$var$_TransitionEditor(_props) {
+    class __TransitionEditor extends (0, $8535c575077b9670$export$e2253033e6e1df16).react.Component {
+        constructor(props){
+            super(props);
+            this.state = Object.assign({
+                scrub: 100,
+                pauseDisabled: true
+            }, this.initialCalc(props.transitionDurations));
+            this.autoScrubber = new $92486479f357636c$var$AutoScrubber($92486479f357636c$var$autoScrubInterval, (direction, interval)=>{
+                const totalMs = this.state.totalTransition * 1000;
+                const currentMs = this.state.scrub / 100 * totalMs;
+                const scrubMs = currentMs + direction * interval;
+                let scrub = scrubMs / totalMs * 100;
+                if (direction < 0 && scrub <= 0) {
+                    scrub = 0;
+                    this.autoScrubber.stop();
+                }
+                if (direction > 0 && scrub >= 100) {
+                    scrub = 100;
+                    this.autoScrubber.stop();
+                }
+                this.setScrubState(scrub);
+            });
+        }
+        initialCalc(transitionDurations) {
+            const totalTransition = (transitionDurations.position + transitionDurations.stagger) / 1000;
+            const staggerPercent = transitionDurations.stagger === 0 ? 1 : transitionDurations.stagger / (totalTransition * 1000) * 100;
+            const viewTransition = transitionDurations.view / 1000;
+            return {
+                totalTransition: totalTransition,
+                staggerPercent: staggerPercent,
+                viewTransition: viewTransition
+            };
+        }
+        setScrubState(scrub) {
+            this.props.explorer.viewer.presenter.morphchartsref.core.renderer.transitionTime = scrub / 100;
+            scrub = Math.round(scrub);
+            this.setState({
+                scrub: scrub,
+                pauseDisabled: this.autoScrubber.isStopped()
+            });
+        //TODO - swap axes at 0
+        //TODO core.inputManager.isPickingEnabled = true;
+        }
+        setDurations() {
+            setTimeout(()=>{
+                const { totalTransition: totalTransition , staggerPercent: staggerPercent , viewTransition: viewTransition  } = this.state;
+                const stagger = totalTransition * staggerPercent / 100;
+                const { transitionDurations: transitionDurations  } = this.props;
+                transitionDurations.position = (totalTransition - stagger) * 1000;
+                transitionDurations.stagger = stagger * 1000;
+                transitionDurations.view = viewTransition * 1000;
+                $92486479f357636c$export$39fa25c8c3576e7a(this.props.explorer.viewer, transitionDurations);
+            });
+        }
+        render() {
+            const { props: props , state: state  } = this;
+            const { explorer: explorer , transitionDurations: transitionDurations  } = props;
+            const sliderRef = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createRef();
+            explorer.dialogFocusHandler.focus = ()=>{
+                var _a;
+                return (_a = sliderRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+            };
+            return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8d43140d74b3b13d$export$eb2fcfdbd7ba97d4), {
+                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransition
+            }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Slider, {
+                componentRef: sliderRef,
+                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionScrubber,
+                min: 0,
+                max: 100,
+                valueFormat: (0, $0db66385c00a3f15$export$21c51bc433c16634).percentValueFormat,
+                value: state.scrub,
+                onChange: (scrub)=>{
+                    this.autoScrubber.stop();
+                    this.setScrubState(scrub);
+                }
+            }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $adfb025456b8f57f$export$c25acd513dcc8062), {
+                themePalette: props.themePalette,
+                title: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonTransitionReverse,
+                iconName: "PlayReverseResume",
+                onClick: ()=>{
+                    this.autoScrubber.toggleScrubbing(-1);
+                    if (state.scrub === 0) this.setState({
+                        scrub: 100
+                    });
+                }
+            }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $adfb025456b8f57f$export$c25acd513dcc8062), {
+                themePalette: props.themePalette,
+                title: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonTransitionPause,
+                iconName: "Pause",
+                onClick: ()=>{
+                    this.autoScrubber.togglePause();
+                },
+                disabled: state.pauseDisabled
+            }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $adfb025456b8f57f$export$c25acd513dcc8062), {
+                themePalette: props.themePalette,
+                title: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonTransitionPlay,
+                iconName: "PlayResume",
+                onClick: ()=>{
+                    this.autoScrubber.toggleScrubbing(1);
+                    if (state.scrub === 100) this.setState({
+                        scrub: 0
+                    });
+                }
+            })), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8d43140d74b3b13d$export$eb2fcfdbd7ba97d4), {
+                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionOptions
+            }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Toggle, {
+                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelHoldCamera,
+                checked: explorer.state.holdCamera,
+                onChange: (e, holdCamera)=>{
+                    explorer.setState({
+                        holdCamera: holdCamera
+                    });
+                }
+            }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.ChoiceGroup, {
+                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionStaggerBy,
+                selectedKey: props.transitionType,
+                options: [
+                    {
+                        key: "ordinal",
+                        text: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionStaggerByOrdinal
+                    },
+                    {
+                        key: "column",
+                        text: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionStaggerByColumn
+                    },
+                    {
+                        key: "position",
+                        text: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionStaggerByPosition
+                    }, 
+                ],
+                onChange: (e, o)=>{
+                    const transitionType = o.key;
+                    explorer.setState({
+                        transitionType: transitionType,
+                        calculating: ()=>explorer.setStagger()
+                    });
+                }
+            })), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8d43140d74b3b13d$export$eb2fcfdbd7ba97d4), {
+                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionStaggerOptions
+            }, (()=>{
+                switch(props.transitionType){
+                    case "column":
+                        return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $01c4eef7f720da5f$export$931cbfb6bfb85fc), {
+                            collapseLabel: props.compactUI,
+                            label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionStaggerByColumn,
+                            options: $92486479f357636c$var$getColumnOptions(props, props.transitionColumn.name),
+                            onChange: (e, o)=>{
+                                explorer.setState({
+                                    transitionColumn: o.data,
+                                    calculating: ()=>explorer.setStagger()
+                                });
+                            }
+                        });
+                    case "position":
+                        return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $01c4eef7f720da5f$export$931cbfb6bfb85fc), {
+                            collapseLabel: props.compactUI,
+                            label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionStaggerByPosition,
+                            options: $92486479f357636c$var$positions.map(([key, text])=>{
+                                return {
+                                    key: key,
+                                    text: text,
+                                    selected: props.transitionDimension === key
+                                };
+                            }),
+                            onChange: (e, o)=>{
+                                explorer.setState({
+                                    transitionDimension: o.key,
+                                    calculating: ()=>explorer.setStagger()
+                                });
+                            }
+                        });
+                }
+            })(), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Toggle, {
+                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionStaggerReverse,
+                checked: props.transitionReverse,
+                onChange: (e, transitionReverse)=>explorer.setState({
+                        transitionReverse: transitionReverse,
+                        calculating: ()=>explorer.setStagger()
+                    })
+            })), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8d43140d74b3b13d$export$eb2fcfdbd7ba97d4), {
+                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionDurations
+            }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Slider, {
+                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionDuration,
+                onChange: (totalTransition)=>{
+                    this.setState({
+                        totalTransition: totalTransition
+                    });
+                    this.setDurations();
+                },
+                min: 0,
+                max: 5,
+                step: 0.1,
+                value: state.totalTransition
+            }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Slider, {
+                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionStagger,
+                onChange: (staggerPercent)=>{
+                    this.setState({
+                        staggerPercent: staggerPercent
+                    });
+                    this.setDurations();
+                },
+                min: 0,
+                max: 100,
+                valueFormat: (0, $0db66385c00a3f15$export$21c51bc433c16634).percentValueFormat,
+                value: state.staggerPercent
+            }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Slider, {
+                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionCamera,
+                onChange: (viewTransition)=>{
+                    this.setState({
+                        viewTransition: viewTransition
+                    });
+                    this.setDurations();
+                },
+                min: 0,
+                max: 5,
+                step: 0.1,
+                value: state.viewTransition
+            }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $2a5fa1321d305a42$export$353f5b6fc5456de1), {
+                themePalette: props.themePalette,
+                onClick: ()=>{
+                    const defaults = (0, $3b509b9541e52a8f$exports).VegaMorphCharts.defaults.defaultPresenterConfig.transitionDurations;
+                    const { position: position , stagger: stagger , view: view  } = defaults;
+                    transitionDurations.position = position;
+                    transitionDurations.stagger = stagger;
+                    transitionDurations.view = view;
+                    this.setState(Object.assign({}, this.initialCalc(transitionDurations)));
+                },
+                text: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonResetToDefault
+            })));
+        }
+    }
+    return new __TransitionEditor(_props);
+}
+const $92486479f357636c$export$df231814b4232ebd = $92486479f357636c$var$_TransitionEditor;
+function $92486479f357636c$var$groupOptions(sectionName, columns, selectedKey) {
+    const options = columns.map((column)=>{
+        const option = {
+            key: `column:${column.name}`,
+            text: column.name,
+            data: column,
+            selected: column.name === selectedKey
+        };
+        return option;
+    });
+    if (options.length) {
+        const option = {
+            key: sectionName,
+            text: sectionName,
+            itemType: (0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.DropdownMenuItemType.Header
+        };
+        options.unshift(option);
+    }
+    return options;
+}
+function $92486479f357636c$var$getColumnOptions(props, selectedKey) {
+    const quantitativeGroup = $92486479f357636c$var$groupOptions((0, $0db66385c00a3f15$export$21c51bc433c16634).selectNumeric, props.quantitativeColumns, selectedKey);
+    const categoricGroup = $92486479f357636c$var$groupOptions((0, $0db66385c00a3f15$export$21c51bc433c16634).selectNonNumeric, props.categoricalColumns, selectedKey);
+    return quantitativeGroup.concat(categoricGroup);
+}
+function $92486479f357636c$export$d5639c01d489b0c(state) {
+    const reverse = state.transitionReverse;
+    switch(state.transitionType){
+        case "ordinal":
+            return {
+                type: "ordinal",
+                reverse: reverse
+            };
+        case "column":
+            return {
+                type: "column",
+                column: state.transitionColumn,
+                reverse: reverse
+            };
+        case "position":
+            return {
+                type: "position",
+                dimension: state.transitionDimension,
+                reverse: reverse
+            };
+    }
+}
+function $92486479f357636c$export$39fa25c8c3576e7a(viewer, transitionDurations) {
+    const { config: config  } = viewer.presenter.morphchartsref.core;
+    const { position: position , stagger: stagger  } = transitionDurations;
+    config.transitionDuration = position;
+    config.transitionStaggering = stagger;
+}
+class $92486479f357636c$var$AutoScrubber {
+    constructor(interval, onInterval){
+        this.interval = interval;
+        this.onInterval = onInterval;
+    }
+    getSignedInterval() {
+        return this.interval * this.direction;
+    }
+    toggleScrubbing(direction) {
+        if (this.isScrubbing() && direction === this.direction) this.pause();
+        else this.start(direction);
+    }
+    isPaused() {
+        return !this.isScrubbing() && this.direction !== undefined;
+    }
+    isStopped() {
+        return !this.isScrubbing() && this.direction === undefined;
+    }
+    isScrubbing() {
+        return this.autoScrubTimer !== undefined;
+    }
+    togglePause() {
+        if (this.isScrubbing()) this.pause();
+        else if (this.direction) this.start(this.direction);
+    }
+    start(direction) {
+        this.direction = direction;
+        if (!this.isScrubbing()) this.autoScrubTimer = setInterval(()=>this.onInterval(this.direction, this.interval), this.interval);
+    }
+    pause() {
+        clearInterval(this.autoScrubTimer);
+        this.autoScrubTimer = undefined;
+    }
+    stop() {
+        this.pause();
+        this.direction = undefined;
+    }
+}
 
 
 function $555bb845cf8689db$var$_SnapshotEditor(_props) {
@@ -38962,7 +40721,12 @@ function $555bb845cf8689db$var$_SnapshotEditor(_props) {
                             insight: this.state.insight,
                             image: this.state.image,
                             bgColor: this.state.bgColor,
-                            camera: explorer.viewer.getCamera()
+                            setup: (0, $3b509b9541e52a8f$exports).VegaMorphCharts.util.clone({
+                                camera: explorer.state.holdCamera ? "hold" : explorer.viewer.getCamera(),
+                                renderer: explorer.state.renderer,
+                                transition: (0, $92486479f357636c$export$d5639c01d489b0c)(explorer.state),
+                                transitionDurations: explorer.state.transitionDurations
+                            })
                         };
                         this.props.modifySnapShot && this.props.modifySnapShot(snapshot);
                         this.props.onWriteSnapshot(snapshot, this.state.editIndex);
@@ -39149,6 +40913,7 @@ function $3465068850534ed3$var$Actions(props) {
         if (action.element) return action.element;
     }));
 }
+
 
 
 var $b935bf5e2863e486$exports = {};
@@ -39527,6 +41292,11 @@ var $99df88aa84de796a$export$f0297ce57faf7d71;
     DataScopeId[DataScopeId["SelectedData"] = 1] = "SelectedData";
     DataScopeId[DataScopeId["FilteredData"] = 2] = "FilteredData";
 })($99df88aa84de796a$export$f0297ce57faf7d71 || ($99df88aa84de796a$export$f0297ce57faf7d71 = {}));
+function $99df88aa84de796a$export$6d13117e74df8390(selectedItemIndex) {
+    selectedItemIndex[$99df88aa84de796a$export$f0297ce57faf7d71.AllData] = 0;
+    selectedItemIndex[$99df88aa84de796a$export$f0297ce57faf7d71.FilteredData] = 0;
+    selectedItemIndex[$99df88aa84de796a$export$f0297ce57faf7d71.SelectedData] = 0;
+}
 const $99df88aa84de796a$var$shortFormat = (0, $2ab610105ad986f3$export$d9468344d3651243)(".2~s");
 function $99df88aa84de796a$var$short(n) {
     return n === -1 ? "--" : n ? n < 1000 ? n.toString() : $99df88aa84de796a$var$shortFormat(n) : "0";
@@ -39603,7 +41373,6 @@ function $99df88aa84de796a$var$DataScopeButton(props) {
 
 
 
-
 function $4833a31f56c4b60e$export$fcc7818a78919c8c(props) {
     return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
         className: (0, $a1d9524814b1e23a$exports).classList("scrollable-container", props.className),
@@ -39622,12 +41391,36 @@ var $a4811b1c86ed19fa$export$f3b7566ffe363e3b;
     SideTabId[SideTabId["Color"] = 3] = "Color";
     SideTabId[SideTabId["Snapshots"] = 4] = "Snapshots";
     SideTabId[SideTabId["History"] = 5] = "History";
-    SideTabId[SideTabId["Settings"] = 6] = "Settings";
-    SideTabId[SideTabId["Pin"] = 7] = "Pin";
-    SideTabId[SideTabId["Collapse"] = 8] = "Collapse";
+    SideTabId[SideTabId["Transition"] = 6] = "Transition";
+    SideTabId[SideTabId["Settings"] = 7] = "Settings";
+    SideTabId[SideTabId["Pin"] = 8] = "Pin";
+    SideTabId[SideTabId["Collapse"] = 9] = "Collapse";
 })($a4811b1c86ed19fa$export$f3b7566ffe363e3b || ($a4811b1c86ed19fa$export$f3b7566ffe363e3b = {}));
 
 
+
+
+
+
+
+function $8fa766fa248d22e4$export$a8fc19311f33df91(props) {
+    const selected = !props.closed && props.selectedSideTab === props.sideTabId;
+    return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
+        className: (0, $a1d9524814b1e23a$exports).classList("vbutton", selected && "selected")
+    }, props.badgeText && (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
+        className: "count"
+    }, props.badgeText), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $adfb025456b8f57f$export$c25acd513dcc8062), {
+        role: props.role || "tab",
+        "aria-selected": selected,
+        themePalette: props.themePalette,
+        className: "vbutton",
+        iconName: props.iconName,
+        title: props.title,
+        onClick: ()=>{
+            props.onSideTabClick(props.sideTabId);
+        }
+    }));
+}
 
 
 function $31fcbd44e38b82f5$export$1ba59dacbcbf90fe(props) {
@@ -39663,6 +41456,11 @@ function $31fcbd44e38b82f5$export$1ba59dacbcbf90fe(props) {
             title: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelHistory
         },
         {
+            sideTabId: (0, $a4811b1c86ed19fa$export$f3b7566ffe363e3b).Transition,
+            iconName: "Flow",
+            title: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransition
+        },
+        {
             sideTabId: (0, $a4811b1c86ed19fa$export$f3b7566ffe363e3b).Settings,
             iconName: "Settings",
             title: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelChartSettings
@@ -39677,18 +41475,18 @@ function $31fcbd44e38b82f5$export$1ba59dacbcbf90fe(props) {
         role: "tablist"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
         className: "sidebar-dialogs"
-    }, sidebuttons.map((sidebutton, i)=>(0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement($31fcbd44e38b82f5$export$a8fc19311f33df91, Object.assign({
+    }, sidebuttons.map((sidebutton, i)=>(0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8fa766fa248d22e4$export$a8fc19311f33df91), Object.assign({
             key: i
         }, props, sidebutton, {
             themePalette: props.themePalette
         })))), !props.hideSidebarControls && (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
         className: "sidebar-controls"
-    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement($31fcbd44e38b82f5$export$a8fc19311f33df91, Object.assign({}, props, {
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8fa766fa248d22e4$export$a8fc19311f33df91), Object.assign({}, props, {
         role: "button",
         sideTabId: (0, $a4811b1c86ed19fa$export$f3b7566ffe363e3b).Pin,
         iconName: props.pinned ? "Pinned" : "Pin",
         title: props.pinned ? (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonToolbarFloat : (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonToolbarDock
-    })), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement($31fcbd44e38b82f5$export$a8fc19311f33df91, Object.assign({}, props, {
+    })), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8fa766fa248d22e4$export$a8fc19311f33df91), Object.assign({}, props, {
         role: "button",
         sideTabId: (0, $a4811b1c86ed19fa$export$f3b7566ffe363e3b).Collapse,
         iconName: props.closed ? "DoubleChevronRight12" : "DoubleChevronLeft12",
@@ -39702,24 +41500,6 @@ function $31fcbd44e38b82f5$export$1ba59dacbcbf90fe(props) {
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Spinner, {
         size: (0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.SpinnerSize.large
     }))));
-}
-function $31fcbd44e38b82f5$export$a8fc19311f33df91(props) {
-    const selected = !props.closed && props.selectedSideTab === props.sideTabId;
-    return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
-        className: (0, $a1d9524814b1e23a$exports).classList("vbutton", selected && "selected")
-    }, props.badgeText && (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
-        className: "count"
-    }, props.badgeText), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $adfb025456b8f57f$export$c25acd513dcc8062), {
-        role: props.role || "tab",
-        "aria-selected": selected,
-        themePalette: props.themePalette,
-        className: "vbutton",
-        iconName: props.iconName,
-        title: props.title,
-        onClick: ()=>{
-            props.onSideTabClick(props.sideTabId);
-        }
-    }));
 }
 
 
@@ -40111,12 +41891,76 @@ function $b61671d8f61aadb4$export$93a255849c3bdb97(themePalette) {
 }
 
 
+
+
+
 const $8bfbb5c28cff0e2c$export$a5975749f0374264 = "Segoe UI, sans-serif";
 const $8bfbb5c28cff0e2c$export$fb736e4909afb3d7 = {
     colors: (0, $b61671d8f61aadb4$export$93a255849c3bdb97)((0, $b61671d8f61aadb4$export$3465a0e7b289ab72)[""]),
     fontFamily: $8bfbb5c28cff0e2c$export$a5975749f0374264
 };
 const $8bfbb5c28cff0e2c$export$7e33de69431bbb06 = 300;
+const $8bfbb5c28cff0e2c$export$6093ee13d2f7fa25 = {
+    advanced: false,
+    advancedOptions: {
+        bloomIntensity: 2,
+        isBloomEnabled: false,
+        isDofEnabled: false,
+        dofFocusRange: 0.25,
+        isFxaaEnabled: false,
+        isShadowEnabled: true,
+        isSsaoEnabled: true
+    },
+    basicOptions: {
+        antialias: true
+    }
+};
+function $8bfbb5c28cff0e2c$export$d1b579ecf4cf2d3f(props) {
+    const state = {
+        calculating: null,
+        errors: null,
+        autoCompleteDistinctValues: {},
+        colorBin: null,
+        dataContent: null,
+        dataFile: null,
+        search: null,
+        totalStyle: null,
+        facetStyle: "wrap",
+        filter: null,
+        filteredData: null,
+        specCapabilities: null,
+        size: {
+            height: null,
+            width: null
+        },
+        scheme: null,
+        transform: null,
+        columns: null,
+        chart: "grid",
+        signalValues: null,
+        hideAxes: false,
+        hideLegend: false,
+        sideTabId: (0, $a4811b1c86ed19fa$export$f3b7566ffe363e3b).ChartType,
+        dataScopeId: (0, $99df88aa84de796a$export$f0297ce57faf7d71).AllData,
+        selectedItemIndex: {},
+        sidebarClosed: false,
+        sidebarPinned: true,
+        view: props.initialView || "2d",
+        snapshots: [],
+        selectedSnapshotIndex: -1,
+        tooltipExclusions: [],
+        positionedColumnMapProps: null,
+        note: null,
+        historyIndex: -1,
+        historyItems: [],
+        renderer: props.initialRenderer || $8bfbb5c28cff0e2c$export$6093ee13d2f7fa25,
+        transitionType: "ordinal",
+        transitionDimension: "x",
+        transitionDurations: (0, $3b509b9541e52a8f$exports).VegaMorphCharts.util.clone((0, $3b509b9541e52a8f$exports).VegaMorphCharts.defaults.defaultPresenterConfig.transitionDurations)
+    };
+    (0, $99df88aa84de796a$export$6d13117e74df8390)(state.selectedItemIndex);
+    return state;
+}
 
 
 
@@ -43090,6 +44934,14 @@ function $e4a6dc900077dd85$export$e9ab04247990d50b(props) {
 
 
 
+const $0829079b3c747bdc$export$bbe9fd33806c217d = {};
+$0829079b3c747bdc$export$bbe9fd33806c217d[(0, $99df88aa84de796a$export$f0297ce57faf7d71).AllData] = (0, $0db66385c00a3f15$export$21c51bc433c16634).labelZeroAll;
+$0829079b3c747bdc$export$bbe9fd33806c217d[(0, $99df88aa84de796a$export$f0297ce57faf7d71).FilteredData] = null; //empty array is not used
+$0829079b3c747bdc$export$bbe9fd33806c217d[(0, $99df88aa84de796a$export$f0297ce57faf7d71).SelectedData] = (0, $0db66385c00a3f15$export$21c51bc433c16634).labelZeroSearchResults;
+const $0829079b3c747bdc$export$79bd5e38ba2a6de0 = {};
+$0829079b3c747bdc$export$79bd5e38ba2a6de0[(0, $99df88aa84de796a$export$f0297ce57faf7d71).AllData] = (0, $0db66385c00a3f15$export$21c51bc433c16634).labelDataNullAll;
+$0829079b3c747bdc$export$79bd5e38ba2a6de0[(0, $99df88aa84de796a$export$f0297ce57faf7d71).FilteredData] = (0, $0db66385c00a3f15$export$21c51bc433c16634).labelDataNullFiltered;
+$0829079b3c747bdc$export$79bd5e38ba2a6de0[(0, $99df88aa84de796a$export$f0297ce57faf7d71).SelectedData] = (0, $0db66385c00a3f15$export$21c51bc433c16634).labelDataNullSelection;
 function $0829079b3c747bdc$export$1ce2294f62fa7154(props) {
     function activateRecord(newIndex) {
         props.onActivate(props.data[newIndex], newIndex);
@@ -43198,6 +45050,43 @@ function $0820350effaa56a9$export$84202caead5689ba(props) {
         }));
     })));
 }
+function $0820350effaa56a9$export$a5701bb72c00a527(historicInsight) {
+    const { colorBin: colorBin , columns: columns , directColor: directColor , facetStyle: facetStyle , filter: filter , hideAxes: hideAxes , hideLegend: hideLegend , scheme: scheme , signalValues: signalValues , size: size , totalStyle: totalStyle , transform: transform , chart: chart , view: view  } = historicInsight;
+    const insight = {
+        colorBin: colorBin,
+        columns: columns,
+        directColor: directColor,
+        facetStyle: facetStyle,
+        filter: filter,
+        hideAxes: hideAxes,
+        hideLegend: hideLegend,
+        scheme: scheme,
+        signalValues: signalValues,
+        size: size,
+        totalStyle: totalStyle,
+        transform: transform,
+        chart: chart,
+        view: view
+    };
+    return insight;
+}
+function $0820350effaa56a9$export$5c9ba34b2d024c9b(historyItems, index) {
+    let filter = null;
+    let historicInsight = {};
+    for(let i = 0; i < index + 1; i++){
+        const historyItem = historyItems[i];
+        if (historyItem) {
+            if (historyItem.historicInsight.filter === null) filter = null;
+            else if (historyItem.historicInsight.rebaseFilter) filter = historyItem.historicInsight.filter;
+            else if (historyItem.historicInsight.filter) filter = (0, $3b509b9541e52a8f$exports).searchExpression.narrow(filter, historyItem.historicInsight.filter);
+            historicInsight = Object.assign(Object.assign({}, historicInsight), historyItem.historicInsight);
+        }
+    }
+    return Object.assign(Object.assign({}, historicInsight), {
+        filter: filter
+    });
+}
+
 
 
 
@@ -43308,6 +45197,22 @@ function $b64aa1c1bdcad83c$export$c2270d7efbef44bf(haystack, needle) {
         found: found
     };
 }
+function $b64aa1c1bdcad83c$export$3ffa48e55176070e(search) {
+    const groups = (0, $3b509b9541e52a8f$exports).searchExpression.ensureSearchExpressionGroupArray(search);
+    const dialogSearch = groups.map((group, groupIndex)=>{
+        return Object.assign(Object.assign({
+            key: groupIndex
+        }, group), {
+            expressions: group.expressions.map((ex, i)=>{
+                const ex2 = Object.assign({
+                    key: i
+                }, ex);
+                return ex2;
+            })
+        });
+    });
+    return dialogSearch;
+}
 
 
 
@@ -43338,45 +45243,26 @@ function $dc870545cd7ec4ba$var$_Renderer(_props) {
             const { viewer: viewer  } = props.explorer;
             return {
                 showOptions: false,
-                viewer: viewer,
-                antialias: true,
-                isSsaoEnabled: true,
-                isShadowEnabled: true,
-                isDofEnabled: false,
-                dofFocusRange: 0.25,
-                isBloomEnabled: false,
-                bloomIntensity: 2,
-                isFxaaEnabled: false
+                viewer: viewer
             };
         }
-        change(advanced) {
-            this.sync(advanced);
-            this.forceUpdate();
-        }
-        sync(advanced) {
-            const { state: state  } = this;
-            const { antialias: antialias , bloomIntensity: bloomIntensity , dofFocusRange: dofFocusRange , isBloomEnabled: isBloomEnabled , isDofEnabled: isDofEnabled , isFxaaEnabled: isFxaaEnabled , isShadowEnabled: isShadowEnabled , isSsaoEnabled: isSsaoEnabled  } = state;
-            state.viewer.presenter.morphchartsref.setMorphChartsRendererOptions({
-                advanced: advanced,
-                advancedOptions: {
-                    bloomIntensity: bloomIntensity,
-                    isBloomEnabled: isBloomEnabled,
-                    isDofEnabled: isDofEnabled,
-                    dofFocusRange: dofFocusRange,
-                    isFxaaEnabled: isFxaaEnabled,
-                    isShadowEnabled: isShadowEnabled,
-                    isSsaoEnabled: isSsaoEnabled
-                },
-                basicOptions: {
-                    antialias: antialias
-                }
+        setOptions(newOptions) {
+            const { explorer: explorer  } = this.props;
+            explorer.setState({
+                renderer: Object.assign(Object.assign({}, explorer.state.renderer), newOptions)
             });
         }
-        syncNext(advanced, newState) {
-            this.needsSync = {
-                advanced: advanced
-            };
-            this.setState(newState);
+        setBasicOptions(newOptions) {
+            this.setOptions({
+                advanced: false,
+                basicOptions: Object.assign(Object.assign({}, this.props.basicOptions), newOptions)
+            });
+        }
+        setAdvancedOptions(newOptions) {
+            this.setOptions({
+                advanced: true,
+                advancedOptions: Object.assign(Object.assign({}, this.props.advancedOptions), newOptions)
+            });
         }
         render() {
             var _a, _b;
@@ -43400,11 +45286,7 @@ function $dc870545cd7ec4ba$var$_Renderer(_props) {
                 const choiceButtonStyle = {
                     border: "none"
                 };
-                if (this.needsSync) {
-                    this.sync(this.needsSync.advanced);
-                    this.needsSync = null;
-                }
-                const { advanced: advanced  } = morphchartsref.lastMorphChartsRendererOptions;
+                const { advanced: advanced , advancedOptions: advancedOptions , basicOptions: basicOptions  } = props;
                 return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $adfb025456b8f57f$export$c25acd513dcc8062), {
                     iconName: "PicturePosition",
                     title: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonCameraHome,
@@ -43427,7 +45309,9 @@ function $dc870545cd7ec4ba$var$_Renderer(_props) {
                                 iconProps: {
                                     iconName: advanced ? null : "RadioBullet"
                                 },
-                                onClick: ()=>advanced && this.change(false)
+                                onClick: ()=>advanced && this.setOptions({
+                                        advanced: false
+                                    })
                             },
                             {
                                 key: "advanced",
@@ -43435,7 +45319,9 @@ function $dc870545cd7ec4ba$var$_Renderer(_props) {
                                 iconProps: {
                                     iconName: advanced ? "RadioBullet" : null
                                 },
-                                onClick: ()=>!advanced && this.change(true)
+                                onClick: ()=>!advanced && this.setOptions({
+                                        advanced: true
+                                    })
                             },
                             {
                                 key: "options",
@@ -43457,70 +45343,74 @@ function $dc870545cd7ec4ba$var$_Renderer(_props) {
                         })
                 }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $2a5fa1321d305a42$export$353f5b6fc5456de1), {
                     iconName: advanced ? "RadioBtnOff" : "RadioBtnOn",
-                    onClick: ()=>this.change(false),
+                    onClick: ()=>this.setOptions({
+                            advanced: false
+                        }),
                     text: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelRendererBasic,
                     themePalette: props.themePalette,
                     rootStyle: choiceButtonStyle
                 }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("ul", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("li", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Toggle, {
-                    checked: state.antialias,
+                    checked: basicOptions.antialias,
                     label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelRendererOptionsAntialias,
-                    onChange: (e, antialias)=>this.syncNext(false, {
+                    onChange: (e, antialias)=>this.setBasicOptions({
                             antialias: antialias
                         })
                 })))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $2a5fa1321d305a42$export$353f5b6fc5456de1), {
                     iconName: advanced ? "RadioBtnOn" : "RadioBtnOff",
-                    onClick: ()=>this.change(true),
+                    onClick: ()=>this.setOptions({
+                            advanced: true
+                        }),
                     text: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelRendererAdvanced,
                     themePalette: props.themePalette,
                     rootStyle: choiceButtonStyle
                 }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("ul", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("li", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Toggle, {
-                    checked: state.isShadowEnabled,
+                    checked: advancedOptions.isShadowEnabled,
                     label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelRendererOptionsShadow,
-                    onChange: (e, isShadowEnabled)=>this.syncNext(true, {
+                    onChange: (e, isShadowEnabled)=>this.setAdvancedOptions({
                             isShadowEnabled: isShadowEnabled
                         })
                 })), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("li", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Toggle, {
-                    checked: state.isSsaoEnabled,
+                    checked: advancedOptions.isSsaoEnabled,
                     label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelRendererOptionsSsao,
-                    onChange: (e, isSsaoEnabled)=>this.syncNext(true, {
+                    onChange: (e, isSsaoEnabled)=>this.setAdvancedOptions({
                             isSsaoEnabled: isSsaoEnabled
                         })
                 })), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("li", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Toggle, {
-                    checked: state.isBloomEnabled,
+                    checked: advancedOptions.isBloomEnabled,
                     label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelRendererOptionsBloom,
-                    onChange: (e, isBloomEnabled)=>this.syncNext(true, {
+                    onChange: (e, isBloomEnabled)=>this.setAdvancedOptions({
                             isBloomEnabled: isBloomEnabled
                         })
                 }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("ul", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("li", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Slider, {
-                    value: state.bloomIntensity,
+                    value: advancedOptions.bloomIntensity,
                     min: 0.1,
                     max: 5,
                     step: 0.01,
                     label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelRendererOptionsBloomIntensity,
-                    onChange: (bloomIntensity)=>this.syncNext(true, {
+                    onChange: (bloomIntensity)=>this.setAdvancedOptions({
                             bloomIntensity: bloomIntensity,
                             isBloomEnabled: true
                         })
                 })))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("li", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Toggle, {
-                    checked: state.isDofEnabled,
+                    checked: advancedOptions.isDofEnabled,
                     label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelRendererOptionsDof,
-                    onChange: (e, isDofEnabled)=>this.syncNext(true, {
+                    onChange: (e, isDofEnabled)=>this.setAdvancedOptions({
                             isDofEnabled: isDofEnabled
                         })
                 }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("ul", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("li", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Slider, {
-                    value: state.dofFocusRange,
+                    value: advancedOptions.dofFocusRange,
                     min: 0,
                     max: 2,
                     step: 0.01,
                     label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelRendererOptionsDofRange,
-                    onChange: (dofFocusRange)=>this.syncNext(true, {
+                    onChange: (dofFocusRange)=>this.setAdvancedOptions({
                             dofFocusRange: dofFocusRange,
                             isDofEnabled: true
                         })
                 })))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("li", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Toggle, {
-                    checked: state.isFxaaEnabled,
+                    checked: advancedOptions.isFxaaEnabled,
                     label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelRendererOptionsFxaa,
-                    onChange: (e, isFxaaEnabled)=>this.syncNext(true, {
+                    onChange: (e, isFxaaEnabled)=>this.setAdvancedOptions({
                             isFxaaEnabled: isFxaaEnabled
                         })
                 }))))));
@@ -43532,76 +45422,13 @@ function $dc870545cd7ec4ba$var$_Renderer(_props) {
 const $dc870545cd7ec4ba$export$88530751e3977073 = $dc870545cd7ec4ba$var$_Renderer;
 
 
-const $b935bf5e2863e486$var$dataBrowserZeroMessages = {};
-$b935bf5e2863e486$var$dataBrowserZeroMessages[(0, $99df88aa84de796a$export$f0297ce57faf7d71).AllData] = (0, $0db66385c00a3f15$export$21c51bc433c16634).labelZeroAll;
-$b935bf5e2863e486$var$dataBrowserZeroMessages[(0, $99df88aa84de796a$export$f0297ce57faf7d71).FilteredData] = null; //empty array is not used
-$b935bf5e2863e486$var$dataBrowserZeroMessages[(0, $99df88aa84de796a$export$f0297ce57faf7d71).SelectedData] = (0, $0db66385c00a3f15$export$21c51bc433c16634).labelZeroSearchResults;
-const $b935bf5e2863e486$var$dataBrowserNullMessages = {};
-$b935bf5e2863e486$var$dataBrowserNullMessages[(0, $99df88aa84de796a$export$f0297ce57faf7d71).AllData] = (0, $0db66385c00a3f15$export$21c51bc433c16634).labelDataNullAll;
-$b935bf5e2863e486$var$dataBrowserNullMessages[(0, $99df88aa84de796a$export$f0297ce57faf7d71).FilteredData] = (0, $0db66385c00a3f15$export$21c51bc433c16634).labelDataNullFiltered;
-$b935bf5e2863e486$var$dataBrowserNullMessages[(0, $99df88aa84de796a$export$f0297ce57faf7d71).SelectedData] = (0, $0db66385c00a3f15$export$21c51bc433c16634).labelDataNullSelection;
-function $b935bf5e2863e486$var$createInputSearch(search) {
-    const groups = (0, $3b509b9541e52a8f$exports).searchExpression.ensureSearchExpressionGroupArray(search);
-    const dialogSearch = groups.map((group, groupIndex)=>{
-        return Object.assign(Object.assign({
-            key: groupIndex
-        }, group), {
-            expressions: group.expressions.map((ex, i)=>{
-                const ex2 = Object.assign({
-                    key: i
-                }, ex);
-                return ex2;
-            })
-        });
-    });
-    return dialogSearch;
-}
+
 function $b935bf5e2863e486$var$_Explorer(_props) {
     class __Explorer extends (0, $8535c575077b9670$export$e2253033e6e1df16).react.Component {
         constructor(props){
             super(props);
             this.dialogFocusHandler = {};
-            this.state = {
-                calculating: null,
-                errors: null,
-                autoCompleteDistinctValues: {},
-                colorBin: null,
-                dataContent: null,
-                dataFile: null,
-                search: null,
-                totalStyle: null,
-                facetStyle: "wrap",
-                filter: null,
-                filteredData: null,
-                specCapabilities: null,
-                size: {
-                    height: null,
-                    width: null
-                },
-                scheme: null,
-                transform: null,
-                columns: null,
-                chart: "grid",
-                signalValues: null,
-                hideAxes: false,
-                hideLegend: false,
-                sideTabId: (0, $a4811b1c86ed19fa$export$f3b7566ffe363e3b).ChartType,
-                dataScopeId: (0, $99df88aa84de796a$export$f0297ce57faf7d71).AllData,
-                selectedItemIndex: {},
-                sidebarClosed: false,
-                sidebarPinned: true,
-                view: props.initialView || "2d",
-                snapshots: [],
-                selectedSnapshotIndex: -1,
-                tooltipExclusions: [],
-                positionedColumnMapProps: null,
-                note: null,
-                historyIndex: -1,
-                historyItems: []
-            };
-            this.state.selectedItemIndex[(0, $99df88aa84de796a$export$f0297ce57faf7d71).AllData] = 0;
-            this.state.selectedItemIndex[(0, $99df88aa84de796a$export$f0297ce57faf7d71).FilteredData] = 0;
-            this.state.selectedItemIndex[(0, $99df88aa84de796a$export$f0297ce57faf7d71).SelectedData] = 0;
+            this.state = (0, $8bfbb5c28cff0e2c$export$d1b579ecf4cf2d3f)(props);
             this.imageHolder = {
                 img: null,
                 backgroundImageColumnBounds: [],
@@ -43649,7 +45476,7 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                     selectedItemIndex[(0, $99df88aa84de796a$export$f0297ce57faf7d71).SelectedData] = index || 0;
                     let { search: search  } = this.state;
                     const { sideTabId: sideTabId  } = this.state;
-                    if (newSearch) search = $b935bf5e2863e486$var$createInputSearch(newSearch);
+                    if (newSearch) search = (0, $b64aa1c1bdcad83c$export$3ffa48e55176070e)(newSearch);
                     this.setState({
                         search: search,
                         selectedItemIndex: selectedItemIndex,
@@ -43691,7 +45518,12 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                     });
                     viewerOptions && viewerOptions.onError && viewerOptions.onError(errors);
                 },
-                onBeforeCreateLayers: $1f0c6e0f0abb4f2d$export$dd264fd5c92b73c6,
+                onBeforeCreateLayers: (stage, specCapabilities)=>{
+                    (0, $1f0c6e0f0abb4f2d$export$48e4a8ab7f4530ac)(stage, specCapabilities);
+                },
+                onPresent: ()=>{
+                    this.setStagger();
+                },
                 getTextColor: (o)=>{
                     if (o.specRole) return (0, $3b509b9541e52a8f$exports).VegaMorphCharts.util.colorFromString(this.viewerOptions.colors.clickableText);
                     else if (o.metaData && o.metaData.search) return (0, $3b509b9541e52a8f$exports).VegaMorphCharts.util.colorFromString(this.viewerOptions.colors.searchText);
@@ -43745,6 +45577,9 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                 this.viewer.options = (0, $3b509b9541e52a8f$exports).VegaMorphCharts.util.deepMerge(this.viewer.options, this.props.viewerOptions, this.viewerOptions);
             }
         }
+        setStagger() {
+            this.viewer.assignTransitionStagger((0, $92486479f357636c$export$d5639c01d489b0c)(this.state));
+        }
         signal(signalName, signalValue, newViewStateTarget) {
             switch(signalName){
                 case (0, $3b509b9541e52a8f$exports).constants.SignalNames.ColorBinCount:
@@ -43779,48 +45614,62 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
         getInsight() {
             return this.viewer.getInsight();
         }
-        compareInsightAndCamera(newInsight) {
-            //compare insight
-            const insight = Object.assign(Object.assign(Object.assign({}, this.getPureInsight(this.state)), this.getPureInsight(newInsight)), {
-                size: this.state.size
-            });
-            const compare = (0, $a1d9524814b1e23a$exports).compareInsight(this.viewer, insight);
-            if (compare.compare) //insight is SAME, compare camera
-            {
-                if (!(0, $a1d9524814b1e23a$exports).deepCompare(this.viewer.getCamera(), newInsight.cameraTo)) //camera is different
-                this.viewer.setCamera(newInsight.cameraTo);
-            } else //insight is different
-            this.cameraTo = newInsight.cameraTo;
+        setSetup(setup) {
+            let newState;
+            if (!setup) newState = {
+                camera: undefined
+            };
+            else {
+                const { camera: camera , renderer: renderer , transition: transition , transitionDurations: transitionDurations  } = setup;
+                newState = {
+                    renderer: renderer,
+                    transitionType: transition.type
+                };
+                if (camera === "hold") newState.holdCamera = true;
+                else {
+                    newState.holdCamera = false;
+                    newState.camera = camera;
+                }
+                if (transition.type === "column") newState.transitionColumn = transition.column;
+                else if (transition.type === "position") newState.transitionDimension = transition.dimension;
+                if (transitionDurations) {
+                    newState.transitionDurations = transitionDurations;
+                    (0, $92486479f357636c$export$39fa25c8c3576e7a)(this.viewer, transitionDurations);
+                    const { config: config  } = this.viewer.presenter.morphchartsref.core;
+                }
+            }
+            this.setState(newState);
         }
-        setInsight(historyAction, newState = {}, partialInsight = this.viewer.getInsight(), rebaseFilter, cameraTo) {
+        setInsight(historyAction, newState = {}, partialInsight = this.viewer.getInsight(), rebaseFilter, setup) {
             const selectedItemIndex = Object.assign({}, this.state.selectedItemIndex);
-            selectedItemIndex[(0, $99df88aa84de796a$export$f0297ce57faf7d71).AllData] = 0;
-            selectedItemIndex[(0, $99df88aa84de796a$export$f0297ce57faf7d71).FilteredData] = 0;
-            selectedItemIndex[(0, $99df88aa84de796a$export$f0297ce57faf7d71).SelectedData] = 0;
+            (0, $99df88aa84de796a$export$6d13117e74df8390)(selectedItemIndex);
             const historicInsight = Object.assign({
                 chart: null,
                 scheme: null,
                 columns: null,
                 filter: null,
-                rebaseFilter: rebaseFilter,
-                cameraTo: cameraTo
+                rebaseFilter: rebaseFilter
             }, partialInsight);
             const state = Object.assign({
                 filteredData: null,
                 selectedItemIndex: selectedItemIndex,
-                search: $b935bf5e2863e486$var$createInputSearch(historicInsight.filter)
+                search: (0, $b64aa1c1bdcad83c$export$3ffa48e55176070e)(historicInsight.filter)
             }, newState);
             const changeInsight = ()=>{
                 this.getColorContext = null;
-                this.compareInsightAndCamera(historicInsight);
-                this.changeInsight(historicInsight, historyAction, state);
+                this.changeInsight(historicInsight, historyAction, state, setup);
             };
             const currentFilter = this.viewer.getInsight().filter;
             if (rebaseFilter && currentFilter && historicInsight.filter) {
                 if ((0, $3b509b9541e52a8f$exports).searchExpression.startsWith(historicInsight.filter, currentFilter)) changeInsight();
-                else this.viewer.reset().then(()=>new Promise((resolve, reject)=>{
-                        setTimeout(resolve, this.viewer.options.transitionDurations.scope);
-                    })).then(changeInsight);
+                else {
+                    const { transitionDurations: transitionDurations  } = this.state;
+                    const renderTime = transitionDurations.position + transitionDurations.stagger;
+                    const allowAsyncRenderTime = renderTime + this.viewerOptions.filterRenderingTimerPadding;
+                    this.viewer.reset().then(()=>new Promise((resolve, reject)=>{
+                            setTimeout(resolve, allowAsyncRenderTime);
+                        })).then(changeInsight);
+                }
             } else changeInsight();
         }
         handleReviveSnapshot(snapshot, selectedSnapshotIndex) {
@@ -43845,18 +45694,21 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                     newState.sideTabId = (0, $a4811b1c86ed19fa$export$f3b7566ffe363e3b).Snapshots;
                     this.scrollSnapshotIntoView(selectedSnapshotIndex);
                 }
+                this.setSetup(snapshot.setup);
                 this.setInsight({
                     label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelHistoryReviveSnapshot
-                }, newState, snapshot.insight, true, snapshot.camera);
+                }, newState, snapshot.insight, true, snapshot.setup);
             } else {
                 const snapshot1 = snapshotOrIndex;
-                if (snapshot1.insight) this.setInsight({
-                    label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelHistoryReviveSnapshot
-                }, {
-                    note: snapshot1.description,
-                    selectedSnapshotIndex: -1
-                }, snapshot1.insight, true, snapshot1.camera); //don't navigate to sideTab
-                else this.setState({
+                if (snapshot1.insight) {
+                    this.setSetup(snapshot1.setup);
+                    this.setInsight({
+                        label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelHistoryReviveSnapshot
+                    }, {
+                        note: snapshot1.description,
+                        selectedSnapshotIndex: -1
+                    }, snapshot1.insight, true, snapshot1.setup); //don't navigate to sideTab
+                } else this.setState({
                     note: snapshot1.description,
                     selectedSnapshotIndex: -1
                 });
@@ -43898,9 +45750,7 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                     if (partialInsight.chart === "barchart") partialInsight.chart = "barchartV";
                     const selectedItemIndex = Object.assign({}, this.state.selectedItemIndex);
                     const sideTabId = (0, $a4811b1c86ed19fa$export$f3b7566ffe363e3b).ChartType;
-                    selectedItemIndex[(0, $99df88aa84de796a$export$f0297ce57faf7d71).AllData] = 0;
-                    selectedItemIndex[(0, $99df88aa84de796a$export$f0297ce57faf7d71).FilteredData] = 0;
-                    selectedItemIndex[(0, $99df88aa84de796a$export$f0297ce57faf7d71).SelectedData] = 0;
+                    (0, $99df88aa84de796a$export$6d13117e74df8390)(selectedItemIndex);
                     const newState = Object.assign({
                         dataFile: dataFile,
                         dataContent: dataContent,
@@ -43915,6 +45765,7 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                     (0, $a17a024e67e91c9f$export$1e096674a95fd43b)(newState.columns, dataContent.columns, newState.transform);
                     const errors = (0, $a17a024e67e91c9f$export$c2563952d877899)(partialInsight === null || partialInsight === void 0 ? void 0 : partialInsight.chart, partialInsight === null || partialInsight === void 0 ? void 0 : partialInsight.totalStyle, newState.columns, dataContent.columns);
                     newState.errors = errors;
+                    newState.transitionColumn = dataContent.columns[0];
                     //change insight
                     this.changeInsight(partialInsight, {
                         label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelHistoryInit,
@@ -43999,17 +45850,18 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
             });
         }
         //state members which change the insight
-        changeInsight(partialInsight, historyAction, additionalUIState) {
+        changeInsight(partialInsight, historyAction, additionalUIState, setup) {
             if (!partialInsight.signalValues) partialInsight.signalValues = null;
             if (partialInsight.chart === "barchart") partialInsight.chart = "barchartV";
-            this.addHistory(partialInsight, historyAction, additionalUIState);
+            this.addHistory(Object.assign(Object.assign({}, partialInsight), {
+                setup: setup
+            }), historyAction, additionalUIState);
         }
         addHistory(historicInsight, historyAction, additionalUIState) {
             const setCleanState = (newState)=>{
                 const cleanState = Object.assign(Object.assign({}, newState), additionalUIState);
                 if (!cleanState.note) cleanState.note = null;
                 delete cleanState.rebaseFilter;
-                delete cleanState.cameraTo;
                 if (this.viewer) {
                     const { signalValues: signalValues  } = this.viewer.getInsight();
                     cleanState.signalValues = Object.assign(Object.assign(Object.assign({}, this.state.signalValues), signalValues), cleanState.signalValues);
@@ -44036,27 +45888,14 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
             }));
         }
         replay(index) {
-            let filter = null;
-            let historicInsight = {};
-            for(let i = 0; i < index + 1; i++){
-                const historyItem = this.state.historyItems[i];
-                if (historyItem) {
-                    if (historyItem.historicInsight.filter === null) filter = null;
-                    else if (historyItem.historicInsight.rebaseFilter) filter = historyItem.historicInsight.filter;
-                    else if (historyItem.historicInsight.filter) filter = (0, $3b509b9541e52a8f$exports).searchExpression.narrow(filter, historyItem.historicInsight.filter);
-                    historicInsight = Object.assign(Object.assign({}, historicInsight), historyItem.historicInsight);
-                }
-            }
-            return Object.assign(Object.assign({}, historicInsight), {
-                filter: filter
-            });
+            return (0, $0820350effaa56a9$export$5c9ba34b2d024c9b)(this.state.historyItems, index);
         }
         undo() {
             const historyIndex = this.state.historyIndex - 1;
             if (historyIndex < 0) return;
             const newState = this.replay(historyIndex);
             this.rebaseFilter = true;
-            this.compareInsightAndCamera(newState);
+            this.setSetup(newState.setup);
             this.setState(Object.assign(Object.assign({}, newState), {
                 historyIndex: historyIndex
             }));
@@ -44065,7 +45904,7 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
             if (historyIndex >= this.state.historyItems.length) return;
             const newState = this.replay(historyIndex);
             this.rebaseFilter = true;
-            this.compareInsightAndCamera(newState);
+            this.setSetup(newState.setup);
             this.setState(Object.assign(Object.assign({}, newState), {
                 historyIndex: historyIndex
             }));
@@ -44286,7 +46125,7 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
         toggleableSearch(e, search) {
             if (e.ctrlKey) {
                 this.setState({
-                    search: $b935bf5e2863e486$var$createInputSearch(search)
+                    search: (0, $b64aa1c1bdcad83c$export$3ffa48e55176070e)(search)
                 });
                 this.setSideTabId((0, $a4811b1c86ed19fa$export$f3b7566ffe363e3b).Search);
             } else {
@@ -44370,31 +46209,11 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
         componentDidMount() {
             if (this.props.mounted) this.props.mounted(this);
         }
-        getPureInsight(state) {
-            const { colorBin: colorBin , columns: columns , directColor: directColor , facetStyle: facetStyle , filter: filter , hideAxes: hideAxes , hideLegend: hideLegend , scheme: scheme , signalValues: signalValues , size: size , totalStyle: totalStyle , transform: transform , chart: chart , view: view  } = state;
-            const insight = {
-                colorBin: colorBin,
-                columns: columns,
-                directColor: directColor,
-                facetStyle: facetStyle,
-                filter: filter,
-                hideAxes: hideAxes,
-                hideLegend: hideLegend,
-                scheme: scheme,
-                signalValues: signalValues,
-                size: size,
-                totalStyle: totalStyle,
-                transform: transform,
-                chart: chart,
-                view: view
-            };
-            return insight;
-        }
         render() {
             var _a, _b;
-            const insight = this.getPureInsight(this.state);
+            const insight = (0, $0820350effaa56a9$export$a5701bb72c00a527)(this.state);
             const loaded = !!(insight.columns && this.state.dataContent);
-            if (loaded) this.getBackgroundImage(insight);
+            if (loaded) (0, $26f1c3755ae0f685$export$5aa9f35b88971754)(insight, this.imageHolder, this.state.columns);
             const selectionState = this.viewer && this.viewer.getSelection() || {};
             const selectionSearch = selectionState && selectionState.search;
             const columnMapProps = this.getColumnMapBaseProps();
@@ -44414,15 +46233,11 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
             const theme = this.props.theme || "";
             const themePalette = (0, $b61671d8f61aadb4$export$3465a0e7b289ab72)[theme];
             let renderOptions;
-            if (loaded) {
-                renderOptions = Object.assign(Object.assign({}, this.props.renderOptions), {
-                    rebaseFilter: ()=>this.rebaseFilter,
-                    initialColorContext: this.getColorContext && this.getColorContext(this.viewer.insight, insight),
-                    discardColorContextUpdates: ()=>this.discardColorContextUpdates,
-                    initialMorphChartsRendererOptions: this.props.initialMorphChartsRendererOptions
-                });
-                if (this.cameraTo) renderOptions.getCameraTo = ()=>this.cameraTo;
-            }
+            if (loaded) renderOptions = Object.assign(Object.assign({}, this.props.renderOptions), {
+                rebaseFilter: ()=>this.rebaseFilter,
+                initialColorContext: this.getColorContext && this.getColorContext(this.viewer.insight, insight),
+                discardColorContextUpdates: ()=>this.discardColorContextUpdates
+            });
             return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
                 ref: (div)=>{
                     if (div) this.div = div;
@@ -44657,8 +46472,8 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                                 columns: this.state.dataContent && this.state.dataContent.columns,
                                 data: data,
                                 displayName: this.state.dataFile && this.state.dataFile.displayName || (0, $0db66385c00a3f15$export$21c51bc433c16634).defaultFileName,
-                                nullMessage: $b935bf5e2863e486$var$dataBrowserNullMessages[this.state.dataScopeId],
-                                zeroMessage: $b935bf5e2863e486$var$dataBrowserZeroMessages[this.state.dataScopeId],
+                                nullMessage: (0, $0829079b3c747bdc$export$79bd5e38ba2a6de0)[this.state.dataScopeId],
+                                zeroMessage: (0, $0829079b3c747bdc$export$bbe9fd33806c217d)[this.state.dataScopeId],
                                 index: this.state.selectedItemIndex[this.state.dataScopeId],
                                 itemVisible: itemVisible,
                                 dataExportHandler: this.props.dataExportHandler,
@@ -44781,6 +46596,12 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                             historyItems: this.state.historyItems,
                             redo: (i)=>this.redo(i)
                         });
+                    case (0, $a4811b1c86ed19fa$export$f3b7566ffe363e3b).Transition:
+                        return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $92486479f357636c$export$df231814b4232ebd), Object.assign({}, columnMapProps, this.state, {
+                            compactUI: this.props.compactUI,
+                            explorer: this,
+                            themePalette: themePalette
+                        }));
                     case (0, $a4811b1c86ed19fa$export$f3b7566ffe363e3b).Settings:
                         return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $4805700d8b417596$export$c72f6eaae7b9adff), {
                             explorer: this,
@@ -44810,7 +46631,9 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                 },
                 onView: (renderResult)=>{
                     this.rebaseFilter = false;
-                    this.cameraTo = null;
+                    this.setState({
+                        camera: undefined
+                    });
                     this.changespecCapabilities(renderResult.specResult.errors ? renderResult.specResult.specCapabilities : this.viewer.specCapabilities);
                     this.getColorContext = (oldInsight, newInsight)=>{
                         if (!oldInsight && !newInsight) return null;
@@ -44829,6 +46652,12 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                 },
                 data: this.state.dataContent.data,
                 insight: insight,
+                setup: {
+                    camera: this.state.holdCamera ? "hold" : this.state.camera,
+                    renderer: this.state.renderer,
+                    transition: (0, $92486479f357636c$export$d5639c01d489b0c)(this.state),
+                    transitionDurations: this.state.transitionDurations
+                },
                 onMount: (el)=>this.viewerMounted(el)
             }), this.state.note && (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
                 className: "sanddance-note"
@@ -44842,6 +46671,9 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                     })
             }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", null, this.state.note)), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $dc870545cd7ec4ba$export$88530751e3977073), {
                 explorer: this,
+                advanced: this.state.renderer.advanced,
+                advancedOptions: this.state.renderer.advancedOptions,
+                basicOptions: this.state.renderer.basicOptions,
                 themePalette: themePalette,
                 onHomeClick: ()=>this.viewer.presenter.homeCamera()
             })), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $5453c8de1a3cb6b6$export$3ddf2d174ce01153), {
@@ -44862,50 +46694,6 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                 theme: this.props.theme,
                 themePalette: themePalette
             }))), this.state.positionedColumnMapProps && (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $1f0c6e0f0abb4f2d$export$3e341bd56774d659), Object.assign({}, this.state.positionedColumnMapProps)));
-        }
-        getBackgroundImage(insight) {
-            const { imageHolder: imageHolder  } = this;
-            const { columns: columns  } = this.state;
-            if (!imageHolder.showBackgroundImage || !columns.x || !columns.y) return;
-            const { backgroundImageColumnBounds: backgroundImageColumnBounds  } = imageHolder;
-            const xBounds = backgroundImageColumnBounds.filter((b)=>b.columnName === columns.x && b.dimension === "x");
-            const yBounds = backgroundImageColumnBounds.filter((b)=>b.columnName === columns.y && b.dimension === "y");
-            if (!xBounds.length || !yBounds.length) return;
-            const allBounds = [
-                ...xBounds,
-                ...yBounds
-            ];
-            for(let i = 0; i < allBounds.length; i++){
-                if (!allBounds[i].valid) return;
-            }
-            const bottom = yBounds.filter((b)=>b.dataExtent === "min")[0];
-            const left = xBounds.filter((b)=>b.dataExtent === "min")[0];
-            const right = xBounds.filter((b)=>b.dataExtent === "max")[0];
-            const top = yBounds.filter((b)=>b.dataExtent === "max")[0];
-            const all = [
-                bottom,
-                left,
-                right,
-                top
-            ];
-            for(let i1 = 0; i1 < all.length; i1++){
-                if (!all[i1]) return;
-            }
-            const { src: src , height: height , width: width  } = imageHolder.img;
-            insight.backgroundImage = {
-                url: src,
-                size: {
-                    height: height,
-                    width: width
-                },
-                extents: {
-                    bottom: bottom.numericValue,
-                    left: left.numericValue,
-                    right: right.numericValue,
-                    top: top.numericValue
-                }
-            };
-            insight.size = insight.backgroundImage.size;
         }
         getColumnMapBaseProps() {
             const allColumns = this.state.dataContent && this.state.dataContent.columns.filter((c)=>!(0, $3b509b9541e52a8f$exports).util.isInternalFieldName(c.name, true));
@@ -44960,6 +46748,7 @@ function $8535c575077b9670$export$1f96ae73734a86cc(fluentUI, react, reactDOM, ve
     (0, $555bb845cf8689db$export$15b376344cc89d12).prototype = react.Component.prototype;
     (0, $3465068850534ed3$export$3e09886744a57615).prototype = react.Component.prototype;
     (0, $4805700d8b417596$export$c72f6eaae7b9adff).prototype = react.Component.prototype;
+    (0, $92486479f357636c$export$df231814b4232ebd).prototype = react.Component.prototype;
 }
 
 

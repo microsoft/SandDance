@@ -41,5 +41,5 @@ var quanBarChartTest;
         chart: 'barchart',
         view: '2d'
     };
-    quanBarChartTest.viewer.render(insight, data);
+    quanBarChartTest.viewer.render({ insight: insight }, data);
 })(quanBarChartTest || (quanBarChartTest = {}));

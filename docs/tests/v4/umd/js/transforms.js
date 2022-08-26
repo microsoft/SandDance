@@ -37,6 +37,6 @@ var transformTest;
     fetch('https://vega.github.io/editor/data/cars.json').then(function (response) {
         return response.json();
     }).then(function (json) {
-        transformTest.viewer.render(insight, json);
+        transformTest.viewer.render({ insight: insight }, json);
     });
 })(transformTest || (transformTest = {}));
