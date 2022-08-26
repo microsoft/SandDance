@@ -31,7 +31,7 @@ import { InputSearchExpressionGroup, Search } from './dialogs/search';
 import { Settings } from './dialogs/settings';
 import { SnapshotEditor, SnapshotEditor_Class } from './dialogs/snapshotEditor';
 import { Snapshots } from './dialogs/snapshots';
-import { getTransition, TransitionEdits, TransitionEditor } from './dialogs/transition';
+import { getTransition, TransitionEdits, TransitionEditor, syncTansitionDurations } from './dialogs/transition';
 import {
     ChangeColumnMappingOptions,
     ColorSettings,
@@ -359,9 +359,8 @@ function _Explorer(_props: Props) {
                 }
                 if (transitionDurations) {
                     newState.transitionDurations = transitionDurations;
+                    syncTansitionDurations(this.viewer, transitionDurations);
                     const { config } = this.viewer.presenter.morphchartsref.core;
-                    config.transitionDuration = transitionDurations.position;
-                    config.transitionStaggering = transitionDurations.stagger;
                 }
             }
             this.setState(newState as State);

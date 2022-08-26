@@ -48,6 +48,7 @@ export const strings = {
     buttonTransitionPlay: 'Play',
     buttonUndo: 'Undo',
     buttonRedo: 'Redo',
+    buttonResetToDefault: 'Reset to default',
     chartTypeBarChartH: 'Bar',
     chartTypeBarChartV: 'Column',
     chartTypeDensity: 'Density',

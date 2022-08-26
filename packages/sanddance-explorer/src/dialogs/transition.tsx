@@ -12,6 +12,7 @@ import { ColumnMapBaseProps } from '../controls/columnMap';
 import { SandDance } from '@msrvida/sanddance-react';
 import { Dropdown } from '../controls/dropdown';
 import { IconButton } from '../controls/iconButton';
+import { Button } from '../controls/button';
 
 export interface TransitionEdits {
     transitionType: SandDance.types.TransitionType;
@@ -40,7 +41,7 @@ const positions: [SandDance.types.Dimension3D, string][] = [
     ['z', strings.labelAliasZ],
 ];
 
-const autoScrubInterval = 25;   //tune to get the smoothest animation while able to do an update pass through React
+const autoScrubInterval = 50;   //tune to get the smoothest animation while able to do an update pass through React
 
 function _TransitionEditor(_props: Props) {
     class __TransitionEditor extends base.react.Component<Props, State>{
@@ -48,13 +49,10 @@ function _TransitionEditor(_props: Props) {
 
         constructor(props: Props) {
             super(props);
-            const { transitionDurations } = props;
-            const totalTransition = (transitionDurations.position + transitionDurations.stagger) / 1000;
             this.state = {
                 scrub: 100,
-                staggerPercent: transitionDurations.stagger === 0 ? 1 : (transitionDurations.stagger / (totalTransition * 1000)) * 100,
-                totalTransition,
                 pauseDisabled: true,
+                ...this.initialCalc(props.transitionDurations),
             };
             this.autoScrubber = new AutoScrubber(
                 autoScrubInterval,
@@ -76,6 +74,12 @@ function _TransitionEditor(_props: Props) {
             );
         }
 
+        initialCalc(transitionDurations: SandDance.VegaMorphCharts.types.TransitionDurations) {
+            const totalTransition = (transitionDurations.position + transitionDurations.stagger) / 1000;
+            const staggerPercent = transitionDurations.stagger === 0 ? 1 : (transitionDurations.stagger / (totalTransition * 1000)) * 100;
+            return { totalTransition, staggerPercent };
+        }
+
         setScrubState(scrub: number) {
             this.props.explorer.viewer.presenter.morphchartsref.core.renderer.transitionTime = scrub / 100;
             scrub = Math.round(scrub);
@@ -88,11 +92,10 @@ function _TransitionEditor(_props: Props) {
             setTimeout(() => {  //allow full state to update
                 const { totalTransition, staggerPercent } = this.state;
                 const stagger = totalTransition * staggerPercent / 100;
-                const position = totalTransition - stagger;
                 const { transitionDurations } = this.props;
-                const { config } = this.props.explorer.viewer.presenter.morphchartsref.core;
-                transitionDurations.position = config.transitionDuration = position * 1000;
-                transitionDurations.stagger = config.transitionStaggering = stagger * 1000;
+                transitionDurations.position = (totalTransition - stagger) * 1000;
+                transitionDurations.stagger = stagger * 1000;
+                syncTansitionDurations(this.props.explorer.viewer, transitionDurations);
             })
         }
 
@@ -226,7 +229,7 @@ function _TransitionEditor(_props: Props) {
                             min={0}
                             max={5}
                             step={0.1}
-                            defaultValue={state.totalTransition}
+                            value={state.totalTransition}
                         />
                         <base.fluentUI.Slider
                             label={strings.labelTransitionStagger}
@@ -237,18 +240,30 @@ function _TransitionEditor(_props: Props) {
                             min={0}
                             max={100}
                             valueFormat={strings.percentValueFormat}
-                            defaultValue={state.staggerPercent}
+                            value={state.staggerPercent}
                         />
                         <base.fluentUI.Slider
                             label={strings.labelTransitionCamera}
                             onChange={value => {
                                 transitionDurations.view = value;
+                                this.forceUpdate();
                             }}
                             min={0}
                             max={10000}
-                            defaultValue={transitionDurations.view}
+                            value={transitionDurations.view}
                         />
-                        TODO:  defaults button
+                        <Button
+                            themePalette={props.themePalette}
+                            onClick={() => {
+                                const defaults = SandDance.VegaMorphCharts.defaults.defaultPresenterConfig.transitionDurations;
+                                const { position, stagger, view } = defaults;
+                                transitionDurations.position = position;
+                                transitionDurations.stagger = stagger;
+                                transitionDurations.view = view;
+                                this.setState({ ...this.initialCalc(transitionDurations) });
+                            }}
+                            text={strings.buttonResetToDefault}
+                        />
                     </Group>
                 </div>
             );
@@ -313,6 +328,13 @@ export function getTransition(state: TransitionEdits): SandDance.types.Transitio
             };
         }
     }
+}
+
+export function syncTansitionDurations(viewer: SandDance.Viewer, transitionDurations: SandDance.VegaMorphCharts.types.TransitionDurations) {
+    const { config } = viewer.presenter.morphchartsref.core;
+    const { position, stagger } = transitionDurations;
+    config.transitionDuration = position;
+    config.transitionStaggering = stagger;
 }
 
 type AutoScrubberDirection = -1 | 1;
