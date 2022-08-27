@@ -335,9 +335,9 @@ export function getTransition(state: TransitionEdits): SandDance.types.Transitio
 }
 
 export function syncTansitionDurations(viewer: SandDance.Viewer, transitionDurations: SandDance.VegaMorphCharts.types.TransitionDurations) {
-    const { config } = viewer?.presenter?.morphchartsref?.core;
-    const { position, stagger } = transitionDurations;
+    const config = viewer?.presenter?.morphchartsref?.core.config;
     if (config) {
+        const { position, stagger } = transitionDurations;
         config.transitionDuration = position;
         config.transitionStaggering = stagger;
     }
