@@ -10,7 +10,6 @@ import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { getCanvas } from '../canvas';
 import { SandDance, util } from '@msrvida/sanddance-react';
 import { strings } from '../language';
-import { getTransition } from './transition';
 
 import Snapshot = SandDance.types.Snapshot;
 
@@ -113,12 +112,7 @@ function _SnapshotEditor(_props: Props) {
                                     insight: this.state.insight,
                                     image: this.state.image,
                                     bgColor: this.state.bgColor,
-                                    setup: SandDance.VegaMorphCharts.util.clone({
-                                        camera: explorer.state.holdCamera ? 'hold' : explorer.viewer.getCamera(),
-                                        renderer: explorer.state.renderer,
-                                        transition: getTransition(explorer.state),
-                                        transitionDurations: explorer.state.transitionDurations,
-                                    }),
+                                    setup: SandDance.VegaMorphCharts.util.clone(explorer.getSetup()),
                                 };
                                 this.props.modifySnapShot && this.props.modifySnapShot(snapshot);
                                 this.props.onWriteSnapshot(snapshot, this.state.editIndex);

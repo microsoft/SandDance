@@ -339,6 +339,15 @@ function _Explorer(_props: Props) {
             return this.viewer.getInsight();
         }
 
+        public getSetup(): SandDance.types.Setup {
+            return {
+                camera: this.state.holdCamera ? 'hold' : this.state.camera,
+                renderer: this.state.renderer,
+                transition: getTransition(this.state),
+                transitionDurations: this.state.transitionDurations,
+            };
+        }
+
         public setSetup(setup: SandDance.types.Setup) {
             let newState: Partial<State>;
             if (!setup) {
@@ -1428,12 +1437,7 @@ function _Explorer(_props: Props) {
                                     }}
                                     data={this.state.dataContent.data}
                                     insight={insight}
-                                    setup={{
-                                        camera: this.state.holdCamera ? 'hold' : this.state.camera,
-                                        renderer: this.state.renderer,
-                                        transition: getTransition(this.state),
-                                        transitionDurations: this.state.transitionDurations,
-                                    }}
+                                    setup={this.getSetup()}
                                     onMount={el => this.viewerMounted(el)}
                                 />
                                 {this.state.note && (
@@ -1544,6 +1548,7 @@ export declare class Explorer_Class extends base.react.Component<Props, State> {
     signal(signalName: string, signalValue: any, newViewStateTarget?: boolean): void;
     //private manageColorToolbar(): void;
     getInsight(): SandDance.specs.Insight;
+    getSetup(): SandDance.types.Setup;
     setSetup(setup: SandDance.types.Setup): void;
     setInsight(historyAction: HistoryAction, newState?: Partial<UIState>, partialInsight?: Partial<SandDance.specs.Insight>, rebaseFilter?: boolean): void;
     //private handleReviveSnapshot(snapshot: Snapshot, selectedSnapshotIndex: number): void;
