@@ -40588,10 +40588,13 @@ function $92486479f357636c$export$d5639c01d489b0c(state) {
     }
 }
 function $92486479f357636c$export$39fa25c8c3576e7a(viewer, transitionDurations) {
-    const { config: config  } = viewer.presenter.morphchartsref.core;
+    var _a, _b;
+    const { config: config  } = (_b = (_a = viewer === null || viewer === void 0 ? void 0 : viewer.presenter) === null || _a === void 0 ? void 0 : _a.morphchartsref) === null || _b === void 0 ? void 0 : _b.core;
     const { position: position , stagger: stagger  } = transitionDurations;
-    config.transitionDuration = position;
-    config.transitionStaggering = stagger;
+    if (config) {
+        config.transitionDuration = position;
+        config.transitionStaggering = stagger;
+    }
 }
 class $92486479f357636c$var$AutoScrubber {
     constructor(interval, onInterval){
@@ -45635,7 +45638,6 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                 if (transitionDurations) {
                     newState.transitionDurations = transitionDurations;
                     (0, $92486479f357636c$export$39fa25c8c3576e7a)(this.viewer, transitionDurations);
-                    const { config: config  } = this.viewer.presenter.morphchartsref.core;
                 }
             }
             this.setState(newState);
