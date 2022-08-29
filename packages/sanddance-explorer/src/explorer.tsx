@@ -65,6 +65,7 @@ import { setInsightBackgroundImage } from './dialogs/backgroundImageEditor';
 export interface Options {
     chartPrefs?: Prefs;
     tooltipExclusions?: string[];
+    setup?: SandDance.types.Setup;
 }
 
 export interface Props {
@@ -348,13 +349,13 @@ function _Explorer(_props: Props) {
             };
         }
 
-        public setSetup(setup: SandDance.types.Setup) {
-            let newState: Partial<State>;
+        private setSetup(setup: SandDance.types.Setup, newState: Partial<State>) {
             if (!setup) {
                 newState = { camera: undefined };
             } else {
                 const { camera, renderer, transition, transitionDurations } = setup;
-                newState = { renderer, transitionType: transition.type };
+                newState.renderer = renderer;
+                newState.transitionType = transition.type;
                 if (camera === 'hold') {
                     newState.holdCamera = true;
                 } else {
@@ -371,7 +372,6 @@ function _Explorer(_props: Props) {
                     syncTansitionDurations(this.viewer, transitionDurations);
                 }
             }
-            this.setState(newState as State);
         }
 
         public setInsight(historyAction: HistoryAction, newState: Partial<UIState> = {}, partialInsight: Partial<SandDance.specs.Insight> = this.viewer.getInsight(), rebaseFilter: boolean, setup?: SandDance.types.Setup) {
@@ -393,6 +393,9 @@ function _Explorer(_props: Props) {
             };
             const changeInsight = () => {
                 this.getColorContext = null;
+                if (setup) {
+                    this.setSetup(setup, historicInsight);
+                }
                 this.changeInsight(historicInsight, historyAction, state, setup);
             };
             const currentFilter = this.viewer.getInsight().filter;
@@ -432,12 +435,10 @@ function _Explorer(_props: Props) {
                     newState.sideTabId = SideTabId.Snapshots;
                     this.scrollSnapshotIntoView(selectedSnapshotIndex);
                 }
-                this.setSetup(snapshot.setup);
                 this.setInsight({ label: strings.labelHistoryReviveSnapshot }, newState, snapshot.insight, true, snapshot.setup);
             } else {
                 const snapshot = snapshotOrIndex as Snapshot;
                 if (snapshot.insight) {
-                    this.setSetup(snapshot.setup);
                     this.setInsight({ label: strings.labelHistoryReviveSnapshot }, { note: snapshot.description, selectedSnapshotIndex: -1 }, snapshot.insight, true, snapshot.setup); //don't navigate to sideTab
                 } else {
                     this.setState({ note: snapshot.description, selectedSnapshotIndex: -1 });
@@ -506,6 +507,7 @@ function _Explorer(_props: Props) {
                         partialInsight,
                         { label: strings.labelHistoryInit, insert: true },
                         newState as State,
+                        (optionsOrPrefs && (optionsOrPrefs as Options).setup),
                     );
                     //make sure item is active
                     this.activateDataBrowserItem(sideTabId, this.state.dataScopeId);
@@ -597,14 +599,14 @@ function _Explorer(_props: Props) {
         }
 
         //state members which change the insight
-        private changeInsight(partialInsight: Partial<SandDance.specs.Insight>, historyAction: HistoryAction, additionalUIState?: Partial<UIState>, setup?: SandDance.types.Setup) {
+        private changeInsight(partialInsight: Partial<SandDance.specs.Insight>, historyAction: HistoryAction, additionalUIState?: Partial<UIState>, historicSetup?: SandDance.types.Setup) {
             if (!partialInsight.signalValues) {
                 partialInsight.signalValues = null;
             }
             if (partialInsight.chart === 'barchart') {
                 partialInsight.chart = 'barchartV';
             }
-            this.addHistory({ ...partialInsight, setup }, historyAction, additionalUIState);
+            this.addHistory({ ...partialInsight, historicSetup }, historyAction, additionalUIState);
         }
 
         public addHistory(historicInsight: Partial<HistoricInsight>, historyAction: HistoryAction, additionalUIState?: Partial<UIState>) {
@@ -645,17 +647,20 @@ function _Explorer(_props: Props) {
         public undo() {
             const historyIndex = this.state.historyIndex - 1;
             if (historyIndex < 0) return;
-            const newState = this.replay(historyIndex);
-            this.rebaseFilter = true;
-            this.setSetup(newState.setup);
-            this.setState({ ...newState as State, historyIndex });
+            this.doReplay(historyIndex);
         }
 
         public redo(historyIndex = this.state.historyIndex + 1) {
             if (historyIndex >= this.state.historyItems.length) return;
+            this.doReplay(historyIndex);
+        }
+
+        private doReplay(historyIndex: number) {
             const newState = this.replay(historyIndex);
             this.rebaseFilter = true;
-            this.setSetup(newState.setup);
+            if (newState.historicSetup) {
+                this.setSetup(newState.historicSetup, newState);
+            }
             this.setState({ ...newState as State, historyIndex });
         }
 
@@ -1550,7 +1555,7 @@ export declare class Explorer_Class extends base.react.Component<Props, State> {
     getInsight(): SandDance.specs.Insight;
     getSetup(): SandDance.types.Setup;
     setSetup(setup: SandDance.types.Setup): void;
-    setInsight(historyAction: HistoryAction, newState?: Partial<UIState>, partialInsight?: Partial<SandDance.specs.Insight>, rebaseFilter?: boolean): void;
+    setInsight(historyAction: HistoryAction, newState: Partial<UIState>, partialInsight: Partial<SandDance.specs.Insight>, rebaseFilter: boolean, setup?: SandDance.types.Setup): void;
     //private handleReviveSnapshot(snapshot: Snapshot, selectedSnapshotIndex: number): void;
     reviveSnapshot(snapshotOrIndex: Snapshot | number): void;
     load(data: DataFile | object[], getPartialInsight?: (columns: SandDance.types.Column[]) => Partial<SandDance.specs.Insight>, optionsOrPrefs?: Prefs | Options): Promise<void>;
