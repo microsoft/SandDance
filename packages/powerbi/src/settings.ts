@@ -34,7 +34,7 @@ import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 
 export class SandDanceConfig {
   [propertyName: string]: DataViewPropertyValue;
-  cameraJSON: string = '';
+  setupJSON: string = '';
   insightJSON: string = '';
   selectionQueryJSON: string = '';
   snapshotsJSON: string = '';
