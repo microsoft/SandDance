@@ -99,9 +99,9 @@ export class Visual implements IVisual {
                     this.app = app;
                 },
                 onCameraSave: (camera: SandDance.types.Camera) => {
-                    // console.log('onCameraChange', camera);
                     const setup = this.app.explorer.getSetup();
                     setup.camera = camera;
+                    // console.log('onCameraChange', setup);
                     this.persist({ setup });
                 },
                 onContextMenu: (e: MouseEvent | PointerEvent, selectionId?: powerbiVisualsApi.extensibility.ISelectionId) => {
@@ -343,6 +343,17 @@ export class Visual implements IVisual {
                 } catch (e) {
                     // continue regardless of error
                 }
+            }
+
+            if (!setInsight) {
+                // console.log('same insight')
+                const { camera, renderer } = setup;
+                if (camera && camera !== 'hold') {
+                    this.app.explorer.viewer.setCamera(camera);
+                } else {
+                    this.app.explorer.viewer.presenter.homeCamera();
+                }
+                this.app.explorer.setState({ renderer });
             }
             return;
         }

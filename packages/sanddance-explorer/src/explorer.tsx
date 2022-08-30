@@ -502,6 +502,10 @@ function _Explorer(_props: Props) {
                     const errors = ensureColumnsPopulated(partialInsight?.chart, partialInsight?.totalStyle, newState.columns, dataContent.columns);
                     newState.errors = errors;
                     newState.transitionColumn = dataContent.columns[0];
+                    const setup = (optionsOrPrefs && (optionsOrPrefs as Options).setup);
+                    if (setup) {
+                        this.setSetup(setup, newState);
+                    }
                     //change insight
                     this.changeInsight(
                         partialInsight,
