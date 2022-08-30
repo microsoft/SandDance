@@ -1558,7 +1558,7 @@ export declare class Explorer_Class extends base.react.Component<Props, State> {
     //private manageColorToolbar(): void;
     getInsight(): SandDance.specs.Insight;
     getSetup(): SandDance.types.Setup;
-    setSetup(setup: SandDance.types.Setup): void;
+    //private setSetup(setup: SandDance.types.Setup, newState: Partial<State>): void;
     setInsight(historyAction: HistoryAction, newState: Partial<UIState>, partialInsight: Partial<SandDance.specs.Insight>, rebaseFilter: boolean, setup?: SandDance.types.Setup): void;
     //private handleReviveSnapshot(snapshot: Snapshot, selectedSnapshotIndex: number): void;
     reviveSnapshot(snapshotOrIndex: Snapshot | number): void;
