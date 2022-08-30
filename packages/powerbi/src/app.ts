@@ -31,6 +31,7 @@ function getThemePalette(darkTheme: boolean) {
 
 export interface ViewChangeOptions {
     tooltipExclusions?: string[];
+    setup?: SandDance.types.Setup;
 }
 
 export interface Props {
@@ -113,7 +114,7 @@ export class App extends React.Component<Props, State> {
         return this.explorer && this.explorer.state.dataContent && this.explorer.state.dataContent.data;
     }
 
-    load(data: DataFile | object[], getPartialInsight: (columns: SandDance.types.Column[]) => Partial<SandDance.specs.Insight>, tooltipExclusions: string[], snapshots: SandDance.types.Snapshot[], snapshotIndex?: number) {
+    load(data: DataFile | object[], getPartialInsight: (columns: SandDance.types.Column[]) => Partial<SandDance.specs.Insight>, setup: SandDance.types.Setup, tooltipExclusions: string[], snapshots: SandDance.types.Snapshot[], snapshotIndex?: number) {
         const wasLoaded = this.state.loaded;
         const { explorer } = this;
         if (wasLoaded) {
@@ -130,13 +131,13 @@ export class App extends React.Component<Props, State> {
             };
             explorer.setState({
                 calculating: () => {
-                    explorer.load(data, getPartialInsight, { tooltipExclusions }).then(loaded);
+                    explorer.load(data, getPartialInsight, { tooltipExclusions, setup }).then(loaded);
                     explorer.setState({ snapshots });
                     this.manageSnapshot(snapshotIndex);
                 },
             });
         } else {
-            explorer.load(data, getPartialInsight, { tooltipExclusions });
+            explorer.load(data, getPartialInsight, { tooltipExclusions, setup });
             explorer.setState({ snapshots });
             this.manageSnapshot(snapshotIndex);
         }

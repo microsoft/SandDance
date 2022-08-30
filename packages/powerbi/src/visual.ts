@@ -74,7 +74,6 @@ export class Visual implements IVisual {
     public afterView: (() => void)[];
     public search: SandDance.searchExpression.Search;
     public snapshots: SandDance.types.Snapshot[];
-    public lastCameraJSON: string;
 
     public static fetchMoreTimeout = 5000;
     public static ignorePersistTimeout = 200;
@@ -100,9 +99,10 @@ export class Visual implements IVisual {
                     this.app = app;
                 },
                 onCameraSave: (camera: SandDance.types.Camera) => {
-                    // console.log('onCameraChange');
-                    this.lastCameraJSON = JSON.stringify(camera);
-                    this.persist({});
+                    const setup = this.app.explorer.getSetup();
+                    setup.camera = camera;
+                    // console.log('onCameraChange', setup);
+                    this.persist({ setup });
                 },
                 onContextMenu: (e: MouseEvent | PointerEvent, selectionId?: powerbiVisualsApi.extensibility.ISelectionId) => {
                     const position: powerbiVisualsApi.extensibility.IPoint = {
@@ -191,7 +191,7 @@ export class Visual implements IVisual {
             const tooltipExclusions = options.tooltipExclusions || explorer.state.tooltipExclusions;
             cleanInsight(insight, false);
             const config: SandDanceConfig = {
-                cameraJSON: this.lastCameraJSON,
+                setupJSON: JSON.stringify(options.setup || explorer.getSetup()),
                 insightJSON: JSON.stringify(insight),
                 selectionQueryJSON: JSON.stringify(this.search),
                 snapshotsJSON: JSON.stringify(this.snapshots || []),
@@ -302,6 +302,15 @@ export class Visual implements IVisual {
 
         this.prevSettings = util.clone(this.settings);
 
+        let setup: SandDance.types.Setup;
+        if (sandDanceConfig.setupJSON) {
+            try {
+                setup = JSON.parse(sandDanceConfig.setupJSON);
+            } catch (e) {
+                // continue regardless of error
+            }
+        }
+
         if (!different) {
             // console.log('Visual update - not different');
 
@@ -323,30 +332,29 @@ export class Visual implements IVisual {
             if (sandDanceConfig.insightJSON) {
                 try {
                     const insight = JSON.parse(sandDanceConfig.insightJSON) as SandDance.specs.Insight;
-
                     const compA = util.clone(insight);
                     cleanInsight(compA, false);
-
                     const compB = util.clone(this.app.explorer.viewer.getInsight());
-
                     cleanInsight(compB, false);
-
                     if (!util.deepCompare(compA, compB)) {
                         setInsight = true;
-                        this.syncCamera(sandDanceConfig.cameraJSON, false);
-                        this.app.explorer.setInsight({ label: language.historyActionUpdate }, null, insight, true);
+                        this.app.explorer.setInsight({ label: language.historyActionUpdate }, null, insight, true, setup);
                     }
-
                 } catch (e) {
                     // continue regardless of error
                 }
             }
 
             if (!setInsight) {
-                this.syncCamera(sandDanceConfig.cameraJSON, true);
+                // console.log('same insight')
+                const { camera, renderer } = setup;
+                if (camera && camera !== 'hold') {
+                    this.app.explorer.viewer.setCamera(camera);
+                } else {
+                    this.app.explorer.viewer.presenter.homeCamera();
+                }
+                this.app.explorer.setState({ renderer });
             }
-
-            //this.app.manageSnapshot(sandDanceMainSettings.snapshot);
             return;
         }
 
@@ -394,7 +402,6 @@ export class Visual implements IVisual {
 
                 if (sandDanceConfig.insightJSON) {
                     try {
-                        this.syncCamera(sandDanceConfig.cameraJSON, false);
                         insight = JSON.parse(sandDanceConfig.insightJSON);
                         delete insight.size;
                     } catch (e) {
@@ -408,6 +415,7 @@ export class Visual implements IVisual {
 
                 return insight;
             },
+            setup,
             tooltipExclusions,
             this.snapshots,
         );
@@ -421,27 +429,6 @@ export class Visual implements IVisual {
                 this.app.explorer.imageHolder = imageHolder;
             } catch (e) {
                 // continue regardless of error
-            }
-        }
-    }
-
-    syncCamera(cameraJSON: string, now: boolean) {
-        if (cameraJSON && cameraJSON !== this.lastCameraJSON) {
-            let camera: SandDance.types.Camera;
-            try {
-                camera = JSON.parse(cameraJSON);
-            } catch (e) {
-                // continue regardless of error
-            }
-            if (camera) {
-                if (now) {
-                    this.app.explorer.viewer.setCamera(camera);
-                    //delete this.sanddanceRenderOptions.getCameraTo;
-                } else {
-                    //this.sanddanceRenderOptions.getCameraTo = () => camera;
-                    //this.afterView.push(() => delete this.sanddanceRenderOptions.getCameraTo);
-                }
-                this.lastCameraJSON = cameraJSON;
             }
         }
     }

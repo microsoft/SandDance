@@ -13,7 +13,7 @@ import { Explorer_Class } from '../explorer';
 
 export interface HistoricInsight extends SandDance.specs.Insight {
     rebaseFilter?: boolean;
-    setup?: SandDance.types.Setup;
+    historicSetup?: SandDance.types.Setup;
 }
 
 export interface HistoryAction {

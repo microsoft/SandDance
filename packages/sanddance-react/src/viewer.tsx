@@ -69,7 +69,7 @@ function _SandDanceReact(_props: Props) {
                     }
                 }
                 if (props.setup.renderer) {
-                    this.viewer.presenter.morphchartsref.setMorphChartsRendererOptions(props.setup.renderer);
+                    this.viewer?.presenter?.morphchartsref?.setMorphChartsRendererOptions(props.setup.renderer);
                 }
             }
         }

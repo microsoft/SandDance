@@ -37798,6 +37798,7 @@ function $81745c046077d503$var$_SandDanceReact(_props) {
             });
         }
         view() {
+            var _a, _b, _c;
             const { props: props  } = this;
             let didLayout = false;
             if (props.insight && props.data) {
@@ -37815,7 +37816,7 @@ function $81745c046077d503$var$_SandDanceReact(_props) {
                     if (!(0, $a1d9524814b1e23a$export$e12301e595e16ad8)(this.viewer.getCamera(), camera)) //camera is different
                     this.viewer.setCamera(camera);
                 }
-                if (props.setup.renderer) this.viewer.presenter.morphchartsref.setMorphChartsRendererOptions(props.setup.renderer);
+                if (props.setup.renderer) (_c = (_b = (_a = this.viewer) === null || _a === void 0 ? void 0 : _a.presenter) === null || _b === void 0 ? void 0 : _b.morphchartsref) === null || _c === void 0 || _c.setMorphChartsRendererOptions(props.setup.renderer);
             }
         }
         componentDidMount() {
@@ -40283,6 +40284,285 @@ const $4805700d8b417596$export$c72f6eaae7b9adff = $4805700d8b417596$var$_Setting
 
 
 
+function $555bb845cf8689db$var$_SnapshotEditor(_props) {
+    class __SnapshotEditor extends (0, $8535c575077b9670$export$e2253033e6e1df16).react.Component {
+        constructor(props){
+            super(props);
+            this.state = {
+                showEditFormDialog: false,
+                title: "",
+                description: "",
+                image: null,
+                bgColor: null,
+                insight: null,
+                editIndex: -1
+            };
+        }
+        resize(src, thumbWidth) {
+            if (!src) return;
+            const img = new Image();
+            img.onload = ()=>{
+                const canvas = document.createElement("canvas"), ctx = canvas.getContext("2d");
+                const ratio = img.width / thumbWidth;
+                canvas.height = img.height / ratio;
+                canvas.width = thumbWidth;
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                const image = canvas.toDataURL();
+                this.setState({
+                    image: image
+                });
+            };
+            img.src = src;
+        }
+        editSnapshot(snapshot, editIndex = -1) {
+            if (snapshot) this.setState(Object.assign(Object.assign({
+                showEditFormDialog: true
+            }, snapshot), {
+                editIndex: editIndex
+            }));
+            else {
+                const { explorer: explorer  } = this.props;
+                const signalValues = explorer.viewer.getSignalValues();
+                explorer.viewer.deselect().then(()=>{
+                    const canvas = (0, $29728562a99c68a2$export$f80a6900d44a74ee)(explorer.viewer);
+                    const bgColor = canvas && window.getComputedStyle(canvas).backgroundColor;
+                    const insight = (0, $3b509b9541e52a8f$exports).VegaMorphCharts.util.clone(explorer.viewer.getInsight());
+                    delete insight.size;
+                    insight.signalValues = signalValues;
+                    const title = this.props.getTitle && this.props.getTitle(insight) || "";
+                    const description = this.props.getDescription && this.props.getDescription(insight) || "";
+                    this.setState({
+                        showEditFormDialog: true,
+                        bgColor: bgColor,
+                        title: title,
+                        description: description,
+                        insight: insight,
+                        image: null,
+                        editIndex: editIndex
+                    });
+                    //allow deselection to render
+                    setTimeout(()=>{
+                        explorer.viewer.presenter.canvasToDataURL().then((dataUrl)=>{
+                            this.resize(dataUrl, explorer.snapshotThumbWidth);
+                        });
+                    }, 500);
+                });
+            }
+        }
+        render() {
+            var _a, _b;
+            const { explorer: explorer  } = this.props;
+            return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $5453c8de1a3cb6b6$export$3ddf2d174ce01153), {
+                modalProps: {
+                    className: (0, $a1d9524814b1e23a$exports).classList("sanddance-snapshot-dialog", this.props.theme)
+                },
+                minWidth: `${explorer.snapshotThumbWidth + 64}px`,
+                hidden: !this.state.showEditFormDialog,
+                onDismiss: ()=>this.setState({
+                        showEditFormDialog: false
+                    }),
+                title: this.state.editIndex >= 0 ? (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonEditSnapshot : (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonCreateSnapshot,
+                buttons: (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.PrimaryButton, {
+                    disabled: !this.state.image || !this.state.title,
+                    key: 0,
+                    onClick: (e)=>{
+                        const setup = (0, $3b509b9541e52a8f$exports).VegaMorphCharts.util.clone(explorer.getSetup());
+                        setup.camera = explorer.viewer.getCamera();
+                        const snapshot = {
+                            title: this.state.title,
+                            description: this.state.description,
+                            insight: this.state.insight,
+                            image: this.state.image,
+                            bgColor: this.state.bgColor,
+                            setup: setup
+                        };
+                        this.props.modifySnapShot && this.props.modifySnapShot(snapshot);
+                        this.props.onWriteSnapshot(snapshot, this.state.editIndex);
+                        this.setState({
+                            showEditFormDialog: false,
+                            title: "",
+                            description: "",
+                            image: null
+                        });
+                    },
+                    iconProps: {
+                        iconName: "Camera"
+                    },
+                    text: this.state.editIndex >= 0 ? (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonUpdateSnapshot : (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonCreateSnapshot
+                })
+            }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.TextField, {
+                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelSnapshotTitle,
+                onChange: (e, title)=>this.setState({
+                        title: title
+                    }),
+                value: this.state.title
+            }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.TextField, {
+                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelSnapshotDescription,
+                onChange: (e, description)=>this.setState({
+                        description: description
+                    }),
+                value: this.state.description,
+                multiline: true
+            }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
+                className: "thumbnail"
+            }, !this.state.image && (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Spinner, null), this.state.image && (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("img", {
+                src: this.state.image,
+                style: {
+                    backgroundColor: this.state.bgColor
+                }
+            })), ((_b = (_a = explorer.viewer) === null || _a === void 0 ? void 0 : _a.colorContexts) === null || _b === void 0 ? void 0 : _b.length) > 1 && (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", null, (0, $0db66385c00a3f15$export$21c51bc433c16634).labelColorFilter));
+        }
+    }
+    return new __SnapshotEditor(_props);
+}
+const $555bb845cf8689db$export$15b376344cc89d12 = $555bb845cf8689db$var$_SnapshotEditor;
+
+
+
+
+
+
+
+
+function $3465068850534ed3$var$_Snapshots(_props) {
+    class __Snapshots extends (0, $8535c575077b9670$export$e2253033e6e1df16).react.Component {
+        constructor(props){
+            super(props);
+            this.state = {
+                confirmation: null,
+                title: "",
+                description: "",
+                image: null,
+                bgColor: null,
+                insight: null
+            };
+        }
+        render() {
+            const items = [
+                {
+                    key: "clear",
+                    text: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonClearSnapshots,
+                    onClick: ()=>this.setState({
+                            confirmation: {
+                                buttonText: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonClearSnapshots,
+                                handler: ()=>this.props.onClearSnapshots()
+                            }
+                        }),
+                    disabled: this.props.snapshots.length === 0
+                }, 
+            ];
+            if (this.props.getTopActions) items.push.apply(items, this.props.getTopActions(this.props.snapshots));
+            const ref = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createRef();
+            this.props.explorer.dialogFocusHandler.focus = ()=>{
+                var _a;
+                (_a = ref.current) === null || _a === void 0 || _a.focus();
+            };
+            return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8d43140d74b3b13d$export$eb2fcfdbd7ba97d4), {
+                className: "sanddance-snapshots",
+                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelSnapshots
+            }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.PrimaryButton, {
+                componentRef: ref,
+                text: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonCreateSnapshot,
+                onClick: (e)=>this.props.editor.editSnapshot(),
+                split: true,
+                menuProps: {
+                    items: items
+                }
+            }), this.props.getChildren && this.props.getChildren(this.props.snapshots), this.state.confirmation && (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $5453c8de1a3cb6b6$export$3ddf2d174ce01153), {
+                hidden: false,
+                buttons: (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.PrimaryButton, {
+                    key: 0,
+                    onClick: (e)=>{
+                        this.setState({
+                            confirmation: null
+                        });
+                        this.state.confirmation.handler();
+                    },
+                    iconProps: {
+                        iconName: "Delete"
+                    },
+                    text: this.state.confirmation.buttonText
+                }),
+                onDismiss: ()=>this.setState({
+                        confirmation: null
+                    })
+            }, (0, $0db66385c00a3f15$export$21c51bc433c16634).labelConfirmation), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", null, this.props.snapshots.map((snapshot, i)=>{
+                const actions = this.props.getActions && this.props.getActions(snapshot, i) || [];
+                actions.push({
+                    iconButtonProps: {
+                        themePalette: this.props.themePalette,
+                        title: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonEditSnapshot,
+                        onClick: (e)=>this.props.editor.editSnapshot(snapshot, i),
+                        iconName: "Edit"
+                    }
+                });
+                if (this.props.snapshots.length > 1) actions.push({
+                    iconButtonProps: {
+                        disabled: i === 0,
+                        themePalette: this.props.themePalette,
+                        title: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonMoveUp,
+                        onClick: (e)=>this.props.onMoveUp(i),
+                        iconName: "SortUp"
+                    }
+                }, {
+                    iconButtonProps: {
+                        disabled: i > this.props.snapshots.length - 2,
+                        themePalette: this.props.themePalette,
+                        title: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonMoveDown,
+                        onClick: (e)=>this.props.onMoveDown(i),
+                        iconName: "SortDown"
+                    }
+                });
+                actions.push({
+                    iconButtonProps: {
+                        themePalette: this.props.themePalette,
+                        title: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonDeleteSnapshot,
+                        onClick: ()=>this.setState({
+                                confirmation: {
+                                    buttonText: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonDeleteSnapshot,
+                                    handler: ()=>this.props.onRemoveSnapshot(i)
+                                }
+                            }),
+                        iconName: "Delete"
+                    }
+                });
+                return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
+                    key: i,
+                    className: (0, $a1d9524814b1e23a$exports).classList("snapshot", i === this.props.selectedSnapshotIndex && "selected")
+                }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
+                    onClick: (e)=>this.props.onSnapshotClick(snapshot, i)
+                }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
+                    className: "title"
+                }, snapshot.title), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
+                    className: "thumbnail"
+                }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("img", {
+                    title: snapshot.description,
+                    src: snapshot.image,
+                    style: {
+                        backgroundColor: snapshot.bgColor
+                    }
+                }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement($3465068850534ed3$var$Actions, {
+                    actions: actions,
+                    snapshot: snapshot
+                }));
+            }))));
+        }
+    }
+    return new __Snapshots(_props);
+}
+const $3465068850534ed3$export$3e09886744a57615 = $3465068850534ed3$var$_Snapshots;
+function $3465068850534ed3$var$Actions(props) {
+    return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
+        className: "actions"
+    }, props.actions.map((action, i)=>{
+        if (action.iconButtonProps) return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $adfb025456b8f57f$export$c25acd513dcc8062), Object.assign({
+            key: i
+        }, action.iconButtonProps));
+        if (action.element) return action.element;
+    }));
+}
+
+
 
 
 
@@ -40588,10 +40868,13 @@ function $92486479f357636c$export$d5639c01d489b0c(state) {
     }
 }
 function $92486479f357636c$export$39fa25c8c3576e7a(viewer, transitionDurations) {
-    const { config: config  } = viewer.presenter.morphchartsref.core;
-    const { position: position , stagger: stagger  } = transitionDurations;
-    config.transitionDuration = position;
-    config.transitionStaggering = stagger;
+    var _a, _b;
+    const config = (_b = (_a = viewer === null || viewer === void 0 ? void 0 : viewer.presenter) === null || _a === void 0 ? void 0 : _a.morphchartsref) === null || _b === void 0 ? void 0 : _b.core.config;
+    if (config) {
+        const { position: position , stagger: stagger  } = transitionDurations;
+        config.transitionDuration = position;
+        config.transitionStaggering = stagger;
+    }
 }
 class $92486479f357636c$var$AutoScrubber {
     constructor(interval, onInterval){
@@ -40631,289 +40914,6 @@ class $92486479f357636c$var$AutoScrubber {
         this.direction = undefined;
     }
 }
-
-
-function $555bb845cf8689db$var$_SnapshotEditor(_props) {
-    class __SnapshotEditor extends (0, $8535c575077b9670$export$e2253033e6e1df16).react.Component {
-        constructor(props){
-            super(props);
-            this.state = {
-                showEditFormDialog: false,
-                title: "",
-                description: "",
-                image: null,
-                bgColor: null,
-                insight: null,
-                editIndex: -1
-            };
-        }
-        resize(src, thumbWidth) {
-            if (!src) return;
-            const img = new Image();
-            img.onload = ()=>{
-                const canvas = document.createElement("canvas"), ctx = canvas.getContext("2d");
-                const ratio = img.width / thumbWidth;
-                canvas.height = img.height / ratio;
-                canvas.width = thumbWidth;
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                const image = canvas.toDataURL();
-                this.setState({
-                    image: image
-                });
-            };
-            img.src = src;
-        }
-        editSnapshot(snapshot, editIndex = -1) {
-            if (snapshot) this.setState(Object.assign(Object.assign({
-                showEditFormDialog: true
-            }, snapshot), {
-                editIndex: editIndex
-            }));
-            else {
-                const { explorer: explorer  } = this.props;
-                const signalValues = explorer.viewer.getSignalValues();
-                explorer.viewer.deselect().then(()=>{
-                    const canvas = (0, $29728562a99c68a2$export$f80a6900d44a74ee)(explorer.viewer);
-                    const bgColor = canvas && window.getComputedStyle(canvas).backgroundColor;
-                    const insight = (0, $3b509b9541e52a8f$exports).VegaMorphCharts.util.clone(explorer.viewer.getInsight());
-                    delete insight.size;
-                    insight.signalValues = signalValues;
-                    const title = this.props.getTitle && this.props.getTitle(insight) || "";
-                    const description = this.props.getDescription && this.props.getDescription(insight) || "";
-                    this.setState({
-                        showEditFormDialog: true,
-                        bgColor: bgColor,
-                        title: title,
-                        description: description,
-                        insight: insight,
-                        image: null,
-                        editIndex: editIndex
-                    });
-                    //allow deselection to render
-                    setTimeout(()=>{
-                        explorer.viewer.presenter.canvasToDataURL().then((dataUrl)=>{
-                            this.resize(dataUrl, explorer.snapshotThumbWidth);
-                        });
-                    }, 500);
-                });
-            }
-        }
-        render() {
-            var _a, _b;
-            const { explorer: explorer  } = this.props;
-            return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $5453c8de1a3cb6b6$export$3ddf2d174ce01153), {
-                modalProps: {
-                    className: (0, $a1d9524814b1e23a$exports).classList("sanddance-snapshot-dialog", this.props.theme)
-                },
-                minWidth: `${explorer.snapshotThumbWidth + 64}px`,
-                hidden: !this.state.showEditFormDialog,
-                onDismiss: ()=>this.setState({
-                        showEditFormDialog: false
-                    }),
-                title: this.state.editIndex >= 0 ? (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonEditSnapshot : (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonCreateSnapshot,
-                buttons: (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.PrimaryButton, {
-                    disabled: !this.state.image || !this.state.title,
-                    key: 0,
-                    onClick: (e)=>{
-                        const snapshot = {
-                            title: this.state.title,
-                            description: this.state.description,
-                            insight: this.state.insight,
-                            image: this.state.image,
-                            bgColor: this.state.bgColor,
-                            setup: (0, $3b509b9541e52a8f$exports).VegaMorphCharts.util.clone({
-                                camera: explorer.state.holdCamera ? "hold" : explorer.viewer.getCamera(),
-                                renderer: explorer.state.renderer,
-                                transition: (0, $92486479f357636c$export$d5639c01d489b0c)(explorer.state),
-                                transitionDurations: explorer.state.transitionDurations
-                            })
-                        };
-                        this.props.modifySnapShot && this.props.modifySnapShot(snapshot);
-                        this.props.onWriteSnapshot(snapshot, this.state.editIndex);
-                        this.setState({
-                            showEditFormDialog: false,
-                            title: "",
-                            description: "",
-                            image: null
-                        });
-                    },
-                    iconProps: {
-                        iconName: "Camera"
-                    },
-                    text: this.state.editIndex >= 0 ? (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonUpdateSnapshot : (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonCreateSnapshot
-                })
-            }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.TextField, {
-                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelSnapshotTitle,
-                onChange: (e, title)=>this.setState({
-                        title: title
-                    }),
-                value: this.state.title
-            }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.TextField, {
-                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelSnapshotDescription,
-                onChange: (e, description)=>this.setState({
-                        description: description
-                    }),
-                value: this.state.description,
-                multiline: true
-            }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
-                className: "thumbnail"
-            }, !this.state.image && (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Spinner, null), this.state.image && (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("img", {
-                src: this.state.image,
-                style: {
-                    backgroundColor: this.state.bgColor
-                }
-            })), ((_b = (_a = explorer.viewer) === null || _a === void 0 ? void 0 : _a.colorContexts) === null || _b === void 0 ? void 0 : _b.length) > 1 && (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", null, (0, $0db66385c00a3f15$export$21c51bc433c16634).labelColorFilter));
-        }
-    }
-    return new __SnapshotEditor(_props);
-}
-const $555bb845cf8689db$export$15b376344cc89d12 = $555bb845cf8689db$var$_SnapshotEditor;
-
-
-
-
-
-
-
-
-function $3465068850534ed3$var$_Snapshots(_props) {
-    class __Snapshots extends (0, $8535c575077b9670$export$e2253033e6e1df16).react.Component {
-        constructor(props){
-            super(props);
-            this.state = {
-                confirmation: null,
-                title: "",
-                description: "",
-                image: null,
-                bgColor: null,
-                insight: null
-            };
-        }
-        render() {
-            const items = [
-                {
-                    key: "clear",
-                    text: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonClearSnapshots,
-                    onClick: ()=>this.setState({
-                            confirmation: {
-                                buttonText: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonClearSnapshots,
-                                handler: ()=>this.props.onClearSnapshots()
-                            }
-                        }),
-                    disabled: this.props.snapshots.length === 0
-                }, 
-            ];
-            if (this.props.getTopActions) items.push.apply(items, this.props.getTopActions(this.props.snapshots));
-            const ref = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createRef();
-            this.props.explorer.dialogFocusHandler.focus = ()=>{
-                var _a;
-                (_a = ref.current) === null || _a === void 0 || _a.focus();
-            };
-            return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8d43140d74b3b13d$export$eb2fcfdbd7ba97d4), {
-                className: "sanddance-snapshots",
-                label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelSnapshots
-            }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.PrimaryButton, {
-                componentRef: ref,
-                text: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonCreateSnapshot,
-                onClick: (e)=>this.props.editor.editSnapshot(),
-                split: true,
-                menuProps: {
-                    items: items
-                }
-            }), this.props.getChildren && this.props.getChildren(this.props.snapshots), this.state.confirmation && (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $5453c8de1a3cb6b6$export$3ddf2d174ce01153), {
-                hidden: false,
-                buttons: (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.PrimaryButton, {
-                    key: 0,
-                    onClick: (e)=>{
-                        this.setState({
-                            confirmation: null
-                        });
-                        this.state.confirmation.handler();
-                    },
-                    iconProps: {
-                        iconName: "Delete"
-                    },
-                    text: this.state.confirmation.buttonText
-                }),
-                onDismiss: ()=>this.setState({
-                        confirmation: null
-                    })
-            }, (0, $0db66385c00a3f15$export$21c51bc433c16634).labelConfirmation), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", null, this.props.snapshots.map((snapshot, i)=>{
-                const actions = this.props.getActions && this.props.getActions(snapshot, i) || [];
-                actions.push({
-                    iconButtonProps: {
-                        themePalette: this.props.themePalette,
-                        title: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonEditSnapshot,
-                        onClick: (e)=>this.props.editor.editSnapshot(snapshot, i),
-                        iconName: "Edit"
-                    }
-                });
-                if (this.props.snapshots.length > 1) actions.push({
-                    iconButtonProps: {
-                        disabled: i === 0,
-                        themePalette: this.props.themePalette,
-                        title: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonMoveUp,
-                        onClick: (e)=>this.props.onMoveUp(i),
-                        iconName: "SortUp"
-                    }
-                }, {
-                    iconButtonProps: {
-                        disabled: i > this.props.snapshots.length - 2,
-                        themePalette: this.props.themePalette,
-                        title: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonMoveDown,
-                        onClick: (e)=>this.props.onMoveDown(i),
-                        iconName: "SortDown"
-                    }
-                });
-                actions.push({
-                    iconButtonProps: {
-                        themePalette: this.props.themePalette,
-                        title: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonDeleteSnapshot,
-                        onClick: ()=>this.setState({
-                                confirmation: {
-                                    buttonText: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonDeleteSnapshot,
-                                    handler: ()=>this.props.onRemoveSnapshot(i)
-                                }
-                            }),
-                        iconName: "Delete"
-                    }
-                });
-                return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
-                    key: i,
-                    className: (0, $a1d9524814b1e23a$exports).classList("snapshot", i === this.props.selectedSnapshotIndex && "selected")
-                }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
-                    onClick: (e)=>this.props.onSnapshotClick(snapshot, i)
-                }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
-                    className: "title"
-                }, snapshot.title), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
-                    className: "thumbnail"
-                }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("img", {
-                    title: snapshot.description,
-                    src: snapshot.image,
-                    style: {
-                        backgroundColor: snapshot.bgColor
-                    }
-                }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement($3465068850534ed3$var$Actions, {
-                    actions: actions,
-                    snapshot: snapshot
-                }));
-            }))));
-        }
-    }
-    return new __Snapshots(_props);
-}
-const $3465068850534ed3$export$3e09886744a57615 = $3465068850534ed3$var$_Snapshots;
-function $3465068850534ed3$var$Actions(props) {
-    return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
-        className: "actions"
-    }, props.actions.map((action, i)=>{
-        if (action.iconButtonProps) return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $adfb025456b8f57f$export$c25acd513dcc8062), Object.assign({
-            key: i
-        }, action.iconButtonProps));
-        if (action.element) return action.element;
-    }));
-}
-
 
 
 var $b935bf5e2863e486$exports = {};
@@ -45614,17 +45614,22 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
         getInsight() {
             return this.viewer.getInsight();
         }
-        setSetup(setup) {
-            let newState;
+        getSetup() {
+            return {
+                camera: this.state.holdCamera ? "hold" : this.state.camera,
+                renderer: this.state.renderer,
+                transition: (0, $92486479f357636c$export$d5639c01d489b0c)(this.state),
+                transitionDurations: this.state.transitionDurations
+            };
+        }
+        setSetup(setup, newState) {
             if (!setup) newState = {
                 camera: undefined
             };
             else {
                 const { camera: camera , renderer: renderer , transition: transition , transitionDurations: transitionDurations  } = setup;
-                newState = {
-                    renderer: renderer,
-                    transitionType: transition.type
-                };
+                newState.renderer = renderer;
+                newState.transitionType = transition.type;
                 if (camera === "hold") newState.holdCamera = true;
                 else {
                     newState.holdCamera = false;
@@ -45635,10 +45640,8 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                 if (transitionDurations) {
                     newState.transitionDurations = transitionDurations;
                     (0, $92486479f357636c$export$39fa25c8c3576e7a)(this.viewer, transitionDurations);
-                    const { config: config  } = this.viewer.presenter.morphchartsref.core;
                 }
             }
-            this.setState(newState);
         }
         setInsight(historyAction, newState = {}, partialInsight = this.viewer.getInsight(), rebaseFilter, setup) {
             const selectedItemIndex = Object.assign({}, this.state.selectedItemIndex);
@@ -45657,6 +45660,7 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
             }, newState);
             const changeInsight = ()=>{
                 this.getColorContext = null;
+                if (setup) this.setSetup(setup, historicInsight);
                 this.changeInsight(historicInsight, historyAction, state, setup);
             };
             const currentFilter = this.viewer.getInsight().filter;
@@ -45694,21 +45698,18 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                     newState.sideTabId = (0, $a4811b1c86ed19fa$export$f3b7566ffe363e3b).Snapshots;
                     this.scrollSnapshotIntoView(selectedSnapshotIndex);
                 }
-                this.setSetup(snapshot.setup);
                 this.setInsight({
                     label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelHistoryReviveSnapshot
                 }, newState, snapshot.insight, true, snapshot.setup);
             } else {
                 const snapshot1 = snapshotOrIndex;
-                if (snapshot1.insight) {
-                    this.setSetup(snapshot1.setup);
-                    this.setInsight({
-                        label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelHistoryReviveSnapshot
-                    }, {
-                        note: snapshot1.description,
-                        selectedSnapshotIndex: -1
-                    }, snapshot1.insight, true, snapshot1.setup); //don't navigate to sideTab
-                } else this.setState({
+                if (snapshot1.insight) this.setInsight({
+                    label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelHistoryReviveSnapshot
+                }, {
+                    note: snapshot1.description,
+                    selectedSnapshotIndex: -1
+                }, snapshot1.insight, true, snapshot1.setup); //don't navigate to sideTab
+                else this.setState({
                     note: snapshot1.description,
                     selectedSnapshotIndex: -1
                 });
@@ -45766,11 +45767,13 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                     const errors = (0, $a17a024e67e91c9f$export$c2563952d877899)(partialInsight === null || partialInsight === void 0 ? void 0 : partialInsight.chart, partialInsight === null || partialInsight === void 0 ? void 0 : partialInsight.totalStyle, newState.columns, dataContent.columns);
                     newState.errors = errors;
                     newState.transitionColumn = dataContent.columns[0];
+                    const setup = optionsOrPrefs && optionsOrPrefs.setup;
+                    if (setup) this.setSetup(setup, newState);
                     //change insight
                     this.changeInsight(partialInsight, {
                         label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelHistoryInit,
                         insert: true
-                    }, newState);
+                    }, newState, optionsOrPrefs && optionsOrPrefs.setup);
                     //make sure item is active
                     this.activateDataBrowserItem(sideTabId, this.state.dataScopeId);
                     resolve();
@@ -45850,11 +45853,11 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
             });
         }
         //state members which change the insight
-        changeInsight(partialInsight, historyAction, additionalUIState, setup) {
+        changeInsight(partialInsight, historyAction, additionalUIState, historicSetup) {
             if (!partialInsight.signalValues) partialInsight.signalValues = null;
             if (partialInsight.chart === "barchart") partialInsight.chart = "barchartV";
             this.addHistory(Object.assign(Object.assign({}, partialInsight), {
-                setup: setup
+                historicSetup: historicSetup
             }), historyAction, additionalUIState);
         }
         addHistory(historicInsight, historyAction, additionalUIState) {
@@ -45893,18 +45896,16 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
         undo() {
             const historyIndex = this.state.historyIndex - 1;
             if (historyIndex < 0) return;
-            const newState = this.replay(historyIndex);
-            this.rebaseFilter = true;
-            this.setSetup(newState.setup);
-            this.setState(Object.assign(Object.assign({}, newState), {
-                historyIndex: historyIndex
-            }));
+            this.doReplay(historyIndex);
         }
         redo(historyIndex = this.state.historyIndex + 1) {
             if (historyIndex >= this.state.historyItems.length) return;
+            this.doReplay(historyIndex);
+        }
+        doReplay(historyIndex) {
             const newState = this.replay(historyIndex);
             this.rebaseFilter = true;
-            this.setSetup(newState.setup);
+            if (newState.historicSetup) this.setSetup(newState.historicSetup, newState);
             this.setState(Object.assign(Object.assign({}, newState), {
                 historyIndex: historyIndex
             }));
@@ -46652,12 +46653,7 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                 },
                 data: this.state.dataContent.data,
                 insight: insight,
-                setup: {
-                    camera: this.state.holdCamera ? "hold" : this.state.camera,
-                    renderer: this.state.renderer,
-                    transition: (0, $92486479f357636c$export$d5639c01d489b0c)(this.state),
-                    transitionDurations: this.state.transitionDurations
-                },
+                setup: this.getSetup(),
                 onMount: (el)=>this.viewerMounted(el)
             }), this.state.note && (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
                 className: "sanddance-note"

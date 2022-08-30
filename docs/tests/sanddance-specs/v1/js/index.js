@@ -37,7 +37,7 @@ function selected(selectedIndex) {
     fetchInsight(select.options[selectedIndex].value);
 }
 function fetchInsight(specFilename) {
-    fetch("specs/".concat(specFilename))
+    fetch("specs/" + specFilename)
         .then(function (response) { return response.json(); })
         .then(function (insight) { return render(insight); })["catch"](function (error) { return container.innerText = error; });
 }
@@ -57,7 +57,7 @@ function renderVegaSpec(vegaSpec) {
     var runtime = vega.parse(vegaSpec);
     var vegaView = new vega.View(runtime, { container: container });
     vegaView
-        .runAsync()["catch"](function (e) { return container.innerHTML = "error ".concat(e); })
+        .runAsync()["catch"](function (e) { return container.innerHTML = "error " + e; })
         .then(function () {
         var d0 = vegaSpec.data[0];
         delete d0.values;
@@ -69,7 +69,7 @@ function renderVegaSpec(vegaSpec) {
         vegaOutput.value = JSON.stringify(vegaSpec, null, 2);
     });
 }
-container.innerHTML = "loading ".concat(dataUrl, "...");
+container.innerHTML = "loading " + dataUrl + "...";
 vega.loader().load(dataUrl).then(function (tsv_data) {
     data = vega.read(tsv_data, { type: 'tsv', parse: 'auto' });
     columns = SandDanceSpecs.getColumnsFromData(vega.inferTypes, data);
