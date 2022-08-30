@@ -37798,6 +37798,7 @@ function $81745c046077d503$var$_SandDanceReact(_props) {
             });
         }
         view() {
+            var _a, _b, _c;
             const { props: props  } = this;
             let didLayout = false;
             if (props.insight && props.data) {
@@ -37815,7 +37816,7 @@ function $81745c046077d503$var$_SandDanceReact(_props) {
                     if (!(0, $a1d9524814b1e23a$export$e12301e595e16ad8)(this.viewer.getCamera(), camera)) //camera is different
                     this.viewer.setCamera(camera);
                 }
-                if (props.setup.renderer) this.viewer.presenter.morphchartsref.setMorphChartsRendererOptions(props.setup.renderer);
+                if (props.setup.renderer) (_c = (_b = (_a = this.viewer) === null || _a === void 0 ? void 0 : _a.presenter) === null || _b === void 0 ? void 0 : _b.morphchartsref) === null || _c === void 0 || _c.setMorphChartsRendererOptions(props.setup.renderer);
             }
         }
         componentDidMount() {
@@ -40365,13 +40366,15 @@ function $555bb845cf8689db$var$_SnapshotEditor(_props) {
                     disabled: !this.state.image || !this.state.title,
                     key: 0,
                     onClick: (e)=>{
+                        const setup = (0, $3b509b9541e52a8f$exports).VegaMorphCharts.util.clone(explorer.getSetup());
+                        setup.camera = explorer.viewer.getCamera();
                         const snapshot = {
                             title: this.state.title,
                             description: this.state.description,
                             insight: this.state.insight,
                             image: this.state.image,
                             bgColor: this.state.bgColor,
-                            setup: (0, $3b509b9541e52a8f$exports).VegaMorphCharts.util.clone(explorer.getSetup())
+                            setup: setup
                         };
                         this.props.modifySnapShot && this.props.modifySnapShot(snapshot);
                         this.props.onWriteSnapshot(snapshot, this.state.editIndex);
@@ -40866,9 +40869,9 @@ function $92486479f357636c$export$d5639c01d489b0c(state) {
 }
 function $92486479f357636c$export$39fa25c8c3576e7a(viewer, transitionDurations) {
     var _a, _b;
-    const { config: config  } = (_b = (_a = viewer === null || viewer === void 0 ? void 0 : viewer.presenter) === null || _a === void 0 ? void 0 : _a.morphchartsref) === null || _b === void 0 ? void 0 : _b.core;
-    const { position: position , stagger: stagger  } = transitionDurations;
+    const config = (_b = (_a = viewer === null || viewer === void 0 ? void 0 : viewer.presenter) === null || _a === void 0 ? void 0 : _a.morphchartsref) === null || _b === void 0 ? void 0 : _b.core.config;
     if (config) {
+        const { position: position , stagger: stagger  } = transitionDurations;
         config.transitionDuration = position;
         config.transitionStaggering = stagger;
     }
@@ -45619,17 +45622,14 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                 transitionDurations: this.state.transitionDurations
             };
         }
-        setSetup(setup) {
-            let newState;
+        setSetup(setup, newState) {
             if (!setup) newState = {
                 camera: undefined
             };
             else {
                 const { camera: camera , renderer: renderer , transition: transition , transitionDurations: transitionDurations  } = setup;
-                newState = {
-                    renderer: renderer,
-                    transitionType: transition.type
-                };
+                newState.renderer = renderer;
+                newState.transitionType = transition.type;
                 if (camera === "hold") newState.holdCamera = true;
                 else {
                     newState.holdCamera = false;
@@ -45642,7 +45642,6 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                     (0, $92486479f357636c$export$39fa25c8c3576e7a)(this.viewer, transitionDurations);
                 }
             }
-            this.setState(newState);
         }
         setInsight(historyAction, newState = {}, partialInsight = this.viewer.getInsight(), rebaseFilter, setup) {
             const selectedItemIndex = Object.assign({}, this.state.selectedItemIndex);
@@ -45661,6 +45660,7 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
             }, newState);
             const changeInsight = ()=>{
                 this.getColorContext = null;
+                if (setup) this.setSetup(setup, historicInsight);
                 this.changeInsight(historicInsight, historyAction, state, setup);
             };
             const currentFilter = this.viewer.getInsight().filter;
@@ -45698,21 +45698,18 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                     newState.sideTabId = (0, $a4811b1c86ed19fa$export$f3b7566ffe363e3b).Snapshots;
                     this.scrollSnapshotIntoView(selectedSnapshotIndex);
                 }
-                this.setSetup(snapshot.setup);
                 this.setInsight({
                     label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelHistoryReviveSnapshot
                 }, newState, snapshot.insight, true, snapshot.setup);
             } else {
                 const snapshot1 = snapshotOrIndex;
-                if (snapshot1.insight) {
-                    this.setSetup(snapshot1.setup);
-                    this.setInsight({
-                        label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelHistoryReviveSnapshot
-                    }, {
-                        note: snapshot1.description,
-                        selectedSnapshotIndex: -1
-                    }, snapshot1.insight, true, snapshot1.setup); //don't navigate to sideTab
-                } else this.setState({
+                if (snapshot1.insight) this.setInsight({
+                    label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelHistoryReviveSnapshot
+                }, {
+                    note: snapshot1.description,
+                    selectedSnapshotIndex: -1
+                }, snapshot1.insight, true, snapshot1.setup); //don't navigate to sideTab
+                else this.setState({
                     note: snapshot1.description,
                     selectedSnapshotIndex: -1
                 });
@@ -45770,11 +45767,13 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                     const errors = (0, $a17a024e67e91c9f$export$c2563952d877899)(partialInsight === null || partialInsight === void 0 ? void 0 : partialInsight.chart, partialInsight === null || partialInsight === void 0 ? void 0 : partialInsight.totalStyle, newState.columns, dataContent.columns);
                     newState.errors = errors;
                     newState.transitionColumn = dataContent.columns[0];
+                    const setup = optionsOrPrefs && optionsOrPrefs.setup;
+                    if (setup) this.setSetup(setup, newState);
                     //change insight
                     this.changeInsight(partialInsight, {
                         label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelHistoryInit,
                         insert: true
-                    }, newState);
+                    }, newState, optionsOrPrefs && optionsOrPrefs.setup);
                     //make sure item is active
                     this.activateDataBrowserItem(sideTabId, this.state.dataScopeId);
                     resolve();
@@ -45854,11 +45853,11 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
             });
         }
         //state members which change the insight
-        changeInsight(partialInsight, historyAction, additionalUIState, setup) {
+        changeInsight(partialInsight, historyAction, additionalUIState, historicSetup) {
             if (!partialInsight.signalValues) partialInsight.signalValues = null;
             if (partialInsight.chart === "barchart") partialInsight.chart = "barchartV";
             this.addHistory(Object.assign(Object.assign({}, partialInsight), {
-                setup: setup
+                historicSetup: historicSetup
             }), historyAction, additionalUIState);
         }
         addHistory(historicInsight, historyAction, additionalUIState) {
@@ -45897,18 +45896,16 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
         undo() {
             const historyIndex = this.state.historyIndex - 1;
             if (historyIndex < 0) return;
-            const newState = this.replay(historyIndex);
-            this.rebaseFilter = true;
-            this.setSetup(newState.setup);
-            this.setState(Object.assign(Object.assign({}, newState), {
-                historyIndex: historyIndex
-            }));
+            this.doReplay(historyIndex);
         }
         redo(historyIndex = this.state.historyIndex + 1) {
             if (historyIndex >= this.state.historyItems.length) return;
+            this.doReplay(historyIndex);
+        }
+        doReplay(historyIndex) {
             const newState = this.replay(historyIndex);
             this.rebaseFilter = true;
-            this.setSetup(newState.setup);
+            if (newState.historicSetup) this.setSetup(newState.historicSetup, newState);
             this.setState(Object.assign(Object.assign({}, newState), {
                 historyIndex: historyIndex
             }));
