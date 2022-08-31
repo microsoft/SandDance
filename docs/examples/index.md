@@ -23,6 +23,7 @@ title: Examples
 * [qualitative barchart](../tests/v4/umd/qualBarChartTest.html) using UMD/CDN
 * [quantitative barchart](../tests/v4/umd/quanBarChartTest.html) using UMD/CDN
 * [titanic treemap](../tests/v4/umd/treeMapTest.html) using UMD/CDN
+* [react component](../tests/v4/umd/sanddance-react.html) using UMD/CDN
 
 ## <a name="apps"></a>SandDance apps v4 Beta
 * [Web app](../tests/v4/es6/app)
