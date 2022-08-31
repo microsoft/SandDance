@@ -15,10 +15,12 @@
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "docs": "typedoc src/index.ts -out ../../docs/docs/sanddance-react/v4 --theme ../../typedoc/theme --excludePrivate --gitRevision master",
+		"deploy": "node ./scripts/deploy.js",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "build-css": "sass ./src/css/sanddance-react.scss ./dist/css/sanddance-react.css",
-    "build:sanddance-core": "npm run build-typescript && node ../../scripts/version.js && npm run build-css",
+    "bundle": "rollup -c",
+    "build:sanddance-core": "npm run build-typescript && node ../../scripts/version.js && npm run build-css && npm run bundle",
     "watch-css": "sass ./src/css/sanddance-react.scss ./dist/css/sanddance-react.css --watch"
   },
   "keywords": [],
