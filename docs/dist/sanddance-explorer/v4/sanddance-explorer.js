@@ -33929,6 +33929,7 @@ function $41fb9e253980bfb2$export$bd1c7209c525d9d0(ref, prevStage, stage, height
     let bounds;
     if (axesLayer && axesLayer.bounds) bounds = axesLayer.bounds;
     else bounds = contentBounds;
+    ref.setMorphChartsRendererOptions(config.renderer);
     if (preStage) preStage(stage, cubeLayer);
     //add images
     core.renderer.images = [];
@@ -33959,6 +33960,7 @@ function $41fb9e253980bfb2$export$bd1c7209c525d9d0(ref, prevStage, stage, height
     //Now call update on each layout
     $41fb9e253980bfb2$var$layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds, ref.layerStagger);
     ref.lastPresenterConfig = config;
+    ref.lastView = stage.view;
     core.renderer.transitionTime = 0; // Set renderer transition time for this render pass to prevent rendering target buffer for single frame
     (0, $b535d7ad927c78f3$export$419c579437571e95)(ref, colors);
     return {
@@ -34171,6 +34173,7 @@ class $c010ff92a7e33cbd$export$e4008bc37533ca62 extends $c010ff92a7e33cbd$export
 }
 
 
+
 function $7df34aee694c1c2f$export$2cd8252107eb640b(options, mcRendererOptions) {
     const { container: container  } = options;
     const core = new (0, $b0e0bae684e98192$export$4143ab5b91744744)({
@@ -34188,12 +34191,22 @@ function $7df34aee694c1c2f$export$2cd8252107eb640b(options, mcRendererOptions) {
             basic: (0, $eed32355f965d77a$export$12cca049a4826e61)(false)
         },
         reset: ()=>{
+            const { qCameraRotation2d: qCameraRotation2d , qCameraRotation3d: qCameraRotation3d , qModel2d: qModel2d , qModel3d: qModel3d , vPosition: vPosition  } = (0, $3106e5aac5bdcc98$export$504e5adc1166f08a);
+            const { cameraTransitioner: cameraTransitioner , modelTransitioner: modelTransitioner  } = ref;
             core.reset(true);
-            const { cameraTransitioner: cameraState , modelTransitioner: modelState  } = ref;
-            (0, $a75e1c0eea6f029a$exports).slerp(modelState.qModelCurrent, modelState.qModelTo, modelState.qModelTo, 0);
-            core.setModelRotation(modelState.qModelCurrent, true);
-            core.camera.setOrbit(cameraState.qCameraRotationTo, false);
-        //core.camera.setPosition(cameraState.vCameraPositionTo, false);
+            if (ref.lastView === "3d") {
+                modelTransitioner.qModelTo = qModel3d;
+                cameraTransitioner.qCameraRotationTo = qCameraRotation3d;
+                cameraTransitioner.vCameraPositionTo = vPosition;
+            } else {
+                modelTransitioner.qModelTo = qModel2d;
+                cameraTransitioner.qCameraRotationTo = qCameraRotation2d;
+                cameraTransitioner.vCameraPositionTo = vPosition;
+            }
+            (0, $a75e1c0eea6f029a$exports).slerp(modelTransitioner.qModelCurrent, modelTransitioner.qModelTo, modelTransitioner.qModelTo, 0);
+            core.setModelRotation(modelTransitioner.qModelCurrent, true);
+            core.camera.setOrbit(cameraTransitioner.qCameraRotationTo, true);
+            core.camera.setPosition(cameraTransitioner.vCameraPositionTo, true);
         },
         cameraTransitioner: cameraTransitioner,
         modelTransitioner: modelTransitioner,
@@ -34209,6 +34222,7 @@ function $7df34aee694c1c2f$export$2cd8252107eb640b(options, mcRendererOptions) {
         },
         lastMorphChartsRendererOptions: mcRendererOptions,
         lastPresenterConfig: null,
+        lastView: null,
         layerStagger: {}
     };
     const cam = (t)=>{
@@ -36933,7 +36947,6 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
                 const oldColorContext = this.colorContexts[this.currentColorContext];
                 innerPromise = new Promise((innerResolve)=>{
                     this.renderNewLayout({}, Object.assign(Object.assign({}, this.setup || {}), {
-                        onPresent: ()=>this.options.onPresent(),
                         preStage: (stage, cubeLayer)=>{
                             (0, $d50aa7ce26a6d6ed$export$71ab65a966760ac3)(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                             this.overrideAxisLabels(stage);
@@ -36947,7 +36960,6 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
                     });
                 });
             } else innerPromise = this.renderNewLayout({}, Object.assign(Object.assign({}, this.setup || {}), {
-                onPresent: ()=>this.options.onPresent(),
                 preStage: (stage, colorMapper)=>{
                     (0, $d50aa7ce26a6d6ed$export$71ab65a966760ac3)(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                     this.overrideAxisLabels(stage);
@@ -37006,7 +37018,7 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
                                     oldColorContext,
                                     newColorContext
                                 ]);
-                                this.options.onPresent && this.options.onPresent();
+                                this.onPresent();
                             }
                         }));
                         //narrow the filter only if it is different
@@ -37031,7 +37043,7 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
                             onPresent: ()=>{
                                 //color needs to change instantly
                                 (0, $0fd54a544f9d2363$export$44addeff9a96c1e7)(colorContext, this.presenter);
-                                this.options.onPresent && this.options.onPresent();
+                                this.onPresent();
                             }
                         }));
                         delete this.insight.filter;
@@ -37260,8 +37272,13 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
                 ]);
                 this._dataScope.deselect();
             }
-            this.options.onPresent && this.options.onPresent();
+            this.onPresent();
         };
+    }
+    onPresent() {
+        var _a;
+        if ((_a = this.setup) === null || _a === void 0 ? void 0 : _a.transition) (0, $09e8510904f131d2$export$2be97f482a239d30)(this.setup.transition, this._dataScope.currentData(), this.convertSearchToSet(), this.presenter);
+        this.options.onPresent && this.options.onPresent();
     }
     _render(insightSetup, data, renderOptions, forceNewCharacterSet) {
         return $0000a41cc7b5918f$var$__awaiter(this, void 0, void 0, function*() {
@@ -37302,7 +37319,7 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
                         ]);
                     } else //apply passed colorContext
                     this.applyLegendColorContext(colorContext);
-                    this.options.onPresent && this.options.onPresent();
+                    this.onPresent();
                 },
                 shouldViewstateTransition: ()=>this.shouldViewstateTransition(insight, this.insight)
             }), this.getView(insight.view));
@@ -37437,7 +37454,7 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
             onTextHover: this.onTextHover.bind(this),
             preLayer: this.preLayer.bind(this),
             preStage: this.preStage.bind(this),
-            onPresent: this.options.onPresent,
+            onPresent: this.onPresent.bind(this),
             onAxisConfig: (cartesian, dim3d, axis)=>{
                 if (!axis) return;
                 const role = this.specCapabilities.roles.filter((r)=>r.role === axis.axisRole)[0];
@@ -37640,9 +37657,6 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
      */ getSignalValues() {
         return (0, $7f509bc53ab5b2b2$export$764590c093441ac7)(this.vegaViewGl, this.vegaSpec);
     }
-    assignTransitionStagger(transition) {
-        (0, $09e8510904f131d2$export$2be97f482a239d30)(transition, this._dataScope.currentData(), this.convertSearchToSet(), this.presenter);
-    }
     finalize() {
         if (this._dataScope) this._dataScope.finalize();
         if (this._details) this._details.finalize();
@@ -37774,14 +37788,14 @@ function $de8134d48126c751$export$1f96ae73734a86cc(react, reactDOM, vega) {
     $de8134d48126c751$export$e2253033e6e1df16.react = react;
     $de8134d48126c751$export$e2253033e6e1df16.reactDOM = reactDOM;
     //inform React that we are using a dynamic base class
-    (0, $81745c046077d503$export$441ac54c4cda559d).prototype = react.Component.prototype;
+    (0, $81745c046077d503$export$2ec4afd9b3c16a85).prototype = react.Component.prototype;
 }
 
 
 
 
-function $81745c046077d503$var$_SandDanceReact(_props) {
-    class __SandDanceReact extends (0, $de8134d48126c751$export$e2253033e6e1df16).react.Component {
+function $81745c046077d503$var$_Viewer(_props) {
+    class __Viewer extends (0, $de8134d48126c751$export$e2253033e6e1df16).react.Component {
         layout() {
             const { props: props  } = this;
             this.lastData = props.data;
@@ -37798,7 +37812,7 @@ function $81745c046077d503$var$_SandDanceReact(_props) {
             });
         }
         view() {
-            var _a, _b, _c;
+            var _a, _b, _c, _d, _e;
             const { props: props  } = this;
             let didLayout = false;
             if (props.insight && props.data) {
@@ -37815,8 +37829,8 @@ function $81745c046077d503$var$_SandDanceReact(_props) {
                 if (camera && camera !== "hold") {
                     if (!(0, $a1d9524814b1e23a$export$e12301e595e16ad8)(this.viewer.getCamera(), camera)) //camera is different
                     this.viewer.setCamera(camera);
-                }
-                if (props.setup.renderer) (_c = (_b = (_a = this.viewer) === null || _a === void 0 ? void 0 : _a.presenter) === null || _b === void 0 ? void 0 : _b.morphchartsref) === null || _c === void 0 || _c.setMorphChartsRendererOptions(props.setup.renderer);
+                } else if (!camera && this.viewer.setup.camera) (_b = (_a = this.viewer) === null || _a === void 0 ? void 0 : _a.presenter) === null || _b === void 0 || _b.homeCamera();
+                if (props.setup.renderer) (_e = (_d = (_c = this.viewer) === null || _c === void 0 ? void 0 : _c.presenter) === null || _d === void 0 ? void 0 : _d.morphchartsref) === null || _e === void 0 || _e.setMorphChartsRendererOptions(props.setup.renderer);
             }
         }
         componentDidMount() {
@@ -37842,9 +37856,9 @@ function $81745c046077d503$var$_SandDanceReact(_props) {
             });
         }
     }
-    return new __SandDanceReact(_props);
+    return new __Viewer(_props);
 }
-const $81745c046077d503$export$441ac54c4cda559d = $81745c046077d503$var$_SandDanceReact;
+const $81745c046077d503$export$2ec4afd9b3c16a85 = $81745c046077d503$var$_Viewer;
 
 
 
@@ -40719,8 +40733,7 @@ function $92486479f357636c$var$_TransitionEditor(_props) {
                 onChange: (e, o)=>{
                     const transitionType = o.key;
                     explorer.setState({
-                        transitionType: transitionType,
-                        calculating: ()=>explorer.setStagger()
+                        transitionType: transitionType
                     });
                 }
             })), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8d43140d74b3b13d$export$eb2fcfdbd7ba97d4), {
@@ -40734,8 +40747,7 @@ function $92486479f357636c$var$_TransitionEditor(_props) {
                             options: $92486479f357636c$var$getColumnOptions(props, props.transitionColumn.name),
                             onChange: (e, o)=>{
                                 explorer.setState({
-                                    transitionColumn: o.data,
-                                    calculating: ()=>explorer.setStagger()
+                                    transitionColumn: o.data
                                 });
                             }
                         });
@@ -40752,8 +40764,7 @@ function $92486479f357636c$var$_TransitionEditor(_props) {
                             }),
                             onChange: (e, o)=>{
                                 explorer.setState({
-                                    transitionDimension: o.key,
-                                    calculating: ()=>explorer.setStagger()
+                                    transitionDimension: o.key
                                 });
                             }
                         });
@@ -40762,8 +40773,7 @@ function $92486479f357636c$var$_TransitionEditor(_props) {
                 label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionStaggerReverse,
                 checked: props.transitionReverse,
                 onChange: (e, transitionReverse)=>explorer.setState({
-                        transitionReverse: transitionReverse,
-                        calculating: ()=>explorer.setStagger()
+                        transitionReverse: transitionReverse
                     })
             })), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8d43140d74b3b13d$export$eb2fcfdbd7ba97d4), {
                 label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionDurations
@@ -45521,9 +45531,6 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                 onBeforeCreateLayers: (stage, specCapabilities)=>{
                     (0, $1f0c6e0f0abb4f2d$export$48e4a8ab7f4530ac)(stage, specCapabilities);
                 },
-                onPresent: ()=>{
-                    this.setStagger();
-                },
                 getTextColor: (o)=>{
                     if (o.specRole) return (0, $3b509b9541e52a8f$exports).VegaMorphCharts.util.colorFromString(this.viewerOptions.colors.clickableText);
                     else if (o.metaData && o.metaData.search) return (0, $3b509b9541e52a8f$exports).VegaMorphCharts.util.colorFromString(this.viewerOptions.colors.searchText);
@@ -45576,9 +45583,6 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                 this.viewer.presenter.style = mergePrenterStyle;
                 this.viewer.options = (0, $3b509b9541e52a8f$exports).VegaMorphCharts.util.deepMerge(this.viewer.options, this.props.viewerOptions, this.viewerOptions);
             }
-        }
-        setStagger() {
-            this.viewer.assignTransitionStagger((0, $92486479f357636c$export$d5639c01d489b0c)(this.state));
         }
         signal(signalName, signalValue, newViewStateTarget) {
             switch(signalName){
@@ -46624,7 +46628,7 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                 }
             })()), loaded && (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
                 className: "sanddance-view"
-            }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $81745c046077d503$export$441ac54c4cda559d), {
+            }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $81745c046077d503$export$2ec4afd9b3c16a85), {
                 renderOptions: renderOptions,
                 viewerOptions: this.viewerOptions,
                 ref: (reactViewer)=>{

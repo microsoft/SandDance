@@ -24106,6 +24106,7 @@ f 5/6/6 1/12/6 8/11/6`;
         else {
             bounds = contentBounds;
         }
+        ref.setMorphChartsRendererOptions(config.renderer);
         if (preStage) {
             preStage(stage, cubeLayer);
         }
@@ -24138,6 +24139,7 @@ f 5/6/6 1/12/6 8/11/6`;
         //Now call update on each layout
         layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds, ref.layerStagger);
         ref.lastPresenterConfig = config;
+        ref.lastView = stage.view;
         core.renderer.transitionTime = 0; // Set renderer transition time for this render pass to prevent rendering target buffer for single frame
         colorConfig(ref, colors);
         return {
@@ -24381,12 +24383,23 @@ f 5/6/6 1/12/6 8/11/6`;
                 basic: rendererEnabled(false),
             },
             reset: () => {
+                const { qCameraRotation2d, qCameraRotation3d, qModel2d, qModel3d, vPosition } = cameraDefaults;
+                const { cameraTransitioner, modelTransitioner } = ref;
                 core.reset(true);
-                const { cameraTransitioner: cameraState, modelTransitioner: modelState } = ref;
-                slerp(modelState.qModelCurrent, modelState.qModelTo, modelState.qModelTo, 0);
-                core.setModelRotation(modelState.qModelCurrent, true);
-                core.camera.setOrbit(cameraState.qCameraRotationTo, false);
-                //core.camera.setPosition(cameraState.vCameraPositionTo, false);
+                if (ref.lastView === '3d') {
+                    modelTransitioner.qModelTo = qModel3d;
+                    cameraTransitioner.qCameraRotationTo = qCameraRotation3d;
+                    cameraTransitioner.vCameraPositionTo = vPosition;
+                }
+                else {
+                    modelTransitioner.qModelTo = qModel2d;
+                    cameraTransitioner.qCameraRotationTo = qCameraRotation2d;
+                    cameraTransitioner.vCameraPositionTo = vPosition;
+                }
+                slerp(modelTransitioner.qModelCurrent, modelTransitioner.qModelTo, modelTransitioner.qModelTo, 0);
+                core.setModelRotation(modelTransitioner.qModelCurrent, true);
+                core.camera.setOrbit(cameraTransitioner.qCameraRotationTo, true);
+                core.camera.setPosition(cameraTransitioner.vCameraPositionTo, true);
             },
             cameraTransitioner,
             modelTransitioner,
@@ -24407,6 +24420,7 @@ f 5/6/6 1/12/6 8/11/6`;
             },
             lastMorphChartsRendererOptions: mcRendererOptions,
             lastPresenterConfig: null,
+            lastView: null,
             layerStagger: {},
         };
         const cam = (t) => {
@@ -27351,7 +27365,7 @@ f 5/6/6 1/12/6 8/11/6`;
                 if (dataChange === DataLayoutChange.refine) {
                     const oldColorContext = this.colorContexts[this.currentColorContext];
                     innerPromise = new Promise(innerResolve => {
-                        this.renderNewLayout({}, Object.assign(Object.assign({}, (this.setup || {})), { onPresent: () => this.options.onPresent(), preStage: (stage, cubeLayer) => {
+                        this.renderNewLayout({}, Object.assign(Object.assign({}, (this.setup || {})), { preStage: (stage, cubeLayer) => {
                                 finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                                 this.overrideAxisLabels(stage);
                                 cubeLayer.unitColorMap = oldColorContext.colorMap;
@@ -27366,7 +27380,7 @@ f 5/6/6 1/12/6 8/11/6`;
                     });
                 }
                 else {
-                    innerPromise = this.renderNewLayout({}, Object.assign(Object.assign({}, (this.setup || {})), { onPresent: () => this.options.onPresent(), preStage: (stage, colorMapper) => {
+                    innerPromise = this.renderNewLayout({}, Object.assign(Object.assign({}, (this.setup || {})), { preStage: (stage, colorMapper) => {
                             finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                             this.overrideAxisLabels(stage);
                             if (this.options.onStage) {
@@ -27413,7 +27427,7 @@ f 5/6/6 1/12/6 8/11/6`;
                                 //apply old legend
                                 this.applyLegendColorContext(oldColorContext);
                                 this.changeColorContexts([oldColorContext, newColorContext]);
-                                this.options.onPresent && this.options.onPresent();
+                                this.onPresent();
                             } }));
                         //narrow the filter only if it is different
                         if (!compare(this.insight.filter, filter)) {
@@ -27435,7 +27449,7 @@ f 5/6/6 1/12/6 8/11/6`;
                         yield this.renderNewLayout({}, Object.assign(Object.assign({}, (this.setup || {})), { onPresent: () => {
                                 //color needs to change instantly
                                 populateColorContext(colorContext, this.presenter);
-                                this.options.onPresent && this.options.onPresent();
+                                this.onPresent();
                             } }));
                         delete this.insight.filter;
                         if (this.options.onDataFilter) {
@@ -27676,8 +27690,15 @@ f 5/6/6 1/12/6 8/11/6`;
                     this.changeColorContexts([colorContext]);
                     this._dataScope.deselect();
                 }
-                this.options.onPresent && this.options.onPresent();
+                this.onPresent();
             };
+        }
+        onPresent() {
+            var _a;
+            if ((_a = this.setup) === null || _a === void 0 ? void 0 : _a.transition) {
+                assignTransitionStagger(this.setup.transition, this._dataScope.currentData(), this.convertSearchToSet(), this.presenter);
+            }
+            this.options.onPresent && this.options.onPresent();
         }
         _render(insightSetup, data, renderOptions, forceNewCharacterSet) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -27724,7 +27745,7 @@ f 5/6/6 1/12/6 8/11/6`;
                             //apply passed colorContext
                             this.applyLegendColorContext(colorContext);
                         }
-                        this.options.onPresent && this.options.onPresent();
+                        this.onPresent();
                     }, shouldViewstateTransition: () => this.shouldViewstateTransition(insight, this.insight) }), this.getView(insight.view));
                 //future signal changes should save the color context
                 this._shouldSaveColorContext = () => !renderOptions.discardColorContextUpdates || !renderOptions.discardColorContextUpdates();
@@ -27869,7 +27890,7 @@ f 5/6/6 1/12/6 8/11/6`;
                 onTextHover: this.onTextHover.bind(this),
                 preLayer: this.preLayer.bind(this),
                 preStage: this.preStage.bind(this),
-                onPresent: this.options.onPresent,
+                onPresent: this.onPresent.bind(this),
                 onAxisConfig: (cartesian, dim3d, axis) => {
                     if (!axis)
                         return;
@@ -28093,9 +28114,6 @@ f 5/6/6 1/12/6 8/11/6`;
          */
         getSignalValues() {
             return extractSignalValuesFromView(this.vegaViewGl, this.vegaSpec);
-        }
-        assignTransitionStagger(transition) {
-            assignTransitionStagger(transition, this._dataScope.currentData(), this.convertSearchToSet(), this.presenter);
         }
         finalize() {
             if (this._dataScope)

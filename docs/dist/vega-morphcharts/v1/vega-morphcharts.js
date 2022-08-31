@@ -18593,6 +18593,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    else {
 	        bounds = contentBounds;
 	    }
+	    ref.setMorphChartsRendererOptions(config.renderer);
 	    if (preStage) {
 	        preStage(stage, cubeLayer);
 	    }
@@ -18625,6 +18626,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    //Now call update on each layout
 	    layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds, ref.layerStagger);
 	    ref.lastPresenterConfig = config;
+	    ref.lastView = stage.view;
 	    core.renderer.transitionTime = 0; // Set renderer transition time for this render pass to prevent rendering target buffer for single frame
 	    colorConfig(ref, colors);
 	    return {
@@ -18868,12 +18870,23 @@ f 5/6/6 1/12/6 8/11/6`;
 	            basic: rendererEnabled(false),
 	        },
 	        reset: () => {
+	            const { qCameraRotation2d, qCameraRotation3d, qModel2d, qModel3d, vPosition } = cameraDefaults;
+	            const { cameraTransitioner, modelTransitioner } = ref;
 	            core.reset(true);
-	            const { cameraTransitioner: cameraState, modelTransitioner: modelState } = ref;
-	            slerp(modelState.qModelCurrent, modelState.qModelTo, modelState.qModelTo, 0);
-	            core.setModelRotation(modelState.qModelCurrent, true);
-	            core.camera.setOrbit(cameraState.qCameraRotationTo, false);
-	            //core.camera.setPosition(cameraState.vCameraPositionTo, false);
+	            if (ref.lastView === '3d') {
+	                modelTransitioner.qModelTo = qModel3d;
+	                cameraTransitioner.qCameraRotationTo = qCameraRotation3d;
+	                cameraTransitioner.vCameraPositionTo = vPosition;
+	            }
+	            else {
+	                modelTransitioner.qModelTo = qModel2d;
+	                cameraTransitioner.qCameraRotationTo = qCameraRotation2d;
+	                cameraTransitioner.vCameraPositionTo = vPosition;
+	            }
+	            slerp(modelTransitioner.qModelCurrent, modelTransitioner.qModelTo, modelTransitioner.qModelTo, 0);
+	            core.setModelRotation(modelTransitioner.qModelCurrent, true);
+	            core.camera.setOrbit(cameraTransitioner.qCameraRotationTo, true);
+	            core.camera.setPosition(cameraTransitioner.vCameraPositionTo, true);
 	        },
 	        cameraTransitioner,
 	        modelTransitioner,
@@ -18894,6 +18907,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        },
 	        lastMorphChartsRendererOptions: mcRendererOptions,
 	        lastPresenterConfig: null,
+	        lastView: null,
 	        layerStagger: {},
 	    };
 	    const cam = (t) => {

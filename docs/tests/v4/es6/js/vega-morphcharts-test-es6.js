@@ -77244,6 +77244,7 @@ function morphChartsRender(ref, prevStage, stage, height, width, preStage, color
     let bounds;
     if (axesLayer && axesLayer.bounds) bounds = axesLayer.bounds;
     else bounds = contentBounds;
+    ref.setMorphChartsRendererOptions(config.renderer);
     if (preStage) preStage(stage, cubeLayer);
     //add images
     core.renderer.images = [];
@@ -77274,6 +77275,7 @@ function morphChartsRender(ref, prevStage, stage, height, width, preStage, color
     //Now call update on each layout
     layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds, ref.layerStagger);
     ref.lastPresenterConfig = config;
+    ref.lastView = stage.view;
     core.renderer.transitionTime = 0; // Set renderer transition time for this render pass to prevent rendering target buffer for single frame
     (0, _color.colorConfig)(ref, colors);
     return {
@@ -78160,6 +78162,7 @@ var _renderer = require("./renderer");
 var _glMatrix = require("gl-matrix");
 var _canvas = require("./canvas");
 var _transition = require("../transition");
+var _defaults = require("./defaults");
 function init(options, mcRendererOptions) {
     const { container  } = options;
     const core = new (0, _morphcharts.Core)({
@@ -78177,12 +78180,22 @@ function init(options, mcRendererOptions) {
             basic: (0, _renderer.rendererEnabled)(false)
         },
         reset: ()=>{
+            const { qCameraRotation2d , qCameraRotation3d , qModel2d , qModel3d , vPosition  } = (0, _defaults.cameraDefaults);
+            const { cameraTransitioner , modelTransitioner  } = ref;
             core.reset(true);
-            const { cameraTransitioner: cameraState , modelTransitioner: modelState  } = ref;
-            (0, _glMatrix.quat).slerp(modelState.qModelCurrent, modelState.qModelTo, modelState.qModelTo, 0);
-            core.setModelRotation(modelState.qModelCurrent, true);
-            core.camera.setOrbit(cameraState.qCameraRotationTo, false);
-        //core.camera.setPosition(cameraState.vCameraPositionTo, false);
+            if (ref.lastView === "3d") {
+                modelTransitioner.qModelTo = qModel3d;
+                cameraTransitioner.qCameraRotationTo = qCameraRotation3d;
+                cameraTransitioner.vCameraPositionTo = vPosition;
+            } else {
+                modelTransitioner.qModelTo = qModel2d;
+                cameraTransitioner.qCameraRotationTo = qCameraRotation2d;
+                cameraTransitioner.vCameraPositionTo = vPosition;
+            }
+            (0, _glMatrix.quat).slerp(modelTransitioner.qModelCurrent, modelTransitioner.qModelTo, modelTransitioner.qModelTo, 0);
+            core.setModelRotation(modelTransitioner.qModelCurrent, true);
+            core.camera.setOrbit(cameraTransitioner.qCameraRotationTo, true);
+            core.camera.setPosition(cameraTransitioner.vCameraPositionTo, true);
         },
         cameraTransitioner,
         modelTransitioner,
@@ -78198,6 +78211,7 @@ function init(options, mcRendererOptions) {
         },
         lastMorphChartsRendererOptions: mcRendererOptions,
         lastPresenterConfig: null,
+        lastView: null,
         layerStagger: {}
     };
     const cam = (t)=>{
@@ -78227,7 +78241,7 @@ function init(options, mcRendererOptions) {
     return ref;
 }
 
-},{"morphcharts":"dzm75","./renderer":"aQlAd","gl-matrix":"3mrln","./canvas":"keiIA","../transition":"eZK1M","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"aQlAd":[function(require,module,exports) {
+},{"morphcharts":"dzm75","./renderer":"aQlAd","gl-matrix":"3mrln","./canvas":"keiIA","../transition":"eZK1M","./defaults":"lUHd0","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"aQlAd":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "shouldChangeRenderer", ()=>shouldChangeRenderer);
