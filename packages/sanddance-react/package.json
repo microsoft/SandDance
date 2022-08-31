@@ -13,6 +13,7 @@
     "dist"
   ],
   "scripts": {
+		"uitest": "parcel serve ./test/index.html --open --no-autoinstall --no-cache",
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "docs": "typedoc src/index.ts -out ../../docs/docs/sanddance-react/v4 --theme ../../typedoc/theme --excludePrivate --gitRevision master",
 		"deploy": "node ./scripts/deploy.js",
@@ -35,5 +36,8 @@
     "@types/react-dom": ">=16.8.0 <18.0.0",
     "react": ">=16.8.0 <18.0.0",
     "react-dom": ">=16.8.0 <18.0.0"
-  }
+  },
+	"devDependencies": {
+		"vega": "5.20.2"
+	}
 }
