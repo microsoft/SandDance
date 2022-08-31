@@ -10,7 +10,7 @@ import { specs, types, VegaMorphCharts, Viewer as SandDanceViewer } from '@msrvi
 export interface Props {
     viewerOptions?: Partial<types.ViewerOptions>;
     insight: specs.Insight;
-    setup: types.Setup;
+    setup?: types.Setup;
     data: object[];
     renderOptions?: types.RenderOptions;
     onView?: (renderResult: types.RenderResult) => void;
