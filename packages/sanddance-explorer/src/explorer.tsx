@@ -56,7 +56,7 @@ import { themePalettes } from './themes';
 import { compareGroups, createInputSearch } from './searchGroups';
 import { RecommenderSummary } from '@msrvida/chart-recommender';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
-import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
+import { SandDance, Viewer, util } from '@msrvida/sanddance-react';
 import { Renderer } from './controls/renderer';
 
 import Snapshot = SandDance.types.Snapshot;
@@ -240,9 +240,6 @@ function _Explorer(_props: Props) {
                 onBeforeCreateLayers: (stage, specCapabilities) => {
                     attachSpecRoleToAxisTitle(stage, specCapabilities);
                 },
-                onPresent: () => {
-                    this.setStagger();
-                },
                 getTextColor: o => {
                     if ((o as TextWithSpecRole).specRole) {
                         return SandDance.VegaMorphCharts.util.colorFromString((this.viewerOptions.colors as ColorSettings).clickableText);
@@ -293,10 +290,6 @@ function _Explorer(_props: Props) {
                 this.viewer.presenter.style = mergePrenterStyle;
                 this.viewer.options = SandDance.VegaMorphCharts.util.deepMerge(this.viewer.options, this.props.viewerOptions, this.viewerOptions) as SandDance.types.ViewerOptions;
             }
-        }
-
-        public setStagger() {
-            this.viewer.assignTransitionStagger(getTransition(this.state));
         }
 
         public signal(signalName: string, signalValue: any, newViewStateTarget?: boolean) {
@@ -1407,7 +1400,7 @@ function _Explorer(_props: Props) {
                         </Sidebar>
                         {loaded && (
                             <div className="sanddance-view">
-                                <SandDanceReact
+                                <Viewer
                                     renderOptions={renderOptions}
                                     viewerOptions={this.viewerOptions}
                                     ref={reactViewer => {
@@ -1553,7 +1546,6 @@ export declare class Explorer_Class extends base.react.Component<Props, State> {
     constructor(props: Props);
     finalize(): void;
     updateViewerOptions(viewerOptions: Partial<SandDance.types.ViewerOptions>): void;
-    setStagger(): void;
     signal(signalName: string, signalValue: any, newViewStateTarget?: boolean): void;
     //private manageColorToolbar(): void;
     getInsight(): SandDance.specs.Insight;

@@ -5,7 +5,7 @@
 
 import { base } from './base';
 import { compareInsight, deepCompare } from './util';
-import { specs, types, VegaMorphCharts, Viewer } from '@msrvida/sanddance';
+import { specs, types, VegaMorphCharts, Viewer as SandDanceViewer } from '@msrvida/sanddance';
 
 export interface Props {
     viewerOptions?: Partial<types.ViewerOptions>;
@@ -21,10 +21,10 @@ export interface Props {
 export interface State {
 }
 
-function _SandDanceReact(_props: Props) {
+function _Viewer(_props: Props) {
 
-    class __SandDanceReact extends base.react.Component<Props, State> {
-        public viewer: Viewer;
+    class __Viewer extends base.react.Component<Props, State> {
+        public viewer: SandDanceViewer;
         private viewerDiv: React.ReactInstance;
         private lastData: object[];
 
@@ -67,6 +67,8 @@ function _SandDanceReact(_props: Props) {
                         //camera is different
                         this.viewer.setCamera(camera);
                     }
+                } else if (!camera && this.viewer.setup.camera) {
+                    this.viewer?.presenter?.homeCamera();
                 }
                 if (props.setup.renderer) {
                     this.viewer?.presenter?.morphchartsref?.setMorphChartsRendererOptions(props.setup.renderer);
@@ -77,7 +79,7 @@ function _SandDanceReact(_props: Props) {
         componentDidMount() {
             const { props } = this;
             const element = base.reactDOM.findDOMNode(this.viewerDiv) as HTMLElement;
-            this.viewer = new Viewer(element, props.viewerOptions);
+            this.viewer = new SandDanceViewer(element, props.viewerOptions);
             if (props.onMount) {
                 if (props.onMount(this.viewer.presenter.getElement(VegaMorphCharts.PresenterElement.gl))) {
                     this.view();
@@ -104,11 +106,11 @@ function _SandDanceReact(_props: Props) {
         }
     }
 
-    return new __SandDanceReact(_props);
+    return new __Viewer(_props);
 }
 
-export const SandDanceReact: typeof SandDanceReact_Class = _SandDanceReact as any;
+export const Viewer: typeof Viewer_Class = _Viewer as any;
 
-export declare class SandDanceReact_Class extends base.react.Component<Props, State> {
-    public viewer: Viewer;
+export declare class Viewer_Class extends base.react.Component<Props, State> {
+    public viewer: SandDanceViewer;
 }
