@@ -9,6 +9,7 @@ import { getRenderer, rendererEnabled, setRendererOptions, shouldChangeRenderer 
 import { quat, vec3 } from 'gl-matrix';
 import { listenCanvasEvents } from './canvas';
 import { CameraTransitioner, ModelTransitioner, Transitioner } from '../transition';
+import { cameraDefaults } from './defaults';
 
 export function init(options: MorphChartsOptions, mcRendererOptions: MorphChartsRendererOptions) {
     const { container } = options;
@@ -29,12 +30,25 @@ export function init(options: MorphChartsOptions, mcRendererOptions: MorphCharts
             basic: rendererEnabled(false),
         },
         reset: () => {
+            const { qCameraRotation2d, qCameraRotation3d, qModel2d, qModel3d, vPosition } = cameraDefaults;
+            const { cameraTransitioner, modelTransitioner } = ref;
+
             core.reset(true);
-            const { cameraTransitioner: cameraState, modelTransitioner: modelState } = ref;
-            quat.slerp(modelState.qModelCurrent, modelState.qModelTo, modelState.qModelTo, 0);
-            core.setModelRotation(modelState.qModelCurrent, true);
-            core.camera.setOrbit(cameraState.qCameraRotationTo, false);
-            //core.camera.setPosition(cameraState.vCameraPositionTo, false);
+
+            if (ref.lastView === '3d') {
+                modelTransitioner.qModelTo = qModel3d;
+                cameraTransitioner.qCameraRotationTo = qCameraRotation3d;
+                cameraTransitioner.vCameraPositionTo = vPosition;
+            } else {
+                modelTransitioner.qModelTo = qModel2d;
+                cameraTransitioner.qCameraRotationTo =  qCameraRotation2d;
+                cameraTransitioner.vCameraPositionTo =  vPosition;
+            }
+
+            quat.slerp(modelTransitioner.qModelCurrent, modelTransitioner.qModelTo, modelTransitioner.qModelTo, 0);
+            core.setModelRotation(modelTransitioner.qModelCurrent, true);
+            core.camera.setOrbit(cameraTransitioner.qCameraRotationTo, true);
+            core.camera.setPosition(cameraTransitioner.vCameraPositionTo, true);
         },
         cameraTransitioner,
         modelTransitioner,
@@ -54,6 +68,7 @@ export function init(options: MorphChartsOptions, mcRendererOptions: MorphCharts
         },
         lastMorphChartsRendererOptions: mcRendererOptions,
         lastPresenterConfig: null,
+        lastView: null,
         layerStagger: {},
     };
     const cam = (t: number) => {

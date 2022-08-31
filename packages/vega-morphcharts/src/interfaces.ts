@@ -270,6 +270,7 @@ export interface MorphChartsRef {
     setMorphChartsRendererOptions: (value: MorphChartsRendererOptions) => void;
     lastMorphChartsRendererOptions: MorphChartsRendererOptions;
     lastPresenterConfig: PresenterConfig;
+    lastView: View;
     supportedRenders: {
         advanced: boolean;
         basic: boolean;

@@ -94,6 +94,8 @@ export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: 
         bounds = contentBounds;
     }
 
+    ref.setMorphChartsRendererOptions(config.renderer);
+
     if (preStage) {
         preStage(stage, <ICubeLayer>cubeLayer);
     }
@@ -128,6 +130,7 @@ export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: 
     layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds, ref.layerStagger);
 
     ref.lastPresenterConfig = config;
+    ref.lastView = stage.view;
     core.renderer.transitionTime = 0; // Set renderer transition time for this render pass to prevent rendering target buffer for single frame
 
     colorConfig(ref, colors);
