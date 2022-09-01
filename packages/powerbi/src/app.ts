@@ -170,6 +170,8 @@ export class App extends React.Component<Props, State> {
             if (compare) {
                 //unstable camera has stabilized
                 this.setState({ unsavedCamera: currCamera });
+                this.props.onCameraSave(currCamera);
+                this.setState({ unsavedCamera: null });
                 stable = true;
             }
         }
