@@ -16,6 +16,7 @@ import {
     MorphChartsRenderResult,
     MorphChartsColors,
     MorphChartsOptions,
+    MorphChartsRef,
 } from './interfaces';
 import { LegendView } from './legend';
 import { MarkStagerOptions } from './marks/interfaces';
@@ -24,7 +25,7 @@ import { patchCubeArray } from './patchedCubeArray';
 import { sceneToStage } from './stagers';
 import { View } from '@msrvida/chart-types';
 import { getActiveElementInfo, mount, setActiveElement } from 'tsx-create-element';
-import { colorConfig, init, morphChartsRender, MorphChartsRef } from './morphcharts';
+import { colorConfig, init, morphChartsRender } from './morphcharts';
 
 interface IBounds {
     view: View;
@@ -180,7 +181,7 @@ export class Presenter {
                 onCanvasClick: config?.onLayerClick,
                 onLasso: config?.onLasso,
             };
-            this.morphchartsref = init(this._morphChartsOptions, c.initialMorphChartsRendererOptions || defaultPresenterConfig.initialMorphChartsRendererOptions);
+            this.morphchartsref = init(this._morphChartsOptions, c.renderer || defaultPresenterConfig.renderer);
         }
         let cubeCount = Math.max(this._last.cubeCount, stage.cubeData.length);
         if (options.maxOrdinal) {

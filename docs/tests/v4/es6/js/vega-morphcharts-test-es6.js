@@ -75965,34 +75965,7 @@ var _defineJsDefault = parcelHelpers.interopDefault(_defineJs);
 function Color() {}
 var darker = 0.7;
 var brighter = 1 / darker;
-var reI = "\\s*([+-]?\\d+)\\s*", reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*", reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*", reHex = /^#([0-9a-f]{3,8})$/, reRgbInteger = new RegExp("^rgb\\(" + [
-    reI,
-    reI,
-    reI
-] + "\\)$"), reRgbPercent = new RegExp("^rgb\\(" + [
-    reP,
-    reP,
-    reP
-] + "\\)$"), reRgbaInteger = new RegExp("^rgba\\(" + [
-    reI,
-    reI,
-    reI,
-    reN
-] + "\\)$"), reRgbaPercent = new RegExp("^rgba\\(" + [
-    reP,
-    reP,
-    reP,
-    reN
-] + "\\)$"), reHslPercent = new RegExp("^hsl\\(" + [
-    reN,
-    reP,
-    reP
-] + "\\)$"), reHslaPercent = new RegExp("^hsla\\(" + [
-    reN,
-    reP,
-    reP,
-    reN
-] + "\\)$");
+var reI = "\\s*([+-]?\\d+)\\s*", reN = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*", reP = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*", reHex = /^#([0-9a-f]{3,8})$/, reRgbInteger = new RegExp(`^rgb\\(${reI},${reI},${reI}\\)$`), reRgbPercent = new RegExp(`^rgb\\(${reP},${reP},${reP}\\)$`), reRgbaInteger = new RegExp(`^rgba\\(${reI},${reI},${reI},${reN}\\)$`), reRgbaPercent = new RegExp(`^rgba\\(${reP},${reP},${reP},${reN}\\)$`), reHslPercent = new RegExp(`^hsl\\(${reN},${reP},${reP}\\)$`), reHslaPercent = new RegExp(`^hsla\\(${reN},${reP},${reP},${reN}\\)$`);
 var named = {
     aliceblue: 0xf0f8ff,
     antiquewhite: 0xfaebd7,
@@ -76144,20 +76117,24 @@ var named = {
     yellowgreen: 0x9acd32
 };
 (0, _defineJsDefault.default)(Color, color, {
-    copy: function(channels) {
+    copy (channels) {
         return Object.assign(new this.constructor, this, channels);
     },
-    displayable: function() {
+    displayable () {
         return this.rgb().displayable();
     },
     hex: color_formatHex,
     formatHex: color_formatHex,
+    formatHex8: color_formatHex8,
     formatHsl: color_formatHsl,
     formatRgb: color_formatRgb,
     toString: color_formatRgb
 });
 function color_formatHex() {
     return this.rgb().formatHex();
+}
+function color_formatHex8() {
+    return this.rgb().formatHex8();
 }
 function color_formatHsl() {
     return hslConvert(this).formatHsl();
@@ -76206,35 +76183,47 @@ function Rgb(r, g, b, opacity) {
     this.opacity = +opacity;
 }
 (0, _defineJsDefault.default)(Rgb, rgb, (0, _defineJs.extend)(Color, {
-    brighter: function(k) {
+    brighter (k) {
         k = k == null ? brighter : Math.pow(brighter, k);
         return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
     },
-    darker: function(k) {
+    darker (k) {
         k = k == null ? darker : Math.pow(darker, k);
         return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
     },
-    rgb: function() {
+    rgb () {
         return this;
     },
-    displayable: function() {
+    clamp () {
+        return new Rgb(clampi(this.r), clampi(this.g), clampi(this.b), clampa(this.opacity));
+    },
+    displayable () {
         return -0.5 <= this.r && this.r < 255.5 && -0.5 <= this.g && this.g < 255.5 && -0.5 <= this.b && this.b < 255.5 && 0 <= this.opacity && this.opacity <= 1;
     },
     hex: rgb_formatHex,
     formatHex: rgb_formatHex,
+    formatHex8: rgb_formatHex8,
     formatRgb: rgb_formatRgb,
     toString: rgb_formatRgb
 }));
 function rgb_formatHex() {
-    return "#" + hex(this.r) + hex(this.g) + hex(this.b);
+    return `#${hex(this.r)}${hex(this.g)}${hex(this.b)}`;
+}
+function rgb_formatHex8() {
+    return `#${hex(this.r)}${hex(this.g)}${hex(this.b)}${hex((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
 }
 function rgb_formatRgb() {
-    var a = this.opacity;
-    a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-    return (a === 1 ? "rgb(" : "rgba(") + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.b) || 0)) + (a === 1 ? ")" : ", " + a + ")");
+    const a = clampa(this.opacity);
+    return `${a === 1 ? "rgb(" : "rgba("}${clampi(this.r)}, ${clampi(this.g)}, ${clampi(this.b)}${a === 1 ? ")" : `, ${a})`}`;
+}
+function clampa(opacity) {
+    return isNaN(opacity) ? 1 : Math.max(0, Math.min(1, opacity));
+}
+function clampi(value) {
+    return Math.max(0, Math.min(255, Math.round(value) || 0));
 }
 function hex(value) {
-    value = Math.max(0, Math.min(255, Math.round(value) || 0));
+    value = clampi(value);
     return (value < 16 ? "0" : "") + value.toString(16);
 }
 function hsla(h, s, l, a) {
@@ -76269,27 +76258,36 @@ function Hsl(h, s, l, opacity) {
     this.opacity = +opacity;
 }
 (0, _defineJsDefault.default)(Hsl, hsl, (0, _defineJs.extend)(Color, {
-    brighter: function(k) {
+    brighter (k) {
         k = k == null ? brighter : Math.pow(brighter, k);
         return new Hsl(this.h, this.s, this.l * k, this.opacity);
     },
-    darker: function(k) {
+    darker (k) {
         k = k == null ? darker : Math.pow(darker, k);
         return new Hsl(this.h, this.s, this.l * k, this.opacity);
     },
-    rgb: function() {
+    rgb () {
         var h = this.h % 360 + (this.h < 0) * 360, s = isNaN(h) || isNaN(this.s) ? 0 : this.s, l = this.l, m2 = l + (l < 0.5 ? l : 1 - l) * s, m1 = 2 * l - m2;
         return new Rgb(hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), hsl2rgb(h, m1, m2), hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
     },
-    displayable: function() {
+    clamp () {
+        return new Hsl(clamph(this.h), clampt(this.s), clampt(this.l), clampa(this.opacity));
+    },
+    displayable () {
         return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && 0 <= this.l && this.l <= 1 && 0 <= this.opacity && this.opacity <= 1;
     },
-    formatHsl: function() {
-        var a = this.opacity;
-        a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-        return (a === 1 ? "hsl(" : "hsla(") + (this.h || 0) + ", " + (this.s || 0) * 100 + "%, " + (this.l || 0) * 100 + "%" + (a === 1 ? ")" : ", " + a + ")");
+    formatHsl () {
+        const a = clampa(this.opacity);
+        return `${a === 1 ? "hsl(" : "hsla("}${clamph(this.h)}, ${clampt(this.s) * 100}%, ${clampt(this.l) * 100}%${a === 1 ? ")" : `, ${a})`}`;
     }
 }));
+function clamph(value) {
+    value = (value || 0) % 360;
+    return value < 0 ? value + 360 : value;
+}
+function clampt(value) {
+    return Math.max(0, Math.min(1, value || 0));
+}
 /* From FvD 13.37, CSS Color Module Level 3 */ function hsl2rgb(h, m1, m2) {
     return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
 }
@@ -76348,12 +76346,11 @@ const defaultPresenterConfig = {
     onCubeClick: (e, cube)=>{},
     onCubeHover: (e, cube)=>{},
     transitionDurations: {
-        color: 100,
         position: 600,
         stagger: 600,
         view: 600
     },
-    initialMorphChartsRendererOptions: {
+    renderer: {
         advanced: false,
         advancedOptions: {},
         basicOptions: {
@@ -76575,7 +76572,7 @@ class Presenter {
                 onCanvasClick: config === null || config === void 0 ? void 0 : config.onLayerClick,
                 onLasso: config === null || config === void 0 ? void 0 : config.onLasso
             };
-            this.morphchartsref = (0, _morphcharts.init)(this._morphChartsOptions, c.initialMorphChartsRendererOptions || (0, _defaults.defaultPresenterConfig).initialMorphChartsRendererOptions);
+            this.morphchartsref = (0, _morphcharts.init)(this._morphChartsOptions, c.renderer || (0, _defaults.defaultPresenterConfig).renderer);
         }
         let cubeCount = Math.max(this._last.cubeCount, stage.cubeData.length);
         if (options.maxOrdinal) {
@@ -77158,151 +77155,73 @@ var GroupType;
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"gGHdI":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "init", ()=>init);
-parcelHelpers.export(exports, "morphChartsRender", ()=>morphChartsRender);
-parcelHelpers.export(exports, "colorConfig", ()=>colorConfig);
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
-*/ var _morphcharts = require("morphcharts");
-var _color = require("../color");
-var _axes = require("./axes");
+*/ var _render = require("./render");
+parcelHelpers.exportAll(_render, exports);
+var _color = require("./color");
+parcelHelpers.exportAll(_color, exports);
+var _init = require("./init");
+parcelHelpers.exportAll(_init, exports);
+
+},{"./render":"fjsYU","./color":"4Hopn","./init":"9V139","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fjsYU":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "morphChartsRender", ()=>morphChartsRender);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _axes = require("./axes");
 var _bounds = require("./bounds");
 var _cubes = require("./cubes");
 var _lines = require("./lines");
-var _renderer = require("./renderer");
 var _text = require("./text");
-var _glMatrix = require("gl-matrix");
-var _easing = require("../easing");
 var _image = require("./image");
 var _defaults = require("../defaults");
-var _canvas = require("./canvas");
-function init(options, mcRendererOptions) {
-    const { container  } = options;
-    const core = new (0, _morphcharts.Core)({
-        container
-    });
-    (0, _renderer.getRenderer)(mcRendererOptions, core);
-    (0, _canvas.listenCanvasEvents)(core, options);
-    core.config.pickSelectDelay = 50;
-    const ref = {
-        supportedRenders: {
-            advanced: (0, _renderer.rendererEnabled)(true),
-            basic: (0, _renderer.rendererEnabled)(false)
-        },
-        reset: ()=>{
-            core.reset(true);
-            (0, _glMatrix.quat).slerp(ref.qModelCurrent, ref.qModelTo, ref.qModelTo, 0);
-            core.setModelRotation(ref.qModelCurrent, true);
-            core.camera.setOrbit(ref.qCameraRotationTo, false);
-        //core.camera.setPosition(ref.vCameraPositionTo, false);
-        },
-        transitionModel: false,
-        qModelFrom: null,
-        qModelTo: null,
-        qModelCurrent: (0, _glMatrix.quat).create(),
-        qCameraRotationFrom: (0, _glMatrix.quat).create(),
-        qCameraRotationTo: null,
-        qCameraRotationCurrent: (0, _glMatrix.quat).create(),
-        vCameraPositionFrom: (0, _glMatrix.vec3).create(),
-        vCameraPositionTo: null,
-        vCameraPositionCurrent: (0, _glMatrix.vec3).create(),
-        core,
-        cameraTime: 0,
-        isCameraMovement: false,
-        isTransitioning: false,
-        transitionTime: 0,
-        setMorphChartsRendererOptions (mcRendererOptions) {
-            if ((0, _renderer.shouldChangeRenderer)(ref.lastMorphChartsRendererOptions, mcRendererOptions)) {
-                (0, _renderer.getRenderer)(mcRendererOptions, core);
-                (0, _canvas.listenCanvasEvents)(core, options);
-            } else if (mcRendererOptions.advanced) //same renderer, poke the config
-            (0, _renderer.setRendererOptions)(core.renderer, mcRendererOptions);
-            ref.lastMorphChartsRendererOptions = mcRendererOptions;
-        },
-        lastMorphChartsRendererOptions: mcRendererOptions
-    };
-    const cam = (t)=>{
-        (0, _glMatrix.quat).slerp(ref.qCameraRotationCurrent, ref.qCameraRotationFrom, ref.qCameraRotationTo, t);
-        (0, _glMatrix.vec3).lerp(ref.vCameraPositionCurrent, ref.vCameraPositionFrom, ref.vCameraPositionTo, t);
-        core.camera.setOrbit(ref.qCameraRotationCurrent, false);
-        core.camera.setPosition(ref.vCameraPositionCurrent, false);
-        // disable picking during transitions, as the performance degradation could reduce the framerate
-        core.inputManager.isPickingEnabled = false;
-    };
-    core.updateCallback = (elapsedTime)=>{
-        if (ref.isTransitioning) {
-            ref.transitionTime += elapsedTime;
-            const totalTime = core.config.transitionDuration + core.config.transitionStaggering;
-            if (ref.transitionTime >= totalTime) {
-                ref.isTransitioning = false;
-                ref.transitionTime = totalTime;
-            }
-            const t = (0, _easing.easing)(ref.transitionTime / totalTime);
-            core.renderer.transitionTime = t;
-            if (ref.transitionModel) {
-                (0, _glMatrix.quat).slerp(ref.qModelCurrent, ref.qModelFrom, ref.qModelTo, t);
-                core.setModelRotation(ref.qModelCurrent, false);
-            }
-            cam(t);
-        } else if (ref.isCameraMovement) {
-            ref.cameraTime += elapsedTime;
-            const totalTime1 = core.config.transitionDuration;
-            if (ref.cameraTime >= totalTime1) {
-                ref.isCameraMovement = false;
-                ref.cameraTime = totalTime1;
-            }
-            const t1 = (0, _easing.easing)(ref.cameraTime / totalTime1);
-            cam(t1);
-        } else core.inputManager.isPickingEnabled = true;
-    };
-    return ref;
-}
-const qModel2d = (0, _glMatrix.quat).create();
-const qModel3d = (0, _morphcharts.Constants).QUAT_ROTATEX_MINUS_90;
-const qCameraRotation2d = (0, _glMatrix.quat).create();
-const qCameraRotation3d = (0, _glMatrix.quat).create();
-const qAngle = (0, _glMatrix.quat).create();
-const vPosition = (0, _glMatrix.vec3).create();
-// Altitude (pitch around local right axis)
-(0, _glMatrix.quat).setAxisAngle(qCameraRotation3d, (0, _morphcharts.Constants).VECTOR3_UNITX, (0, _morphcharts.Helpers).AngleHelper.degreesToRadians(30));
-// Azimuth (yaw around global up axis)
-(0, _glMatrix.quat).setAxisAngle(qAngle, (0, _morphcharts.Constants).VECTOR3_UNITY, (0, _morphcharts.Helpers).AngleHelper.degreesToRadians(-25));
-(0, _glMatrix.quat).multiply(qCameraRotation3d, qCameraRotation3d, qAngle);
+var _color = require("./color");
+var _defaults1 = require("./defaults");
 function morphChartsRender(ref, prevStage, stage, height, width, preStage, colors, config) {
-    const cameraTo = config.getCameraTo && config.getCameraTo();
+    const { qCameraRotation2d , qCameraRotation3d , qModel2d , qModel3d , vPosition  } = (0, _defaults1.cameraDefaults);
+    const { core , cameraTransitioner , modelTransitioner , positionTransitioner  } = ref;
+    let cameraTo;
+    let holdCamera;
+    if (config.camera === "hold") holdCamera = true;
+    else cameraTo = config.camera;
     if (prevStage && prevStage.view !== stage.view) {
-        ref.transitionModel = true;
+        modelTransitioner.shouldTransition = !holdCamera;
         if (stage.view === "2d") {
-            ref.qModelFrom = qModel3d;
-            ref.qModelTo = qModel2d;
-            ref.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
-            ref.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+            modelTransitioner.qModelFrom = qModel3d;
+            modelTransitioner.qModelTo = qModel2d;
+            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
+            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
         } else {
-            ref.qModelFrom = qModel2d;
-            ref.qModelTo = qModel3d;
-            ref.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
-            ref.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+            modelTransitioner.qModelFrom = qModel2d;
+            modelTransitioner.qModelTo = qModel3d;
+            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
+            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
         }
     } else {
+        modelTransitioner.shouldTransition = false;
         if (stage.view === "2d") {
-            ref.qModelTo = qModel2d;
-            ref.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
-            ref.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+            modelTransitioner.qModelTo = qModel2d;
+            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
+            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
         } else {
-            ref.qModelTo = qModel3d;
-            ref.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
-            ref.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+            modelTransitioner.qModelTo = qModel3d;
+            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
+            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
         }
-        ref.transitionModel = false;
     }
-    ref.core.camera.getOrbit(ref.qCameraRotationFrom);
-    ref.core.camera.getPosition(ref.vCameraPositionFrom);
+    core.camera.getOrbit(cameraTransitioner.qCameraRotationFrom);
+    core.camera.getPosition(cameraTransitioner.vCameraPositionFrom);
     if (!prevStage) {
-        ref.core.setModelRotation(ref.qModelTo, false);
-        ref.core.camera.setOrbit(ref.qCameraRotationTo, false);
-        ref.core.camera.setPosition(ref.vCameraPositionTo, false);
-    }
+        core.setModelRotation(modelTransitioner.qModelTo, false);
+        core.camera.setOrbit(cameraTransitioner.qCameraRotationTo, false);
+        core.camera.setPosition(cameraTransitioner.vCameraPositionTo, false);
+    } else if (!holdCamera) cameraTransitioner.begin();
+    positionTransitioner.begin();
+    if (modelTransitioner.shouldTransition) modelTransitioner.begin();
     const props = {
         ref,
         stage,
@@ -77320,19 +77239,12 @@ function morphChartsRender(ref, prevStage, stage, height, width, preStage, color
     });
     props.bounds = contentBounds;
     const axesLayer = (0, _axes.createAxesLayer)(props);
-    const { core  } = ref;
     core.config.transitionStaggering = config.transitionDurations.stagger;
     core.config.transitionDuration = config.transitionDurations.position;
     let bounds;
     if (axesLayer && axesLayer.bounds) bounds = axesLayer.bounds;
     else bounds = contentBounds;
-    const colorMapper = {
-        getCubeUnitColorMap: ()=>cubeLayer.unitColorMap,
-        setCubeUnitColorMap: (unitColorMap)=>{
-            cubeLayer.unitColorMap = unitColorMap;
-        }
-    };
-    if (preStage) preStage(stage, colorMapper);
+    if (preStage) preStage(stage, cubeLayer);
     //add images
     core.renderer.images = [];
     if (backgroundImages) {
@@ -77360,65 +77272,46 @@ function morphChartsRender(ref, prevStage, stage, height, width, preStage, color
         });
     }
     //Now call update on each layout
-    layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds);
-    ref.isTransitioning = true;
-    ref.transitionTime = 0;
+    layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds, ref.layerStagger);
+    ref.lastPresenterConfig = config;
     core.renderer.transitionTime = 0; // Set renderer transition time for this render pass to prevent rendering target buffer for single frame
-    colorConfig(ref, colors);
-    return Object.assign(Object.assign({}, colorMapper), {
-        update: (layerSelection)=>layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds),
+    (0, _color.colorConfig)(ref, colors);
+    return {
+        bounds,
+        getCubeLayer: ()=>cubeLayer,
+        update: (layerSelection)=>layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds, ref.layerStagger),
         activate: (id)=>core.renderer.transitionBuffers[0].activeId = id,
         moveCamera: (position, rotation)=>{
-            if (!ref.isTransitioning) {
-                ref.core.camera.getOrbit(ref.qCameraRotationFrom);
-                ref.core.camera.getPosition(ref.vCameraPositionFrom);
-                ref.isCameraMovement = true;
-                ref.cameraTime = 0;
-                ref.qCameraRotationTo = rotation;
-                ref.vCameraPositionTo = position;
+            if (!(positionTransitioner.isTransitioning || modelTransitioner.isTransitioning)) {
+                core.camera.getOrbit(cameraTransitioner.qCameraRotationFrom);
+                core.camera.getPosition(cameraTransitioner.vCameraPositionFrom);
+                cameraTransitioner.move(position, rotation);
             }
         }
-    });
+    };
 }
-function layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds) {
-    const layers = [
+function layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds, layerStagger) {
+    const layerItems = [
         {
             layer: cubeLayer,
-            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.cubes
+            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.cubes,
+            stagger: layerStagger === null || layerStagger === void 0 ? void 0 : layerStagger.cubes
         },
         {
             layer: lineLayer,
-            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.lines
+            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.lines,
+            stagger: layerStagger === null || layerStagger === void 0 ? void 0 : layerStagger.lines
         },
         {
             layer: textLayer,
-            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.texts
+            selection: layerSelection === null || layerSelection === void 0 ? void 0 : layerSelection.texts,
+            stagger: layerStagger === null || layerStagger === void 0 ? void 0 : layerStagger.texts
         }, 
     ];
-    layers.forEach((x)=>{
+    layerItems.forEach((layerItem)=>{
         var _a;
-        return (_a = x.layer) === null || _a === void 0 ? void 0 : _a.update(bounds, x.selection);
+        return (_a = layerItem.layer) === null || _a === void 0 ? void 0 : _a.update(bounds, layerItem.selection, layerItem.stagger);
     });
-}
-function convert(newColor) {
-    const c = (0, _color.colorFromString)(newColor).slice(0, 3);
-    return c.map((v)=>v / 255);
-}
-function colorConfig(ref, colors) {
-    if (!colors) return;
-    const { config  } = ref.core;
-    config.activeColor = convert(colors.activeItemColor);
-    config.backgroundColor = convert(colors.backgroundColor);
-    config.textColor = convert(colors.textColor);
-    config.textBorderColor = convert(colors.textBorderColor);
-    config.axesTextColor = convert(colors.axesTextLabelColor);
-    config.axesGridBackgroundColor = convert(colors.axesGridBackgroundColor);
-    config.axesGridHighlightColor = convert(colors.axesGridHighlightColor);
-    config.axesGridMinorColor = convert(colors.axesGridMinorColor);
-    config.axesGridMajorColor = convert(colors.axesGridMajorColor);
-    config.axesGridZeroColor = convert(colors.axesGridZeroColor);
-    //TODO fix this - hack to reset the background color
-    ref.core.renderer["_theme"] = null;
 }
 function convertBounds(bounds) {
     if (!bounds) return;
@@ -77432,7 +77325,7 @@ function convertBounds(bounds) {
     };
 }
 
-},{"morphcharts":"dzm75","../color":"cXyMC","./axes":"cqVLQ","./bounds":"ipKbZ","./cubes":"8Swgd","./lines":"1NssX","./renderer":"aQlAd","./text":"gXSar","gl-matrix":"3mrln","../easing":"aJG37","./image":"82mLv","../defaults":"rYstm","./canvas":"keiIA","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"cqVLQ":[function(require,module,exports) {
+},{"./axes":"cqVLQ","./bounds":"ipKbZ","./cubes":"8Swgd","./lines":"1NssX","./text":"gXSar","./image":"82mLv","../defaults":"rYstm","./color":"4Hopn","./defaults":"lUHd0","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"cqVLQ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "createAxesLayer", ()=>createAxesLayer);
@@ -77831,13 +77724,16 @@ const createCubeLayer = (props)=>{
         positionsZ
     });
     const layer = {
-        update: (newBounds, selected)=>{
+        positionsX,
+        positionsY,
+        positionsZ,
+        update: (newBounds, selected, stagger)=>{
             const { colors , maxColor , minColor , palette  } = layer.unitColorMap;
             // reference off of core.renderer to get the actual buffer
             const currCubeTransitionBuffer = core.renderer.transitionBuffers.find((t)=>t.key === key);
             currCubeTransitionBuffer.currentBuffer.unitType = (0, _morphcharts.UnitType).block;
             currCubeTransitionBuffer.currentPalette.colors = palette;
-            scatter.update(currCubeTransitionBuffer.currentBuffer, ids, Object.assign({
+            let options = Object.assign({
                 selected,
                 colors,
                 minColor,
@@ -77845,7 +77741,16 @@ const createCubeLayer = (props)=>{
                 sizesX,
                 sizesY,
                 sizesZ
-            }, newBounds));
+            }, newBounds);
+            if (stagger === null || stagger === void 0 ? void 0 : stagger.staggerOrders) {
+                const { maxStaggerOrder , minStaggerOrder , staggerOrders  } = stagger;
+                options = Object.assign(Object.assign({}, options), {
+                    maxStaggerOrder,
+                    minStaggerOrder,
+                    staggerOrders
+                });
+            }
+            scatter.update(currCubeTransitionBuffer.currentBuffer, ids, options);
         },
         bounds,
         unitColorMap: {
@@ -77912,10 +77817,12 @@ function convert(stage) {
 },{"morphcharts":"dzm75","./bounds":"ipKbZ","./color":"4Hopn","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"4Hopn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "ColorMap", ()=>ColorMap);
+parcelHelpers.export(exports, "colorConfig", ()=>colorConfig);
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
-*/ parcelHelpers.export(exports, "ColorMap", ()=>ColorMap);
+*/ var _color = require("../color");
 class ColorMap {
     constructor(quant = 5){
         this.quant = quant;
@@ -77945,8 +77852,28 @@ class ColorMap {
         };
     }
 }
+function convert(newColor) {
+    const c = (0, _color.colorFromString)(newColor).slice(0, 3);
+    return c.map((v)=>v / 255);
+}
+function colorConfig(ref, colors) {
+    if (!colors) return;
+    const { config  } = ref.core;
+    config.activeColor = convert(colors.activeItemColor);
+    config.backgroundColor = convert(colors.backgroundColor);
+    config.textColor = convert(colors.textColor);
+    config.textBorderColor = convert(colors.textBorderColor);
+    config.axesTextColor = convert(colors.axesTextLabelColor);
+    config.axesGridBackgroundColor = convert(colors.axesGridBackgroundColor);
+    config.axesGridHighlightColor = convert(colors.axesGridHighlightColor);
+    config.axesGridMinorColor = convert(colors.axesGridMinorColor);
+    config.axesGridMajorColor = convert(colors.axesGridMajorColor);
+    config.axesGridZeroColor = convert(colors.axesGridZeroColor);
+    //TODO fix this - hack to reset the background color
+    ref.core.renderer["_theme"] = null;
+}
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1NssX":[function(require,module,exports) {
+},{"../color":"cXyMC","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1NssX":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "createLineLayer", ()=>createLineLayer);
@@ -78062,40 +77989,7 @@ function convert(stage, height, width) {
     };
 }
 
-},{"morphcharts":"dzm75","./bounds":"ipKbZ","./color":"4Hopn","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"aQlAd":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "shouldChangeRenderer", ()=>shouldChangeRenderer);
-parcelHelpers.export(exports, "getRenderer", ()=>getRenderer);
-parcelHelpers.export(exports, "setRendererOptions", ()=>setRendererOptions);
-parcelHelpers.export(exports, "rendererEnabled", ()=>rendererEnabled);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _morphcharts = require("morphcharts");
-function shouldChangeRenderer(prev, next) {
-    var _a, _b;
-    if (!prev || !next) return true;
-    if (prev.advanced !== next.advanced) return true;
-    if (!prev.advanced) return ((_a = prev.basicOptions) === null || _a === void 0 ? void 0 : _a.antialias) != ((_b = next.basicOptions) === null || _b === void 0 ? void 0 : _b.antialias);
-}
-function getRenderer(mcRendererOptions, core) {
-    const advanced = mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advanced;
-    const r = advanced ? new (0, _morphcharts.Renderers).Advanced.Main() : new (0, _morphcharts.Renderers).Basic.Main(mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.basicOptions);
-    core.renderer = r;
-    setRendererOptions(r, mcRendererOptions);
-    return r;
-}
-function setRendererOptions(renderer, mcRendererOptions) {
-    const o = mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advancedOptions;
-    if ((mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advanced) && o) for(const key in o)renderer.config[key] = o[key];
-}
-function rendererEnabled(advanced) {
-    const r = advanced ? new (0, _morphcharts.Renderers).Advanced.Main() : new (0, _morphcharts.Renderers).Basic.Main();
-    return r.isSupported;
-}
-
-},{"morphcharts":"dzm75","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"gXSar":[function(require,module,exports) {
+},{"morphcharts":"dzm75","./bounds":"ipKbZ","./color":"4Hopn","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"gXSar":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "createTextLayer", ()=>createTextLayer);
@@ -78182,7 +78076,321 @@ function convert(stage) {
     };
 }
 
-},{"morphcharts":"dzm75","./bounds":"ipKbZ","./color":"4Hopn","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"aJG37":[function(require,module,exports) {
+},{"morphcharts":"dzm75","./bounds":"ipKbZ","./color":"4Hopn","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"82mLv":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "getImageData", ()=>getImageData);
+parcelHelpers.export(exports, "createImageQuad", ()=>createImageQuad);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _morphcharts = require("morphcharts");
+function getImageData(url) {
+    return new Promise((resolve, reject)=>{
+        const imageElement = document.createElement("img");
+        imageElement.onload = ()=>{
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+            const { height , width  } = imageElement;
+            canvas.width = width;
+            canvas.height = height;
+            ctx.drawImage(imageElement, 0, 0);
+            resolve(ctx.getImageData(0, 0, width, height));
+        };
+        imageElement.src = url;
+    });
+}
+function createImageQuad(core, imageData, bounds, position, width, height) {
+    const { maxBoundsX , maxBoundsY , maxBoundsZ , minBoundsX , minBoundsY , minBoundsZ  } = bounds;
+    const imageOptions = {
+        imageData,
+        position,
+        height,
+        width,
+        minBoundsX,
+        maxBoundsX,
+        minBoundsZ,
+        maxBoundsZ,
+        minBoundsY,
+        maxBoundsY
+    };
+    return new (0, _morphcharts.Components).ImageQuad(core, imageOptions);
+}
+
+},{"morphcharts":"dzm75","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"lUHd0":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "cameraDefaults", ()=>cameraDefaults);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _glMatrix = require("gl-matrix");
+var _morphcharts = require("morphcharts");
+function createCameraDefaults() {
+    const qModel2d = (0, _glMatrix.quat).create();
+    const qModel3d = (0, _morphcharts.Constants).QUAT_ROTATEX_MINUS_90;
+    const qCameraRotation2d = (0, _glMatrix.quat).create();
+    const qCameraRotation3d = (0, _glMatrix.quat).create();
+    const qAngle = (0, _glMatrix.quat).create();
+    const vPosition = (0, _glMatrix.vec3).create();
+    // Altitude (pitch around local right axis)
+    (0, _glMatrix.quat).setAxisAngle(qCameraRotation3d, (0, _morphcharts.Constants).VECTOR3_UNITX, (0, _morphcharts.Helpers).AngleHelper.degreesToRadians(30));
+    // Azimuth (yaw around global up axis)
+    (0, _glMatrix.quat).setAxisAngle(qAngle, (0, _morphcharts.Constants).VECTOR3_UNITY, (0, _morphcharts.Helpers).AngleHelper.degreesToRadians(-25));
+    (0, _glMatrix.quat).multiply(qCameraRotation3d, qCameraRotation3d, qAngle);
+    return {
+        qModel2d,
+        qModel3d,
+        qCameraRotation2d,
+        qCameraRotation3d,
+        vPosition
+    };
+}
+const cameraDefaults = createCameraDefaults();
+
+},{"gl-matrix":"3mrln","morphcharts":"dzm75","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"9V139":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "init", ()=>init);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _morphcharts = require("morphcharts");
+var _renderer = require("./renderer");
+var _glMatrix = require("gl-matrix");
+var _canvas = require("./canvas");
+var _transition = require("../transition");
+function init(options, mcRendererOptions) {
+    const { container  } = options;
+    const core = new (0, _morphcharts.Core)({
+        container
+    });
+    (0, _renderer.getRenderer)(mcRendererOptions, core);
+    (0, _canvas.listenCanvasEvents)(core, options);
+    core.config.pickSelectDelay = 50;
+    const cameraTransitioner = new (0, _transition.CameraTransitioner)();
+    const modelTransitioner = new (0, _transition.ModelTransitioner)();
+    const positionTransitioner = new (0, _transition.Transitioner)();
+    const ref = {
+        supportedRenders: {
+            advanced: (0, _renderer.rendererEnabled)(true),
+            basic: (0, _renderer.rendererEnabled)(false)
+        },
+        reset: ()=>{
+            core.reset(true);
+            const { cameraTransitioner: cameraState , modelTransitioner: modelState  } = ref;
+            (0, _glMatrix.quat).slerp(modelState.qModelCurrent, modelState.qModelTo, modelState.qModelTo, 0);
+            core.setModelRotation(modelState.qModelCurrent, true);
+            core.camera.setOrbit(cameraState.qCameraRotationTo, false);
+        //core.camera.setPosition(cameraState.vCameraPositionTo, false);
+        },
+        cameraTransitioner,
+        modelTransitioner,
+        positionTransitioner,
+        core,
+        setMorphChartsRendererOptions (mcRendererOptions) {
+            if ((0, _renderer.shouldChangeRenderer)(ref.lastMorphChartsRendererOptions, mcRendererOptions)) {
+                (0, _renderer.getRenderer)(mcRendererOptions, core);
+                (0, _canvas.listenCanvasEvents)(core, options);
+            } else if (mcRendererOptions.advanced) //same renderer, poke the config
+            (0, _renderer.setRendererOptions)(core.renderer, mcRendererOptions);
+            ref.lastMorphChartsRendererOptions = mcRendererOptions;
+        },
+        lastMorphChartsRendererOptions: mcRendererOptions,
+        lastPresenterConfig: null,
+        layerStagger: {}
+    };
+    const cam = (t)=>{
+        (0, _glMatrix.quat).slerp(cameraTransitioner.qCameraRotationCurrent, cameraTransitioner.qCameraRotationFrom, cameraTransitioner.qCameraRotationTo, t);
+        (0, _glMatrix.vec3).lerp(cameraTransitioner.vCameraPositionCurrent, cameraTransitioner.vCameraPositionFrom, cameraTransitioner.vCameraPositionTo, t);
+        core.camera.setOrbit(cameraTransitioner.qCameraRotationCurrent, false);
+        core.camera.setPosition(cameraTransitioner.vCameraPositionCurrent, false);
+        // disable picking during transitions, as the performance degradation could reduce the framerate
+        core.inputManager.isPickingEnabled = false;
+    };
+    core.updateCallback = (elapsedTime)=>{
+        const { transitionDurations  } = ref.lastPresenterConfig;
+        if (positionTransitioner.isTransitioning) core.renderer.transitionTime = positionTransitioner.elapse(elapsedTime, transitionDurations.position + transitionDurations.stagger);
+        if (modelTransitioner.isTransitioning) {
+            const tm = modelTransitioner.elapse(elapsedTime, transitionDurations.view, true);
+            if (modelTransitioner.shouldTransition) {
+                (0, _glMatrix.quat).slerp(modelTransitioner.qModelCurrent, modelTransitioner.qModelFrom, modelTransitioner.qModelTo, tm);
+                core.setModelRotation(modelTransitioner.qModelCurrent, false);
+            }
+            cam(tm);
+        }
+        if (cameraTransitioner.isTransitioning) {
+            const t = cameraTransitioner.elapse(elapsedTime, transitionDurations.view, true);
+            cam(t);
+        } else core.inputManager.isPickingEnabled = true;
+    };
+    return ref;
+}
+
+},{"morphcharts":"dzm75","./renderer":"aQlAd","gl-matrix":"3mrln","./canvas":"keiIA","../transition":"eZK1M","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"aQlAd":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "shouldChangeRenderer", ()=>shouldChangeRenderer);
+parcelHelpers.export(exports, "getRenderer", ()=>getRenderer);
+parcelHelpers.export(exports, "setRendererOptions", ()=>setRendererOptions);
+parcelHelpers.export(exports, "rendererEnabled", ()=>rendererEnabled);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _morphcharts = require("morphcharts");
+function shouldChangeRenderer(prev, next) {
+    var _a, _b;
+    if (!prev || !next) return true;
+    if (prev.advanced !== next.advanced) return true;
+    if (!prev.advanced) return ((_a = prev.basicOptions) === null || _a === void 0 ? void 0 : _a.antialias) != ((_b = next.basicOptions) === null || _b === void 0 ? void 0 : _b.antialias);
+}
+function getRenderer(mcRendererOptions, core) {
+    const advanced = mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advanced;
+    const r = advanced ? new (0, _morphcharts.Renderers).Advanced.Main() : new (0, _morphcharts.Renderers).Basic.Main(mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.basicOptions);
+    core.renderer = r;
+    setRendererOptions(r, mcRendererOptions);
+    return r;
+}
+function setRendererOptions(renderer, mcRendererOptions) {
+    const o = mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advancedOptions;
+    if ((mcRendererOptions === null || mcRendererOptions === void 0 ? void 0 : mcRendererOptions.advanced) && o) for(const key in o)renderer.config[key] = o[key];
+}
+function rendererEnabled(advanced) {
+    const r = advanced ? new (0, _morphcharts.Renderers).Advanced.Main() : new (0, _morphcharts.Renderers).Basic.Main();
+    return r.isSupported;
+}
+
+},{"morphcharts":"dzm75","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"keiIA":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "listenCanvasEvents", ()=>listenCanvasEvents);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _morphcharts = require("morphcharts");
+const rightButton = 2;
+function listenCanvasEvents(core, options) {
+    const { container , pickGridCallback  } = options;
+    const { inputManager  } = core;
+    if (options.onLasso) inputManager.pickLassoCallback = (result)=>{
+        options.onLasso(result.ids[0], result.manipulator.event);
+    };
+    inputManager.singleTouchAction = (manipulator)=>{
+        if (manipulator.button == rightButton || manipulator.shiftKey || manipulator.ctrlKey) return (0, _morphcharts.SingleTouchAction).rotate;
+        else if (manipulator.altKey) return (0, _morphcharts.SingleTouchAction).lasso;
+        else return (0, _morphcharts.SingleTouchAction).translate;
+    };
+    inputManager.pickAxesGridCallback = ({ divisionX , divisionY , divisionZ , manipulator  })=>{
+        clearClickTimeout();
+        const { altKey , button , shiftKey  } = manipulator;
+        const me = {
+            altKey,
+            shiftKey,
+            button
+        };
+        const e = me;
+        pickGridCallback([
+            divisionX,
+            divisionY,
+            divisionZ
+        ], e);
+    };
+    const canvas = container.getElementsByTagName("canvas")[0];
+    let pickedId;
+    const hover = (e)=>{
+        if (core.renderer.pickedId !== pickedId) {
+            pickedId = core.renderer.pickedId;
+            const ordinal = core.renderer.transitionBuffers[0].pickIdLookup[pickedId];
+            options.onCubeHover(e, ordinal);
+        }
+    };
+    canvas.addEventListener("mousemove", (e)=>{
+        clearClickTimeout();
+        if (mousedown) options.onCubeHover(e, null);
+        hover(e);
+    });
+    canvas.addEventListener("mouseout", hover);
+    canvas.addEventListener("mouseover", hover);
+    let mousedown;
+    canvas.addEventListener("mousedown", ()=>{
+        mousedown = true;
+    });
+    canvas.addEventListener("mouseup", (e)=>{
+        mousedown = false;
+    });
+    let canvasClickTimeout;
+    const clearClickTimeout = ()=>{
+        clearTimeout(canvasClickTimeout);
+        canvasClickTimeout = null;
+    };
+    canvas.addEventListener("click", (e)=>{
+        canvasClickTimeout = setTimeout(()=>{
+            options.onCanvasClick(e);
+        }, 50);
+    });
+    inputManager.pickItemCallback = ({ manipulator  })=>{
+        clearClickTimeout();
+        const ordinal = core.renderer.transitionBuffers[0].pickIdLookup[pickedId];
+        options.onCubeClick(manipulator.event, ordinal);
+    };
+}
+
+},{"morphcharts":"dzm75","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"eZK1M":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Transitioner", ()=>Transitioner);
+parcelHelpers.export(exports, "CameraTransitioner", ()=>CameraTransitioner);
+parcelHelpers.export(exports, "ModelTransitioner", ()=>ModelTransitioner);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _glMatrix = require("gl-matrix");
+var _easing = require("./easing");
+class Transitioner {
+    constructor(){
+        this.isTransitioning = false;
+    }
+    begin() {
+        this.isTransitioning = true;
+        this.time = 0;
+    }
+    elapse(elapsedTime, totalTime, ease = false) {
+        this.time += elapsedTime;
+        if (this.time >= totalTime) {
+            this.isTransitioning = false;
+            this.time = totalTime;
+        }
+        const t = this.time / totalTime;
+        return ease ? (0, _easing.easing)(t) : t;
+    }
+}
+class CameraTransitioner extends Transitioner {
+    constructor(){
+        super();
+        this.qCameraRotationFrom = (0, _glMatrix.quat).create();
+        this.qCameraRotationTo = null;
+        this.qCameraRotationCurrent = (0, _glMatrix.quat).create();
+        this.vCameraPositionFrom = (0, _glMatrix.vec3).create();
+        this.vCameraPositionTo = null;
+        this.vCameraPositionCurrent = (0, _glMatrix.vec3).create();
+    }
+    move(position, rotation) {
+        this.begin();
+        this.qCameraRotationTo = rotation;
+        this.vCameraPositionTo = position;
+    }
+}
+class ModelTransitioner extends Transitioner {
+    constructor(){
+        super();
+        this.shouldTransition = false;
+        this.qModelFrom = null;
+        this.qModelTo = null;
+        this.qModelCurrent = (0, _glMatrix.quat).create();
+    }
+}
+
+},{"gl-matrix":"3mrln","./easing":"aJG37","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"aJG37":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "easing", ()=>easing);
@@ -78262,123 +78470,7 @@ function cubicInOut(t) {
     return ((t *= 2) <= 1 ? t * t * t : (t -= 2) * t * t + 2) / 2;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"82mLv":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "getImageData", ()=>getImageData);
-parcelHelpers.export(exports, "createImageQuad", ()=>createImageQuad);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _morphcharts = require("morphcharts");
-function getImageData(url) {
-    return new Promise((resolve, reject)=>{
-        const imageElement = document.createElement("img");
-        imageElement.onload = ()=>{
-            const canvas = document.createElement("canvas");
-            const ctx = canvas.getContext("2d");
-            const { height , width  } = imageElement;
-            canvas.width = width;
-            canvas.height = height;
-            ctx.drawImage(imageElement, 0, 0);
-            resolve(ctx.getImageData(0, 0, width, height));
-        };
-        imageElement.src = url;
-    });
-}
-function createImageQuad(core, imageData, bounds, position, width, height) {
-    const { maxBoundsX , maxBoundsY , maxBoundsZ , minBoundsX , minBoundsY , minBoundsZ  } = bounds;
-    const imageOptions = {
-        imageData,
-        position,
-        height,
-        width,
-        minBoundsX,
-        maxBoundsX,
-        minBoundsZ,
-        maxBoundsZ,
-        minBoundsY,
-        maxBoundsY
-    };
-    return new (0, _morphcharts.Components).ImageQuad(core, imageOptions);
-}
-
-},{"morphcharts":"dzm75","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"keiIA":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "listenCanvasEvents", ()=>listenCanvasEvents);
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var _morphcharts = require("morphcharts");
-const rightButton = 2;
-function listenCanvasEvents(core, options) {
-    const { container , pickGridCallback  } = options;
-    const { inputManager  } = core;
-    if (options.onLasso) inputManager.pickLassoCallback = (result)=>{
-        options.onLasso(result.ids[0], result.manipulator.event);
-    };
-    inputManager.singleTouchAction = (manipulator)=>{
-        if (manipulator.button == rightButton || manipulator.shiftKey || manipulator.ctrlKey) return (0, _morphcharts.SingleTouchAction).rotate;
-        else if (manipulator.altKey) return (0, _morphcharts.SingleTouchAction).lasso;
-        else return (0, _morphcharts.SingleTouchAction).translate;
-    };
-    inputManager.pickAxesGridCallback = ({ divisionX , divisionY , divisionZ , manipulator  })=>{
-        clearClickTimeout();
-        const { altKey , button , shiftKey  } = manipulator;
-        const me = {
-            altKey,
-            shiftKey,
-            button
-        };
-        const e = me;
-        pickGridCallback([
-            divisionX,
-            divisionY,
-            divisionZ
-        ], e);
-    };
-    const canvas = container.getElementsByTagName("canvas")[0];
-    let pickedId;
-    const hover = (e)=>{
-        if (core.renderer.pickedId !== pickedId) {
-            pickedId = core.renderer.pickedId;
-            const ordinal = core.renderer.transitionBuffers[0].pickIdLookup[pickedId];
-            options.onCubeHover(e, ordinal);
-        }
-    };
-    canvas.addEventListener("mousemove", (e)=>{
-        clearClickTimeout();
-        if (mousedown) options.onCubeHover(e, null);
-        hover(e);
-    });
-    canvas.addEventListener("mouseout", hover);
-    canvas.addEventListener("mouseover", hover);
-    let mousedown;
-    canvas.addEventListener("mousedown", ()=>{
-        mousedown = true;
-    });
-    canvas.addEventListener("mouseup", (e)=>{
-        mousedown = false;
-    });
-    let canvasClickTimeout;
-    const clearClickTimeout = ()=>{
-        clearTimeout(canvasClickTimeout);
-        canvasClickTimeout = null;
-    };
-    canvas.addEventListener("click", (e)=>{
-        canvasClickTimeout = setTimeout(()=>{
-            options.onCanvasClick(e);
-        }, 50);
-    });
-    inputManager.pickItemCallback = ({ manipulator  })=>{
-        clearClickTimeout();
-        const ordinal = core.renderer.transitionBuffers[0].pickIdLookup[pickedId];
-        options.onCubeClick(manipulator.event, ordinal);
-    };
-}
-
-},{"morphcharts":"dzm75","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fQ572":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fQ572":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ViewGl", ()=>ViewGl);
@@ -78481,7 +78573,7 @@ const RendererGl = _RendererGl;
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "version", ()=>version);
-const version = "1.0.1";
+const version = "1.0.2";
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}]},["dlIYU"], "dlIYU", "parcelRequire1c68")
 

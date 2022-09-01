@@ -37,7 +37,12 @@ title: 'PresenterConfig | @msrvida/sanddance'
 			<h3>Hierarchy</h3>
 			<ul class="tsd-hierarchy">
 				<li>
-					<span class="target">PresenterConfig</span>
+					<a href="VegaMorphCharts.types.PresenterSetup.html" class="tsd-signature-type" data-tsd-kind="Interface">PresenterSetup</a>
+					<ul class="tsd-hierarchy">
+						<li>
+							<span class="target">PresenterConfig</span>
+						</li>
+					</ul>
 				</li>
 			</ul>
 		</section>
@@ -48,12 +53,13 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<section class="tsd-index-section ">
 						<h3>Properties</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="VegaMorphCharts.types.PresenterConfig.html#initialMorphChartsRendererOptions" class="tsd-kind-icon">initial<wbr>Morph<wbr>Charts<wbr>Renderer<wbr>Options</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="VegaMorphCharts.types.PresenterConfig.html#camera" class="tsd-kind-icon">camera</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="VegaMorphCharts.types.PresenterConfig.html#layerSelection" class="tsd-kind-icon">layer<wbr>Selection</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="VegaMorphCharts.types.PresenterConfig.html#morphChartsColors" class="tsd-kind-icon">morph<wbr>Charts<wbr>Colors</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="VegaMorphCharts.types.PresenterConfig.html#preStage" class="tsd-kind-icon">pre<wbr>Stage</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="VegaMorphCharts.types.PresenterConfig.html#preserveDrawingBuffer" class="tsd-kind-icon">preserve<wbr>Drawing<wbr>Buffer</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="VegaMorphCharts.types.PresenterConfig.html#transitionDurations" class="tsd-kind-icon">transition<wbr>Durations</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite"><a href="VegaMorphCharts.types.PresenterConfig.html#renderer" class="tsd-kind-icon">renderer</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="VegaMorphCharts.types.PresenterConfig.html#transitionDurations" class="tsd-kind-icon">transition<wbr>Durations</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="VegaMorphCharts.types.PresenterConfig.html#zAxisZindex" class="tsd-kind-icon">z<wbr>Axis<wbr>Zindex</a></li>
 						</ul>
 					</section>
@@ -61,7 +67,6 @@ title: 'PresenterConfig | @msrvida/sanddance'
 						<h3>Methods</h3>
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="VegaMorphCharts.types.PresenterConfig.html#axisPickGridCallback" class="tsd-kind-icon">axis<wbr>Pick<wbr>Grid<wbr>Callback</a></li>
-							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="VegaMorphCharts.types.PresenterConfig.html#getCameraTo" class="tsd-kind-icon">get<wbr>Camera<wbr>To</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="VegaMorphCharts.types.PresenterConfig.html#getCharacterSet" class="tsd-kind-icon">get<wbr>Character<wbr>Set</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="VegaMorphCharts.types.PresenterConfig.html#getTextColor" class="tsd-kind-icon">get<wbr>Text<wbr>Color</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="VegaMorphCharts.types.PresenterConfig.html#getTextHighlightColor" class="tsd-kind-icon">get<wbr>Text<wbr>Highlight<wbr>Color</a></li>
@@ -88,13 +93,14 @@ title: 'PresenterConfig | @msrvida/sanddance'
 		</section>
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Properties</h2>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-				<a name="initialMorphChartsRendererOptions" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagOptional">Optional</span> initial<wbr>Morph<wbr>Charts<wbr>Renderer<wbr>Options</h3>
-				<div class="tsd-signature tsd-kind-icon">initial<wbr>Morph<wbr>Charts<wbr>Renderer<wbr>Options<span class="tsd-signature-symbol">:</span> <a href="VegaMorphCharts.MorphChartsRendererOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">MorphChartsRendererOptions</a></div>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+				<a name="camera" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> camera</h3>
+				<div class="tsd-signature tsd-kind-icon">camera<span class="tsd-signature-symbol">:</span> <a href="types.Camera.html" class="tsd-signature-type" data-tsd-kind="Interface">Camera</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;hold&quot;</span></div>
 				<aside class="tsd-sources">
+					<p>Inherited from <a href="VegaMorphCharts.types.PresenterSetup.html">PresenterSetup</a>.<a href="VegaMorphCharts.types.PresenterSetup.html#camera">camera</a></p>
 					<ul>
-						<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:149</li>
+						<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:146</li>
 					</ul>
 				</aside>
 			</section>
@@ -104,7 +110,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 				<div class="tsd-signature tsd-kind-icon">layer<wbr>Selection<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">LayerSelection</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:177</li>
+						<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:183</li>
 					</ul>
 				</aside>
 			</section>
@@ -114,7 +120,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 				<div class="tsd-signature tsd-kind-icon">morph<wbr>Charts<wbr>Colors<span class="tsd-signature-symbol">:</span> <a href="VegaMorphCharts.types.MorphChartsColors.html" class="tsd-signature-type" data-tsd-kind="Interface">MorphChartsColors</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:148</li>
+						<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:154</li>
 					</ul>
 				</aside>
 			</section>
@@ -124,7 +130,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 				<div class="tsd-signature tsd-kind-icon">pre<wbr>Stage<span class="tsd-signature-symbol">:</span> <a href="VegaMorphCharts.types.PreStage.html" class="tsd-signature-type" data-tsd-kind="Interface">PreStage</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:150</li>
+						<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:156</li>
 					</ul>
 				</aside>
 			</section>
@@ -134,15 +140,27 @@ title: 'PresenterConfig | @msrvida/sanddance'
 				<div class="tsd-signature tsd-kind-icon">preserve<wbr>Drawing<wbr>Buffer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:175</li>
+						<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:181</li>
 					</ul>
 				</aside>
 			</section>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite">
+				<a name="renderer" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> renderer</h3>
+				<div class="tsd-signature tsd-kind-icon">renderer<span class="tsd-signature-symbol">:</span> <a href="VegaMorphCharts.types.MorphChartsRendererOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">MorphChartsRendererOptions</a></div>
+				<aside class="tsd-sources">
+					<p>Overrides <a href="VegaMorphCharts.types.PresenterSetup.html">PresenterSetup</a>.<a href="VegaMorphCharts.types.PresenterSetup.html#renderer">renderer</a></p>
+					<ul>
+						<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:155</li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 				<a name="transitionDurations" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> transition<wbr>Durations</h3>
 				<div class="tsd-signature tsd-kind-icon">transition<wbr>Durations<span class="tsd-signature-symbol">:</span> <a href="VegaMorphCharts.types.TransitionDurations.html" class="tsd-signature-type" data-tsd-kind="Interface">TransitionDurations</a></div>
 				<aside class="tsd-sources">
+					<p>Inherited from <a href="VegaMorphCharts.types.PresenterSetup.html">PresenterSetup</a>.<a href="VegaMorphCharts.types.PresenterSetup.html#transitionDurations">transitionDurations</a></p>
 					<ul>
 						<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:147</li>
 					</ul>
@@ -154,7 +172,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 				<div class="tsd-signature tsd-kind-icon">z<wbr>Axis<wbr>Zindex<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:176</li>
+						<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:182</li>
 					</ul>
 				</aside>
 			</section>
@@ -171,7 +189,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:169</li>
+								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:175</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -188,23 +206,6 @@ title: 'PresenterConfig | @msrvida/sanddance'
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-				<a name="getCameraTo" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagOptional">Optional</span> get<wbr>Camera<wbr>To</h3>
-				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">get<wbr>Camera<wbr>To<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="types.Camera.html" class="tsd-signature-type" data-tsd-kind="Interface">Camera</a></li>
-				</ul>
-				<ul class="tsd-descriptions">
-					<li class="tsd-description">
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:146</li>
-							</ul>
-						</aside>
-						<h4 class="tsd-returns-title">Returns <a href="types.Camera.html" class="tsd-signature-type" data-tsd-kind="Interface">Camera</a></h4>
-					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
 				<a name="getCharacterSet" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> get<wbr>Character<wbr>Set</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
@@ -214,7 +215,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:151</li>
+								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:157</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -237,7 +238,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:163</li>
+								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:169</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -260,7 +261,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:164</li>
+								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:170</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -283,7 +284,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:168</li>
+								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:174</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -306,7 +307,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:167</li>
+								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:173</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -335,7 +336,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:166</li>
+								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:172</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -367,7 +368,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:154</li>
+								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:160</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -393,7 +394,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:153</li>
+								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:159</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -419,7 +420,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:156</li>
+								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:162</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -445,7 +446,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:155</li>
+								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:161</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -468,7 +469,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:157</li>
+								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:163</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -497,7 +498,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:158</li>
+								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:164</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -514,7 +515,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:165</li>
+								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:171</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -537,7 +538,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:170</li>
+								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:176</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -574,7 +575,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:161</li>
+								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:167</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -600,7 +601,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:162</li>
+								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:168</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -626,7 +627,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:160</li>
+								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:166</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -649,7 +650,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:152</li>
+								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:158</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -666,7 +667,7 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:159</li>
+								<li>Defined in vega-morphcharts/dist/es6/interfaces.d.ts:165</li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -721,16 +722,28 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<a href="../classes/VegaMorphCharts.types.MorphChartsCore.html" class="tsd-kind-icon">Morph<wbr>Charts<wbr>Core</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="VegaMorphCharts.types.AdvancedRendererOptions.html" class="tsd-kind-icon">Advanced<wbr>Renderer<wbr>Options</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="VegaMorphCharts.types.Axis.html" class="tsd-kind-icon">Axis</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="VegaMorphCharts.types.Base.html" class="tsd-kind-icon">Base</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="VegaMorphCharts.types.BasicRendererOptions.html" class="tsd-kind-icon">Basic<wbr>Renderer<wbr>Options</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="VegaMorphCharts.types.Cube.html" class="tsd-kind-icon">Cube</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="VegaMorphCharts.types.FacetRect.html" class="tsd-kind-icon">Facet<wbr>Rect</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="VegaMorphCharts.types.ICubeLayer.html" class="tsd-kind-icon">ICube<wbr>Layer</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="VegaMorphCharts.types.LayerStagger.html" class="tsd-kind-icon">Layer<wbr>Stagger</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="VegaMorphCharts.types.Legend.html" class="tsd-kind-icon">Legend</a>
@@ -742,10 +755,10 @@ title: 'PresenterConfig | @msrvida/sanddance'
 					<a href="VegaMorphCharts.types.LegendRowSymbol.html" class="tsd-kind-icon">Legend<wbr>Row<wbr>Symbol</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="VegaMorphCharts.types.MorphChartsColorMapper.html" class="tsd-kind-icon">Morph<wbr>Charts<wbr>Color<wbr>Mapper</a>
+					<a href="VegaMorphCharts.types.MorphChartsColors.html" class="tsd-kind-icon">Morph<wbr>Charts<wbr>Colors</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="VegaMorphCharts.types.MorphChartsColors.html" class="tsd-kind-icon">Morph<wbr>Charts<wbr>Colors</a>
+					<a href="VegaMorphCharts.types.MorphChartsRendererOptions.html" class="tsd-kind-icon">Morph<wbr>Charts<wbr>Renderer<wbr>Options</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="VegaMorphCharts.types.PreStage.html" class="tsd-kind-icon">Pre<wbr>Stage</a>
@@ -755,8 +768,8 @@ title: 'PresenterConfig | @msrvida/sanddance'
 				<li class="current tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="VegaMorphCharts.types.PresenterConfig.html" class="tsd-kind-icon">Presenter<wbr>Config</a>
 					<ul>
-						<li class=" tsd-kind-property tsd-parent-kind-interface">
-							<a href="VegaMorphCharts.types.PresenterConfig.html#initialMorphChartsRendererOptions" class="tsd-kind-icon">initial<wbr>Morph<wbr>Charts<wbr>Renderer<wbr>Options</a>
+						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+							<a href="VegaMorphCharts.types.PresenterConfig.html#camera" class="tsd-kind-icon">camera</a>
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-interface">
 							<a href="VegaMorphCharts.types.PresenterConfig.html#layerSelection" class="tsd-kind-icon">layer<wbr>Selection</a>
@@ -770,7 +783,10 @@ title: 'PresenterConfig | @msrvida/sanddance'
 						<li class=" tsd-kind-property tsd-parent-kind-interface">
 							<a href="VegaMorphCharts.types.PresenterConfig.html#preserveDrawingBuffer" class="tsd-kind-icon">preserve<wbr>Drawing<wbr>Buffer</a>
 						</li>
-						<li class=" tsd-kind-property tsd-parent-kind-interface">
+						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite">
+							<a href="VegaMorphCharts.types.PresenterConfig.html#renderer" class="tsd-kind-icon">renderer</a>
+						</li>
+						<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 							<a href="VegaMorphCharts.types.PresenterConfig.html#transitionDurations" class="tsd-kind-icon">transition<wbr>Durations</a>
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-interface">
@@ -778,9 +794,6 @@ title: 'PresenterConfig | @msrvida/sanddance'
 						</li>
 						<li class=" tsd-kind-method tsd-parent-kind-interface">
 							<a href="VegaMorphCharts.types.PresenterConfig.html#axisPickGridCallback" class="tsd-kind-icon">axis<wbr>Pick<wbr>Grid<wbr>Callback</a>
-						</li>
-						<li class=" tsd-kind-method tsd-parent-kind-interface">
-							<a href="VegaMorphCharts.types.PresenterConfig.html#getCameraTo" class="tsd-kind-icon">get<wbr>Camera<wbr>To</a>
 						</li>
 						<li class=" tsd-kind-method tsd-parent-kind-interface">
 							<a href="VegaMorphCharts.types.PresenterConfig.html#getCharacterSet" class="tsd-kind-icon">get<wbr>Character<wbr>Set</a>
@@ -844,6 +857,9 @@ title: 'PresenterConfig | @msrvida/sanddance'
 			</ul>
 			<ul class="after-current">
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="VegaMorphCharts.types.PresenterSetup.html" class="tsd-kind-icon">Presenter<wbr>Setup</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="VegaMorphCharts.types.PresenterStyle.html" class="tsd-kind-icon">Presenter<wbr>Style</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
@@ -854,6 +870,9 @@ title: 'PresenterConfig | @msrvida/sanddance'
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="VegaMorphCharts.types.Stage.html" class="tsd-kind-icon">Stage</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="VegaMorphCharts.types.Stagger.html" class="tsd-kind-icon">Stagger</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="VegaMorphCharts.types.StyledLine.html" class="tsd-kind-icon">Styled<wbr>Line</a>

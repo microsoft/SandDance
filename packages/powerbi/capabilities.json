@@ -48,7 +48,7 @@
                         "text": true
                     }
                 },
-                "cameraJSON": {
+                "setupJSON": {
                     "filterState": true,
                     "type": {
                         "text": true

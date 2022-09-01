@@ -13,7 +13,7 @@ export interface TextWithSpecRole extends SandDance.VegaMorphCharts.types.VegaTe
     specRole: SandDance.specs.SpecRoleCapabilities;
 }
 
-export function onBeforeCreateLayers(
+export function attachSpecRoleToAxisTitle(
     stage: SandDance.VegaMorphCharts.types.Stage,
     specCapabilities: SandDance.specs.SpecCapabilities,
 ) {

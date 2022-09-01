@@ -30,12 +30,11 @@ export const defaultPresenterConfig: PresenterConfig = {
     onCubeClick: (e, cube: Cube) => { },
     onCubeHover: (e, cube: Cube) => { },
     transitionDurations: {
-        color: 100,
         position: 600,
         stagger: 600,
         view: 600,
     },
-    initialMorphChartsRendererOptions: {
+    renderer: {
         advanced: false,
         advancedOptions: {},
         basicOptions: {

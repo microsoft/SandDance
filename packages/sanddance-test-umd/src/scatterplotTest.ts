@@ -10,7 +10,7 @@ namespace scatterplotTest {
     export const viewer = new SandDance.Viewer(document.querySelector('#vis'));
 
     const glDiv = viewer.presenter.getElement(SandDance.VegaMorphCharts.PresenterElement.gl);
-    const options: SandDance.specs.Insight = {
+    const insight: SandDance.specs.Insight = {
         columns: {
             color: 'Education',
             sort: 'TotalPop',
@@ -29,7 +29,7 @@ namespace scatterplotTest {
 
     vega.loader().load('../../../sample-data/demovote.tsv').then(text => {
         const data = vega.read(text, { type: 'tsv' });
-        viewer.render(options, data);
+        viewer.render({ insight }, data);
     });
 
 }

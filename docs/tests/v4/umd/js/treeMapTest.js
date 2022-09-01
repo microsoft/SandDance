@@ -3,7 +3,7 @@ var treeMapTest;
     SandDance.use(vega);
     treeMapTest.viewer = new SandDance.Viewer(document.querySelector('#vis'));
     var glDiv = treeMapTest.viewer.presenter.getElement(SandDance.VegaMorphCharts.PresenterElement.gl);
-    var options = {
+    var insight = {
         columns: {
             color: 'Class',
             size: 'TicketCost',
@@ -18,6 +18,6 @@ var treeMapTest;
     };
     vega.loader().load('../../../sample-data/titanicmaster.tsv').then(function (text) {
         var data = vega.read(text, { type: 'tsv' });
-        treeMapTest.viewer.render(options, data);
+        treeMapTest.viewer.render({ insight: insight }, data);
     });
 })(treeMapTest || (treeMapTest = {}));

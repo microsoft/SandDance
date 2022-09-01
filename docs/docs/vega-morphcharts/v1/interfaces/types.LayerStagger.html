@@ -1,6 +1,6 @@
 ---
 layout: typedoc
-title: 'MorphChartsColorMapper | @msrvida/vega-morphcharts'
+title: 'LayerStagger | @msrvida/vega-morphcharts'
 ---
 <header>
 <div class="tsd-page-title">
@@ -13,10 +13,10 @@ title: 'MorphChartsColorMapper | @msrvida/vega-morphcharts'
 				<a href="../modules/types.html">types</a>
 			</li>
 			<li>
-				<a href="types.MorphChartsColorMapper.html">MorphChartsColorMapper</a>
+				<a href="types.LayerStagger.html">LayerStagger</a>
 			</li>
 		</ul>
-		<h1>Interface MorphChartsColorMapper</h1>
+		<h1>Interface LayerStagger</h1>
 	</div>
 </div>
 </header>
@@ -27,7 +27,7 @@ title: 'MorphChartsColorMapper | @msrvida/vega-morphcharts'
 			<h3>Hierarchy</h3>
 			<ul class="tsd-hierarchy">
 				<li>
-					<span class="target">MorphChartsColorMapper</span>
+					<span class="target">LayerStagger</span>
 				</li>
 			</ul>
 		</section>
@@ -36,56 +36,47 @@ title: 'MorphChartsColorMapper | @msrvida/vega-morphcharts'
 			<section class="tsd-panel tsd-index-panel">
 				<div class="tsd-index-content">
 					<section class="tsd-index-section ">
-						<h3>Methods</h3>
+						<h3>Properties</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="types.MorphChartsColorMapper.html#getCubeUnitColorMap" class="tsd-kind-icon">get<wbr>Cube<wbr>Unit<wbr>Color<wbr>Map</a></li>
-							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="types.MorphChartsColorMapper.html#setCubeUnitColorMap" class="tsd-kind-icon">set<wbr>Cube<wbr>Unit<wbr>Color<wbr>Map</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="types.LayerStagger.html#cubes" class="tsd-kind-icon">cubes</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="types.LayerStagger.html#lines" class="tsd-kind-icon">lines</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="types.LayerStagger.html#texts" class="tsd-kind-icon">texts</a></li>
 						</ul>
 					</section>
 				</div>
 			</section>
 		</section>
 		<section class="tsd-panel-group tsd-member-group ">
-			<h2>Methods</h2>
-			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-				<a name="getCubeUnitColorMap" class="tsd-anchor"></a>
-				<h3>get<wbr>Cube<wbr>Unit<wbr>Color<wbr>Map</h3>
-				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">get<wbr>Cube<wbr>Unit<wbr>Color<wbr>Map<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="types.UnitColorMap.html" class="tsd-signature-type" data-tsd-kind="Interface">UnitColorMap</a></li>
-				</ul>
-				<ul class="tsd-descriptions">
-					<li class="tsd-description">
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/interfaces.ts#L315">src/interfaces.ts:315</a></li>
-							</ul>
-						</aside>
-						<h4 class="tsd-returns-title">Returns <a href="types.UnitColorMap.html" class="tsd-signature-type" data-tsd-kind="Interface">UnitColorMap</a></h4>
-					</li>
-				</ul>
+			<h2>Properties</h2>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<a name="cubes" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> cubes</h3>
+				<div class="tsd-signature tsd-kind-icon">cubes<span class="tsd-signature-symbol">:</span> <a href="types.Stagger.html" class="tsd-signature-type" data-tsd-kind="Interface">Stagger</a></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/interfaces.ts#L325">src/interfaces.ts:325</a></li>
+					</ul>
+				</aside>
 			</section>
-			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-				<a name="setCubeUnitColorMap" class="tsd-anchor"></a>
-				<h3>set<wbr>Cube<wbr>Unit<wbr>Color<wbr>Map</h3>
-				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">set<wbr>Cube<wbr>Unit<wbr>Color<wbr>Map<span class="tsd-signature-symbol">(</span>unitColorMap<span class="tsd-signature-symbol">: </span><a href="types.UnitColorMap.html" class="tsd-signature-type" data-tsd-kind="Interface">UnitColorMap</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-				</ul>
-				<ul class="tsd-descriptions">
-					<li class="tsd-description">
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/interfaces.ts#L316">src/interfaces.ts:316</a></li>
-							</ul>
-						</aside>
-						<h4 class="tsd-parameters-title">Parameters</h4>
-						<ul class="tsd-parameters">
-							<li>
-								<h5>unitColorMap: <a href="types.UnitColorMap.html" class="tsd-signature-type" data-tsd-kind="Interface">UnitColorMap</a></h5>
-							</li>
-						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-					</li>
-				</ul>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<a name="lines" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> lines</h3>
+				<div class="tsd-signature tsd-kind-icon">lines<span class="tsd-signature-symbol">:</span> <a href="types.Stagger.html" class="tsd-signature-type" data-tsd-kind="Interface">Stagger</a></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/interfaces.ts#L326">src/interfaces.ts:326</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<a name="texts" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> texts</h3>
+				<div class="tsd-signature tsd-kind-icon">texts<span class="tsd-signature-symbol">:</span> <a href="types.Stagger.html" class="tsd-signature-type" data-tsd-kind="Interface">Stagger</a></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/interfaces.ts#L327">src/interfaces.ts:327</a></li>
+					</ul>
+				</aside>
 			</section>
 		</section>
 	</div>
@@ -115,10 +106,16 @@ title: 'MorphChartsColorMapper | @msrvida/vega-morphcharts'
 					<a href="../classes/types.MorphChartsCore.html" class="tsd-kind-icon">Morph<wbr>Charts<wbr>Core</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="types.AdvancedRendererOptions.html" class="tsd-kind-icon">Advanced<wbr>Renderer<wbr>Options</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="types.Axis.html" class="tsd-kind-icon">Axis</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="types.Base.html" class="tsd-kind-icon">Base</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="types.BasicRendererOptions.html" class="tsd-kind-icon">Basic<wbr>Renderer<wbr>Options</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="types.Cube.html" class="tsd-kind-icon">Cube</a>
@@ -126,6 +123,27 @@ title: 'MorphChartsColorMapper | @msrvida/vega-morphcharts'
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="types.FacetRect.html" class="tsd-kind-icon">Facet<wbr>Rect</a>
 				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="types.ICubeLayer.html" class="tsd-kind-icon">ICube<wbr>Layer</a>
+				</li>
+			</ul>
+			<ul class="current">
+				<li class="current tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="types.LayerStagger.html" class="tsd-kind-icon">Layer<wbr>Stagger</a>
+					<ul>
+						<li class=" tsd-kind-property tsd-parent-kind-interface">
+							<a href="types.LayerStagger.html#cubes" class="tsd-kind-icon">cubes</a>
+						</li>
+						<li class=" tsd-kind-property tsd-parent-kind-interface">
+							<a href="types.LayerStagger.html#lines" class="tsd-kind-icon">lines</a>
+						</li>
+						<li class=" tsd-kind-property tsd-parent-kind-interface">
+							<a href="types.LayerStagger.html#texts" class="tsd-kind-icon">texts</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+			<ul class="after-current">
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="types.Legend.html" class="tsd-kind-icon">Legend</a>
 				</li>
@@ -135,29 +153,20 @@ title: 'MorphChartsColorMapper | @msrvida/vega-morphcharts'
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="types.LegendRowSymbol.html" class="tsd-kind-icon">Legend<wbr>Row<wbr>Symbol</a>
 				</li>
-			</ul>
-			<ul class="current">
-				<li class="current tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.MorphChartsColorMapper.html" class="tsd-kind-icon">Morph<wbr>Charts<wbr>Color<wbr>Mapper</a>
-					<ul>
-						<li class=" tsd-kind-method tsd-parent-kind-interface">
-							<a href="types.MorphChartsColorMapper.html#getCubeUnitColorMap" class="tsd-kind-icon">get<wbr>Cube<wbr>Unit<wbr>Color<wbr>Map</a>
-						</li>
-						<li class=" tsd-kind-method tsd-parent-kind-interface">
-							<a href="types.MorphChartsColorMapper.html#setCubeUnitColorMap" class="tsd-kind-icon">set<wbr>Cube<wbr>Unit<wbr>Color<wbr>Map</a>
-						</li>
-					</ul>
-				</li>
-			</ul>
-			<ul class="after-current">
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="types.MorphChartsColors.html" class="tsd-kind-icon">Morph<wbr>Charts<wbr>Colors</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="types.MorphChartsRendererOptions.html" class="tsd-kind-icon">Morph<wbr>Charts<wbr>Renderer<wbr>Options</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="types.PreStage.html" class="tsd-kind-icon">Pre<wbr>Stage</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="types.PresenterConfig.html" class="tsd-kind-icon">Presenter<wbr>Config</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="types.PresenterSetup.html" class="tsd-kind-icon">Presenter<wbr>Setup</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="types.PresenterStyle.html" class="tsd-kind-icon">Presenter<wbr>Style</a>
@@ -170,6 +179,9 @@ title: 'MorphChartsColorMapper | @msrvida/vega-morphcharts'
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="types.Stage.html" class="tsd-kind-icon">Stage</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="types.Stagger.html" class="tsd-kind-icon">Stagger</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="types.StyledLine.html" class="tsd-kind-icon">Styled<wbr>Line</a>

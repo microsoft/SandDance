@@ -267,44 +267,6 @@ function _Settings(_props: Props) {
                             defaultValue={this.props.explorer.snapshotThumbWidth}
                         />
                     </Group>
-                    <Group label={strings.labelTransitionDurations}>
-                        <base.fluentUI.Slider
-                            label={strings.labelTransitionColor}
-                            onChange={value => {
-                                this.props.explorer.viewerOptions.transitionDurations.color = value;
-                            }}
-                            min={0}
-                            max={10000}
-                            defaultValue={this.props.explorer.viewerOptions.transitionDurations.color}
-                        />
-                        <base.fluentUI.Slider
-                            label={strings.labelTransitionPosition}
-                            onChange={value => {
-                                this.props.explorer.viewerOptions.transitionDurations.position = value;
-                            }}
-                            min={0}
-                            max={10000}
-                            defaultValue={this.props.explorer.viewerOptions.transitionDurations.position}
-                        />
-                        <base.fluentUI.Slider
-                            label={strings.labelTransitionStagger}
-                            onChange={value => {
-                                this.props.explorer.viewerOptions.transitionDurations.stagger = value;
-                            }}
-                            min={0}
-                            max={10000}
-                            defaultValue={this.props.explorer.viewerOptions.transitionDurations.stagger}
-                        />
-                        <base.fluentUI.Slider
-                            label={strings.labelTransitionCamera}
-                            onChange={value => {
-                                this.props.explorer.viewerOptions.transitionDurations.view = value;
-                            }}
-                            min={0}
-                            max={10000}
-                            defaultValue={this.props.explorer.viewerOptions.transitionDurations.view}
-                        />
-                    </Group>
                     {props.additionalSettings && props.additionalSettings.map((g, i) => (
                         <Group key={i} label={g.groupLabel}>
                             {g.children}

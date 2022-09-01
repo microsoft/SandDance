@@ -6,7 +6,7 @@
 import { CommandBarButtonStyles } from './CommandBarButton.styles';
 import { Logo } from './logo';
 import { base } from '../base';
-import { HistoryItem } from '../explorer';
+import { HistoryItem } from '../dialogs/history';
 import { strings } from '../language';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { SandDance } from '@msrvida/sanddance-react';

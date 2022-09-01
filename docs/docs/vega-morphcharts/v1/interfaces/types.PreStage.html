@@ -34,13 +34,13 @@ title: 'PreStage | @msrvida/vega-morphcharts'
 		<section class="tsd-panel">
 			<h3 class="tsd-before-signature">Callable</h3>
 			<ul class="tsd-signatures tsd-kind-interface tsd-parent-kind-namespace">
-				<li class="tsd-signature tsd-kind-icon">Pre<wbr>Stage<span class="tsd-signature-symbol">(</span>stage<span class="tsd-signature-symbol">: </span><a href="types.Stage.html" class="tsd-signature-type" data-tsd-kind="Interface">Stage</a>, colorMapper<span class="tsd-signature-symbol">: </span><a href="types.MorphChartsColorMapper.html" class="tsd-signature-type" data-tsd-kind="Interface">MorphChartsColorMapper</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				<li class="tsd-signature tsd-kind-icon">Pre<wbr>Stage<span class="tsd-signature-symbol">(</span>stage<span class="tsd-signature-symbol">: </span><a href="types.Stage.html" class="tsd-signature-type" data-tsd-kind="Interface">Stage</a>, cubeLayer<span class="tsd-signature-symbol">: </span><a href="types.ICubeLayer.html" class="tsd-signature-type" data-tsd-kind="Interface">ICubeLayer</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 			</ul>
 			<ul class="tsd-descriptions">
 				<li class="tsd-description">
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/interfaces.ts#L152">src/interfaces.ts:152</a></li>
+							<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/vega-morphcharts/src/interfaces.ts#L153">src/interfaces.ts:153</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -54,7 +54,7 @@ title: 'PreStage | @msrvida/vega-morphcharts'
 							<h5>stage: <a href="types.Stage.html" class="tsd-signature-type" data-tsd-kind="Interface">Stage</a></h5>
 						</li>
 						<li>
-							<h5>colorMapper: <a href="types.MorphChartsColorMapper.html" class="tsd-signature-type" data-tsd-kind="Interface">MorphChartsColorMapper</a></h5>
+							<h5>cubeLayer: <a href="types.ICubeLayer.html" class="tsd-signature-type" data-tsd-kind="Interface">ICubeLayer</a></h5>
 						</li>
 					</ul>
 					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -88,16 +88,28 @@ title: 'PreStage | @msrvida/vega-morphcharts'
 					<a href="../classes/types.MorphChartsCore.html" class="tsd-kind-icon">Morph<wbr>Charts<wbr>Core</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="types.AdvancedRendererOptions.html" class="tsd-kind-icon">Advanced<wbr>Renderer<wbr>Options</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="types.Axis.html" class="tsd-kind-icon">Axis</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="types.Base.html" class="tsd-kind-icon">Base</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="types.BasicRendererOptions.html" class="tsd-kind-icon">Basic<wbr>Renderer<wbr>Options</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="types.Cube.html" class="tsd-kind-icon">Cube</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="types.FacetRect.html" class="tsd-kind-icon">Facet<wbr>Rect</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="types.ICubeLayer.html" class="tsd-kind-icon">ICube<wbr>Layer</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="types.LayerStagger.html" class="tsd-kind-icon">Layer<wbr>Stagger</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="types.Legend.html" class="tsd-kind-icon">Legend</a>
@@ -109,10 +121,10 @@ title: 'PreStage | @msrvida/vega-morphcharts'
 					<a href="types.LegendRowSymbol.html" class="tsd-kind-icon">Legend<wbr>Row<wbr>Symbol</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.MorphChartsColorMapper.html" class="tsd-kind-icon">Morph<wbr>Charts<wbr>Color<wbr>Mapper</a>
+					<a href="types.MorphChartsColors.html" class="tsd-kind-icon">Morph<wbr>Charts<wbr>Colors</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-					<a href="types.MorphChartsColors.html" class="tsd-kind-icon">Morph<wbr>Charts<wbr>Colors</a>
+					<a href="types.MorphChartsRendererOptions.html" class="tsd-kind-icon">Morph<wbr>Charts<wbr>Renderer<wbr>Options</a>
 				</li>
 			</ul>
 			<ul class="current">
@@ -125,6 +137,9 @@ title: 'PreStage | @msrvida/vega-morphcharts'
 					<a href="types.PresenterConfig.html" class="tsd-kind-icon">Presenter<wbr>Config</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="types.PresenterSetup.html" class="tsd-kind-icon">Presenter<wbr>Setup</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="types.PresenterStyle.html" class="tsd-kind-icon">Presenter<wbr>Style</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
@@ -135,6 +150,9 @@ title: 'PreStage | @msrvida/vega-morphcharts'
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="types.Stage.html" class="tsd-kind-icon">Stage</a>
+				</li>
+				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+					<a href="types.Stagger.html" class="tsd-kind-icon">Stagger</a>
 				</li>
 				<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 					<a href="types.StyledLine.html" class="tsd-kind-icon">Styled<wbr>Line</a>

@@ -1,6 +1,6 @@
 {
 	"name": "@msrvida/vega-morphcharts",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "MorphCharts renderer for Vega",
 	"main": "dist/es6/index.js",
 	"files": [
@@ -24,15 +24,16 @@
 	"license": "MIT",
 	"dependencies": {
 		"@msrvida/chart-types": "^1",
-		"morphcharts": "^1",
-		"d3-color": "^1.4.0",
-		"d3-ease": "^1.0.5",
+		"d3-color": "^3.1.0",
+		"d3-ease": "^3.0.1",
 		"deepmerge": "^2.1.1",
 		"is-plain-object": "^5.0.0",
+		"morphcharts": "^1",
 		"tsx-create-element": "^2.2.5",
 		"vega-typings": "0.21.0"
 	},
 	"devDependencies": {
+		"@types/d3-color": "^3.1.0",
 		"@types/d3-ease": "^3.0.0",
 		"@types/react": ">=16.8.0 <18.0.0",
 		"typescript": "^4.2.3",

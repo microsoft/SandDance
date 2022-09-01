@@ -26,7 +26,7 @@
         "serve-app": "parcel serve ./test/sanddance-app.html --port 8085 --open --no-autoinstall",
         "start": "npm-run-all --parallel watch-typescript watch-css serve-app",
         "parcel": "lerna run parcel --parallel",
-        "restore-dist": "git checkout -q -- ./packages/sanddance/dist/umd/sanddance.d.ts ./packages/vega-deck.gl/dist/umd/vega-deck.gl.d.ts ./packages/vega-morphcharts/dist/umd/vega-morphcharts.d.ts",
+        "restore-dist": "git checkout -q -- ./packages/sanddance/dist/umd/sanddance.d.ts ./packages/vega-deck.gl/dist/umd/vega-deck.gl.d.ts ./packages/vega-morphcharts/dist/umd/vega-morphcharts.d.ts ./packages/sanddance-specs/dist/umd/sanddance-specs.d.ts",
         "clean-parcel-cache": "rimraf ./packages/**/.cache/ && rimraf ./packages/**/.parcel-cache/",
         "clean-build": "npm run clean-parcel-cache && rimraf ./packages/**/dist/ && rimraf ./**/package-lock.json && rimraf ./lerna-debug.log",
         "clean": "lerna clean --yes && npm run clean-build && npm run restore-dist",

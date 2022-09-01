@@ -18,7 +18,7 @@ import {
     addTransforms,
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
-import { Column, View } from '@msrvida/chart-types';
+import { Column, Dimension3D, View } from '@msrvida/chart-types';
 import {
     RectEncodeEntry,
     RectMark,
@@ -204,7 +204,7 @@ export class Scatter extends Layout {
 
         const columnSignals: {
             column: Column,
-            xyz: 'x' | 'y' | 'z',
+            xyz: Dimension3D,
             scaleName: string,
             domain: ScaleData | SignalRef,
             reverse: boolean,

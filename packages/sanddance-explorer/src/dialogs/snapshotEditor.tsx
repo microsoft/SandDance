@@ -106,13 +106,15 @@ function _SnapshotEditor(_props: Props) {
                             disabled={!this.state.image || !this.state.title}
                             key={0}
                             onClick={e => {
+                                const setup = SandDance.VegaMorphCharts.util.clone(explorer.getSetup());
+                                setup.camera = explorer.viewer.getCamera();
                                 const snapshot: Snapshot = {
                                     title: this.state.title,
                                     description: this.state.description,
                                     insight: this.state.insight,
                                     image: this.state.image,
                                     bgColor: this.state.bgColor,
-                                    camera: explorer.viewer.getCamera(),
+                                    setup,
                                 };
                                 this.props.modifySnapShot && this.props.modifySnapShot(snapshot);
                                 this.props.onWriteSnapshot(snapshot, this.state.editIndex);

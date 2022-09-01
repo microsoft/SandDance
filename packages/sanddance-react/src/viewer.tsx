@@ -4,12 +4,13 @@
 */
 
 import { base } from './base';
-import { compareInsight } from './util';
+import { compareInsight, deepCompare } from './util';
 import { specs, types, VegaMorphCharts, Viewer } from '@msrvida/sanddance';
 
 export interface Props {
     viewerOptions?: Partial<types.ViewerOptions>;
     insight: specs.Insight;
+    setup: types.Setup;
     data: object[];
     renderOptions?: types.RenderOptions;
     onView?: (renderResult: types.RenderResult) => void;
@@ -31,7 +32,10 @@ function _SandDanceReact(_props: Props) {
             const { props } = this;
             this.lastData = props.data;
             this.viewer.render(
-                props.insight,
+                {
+                    insight: props.insight,
+                    setup: props.setup,
+                },
                 props.data,
                 props.renderOptions,
             ).then(renderResult => {
@@ -46,11 +50,26 @@ function _SandDanceReact(_props: Props) {
 
         private view() {
             const { props } = this;
+            let didLayout = false;
             if (props.insight && props.data) {
                 const c = compareInsight(this.viewer, props.insight);
                 const sameDataRef = props.data === this.lastData;
                 if (!c.compare || !sameDataRef) {
                     this.layout();
+                    didLayout = true;
+                }
+            }
+            if (!didLayout && props.setup) {
+                const { camera } = props.setup;
+                //compare setup, move camera
+                if (camera && camera !== 'hold') {
+                    if (!deepCompare(this.viewer.getCamera(), camera)) {
+                        //camera is different
+                        this.viewer.setCamera(camera);
+                    }
+                }
+                if (props.setup.renderer) {
+                    this.viewer?.presenter?.morphchartsref?.setMorphChartsRendererOptions(props.setup.renderer);
                 }
             }
         }

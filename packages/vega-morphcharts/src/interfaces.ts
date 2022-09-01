@@ -3,11 +3,12 @@
 * Licensed under the MIT License.
 */
 
-import { Camera, View } from '@msrvida/chart-types';
+import { Camera, Dimension3D, View } from '@msrvida/chart-types';
 import { Scene, SceneLine, SceneText } from 'vega-typings';
 import { Axes, Core, Renderers } from 'morphcharts';
 import { Config } from 'morphcharts/dist/renderers/advanced/config';
 import { quat, vec3 } from 'gl-matrix';
+import { CameraTransitioner, ModelTransitioner, Transitioner } from './transition';
 
 export type Position = [number, number, number];
 export type RGBAColor = [number, number, number, number];
@@ -36,7 +37,7 @@ export interface TickText extends VegaTextLayerDatum {
     value: number | string;
 }
 
-export type AxisRole = 'x' | 'y' | 'z';
+export type AxisRole = Dimension3D;
 
 export interface Axis {
     axisRole: AxisRole;
@@ -149,27 +150,33 @@ export interface LegendRowSymbol {
  * Function that can be called prior to presenting the stage.
  */
 export interface PreStage {
-    (stage: Stage, colorMapper: MorphChartsColorMapper): void;
+    (stage: Stage, cubeLayer: ICubeLayer): void;
 }
 
 /**
  * Lengths of time for a transition animation.
  */
 export interface TransitionDurations {
-    color?: number;
     position?: number;
     stagger?: number;
     view?: number;
 }
 
 /**
+ * Visualization setup options to be used by the Presenter.
+ */
+export interface PresenterSetup {
+    camera?: Camera | 'hold';
+    transitionDurations?: TransitionDurations;
+    renderer?: MorphChartsRendererOptions;
+}
+
+/**
  * Configuration options to be used by the Presenter.
  */
-export interface PresenterConfig {
-    getCameraTo?: () => Camera;
-    transitionDurations?: TransitionDurations;
+export interface PresenterConfig extends PresenterSetup {
     morphChartsColors?: MorphChartsColors;
-    initialMorphChartsRendererOptions?: MorphChartsRendererOptions;
+    renderer?: MorphChartsRendererOptions;
     preStage?: PreStage;
     getCharacterSet?: (stage: Stage) => string[];
     redraw?: () => void;
@@ -257,26 +264,17 @@ export interface MorphChartsRendererOptions {
 export interface MorphChartsRef {
     reset: () => void;
     core: Core;
-    isCameraMovement: boolean;
-    isTransitioning: boolean;
-    cameraTime: number;
-    transitionTime: number;
-    transitionModel: boolean;
+    cameraTransitioner: CameraTransitioner;
+    modelTransitioner: ModelTransitioner;
+    positionTransitioner: Transitioner,
     setMorphChartsRendererOptions: (value: MorphChartsRendererOptions) => void;
     lastMorphChartsRendererOptions: MorphChartsRendererOptions;
-    qModelFrom: quat;
-    qModelTo: quat;
-    qModelCurrent: quat;
-    qCameraRotationFrom: quat;
-    qCameraRotationTo: quat;
-    qCameraRotationCurrent: quat;
-    vCameraPositionFrom: vec3;
-    vCameraPositionTo: vec3;
-    vCameraPositionCurrent: vec3;
+    lastPresenterConfig: PresenterConfig;
     supportedRenders: {
         advanced: boolean;
         basic: boolean;
-    }
+    };
+    layerStagger: LayerStagger;
 }
 
 export interface ILayerProps {
@@ -299,8 +297,14 @@ export interface IBounds {
 
 export interface ILayer {
     bounds: IBounds;
-    update?: (bounds: IBounds, selected?: Set<number>) => void;
-    unitColorMap?: UnitColorMap
+    update?: (bounds: IBounds, selected?: Set<number>, stagger?: Stagger) => void;
+    unitColorMap?: UnitColorMap;
+}
+
+export interface ICubeLayer extends ILayer {
+    positionsX: Float64Array;
+    positionsY: Float64Array;
+    positionsZ: Float64Array;
 }
 
 export type ILayerCreator = (props: ILayerProps) => ILayer;
@@ -311,15 +315,24 @@ export interface LayerSelection {
     texts?: Set<number>;
 }
 
-export interface MorphChartsColorMapper {
-    getCubeUnitColorMap: () => UnitColorMap;
-    setCubeUnitColorMap: (unitColorMap: UnitColorMap) => void;
+export interface Stagger {
+    staggerOrders?: Float64Array;
+    minStaggerOrder?: number;
+    maxStaggerOrder?: number;
 }
 
-export interface MorphChartsRenderResult extends MorphChartsColorMapper {
-    activate(id: number),
+export interface LayerStagger {
+    cubes?: Stagger;
+    lines?: Stagger;
+    texts?: Stagger;
+}
+
+export interface MorphChartsRenderResult {
+    activate(id: number);
+    bounds: IBounds;
     update: (layerSelection: LayerSelection) => void;
     moveCamera: (position: vec3, rotation: quat) => void;
+    getCubeLayer: () => ICubeLayer;
 }
 
 export type MorphChartsColor = [number, number, number];
