@@ -62,13 +62,19 @@ function _Viewer(_props: Props) {
             if (!didLayout && props.setup) {
                 const { camera } = props.setup;
                 //compare setup, move camera
-                if (camera && camera !== 'hold') {
-                    if (!deepCompare(this.viewer.getCamera(), camera)) {
+                if (camera !== 'hold') {
+                    if (!deepCompare(this.viewer.setup.camera, camera)) {
                         //camera is different
-                        this.viewer.setCamera(camera);
+                        if (!camera) {
+                            this.viewer?.presenter?.homeCamera();
+                        } else {
+                            this.viewer.setCamera(camera);
+                        }
+                        //save this for next comparison
+                        const setup = VegaMorphCharts.util.clone(this.viewer.setup);
+                        setup.camera = camera;
+                        this.viewer.setup = setup;
                     }
-                } else if (!camera && this.viewer.setup.camera) {
-                    this.viewer?.presenter?.homeCamera();
                 }
                 if (props.setup.renderer) {
                     this.viewer?.presenter?.morphchartsref?.setMorphChartsRendererOptions(props.setup.renderer);
