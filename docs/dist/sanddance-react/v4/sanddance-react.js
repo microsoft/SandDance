@@ -201,14 +201,20 @@
               if (!didLayout && props.setup) {
                   const { camera } = props.setup;
                   //compare setup, move camera
-                  if (camera && camera !== 'hold') {
-                      if (!deepCompare(this.viewer.getCamera(), camera)) {
+                  if (camera !== 'hold') {
+                      if (!deepCompare(this.viewer.setup.camera, camera)) {
                           //camera is different
-                          this.viewer.setCamera(camera);
+                          if (!camera) {
+                              (_b = (_a = this.viewer) === null || _a === void 0 ? void 0 : _a.presenter) === null || _b === void 0 ? void 0 : _b.homeCamera();
+                          }
+                          else {
+                              this.viewer.setCamera(camera);
+                          }
+                          //save this for next comparison
+                          const setup = SandDance.VegaMorphCharts.util.clone(this.viewer.setup);
+                          setup.camera = camera;
+                          this.viewer.setup = setup;
                       }
-                  }
-                  else if (!camera && this.viewer.setup.camera) {
-                      (_b = (_a = this.viewer) === null || _a === void 0 ? void 0 : _a.presenter) === null || _b === void 0 ? void 0 : _b.homeCamera();
                   }
                   if (props.setup.renderer) {
                       (_e = (_d = (_c = this.viewer) === null || _c === void 0 ? void 0 : _c.presenter) === null || _d === void 0 ? void 0 : _d.morphchartsref) === null || _e === void 0 ? void 0 : _e.setMorphChartsRendererOptions(props.setup.renderer);

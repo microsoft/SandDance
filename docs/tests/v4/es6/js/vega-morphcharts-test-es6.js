@@ -77182,7 +77182,7 @@ var _defaults = require("../defaults");
 var _color = require("./color");
 var _defaults1 = require("./defaults");
 function morphChartsRender(ref, prevStage, stage, height, width, preStage, colors, config) {
-    const { qCameraRotation2d , qCameraRotation3d , qModel2d , qModel3d , vPosition  } = (0, _defaults1.cameraDefaults);
+    const { qCameraRotation2d , qCameraRotation3d , qModelRotation2d , qModelRotation3d , vCameraPosition  } = (0, _defaults1.cameraDefaults);
     const { core , cameraTransitioner , modelTransitioner , positionTransitioner  } = ref;
     let cameraTo;
     let holdCamera;
@@ -77191,34 +77191,34 @@ function morphChartsRender(ref, prevStage, stage, height, width, preStage, color
     if (prevStage && prevStage.view !== stage.view) {
         modelTransitioner.shouldTransition = !holdCamera;
         if (stage.view === "2d") {
-            modelTransitioner.qModelFrom = qModel3d;
-            modelTransitioner.qModelTo = qModel2d;
-            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
-            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+            modelTransitioner.qRotation.from = qModelRotation3d;
+            modelTransitioner.qRotation.to = qModelRotation2d;
+            cameraTransitioner.qRotation.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
+            cameraTransitioner.vPosition.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vCameraPosition;
         } else {
-            modelTransitioner.qModelFrom = qModel2d;
-            modelTransitioner.qModelTo = qModel3d;
-            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
-            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+            modelTransitioner.qRotation.from = qModelRotation2d;
+            modelTransitioner.qRotation.to = qModelRotation3d;
+            cameraTransitioner.qRotation.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
+            cameraTransitioner.vPosition.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vCameraPosition;
         }
     } else {
         modelTransitioner.shouldTransition = false;
         if (stage.view === "2d") {
-            modelTransitioner.qModelTo = qModel2d;
-            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
-            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+            modelTransitioner.qRotation.to = qModelRotation2d;
+            cameraTransitioner.qRotation.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
+            cameraTransitioner.vPosition.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vCameraPosition;
         } else {
-            modelTransitioner.qModelTo = qModel3d;
-            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
-            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+            modelTransitioner.qRotation.to = qModelRotation3d;
+            cameraTransitioner.qRotation.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
+            cameraTransitioner.vPosition.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vCameraPosition;
         }
     }
-    core.camera.getOrbit(cameraTransitioner.qCameraRotationFrom);
-    core.camera.getPosition(cameraTransitioner.vCameraPositionFrom);
+    core.camera.getOrbit(cameraTransitioner.qRotation.from);
+    core.camera.getPosition(cameraTransitioner.vPosition.from);
     if (!prevStage) {
-        core.setModelRotation(modelTransitioner.qModelTo, false);
-        core.camera.setOrbit(cameraTransitioner.qCameraRotationTo, false);
-        core.camera.setPosition(cameraTransitioner.vCameraPositionTo, false);
+        core.setModelRotation(modelTransitioner.qRotation.to, false);
+        core.camera.setOrbit(cameraTransitioner.qRotation.to, false);
+        core.camera.setPosition(cameraTransitioner.vPosition.to, false);
     } else if (!holdCamera) cameraTransitioner.begin();
     positionTransitioner.begin();
     if (modelTransitioner.shouldTransition) modelTransitioner.begin();
@@ -77283,11 +77283,11 @@ function morphChartsRender(ref, prevStage, stage, height, width, preStage, color
         getCubeLayer: ()=>cubeLayer,
         update: (layerSelection)=>layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds, ref.layerStagger),
         activate: (id)=>core.renderer.transitionBuffers[0].activeId = id,
-        moveCamera: (position, rotation)=>{
+        moveCamera: (camera)=>{
             if (!(positionTransitioner.isTransitioning || modelTransitioner.isTransitioning)) {
-                core.camera.getOrbit(cameraTransitioner.qCameraRotationFrom);
-                core.camera.getPosition(cameraTransitioner.vCameraPositionFrom);
-                cameraTransitioner.move(position, rotation);
+                core.camera.getOrbit(cameraTransitioner.qRotation.from);
+                core.camera.getPosition(cameraTransitioner.vPosition.from);
+                cameraTransitioner.move(camera.position, camera.rotation);
             }
         }
     };
@@ -78129,23 +78129,23 @@ parcelHelpers.export(exports, "cameraDefaults", ()=>cameraDefaults);
 */ var _glMatrix = require("gl-matrix");
 var _morphcharts = require("morphcharts");
 function createCameraDefaults() {
-    const qModel2d = (0, _glMatrix.quat).create();
-    const qModel3d = (0, _morphcharts.Constants).QUAT_ROTATEX_MINUS_90;
+    const qModelRotation2d = (0, _glMatrix.quat).create();
+    const qModelRotation3d = (0, _morphcharts.Constants).QUAT_ROTATEX_MINUS_90;
     const qCameraRotation2d = (0, _glMatrix.quat).create();
     const qCameraRotation3d = (0, _glMatrix.quat).create();
     const qAngle = (0, _glMatrix.quat).create();
-    const vPosition = (0, _glMatrix.vec3).create();
+    const vCameraPosition = (0, _glMatrix.vec3).create();
     // Altitude (pitch around local right axis)
     (0, _glMatrix.quat).setAxisAngle(qCameraRotation3d, (0, _morphcharts.Constants).VECTOR3_UNITX, (0, _morphcharts.Helpers).AngleHelper.degreesToRadians(30));
     // Azimuth (yaw around global up axis)
     (0, _glMatrix.quat).setAxisAngle(qAngle, (0, _morphcharts.Constants).VECTOR3_UNITY, (0, _morphcharts.Helpers).AngleHelper.degreesToRadians(-25));
     (0, _glMatrix.quat).multiply(qCameraRotation3d, qCameraRotation3d, qAngle);
     return {
-        qModel2d,
-        qModel3d,
+        qModelRotation2d,
+        qModelRotation3d,
         qCameraRotation2d,
         qCameraRotation3d,
-        vPosition
+        vCameraPosition
     };
 }
 const cameraDefaults = createCameraDefaults();
@@ -78180,22 +78180,22 @@ function init(options, mcRendererOptions) {
             basic: (0, _renderer.rendererEnabled)(false)
         },
         reset: ()=>{
-            const { qCameraRotation2d , qCameraRotation3d , qModel2d , qModel3d , vPosition  } = (0, _defaults.cameraDefaults);
+            const { qCameraRotation2d , qCameraRotation3d , qModelRotation2d , qModelRotation3d , vCameraPosition  } = (0, _defaults.cameraDefaults);
             const { cameraTransitioner , modelTransitioner  } = ref;
             core.reset(true);
             if (ref.lastView === "3d") {
-                modelTransitioner.qModelTo = qModel3d;
-                cameraTransitioner.qCameraRotationTo = qCameraRotation3d;
-                cameraTransitioner.vCameraPositionTo = vPosition;
+                modelTransitioner.qRotation.to = qModelRotation3d;
+                cameraTransitioner.qRotation.to = qCameraRotation3d;
+                cameraTransitioner.vPosition.to = vCameraPosition;
             } else {
-                modelTransitioner.qModelTo = qModel2d;
-                cameraTransitioner.qCameraRotationTo = qCameraRotation2d;
-                cameraTransitioner.vCameraPositionTo = vPosition;
+                modelTransitioner.qRotation.to = qModelRotation2d;
+                cameraTransitioner.qRotation.to = qCameraRotation2d;
+                cameraTransitioner.vPosition.to = vCameraPosition;
             }
-            (0, _glMatrix.quat).slerp(modelTransitioner.qModelCurrent, modelTransitioner.qModelTo, modelTransitioner.qModelTo, 0);
-            core.setModelRotation(modelTransitioner.qModelCurrent, true);
-            core.camera.setOrbit(cameraTransitioner.qCameraRotationTo, true);
-            core.camera.setPosition(cameraTransitioner.vCameraPositionTo, true);
+            (0, _glMatrix.quat).slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.to, modelTransitioner.qRotation.to, 0);
+            core.setModelRotation(modelTransitioner.qRotation.current, true);
+            core.camera.setOrbit(cameraTransitioner.qRotation.to, true);
+            core.camera.setPosition(cameraTransitioner.vPosition.to, true);
         },
         cameraTransitioner,
         modelTransitioner,
@@ -78215,10 +78215,10 @@ function init(options, mcRendererOptions) {
         layerStagger: {}
     };
     const cam = (t)=>{
-        (0, _glMatrix.quat).slerp(cameraTransitioner.qCameraRotationCurrent, cameraTransitioner.qCameraRotationFrom, cameraTransitioner.qCameraRotationTo, t);
-        (0, _glMatrix.vec3).lerp(cameraTransitioner.vCameraPositionCurrent, cameraTransitioner.vCameraPositionFrom, cameraTransitioner.vCameraPositionTo, t);
-        core.camera.setOrbit(cameraTransitioner.qCameraRotationCurrent, false);
-        core.camera.setPosition(cameraTransitioner.vCameraPositionCurrent, false);
+        (0, _glMatrix.quat).slerp(cameraTransitioner.qRotation.current, cameraTransitioner.qRotation.from, cameraTransitioner.qRotation.to, t);
+        (0, _glMatrix.vec3).lerp(cameraTransitioner.vPosition.current, cameraTransitioner.vPosition.from, cameraTransitioner.vPosition.to, t);
+        core.camera.setOrbit(cameraTransitioner.qRotation.current, false);
+        core.camera.setPosition(cameraTransitioner.vPosition.current, false);
         // disable picking during transitions, as the performance degradation could reduce the framerate
         core.inputManager.isPickingEnabled = false;
     };
@@ -78228,8 +78228,8 @@ function init(options, mcRendererOptions) {
         if (modelTransitioner.isTransitioning) {
             const tm = modelTransitioner.elapse(elapsedTime, transitionDurations.view, true);
             if (modelTransitioner.shouldTransition) {
-                (0, _glMatrix.quat).slerp(modelTransitioner.qModelCurrent, modelTransitioner.qModelFrom, modelTransitioner.qModelTo, tm);
-                core.setModelRotation(modelTransitioner.qModelCurrent, false);
+                (0, _glMatrix.quat).slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.from, modelTransitioner.qRotation.to, tm);
+                core.setModelRotation(modelTransitioner.qRotation.current, false);
             }
             cam(tm);
         }
@@ -78381,26 +78381,32 @@ class Transitioner {
 class CameraTransitioner extends Transitioner {
     constructor(){
         super();
-        this.qCameraRotationFrom = (0, _glMatrix.quat).create();
-        this.qCameraRotationTo = null;
-        this.qCameraRotationCurrent = (0, _glMatrix.quat).create();
-        this.vCameraPositionFrom = (0, _glMatrix.vec3).create();
-        this.vCameraPositionTo = null;
-        this.vCameraPositionCurrent = (0, _glMatrix.vec3).create();
+        this.qRotation = {
+            from: (0, _glMatrix.quat).create(),
+            to: null,
+            current: (0, _glMatrix.quat).create()
+        };
+        this.vPosition = {
+            from: (0, _glMatrix.vec3).create(),
+            to: null,
+            current: (0, _glMatrix.vec3).create()
+        };
     }
     move(position, rotation) {
         this.begin();
-        this.qCameraRotationTo = rotation;
-        this.vCameraPositionTo = position;
+        this.qRotation.to = rotation;
+        this.vPosition.to = position;
     }
 }
 class ModelTransitioner extends Transitioner {
     constructor(){
         super();
         this.shouldTransition = false;
-        this.qModelFrom = null;
-        this.qModelTo = null;
-        this.qModelCurrent = (0, _glMatrix.quat).create();
+        this.qRotation = {
+            from: null,
+            to: null,
+            current: (0, _glMatrix.quat).create()
+        };
     }
 }
 

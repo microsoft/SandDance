@@ -18495,23 +18495,23 @@ f 5/6/6 1/12/6 8/11/6`;
 	* Licensed under the MIT License.
 	*/
 	function createCameraDefaults() {
-	    const qModel2d = create$1();
-	    const qModel3d = Constants.QUAT_ROTATEX_MINUS_90;
+	    const qModelRotation2d = create$1();
+	    const qModelRotation3d = Constants.QUAT_ROTATEX_MINUS_90;
 	    const qCameraRotation2d = create$1();
 	    const qCameraRotation3d = create$1();
 	    const qAngle = create$1();
-	    const vPosition = create$3();
+	    const vCameraPosition = create$3();
 	    // Altitude (pitch around local right axis)
 	    setAxisAngle(qCameraRotation3d, Constants.VECTOR3_UNITX, AngleHelper.degreesToRadians(30));
 	    // Azimuth (yaw around global up axis)
 	    setAxisAngle(qAngle, Constants.VECTOR3_UNITY, AngleHelper.degreesToRadians(-25));
 	    multiply(qCameraRotation3d, qCameraRotation3d, qAngle);
 	    return {
-	        qModel2d,
-	        qModel3d,
+	        qModelRotation2d,
+	        qModelRotation3d,
 	        qCameraRotation2d,
 	        qCameraRotation3d,
-	        vPosition,
+	        vCameraPosition,
 	    };
 	}
 	const cameraDefaults = createCameraDefaults();
@@ -18521,7 +18521,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	* Licensed under the MIT License.
 	*/
 	function morphChartsRender(ref, prevStage, stage, height, width, preStage, colors, config) {
-	    const { qCameraRotation2d, qCameraRotation3d, qModel2d, qModel3d, vPosition } = cameraDefaults;
+	    const { qCameraRotation2d, qCameraRotation3d, qModelRotation2d, qModelRotation3d, vCameraPosition } = cameraDefaults;
 	    const { core, cameraTransitioner, modelTransitioner, positionTransitioner } = ref;
 	    let cameraTo;
 	    let holdCamera;
@@ -18534,37 +18534,37 @@ f 5/6/6 1/12/6 8/11/6`;
 	    if (prevStage && (prevStage.view !== stage.view)) {
 	        modelTransitioner.shouldTransition = !holdCamera;
 	        if (stage.view === '2d') {
-	            modelTransitioner.qModelFrom = qModel3d;
-	            modelTransitioner.qModelTo = qModel2d;
-	            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
-	            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+	            modelTransitioner.qRotation.from = qModelRotation3d;
+	            modelTransitioner.qRotation.to = qModelRotation2d;
+	            cameraTransitioner.qRotation.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
+	            cameraTransitioner.vPosition.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vCameraPosition;
 	        }
 	        else {
-	            modelTransitioner.qModelFrom = qModel2d;
-	            modelTransitioner.qModelTo = qModel3d;
-	            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
-	            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+	            modelTransitioner.qRotation.from = qModelRotation2d;
+	            modelTransitioner.qRotation.to = qModelRotation3d;
+	            cameraTransitioner.qRotation.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
+	            cameraTransitioner.vPosition.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vCameraPosition;
 	        }
 	    }
 	    else {
 	        modelTransitioner.shouldTransition = false;
 	        if (stage.view === '2d') {
-	            modelTransitioner.qModelTo = qModel2d;
-	            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
-	            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+	            modelTransitioner.qRotation.to = qModelRotation2d;
+	            cameraTransitioner.qRotation.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
+	            cameraTransitioner.vPosition.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vCameraPosition;
 	        }
 	        else {
-	            modelTransitioner.qModelTo = qModel3d;
-	            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
-	            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+	            modelTransitioner.qRotation.to = qModelRotation3d;
+	            cameraTransitioner.qRotation.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
+	            cameraTransitioner.vPosition.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vCameraPosition;
 	        }
 	    }
-	    core.camera.getOrbit(cameraTransitioner.qCameraRotationFrom);
-	    core.camera.getPosition(cameraTransitioner.vCameraPositionFrom);
+	    core.camera.getOrbit(cameraTransitioner.qRotation.from);
+	    core.camera.getPosition(cameraTransitioner.vPosition.from);
 	    if (!prevStage) {
-	        core.setModelRotation(modelTransitioner.qModelTo, false);
-	        core.camera.setOrbit(cameraTransitioner.qCameraRotationTo, false);
-	        core.camera.setPosition(cameraTransitioner.vCameraPositionTo, false);
+	        core.setModelRotation(modelTransitioner.qRotation.to, false);
+	        core.camera.setOrbit(cameraTransitioner.qRotation.to, false);
+	        core.camera.setPosition(cameraTransitioner.vPosition.to, false);
 	    }
 	    else if (!holdCamera) {
 	        cameraTransitioner.begin();
@@ -18634,11 +18634,11 @@ f 5/6/6 1/12/6 8/11/6`;
 	        getCubeLayer: () => cubeLayer,
 	        update: layerSelection => layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds, ref.layerStagger),
 	        activate: id => core.renderer.transitionBuffers[0].activeId = id,
-	        moveCamera: (position, rotation) => {
+	        moveCamera: (camera) => {
 	            if (!(positionTransitioner.isTransitioning || modelTransitioner.isTransitioning)) {
-	                core.camera.getOrbit(cameraTransitioner.qCameraRotationFrom);
-	                core.camera.getPosition(cameraTransitioner.vCameraPositionFrom);
-	                cameraTransitioner.move(position, rotation);
+	                core.camera.getOrbit(cameraTransitioner.qRotation.from);
+	                core.camera.getPosition(cameraTransitioner.vPosition.from);
+	                cameraTransitioner.move(camera.position, camera.rotation);
 	            }
 	        },
 	    };
@@ -18828,26 +18828,32 @@ f 5/6/6 1/12/6 8/11/6`;
 	class CameraTransitioner extends Transitioner {
 	    constructor() {
 	        super();
-	        this.qCameraRotationFrom = create$1();
-	        this.qCameraRotationTo = null;
-	        this.qCameraRotationCurrent = create$1();
-	        this.vCameraPositionFrom = create$3();
-	        this.vCameraPositionTo = null;
-	        this.vCameraPositionCurrent = create$3();
+	        this.qRotation = {
+	            from: create$1(),
+	            to: null,
+	            current: create$1(),
+	        };
+	        this.vPosition = {
+	            from: create$3(),
+	            to: null,
+	            current: create$3(),
+	        };
 	    }
 	    move(position, rotation) {
 	        this.begin();
-	        this.qCameraRotationTo = rotation;
-	        this.vCameraPositionTo = position;
+	        this.qRotation.to = rotation;
+	        this.vPosition.to = position;
 	    }
 	}
 	class ModelTransitioner extends Transitioner {
 	    constructor() {
 	        super();
 	        this.shouldTransition = false;
-	        this.qModelFrom = null;
-	        this.qModelTo = null;
-	        this.qModelCurrent = create$1();
+	        this.qRotation = {
+	            from: null,
+	            to: null,
+	            current: create$1(),
+	        };
 	    }
 	}
 
@@ -18870,23 +18876,23 @@ f 5/6/6 1/12/6 8/11/6`;
 	            basic: rendererEnabled(false),
 	        },
 	        reset: () => {
-	            const { qCameraRotation2d, qCameraRotation3d, qModel2d, qModel3d, vPosition } = cameraDefaults;
+	            const { qCameraRotation2d, qCameraRotation3d, qModelRotation2d, qModelRotation3d, vCameraPosition } = cameraDefaults;
 	            const { cameraTransitioner, modelTransitioner } = ref;
 	            core.reset(true);
 	            if (ref.lastView === '3d') {
-	                modelTransitioner.qModelTo = qModel3d;
-	                cameraTransitioner.qCameraRotationTo = qCameraRotation3d;
-	                cameraTransitioner.vCameraPositionTo = vPosition;
+	                modelTransitioner.qRotation.to = qModelRotation3d;
+	                cameraTransitioner.qRotation.to = qCameraRotation3d;
+	                cameraTransitioner.vPosition.to = vCameraPosition;
 	            }
 	            else {
-	                modelTransitioner.qModelTo = qModel2d;
-	                cameraTransitioner.qCameraRotationTo = qCameraRotation2d;
-	                cameraTransitioner.vCameraPositionTo = vPosition;
+	                modelTransitioner.qRotation.to = qModelRotation2d;
+	                cameraTransitioner.qRotation.to = qCameraRotation2d;
+	                cameraTransitioner.vPosition.to = vCameraPosition;
 	            }
-	            slerp(modelTransitioner.qModelCurrent, modelTransitioner.qModelTo, modelTransitioner.qModelTo, 0);
-	            core.setModelRotation(modelTransitioner.qModelCurrent, true);
-	            core.camera.setOrbit(cameraTransitioner.qCameraRotationTo, true);
-	            core.camera.setPosition(cameraTransitioner.vCameraPositionTo, true);
+	            slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.to, modelTransitioner.qRotation.to, 0);
+	            core.setModelRotation(modelTransitioner.qRotation.current, true);
+	            core.camera.setOrbit(cameraTransitioner.qRotation.to, true);
+	            core.camera.setPosition(cameraTransitioner.vPosition.to, true);
 	        },
 	        cameraTransitioner,
 	        modelTransitioner,
@@ -18911,10 +18917,10 @@ f 5/6/6 1/12/6 8/11/6`;
 	        layerStagger: {},
 	    };
 	    const cam = (t) => {
-	        slerp(cameraTransitioner.qCameraRotationCurrent, cameraTransitioner.qCameraRotationFrom, cameraTransitioner.qCameraRotationTo, t);
-	        lerp(cameraTransitioner.vCameraPositionCurrent, cameraTransitioner.vCameraPositionFrom, cameraTransitioner.vCameraPositionTo, t);
-	        core.camera.setOrbit(cameraTransitioner.qCameraRotationCurrent, false);
-	        core.camera.setPosition(cameraTransitioner.vCameraPositionCurrent, false);
+	        slerp(cameraTransitioner.qRotation.current, cameraTransitioner.qRotation.from, cameraTransitioner.qRotation.to, t);
+	        lerp(cameraTransitioner.vPosition.current, cameraTransitioner.vPosition.from, cameraTransitioner.vPosition.to, t);
+	        core.camera.setOrbit(cameraTransitioner.qRotation.current, false);
+	        core.camera.setPosition(cameraTransitioner.vPosition.current, false);
 	        // disable picking during transitions, as the performance degradation could reduce the framerate
 	        core.inputManager.isPickingEnabled = false;
 	    };
@@ -18926,8 +18932,8 @@ f 5/6/6 1/12/6 8/11/6`;
 	        if (modelTransitioner.isTransitioning) {
 	            const tm = modelTransitioner.elapse(elapsedTime, transitionDurations.view, true);
 	            if (modelTransitioner.shouldTransition) {
-	                slerp(modelTransitioner.qModelCurrent, modelTransitioner.qModelFrom, modelTransitioner.qModelTo, tm);
-	                core.setModelRotation(modelTransitioner.qModelCurrent, false);
+	                slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.from, modelTransitioner.qRotation.to, tm);
+	                core.setModelRotation(modelTransitioner.qRotation.current, false);
 	            }
 	            cam(tm);
 	        }
