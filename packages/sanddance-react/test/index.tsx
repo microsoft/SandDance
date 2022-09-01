@@ -74,6 +74,10 @@ var insightSetups: SandDanceReact.SandDance.types.InsightSetup[] = [
             camera: {
                 position: [0, 0, 0],
                 rotation: [0, 0, 0, 1],
+                captureSize: {
+                    height: 100,
+                    width: 100,
+                }
             },
             transition: {
                 type: "ordinal"
