@@ -30,25 +30,25 @@ export function init(options: MorphChartsOptions, mcRendererOptions: MorphCharts
             basic: rendererEnabled(false),
         },
         reset: () => {
-            const { qCameraRotation2d, qCameraRotation3d, qModel2d, qModel3d, vPosition } = cameraDefaults;
+            const { qCameraRotation2d, qCameraRotation3d, qModelRotation2d, qModelRotation3d, vCameraPosition } = cameraDefaults;
             const { cameraTransitioner, modelTransitioner } = ref;
 
             core.reset(true);
 
             if (ref.lastView === '3d') {
-                modelTransitioner.qModelTo = qModel3d;
-                cameraTransitioner.qCameraRotationTo = qCameraRotation3d;
-                cameraTransitioner.vCameraPositionTo = vPosition;
+                modelTransitioner.qRotation.to = qModelRotation3d;
+                cameraTransitioner.qRotation.to = qCameraRotation3d;
+                cameraTransitioner.vPosition.to = vCameraPosition;
             } else {
-                modelTransitioner.qModelTo = qModel2d;
-                cameraTransitioner.qCameraRotationTo =  qCameraRotation2d;
-                cameraTransitioner.vCameraPositionTo =  vPosition;
+                modelTransitioner.qRotation.to = qModelRotation2d;
+                cameraTransitioner.qRotation.to = qCameraRotation2d;
+                cameraTransitioner.vPosition.to = vCameraPosition;
             }
 
-            quat.slerp(modelTransitioner.qModelCurrent, modelTransitioner.qModelTo, modelTransitioner.qModelTo, 0);
-            core.setModelRotation(modelTransitioner.qModelCurrent, true);
-            core.camera.setOrbit(cameraTransitioner.qCameraRotationTo, true);
-            core.camera.setPosition(cameraTransitioner.vCameraPositionTo, true);
+            quat.slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.to, modelTransitioner.qRotation.to, 0);
+            core.setModelRotation(modelTransitioner.qRotation.current, true);
+            core.camera.setOrbit(cameraTransitioner.qRotation.to, true);
+            core.camera.setPosition(cameraTransitioner.vPosition.to, true);
         },
         cameraTransitioner,
         modelTransitioner,
@@ -72,10 +72,10 @@ export function init(options: MorphChartsOptions, mcRendererOptions: MorphCharts
         layerStagger: {},
     };
     const cam = (t: number) => {
-        quat.slerp(cameraTransitioner.qCameraRotationCurrent, cameraTransitioner.qCameraRotationFrom, cameraTransitioner.qCameraRotationTo, t);
-        vec3.lerp(cameraTransitioner.vCameraPositionCurrent, cameraTransitioner.vCameraPositionFrom, cameraTransitioner.vCameraPositionTo, t);
-        core.camera.setOrbit(cameraTransitioner.qCameraRotationCurrent, false);
-        core.camera.setPosition(cameraTransitioner.vCameraPositionCurrent, false);
+        quat.slerp(cameraTransitioner.qRotation.current, cameraTransitioner.qRotation.from, cameraTransitioner.qRotation.to, t);
+        vec3.lerp(cameraTransitioner.vPosition.current, cameraTransitioner.vPosition.from, cameraTransitioner.vPosition.to, t);
+        core.camera.setOrbit(cameraTransitioner.qRotation.current, false);
+        core.camera.setPosition(cameraTransitioner.vPosition.current, false);
 
         // disable picking during transitions, as the performance degradation could reduce the framerate
         core.inputManager.isPickingEnabled = false;
@@ -88,8 +88,8 @@ export function init(options: MorphChartsOptions, mcRendererOptions: MorphCharts
         if (modelTransitioner.isTransitioning) {
             const tm = modelTransitioner.elapse(elapsedTime, transitionDurations.view, true);
             if (modelTransitioner.shouldTransition) {
-                quat.slerp(modelTransitioner.qModelCurrent, modelTransitioner.qModelFrom, modelTransitioner.qModelTo, tm);
-                core.setModelRotation(modelTransitioner.qModelCurrent, false);
+                quat.slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.from, modelTransitioner.qRotation.to, tm);
+                core.setModelRotation(modelTransitioner.qRotation.current, false);
             }
             cam(tm);
         }

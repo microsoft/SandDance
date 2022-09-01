@@ -332,7 +332,7 @@ export interface MorphChartsRenderResult {
     activate(id: number);
     bounds: IBounds;
     update: (layerSelection: LayerSelection) => void;
-    moveCamera: (position: vec3, rotation: quat) => void;
+    moveCamera: (camera: Camera) => void;
     getCubeLayer: () => ICubeLayer;
 }
 
