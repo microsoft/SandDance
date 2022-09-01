@@ -27,7 +27,7 @@ title: Examples
 
 ## <a name="apps"></a>SandDance apps v4 Beta
 * [Web app](../tests/v4/es6/app)
-* [Power BI custom visual](../dist/powerbi/v4/SandDance2019beta4.4.0.5.pbiviz) SandDance 2019 beta4 4.0.5
+* [Power BI custom visual](../dist/powerbi/v4/SandDance2019beta4.4.0.6.pbiviz) SandDance 2019 beta4 4.0.6
 * [VSCode extension](../dist/vscode/v4/vscode-sanddance-4.0.0-beta.1.vsix) SandDance 4.0.0-beta.1
 
 ## Previous versions
