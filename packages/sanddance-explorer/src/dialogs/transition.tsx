@@ -181,7 +181,7 @@ function _TransitionEditor(_props: Props) {
                             ]}
                             onChange={(e, o) => {
                                 const transitionType = o.key as SandDance.types.TransitionType;
-                                explorer.setState({ transitionType });
+                                explorer.setState({ transitionType, calculating: () => explorer.setStagger() });
                             }}
                         />
                     </Group>
@@ -195,7 +195,7 @@ function _TransitionEditor(_props: Props) {
                                             label={strings.labelTransitionStaggerByColumn}
                                             options={getColumnOptions(props, props.transitionColumn.name)}
                                             onChange={(e, o) => {
-                                                explorer.setState({ transitionColumn: o.data });
+                                                explorer.setState({ transitionColumn: o.data, calculating: () => explorer.setStagger() });
                                             }}
                                         />
                                     );
@@ -209,7 +209,7 @@ function _TransitionEditor(_props: Props) {
                                                 return { key, text, selected: props.transitionDimension === key };
                                             })}
                                             onChange={(e, o) => {
-                                                explorer.setState({ transitionDimension: o.key as SandDance.types.Dimension2D });
+                                                explorer.setState({ transitionDimension: o.key as SandDance.types.Dimension2D, calculating: () => explorer.setStagger() });
                                             }}
                                         />
                                     );
@@ -219,7 +219,7 @@ function _TransitionEditor(_props: Props) {
                         <base.fluentUI.Toggle
                             label={strings.labelTransitionStaggerReverse}
                             checked={props.transitionReverse}
-                            onChange={(e, transitionReverse) => explorer.setState({ transitionReverse })}
+                            onChange={(e, transitionReverse) => explorer.setState({ transitionReverse, calculating: () => explorer.setStagger() })}
                         />
                     </Group>
                     <Group label={strings.labelTransitionDurations}>

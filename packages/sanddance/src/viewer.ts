@@ -974,6 +974,10 @@ export class Viewer {
         return extractSignalValuesFromView(this.vegaViewGl, this.vegaSpec);
     }
 
+    assignTransitionStagger(transition: Transition) {
+        assignTransitionStagger(transition, this._dataScope.currentData(), this.convertSearchToSet(), this.presenter);
+    }
+    
     finalize() {
         if (this._dataScope) this._dataScope.finalize();
         if (this._details) this._details.finalize();
