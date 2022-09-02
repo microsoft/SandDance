@@ -9,6 +9,7 @@ import { easing } from './easing';
 export class Transitioner {
     public isTransitioning: boolean;
     public time: number;
+    public ended: () => void;
 
     constructor() {
         this.isTransitioning = false;
@@ -24,6 +25,7 @@ export class Transitioner {
         if (this.time >= totalTime) {
             this.isTransitioning = false;
             this.time = totalTime;
+            this.ended && this.ended();
         }
         const t = this.time / totalTime;
         return ease ? easing(t) : t;
