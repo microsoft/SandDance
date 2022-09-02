@@ -270,6 +270,7 @@ export interface MorphChartsRef {
     setMorphChartsRendererOptions: (value: MorphChartsRendererOptions) => void;
     lastMorphChartsRendererOptions: MorphChartsRendererOptions;
     lastPresenterConfig: PresenterConfig;
+    lastView: View;
     supportedRenders: {
         advanced: boolean;
         basic: boolean;
@@ -331,7 +332,7 @@ export interface MorphChartsRenderResult {
     activate(id: number);
     bounds: IBounds;
     update: (layerSelection: LayerSelection) => void;
-    moveCamera: (position: vec3, rotation: quat) => void;
+    moveCamera: (camera: Camera) => void;
     getCubeLayer: () => ICubeLayer;
 }
 

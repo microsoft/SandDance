@@ -87,7 +87,7 @@ export const strings = {
     labelExportTSV: '.TSV - Tab separated values',
     labelHistory: 'History',
     labelTools: 'Tools',
-    labelHoldCamera: 'Hold camera position',
+    labelHoldCamera: 'Keep previous camera position',
     labelVegaSpec: 'Vega specification',
     labelColor: 'Chart color',
     labelError: 'Error',

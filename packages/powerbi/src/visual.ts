@@ -65,6 +65,7 @@ export class Visual implements IVisual {
     private fetchMoreTimer: number;
     private filters: { sd: SandDance.searchExpression.Search, pbi: powerbiModels.IFilter[] };
     private columns: powerbiVisualsApi.DataViewMetadataColumn[];
+
     public persistViewChange: boolean;
     public persistSelectionChange: boolean;
     public ignoreSelectionUpdate: boolean;
@@ -102,6 +103,7 @@ export class Visual implements IVisual {
                     const setup = this.app.explorer.getSetup();
                     setup.camera = camera;
                     // console.log('onCameraChange', setup);
+                    this.ignorePersistUpdate = true;
                     this.persist({ setup });
                 },
                 onContextMenu: (e: MouseEvent | PointerEvent, selectionId?: powerbiVisualsApi.extensibility.ISelectionId) => {
@@ -248,6 +250,7 @@ export class Visual implements IVisual {
         }
 
         if (this.ignorePersistUpdate) {
+            // console.log('PersistUpdate ignored ')
             this.ignorePersistUpdate = false;
             clearTimeout(this.ignorePersistTimer);
             this.events.renderingFinished(this.renderingOptions);
@@ -311,6 +314,10 @@ export class Visual implements IVisual {
             }
         }
 
+        const renderingFinished = () => {
+            this.events.renderingFinished(this.renderingOptions);
+        };
+
         if (!different) {
             // console.log('Visual update - not different');
 
@@ -320,8 +327,7 @@ export class Visual implements IVisual {
 
             if (this.ignoreSelectionUpdate) {
                 this.ignoreSelectionUpdate = false;
-                this.events.renderingFinished(this.renderingOptions);
-                return;
+                return renderingFinished();
             }
 
             if (this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.View) {
@@ -347,13 +353,16 @@ export class Visual implements IVisual {
 
             if (!setInsight) {
                 // console.log('same insight')
-                const { camera, renderer } = setup;
-                if (camera && camera !== 'hold') {
-                    this.app.explorer.viewer.setCamera(camera);
+                const { camera: cameraOrHold, renderer } = setup;
+                let camera: SandDance.types.Camera;
+                let holdCamera = this.app.explorer.state.holdCamera;
+                if (cameraOrHold === 'hold') {
+                    holdCamera = true;
                 } else {
-                    this.app.explorer.viewer.presenter.homeCamera();
+                    camera = cameraOrHold;
                 }
-                this.app.explorer.setState({ renderer });
+                this.app.explorer.setState({ camera, holdCamera, renderer });
+                return renderingFinished();
             }
             return;
         }
@@ -419,7 +428,6 @@ export class Visual implements IVisual {
             tooltipExclusions,
             this.snapshots,
         );
-
     }
 
     syncBackgroundImage(imageHolderJSON: string) {

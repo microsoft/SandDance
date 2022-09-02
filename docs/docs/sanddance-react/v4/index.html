@@ -23,16 +23,46 @@ title: '@msrvida/sanddance-react'
 			</a>
 			<p>Add these to the <code>dependencies</code> section of your <code>package.json</code>, then run <code>npm install</code>:</p>
 			<pre><code class="language-json"><span style="color: #A31515">&quot;@msrvida/sanddance-react&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;^4&quot;</span><span style="color: #000000">,</span>
+<span style="color: #A31515">&quot;react&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;^17&quot;</span><span style="color: #000000">,</span>
+<span style="color: #A31515">&quot;react-dom&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;^17&quot;</span><span style="color: #000000">,</span>
 <span style="color: #A31515">&quot;vega&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;^5.20&quot;</span>
 </code></pre>
 			<p>Import these in your JavaScript:</p>
 			<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">vega</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;vega&#039;</span><span style="color: #000000">;</span>
 <span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">React</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;react&#039;</span><span style="color: #000000">;</span>
 <span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">ReactDOM</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;react-dom&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">SandDanceReact</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@msrvida/sanddance-react&#039;</span><span style="color: #000000">;</span>
 
-<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">use</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">SandDanceUse</span><span style="color: #000000">, </span><span style="color: #001080">SandDanceReact</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@msrvida/sanddance-react&#039;</span><span style="color: #000000">;</span>
+<span style="color: #001080">SandDanceReact</span><span style="color: #000000">.</span><span style="color: #795E26">use</span><span style="color: #000000">(</span><span style="color: #001080">React</span><span style="color: #000000">, </span><span style="color: #001080">ReactDOM</span><span style="color: #000000">, </span><span style="color: #001080">vega</span><span style="color: #000000">);</span>
 
-<span style="color: #795E26">SandDanceUse</span><span style="color: #000000">(</span><span style="color: #001080">React</span><span style="color: #000000">, </span><span style="color: #001080">ReactDOM</span><span style="color: #000000">, </span><span style="color: #001080">vega</span><span style="color: #000000">);</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">data</span><span style="color: #000000"> = [</span>
+<span style="color: #000000">    { </span><span style="color: #001080">a:</span><span style="color: #000000"> </span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #001080">b:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;c1&quot;</span><span style="color: #000000"> },</span>
+<span style="color: #000000">    { </span><span style="color: #001080">a:</span><span style="color: #000000"> </span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #001080">b:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;c2&quot;</span><span style="color: #000000"> },</span>
+<span style="color: #000000">    { </span><span style="color: #001080">a:</span><span style="color: #000000"> </span><span style="color: #098658">2</span><span style="color: #000000">, </span><span style="color: #001080">b:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;c3&quot;</span><span style="color: #000000"> },</span>
+<span style="color: #000000">    { </span><span style="color: #001080">a:</span><span style="color: #000000"> </span><span style="color: #098658">3</span><span style="color: #000000">, </span><span style="color: #001080">b:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;c4&quot;</span><span style="color: #000000"> }</span>
+<span style="color: #000000">];</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">insight</span><span style="color: #000000"> = {</span>
+<span style="color: #000000">    </span><span style="color: #001080">columns:</span><span style="color: #000000"> {</span>
+<span style="color: #000000">        </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;a&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">color:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;b&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    },</span>
+<span style="color: #000000">    </span><span style="color: #001080">scheme:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;set1&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">chart:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;barchartV&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">view:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;2d&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">size:</span><span style="color: #000000"> {</span>
+<span style="color: #000000">        </span><span style="color: #001080">height:</span><span style="color: #000000"> </span><span style="color: #098658">800</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">width:</span><span style="color: #000000"> </span><span style="color: #098658">800</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">}</span>
+
+<span style="color: #001080">ReactDOM</span><span style="color: #000000">.</span><span style="color: #795E26">render</span><span style="color: #000000">(</span>
+<span style="color: #000000">    </span><span style="color: #800000">&lt;</span><span style="color: #267F99">SandDanceReact.Viewer</span>
+<span style="color: #000000">        </span><span style="color: #FF0000">data</span><span style="color: #000000">=</span><span style="color: #0000FF">{</span><span style="color: #001080">data</span><span style="color: #0000FF">}</span>
+<span style="color: #000000">        </span><span style="color: #FF0000">insight</span><span style="color: #000000">=</span><span style="color: #0000FF">{</span><span style="color: #001080">insight</span><span style="color: #0000FF">}</span>
+<span style="color: #000000">    </span><span style="color: #800000">/&gt;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">document</span><span style="color: #000000">.</span><span style="color: #795E26">getElementById</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;app&#039;</span><span style="color: #000000">)</span>
+<span style="color: #000000">);</span>
 </code></pre>
 			<a href="#versions" id="versions" style="color: inherit; text-decoration: none;">
 				<h2>Versions</h2>
@@ -41,6 +71,7 @@ title: '@msrvida/sanddance-react'
 				<h3>Breaking changes in v4</h3>
 			</a>
 			<ul>
+				<li>renamed SandDanceReact to Viewer</li>
 				<li>removed deck.gl dependency</li>
 			</ul>
 			<a href="#for-more-information" id="for-more-information" style="color: inherit; text-decoration: none;">
@@ -69,7 +100,7 @@ title: '@msrvida/sanddance-react'
 					<a href="interfaces/Props.html" class="tsd-kind-icon">Props</a>
 				</li>
 				<li class=" tsd-kind-variable">
-					<a href="modules.html#SandDanceReact" class="tsd-kind-icon">Sand<wbr>Dance<wbr>React</a>
+					<a href="modules.html#Viewer" class="tsd-kind-icon">Viewer</a>
 				</li>
 				<li class=" tsd-kind-variable">
 					<a href="modules.html#version" class="tsd-kind-icon">version</a>

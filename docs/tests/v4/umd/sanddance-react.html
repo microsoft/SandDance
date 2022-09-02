@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SandDance</title>
+    <link rel="stylesheet" type="text/css" href="../../../dist/sanddance/v4/sanddance.css">
+</head>
+
+<body>
+
+    <main id="app"></main>
+
+    <script src="../../../external/js/react.development.js" crossorigin=""></script>
+    <script src="../../../external/js/react-dom.development.js" crossorigin=""></script>
+    <script src="../../../dist/sanddance/v4/sanddance.js"></script>
+    <script src="../../../dist/sanddance-react/v4/sanddance-react.js"></script>
+    <script src="https://unpkg.com/vega@^5.20/build/vega.js" charset="utf-8"></script>
+
+    <style>
+        .sanddance-ReactViewer {
+            height: 800px;
+        }
+    </style>
+    <script>
+
+        SandDanceReact.use(React, ReactDOM, vega);
+
+        class App extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    data: props.data,
+                    index: 0
+                };
+            }
+
+            render() {
+                const { data, index } = this.state;
+
+                return React.createElement('div', {},
+                    React.createElement('button',
+                        {
+                            onClick: () => {
+                                let index = this.state.index + 1;
+                                if (index >= views.length) {
+                                    index = 0;
+                                }
+                                this.setState({ index });
+                            }
+                        },
+                        "Next"
+                    ),
+                    React.createElement(SandDanceReact.Viewer,
+                        { data, ...views[index] }
+                    )
+                );
+            }
+        }
+
+        vega.loader().load('../../../sample-data/titanicmaster.tsv').then(tsv_data => {
+            const data = vega.read(tsv_data, { type: 'tsv', parse: 'auto' });
+            const app = React.createElement(App, { data });
+            ReactDOM.render(app, document.getElementById('app'));
+        });
+
+        var views = [
+            {
+                insight: {
+                    columns: {
+                        x: "Gender",
+                        y: "Joined",
+                        color: "Survived",
+                        z: "TicketCost",
+                        sort: "Survived"
+                    },
+                    scheme: "dual_redgreen",
+                    chart: "barchartV",
+                    view: "2d",
+                    size: {
+                        height: 800,
+                        width: 800
+                    }
+                },
+                setup: {
+                    camera: {
+                        position: [0, 0, 0],
+                        rotation: [0, 0, 0, 1]
+                    },
+                    transition: {
+                        type: "ordinal"
+                    },
+                    transitionDurations: {
+                        position: 600,
+                        stagger: 600,
+                        view: 600
+                    },
+                    renderer: {
+                        advanced: false,
+                        advancedOptions: {
+                            bloomIntensity: 2,
+                            isBloomEnabled: false,
+                            isDofEnabled: false,
+                            dofFocusRange: 0.25,
+                            isFxaaEnabled: false,
+                            isShadowEnabled: true,
+                            isSsaoEnabled: true
+                        },
+                        basicOptions: {
+                            antialias: true
+                        }
+                    }
+                }
+            },
+            {
+                insight: {
+                    columns: {
+                        x: "Survived",
+                        y: "Joined",
+                        color: "TicketCost",
+                        z: "TicketCost",
+                        sort: "Survived"
+                    },
+                    scheme: "redyellowgreen",
+                    chart: "barchartH",
+                    view: "2d",
+                    size: {
+                        height: 800,
+                        width: 800
+                    }
+                },
+                setup: {
+                    camera: {
+                        position: [
+                            0,
+                            0,
+                            0
+                        ],
+                        rotation: [
+                            0.13633213577362982,
+                            -0.37130944289829027,
+                            -0.055216251568944684,
+                            0.9167846049823424
+                        ],
+                        captureSize: {
+                            height: 947,
+                            width: 1496
+                        }
+                    },
+                    renderer: {
+                        advanced: false,
+                        advancedOptions: {
+                            bloomIntensity: 2,
+                            isBloomEnabled: false,
+                            isDofEnabled: false,
+                            dofFocusRange: 0.25,
+                            isFxaaEnabled: false,
+                            isShadowEnabled: true,
+                            isSsaoEnabled: true
+                        },
+                        basicOptions: {
+                            antialias: true
+                        }
+                    },
+                    transition: {
+                        type: "position",
+                        dimension: "x",
+                    },
+                    transitionDurations: {
+                        position: 702,
+                        stagger: 1998.0000000000002,
+                        view: 600
+                    }
+                }
+            },
+            {
+                insight: {
+                    columns: {
+                        x: "Survived",
+                        y: "Joined",
+                        color: "TicketCost",
+                        z: "TicketCost",
+                        sort: "Survived"
+                    },
+                    scheme: "redyellowgreen",
+                    chart: "barchartH",
+                    view: "2d",
+                    size: {
+                        height: 800,
+                        width: 800
+                    }
+                },
+                setup: {
+                    camera: undefined,
+                    renderer: {
+                        advanced: true,
+                        advancedOptions: {
+                            bloomIntensity: 2,
+                            isBloomEnabled: false,
+                            isDofEnabled: false,
+                            dofFocusRange: 0.25,
+                            isFxaaEnabled: false,
+                            isShadowEnabled: true,
+                            isSsaoEnabled: true
+                        },
+                        basicOptions: {
+                            antialias: true
+                        }
+                    },
+                    transition: {
+                        type: "position",
+                        dimension: "x",
+                    },
+                    transitionDurations: {
+                        position: 702,
+                        stagger: 1998.0000000000002,
+                        view: 600
+                    }
+                }
+            }
+        ];
+
+    </script>
+
+</body>
+
+</html>

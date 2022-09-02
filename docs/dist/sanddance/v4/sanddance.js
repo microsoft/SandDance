@@ -24008,23 +24008,23 @@ f 5/6/6 1/12/6 8/11/6`;
     * Licensed under the MIT License.
     */
     function createCameraDefaults() {
-        const qModel2d = create$1();
-        const qModel3d = Constants.QUAT_ROTATEX_MINUS_90;
+        const qModelRotation2d = create$1();
+        const qModelRotation3d = Constants.QUAT_ROTATEX_MINUS_90;
         const qCameraRotation2d = create$1();
         const qCameraRotation3d = create$1();
         const qAngle = create$1();
-        const vPosition = create$3();
+        const vCameraPosition = create$3();
         // Altitude (pitch around local right axis)
         setAxisAngle(qCameraRotation3d, Constants.VECTOR3_UNITX, AngleHelper.degreesToRadians(30));
         // Azimuth (yaw around global up axis)
         setAxisAngle(qAngle, Constants.VECTOR3_UNITY, AngleHelper.degreesToRadians(-25));
         multiply(qCameraRotation3d, qCameraRotation3d, qAngle);
         return {
-            qModel2d,
-            qModel3d,
+            qModelRotation2d,
+            qModelRotation3d,
             qCameraRotation2d,
             qCameraRotation3d,
-            vPosition,
+            vCameraPosition,
         };
     }
     const cameraDefaults = createCameraDefaults();
@@ -24034,7 +24034,7 @@ f 5/6/6 1/12/6 8/11/6`;
     * Licensed under the MIT License.
     */
     function morphChartsRender(ref, prevStage, stage, height, width, preStage, colors, config) {
-        const { qCameraRotation2d, qCameraRotation3d, qModel2d, qModel3d, vPosition } = cameraDefaults;
+        const { qCameraRotation2d, qCameraRotation3d, qModelRotation2d, qModelRotation3d, vCameraPosition } = cameraDefaults;
         const { core, cameraTransitioner, modelTransitioner, positionTransitioner } = ref;
         let cameraTo;
         let holdCamera;
@@ -24047,37 +24047,37 @@ f 5/6/6 1/12/6 8/11/6`;
         if (prevStage && (prevStage.view !== stage.view)) {
             modelTransitioner.shouldTransition = !holdCamera;
             if (stage.view === '2d') {
-                modelTransitioner.qModelFrom = qModel3d;
-                modelTransitioner.qModelTo = qModel2d;
-                cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
-                cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+                modelTransitioner.qRotation.from = qModelRotation3d;
+                modelTransitioner.qRotation.to = qModelRotation2d;
+                cameraTransitioner.qRotation.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
+                cameraTransitioner.vPosition.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vCameraPosition;
             }
             else {
-                modelTransitioner.qModelFrom = qModel2d;
-                modelTransitioner.qModelTo = qModel3d;
-                cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
-                cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+                modelTransitioner.qRotation.from = qModelRotation2d;
+                modelTransitioner.qRotation.to = qModelRotation3d;
+                cameraTransitioner.qRotation.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
+                cameraTransitioner.vPosition.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vCameraPosition;
             }
         }
         else {
             modelTransitioner.shouldTransition = false;
             if (stage.view === '2d') {
-                modelTransitioner.qModelTo = qModel2d;
-                cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
-                cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+                modelTransitioner.qRotation.to = qModelRotation2d;
+                cameraTransitioner.qRotation.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
+                cameraTransitioner.vPosition.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vCameraPosition;
             }
             else {
-                modelTransitioner.qModelTo = qModel3d;
-                cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
-                cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+                modelTransitioner.qRotation.to = qModelRotation3d;
+                cameraTransitioner.qRotation.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
+                cameraTransitioner.vPosition.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vCameraPosition;
             }
         }
-        core.camera.getOrbit(cameraTransitioner.qCameraRotationFrom);
-        core.camera.getPosition(cameraTransitioner.vCameraPositionFrom);
+        core.camera.getOrbit(cameraTransitioner.qRotation.from);
+        core.camera.getPosition(cameraTransitioner.vPosition.from);
         if (!prevStage) {
-            core.setModelRotation(modelTransitioner.qModelTo, false);
-            core.camera.setOrbit(cameraTransitioner.qCameraRotationTo, false);
-            core.camera.setPosition(cameraTransitioner.vCameraPositionTo, false);
+            core.setModelRotation(modelTransitioner.qRotation.to, false);
+            core.camera.setOrbit(cameraTransitioner.qRotation.to, false);
+            core.camera.setPosition(cameraTransitioner.vPosition.to, false);
         }
         else if (!holdCamera) {
             cameraTransitioner.begin();
@@ -24106,6 +24106,7 @@ f 5/6/6 1/12/6 8/11/6`;
         else {
             bounds = contentBounds;
         }
+        ref.setMorphChartsRendererOptions(config.renderer);
         if (preStage) {
             preStage(stage, cubeLayer);
         }
@@ -24138,6 +24139,7 @@ f 5/6/6 1/12/6 8/11/6`;
         //Now call update on each layout
         layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds, ref.layerStagger);
         ref.lastPresenterConfig = config;
+        ref.lastView = stage.view;
         core.renderer.transitionTime = 0; // Set renderer transition time for this render pass to prevent rendering target buffer for single frame
         colorConfig(ref, colors);
         return {
@@ -24145,11 +24147,11 @@ f 5/6/6 1/12/6 8/11/6`;
             getCubeLayer: () => cubeLayer,
             update: layerSelection => layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds, ref.layerStagger),
             activate: id => core.renderer.transitionBuffers[0].activeId = id,
-            moveCamera: (position, rotation) => {
+            moveCamera: (camera) => {
                 if (!(positionTransitioner.isTransitioning || modelTransitioner.isTransitioning)) {
-                    core.camera.getOrbit(cameraTransitioner.qCameraRotationFrom);
-                    core.camera.getPosition(cameraTransitioner.vCameraPositionFrom);
-                    cameraTransitioner.move(position, rotation);
+                    core.camera.getOrbit(cameraTransitioner.qRotation.from);
+                    core.camera.getPosition(cameraTransitioner.vPosition.from);
+                    cameraTransitioner.move(camera.position, camera.rotation);
                 }
             },
         };
@@ -24339,26 +24341,32 @@ f 5/6/6 1/12/6 8/11/6`;
     class CameraTransitioner extends Transitioner {
         constructor() {
             super();
-            this.qCameraRotationFrom = create$1();
-            this.qCameraRotationTo = null;
-            this.qCameraRotationCurrent = create$1();
-            this.vCameraPositionFrom = create$3();
-            this.vCameraPositionTo = null;
-            this.vCameraPositionCurrent = create$3();
+            this.qRotation = {
+                from: create$1(),
+                to: null,
+                current: create$1(),
+            };
+            this.vPosition = {
+                from: create$3(),
+                to: null,
+                current: create$3(),
+            };
         }
         move(position, rotation) {
             this.begin();
-            this.qCameraRotationTo = rotation;
-            this.vCameraPositionTo = position;
+            this.qRotation.to = rotation;
+            this.vPosition.to = position;
         }
     }
     class ModelTransitioner extends Transitioner {
         constructor() {
             super();
             this.shouldTransition = false;
-            this.qModelFrom = null;
-            this.qModelTo = null;
-            this.qModelCurrent = create$1();
+            this.qRotation = {
+                from: null,
+                to: null,
+                current: create$1(),
+            };
         }
     }
 
@@ -24381,12 +24389,23 @@ f 5/6/6 1/12/6 8/11/6`;
                 basic: rendererEnabled(false),
             },
             reset: () => {
+                const { qCameraRotation2d, qCameraRotation3d, qModelRotation2d, qModelRotation3d, vCameraPosition } = cameraDefaults;
+                const { cameraTransitioner, modelTransitioner } = ref;
                 core.reset(true);
-                const { cameraTransitioner: cameraState, modelTransitioner: modelState } = ref;
-                slerp(modelState.qModelCurrent, modelState.qModelTo, modelState.qModelTo, 0);
-                core.setModelRotation(modelState.qModelCurrent, true);
-                core.camera.setOrbit(cameraState.qCameraRotationTo, false);
-                //core.camera.setPosition(cameraState.vCameraPositionTo, false);
+                if (ref.lastView === '3d') {
+                    modelTransitioner.qRotation.to = qModelRotation3d;
+                    cameraTransitioner.qRotation.to = qCameraRotation3d;
+                    cameraTransitioner.vPosition.to = vCameraPosition;
+                }
+                else {
+                    modelTransitioner.qRotation.to = qModelRotation2d;
+                    cameraTransitioner.qRotation.to = qCameraRotation2d;
+                    cameraTransitioner.vPosition.to = vCameraPosition;
+                }
+                slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.to, modelTransitioner.qRotation.to, 0);
+                core.setModelRotation(modelTransitioner.qRotation.current, true);
+                core.camera.setOrbit(cameraTransitioner.qRotation.to, true);
+                core.camera.setPosition(cameraTransitioner.vPosition.to, true);
             },
             cameraTransitioner,
             modelTransitioner,
@@ -24407,13 +24426,14 @@ f 5/6/6 1/12/6 8/11/6`;
             },
             lastMorphChartsRendererOptions: mcRendererOptions,
             lastPresenterConfig: null,
+            lastView: null,
             layerStagger: {},
         };
         const cam = (t) => {
-            slerp(cameraTransitioner.qCameraRotationCurrent, cameraTransitioner.qCameraRotationFrom, cameraTransitioner.qCameraRotationTo, t);
-            lerp(cameraTransitioner.vCameraPositionCurrent, cameraTransitioner.vCameraPositionFrom, cameraTransitioner.vCameraPositionTo, t);
-            core.camera.setOrbit(cameraTransitioner.qCameraRotationCurrent, false);
-            core.camera.setPosition(cameraTransitioner.vCameraPositionCurrent, false);
+            slerp(cameraTransitioner.qRotation.current, cameraTransitioner.qRotation.from, cameraTransitioner.qRotation.to, t);
+            lerp(cameraTransitioner.vPosition.current, cameraTransitioner.vPosition.from, cameraTransitioner.vPosition.to, t);
+            core.camera.setOrbit(cameraTransitioner.qRotation.current, false);
+            core.camera.setPosition(cameraTransitioner.vPosition.current, false);
             // disable picking during transitions, as the performance degradation could reduce the framerate
             core.inputManager.isPickingEnabled = false;
         };
@@ -24425,8 +24445,8 @@ f 5/6/6 1/12/6 8/11/6`;
             if (modelTransitioner.isTransitioning) {
                 const tm = modelTransitioner.elapse(elapsedTime, transitionDurations.view, true);
                 if (modelTransitioner.shouldTransition) {
-                    slerp(modelTransitioner.qModelCurrent, modelTransitioner.qModelFrom, modelTransitioner.qModelTo, tm);
-                    core.setModelRotation(modelTransitioner.qModelCurrent, false);
+                    slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.from, modelTransitioner.qRotation.to, tm);
+                    core.setModelRotation(modelTransitioner.qRotation.current, false);
                 }
                 cam(tm);
             }
@@ -27351,7 +27371,7 @@ f 5/6/6 1/12/6 8/11/6`;
                 if (dataChange === DataLayoutChange.refine) {
                     const oldColorContext = this.colorContexts[this.currentColorContext];
                     innerPromise = new Promise(innerResolve => {
-                        this.renderNewLayout({}, Object.assign(Object.assign({}, (this.setup || {})), { onPresent: () => this.options.onPresent(), preStage: (stage, cubeLayer) => {
+                        this.renderNewLayout({}, Object.assign(Object.assign({}, (this.setup || {})), { preStage: (stage, cubeLayer) => {
                                 finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                                 this.overrideAxisLabels(stage);
                                 cubeLayer.unitColorMap = oldColorContext.colorMap;
@@ -27366,7 +27386,7 @@ f 5/6/6 1/12/6 8/11/6`;
                     });
                 }
                 else {
-                    innerPromise = this.renderNewLayout({}, Object.assign(Object.assign({}, (this.setup || {})), { onPresent: () => this.options.onPresent(), preStage: (stage, colorMapper) => {
+                    innerPromise = this.renderNewLayout({}, Object.assign(Object.assign({}, (this.setup || {})), { preStage: (stage, colorMapper) => {
                             finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                             this.overrideAxisLabels(stage);
                             if (this.options.onStage) {
@@ -27413,7 +27433,7 @@ f 5/6/6 1/12/6 8/11/6`;
                                 //apply old legend
                                 this.applyLegendColorContext(oldColorContext);
                                 this.changeColorContexts([oldColorContext, newColorContext]);
-                                this.options.onPresent && this.options.onPresent();
+                                this.onPresent();
                             } }));
                         //narrow the filter only if it is different
                         if (!compare(this.insight.filter, filter)) {
@@ -27435,7 +27455,7 @@ f 5/6/6 1/12/6 8/11/6`;
                         yield this.renderNewLayout({}, Object.assign(Object.assign({}, (this.setup || {})), { onPresent: () => {
                                 //color needs to change instantly
                                 populateColorContext(colorContext, this.presenter);
-                                this.options.onPresent && this.options.onPresent();
+                                this.onPresent();
                             } }));
                         delete this.insight.filter;
                         if (this.options.onDataFilter) {
@@ -27676,8 +27696,15 @@ f 5/6/6 1/12/6 8/11/6`;
                     this.changeColorContexts([colorContext]);
                     this._dataScope.deselect();
                 }
-                this.options.onPresent && this.options.onPresent();
+                this.onPresent();
             };
+        }
+        onPresent() {
+            var _a;
+            if ((_a = this.setup) === null || _a === void 0 ? void 0 : _a.transition) {
+                assignTransitionStagger(this.setup.transition, this._dataScope.currentData(), this.convertSearchToSet(), this.presenter);
+            }
+            this.options.onPresent && this.options.onPresent();
         }
         _render(insightSetup, data, renderOptions, forceNewCharacterSet) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -27724,7 +27751,7 @@ f 5/6/6 1/12/6 8/11/6`;
                             //apply passed colorContext
                             this.applyLegendColorContext(colorContext);
                         }
-                        this.options.onPresent && this.options.onPresent();
+                        this.onPresent();
                     }, shouldViewstateTransition: () => this.shouldViewstateTransition(insight, this.insight) }), this.getView(insight.view));
                 //future signal changes should save the color context
                 this._shouldSaveColorContext = () => !renderOptions.discardColorContextUpdates || !renderOptions.discardColorContextUpdates();
@@ -27869,7 +27896,7 @@ f 5/6/6 1/12/6 8/11/6`;
                 onTextHover: this.onTextHover.bind(this),
                 preLayer: this.preLayer.bind(this),
                 preStage: this.preStage.bind(this),
-                onPresent: this.options.onPresent,
+                onPresent: this.onPresent.bind(this),
                 onAxisConfig: (cartesian, dim3d, axis) => {
                     if (!axis)
                         return;
@@ -28053,8 +28080,8 @@ f 5/6/6 1/12/6 8/11/6`;
             let position = [0, 0, 0];
             let rotation = [0, 0, 0, 0];
             if (transitionFinal) {
-                position = Array.from((_b = (_a = this.presenter) === null || _a === void 0 ? void 0 : _a.morphchartsref) === null || _b === void 0 ? void 0 : _b.cameraTransitioner.vCameraPositionTo);
-                rotation = Array.from((_d = (_c = this.presenter) === null || _c === void 0 ? void 0 : _c.morphchartsref) === null || _d === void 0 ? void 0 : _d.cameraTransitioner.qCameraRotationTo);
+                position = Array.from((_b = (_a = this.presenter) === null || _a === void 0 ? void 0 : _a.morphchartsref) === null || _b === void 0 ? void 0 : _b.cameraTransitioner.vPosition.to);
+                rotation = Array.from((_d = (_c = this.presenter) === null || _c === void 0 ? void 0 : _c.morphchartsref) === null || _d === void 0 ? void 0 : _d.cameraTransitioner.qRotation.to);
             }
             else {
                 const camera = (_g = (_f = (_e = this.presenter) === null || _e === void 0 ? void 0 : _e.morphchartsref) === null || _f === void 0 ? void 0 : _f.core) === null || _g === void 0 ? void 0 : _g.camera;
@@ -28071,7 +28098,9 @@ f 5/6/6 1/12/6 8/11/6`;
          */
         setCamera(camera) {
             var _a, _b;
-            (_b = (_a = this.presenter) === null || _a === void 0 ? void 0 : _a.morphChartsRenderResult) === null || _b === void 0 ? void 0 : _b.moveCamera(camera.position, camera.rotation);
+            if (camera) {
+                (_b = (_a = this.presenter) === null || _a === void 0 ? void 0 : _a.morphChartsRenderResult) === null || _b === void 0 ? void 0 : _b.moveCamera(camera);
+            }
         }
         /**
          * Gets the current insight with signal values.
