@@ -7,7 +7,7 @@ import { base } from '../base';
 import { Group } from '../controls/group';
 import { strings } from '../language';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
-import { Explorer_Class } from '../explorer';
+import { Explorer_Class, State as ExplorerState } from '../explorer';
 import { ColumnMapBaseProps } from '../controls/columnMap';
 import { SandDance } from '@msrvida/sanddance-react';
 import { Dropdown } from '../controls/dropdown';
@@ -26,6 +26,7 @@ export interface Props extends ColumnMapBaseProps, TransitionEdits {
     compactUI: boolean;
     themePalette: Partial<FluentUITypes.IPalette>;
     explorer: Explorer_Class;
+    changeSetup: (newState: Partial<ExplorerState>, affectsStagger: boolean) => void;
 }
 
 export interface State {
@@ -92,19 +93,21 @@ function _TransitionEditor(_props: Props) {
 
         setDurations() {
             setTimeout(() => {  //allow full state to update
-                const { totalTransition, staggerPercent, viewTransition } = this.state;
+                const { props, state } = this;
+                const { totalTransition, staggerPercent, viewTransition } = state;
                 const stagger = totalTransition * staggerPercent / 100;
-                const { transitionDurations } = this.props;
+                const { transitionDurations } = props;
                 transitionDurations.position = (totalTransition - stagger) * 1000;
                 transitionDurations.stagger = stagger * 1000;
                 transitionDurations.view = viewTransition * 1000;
-                syncTansitionDurations(this.props.explorer.viewer, transitionDurations);
-            })
+                syncTansitionDurations(props.explorer.viewer, transitionDurations);
+                props.changeSetup(null, false);
+            });
         }
 
         render() {
             const { props, state } = this;
-            const { explorer, transitionDurations } = props;
+            const { explorer, transitionDurations, changeSetup } = props;
             const sliderRef = base.react.createRef<FluentUITypes.ISlider>();
             explorer.dialogFocusHandler.focus = () => sliderRef.current?.focus();
             return (
@@ -159,7 +162,7 @@ function _TransitionEditor(_props: Props) {
                             label={strings.labelHoldCamera}
                             checked={explorer.state.holdCamera}
                             onChange={(e, holdCamera) => {
-                                explorer.setState({ holdCamera });
+                                changeSetup({ holdCamera }, false);
                             }}
                         />
                         <base.fluentUI.ChoiceGroup
@@ -181,7 +184,7 @@ function _TransitionEditor(_props: Props) {
                             ]}
                             onChange={(e, o) => {
                                 const transitionType = o.key as SandDance.types.TransitionType;
-                                explorer.setState({ transitionType, calculating: () => explorer.setStagger() });
+                                changeSetup({ transitionType }, true);
                             }}
                         />
                     </Group>
@@ -195,7 +198,7 @@ function _TransitionEditor(_props: Props) {
                                             label={strings.labelTransitionStaggerByColumn}
                                             options={getColumnOptions(props, props.transitionColumn.name)}
                                             onChange={(e, o) => {
-                                                explorer.setState({ transitionColumn: o.data, calculating: () => explorer.setStagger() });
+                                                changeSetup({ transitionColumn: o.data }, true);
                                             }}
                                         />
                                     );
@@ -209,7 +212,7 @@ function _TransitionEditor(_props: Props) {
                                                 return { key, text, selected: props.transitionDimension === key };
                                             })}
                                             onChange={(e, o) => {
-                                                explorer.setState({ transitionDimension: o.key as SandDance.types.Dimension2D, calculating: () => explorer.setStagger() });
+                                                changeSetup({ transitionDimension: o.key as SandDance.types.Dimension2D }, true);
                                             }}
                                         />
                                     );
@@ -219,7 +222,7 @@ function _TransitionEditor(_props: Props) {
                         <base.fluentUI.Toggle
                             label={strings.labelTransitionStaggerReverse}
                             checked={props.transitionReverse}
-                            onChange={(e, transitionReverse) => explorer.setState({ transitionReverse, calculating: () => explorer.setStagger() })}
+                            onChange={(e, transitionReverse) => changeSetup({ transitionReverse }, true)}
                         />
                     </Group>
                     <Group label={strings.labelTransitionDurations}>
@@ -265,6 +268,7 @@ function _TransitionEditor(_props: Props) {
                                 transitionDurations.stagger = stagger;
                                 transitionDurations.view = view;
                                 this.setState({ ...this.initialCalc(transitionDurations) });
+                                this.setDurations();
                             }}
                             text={strings.buttonResetToDefault}
                         />
