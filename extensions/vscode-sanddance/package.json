@@ -2,7 +2,7 @@
     "name": "vscode-sanddance",
     "displayName": "SandDance for VSCode",
     "description": "Visually explore, understand, and present your data.",
-    "version": "4.0.0-beta.1",
+    "version": "4.0.0-beta.2",
     "icon": "sanddance-logo.png",
     "publisher": "msrvida",
     "license": "MIT",
