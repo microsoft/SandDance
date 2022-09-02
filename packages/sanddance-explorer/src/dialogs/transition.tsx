@@ -84,11 +84,11 @@ function _TransitionEditor(_props: Props) {
         }
 
         setScrubState(scrub: number) {
-            this.props.explorer.viewer.presenter.morphchartsref.core.renderer.transitionTime = scrub / 100;
+            const { morphChartsRenderResult, morphchartsref } = this.props.explorer.viewer.presenter;
+            morphchartsref.core.renderer.transitionTime = scrub / 100;
+            morphChartsRenderResult.setTransitionTimeAxesVisibility();
             scrub = Math.round(scrub);
             this.setState({ scrub, pauseDisabled: this.autoScrubber.isStopped() });
-            //TODO - swap axes at 0
-            //TODO core.inputManager.isPickingEnabled = true;
         }
 
         setDurations() {

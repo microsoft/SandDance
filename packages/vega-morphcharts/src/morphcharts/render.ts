@@ -15,10 +15,12 @@ import { vec3 } from 'gl-matrix';
 import { colorConfig } from './color';
 import { cameraDefaults } from './defaults';
 import { Camera } from '@msrvida/chart-types';
+import { applyCameraCallbacks, setTransitionTimeAxesVisibility } from './camera';
 
 export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: Stage, height: number, width: number, preStage: PreStage, colors: MorphChartsColors, config: PresenterConfig): MorphChartsRenderResult {
     const { qCameraRotation2d, qCameraRotation3d, qModelRotation2d, qModelRotation3d, vCameraPosition } = cameraDefaults;
     const { core, cameraTransitioner, modelTransitioner, positionTransitioner } = ref;
+    let transistion2dOnly = false;
     let cameraTo: Camera;
     let holdCamera: boolean;
     if (config.camera === 'hold') {
@@ -42,6 +44,7 @@ export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: 
     } else {
         modelTransitioner.shouldTransition = false;
         if (stage.view === '2d') {
+            transistion2dOnly = true;
             modelTransitioner.qRotation.to = qModelRotation2d;
             cameraTransitioner.qRotation.to = cameraTo?.rotation || qCameraRotation2d;
             cameraTransitioner.vPosition.to = cameraTo?.position || vCameraPosition;
@@ -82,6 +85,7 @@ export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: 
 
     props.bounds = contentBounds;
 
+    core.renderer.previousAxes = core.renderer.currentAxes;
     const axesLayer = createAxesLayer(props);
 
     core.config.transitionStaggering = config.transitionDurations.stagger;
@@ -129,8 +133,8 @@ export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: 
     //Now call update on each layout
     layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds, ref.layerStagger);
 
-    ref.lastPresenterConfig = config;
-    ref.lastView = stage.view;
+    applyCameraCallbacks(ref, config, stage.view, transistion2dOnly);
+
     core.renderer.transitionTime = 0; // Set renderer transition time for this render pass to prevent rendering target buffer for single frame
 
     colorConfig(ref, colors);
@@ -146,6 +150,9 @@ export function morphChartsRender(ref: MorphChartsRef, prevStage: Stage, stage: 
                 core.camera.getPosition(cameraTransitioner.vPosition.from);
                 cameraTransitioner.move(camera.position, camera.rotation);
             }
+        },
+        setTransitionTimeAxesVisibility: () => {
+            setTransitionTimeAxesVisibility(transistion2dOnly, core);
         },
     };
 }
