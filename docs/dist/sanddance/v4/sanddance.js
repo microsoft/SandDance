@@ -24033,9 +24033,89 @@ f 5/6/6 1/12/6 8/11/6`;
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
+    const { qCameraRotation2d, qCameraRotation3d, qModelRotation2d, qModelRotation3d, vCameraPosition } = cameraDefaults;
+    function applyCameraCallbacks(ref, lastPresenterConfig, lastView, transistion2dOnly) {
+        const { cameraTransitioner, core, modelTransitioner, positionTransitioner } = ref;
+        ref.reset = () => {
+            core.reset(true);
+            if (lastView === '3d') {
+                modelTransitioner.qRotation.to = qModelRotation3d;
+                cameraTransitioner.qRotation.to = qCameraRotation3d;
+                cameraTransitioner.vPosition.to = vCameraPosition;
+            }
+            else {
+                modelTransitioner.qRotation.to = qModelRotation2d;
+                cameraTransitioner.qRotation.to = qCameraRotation2d;
+                cameraTransitioner.vPosition.to = vCameraPosition;
+            }
+            slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.to, modelTransitioner.qRotation.to, 0);
+            core.setModelRotation(modelTransitioner.qRotation.current, true);
+            core.camera.setOrbit(cameraTransitioner.qRotation.to, true);
+            core.camera.setPosition(cameraTransitioner.vPosition.to, true);
+        };
+        const cam = (t) => {
+            slerp(cameraTransitioner.qRotation.current, cameraTransitioner.qRotation.from, cameraTransitioner.qRotation.to, t);
+            lerp(cameraTransitioner.vPosition.current, cameraTransitioner.vPosition.from, cameraTransitioner.vPosition.to, t);
+            core.camera.setOrbit(cameraTransitioner.qRotation.current, false);
+            core.camera.setPosition(cameraTransitioner.vPosition.current, false);
+            // disable picking during transitions, as the performance degradation could reduce the framerate
+            core.inputManager.isPickingEnabled = false;
+        };
+        core.updateCallback = (elapsedTime) => {
+            const { transitionDurations } = lastPresenterConfig;
+            if (positionTransitioner.isTransitioning) {
+                const t = positionTransitioner.elapse(elapsedTime, transitionDurations.position + transitionDurations.stagger);
+                core.renderer.transitionTime = t;
+                setTransitionTimeAxesVisibility(transistion2dOnly, core);
+            }
+            else {
+                core.inputManager.isPickingEnabled = true;
+            }
+            if (modelTransitioner.isTransitioning) {
+                const tm = modelTransitioner.elapse(elapsedTime, transitionDurations.view, true);
+                if (modelTransitioner.shouldTransition) {
+                    slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.from, modelTransitioner.qRotation.to, tm);
+                    core.setModelRotation(modelTransitioner.qRotation.current, false);
+                }
+                cam(tm);
+            }
+            if (cameraTransitioner.isTransitioning) {
+                const t = cameraTransitioner.elapse(elapsedTime, transitionDurations.view, true);
+                cam(t);
+            }
+        };
+    }
+    function setTransitionTimeAxesVisibility(transistion2dOnly, core) {
+        const t = core.renderer.transitionTime;
+        if (transistion2dOnly) {
+            if (t < 0.5) {
+                core.renderer.axesVisibility = AxesVisibility.previous;
+            }
+            else {
+                core.renderer.axesVisibility = AxesVisibility.current;
+            }
+        }
+        else {
+            if (t <= 0.01) {
+                core.renderer.axesVisibility = AxesVisibility.previous;
+            }
+            else if (t >= 0.99) {
+                core.renderer.axesVisibility = AxesVisibility.current;
+            }
+            else {
+                core.renderer.axesVisibility = AxesVisibility.none;
+            }
+        }
+    }
+
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     function morphChartsRender(ref, prevStage, stage, height, width, preStage, colors, config) {
         const { qCameraRotation2d, qCameraRotation3d, qModelRotation2d, qModelRotation3d, vCameraPosition } = cameraDefaults;
         const { core, cameraTransitioner, modelTransitioner, positionTransitioner } = ref;
+        let transistion2dOnly = false;
         let cameraTo;
         let holdCamera;
         if (config.camera === 'hold') {
@@ -24062,6 +24142,7 @@ f 5/6/6 1/12/6 8/11/6`;
         else {
             modelTransitioner.shouldTransition = false;
             if (stage.view === '2d') {
+                transistion2dOnly = true;
                 modelTransitioner.qRotation.to = qModelRotation2d;
                 cameraTransitioner.qRotation.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
                 cameraTransitioner.vPosition.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vCameraPosition;
@@ -24096,6 +24177,7 @@ f 5/6/6 1/12/6 8/11/6`;
             contentBounds = outerBounds(contentBounds, convertBounds(backgroundImage.bounds));
         });
         props.bounds = contentBounds;
+        core.renderer.previousAxes = core.renderer.currentAxes;
         const axesLayer = createAxesLayer(props);
         core.config.transitionStaggering = config.transitionDurations.stagger;
         core.config.transitionDuration = config.transitionDurations.position;
@@ -24138,8 +24220,7 @@ f 5/6/6 1/12/6 8/11/6`;
         }
         //Now call update on each layout
         layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds, ref.layerStagger);
-        ref.lastPresenterConfig = config;
-        ref.lastView = stage.view;
+        applyCameraCallbacks(ref, config, stage.view, transistion2dOnly);
         core.renderer.transitionTime = 0; // Set renderer transition time for this render pass to prevent rendering target buffer for single frame
         colorConfig(ref, colors);
         return {
@@ -24153,6 +24234,9 @@ f 5/6/6 1/12/6 8/11/6`;
                     core.camera.getPosition(cameraTransitioner.vPosition.from);
                     cameraTransitioner.move(camera.position, camera.rotation);
                 }
+            },
+            setTransitionTimeAxesVisibility: () => {
+                setTransitionTimeAxesVisibility(transistion2dOnly, core);
             },
         };
     }
@@ -24333,6 +24417,7 @@ f 5/6/6 1/12/6 8/11/6`;
             if (this.time >= totalTime) {
                 this.isTransitioning = false;
                 this.time = totalTime;
+                this.ended && this.ended();
             }
             const t = this.time / totalTime;
             return ease ? easing(t) : t;
@@ -24383,30 +24468,15 @@ f 5/6/6 1/12/6 8/11/6`;
         const cameraTransitioner = new CameraTransitioner();
         const modelTransitioner = new ModelTransitioner();
         const positionTransitioner = new Transitioner();
+        positionTransitioner.ended = () => {
+            core.renderer.axesVisibility = AxesVisibility.current;
+        };
         const ref = {
             supportedRenders: {
                 advanced: rendererEnabled(true),
                 basic: rendererEnabled(false),
             },
-            reset: () => {
-                const { qCameraRotation2d, qCameraRotation3d, qModelRotation2d, qModelRotation3d, vCameraPosition } = cameraDefaults;
-                const { cameraTransitioner, modelTransitioner } = ref;
-                core.reset(true);
-                if (ref.lastView === '3d') {
-                    modelTransitioner.qRotation.to = qModelRotation3d;
-                    cameraTransitioner.qRotation.to = qCameraRotation3d;
-                    cameraTransitioner.vPosition.to = vCameraPosition;
-                }
-                else {
-                    modelTransitioner.qRotation.to = qModelRotation2d;
-                    cameraTransitioner.qRotation.to = qCameraRotation2d;
-                    cameraTransitioner.vPosition.to = vCameraPosition;
-                }
-                slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.to, modelTransitioner.qRotation.to, 0);
-                core.setModelRotation(modelTransitioner.qRotation.current, true);
-                core.camera.setOrbit(cameraTransitioner.qRotation.to, true);
-                core.camera.setPosition(cameraTransitioner.vPosition.to, true);
-            },
+            reset: null,
             cameraTransitioner,
             modelTransitioner,
             positionTransitioner,
@@ -24425,38 +24495,7 @@ f 5/6/6 1/12/6 8/11/6`;
                 ref.lastMorphChartsRendererOptions = mcRendererOptions;
             },
             lastMorphChartsRendererOptions: mcRendererOptions,
-            lastPresenterConfig: null,
-            lastView: null,
             layerStagger: {},
-        };
-        const cam = (t) => {
-            slerp(cameraTransitioner.qRotation.current, cameraTransitioner.qRotation.from, cameraTransitioner.qRotation.to, t);
-            lerp(cameraTransitioner.vPosition.current, cameraTransitioner.vPosition.from, cameraTransitioner.vPosition.to, t);
-            core.camera.setOrbit(cameraTransitioner.qRotation.current, false);
-            core.camera.setPosition(cameraTransitioner.vPosition.current, false);
-            // disable picking during transitions, as the performance degradation could reduce the framerate
-            core.inputManager.isPickingEnabled = false;
-        };
-        core.updateCallback = (elapsedTime) => {
-            const { transitionDurations } = ref.lastPresenterConfig;
-            if (positionTransitioner.isTransitioning) {
-                core.renderer.transitionTime = positionTransitioner.elapse(elapsedTime, transitionDurations.position + transitionDurations.stagger);
-            }
-            if (modelTransitioner.isTransitioning) {
-                const tm = modelTransitioner.elapse(elapsedTime, transitionDurations.view, true);
-                if (modelTransitioner.shouldTransition) {
-                    slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.from, modelTransitioner.qRotation.to, tm);
-                    core.setModelRotation(modelTransitioner.qRotation.current, false);
-                }
-                cam(tm);
-            }
-            if (cameraTransitioner.isTransitioning) {
-                const t = cameraTransitioner.elapse(elapsedTime, transitionDurations.view, true);
-                cam(t);
-            }
-            else {
-                core.inputManager.isPickingEnabled = true;
-            }
         };
         return ref;
     }

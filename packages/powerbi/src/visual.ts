@@ -99,9 +99,7 @@ export class Visual implements IVisual {
                 mounted: (app: App) => {
                     this.app = app;
                 },
-                onCameraSave: (camera: SandDance.types.Camera) => {
-                    const setup = this.app.explorer.getSetup();
-                    setup.camera = camera;
+                onSetupSave: (setup) => {
                     // console.log('onCameraChange', setup);
                     this.ignorePersistUpdate = true;
                     this.persist({ setup });
@@ -189,6 +187,7 @@ export class Visual implements IVisual {
     private persist(options: ViewChangeOptions) {
         if (this.renderingOptions.viewMode !== powerbiVisualsApi.ViewMode.View) {
             const { explorer } = this.app;
+            if (!explorer.viewer) return;
             const insight = explorer.viewer.getInsight();
             const tooltipExclusions = options.tooltipExclusions || explorer.state.tooltipExclusions;
             cleanInsight(insight, false);

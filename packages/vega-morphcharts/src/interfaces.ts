@@ -269,8 +269,6 @@ export interface MorphChartsRef {
     positionTransitioner: Transitioner,
     setMorphChartsRendererOptions: (value: MorphChartsRendererOptions) => void;
     lastMorphChartsRendererOptions: MorphChartsRendererOptions;
-    lastPresenterConfig: PresenterConfig;
-    lastView: View;
     supportedRenders: {
         advanced: boolean;
         basic: boolean;
@@ -334,6 +332,7 @@ export interface MorphChartsRenderResult {
     update: (layerSelection: LayerSelection) => void;
     moveCamera: (camera: Camera) => void;
     getCubeLayer: () => ICubeLayer;
+    setTransitionTimeAxesVisibility(): void;
 }
 
 export type MorphChartsColor = [number, number, number];

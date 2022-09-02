@@ -90,6 +90,7 @@ export interface Props {
     onError?: (e: any) => void;
     onSignalChanged?: (signalName: string, signalValue: any) => void;
     onTooltipExclusionsChanged?: (tooltipExclusions: string[]) => void;
+    onSetupOptionsChanged?: (setup: SandDance.types.Setup) => void;
     additionalSettings?: SettingsGroup[];
     systemInfoChildren?: React.ReactNode;
     initialRenderer?: SandDance.VegaMorphCharts.types.MorphChartsRendererOptions;
@@ -292,10 +293,6 @@ function _Explorer(_props: Props) {
             }
         }
 
-        public setStagger() {
-            this.viewer.assignTransitionStagger(getTransition(this.state));
-        }
-
         public signal(signalName: string, signalValue: any, newViewStateTarget?: boolean) {
             switch (signalName) {
                 case SandDance.constants.SignalNames.ColorBinCount:
@@ -349,6 +346,7 @@ function _Explorer(_props: Props) {
         private setSetup(setup: SandDance.types.Setup, newState: Partial<State>) {
             newState.camera = undefined;
             if (setup) {
+                this.props.onSetupOptionsChanged && this.props.onSetupOptionsChanged(setup);
                 const { camera, renderer, transition, transitionDurations } = setup;
                 newState.renderer = renderer;
                 newState.transitionType = transition.type;
@@ -1374,6 +1372,19 @@ function _Explorer(_props: Props) {
                                                 compactUI={this.props.compactUI}
                                                 explorer={this as any as Explorer_Class}
                                                 themePalette={themePalette}
+                                                changeSetup={(newState, affectsStagger) => {
+                                                    const calculating = () => {
+                                                        if (affectsStagger) {
+                                                            this.viewer.assignTransitionStagger(getTransition(this.state));
+                                                        }
+                                                        this.props.onSetupOptionsChanged && this.props.onSetupOptionsChanged(this.getSetup());
+                                                    };
+                                                    if (newState) {
+                                                        this.setState({ ...newState as State, calculating });
+                                                    } else {
+                                                        calculating();
+                                                    }
+                                                }}
                                             />
                                         );
                                     }
@@ -1546,7 +1557,6 @@ export declare class Explorer_Class extends base.react.Component<Props, State> {
     constructor(props: Props);
     finalize(): void;
     updateViewerOptions(viewerOptions: Partial<SandDance.types.ViewerOptions>): void;
-    setStagger(): void;
     signal(signalName: string, signalValue: any, newViewStateTarget?: boolean): void;
     //private manageColorToolbar(): void;
     getInsight(): SandDance.specs.Insight;
