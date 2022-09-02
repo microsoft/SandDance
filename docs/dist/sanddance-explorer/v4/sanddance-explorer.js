@@ -33866,9 +33866,74 @@ function $3106e5aac5bdcc98$var$createCameraDefaults() {
 const $3106e5aac5bdcc98$export$504e5adc1166f08a = $3106e5aac5bdcc98$var$createCameraDefaults();
 
 
+
+
+
+const { qCameraRotation2d: $29f8314e8f0a8fb7$var$qCameraRotation2d , qCameraRotation3d: $29f8314e8f0a8fb7$var$qCameraRotation3d , qModelRotation2d: $29f8314e8f0a8fb7$var$qModelRotation2d , qModelRotation3d: $29f8314e8f0a8fb7$var$qModelRotation3d , vCameraPosition: $29f8314e8f0a8fb7$var$vCameraPosition  } = (0, $3106e5aac5bdcc98$export$504e5adc1166f08a);
+function $29f8314e8f0a8fb7$export$21ad5731ba175a64(ref, lastPresenterConfig, lastView, transistion2dOnly) {
+    const { cameraTransitioner: cameraTransitioner , core: core , modelTransitioner: modelTransitioner , positionTransitioner: positionTransitioner  } = ref;
+    ref.reset = ()=>{
+        core.reset(true);
+        if (lastView === "3d") {
+            modelTransitioner.qRotation.to = $29f8314e8f0a8fb7$var$qModelRotation3d;
+            cameraTransitioner.qRotation.to = $29f8314e8f0a8fb7$var$qCameraRotation3d;
+            cameraTransitioner.vPosition.to = $29f8314e8f0a8fb7$var$vCameraPosition;
+        } else {
+            modelTransitioner.qRotation.to = $29f8314e8f0a8fb7$var$qModelRotation2d;
+            cameraTransitioner.qRotation.to = $29f8314e8f0a8fb7$var$qCameraRotation2d;
+            cameraTransitioner.vPosition.to = $29f8314e8f0a8fb7$var$vCameraPosition;
+        }
+        (0, $a75e1c0eea6f029a$exports).slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.to, modelTransitioner.qRotation.to, 0);
+        core.setModelRotation(modelTransitioner.qRotation.current, true);
+        core.camera.setOrbit(cameraTransitioner.qRotation.to, true);
+        core.camera.setPosition(cameraTransitioner.vPosition.to, true);
+    };
+    const cam = (t)=>{
+        (0, $a75e1c0eea6f029a$exports).slerp(cameraTransitioner.qRotation.current, cameraTransitioner.qRotation.from, cameraTransitioner.qRotation.to, t);
+        (0, $3060130e3101af24$exports).lerp(cameraTransitioner.vPosition.current, cameraTransitioner.vPosition.from, cameraTransitioner.vPosition.to, t);
+        core.camera.setOrbit(cameraTransitioner.qRotation.current, false);
+        core.camera.setPosition(cameraTransitioner.vPosition.current, false);
+        // disable picking during transitions, as the performance degradation could reduce the framerate
+        core.inputManager.isPickingEnabled = false;
+    };
+    core.updateCallback = (elapsedTime)=>{
+        const { transitionDurations: transitionDurations  } = lastPresenterConfig;
+        if (positionTransitioner.isTransitioning) {
+            const t = positionTransitioner.elapse(elapsedTime, transitionDurations.position + transitionDurations.stagger);
+            core.renderer.transitionTime = t;
+            $29f8314e8f0a8fb7$export$7e9aa6bed81b6dc3(transistion2dOnly, core);
+        } else core.inputManager.isPickingEnabled = true;
+        if (modelTransitioner.isTransitioning) {
+            const tm = modelTransitioner.elapse(elapsedTime, transitionDurations.view, true);
+            if (modelTransitioner.shouldTransition) {
+                (0, $a75e1c0eea6f029a$exports).slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.from, modelTransitioner.qRotation.to, tm);
+                core.setModelRotation(modelTransitioner.qRotation.current, false);
+            }
+            cam(tm);
+        }
+        if (cameraTransitioner.isTransitioning) {
+            const t1 = cameraTransitioner.elapse(elapsedTime, transitionDurations.view, true);
+            cam(t1);
+        }
+    };
+}
+function $29f8314e8f0a8fb7$export$7e9aa6bed81b6dc3(transistion2dOnly, core) {
+    const t = core.renderer.transitionTime;
+    if (transistion2dOnly) {
+        if (t < 0.5) core.renderer.axesVisibility = (0, $b0e0bae684e98192$export$7dbc7c2b82487e42).previous;
+        else core.renderer.axesVisibility = (0, $b0e0bae684e98192$export$7dbc7c2b82487e42).current;
+    } else {
+        if (t <= 0.01) core.renderer.axesVisibility = (0, $b0e0bae684e98192$export$7dbc7c2b82487e42).previous;
+        else if (t >= 0.99) core.renderer.axesVisibility = (0, $b0e0bae684e98192$export$7dbc7c2b82487e42).current;
+        else core.renderer.axesVisibility = (0, $b0e0bae684e98192$export$7dbc7c2b82487e42).none;
+    }
+}
+
+
 function $41fb9e253980bfb2$export$bd1c7209c525d9d0(ref, prevStage, stage, height, width, preStage, colors, config) {
     const { qCameraRotation2d: qCameraRotation2d , qCameraRotation3d: qCameraRotation3d , qModelRotation2d: qModelRotation2d , qModelRotation3d: qModelRotation3d , vCameraPosition: vCameraPosition  } = (0, $3106e5aac5bdcc98$export$504e5adc1166f08a);
     const { core: core , cameraTransitioner: cameraTransitioner , modelTransitioner: modelTransitioner , positionTransitioner: positionTransitioner  } = ref;
+    let transistion2dOnly = false;
     let cameraTo;
     let holdCamera;
     if (config.camera === "hold") holdCamera = true;
@@ -33889,6 +33954,7 @@ function $41fb9e253980bfb2$export$bd1c7209c525d9d0(ref, prevStage, stage, height
     } else {
         modelTransitioner.shouldTransition = false;
         if (stage.view === "2d") {
+            transistion2dOnly = true;
             modelTransitioner.qRotation.to = qModelRotation2d;
             cameraTransitioner.qRotation.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
             cameraTransitioner.vPosition.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vCameraPosition;
@@ -33923,6 +33989,7 @@ function $41fb9e253980bfb2$export$bd1c7209c525d9d0(ref, prevStage, stage, height
         contentBounds = (0, $517d92450a535487$export$b1d52f954c5faa57)(contentBounds, $41fb9e253980bfb2$var$convertBounds(backgroundImage.bounds));
     });
     props.bounds = contentBounds;
+    core.renderer.previousAxes = core.renderer.currentAxes;
     const axesLayer = (0, $b29bcea612a8cd83$export$b820fac18d588132)(props);
     core.config.transitionStaggering = config.transitionDurations.stagger;
     core.config.transitionDuration = config.transitionDurations.position;
@@ -33959,8 +34026,7 @@ function $41fb9e253980bfb2$export$bd1c7209c525d9d0(ref, prevStage, stage, height
     }
     //Now call update on each layout
     $41fb9e253980bfb2$var$layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds, ref.layerStagger);
-    ref.lastPresenterConfig = config;
-    ref.lastView = stage.view;
+    (0, $29f8314e8f0a8fb7$export$21ad5731ba175a64)(ref, config, stage.view, transistion2dOnly);
     core.renderer.transitionTime = 0; // Set renderer transition time for this render pass to prevent rendering target buffer for single frame
     (0, $b535d7ad927c78f3$export$419c579437571e95)(ref, colors);
     return {
@@ -33974,6 +34040,9 @@ function $41fb9e253980bfb2$export$bd1c7209c525d9d0(ref, prevStage, stage, height
                 core.camera.getPosition(cameraTransitioner.vPosition.from);
                 cameraTransitioner.move(camera.position, camera.rotation);
             }
+        },
+        setTransitionTimeAxesVisibility: ()=>{
+            (0, $29f8314e8f0a8fb7$export$7e9aa6bed81b6dc3)(transistion2dOnly, core);
         }
     };
 }
@@ -34037,7 +34106,6 @@ function $eed32355f965d77a$export$12cca049a4826e61(advanced) {
     const r = advanced ? new (0, $ca06aeb8e9870a42$exports).Advanced.Main() : new (0, $ca06aeb8e9870a42$exports).Basic.Main();
     return r.isSupported;
 }
-
 
 
 
@@ -34141,6 +34209,7 @@ class $c010ff92a7e33cbd$export$935eb9f0b5d28fbb {
         if (this.time >= totalTime) {
             this.isTransitioning = false;
             this.time = totalTime;
+            this.ended && this.ended();
         }
         const t = this.time / totalTime;
         return ease ? (0, $930e0e0dfc69f257$export$24c5ac7c37452e7d)(t) : t;
@@ -34179,7 +34248,6 @@ class $c010ff92a7e33cbd$export$e4008bc37533ca62 extends $c010ff92a7e33cbd$export
 }
 
 
-
 function $7df34aee694c1c2f$export$2cd8252107eb640b(options, mcRendererOptions) {
     const { container: container  } = options;
     const core = new (0, $b0e0bae684e98192$export$4143ab5b91744744)({
@@ -34191,29 +34259,15 @@ function $7df34aee694c1c2f$export$2cd8252107eb640b(options, mcRendererOptions) {
     const cameraTransitioner = new (0, $c010ff92a7e33cbd$export$8498d8ad19b48a8b)();
     const modelTransitioner = new (0, $c010ff92a7e33cbd$export$e4008bc37533ca62)();
     const positionTransitioner = new (0, $c010ff92a7e33cbd$export$935eb9f0b5d28fbb)();
+    positionTransitioner.ended = ()=>{
+        core.renderer.axesVisibility = (0, $b0e0bae684e98192$export$7dbc7c2b82487e42).current;
+    };
     const ref = {
         supportedRenders: {
             advanced: (0, $eed32355f965d77a$export$12cca049a4826e61)(true),
             basic: (0, $eed32355f965d77a$export$12cca049a4826e61)(false)
         },
-        reset: ()=>{
-            const { qCameraRotation2d: qCameraRotation2d , qCameraRotation3d: qCameraRotation3d , qModelRotation2d: qModelRotation2d , qModelRotation3d: qModelRotation3d , vCameraPosition: vCameraPosition  } = (0, $3106e5aac5bdcc98$export$504e5adc1166f08a);
-            const { cameraTransitioner: cameraTransitioner , modelTransitioner: modelTransitioner  } = ref;
-            core.reset(true);
-            if (ref.lastView === "3d") {
-                modelTransitioner.qRotation.to = qModelRotation3d;
-                cameraTransitioner.qRotation.to = qCameraRotation3d;
-                cameraTransitioner.vPosition.to = vCameraPosition;
-            } else {
-                modelTransitioner.qRotation.to = qModelRotation2d;
-                cameraTransitioner.qRotation.to = qCameraRotation2d;
-                cameraTransitioner.vPosition.to = vCameraPosition;
-            }
-            (0, $a75e1c0eea6f029a$exports).slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.to, modelTransitioner.qRotation.to, 0);
-            core.setModelRotation(modelTransitioner.qRotation.current, true);
-            core.camera.setOrbit(cameraTransitioner.qRotation.to, true);
-            core.camera.setPosition(cameraTransitioner.vPosition.to, true);
-        },
+        reset: null,
         cameraTransitioner: cameraTransitioner,
         modelTransitioner: modelTransitioner,
         positionTransitioner: positionTransitioner,
@@ -34227,33 +34281,7 @@ function $7df34aee694c1c2f$export$2cd8252107eb640b(options, mcRendererOptions) {
             ref.lastMorphChartsRendererOptions = mcRendererOptions;
         },
         lastMorphChartsRendererOptions: mcRendererOptions,
-        lastPresenterConfig: null,
-        lastView: null,
         layerStagger: {}
-    };
-    const cam = (t)=>{
-        (0, $a75e1c0eea6f029a$exports).slerp(cameraTransitioner.qRotation.current, cameraTransitioner.qRotation.from, cameraTransitioner.qRotation.to, t);
-        (0, $3060130e3101af24$exports).lerp(cameraTransitioner.vPosition.current, cameraTransitioner.vPosition.from, cameraTransitioner.vPosition.to, t);
-        core.camera.setOrbit(cameraTransitioner.qRotation.current, false);
-        core.camera.setPosition(cameraTransitioner.vPosition.current, false);
-        // disable picking during transitions, as the performance degradation could reduce the framerate
-        core.inputManager.isPickingEnabled = false;
-    };
-    core.updateCallback = (elapsedTime)=>{
-        const { transitionDurations: transitionDurations  } = ref.lastPresenterConfig;
-        if (positionTransitioner.isTransitioning) core.renderer.transitionTime = positionTransitioner.elapse(elapsedTime, transitionDurations.position + transitionDurations.stagger);
-        if (modelTransitioner.isTransitioning) {
-            const tm = modelTransitioner.elapse(elapsedTime, transitionDurations.view, true);
-            if (modelTransitioner.shouldTransition) {
-                (0, $a75e1c0eea6f029a$exports).slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.from, modelTransitioner.qRotation.to, tm);
-                core.setModelRotation(modelTransitioner.qRotation.current, false);
-            }
-            cam(tm);
-        }
-        if (cameraTransitioner.isTransitioning) {
-            const t = cameraTransitioner.elapse(elapsedTime, transitionDurations.view, true);
-            cam(t);
-        } else core.inputManager.isPickingEnabled = true;
     };
     return ref;
 }
@@ -40651,29 +40679,31 @@ function $92486479f357636c$var$_TransitionEditor(_props) {
             };
         }
         setScrubState(scrub) {
-            this.props.explorer.viewer.presenter.morphchartsref.core.renderer.transitionTime = scrub / 100;
+            const { morphChartsRenderResult: morphChartsRenderResult , morphchartsref: morphchartsref  } = this.props.explorer.viewer.presenter;
+            morphchartsref.core.renderer.transitionTime = scrub / 100;
+            morphChartsRenderResult.setTransitionTimeAxesVisibility();
             scrub = Math.round(scrub);
             this.setState({
                 scrub: scrub,
                 pauseDisabled: this.autoScrubber.isStopped()
             });
-        //TODO - swap axes at 0
-        //TODO core.inputManager.isPickingEnabled = true;
         }
         setDurations() {
             setTimeout(()=>{
-                const { totalTransition: totalTransition , staggerPercent: staggerPercent , viewTransition: viewTransition  } = this.state;
+                const { props: props , state: state  } = this;
+                const { totalTransition: totalTransition , staggerPercent: staggerPercent , viewTransition: viewTransition  } = state;
                 const stagger = totalTransition * staggerPercent / 100;
-                const { transitionDurations: transitionDurations  } = this.props;
+                const { transitionDurations: transitionDurations  } = props;
                 transitionDurations.position = (totalTransition - stagger) * 1000;
                 transitionDurations.stagger = stagger * 1000;
                 transitionDurations.view = viewTransition * 1000;
-                $92486479f357636c$export$39fa25c8c3576e7a(this.props.explorer.viewer, transitionDurations);
+                $92486479f357636c$export$39fa25c8c3576e7a(props.explorer.viewer, transitionDurations);
+                props.changeSetup(null, false);
             });
         }
         render() {
             const { props: props , state: state  } = this;
-            const { explorer: explorer , transitionDurations: transitionDurations  } = props;
+            const { explorer: explorer , transitionDurations: transitionDurations , changeSetup: changeSetup  } = props;
             const sliderRef = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createRef();
             explorer.dialogFocusHandler.focus = ()=>{
                 var _a;
@@ -40726,9 +40756,9 @@ function $92486479f357636c$var$_TransitionEditor(_props) {
                 label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelHoldCamera,
                 checked: explorer.state.holdCamera,
                 onChange: (e, holdCamera)=>{
-                    explorer.setState({
+                    changeSetup({
                         holdCamera: holdCamera
-                    });
+                    }, false);
                 }
             }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.ChoiceGroup, {
                 label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionStaggerBy,
@@ -40749,10 +40779,9 @@ function $92486479f357636c$var$_TransitionEditor(_props) {
                 ],
                 onChange: (e, o)=>{
                     const transitionType = o.key;
-                    explorer.setState({
-                        transitionType: transitionType,
-                        calculating: ()=>explorer.setStagger()
-                    });
+                    changeSetup({
+                        transitionType: transitionType
+                    }, true);
                 }
             })), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8d43140d74b3b13d$export$eb2fcfdbd7ba97d4), {
                 label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionStaggerOptions
@@ -40764,10 +40793,9 @@ function $92486479f357636c$var$_TransitionEditor(_props) {
                             label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionStaggerByColumn,
                             options: $92486479f357636c$var$getColumnOptions(props, props.transitionColumn.name),
                             onChange: (e, o)=>{
-                                explorer.setState({
-                                    transitionColumn: o.data,
-                                    calculating: ()=>explorer.setStagger()
-                                });
+                                changeSetup({
+                                    transitionColumn: o.data
+                                }, true);
                             }
                         });
                     case "position":
@@ -40782,20 +40810,18 @@ function $92486479f357636c$var$_TransitionEditor(_props) {
                                 };
                             }),
                             onChange: (e, o)=>{
-                                explorer.setState({
-                                    transitionDimension: o.key,
-                                    calculating: ()=>explorer.setStagger()
-                                });
+                                changeSetup({
+                                    transitionDimension: o.key
+                                }, true);
                             }
                         });
                 }
             })(), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Toggle, {
                 label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionStaggerReverse,
                 checked: props.transitionReverse,
-                onChange: (e, transitionReverse)=>explorer.setState({
-                        transitionReverse: transitionReverse,
-                        calculating: ()=>explorer.setStagger()
-                    })
+                onChange: (e, transitionReverse)=>changeSetup({
+                        transitionReverse: transitionReverse
+                    }, true)
             })), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8d43140d74b3b13d$export$eb2fcfdbd7ba97d4), {
                 label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelTransitionDurations
             }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.Slider, {
@@ -40843,6 +40869,7 @@ function $92486479f357636c$var$_TransitionEditor(_props) {
                     transitionDurations.stagger = stagger;
                     transitionDurations.view = view;
                     this.setState(Object.assign({}, this.initialCalc(transitionDurations)));
+                    this.setDurations();
                 },
                 text: (0, $0db66385c00a3f15$export$21c51bc433c16634).buttonResetToDefault
             })));
@@ -45605,9 +45632,6 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                 this.viewer.options = (0, $3b509b9541e52a8f$exports).VegaMorphCharts.util.deepMerge(this.viewer.options, this.props.viewerOptions, this.viewerOptions);
             }
         }
-        setStagger() {
-            this.viewer.assignTransitionStagger((0, $92486479f357636c$export$d5639c01d489b0c)(this.state));
-        }
         signal(signalName, signalValue, newViewStateTarget) {
             switch(signalName){
                 case (0, $3b509b9541e52a8f$exports).constants.SignalNames.ColorBinCount:
@@ -45653,6 +45677,7 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
         setSetup(setup, newState) {
             newState.camera = undefined;
             if (setup) {
+                this.props.onSetupOptionsChanged && this.props.onSetupOptionsChanged(setup);
                 const { camera: camera , renderer: renderer , transition: transition , transitionDurations: transitionDurations  } = setup;
                 newState.renderer = renderer;
                 newState.transitionType = transition.type;
@@ -46636,7 +46661,17 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                         return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $92486479f357636c$export$df231814b4232ebd), Object.assign({}, columnMapProps, this.state, {
                             compactUI: this.props.compactUI,
                             explorer: this,
-                            themePalette: themePalette
+                            themePalette: themePalette,
+                            changeSetup: (newState, affectsStagger)=>{
+                                const calculating = ()=>{
+                                    if (affectsStagger) this.viewer.assignTransitionStagger((0, $92486479f357636c$export$d5639c01d489b0c)(this.state));
+                                    this.props.onSetupOptionsChanged && this.props.onSetupOptionsChanged(this.getSetup());
+                                };
+                                if (newState) this.setState(Object.assign(Object.assign({}, newState), {
+                                    calculating: calculating
+                                }));
+                                else calculating();
+                            }
                         }));
                     case (0, $a4811b1c86ed19fa$export$f3b7566ffe363e3b).Settings:
                         return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement((0, $4805700d8b417596$export$c72f6eaae7b9adff), {

@@ -77181,9 +77181,11 @@ var _image = require("./image");
 var _defaults = require("../defaults");
 var _color = require("./color");
 var _defaults1 = require("./defaults");
+var _camera = require("./camera");
 function morphChartsRender(ref, prevStage, stage, height, width, preStage, colors, config) {
     const { qCameraRotation2d , qCameraRotation3d , qModelRotation2d , qModelRotation3d , vCameraPosition  } = (0, _defaults1.cameraDefaults);
     const { core , cameraTransitioner , modelTransitioner , positionTransitioner  } = ref;
+    let transistion2dOnly = false;
     let cameraTo;
     let holdCamera;
     if (config.camera === "hold") holdCamera = true;
@@ -77204,6 +77206,7 @@ function morphChartsRender(ref, prevStage, stage, height, width, preStage, color
     } else {
         modelTransitioner.shouldTransition = false;
         if (stage.view === "2d") {
+            transistion2dOnly = true;
             modelTransitioner.qRotation.to = qModelRotation2d;
             cameraTransitioner.qRotation.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
             cameraTransitioner.vPosition.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vCameraPosition;
@@ -77238,6 +77241,7 @@ function morphChartsRender(ref, prevStage, stage, height, width, preStage, color
         contentBounds = (0, _bounds.outerBounds)(contentBounds, convertBounds(backgroundImage.bounds));
     });
     props.bounds = contentBounds;
+    core.renderer.previousAxes = core.renderer.currentAxes;
     const axesLayer = (0, _axes.createAxesLayer)(props);
     core.config.transitionStaggering = config.transitionDurations.stagger;
     core.config.transitionDuration = config.transitionDurations.position;
@@ -77274,8 +77278,7 @@ function morphChartsRender(ref, prevStage, stage, height, width, preStage, color
     }
     //Now call update on each layout
     layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds, ref.layerStagger);
-    ref.lastPresenterConfig = config;
-    ref.lastView = stage.view;
+    (0, _camera.applyCameraCallbacks)(ref, config, stage.view, transistion2dOnly);
     core.renderer.transitionTime = 0; // Set renderer transition time for this render pass to prevent rendering target buffer for single frame
     (0, _color.colorConfig)(ref, colors);
     return {
@@ -77289,6 +77292,9 @@ function morphChartsRender(ref, prevStage, stage, height, width, preStage, color
                 core.camera.getPosition(cameraTransitioner.vPosition.from);
                 cameraTransitioner.move(camera.position, camera.rotation);
             }
+        },
+        setTransitionTimeAxesVisibility: ()=>{
+            (0, _camera.setTransitionTimeAxesVisibility)(transistion2dOnly, core);
         }
     };
 }
@@ -77327,7 +77333,7 @@ function convertBounds(bounds) {
     };
 }
 
-},{"./axes":"cqVLQ","./bounds":"ipKbZ","./cubes":"8Swgd","./lines":"1NssX","./text":"gXSar","./image":"82mLv","../defaults":"rYstm","./color":"4Hopn","./defaults":"lUHd0","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"cqVLQ":[function(require,module,exports) {
+},{"./axes":"cqVLQ","./bounds":"ipKbZ","./cubes":"8Swgd","./lines":"1NssX","./text":"gXSar","./image":"82mLv","../defaults":"rYstm","./color":"4Hopn","./defaults":"lUHd0","./camera":"jN8GV","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"cqVLQ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "createAxesLayer", ()=>createAxesLayer);
@@ -78150,7 +78156,78 @@ function createCameraDefaults() {
 }
 const cameraDefaults = createCameraDefaults();
 
-},{"gl-matrix":"3mrln","morphcharts":"dzm75","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"9V139":[function(require,module,exports) {
+},{"gl-matrix":"3mrln","morphcharts":"dzm75","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jN8GV":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "applyCameraCallbacks", ()=>applyCameraCallbacks);
+parcelHelpers.export(exports, "setTransitionTimeAxesVisibility", ()=>setTransitionTimeAxesVisibility);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var _glMatrix = require("gl-matrix");
+var _morphcharts = require("morphcharts");
+var _defaults = require("./defaults");
+const { qCameraRotation2d , qCameraRotation3d , qModelRotation2d , qModelRotation3d , vCameraPosition  } = (0, _defaults.cameraDefaults);
+function applyCameraCallbacks(ref, lastPresenterConfig, lastView, transistion2dOnly) {
+    const { cameraTransitioner , core , modelTransitioner , positionTransitioner  } = ref;
+    ref.reset = ()=>{
+        core.reset(true);
+        if (lastView === "3d") {
+            modelTransitioner.qRotation.to = qModelRotation3d;
+            cameraTransitioner.qRotation.to = qCameraRotation3d;
+            cameraTransitioner.vPosition.to = vCameraPosition;
+        } else {
+            modelTransitioner.qRotation.to = qModelRotation2d;
+            cameraTransitioner.qRotation.to = qCameraRotation2d;
+            cameraTransitioner.vPosition.to = vCameraPosition;
+        }
+        (0, _glMatrix.quat).slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.to, modelTransitioner.qRotation.to, 0);
+        core.setModelRotation(modelTransitioner.qRotation.current, true);
+        core.camera.setOrbit(cameraTransitioner.qRotation.to, true);
+        core.camera.setPosition(cameraTransitioner.vPosition.to, true);
+    };
+    const cam = (t)=>{
+        (0, _glMatrix.quat).slerp(cameraTransitioner.qRotation.current, cameraTransitioner.qRotation.from, cameraTransitioner.qRotation.to, t);
+        (0, _glMatrix.vec3).lerp(cameraTransitioner.vPosition.current, cameraTransitioner.vPosition.from, cameraTransitioner.vPosition.to, t);
+        core.camera.setOrbit(cameraTransitioner.qRotation.current, false);
+        core.camera.setPosition(cameraTransitioner.vPosition.current, false);
+        // disable picking during transitions, as the performance degradation could reduce the framerate
+        core.inputManager.isPickingEnabled = false;
+    };
+    core.updateCallback = (elapsedTime)=>{
+        const { transitionDurations  } = lastPresenterConfig;
+        if (positionTransitioner.isTransitioning) {
+            const t = positionTransitioner.elapse(elapsedTime, transitionDurations.position + transitionDurations.stagger);
+            core.renderer.transitionTime = t;
+            setTransitionTimeAxesVisibility(transistion2dOnly, core);
+        } else core.inputManager.isPickingEnabled = true;
+        if (modelTransitioner.isTransitioning) {
+            const tm = modelTransitioner.elapse(elapsedTime, transitionDurations.view, true);
+            if (modelTransitioner.shouldTransition) {
+                (0, _glMatrix.quat).slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.from, modelTransitioner.qRotation.to, tm);
+                core.setModelRotation(modelTransitioner.qRotation.current, false);
+            }
+            cam(tm);
+        }
+        if (cameraTransitioner.isTransitioning) {
+            const t1 = cameraTransitioner.elapse(elapsedTime, transitionDurations.view, true);
+            cam(t1);
+        }
+    };
+}
+function setTransitionTimeAxesVisibility(transistion2dOnly, core) {
+    const t = core.renderer.transitionTime;
+    if (transistion2dOnly) {
+        if (t < 0.5) core.renderer.axesVisibility = (0, _morphcharts.AxesVisibility).previous;
+        else core.renderer.axesVisibility = (0, _morphcharts.AxesVisibility).current;
+    } else {
+        if (t <= 0.01) core.renderer.axesVisibility = (0, _morphcharts.AxesVisibility).previous;
+        else if (t >= 0.99) core.renderer.axesVisibility = (0, _morphcharts.AxesVisibility).current;
+        else core.renderer.axesVisibility = (0, _morphcharts.AxesVisibility).none;
+    }
+}
+
+},{"gl-matrix":"3mrln","morphcharts":"dzm75","./defaults":"lUHd0","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"9V139":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "init", ()=>init);
@@ -78159,10 +78236,8 @@ parcelHelpers.export(exports, "init", ()=>init);
 * Licensed under the MIT License.
 */ var _morphcharts = require("morphcharts");
 var _renderer = require("./renderer");
-var _glMatrix = require("gl-matrix");
 var _canvas = require("./canvas");
 var _transition = require("../transition");
-var _defaults = require("./defaults");
 function init(options, mcRendererOptions) {
     const { container  } = options;
     const core = new (0, _morphcharts.Core)({
@@ -78174,29 +78249,15 @@ function init(options, mcRendererOptions) {
     const cameraTransitioner = new (0, _transition.CameraTransitioner)();
     const modelTransitioner = new (0, _transition.ModelTransitioner)();
     const positionTransitioner = new (0, _transition.Transitioner)();
+    positionTransitioner.ended = ()=>{
+        core.renderer.axesVisibility = (0, _morphcharts.AxesVisibility).current;
+    };
     const ref = {
         supportedRenders: {
             advanced: (0, _renderer.rendererEnabled)(true),
             basic: (0, _renderer.rendererEnabled)(false)
         },
-        reset: ()=>{
-            const { qCameraRotation2d , qCameraRotation3d , qModelRotation2d , qModelRotation3d , vCameraPosition  } = (0, _defaults.cameraDefaults);
-            const { cameraTransitioner , modelTransitioner  } = ref;
-            core.reset(true);
-            if (ref.lastView === "3d") {
-                modelTransitioner.qRotation.to = qModelRotation3d;
-                cameraTransitioner.qRotation.to = qCameraRotation3d;
-                cameraTransitioner.vPosition.to = vCameraPosition;
-            } else {
-                modelTransitioner.qRotation.to = qModelRotation2d;
-                cameraTransitioner.qRotation.to = qCameraRotation2d;
-                cameraTransitioner.vPosition.to = vCameraPosition;
-            }
-            (0, _glMatrix.quat).slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.to, modelTransitioner.qRotation.to, 0);
-            core.setModelRotation(modelTransitioner.qRotation.current, true);
-            core.camera.setOrbit(cameraTransitioner.qRotation.to, true);
-            core.camera.setPosition(cameraTransitioner.vPosition.to, true);
-        },
+        reset: null,
         cameraTransitioner,
         modelTransitioner,
         positionTransitioner,
@@ -78210,38 +78271,12 @@ function init(options, mcRendererOptions) {
             ref.lastMorphChartsRendererOptions = mcRendererOptions;
         },
         lastMorphChartsRendererOptions: mcRendererOptions,
-        lastPresenterConfig: null,
-        lastView: null,
         layerStagger: {}
-    };
-    const cam = (t)=>{
-        (0, _glMatrix.quat).slerp(cameraTransitioner.qRotation.current, cameraTransitioner.qRotation.from, cameraTransitioner.qRotation.to, t);
-        (0, _glMatrix.vec3).lerp(cameraTransitioner.vPosition.current, cameraTransitioner.vPosition.from, cameraTransitioner.vPosition.to, t);
-        core.camera.setOrbit(cameraTransitioner.qRotation.current, false);
-        core.camera.setPosition(cameraTransitioner.vPosition.current, false);
-        // disable picking during transitions, as the performance degradation could reduce the framerate
-        core.inputManager.isPickingEnabled = false;
-    };
-    core.updateCallback = (elapsedTime)=>{
-        const { transitionDurations  } = ref.lastPresenterConfig;
-        if (positionTransitioner.isTransitioning) core.renderer.transitionTime = positionTransitioner.elapse(elapsedTime, transitionDurations.position + transitionDurations.stagger);
-        if (modelTransitioner.isTransitioning) {
-            const tm = modelTransitioner.elapse(elapsedTime, transitionDurations.view, true);
-            if (modelTransitioner.shouldTransition) {
-                (0, _glMatrix.quat).slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.from, modelTransitioner.qRotation.to, tm);
-                core.setModelRotation(modelTransitioner.qRotation.current, false);
-            }
-            cam(tm);
-        }
-        if (cameraTransitioner.isTransitioning) {
-            const t = cameraTransitioner.elapse(elapsedTime, transitionDurations.view, true);
-            cam(t);
-        } else core.inputManager.isPickingEnabled = true;
     };
     return ref;
 }
 
-},{"morphcharts":"dzm75","./renderer":"aQlAd","gl-matrix":"3mrln","./canvas":"keiIA","../transition":"eZK1M","./defaults":"lUHd0","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"aQlAd":[function(require,module,exports) {
+},{"morphcharts":"dzm75","./renderer":"aQlAd","./canvas":"keiIA","../transition":"eZK1M","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"aQlAd":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "shouldChangeRenderer", ()=>shouldChangeRenderer);
@@ -78373,6 +78408,7 @@ class Transitioner {
         if (this.time >= totalTime) {
             this.isTransitioning = false;
             this.time = totalTime;
+            this.ended && this.ended();
         }
         const t = this.time / totalTime;
         return ease ? (0, _easing.easing)(t) : t;
