@@ -9412,6 +9412,12 @@ $1c067ae0f2b59810$export$210d3b2db589eb5c._vec3 = (0, $3060130e3101af24$exports)
 
 
 
+
+class $458f5db886f95d9a$export$ea4bacb7eec73803 {
+    constructor(core){
+        this.position = (0, $3060130e3101af24$exports).create();
+    }
+}
 class $458f5db886f95d9a$export$c755714d282122f0 {
     constructor(core){
         this._core = core;
@@ -9460,6 +9466,16 @@ class $458f5db886f95d9a$export$c755714d282122f0 {
             (0, $8d309b2f98447504$exports).create(),
             (0, $8d309b2f98447504$exports).create()
         ];
+    }
+    getView(view) {
+        this.getPosition(view.position);
+    }
+    setView(view, isSmooth) {
+        this.setPosition(view.position, isSmooth);
+    }
+    lerpView(from, to, time) {
+        (0, $3060130e3101af24$exports).lerp(this._vec3, from.position, to.position, time);
+        this.setPosition(this._vec3, false);
     }
     get vMatrices() {
         return this._vMatrices;
@@ -9651,7 +9667,31 @@ class $458f5db886f95d9a$export$c755714d282122f0 {
 }
 
 
+class $4e18b9cf6c0e6c5f$export$d6a870718daa1f38 extends (0, $458f5db886f95d9a$export$ea4bacb7eec73803) {
+    constructor(core){
+        super(core);
+        this.fov = core.config.fov;
+        this.altitude = 0;
+        this.azimuth = 0;
+    }
+}
 class $4e18b9cf6c0e6c5f$export$cf22ae31f9260ad2 extends (0, $458f5db886f95d9a$export$c755714d282122f0) {
+    getView(view) {
+        super.getView(view);
+        view.altitude = this.altitude;
+        view.azimuth = this.azimuth;
+        view.fov = this._core.config.fov;
+    }
+    setView(view, isSmooth) {
+        super.setView(view, isSmooth);
+        this.setAltAzimuth(view.altitude, view.azimuth, isSmooth);
+        this._core.config.fov = view.fov;
+    }
+    lerpView(from, to, time) {
+        super.lerpView(from, to, time);
+        this.setAltAzimuth((0, $43b3041aec256b88$export$80a8c44b8858d625).lerp(from.altitude, to.altitude, time), (0, $43b3041aec256b88$export$80a8c44b8858d625).lerp(from.azimuth, to.azimuth, time), false);
+        this._core.config.fov = (0, $43b3041aec256b88$export$80a8c44b8858d625).lerp(from.fov, to.fov, time);
+    }
     update(elapsedTime) {
         super.update(elapsedTime);
         if (this._core.config.isDebugVisible) {
@@ -9771,13 +9811,14 @@ class $cb8574cb48c3673b$export$29cd7b75162a9425 {
         this.selectionColor = (0, $3060130e3101af24$exports).create();
         this.hoverColor = (0, $3060130e3101af24$exports).create();
         this.activeColor = (0, $3060130e3101af24$exports).create();
-        this.hightlightMode = (0, $b0e0bae684e98192$export$6b731eb2fd512fe0).color;
+        this.highlightMode = (0, $b0e0bae684e98192$export$6b731eb2fd512fe0).color;
         this.lassoThickness = 4;
         this.lassoDashWidth = 2;
         this.lassoColor = (0, $3060130e3101af24$exports).create();
         this.minCubifiedTreeMapSlice = 0.01;
         this.transitionDuration = 400;
         this.transitionStaggering = 100;
+        this.transitionView = true;
         this.backgroundColor = (0, $3060130e3101af24$exports).create();
         this.theme = (0, $b0e0bae684e98192$export$14faa19a0f3bbeb2).light;
     }
@@ -11640,6 +11681,9 @@ class $9baea54bf2330932$export$849e31d725692576 {
     static setIdHover(bufferView, index, value) {
         bufferView.setFloat32($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * index + this.ID_HOVER_OFFSET_BYTES, value, true);
     }
+    static copyIdHover(fromBufferView, fromIndex, toBufferView, toIndex) {
+        toBufferView.setFloat32($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * toIndex + this.ID_HOVER_OFFSET_BYTES, fromBufferView.getFloat32($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * fromIndex + this.ID_HOVER_OFFSET_BYTES, true), true);
+    }
     static getTranslation(bufferView, index, value) {
         const offset = $9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * index + this.TRANSLATION_OFFSET_BYTES;
         (0, $3060130e3101af24$exports).set(value, bufferView.getFloat32(offset, true), bufferView.getFloat32(offset + 4, true), bufferView.getFloat32(offset + 8, true));
@@ -11650,6 +11694,13 @@ class $9baea54bf2330932$export$849e31d725692576 {
         bufferView.setFloat32(offset + 4, value[1], true);
         bufferView.setFloat32(offset + 8, value[2], true);
     }
+    static copyTranslation(fromBufferView, fromIndex, toBufferView, toIndex) {
+        const fromOffset = $9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * fromIndex + this.TRANSLATION_OFFSET_BYTES;
+        const toOffset = $9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * toIndex + this.TRANSLATION_OFFSET_BYTES;
+        toBufferView.setFloat32(toOffset, fromBufferView.getFloat32(fromOffset, true), true);
+        toBufferView.setFloat32(toOffset + 4, fromBufferView.getFloat32(fromOffset + 4, true), true);
+        toBufferView.setFloat32(toOffset + 8, fromBufferView.getFloat32(fromOffset + 8, true), true);
+    }
     static getColor(bufferView, index, value) {
         const offset = $9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * index + this.COLOR_OFFSET_BYTES;
         (0, $a3ca522ed0848e85$exports).set(value, bufferView.getUint8(offset) / 0xFF, bufferView.getUint8(offset + 1) / 0xFF);
@@ -11659,27 +11710,47 @@ class $9baea54bf2330932$export$849e31d725692576 {
         bufferView.setUint8(offset, value[0] * 0xFF);
         bufferView.setUint8(offset + 1, value[1] * 0xFF);
     }
+    static copyColor(fromBufferView, fromIndex, toBufferView, toIndex) {
+        const fromOffset = $9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * fromIndex + this.COLOR_OFFSET_BYTES;
+        const toOffset = $9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * toIndex + this.COLOR_OFFSET_BYTES;
+        toBufferView.setUint8(toOffset, fromBufferView.getUint8(fromOffset));
+        toBufferView.setUint8(toOffset + 1, fromBufferView.getUint8(fromOffset + 1));
+    }
     static getScale(bufferView, index, value) {
         const offset = $9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * index + this.SCALE_OFFSET_BYTES;
-        (0, $2e946b626132112f$exports).set(value, bufferView.getFloat32(offset, true), bufferView.getFloat32(offset + 4, true), bufferView.getFloat32(offset + 8, true), bufferView.getFloat32(offset + 12, true));
+        (0, $3060130e3101af24$exports).set(value, bufferView.getFloat32(offset, true), bufferView.getFloat32(offset + 4, true), bufferView.getFloat32(offset + 8, true));
     }
     static setScale(bufferView, index, value) {
         const offset = $9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * index + this.SCALE_OFFSET_BYTES;
         bufferView.setFloat32(offset, value[0], true);
         bufferView.setFloat32(offset + 4, value[1], true);
         bufferView.setFloat32(offset + 8, value[2], true);
-        bufferView.setFloat32(offset + 12, value[3], true);
+    }
+    static copyScale(fromBufferView, fromIndex, toBufferView, toIndex) {
+        const fromOffset = $9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * fromIndex + this.SCALE_OFFSET_BYTES;
+        const toOffset = $9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * toIndex + this.SCALE_OFFSET_BYTES;
+        toBufferView.setFloat32(toOffset, fromBufferView.getFloat32(fromOffset, true), true);
+        toBufferView.setFloat32(toOffset + 4, fromBufferView.getFloat32(fromOffset + 4, true), true);
+        toBufferView.setFloat32(toOffset + 8, fromBufferView.getFloat32(fromOffset + 8, true), true);
     }
     static getRotation(bufferView, index, value) {
         const offset = $9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * index + this.ROTATION_OFFSET_BYTES;
-        (0, $a75e1c0eea6f029a$exports).set(value, bufferView.getInt16(offset, true) / 0x7FFF, bufferView.getInt16(offset + 2, true) / 0x7FFF, bufferView.getInt16(offset + 4, true) / 0x7FFF, bufferView.getInt16(offset + 6, true) / 0x7FFF);
+        (0, $a75e1c0eea6f029a$exports).set(value, bufferView.getFloat32(offset, true), bufferView.getFloat32(offset + 4, true), bufferView.getFloat32(offset + 8, true), bufferView.getFloat32(offset + 12, true));
     }
     static setRotation(bufferView, index, value) {
         const offset = $9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * index + this.ROTATION_OFFSET_BYTES;
-        bufferView.setInt16(offset, value[0] * 0x7FFF, true);
-        bufferView.setInt16(offset + 2, value[1] * 0x7FFF, true);
-        bufferView.setInt16(offset + 4, value[2] * 0x7FFF, true);
-        bufferView.setInt16(offset + 6, value[3] * 0x7FFF, true);
+        bufferView.setFloat32(offset, value[0], true);
+        bufferView.setFloat32(offset + 4, value[1], true);
+        bufferView.setFloat32(offset + 8, value[2], true);
+        bufferView.setFloat32(offset + 12, value[3], true);
+    }
+    static copyRotation(fromBufferView, fromIndex, toBufferView, toIndex) {
+        const fromOffset = $9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * fromIndex + this.ROTATION_OFFSET_BYTES;
+        const toOffset = $9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * toIndex + this.ROTATION_OFFSET_BYTES;
+        toBufferView.setFloat32(toOffset, fromBufferView.getFloat32(fromOffset, true), true);
+        toBufferView.setFloat32(toOffset + 4, fromBufferView.getFloat32(fromOffset + 4, true), true);
+        toBufferView.setFloat32(toOffset + 8, fromBufferView.getFloat32(fromOffset + 8, true), true);
+        toBufferView.setFloat32(toOffset + 12, fromBufferView.getFloat32(fromOffset + 12, true), true);
     }
     static getIdColor(bufferView, index, value) {
         const offset = $9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * index + this.ID_COLOR_OFFSET_BYTES;
@@ -11698,11 +11769,17 @@ class $9baea54bf2330932$export$849e31d725692576 {
     static setOrder(bufferView, index, value) {
         bufferView.setFloat32($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * index + this.ORDER_OFFSET_BYTES, value, true);
     }
+    static copyOrder(fromBufferView, fromIndex, toBufferView, toIndex) {
+        toBufferView.setFloat32($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * toIndex + this.ORDER_OFFSET_BYTES, fromBufferView.getFloat32($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * fromIndex + this.ORDER_OFFSET_BYTES, true), true);
+    }
     static getStaggerOrder(bufferView, index) {
         return bufferView.getUint16($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * index + this.STAGGER_ORDER_OFFSET_BYTES, true) / 0xFFFF;
     }
     static setStaggerOrder(bufferView, index, value) {
         bufferView.setUint16($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * index + this.STAGGER_ORDER_OFFSET_BYTES, value * 0xFFFF, true);
+    }
+    static copyStaggerOrder(fromBufferView, fromIndex, toBufferView, toIndex) {
+        toBufferView.setUint16($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * toIndex + this.STAGGER_ORDER_OFFSET_BYTES, fromBufferView.getUint16($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * fromIndex + this.STAGGER_ORDER_OFFSET_BYTES, true), true);
     }
     static getSelected(bufferView, index) {
         return bufferView.getInt8($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * index + this.SELECTED_OFFSET_BYTES) / 0x7F;
@@ -11710,24 +11787,40 @@ class $9baea54bf2330932$export$849e31d725692576 {
     static setSelected(bufferView, index, value) {
         bufferView.setInt8($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * index + this.SELECTED_OFFSET_BYTES, value * 0x7F);
     }
+    static copySelected(fromBufferView, fromIndex, toBufferView, toIndex) {
+        toBufferView.setInt8($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * toIndex + this.SELECTED_OFFSET_BYTES, fromBufferView.getInt8($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * fromIndex + this.SELECTED_OFFSET_BYTES));
+    }
+    static getRounding(bufferView, index) {
+        return bufferView.getFloat32($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * index + this.ROUNDING_OFFSET_BYTES, true);
+    }
+    static setRounding(bufferView, index, value) {
+        bufferView.setFloat32($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * index + this.ROUNDING_OFFSET_BYTES, value, true);
+    }
+    static copyRounding(fromBufferView, fromIndex, toBufferView, toIndex) {
+        toBufferView.setFloat32($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * toIndex + this.ROUNDING_OFFSET_BYTES, fromBufferView.getFloat32($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * fromIndex + this.ROUNDING_OFFSET_BYTES, true), true);
+    }
     static getMaterial(bufferView, index) {
         return bufferView.getUint16($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * index + this.MATERIAL_OFFSET_BYTES);
     }
     static setMaterial(bufferView, index, value) {
         bufferView.setUint16($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * index + this.MATERIAL_OFFSET_BYTES, value);
     }
+    static copyMaterial(fromBufferView, fromIndex, toBufferView, toIndex) {
+        toBufferView.setUint16($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * toIndex + this.MATERIAL_OFFSET_BYTES, fromBufferView.getUint16($9baea54bf2330932$export$849e31d725692576.SIZE_BYTES * fromIndex + this.MATERIAL_OFFSET_BYTES, true), true);
+    }
 }
-$9baea54bf2330932$export$849e31d725692576.SIZE_BYTES = 56;
+$9baea54bf2330932$export$849e31d725692576.SIZE_BYTES = 64;
 $9baea54bf2330932$export$849e31d725692576.ID_HOVER_OFFSET_BYTES = 0;
 $9baea54bf2330932$export$849e31d725692576.ID_COLOR_OFFSET_BYTES = 4;
 $9baea54bf2330932$export$849e31d725692576.ORDER_OFFSET_BYTES = 8;
 $9baea54bf2330932$export$849e31d725692576.STAGGER_ORDER_OFFSET_BYTES = 12;
+$9baea54bf2330932$export$849e31d725692576.SELECTED_OFFSET_BYTES = 14;
 $9baea54bf2330932$export$849e31d725692576.TRANSLATION_OFFSET_BYTES = 16;
 $9baea54bf2330932$export$849e31d725692576.COLOR_OFFSET_BYTES = 28;
-$9baea54bf2330932$export$849e31d725692576.SCALE_OFFSET_BYTES = 32;
-$9baea54bf2330932$export$849e31d725692576.SELECTED_OFFSET_BYTES = 14;
-$9baea54bf2330932$export$849e31d725692576.ROTATION_OFFSET_BYTES = 48;
 $9baea54bf2330932$export$849e31d725692576.MATERIAL_OFFSET_BYTES = 30;
+$9baea54bf2330932$export$849e31d725692576.SCALE_OFFSET_BYTES = 32;
+$9baea54bf2330932$export$849e31d725692576.ROUNDING_OFFSET_BYTES = 44;
+$9baea54bf2330932$export$849e31d725692576.ROTATION_OFFSET_BYTES = 48;
 
 
 class $872acbae442b915c$export$7005c9eb6671414d {
@@ -15454,7 +15547,7 @@ class $e2473724aa3ec441$export$d0d38e7dec7a1a61 {
             this._keyboard.update(elapsedTime);
             if (this._mouseWheel.delta != 0) switch(this.mouseWheelAction(this._keyboard)){
                 case (0, $b0e0bae684e98192$export$335c7d069643eb6d).zoom:
-                    camera.zoom(this._mouseWheel.delta * this.mouseWheelZoomScale, this._pointers.hoverX, this._pointers.hoverY);
+                    if (this._pointers.hoverX, this._pointers.hoverY) camera.zoom(this._mouseWheel.delta * this.mouseWheelZoomScale, this._pointers.hoverX, this._pointers.hoverY);
                     break;
                 case (0, $b0e0bae684e98192$export$335c7d069643eb6d).rotateY:
                     (0, $a75e1c0eea6f029a$exports).setAxisAngle(this._quat0, (0, $87037c674fbf0952$export$a002182e51710d39).VECTOR3_UNITY, this._mouseWheel.delta * this.mouseWheelRotationScale);
@@ -15709,10 +15802,21 @@ class $e1e4db87d586f6db$export$ce30dbb46644d06c {
 }
 
 
+
+class $b0e0bae684e98192$export$9ebbd251760e4895 {
+    constructor(core){
+        this.position = (0, $3060130e3101af24$exports).create();
+        this.manipulationOrigin = (0, $3060130e3101af24$exports).create();
+        this.rotation = (0, $a75e1c0eea6f029a$exports).create();
+        (0, $3060130e3101af24$exports).set(this.position, 0, 0, -core.config.modelDistance);
+        this.scale = core.config.modelSize;
+    }
+}
 class $b0e0bae684e98192$export$4143ab5b91744744 {
     constructor(options){
         (0, $f05d00667a622c1a$exports).setMatrixArrayType(Array);
         this._vec3 = (0, $3060130e3101af24$exports).create();
+        this._quat = (0, $a75e1c0eea6f029a$exports).create();
         this._mat4 = (0, $8d309b2f98447504$exports).create();
         this._container = options && options.container ? options.container : document.body;
         this._config = new (0, $cb8574cb48c3673b$export$29cd7b75162a9425)(this);
@@ -15860,6 +15964,23 @@ class $b0e0bae684e98192$export$4143ab5b91744744 {
     get inputManager() {
         return this._inputManager;
     }
+    getView(view) {
+        this.getModelPosition(view.position);
+        this.getModelRotation(view.rotation);
+        view.scale = this.getModelScale();
+    }
+    setView(view, isSmooth) {
+        this.setModelPosition(view.position, isSmooth);
+        this.setModelRotation(view.rotation, isSmooth);
+        this.setModelScale(view.scale, isSmooth);
+    }
+    lerpView(from, to, time) {
+        (0, $3060130e3101af24$exports).lerp(this._vec3, from.position, to.position, time);
+        this.setModelPosition(this._vec3, false);
+        (0, $a75e1c0eea6f029a$exports).slerp(this._quat, from.rotation, to.rotation, time);
+        this.setModelRotation(this._quat, false);
+        this.setModelScale((0, $43b3041aec256b88$export$80a8c44b8858d625).lerp(from.scale, to.scale, time), false);
+    }
     resetModel(isSmooth) {
         (0, $3060130e3101af24$exports).set(this._modelPosition, 0, 0, -this._config.modelDistance);
         (0, $3060130e3101af24$exports).set(this._modelScale, this._config.modelSize, this._config.modelSize, this._config.modelSize);
@@ -15879,6 +16000,7 @@ class $b0e0bae684e98192$export$4143ab5b91744744 {
             this._windowAnimationFrame = window.requestAnimationFrame((currentTime)=>this._tick(currentTime));
             this._started = true;
             this._log.write($b0e0bae684e98192$export$243e62d78d3b544d.info, "render loop started");
+            if (this.startCallback) this.startCallback();
         }
     }
     stop() {
@@ -15889,14 +16011,15 @@ class $b0e0bae684e98192$export$4143ab5b91744744 {
                 this._windowAnimationFrame = null;
                 this._log.write($b0e0bae684e98192$export$243e62d78d3b544d.info, "render loop stopped");
             }
+            if (this.stopCallback) this.stopCallback();
         }
     }
     checkWebXRSupport() {
         const xrSystem = navigator.xr;
         if (xrSystem) xrSystem.isSessionSupported("immersive-vr").then((supported)=>{
             if (supported) {
-                if (this.webXRSupportedCallback) this.webXRSupportedCallback();
                 this._log.write($b0e0bae684e98192$export$243e62d78d3b544d.info, "WebXR supported");
+                if (this.webXRSupportedCallback) this.webXRSupportedCallback();
             }
         });
     }
@@ -15954,7 +16077,6 @@ class $b0e0bae684e98192$export$4143ab5b91744744 {
         let elapsedTime = currentTime - this._previousTime;
         this._previousTime = currentTime;
         if (elapsedTime > 0) {
-            if (elapsedTime > 100) elapsedTime = 100;
             this.update(elapsedTime, xrFrame);
             this.render(elapsedTime, xrFrame);
         }
@@ -16027,6 +16149,7 @@ class $b0e0bae684e98192$export$4143ab5b91744744 {
         (0, $3060130e3101af24$exports).transformMat4(this._vec3, this._modelManipulationOrigin, this._modelMMatrix);
         (0, $3060130e3101af24$exports).subtract(this._modelPosition, this._vec3, this._modelManipulationOrigin);
         (0, $3060130e3101af24$exports).copy(this._smoothedModelPosition, this._modelPosition);
+        this._log.write($b0e0bae684e98192$export$243e62d78d3b544d.info, `manipulation origin ${position[0].toFixed(3)},${position[1].toFixed(3)},${position[2].toFixed(3)}`);
         if (this.manipulationOriginChangedCallback) {
             const result = {
                 x: position[0],
@@ -16035,7 +16158,6 @@ class $b0e0bae684e98192$export$4143ab5b91744744 {
             };
             this.manipulationOriginChangedCallback(result);
         }
-        this._log.write($b0e0bae684e98192$export$243e62d78d3b544d.info, `manipulation origin ${position[0].toFixed(3)},${position[1].toFixed(3)},${position[2].toFixed(3)}`);
     }
     pickLasso(x0, y0, x1, y1, pickType) {
         const inverseMMatrix = (0, $8d309b2f98447504$exports).create();
@@ -16560,7 +16682,7 @@ class $9121297154cd69fc$export$31008ffe97c96a49 {
         this.maxGlyphTop = options.maxGlyphTop;
         this.horizontalAlignment = options.horizontalAlignment === undefined ? (0, $b0e0bae684e98192$export$d94dcb5bec64086e).center : options.horizontalAlignment;
         this.verticalAlignment = options.verticalAlignment === undefined ? (0, $b0e0bae684e98192$export$c12e835f91722ef8).center : options.verticalAlignment;
-        this._material = options.material;
+        this._material = options.material === undefined ? -1 : options.material;
         this.borderWidth = core.config.textBorderWidth;
         this.gamma = 0;
     }
@@ -17223,7 +17345,7 @@ class $66a54358178bc812$export$a3758d3f9ac64232 {
         this._rotation = options.rotation ? (0, $a75e1c0eea6f029a$exports).clone(options.rotation) : (0, $a75e1c0eea6f029a$exports).create();
         this._texCoord0 = options.texCoord0 ? (0, $a3ca522ed0848e85$exports).clone(options.texCoord0) : (0, $a3ca522ed0848e85$exports).fromValues(0, 0);
         this._texCoord1 = options.texCoord1 ? (0, $a3ca522ed0848e85$exports).clone(options.texCoord1) : (0, $a3ca522ed0848e85$exports).fromValues(1, 1);
-        this._material = options.material === undefined ? 0 : options.material;
+        this._material = options.material === undefined ? -1 : options.material;
         this._hasChanged = true;
     }
     get material() {
@@ -17583,8 +17705,8 @@ class $c84832b16446a62d$export$f4f11265faddf354 {
         this.maxCumulativeLayoutBoundsY = this.maxCumulativeLayoutBoundsY === undefined ? this.maxLayoutBoundsY : Math.max(this.maxCumulativeLayoutBoundsY, this.maxLayoutBoundsY);
         this.maxCumulativeLayoutBoundsZ = this.maxCumulativeLayoutBoundsZ === undefined ? this.maxLayoutBoundsZ : Math.max(this.maxCumulativeLayoutBoundsZ, this.maxLayoutBoundsZ);
     }
-    unitToModelSize(unit) {
-        return unit / this._boundsScaling;
+    unitToModelSize(unitSize) {
+        return unitSize / this._boundsScaling;
     }
     unitToModelPositionX(unitPositionX) {
         return this.unitToModelSize(unitPositionX) + this.modelOriginX;
@@ -17620,7 +17742,7 @@ class $c84832b16446a62d$export$f4f11265faddf354 {
     inclusiveUnitBounds(buffer, ids, unitType, offset, count, minBounds, maxBounds) {
         (0, $3060130e3101af24$exports).set(minBounds, Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE);
         (0, $3060130e3101af24$exports).set(maxBounds, -Number.MAX_VALUE, -Number.MAX_VALUE, -Number.MAX_VALUE);
-        const unitScale = (0, $2e946b626132112f$exports).create();
+        const unitScale = (0, $3060130e3101af24$exports).create();
         const unitRotation = (0, $a75e1c0eea6f029a$exports).create();
         const unitTranslation = (0, $3060130e3101af24$exports).create();
         const lookup = buffer.lookup;
@@ -17659,7 +17781,6 @@ class $c84832b16446a62d$export$f4f11265faddf354 {
                     const index1 = lookup[id1];
                     (0, $9baea54bf2330932$export$849e31d725692576).getTranslation(dataView, index1, unitTranslation);
                     (0, $9baea54bf2330932$export$849e31d725692576).getRotation(dataView, index1, unitRotation);
-                    (0, $a75e1c0eea6f029a$exports).normalize(unitRotation, unitRotation);
                     (0, $9baea54bf2330932$export$849e31d725692576).getScale(dataView, index1, unitScale);
                     minBounds0[0] = unitTranslation[0] - unitScale[0] / 2;
                     minBounds0[1] = unitTranslation[1] - unitScale[1] / 2;
@@ -17685,7 +17806,6 @@ class $c84832b16446a62d$export$f4f11265faddf354 {
                     const index2 = lookup[id2];
                     (0, $9baea54bf2330932$export$849e31d725692576).getTranslation(dataView, index2, unitTranslation);
                     (0, $9baea54bf2330932$export$849e31d725692576).getRotation(dataView, index2, unitRotation);
-                    (0, $a75e1c0eea6f029a$exports).normalize(unitRotation, unitRotation);
                     (0, $9baea54bf2330932$export$849e31d725692576).getScale(dataView, index2, unitScale);
                     const length = unitScale[1];
                     const radius1 = Math.max(unitScale[0], unitScale[2]);
@@ -17750,7 +17870,6 @@ class $4ce3204157ee8d14$export$1c460fb4285edadc extends (0, $c84832b16446a62d$ex
         const dataView = buffer.dataView;
         const _vec2 = (0, $a3ca522ed0848e85$exports).create();
         const _vec3 = (0, $3060130e3101af24$exports).create();
-        const _vec4 = (0, $2e946b626132112f$exports).create();
         const _quat = (0, $a75e1c0eea6f029a$exports).create();
         const sizeScalingX = options.sizeScaling === undefined ? options.sizeScalingX === undefined ? 1 : options.sizeScalingX : options.sizeScaling;
         const sizeScalingY = options.sizeScaling === undefined ? options.sizeScalingY === undefined ? 1 : options.sizeScalingY : options.sizeScaling;
@@ -17794,10 +17913,10 @@ class $4ce3204157ee8d14$export$1c460fb4285edadc extends (0, $c84832b16446a62d$ex
             _vec3[1] = (positionY - this.modelOriginY) * this._boundsScaling;
             _vec3[2] = (positionZ - this.modelOriginZ) * this._boundsScaling;
             (0, $9baea54bf2330932$export$849e31d725692576).setTranslation(dataView, index, _vec3);
-            _vec4[0] = Math.max((sizesX ? Math.abs(sizesX[id]) : 1) * sizeScalingX, minSize) * this._boundsScaling;
-            _vec4[1] = Math.max((sizesY ? Math.abs(sizesY[id]) : 1) * sizeScalingY, minSize) * this._boundsScaling;
-            _vec4[2] = Math.max((sizesZ ? Math.abs(sizesZ[id]) : 1) * sizeScalingZ, minSize) * this._boundsScaling;
-            (0, $9baea54bf2330932$export$849e31d725692576).setScale(dataView, index, _vec4);
+            _vec3[0] = Math.max((sizesX ? Math.abs(sizesX[id]) : 1) * sizeScalingX, minSize) * this._boundsScaling;
+            _vec3[1] = Math.max((sizesY ? Math.abs(sizesY[id]) : 1) * sizeScalingY, minSize) * this._boundsScaling;
+            _vec3[2] = Math.max((sizesZ ? Math.abs(sizesZ[id]) : 1) * sizeScalingZ, minSize) * this._boundsScaling;
+            (0, $9baea54bf2330932$export$849e31d725692576).setScale(dataView, index, _vec3);
             if (options.rotations) {
                 _quat[0] = options.rotations[id * 4];
                 _quat[1] = options.rotations[id * 4 + 1];
@@ -17825,6 +17944,7 @@ class $4ce3204157ee8d14$export$1c460fb4285edadc extends (0, $c84832b16446a62d$ex
                 (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, i / (count - 1));
             (0, $9baea54bf2330932$export$849e31d725692576).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            (0, $9baea54bf2330932$export$849e31d725692576).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -18997,7 +19117,6 @@ class $1b1a7f1e559d7156$export$ec91da630f36d5ea {
         this._core = core;
         this._ids = ids;
         this._data = data;
-        this._headings = headings;
         this._columnTypes = columnTypes;
         this._numericValues = numericValues;
         this._stringValues = Array(columnTypes.length).fill(null);
@@ -19033,19 +19152,18 @@ class $1b1a7f1e559d7156$export$ec91da630f36d5ea {
         const rows = [];
         for(let i = 0; i < ids.length; i++){
             const rowIndex = ids[i];
-            const row = {};
+            const row = [];
             for(let j = 0; j < columns.length; j++){
                 const columnIndex = columns[j];
-                const heading = this._headings[columnIndex].replace(/\s/g, "");
                 switch(this._columnTypes[columnIndex]){
                     case (0, $212bb5c4fc5225a2$export$7ce43d0a8f00d826).date:
                     case (0, $212bb5c4fc5225a2$export$7ce43d0a8f00d826).string:
-                        row[heading] = this._data[rowIndex][columnIndex];
+                        row.push(this._data[rowIndex][columnIndex]);
                         break;
                     case (0, $212bb5c4fc5225a2$export$7ce43d0a8f00d826).integer:
                     case (0, $212bb5c4fc5225a2$export$7ce43d0a8f00d826).float:
                         const numericValues = this._createNumericValues(columnIndex);
-                        row[heading] = numericValues[rowIndex];
+                        row.push(numericValues[rowIndex]);
                         break;
                 }
             }
@@ -19453,7 +19571,6 @@ class $304da0640819c2ee$export$bbc6c6369b38e3d1 extends (0, $c84832b16446a62d$ex
         const dataView = buffer.dataView;
         const _vec2 = (0, $a3ca522ed0848e85$exports).create();
         const _vec3 = (0, $3060130e3101af24$exports).create();
-        const _vec4 = (0, $2e946b626132112f$exports).create();
         const _quat = (0, $a75e1c0eea6f029a$exports).create();
         const minColor = options.minColor === undefined ? 0 : options.minColor;
         const maxColor = options.maxColor === undefined ? 1 : options.maxColor;
@@ -19487,10 +19604,10 @@ class $304da0640819c2ee$export$bbc6c6369b38e3d1 extends (0, $c84832b16446a62d$ex
             _vec3[1] = (positionY - this.modelOriginY) * this._boundsScaling;
             _vec3[2] = reverseZ ? (this.modelOriginZ - positionZ) * this._boundsScaling : (positionZ - this.modelOriginZ) * this._boundsScaling;
             (0, $9baea54bf2330932$export$849e31d725692576).setTranslation(dataView, index, _vec3);
-            _vec4[0] = this._sizes[index * 3] * this._boundsScaling;
-            _vec4[1] = this._sizes[index * 3 + 1] * this._boundsScaling;
-            _vec4[2] = this._sizes[index * 3 + 2] * this._boundsScaling;
-            (0, $9baea54bf2330932$export$849e31d725692576).setScale(dataView, index, _vec4);
+            _vec3[0] = this._sizes[index * 3] * this._boundsScaling;
+            _vec3[1] = this._sizes[index * 3 + 1] * this._boundsScaling;
+            _vec3[2] = this._sizes[index * 3 + 2] * this._boundsScaling;
+            (0, $9baea54bf2330932$export$849e31d725692576).setScale(dataView, index, _vec3);
             (0, $9baea54bf2330932$export$849e31d725692576).setRotation(dataView, index, _quat);
             if (options.colors) {
                 const color = (0, $43b3041aec256b88$export$80a8c44b8858d625).normalize(options.colors[id], minColor, maxColor, 0, 1);
@@ -19512,6 +19629,7 @@ class $304da0640819c2ee$export$bbc6c6369b38e3d1 extends (0, $c84832b16446a62d$ex
                 (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, i / (count - 1));
             (0, $9baea54bf2330932$export$849e31d725692576).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            (0, $9baea54bf2330932$export$849e31d725692576).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -19572,7 +19690,7 @@ class $966f1371bbccef62$export$a15f0a83a652dd40 extends (0, $c84832b16446a62d$ex
         const staggerOrderReverse = options.staggerOrderReverse === undefined ? false : options.staggerOrderReverse;
         const padding = options.padding === undefined ? 0 : options.padding;
         this._updateModelBounds(options);
-        const scale = (0, $2e946b626132112f$exports).fromValues((1 - padding) * this._boundsScaling, (1 - padding) * this._boundsScaling, (1 - padding) * this._boundsScaling, 0);
+        const scale = (0, $3060130e3101af24$exports).fromValues((1 - padding) * this._boundsScaling, (1 - padding) * this._boundsScaling, (1 - padding) * this._boundsScaling);
         const lookup = buffer.lookup;
         const selection = options.selected && options.selected.size > 0;
         for(let i = 0; i < count; i++){
@@ -19602,6 +19720,7 @@ class $966f1371bbccef62$export$a15f0a83a652dd40 extends (0, $c84832b16446a62d$ex
                 (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, i / (count - 1));
             (0, $9baea54bf2330932$export$849e31d725692576).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            (0, $9baea54bf2330932$export$849e31d725692576).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)} ms`);
@@ -19723,7 +19842,6 @@ class $e3ce4233e60084e2$export$17d680238e50603e extends (0, $c84832b16446a62d$ex
         const dataView = buffer.dataView;
         const _vec2 = (0, $a3ca522ed0848e85$exports).create();
         const _vec3 = (0, $3060130e3101af24$exports).create();
-        const _vec4 = (0, $2e946b626132112f$exports).create();
         const _quat = (0, $a75e1c0eea6f029a$exports).create();
         const endMinColor = options.endMinColor === undefined ? 0 : options.endMinColor;
         const endMaxColor = options.endMaxColor === undefined ? 1 : options.endMaxColor;
@@ -19758,10 +19876,10 @@ class $e3ce4233e60084e2$export$17d680238e50603e extends (0, $c84832b16446a62d$ex
             _vec3[1] = (positionY - this.modelOriginY) * this._boundsScaling;
             _vec3[2] = (positionZ - this.modelOriginZ) * this._boundsScaling;
             (0, $9baea54bf2330932$export$849e31d725692576).setTranslation(dataView, index, _vec3);
-            _vec4[0] = this._sizes[index * 3] * this._boundsScaling;
-            _vec4[1] = this._sizes[index * 3 + 1] * this._boundsScaling;
-            _vec4[2] = this._sizes[index * 3 + 2] * this._boundsScaling;
-            (0, $9baea54bf2330932$export$849e31d725692576).setScale(dataView, index, _vec4);
+            _vec3[0] = this._sizes[index * 3] * this._boundsScaling;
+            _vec3[1] = this._sizes[index * 3 + 1] * this._boundsScaling;
+            _vec3[2] = this._sizes[index * 3 + 2] * this._boundsScaling;
+            (0, $9baea54bf2330932$export$849e31d725692576).setScale(dataView, index, _vec3);
             _quat[0] = this._rotations[index * 4];
             _quat[1] = this._rotations[index * 4 + 1];
             _quat[2] = this._rotations[index * 4 + 2];
@@ -19789,6 +19907,7 @@ class $e3ce4233e60084e2$export$17d680238e50603e extends (0, $c84832b16446a62d$ex
                 (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, i / (count - 1));
             (0, $9baea54bf2330932$export$849e31d725692576).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            (0, $9baea54bf2330932$export$849e31d725692576).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -19881,7 +20000,6 @@ class $cc5febd67997657a$export$b74c7d46bc92515c extends (0, $c84832b16446a62d$ex
         const dataView = buffer.dataView;
         const _vec2 = (0, $a3ca522ed0848e85$exports).create();
         const _vec3 = (0, $3060130e3101af24$exports).create();
-        const _vec4 = (0, $2e946b626132112f$exports).create();
         const _quat = (0, $a75e1c0eea6f029a$exports).create();
         const minColor = options.minColor === undefined ? 0 : options.minColor;
         const maxColor = options.maxColor === undefined ? 1 : options.maxColor;
@@ -19901,10 +20019,10 @@ class $cc5febd67997657a$export$b74c7d46bc92515c extends (0, $c84832b16446a62d$ex
             _vec3[1] = (this._positions[index * 3 + 1] - this.modelOriginY) * this._boundsScaling;
             _vec3[2] = (this._positions[index * 3 + 2] - this.modelOriginZ) * this._boundsScaling;
             (0, $9baea54bf2330932$export$849e31d725692576).setTranslation(dataView, index, _vec3);
-            _vec4[0] = this._sizes[index * 3] * this._boundsScaling;
-            _vec4[1] = this._sizes[index * 3 + 1] * this._boundsScaling;
-            _vec4[2] = this._sizes[index * 3 + 2] * this._boundsScaling;
-            (0, $9baea54bf2330932$export$849e31d725692576).setScale(dataView, index, _vec4);
+            _vec3[0] = this._sizes[index * 3] * this._boundsScaling;
+            _vec3[1] = this._sizes[index * 3 + 1] * this._boundsScaling;
+            _vec3[2] = this._sizes[index * 3 + 2] * this._boundsScaling;
+            (0, $9baea54bf2330932$export$849e31d725692576).setScale(dataView, index, _vec3);
             _quat[0] = this._rotations[index * 4];
             _quat[1] = this._rotations[index * 4 + 1];
             _quat[2] = this._rotations[index * 4 + 2];
@@ -19927,6 +20045,7 @@ class $cc5febd67997657a$export$b74c7d46bc92515c extends (0, $c84832b16446a62d$ex
                 (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, i / (ids.length - 1));
             (0, $9baea54bf2330932$export$849e31d725692576).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            (0, $9baea54bf2330932$export$849e31d725692576).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `${this.constructor.name.toLowerCase()} update ${ids.length} vertices ${Math.round(window.performance.now() - start)}ms`);
@@ -20100,7 +20219,6 @@ class $cc5febd67997657a$export$7fbedc92909ed28e extends (0, $c84832b16446a62d$ex
         const dataView = buffer.dataView;
         const _vec2 = (0, $a3ca522ed0848e85$exports).create();
         const _vec3 = (0, $3060130e3101af24$exports).create();
-        const _vec4 = (0, $2e946b626132112f$exports).create();
         const _quat = (0, $a75e1c0eea6f029a$exports).create();
         const minColor = options.minColor === undefined ? 0 : options.minColor;
         const maxColor = options.maxColor === undefined ? 1 : options.maxColor;
@@ -20120,10 +20238,10 @@ class $cc5febd67997657a$export$7fbedc92909ed28e extends (0, $c84832b16446a62d$ex
             _vec3[1] = (this._positions[index * 3 + 1] - this.modelOriginY) * this._boundsScaling;
             _vec3[2] = (this._positions[index * 3 + 2] - this.modelOriginZ) * this._boundsScaling;
             (0, $9baea54bf2330932$export$849e31d725692576).setTranslation(dataView, index, _vec3);
-            _vec4[0] = this._sizes[index * 3] * this._boundsScaling;
-            _vec4[1] = this._sizes[index * 3 + 1] * this._boundsScaling;
-            _vec4[2] = this._sizes[index * 3 + 2] * this._boundsScaling;
-            (0, $9baea54bf2330932$export$849e31d725692576).setScale(dataView, index, _vec4);
+            _vec3[0] = this._sizes[index * 3] * this._boundsScaling;
+            _vec3[1] = this._sizes[index * 3 + 1] * this._boundsScaling;
+            _vec3[2] = this._sizes[index * 3 + 2] * this._boundsScaling;
+            (0, $9baea54bf2330932$export$849e31d725692576).setScale(dataView, index, _vec3);
             _quat[0] = this._rotations[index * 4];
             _quat[1] = this._rotations[index * 4 + 1];
             _quat[2] = this._rotations[index * 4 + 2];
@@ -20146,6 +20264,7 @@ class $cc5febd67997657a$export$7fbedc92909ed28e extends (0, $c84832b16446a62d$ex
                 (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - i / (ids.length - 1) : i / (ids.length - 1));
             (0, $9baea54bf2330932$export$849e31d725692576).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            (0, $9baea54bf2330932$export$849e31d725692576).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `${this.constructor.name.toLowerCase()} update ${ids.length} vertices ${Math.round(window.performance.now() - start)}ms`);
@@ -20282,7 +20401,7 @@ class $9674b3f55147860a$export$a9bf29f8d87ebbee extends (0, $c84832b16446a62d$ex
         const padding = options.padding === undefined ? 0 : options.padding;
         const thickness = options.thickness === undefined ? 1 : options.thickness;
         this._updateModelBounds(options);
-        const scale = (0, $2e946b626132112f$exports).fromValues((1 - padding) * this._boundsScaling, (1 - padding) * this._boundsScaling, thickness * this._boundsScaling, 0);
+        const scale = (0, $3060130e3101af24$exports).fromValues((1 - padding) * this._boundsScaling, (1 - padding) * this._boundsScaling, thickness * this._boundsScaling);
         const lookup = buffer.lookup;
         const selection = options.selected && options.selected.size > 0;
         for(let i = 0; i < count; i++){
@@ -20325,6 +20444,7 @@ class $9674b3f55147860a$export$a9bf29f8d87ebbee extends (0, $c84832b16446a62d$ex
                 (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, i / (count - 1));
             (0, $9baea54bf2330932$export$849e31d725692576).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            (0, $9baea54bf2330932$export$849e31d725692576).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)} ms`);
@@ -20388,7 +20508,6 @@ class $091ddf50c2a6d267$export$ce1cde616fb0ca7e extends (0, $c84832b16446a62d$ex
         const dataView = buffer.dataView;
         const _vec2 = (0, $a3ca522ed0848e85$exports).create();
         const _vec3 = (0, $3060130e3101af24$exports).create();
-        const _vec4 = (0, $2e946b626132112f$exports).create();
         const _quat = (0, $a75e1c0eea6f029a$exports).create();
         const heights = options.heights;
         const minHeight = options.minHeight === undefined ? 0 : options.minHeight;
@@ -20433,10 +20552,10 @@ class $091ddf50c2a6d267$export$ce1cde616fb0ca7e extends (0, $c84832b16446a62d$ex
             _vec3[1] = (positionY - this.modelOriginY) * this._boundsScaling;
             _vec3[2] = (positionZ - this.modelOriginZ) * this._boundsScaling;
             (0, $9baea54bf2330932$export$849e31d725692576).setTranslation(dataView, index, _vec3);
-            _vec4[0] = Math.max((this._sizesX[index] - padding) * this._boundsScaling, 0);
-            _vec4[1] = Math.max((this._sizesY[index] - padding) * this._boundsScaling, 0);
-            _vec4[2] = height * this._boundsScaling;
-            (0, $9baea54bf2330932$export$849e31d725692576).setScale(dataView, index, _vec4);
+            _vec3[0] = Math.max((this._sizesX[index] - padding) * this._boundsScaling, 0);
+            _vec3[1] = Math.max((this._sizesY[index] - padding) * this._boundsScaling, 0);
+            _vec3[2] = height * this._boundsScaling;
+            (0, $9baea54bf2330932$export$849e31d725692576).setScale(dataView, index, _vec3);
             (0, $9baea54bf2330932$export$849e31d725692576).setRotation(dataView, index, _quat);
             if (options.colors) {
                 const color = (0, $43b3041aec256b88$export$80a8c44b8858d625).normalize(options.colors[id1], minColor, maxColor, 0, 1);
@@ -20455,6 +20574,7 @@ class $091ddf50c2a6d267$export$ce1cde616fb0ca7e extends (0, $c84832b16446a62d$ex
                 (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, i1 / (count - 1));
             (0, $9baea54bf2330932$export$849e31d725692576).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id1] : 0);
+            (0, $9baea54bf2330932$export$849e31d725692576).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id1] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -20504,7 +20624,6 @@ class $091ddf50c2a6d267$export$3ca73d0a8bf0e96e extends (0, $c84832b16446a62d$ex
         const dataView = buffer.dataView;
         const _vec2 = (0, $a3ca522ed0848e85$exports).create();
         const _vec3 = (0, $3060130e3101af24$exports).create();
-        const _vec4 = (0, $2e946b626132112f$exports).create();
         const minColor = options.minColor === undefined ? 0 : options.minColor;
         const maxColor = options.maxColor === undefined ? 1 : options.maxColor;
         const minOrder = options.minOrder === undefined ? 0 : options.minOrder;
@@ -20537,10 +20656,10 @@ class $091ddf50c2a6d267$export$3ca73d0a8bf0e96e extends (0, $c84832b16446a62d$ex
             _vec3[1] = (positionY - this.modelOriginY) * this._boundsScaling;
             _vec3[2] = (positionZ - this.modelOriginZ) * this._boundsScaling;
             (0, $9baea54bf2330932$export$849e31d725692576).setTranslation(dataView, index, _vec3);
-            _vec4[0] = Math.max((this._sizesX[index] - padding) * this._boundsScaling, 0);
-            _vec4[1] = Math.max((this._sizesY[index] - padding) * this._boundsScaling, 0);
-            _vec4[2] = Math.max((this._sizesZ[index] - paddingZ) * this._boundsScaling, 0) * thickness;
-            (0, $9baea54bf2330932$export$849e31d725692576).setScale(dataView, index, _vec4);
+            _vec3[0] = Math.max((this._sizesX[index] - padding) * this._boundsScaling, 0);
+            _vec3[1] = Math.max((this._sizesY[index] - padding) * this._boundsScaling, 0);
+            _vec3[2] = Math.max((this._sizesZ[index] - paddingZ) * this._boundsScaling, 0) * thickness;
+            (0, $9baea54bf2330932$export$849e31d725692576).setScale(dataView, index, _vec3);
             (0, $9baea54bf2330932$export$849e31d725692576).setRotation(dataView, index, (0, $87037c674fbf0952$export$a002182e51710d39).QUAT_IDENTITY);
             if (options.colors) {
                 const color = (0, $43b3041aec256b88$export$80a8c44b8858d625).normalize(options.colors[id], minColor, maxColor, 0, 1);
@@ -20559,6 +20678,7 @@ class $091ddf50c2a6d267$export$3ca73d0a8bf0e96e extends (0, $c84832b16446a62d$ex
                 (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, i / (count - 1));
             (0, $9baea54bf2330932$export$849e31d725692576).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            (0, $9baea54bf2330932$export$849e31d725692576).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -20761,7 +20881,7 @@ class $8e8b902bb9bb0800$export$694e0d28c7ffc90c extends $8e8b902bb9bb0800$export
         const thickness = options.thickness === undefined ? 1 - padding : options.thickness;
         this._updateModelBounds(options);
         (0, $a75e1c0eea6f029a$exports).rotationTo(_quat, this._core.config.identityRotation, (0, $87037c674fbf0952$export$a002182e51710d39).VECTOR3_UNITY);
-        const scale = (0, $2e946b626132112f$exports).fromValues((1 - padding) * this._boundsScaling, (1 - padding) * this._boundsScaling, thickness * this._boundsScaling, 0);
+        const scale = (0, $3060130e3101af24$exports).fromValues((1 - padding) * this._boundsScaling, (1 - padding) * this._boundsScaling, thickness * this._boundsScaling);
         const lookup = buffer.lookup;
         const selection = options.selected && options.selected.size > 0;
         for(let i = 0; i < count; i++){
@@ -20801,6 +20921,7 @@ class $8e8b902bb9bb0800$export$694e0d28c7ffc90c extends $8e8b902bb9bb0800$export
                 (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, i / (count - 1));
             (0, $9baea54bf2330932$export$849e31d725692576).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            (0, $9baea54bf2330932$export$849e31d725692576).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -20980,7 +21101,6 @@ class $8e8b902bb9bb0800$export$75310880a535fd3b extends $8e8b902bb9bb0800$export
         const dataView = buffer.dataView;
         const _vec2 = (0, $a3ca522ed0848e85$exports).create();
         const _vec3 = (0, $3060130e3101af24$exports).create();
-        const _vec4 = (0, $2e946b626132112f$exports).create();
         const _quat = (0, $a75e1c0eea6f029a$exports).create();
         const minColor = options.minColor === undefined ? 0 : options.minColor;
         const maxColor = options.maxColor === undefined ? 1 : options.maxColor;
@@ -21015,10 +21135,10 @@ class $8e8b902bb9bb0800$export$75310880a535fd3b extends $8e8b902bb9bb0800$export
             _vec3[1] = (positionY - this.modelOriginY) * this._boundsScaling;
             _vec3[2] = (positionZ - this.modelOriginZ) * this._boundsScaling;
             (0, $9baea54bf2330932$export$849e31d725692576).setTranslation(dataView, index, _vec3);
-            _vec4[0] = Math.max((this._sizesX[index] - padding) * this._boundsScaling, 0);
-            _vec4[1] = Math.max((this._sizesY[index] - padding) * this._boundsScaling, 0);
-            _vec4[2] = Math.max((this._sizesZ[index] - paddingZ) * this._boundsScaling, 0) * thickness;
-            (0, $9baea54bf2330932$export$849e31d725692576).setScale(dataView, index, _vec4);
+            _vec3[0] = Math.max((this._sizesX[index] - padding) * this._boundsScaling, 0);
+            _vec3[1] = Math.max((this._sizesY[index] - padding) * this._boundsScaling, 0);
+            _vec3[2] = Math.max((this._sizesZ[index] - paddingZ) * this._boundsScaling, 0) * thickness;
+            (0, $9baea54bf2330932$export$849e31d725692576).setScale(dataView, index, _vec3);
             (0, $9baea54bf2330932$export$849e31d725692576).setRotation(dataView, index, _quat);
             if (options.colors) {
                 const color = (0, $43b3041aec256b88$export$80a8c44b8858d625).normalize(options.colors[id], minColor, maxColor, 0, 1);
@@ -21037,6 +21157,7 @@ class $8e8b902bb9bb0800$export$75310880a535fd3b extends $8e8b902bb9bb0800$export
                 (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(dataView, index, i / (count - 1));
             (0, $9baea54bf2330932$export$849e31d725692576).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            (0, $9baea54bf2330932$export$849e31d725692576).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `${this.constructor.name.toLowerCase()} update ${ids.length} ${Math.round(window.performance.now() - start)}ms`);
@@ -21218,29 +21339,23 @@ class $4dac639045fe5cb9$export$c1cecec923d96e5c {
     }
     copyFrom(buffer) {
         const start = window.performance.now();
-        const _vec2 = (0, $a3ca522ed0848e85$exports).create();
-        const _vec3 = (0, $3060130e3101af24$exports).create();
-        const _vec4 = (0, $2e946b626132112f$exports).create();
-        const _quat = (0, $a75e1c0eea6f029a$exports).create();
-        const dataView = buffer.dataView;
+        const fromDataView = buffer.dataView;
+        const toDataView = this._dataView;
         const lookup = buffer.lookup;
         for(let i = 0; i < this._length; i++){
             const index = lookup[this._ids[i]];
             if (index != null) {
-                (0, $9baea54bf2330932$export$849e31d725692576).setIdHover(this._dataView, i, (0, $9baea54bf2330932$export$849e31d725692576).getIdHover(dataView, index));
-                (0, $9baea54bf2330932$export$849e31d725692576).getTranslation(dataView, index, _vec3);
-                (0, $9baea54bf2330932$export$849e31d725692576).setTranslation(this._dataView, i, _vec3);
-                (0, $9baea54bf2330932$export$849e31d725692576).getScale(dataView, index, _vec4);
-                (0, $9baea54bf2330932$export$849e31d725692576).setScale(this._dataView, i, _vec4);
-                (0, $9baea54bf2330932$export$849e31d725692576).getRotation(dataView, index, _quat);
-                (0, $9baea54bf2330932$export$849e31d725692576).setRotation(this._dataView, i, _quat);
-                (0, $9baea54bf2330932$export$849e31d725692576).getColor(dataView, index, _vec2);
-                (0, $9baea54bf2330932$export$849e31d725692576).setColor(this._dataView, i, _vec2);
-                (0, $9baea54bf2330932$export$849e31d725692576).setSelected(this._dataView, i, (0, $9baea54bf2330932$export$849e31d725692576).getSelected(dataView, index));
-                (0, $9baea54bf2330932$export$849e31d725692576).setMaterial(this._dataView, i, (0, $9baea54bf2330932$export$849e31d725692576).getMaterial(dataView, index));
-                (0, $9baea54bf2330932$export$849e31d725692576).setOrder(this._dataView, i, (0, $9baea54bf2330932$export$849e31d725692576).getOrder(dataView, index));
-                (0, $9baea54bf2330932$export$849e31d725692576).setStaggerOrder(this._dataView, i, (0, $9baea54bf2330932$export$849e31d725692576).getStaggerOrder(dataView, index));
-            } else (0, $9baea54bf2330932$export$849e31d725692576).setRotation(this._dataView, i, (0, $87037c674fbf0952$export$a002182e51710d39).QUAT_IDENTITY);
+                (0, $9baea54bf2330932$export$849e31d725692576).copyIdHover(fromDataView, index, toDataView, i);
+                (0, $9baea54bf2330932$export$849e31d725692576).copyTranslation(fromDataView, index, toDataView, i);
+                (0, $9baea54bf2330932$export$849e31d725692576).copyScale(fromDataView, index, toDataView, i);
+                (0, $9baea54bf2330932$export$849e31d725692576).copyRotation(fromDataView, index, toDataView, i);
+                (0, $9baea54bf2330932$export$849e31d725692576).copyColor(fromDataView, index, toDataView, i);
+                (0, $9baea54bf2330932$export$849e31d725692576).copySelected(fromDataView, index, toDataView, i);
+                (0, $9baea54bf2330932$export$849e31d725692576).copyMaterial(fromDataView, index, toDataView, i);
+                (0, $9baea54bf2330932$export$849e31d725692576).copyRounding(fromDataView, index, toDataView, i);
+                (0, $9baea54bf2330932$export$849e31d725692576).copyOrder(fromDataView, index, toDataView, i);
+                (0, $9baea54bf2330932$export$849e31d725692576).copyStaggerOrder(fromDataView, index, toDataView, i);
+            } else (0, $9baea54bf2330932$export$849e31d725692576).setRotation(toDataView, i, (0, $87037c674fbf0952$export$a002182e51710d39).QUAT_IDENTITY);
         }
         this.unitType = buffer.unitType;
         this._selected = buffer.selected;
@@ -21253,10 +21368,11 @@ class $4dac639045fe5cb9$export$c1cecec923d96e5c {
         const offset = options && options.offset !== undefined ? options.offset : 0;
         const count = options && options.count !== undefined ? options.count : ids.length;
         const selection = this._selected.size > 0;
+        const dataView = this._dataView;
         for(let i = 0; i < count; i++){
             const id = ids[i + offset];
             const index = this._lookup[id];
-            (0, $9baea54bf2330932$export$849e31d725692576).setSelected(this._dataView, index, selection ? this._selected.has(id) ? 1 : -1 : 0);
+            (0, $9baea54bf2330932$export$849e31d725692576).setSelected(dataView, index, selection ? this._selected.has(id) ? 1 : -1 : 0);
         }
         this.update();
         this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `buffer update selection ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -21527,7 +21643,8 @@ class $a33c9818b09ebc0d$export$30686c90897c890d {
     initialize(core) {
         this._core = core;
         this._canvas = document.createElement("canvas");
-        this._canvas.addEventListener("contextmenu", (e)=>{
+        const contextmenu = this._options && this._options.contextmenu;
+        if (!contextmenu) this._canvas.addEventListener("contextmenu", (e)=>{
             e.preventDefault();
         });
         this._canvas.tabIndex = this._core.container.tabIndex;
@@ -21577,7 +21694,7 @@ class $a33c9818b09ebc0d$export$30686c90897c890d {
             this._previousResizeWidth = this._resizeWidth;
             this._previousResizeHeight = this._resizeHeight;
             this._isResizing = true;
-            this._resizeElapsedTime = 0;
+            this._resizeElapsedTime = elapsedTime;
         }
         if (this._isResizing) {
             if (this._resizeElapsedTime > this._resizeMinimumDelay && this._isInitialized) {
@@ -21639,6 +21756,9 @@ class $a33c9818b09ebc0d$export$30686c90897c890d {
                 imageVisual.mMatrix = this.mMatrix;
                 imageVisual.vMatrices = this.vMatrices;
                 imageVisual.pMatrices = this.pMatrices;
+                imageVisual.isPickingEnabled = this.isPickingEnabled;
+                imageVisual.pickPMatrix = this.pickPMatrix;
+                imageVisual.pickVMatrix = this.pickVMatrix;
                 imageVisual.viewports = this._viewports;
                 imageVisual.viewportOffset = this._viewportOffset;
                 imageVisual.viewportCount = this._viewportCount;
@@ -21867,7 +21987,7 @@ $4d4782060043943a$export$e9a269813a6315a4.glsl = {
     "sdftext.fragment.fx": '#version 100\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include "common.include.fx"\n#define Derivatives\nuniform sampler2D uSampler;\nuniform bool uPick;\nuniform vec3 uColor;\nuniform vec3 uHoverColor;\nuniform float uGamma;\nuniform vec3 uBorderColor;\nuniform float uBuffer;\nuniform float uBorderWidth;\nvarying mediump vec2 vTexCoord;\nvarying lowp vec4 vIdColor;\nvarying lowp float vHover;\n#ifdef Derivatives\n#extension GL_OES_standard_derivatives : enable\n#endif\nvoid main(void)\n{\nif (uPick) {\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat distance = texture2D(uSampler, vTexCoord).r;\nif (distance < uBuffer - uBorderWidth)\n{\ndiscard;\n}\nfloat gamma;\n#ifdef Derivatives\ngamma = fwidth(distance);\n#else\ngamma = uGamma;\n#endif\nfloat value = smoothstep(uBuffer - gamma, uBuffer + gamma, distance);\ngl_FragColor = vec4(pow(mix(uBorderColor, mix(uColor, uHoverColor, vHover), value), GAMMA), 1.0);\n}\n}\n',
     "sdftext.vertex.fx": "#version 100\nattribute lowp vec4 aIdColor;\nattribute vec3 aPosition;\nattribute mediump vec2 aTexCoord;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform vec4 uPickedIdColor;\nvarying mediump vec2 vTexCoord;\nvarying lowp vec4 vIdColor;\nvarying lowp float vHover;\nvoid main(void) {\ngl_Position = uPMatrix * uVMatrix * uMMatrix * vec4(aPosition, 1.0);\nvTexCoord = aTexCoord;\nvIdColor = aIdColor;\nvHover = uPickedIdColor == aIdColor ? 1.0 : 0.0;\n}\n",
     "simple.vertex.fx": "#version 100\nattribute vec3 aPosition;\nvoid main(void) {\ngl_Position = vec4(aPosition, 1.0);\n}\n",
-    "texture.fragment.fx": "#version 100\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\nuniform sampler2D uSampler;\nvarying mediump vec2 vTexCoord;\nvoid main(void)\n{\ngl_FragColor = vec4(texture2D(uSampler, vTexCoord).xyz, 1.0);\n}\n",
+    "texture.fragment.fx": "#version 100\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\nuniform sampler2D uSampler;\nuniform bool uPick;\nvarying mediump vec2 vTexCoord;\nvoid main(void)\n{\nif (uPick) {\ngl_FragColor = vec4(0.0);\n}\nelse {\ngl_FragColor = vec4(texture2D(uSampler, vTexCoord).xyz, 1.0);\n}\n}\n",
     "texture.vertex.fx": "#version 100\nattribute vec3 aPosition;\nattribute mediump vec3 aNormal;\nattribute mediump vec2 aTexCoord;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nvarying mediump vec3 vNormal;\nvarying mediump vec2 vTexCoord;\nvoid main(void) {\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvNormal = normalize((mvMatrix * vec4(aNormal, 0.0)).xyz);\ngl_Position = uPMatrix * mvMatrix * vec4(aPosition, 1.0);\nvTexCoord = aTexCoord;\n}\n",
     "unitblock.fragment.fx": '#version 100\n#define Derivatives\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include "common.include.fx"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\n#ifdef Derivatives\nvarying vec3 vViewPosition;\n#endif\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\n#ifdef Derivatives\n#extension GL_OES_standard_derivatives : enable\n#endif\nvoid main(void)\n{\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat ambient = 0.01;\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uActiveColor, vActive);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nfloat diffuse, specular;\n#ifdef Derivatives\nvec3 normal = normalize(cross(dFdx(vViewPosition), dFdy(vViewPosition)));\ndiffuse = dot(uDirectionToLight, normal);\nspecular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\n#else\ndiffuse = 1.0;\nspecular = 0.0;\n#endif\ncolor *= (ambient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n',
     "unitblock.vertex.fx": '#version 100\n#include "quat.include.fx"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute mediump vec4 aRotation;\nattribute mediump vec4 aPreviousRotation;\nattribute lowp vec2 aColor;\nattribute lowp vec2 aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute mediump float aStaggerOrder;\nattribute float aOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\n#define Derivatives\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\n#ifdef Derivatives\nvarying vec3 vViewPosition;\n#endif\nvoid main(void)\n{\nif (aOrder < uOrderFrom || aOrder > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\ngl_Position = vec4(0.0);\n#ifdef Derivatives\nvViewPosition = vec3(0.0);\n#endif\n}\nelse\n{\nvIdColor = aIdColor;\nfloat startTime = aStaggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvec3 position = aPosition * scale;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\n}\nposition += mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\n#ifdef Derivatives\nvec4 viewPosition = mvMatrix * vec4(position, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\n#else\ngl_Position = uPMatrix * mvMatrix * vec4(position, 1.0);\n#endif\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\n}\n}\n',
@@ -21877,7 +21997,7 @@ $4d4782060043943a$export$e9a269813a6315a4.glsl = {
     "unithexprism.vertex.fx": '#version 100\n#include "common.include.fx"\n#include "quat.include.fx"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute mediump vec4 aRotation;\nattribute mediump vec4 aPreviousRotation;\nattribute lowp vec2 aColor;\nattribute lowp vec2 aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute float aOrder;\nattribute mediump float aStaggerOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nuniform vec3 uIdentityRotation;\n#define Derivatives\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvarying float vRadius;\nvarying float vHeight;\nvarying float vScaling;\nvoid main(void)\n{\nif (aOrder < uOrderFrom || aOrder > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvViewPosition = vec3(0.0);\nvRadius = 0.0;\nvHeight = 0.0;\ngl_Position = vec4(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nfloat startTime = aStaggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 translation = mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvViewCenter = (mvMatrix * vec4(translation, 1.0)).xyz;\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvRadius = scale.x * ROOT_THREE_OVER_TWO;\nvHeight = scale.y;\nvec3 position = aPosition;\nposition.y *= scale.y;\nposition.z *= scale.x;\nposition.x *= scale.x * ROOT_THREE_OVER_TWO;\nvec3 direction = IDENTITY_ROTATION;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\ndirection = rotate(direction, quat);\n}\nvec3 viewDirection = (mvMatrix * vec4(direction, 0.0)).xyz;\nvec4 viewPosition = mvMatrix * vec4(position + translation, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\nvScaling = length(uMMatrix[0].xyz) / 2.0;\n}\n}\n',
     "unitsphere.fragment.fx": '#version 100\n#define FragDepth\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include "common.include.fx"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvarying mediump float vRadius;\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\n#ifdef FragDepth\n#extension GL_EXT_frag_depth : enable\n#endif\nfloat sphIntersect(in vec3 ro, in vec3 rd, in vec4 sph)\n{\nvec3 oc = ro - sph.xyz;\nfloat b = dot(oc, rd);\nfloat c = dot(oc, oc) - sph.w * sph.w;\nfloat h = b * b - c;\nif (h < 0.0) return -1.0;\nreturn -b - sqrt(h);\n}\nvoid main(void)\n{\nvec3 rd = normalize(vViewPosition);\nvec3 ro = vec3(0.0);\nvec4 s = vec4(vViewCenter, vRadius);\nfloat t = sphIntersect(ro, rd, s);\nif (t < 0.0)\n{\ndiscard;\n}\nelse\n{\nvec3 viewPosition = rd * t;\n#ifdef FragDepth\nfloat ndcDepth = DEPTH_A + DEPTH_B / viewPosition.z;\ngl_FragDepthEXT = ndcDepth * 0.5 + 0.5;\n#endif\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat ambient = 0.01;\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uActiveColor, vActive);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nvec3 normal = (viewPosition - vViewCenter) / s.w;\nfloat diffuse = dot(uDirectionToLight, normal);\nfloat specular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\ncolor *= (ambient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n}\n',
     "unitsphere.vertex.fx": '#version 100\n#include "common.include.fx"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute lowp float aColor;\nattribute lowp float aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute float aOrder;\nattribute mediump float aStaggerOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying mediump float vRadius;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvoid main(void)\n{\nif (aOrder < uOrderFrom || aOrder > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvViewPosition = vec3(0.0);\nvViewCenter = vec3(0.0);\nvRadius = 0.0;\ngl_Position = vec4(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nfloat startTime = aStaggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nfloat scale = mix(min(aPreviousScale.x, min(aPreviousScale.y, aPreviousScale.z)), min(aScale.x, min(aScale.y, aScale.z)), animation);\nvec4 translation = vec4(mix(aPreviousTranslation, aTranslation, animation), 1.0);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvViewCenter = (mvMatrix * translation).xyz;\ntranslation.xyz += aPosition * scale;\nvViewPosition = (mvMatrix * translation).xyz;\ngl_Position = uPMatrix * vec4(vViewPosition, 1.0);\nvVertexColor = vec2(aColor, aPreviousColor);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\nvRadius = distance(vViewPosition, vViewCenter) / ROOT_THREE;\n}\n}\n',
-    "common.include.fx": "const float NEAR_PLANE = 0.01;\nconst float FAR_PLANE = 100.0;\nconst float DEPTH_A = 1.0002000200020003;\nconst float DEPTH_B = 0.020002000200020003;\nconst vec3 GAMMA = vec3(0.45454545454545453);\nconst vec3 LUMINANCE = vec3(0.2126, 0.7152, 0.0722);\nconst float PI = 3.1415926538;\nconst float ROOT_TWO = 1.4142135624;\nconst float ROOT_TWO_OVER_TWO = 0.7071067811865476;\nconst float ROOT_THREE = 1.7320508075688772;\nconst float ROOT_THREE_OVER_TWO = 0.8660254037844386;\nconst vec3 IDENTITY_ROTATION = vec3(0.0, 1.0, 0.0);\nmat3 transpose(in mat3 mat) {\nvec3 i0 = mat[0];\nvec3 i1 = mat[1];\nvec3 i2 = mat[2];\nreturn mat3\n(\nvec3(i0.x, i1.x, i2.x),\nvec3(i0.y, i1.y, i2.y),\nvec3(i0.z, i1.z, i2.z)\n);\n}\n",
+    "common.include.fx": "const float NEAR_PLANE = 0.01;\nconst float FAR_PLANE = 100.0;\nconst float DEPTH_A = 1.0002000200020003;\nconst float DEPTH_B = 0.020002000200020003;\nconst vec3 GAMMA = vec3(0.45454545454545453);\nconst vec3 INV_GAMMA = vec3(2.2);\nconst vec3 LUMINANCE = vec3(0.2126, 0.7152, 0.0722);\nconst float PI = 3.1415926538;\nconst float ROOT_TWO = 1.4142135624;\nconst float ROOT_TWO_OVER_TWO = 0.7071067811865476;\nconst float ROOT_THREE = 1.7320508075688772;\nconst float ROOT_THREE_OVER_TWO = 0.8660254037844386;\nconst vec3 IDENTITY_ROTATION = vec3(0.0, 1.0, 0.0);\nmat3 transpose(in mat3 mat) {\nvec3 i0 = mat[0];\nvec3 i1 = mat[1];\nvec3 i2 = mat[2];\nreturn mat3\n(\nvec3(i0.x, i1.x, i2.x),\nvec3(i0.y, i1.y, i2.y),\nvec3(i0.z, i1.z, i2.z)\n);\n}\n",
     "quat.include.fx": "const float EPSILON = 0.000001;\nmat3 fromQuat(in vec4 q) {\nfloat x = q.x;\nfloat y = q.y;\nfloat z = q.z;\nfloat w = q.w;\nfloat x2 = x + x;\nfloat y2 = y + y;\nfloat z2 = z + z;\nfloat xx = x * x2;\nfloat yx = y * x2;\nfloat yy = y * y2;\nfloat zx = z * x2;\nfloat zy = z * y2;\nfloat zz = z * z2;\nfloat wx = w * x2;\nfloat wy = w * y2;\nfloat wz = w * z2;\nmat3 m;\nm[0][0] = 1.0 - yy - zz;\nm[0][1] = yx - wz;\nm[0][2] = zx + wy;\nm[1][0] = yx + wz;\nm[1][1] = 1.0 - xx - zz;\nm[1][2] = zy - wx;\nm[2][0] = zx - wy;\nm[2][1] = zy + wx;\nm[2][2] = 1.0 - xx - yy;\nreturn m;\n}\nvec3 rotate(in vec3 p, in vec4 q) {\nreturn p + 2.0 * cross(q.xyz, cross(q.xyz, p) + q.w * p);\n}\nvec4 slerp(in vec4 a, in vec4 b, in float t) {\nfloat cosom = dot(a, b);\nif (cosom < 0.0) {\ncosom = -cosom;\nb = -b;\n}\nfloat scale0, scale1;\nif (1.0 - cosom > EPSILON) {\nfloat omega = acos(cosom);\nfloat sinom = sin(omega);\nscale0 = sin((1.0 - t) * omega) / sinom;\nscale1 = sin(t * omega) / sinom;\n}\nelse {\nscale0 = 1.0 - t;\nscale1 = t;\n}\nreturn vec4(scale0 * a + scale1 * b);\n}\n"
 };
 class $4d4782060043943a$export$59a6ab026766925f {
@@ -22083,6 +22203,7 @@ class $9d01e4c97ee3d741$export$5431306cf43de24a extends (0, $4d4782060043943a$ex
         this._texCoordAttribute = gl.getAttribLocation(this._program, "aTexCoord");
         this._normalAttribute = gl.getAttribLocation(this._program, "aNormal");
         this._samplerUniform = gl.getUniformLocation(this._program, "uSampler");
+        this._pickUniform = gl.getUniformLocation(this._program, "uPick");
         this._mMatrixUniform = gl.getUniformLocation(this._program, "uMMatrix");
         this._vMatrixUniform = gl.getUniformLocation(this._program, "uVMatrix");
         this._pMatrixUniform = gl.getUniformLocation(this._program, "uPMatrix");
@@ -22093,6 +22214,7 @@ class $9d01e4c97ee3d741$export$5431306cf43de24a extends (0, $4d4782060043943a$ex
         this._gl.uniform1i(this._samplerUniform, 0);
     }
     applyView() {
+        this._gl.uniform1i(this._pickUniform, this.isPickShader ? 1 : 0);
         this._gl.uniformMatrix4fv(this._vMatrixUniform, false, this.vMatrix);
         this._gl.uniformMatrix4fv(this._pMatrixUniform, false, this.pMatrix);
     }
@@ -22600,7 +22722,7 @@ class $221f0c088ed88df0$export$b72dd5e86522410a extends (0, $0496a6bdb2af1d0c$ex
     _updateCurrentBuffer() {
         super._updateCurrentBuffer();
         const ANGLE_instanced_arrays = this._main.shaderResources.ANGLE_instanced_arrays;
-        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.SHORT, true, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).ROTATION_OFFSET_BYTES);
+        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.FLOAT, false, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).ROTATION_OFFSET_BYTES);
         ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._rotationAttribute, 1);
         this._gl.enableVertexAttribArray(this._rotationAttribute);
         this._gl.vertexAttribPointer(this._colorAttribute, 2, this._gl.UNSIGNED_BYTE, true, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).COLOR_OFFSET_BYTES);
@@ -22610,7 +22732,7 @@ class $221f0c088ed88df0$export$b72dd5e86522410a extends (0, $0496a6bdb2af1d0c$ex
     _updatePreviousBuffer() {
         super._updatePreviousBuffer();
         const ANGLE_instanced_arrays = this._main.shaderResources.ANGLE_instanced_arrays;
-        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.SHORT, true, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).ROTATION_OFFSET_BYTES);
+        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.FLOAT, false, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).ROTATION_OFFSET_BYTES);
         ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousRotationAttribute, 1);
         this._gl.enableVertexAttribArray(this._previousRotationAttribute);
         this._gl.vertexAttribPointer(this._previousColorAttribute, 2, this._gl.UNSIGNED_BYTE, true, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).COLOR_OFFSET_BYTES);
@@ -22684,7 +22806,7 @@ class $114633c4f0451652$export$28e50bed796372f2 extends (0, $0496a6bdb2af1d0c$ex
     _updateCurrentBuffer() {
         super._updateCurrentBuffer();
         const ANGLE_instanced_arrays = this._main.shaderResources.ANGLE_instanced_arrays;
-        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.SHORT, true, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).ROTATION_OFFSET_BYTES);
+        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.FLOAT, false, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).ROTATION_OFFSET_BYTES);
         ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._rotationAttribute, 1);
         this._gl.enableVertexAttribArray(this._rotationAttribute);
         this._gl.vertexAttribPointer(this._colorAttribute, 2, this._gl.UNSIGNED_BYTE, true, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).COLOR_OFFSET_BYTES);
@@ -22694,7 +22816,7 @@ class $114633c4f0451652$export$28e50bed796372f2 extends (0, $0496a6bdb2af1d0c$ex
     _updatePreviousBuffer() {
         super._updatePreviousBuffer();
         const ANGLE_instanced_arrays = this._main.shaderResources.ANGLE_instanced_arrays;
-        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.SHORT, true, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).ROTATION_OFFSET_BYTES);
+        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.FLOAT, false, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).ROTATION_OFFSET_BYTES);
         ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousRotationAttribute, 1);
         this._gl.enableVertexAttribArray(this._previousRotationAttribute);
         this._gl.vertexAttribPointer(this._previousColorAttribute, 2, this._gl.UNSIGNED_BYTE, true, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).COLOR_OFFSET_BYTES);
@@ -22733,7 +22855,7 @@ class $8572f2e053e9f098$export$d39efaf3a2b8a5a extends (0, $0496a6bdb2af1d0c$exp
     _updateCurrentBuffer() {
         super._updateCurrentBuffer();
         const ANGLE_instanced_arrays = this._main.shaderResources.ANGLE_instanced_arrays;
-        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.SHORT, true, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).ROTATION_OFFSET_BYTES);
+        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.FLOAT, false, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).ROTATION_OFFSET_BYTES);
         ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._rotationAttribute, 1);
         this._gl.enableVertexAttribArray(this._rotationAttribute);
         this._gl.vertexAttribPointer(this._colorAttribute, 2, this._gl.UNSIGNED_BYTE, true, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).COLOR_OFFSET_BYTES);
@@ -22743,7 +22865,7 @@ class $8572f2e053e9f098$export$d39efaf3a2b8a5a extends (0, $0496a6bdb2af1d0c$exp
     _updatePreviousBuffer() {
         super._updatePreviousBuffer();
         const ANGLE_instanced_arrays = this._main.shaderResources.ANGLE_instanced_arrays;
-        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.SHORT, true, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).ROTATION_OFFSET_BYTES);
+        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.FLOAT, false, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).ROTATION_OFFSET_BYTES);
         ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousRotationAttribute, 1);
         this._gl.enableVertexAttribArray(this._previousRotationAttribute);
         this._gl.vertexAttribPointer(this._previousColorAttribute, 2, this._gl.UNSIGNED_BYTE, true, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).COLOR_OFFSET_BYTES);
@@ -23590,6 +23712,7 @@ class $a8a63c3e60a9a12e$export$6f251cd327b2ff1 {
             textureShader.texture2D = this.texture;
             textureShader.prepare();
             textureShader.mMatrix = this.mMatrix;
+            textureShader.isPickShader = false;
             textureShader.apply();
             for(let i = 0; i < this.viewportCount; i++){
                 const viewport = i + this.viewportOffset;
@@ -23598,6 +23721,15 @@ class $a8a63c3e60a9a12e$export$6f251cd327b2ff1 {
                 textureShader.vMatrix = this.vMatrices[viewport];
                 textureShader.pMatrix = this.pMatrices[viewport];
                 textureShader.applyView();
+                this._gl.drawElements(this._gl.TRIANGLES, this._image.indexCount, this._gl.UNSIGNED_SHORT, 0);
+            }
+            if (this.isPickingEnabled) {
+                textureShader.isPickShader = true;
+                textureShader.vMatrix = this.pickVMatrix;
+                textureShader.pMatrix = this.pickPMatrix;
+                textureShader.applyView();
+                shaderResources.bindFramebuffer(this.pickFramebuffer);
+                this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
                 this._gl.drawElements(this._gl.TRIANGLES, this._image.indexCount, this._gl.UNSIGNED_SHORT, 0);
             }
         }
@@ -23937,13 +24069,11 @@ class $04b4694d50e05a30$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
     }
     _createContext(canvas) {
         const antialias = this._options ? this._options.antialias === undefined ? false : this._options.antialias : false;
-        const gl = canvas.getContext("webgl", {
+        return canvas.getContext("webgl", {
             stencil: true,
             alpha: false,
             antialias: antialias
         });
-        if (gl === null) this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).error, "WebGL initialization failed");
-        return gl;
     }
     initializeWebXR(session) {
         const promise = new Promise((resolve, reject)=>{
@@ -24152,6 +24282,8 @@ class $04b4694d50e05a30$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
             const imageVisual = this.images[i4];
             if (imageVisual.isVisible) {
                 imageVisual.framebuffers = this._framebuffers;
+                imageVisual.pickFramebuffer = this._pickFrameBuffer;
+                imageVisual.isPickingEnabled = this.isPickingEnabled;
                 imageVisual.render(elapsedTime, xrFrame);
             }
         }
@@ -24180,6 +24312,11 @@ class $04b4694d50e05a30$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
                     data[i6 * 4 + 2] = 0;
                     data[i6 * 4 + 3] = 0;
                 }
+                const length = this._core.config.pickWidth * this._core.config.pickHeight * 4;
+                const row = this._core.config.pickWidth * 4;
+                const end = (this._core.config.pickHeight - 1) * row;
+                const flipped = new Uint8ClampedArray(length);
+                for(let i7 = 0; i7 < length; i7 += row)flipped.set(data.subarray(i7, i7 + row), end - i7);
                 this.capturePickImageCallback(data, this._core.config.pickWidth, this._core.config.pickHeight);
             }
         } else {
@@ -24196,8 +24333,8 @@ class $04b4694d50e05a30$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
             this._lassoShader.dashWidth = this.lassoDashWidth ? this.lassoDashWidth : this._core.config.lassoDashWidth;
             this._lassoShader.apply();
             const lassoThickness = this.lassoThickness ? this.lassoThickness : this._core.config.lassoThickness;
-            for(let i7 = 0; i7 < this._viewportCount; i7++){
-                const viewportIndex = i7 + this._viewportOffset;
+            for(let i8 = 0; i8 < this._viewportCount; i8++){
+                const viewportIndex = i8 + this._viewportOffset;
                 this._shaderResources.bindFramebuffer(this._framebuffers[viewportIndex]);
                 const viewport = this._viewports[viewportIndex];
                 this._gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
@@ -24251,7 +24388,7 @@ class $04b4694d50e05a30$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
             this._blockShader.selectedColor = this._core.config.selectionColor;
             this._blockShader.hoverColor = this._core.config.hoverColor;
             this._blockShader.activeColor = this._core.config.activeColor;
-            this._blockShader.highlightMode = this._core.config.hightlightMode;
+            this._blockShader.highlightMode = this._core.config.highlightMode;
             this._blockShader.specularPower = this._config.specularPower;
             this._blockShader.specularIntensity = this._config.specularIntensity;
             this._blockShader.apply();
@@ -24310,7 +24447,7 @@ class $04b4694d50e05a30$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
             this._sphereShader.selectedColor = this._core.config.selectionColor;
             this._sphereShader.hoverColor = this._core.config.hoverColor;
             this._sphereShader.activeColor = this._core.config.activeColor;
-            this._sphereShader.highlightMode = this._core.config.hightlightMode;
+            this._sphereShader.highlightMode = this._core.config.highlightMode;
             this._sphereShader.specularPower = this._config.specularPower;
             this._sphereShader.specularIntensity = this._config.specularIntensity;
             this._sphereShader.apply();
@@ -24369,7 +24506,7 @@ class $04b4694d50e05a30$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
             this._cylinderShader.selectedColor = this._core.config.selectionColor;
             this._cylinderShader.hoverColor = this._core.config.hoverColor;
             this._cylinderShader.activeColor = this._core.config.activeColor;
-            this._cylinderShader.highlightMode = this._core.config.hightlightMode;
+            this._cylinderShader.highlightMode = this._core.config.highlightMode;
             this._cylinderShader.specularPower = this._config.specularPower;
             this._cylinderShader.specularIntensity = this._config.specularIntensity;
             this._cylinderShader.apply();
@@ -24428,7 +24565,7 @@ class $04b4694d50e05a30$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
             this._hexPrismShader.selectedColor = this._core.config.selectionColor;
             this._hexPrismShader.hoverColor = this._core.config.hoverColor;
             this._hexPrismShader.activeColor = this._core.config.activeColor;
-            this._hexPrismShader.highlightMode = this._core.config.hightlightMode;
+            this._hexPrismShader.highlightMode = this._core.config.highlightMode;
             this._hexPrismShader.specularPower = this._config.specularPower;
             this._hexPrismShader.specularIntensity = this._config.specularIntensity;
             this._hexPrismShader.apply();
@@ -25327,7 +25464,7 @@ class $3318ff4d4da6df82$export$b72dd5e86522410a extends (0, $3ec7dc34b54e7a68$ex
     }
     _updateCurrentBuffer() {
         super._updateCurrentBuffer();
-        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.SHORT, true, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).ROTATION_OFFSET_BYTES);
+        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.FLOAT, false, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).ROTATION_OFFSET_BYTES);
         this._gl.vertexAttribDivisor(this._rotationAttribute, 1);
         this._gl.enableVertexAttribArray(this._rotationAttribute);
         this._gl.vertexAttribPointer(this._colorAttribute, 2, this._gl.UNSIGNED_BYTE, true, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).COLOR_OFFSET_BYTES);
@@ -25336,7 +25473,7 @@ class $3318ff4d4da6df82$export$b72dd5e86522410a extends (0, $3ec7dc34b54e7a68$ex
     }
     _updatePreviousBuffer() {
         super._updatePreviousBuffer();
-        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.SHORT, true, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).ROTATION_OFFSET_BYTES);
+        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.FLOAT, false, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).ROTATION_OFFSET_BYTES);
         this._gl.vertexAttribDivisor(this._previousRotationAttribute, 1);
         this._gl.enableVertexAttribArray(this._previousRotationAttribute);
         this._gl.vertexAttribPointer(this._previousColorAttribute, 2, this._gl.UNSIGNED_BYTE, true, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).COLOR_OFFSET_BYTES);
@@ -25404,7 +25541,7 @@ class $ee6224ec3516fbe5$export$28e50bed796372f2 extends (0, $3ec7dc34b54e7a68$ex
     }
     _updateCurrentBuffer() {
         super._updateCurrentBuffer();
-        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.SHORT, true, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).ROTATION_OFFSET_BYTES);
+        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.FLOAT, false, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).ROTATION_OFFSET_BYTES);
         this._gl.vertexAttribDivisor(this._rotationAttribute, 1);
         this._gl.enableVertexAttribArray(this._rotationAttribute);
         this._gl.vertexAttribPointer(this._colorAttribute, 2, this._gl.UNSIGNED_BYTE, true, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).COLOR_OFFSET_BYTES);
@@ -25413,7 +25550,7 @@ class $ee6224ec3516fbe5$export$28e50bed796372f2 extends (0, $3ec7dc34b54e7a68$ex
     }
     _updatePreviousBuffer() {
         super._updatePreviousBuffer();
-        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.SHORT, true, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).ROTATION_OFFSET_BYTES);
+        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.FLOAT, false, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).ROTATION_OFFSET_BYTES);
         this._gl.vertexAttribDivisor(this._previousRotationAttribute, 1);
         this._gl.enableVertexAttribArray(this._previousRotationAttribute);
         this._gl.vertexAttribPointer(this._previousColorAttribute, 2, this._gl.UNSIGNED_BYTE, true, (0, $9baea54bf2330932$export$849e31d725692576).SIZE_BYTES, (0, $9baea54bf2330932$export$849e31d725692576).COLOR_OFFSET_BYTES);
@@ -27276,25 +27413,25 @@ class $d4a2bb9423c9441d$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
         this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `buffers resized ${width},${height}`);
     }
     _createContext(canvas) {
-        var options = {
+        let supported = false;
+        const options = {
             stencil: true,
             alpha: false,
             antialias: false
         };
         const gl = canvas.getContext("webgl2", options);
-        if (gl === null) this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).error, "WebGL initialization failed");
-        const OES_texture_float_linear = gl.getExtension("OES_texture_float_linear");
-        const EXT_color_buffer_float = gl.getExtension("EXT_color_buffer_float");
-        let supported = false;
-        if (OES_texture_float_linear && EXT_color_buffer_float && gl.MAX_DRAW_BUFFERS > 3) {
-            const texture = (0, $b587035cca79aa04$export$c41e4fcbf45db179).create(gl, 1, 1, gl.RGBA, gl.FLOAT, gl.LINEAR, null, gl.RGBA32F);
-            const framebuffer = gl.createFramebuffer();
-            gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-            gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
-            const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
-            if (status == gl.FRAMEBUFFER_COMPLETE) supported = true;
-            else this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).warn, "Advanced renderer not supported");
-            gl.bindTexture(gl.TEXTURE_2D, null);
+        if (gl) {
+            const OES_texture_float_linear = gl.getExtension("OES_texture_float_linear");
+            const EXT_color_buffer_float = gl.getExtension("EXT_color_buffer_float");
+            if (OES_texture_float_linear && EXT_color_buffer_float && gl.MAX_DRAW_BUFFERS > 3) {
+                const texture = (0, $b587035cca79aa04$export$c41e4fcbf45db179).create(gl, 1, 1, gl.RGBA, gl.FLOAT, gl.LINEAR, null, gl.RGBA32F);
+                const framebuffer = gl.createFramebuffer();
+                gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+                gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+                const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+                if (status == gl.FRAMEBUFFER_COMPLETE) supported = true;
+                gl.bindTexture(gl.TEXTURE_2D, null);
+            }
         }
         return supported ? gl : null;
     }
@@ -27572,7 +27709,7 @@ class $d4a2bb9423c9441d$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
                 this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
                 this._gl.drawElementsInstanced(this._gl.TRIANGLE_STRIP, this._blockShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
             }
-        } else if (this._sphereShader.isInitialized && unitType == (0, $b0e0bae684e98192$export$80d48287646c9e3b).sphere) {
+        } else if (this._sphereShader.isInitialized && (unitType == (0, $b0e0bae684e98192$export$80d48287646c9e3b).sphere || unitType == (0, $b0e0bae684e98192$export$80d48287646c9e3b).sphereSdf)) {
             this._sphereShader.instanceBuffer = currentBuffer.vertexBuffer;
             this._sphereShader.previousInstanceBuffer = previousBuffer.vertexBuffer;
             this._sphereShader.paletteTexture = currentPalette.texture || currentPalette.defaultTexture;
@@ -27620,7 +27757,7 @@ class $d4a2bb9423c9441d$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
                 this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
                 this._gl.drawElementsInstanced(this._gl.TRIANGLE_STRIP, this._sphereShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
             }
-        } else if (this._cylinderShader.isInitialized && unitType == (0, $b0e0bae684e98192$export$80d48287646c9e3b).cylinder) {
+        } else if (this._cylinderShader.isInitialized && (unitType == (0, $b0e0bae684e98192$export$80d48287646c9e3b).cylinder || unitType == (0, $b0e0bae684e98192$export$80d48287646c9e3b).cylinderSdf)) {
             this._cylinderShader.instanceBuffer = currentBuffer.vertexBuffer;
             this._cylinderShader.previousInstanceBuffer = previousBuffer.vertexBuffer;
             this._cylinderShader.paletteTexture = currentPalette.texture || currentPalette.defaultTexture;
@@ -27955,11 +28092,288 @@ $parcel$export($b0abd6d3cac62180$exports, "SolidColorTexture", () => $6c9babe64e
 $parcel$export($b0abd6d3cac62180$exports, "ImageTexture", () => $6c9babe64ee3d26d$export$3ad126b3fdb68b5e);
 $parcel$export($b0abd6d3cac62180$exports, "CheckerTexture", () => $6c9babe64ee3d26d$export$510d156fb224ecac);
 $parcel$export($b0abd6d3cac62180$exports, "GridTexture", () => $6c9babe64ee3d26d$export$121882bab8adda73);
+$parcel$export($b0abd6d3cac62180$exports, "Light", () => $0bb0f5012b8223d3$export$6ecadb6ed240d696);
+$parcel$export($b0abd6d3cac62180$exports, "Ground", () => $a2118f79e1f50c59$export$c6957adcf93c393f);
+$parcel$export($b0abd6d3cac62180$exports, "Constants", () => $c6c443484d57bad4$export$a002182e51710d39);
 var $7c7a9d64ae8a03b0$exports = {};
 
 $parcel$export($7c7a9d64ae8a03b0$exports, "Main", () => $7c7a9d64ae8a03b0$export$861edd1ccea2f746, (v) => $7c7a9d64ae8a03b0$export$861edd1ccea2f746 = v);
 
 
+
+
+
+
+
+const $49634e74d8151f59$export$bd062416169c6728 = {
+    lambertian: 0,
+    metal: 1,
+    dielectric: 2,
+    glossy: 3,
+    diffuseLight: 4
+};
+class $49634e74d8151f59$export$673ddcc6bf213111 extends Float32Array {
+    constructor(count){
+        super(count * $49634e74d8151f59$export$673ddcc6bf213111.SIZE);
+        this.TYPE_OFFSET = 0;
+        this.FUZZ_OFFSET = 1;
+        this.REFRACTIVE_INDEX_OFFSET = 2;
+        this.TEXTURE_ID_OFFSET = 3;
+        this.COLOR_OFFSET = 4;
+        this.GLOSSINESS_OFFSET = 7;
+    }
+    getType(index) {
+        return this[$49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.TYPE_OFFSET];
+    }
+    setType(index, value) {
+        this[$49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.TYPE_OFFSET] = value;
+    }
+    getFuzz(index) {
+        return this[$49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.FUZZ_OFFSET];
+    }
+    setFuzz(index, value) {
+        this[$49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.FUZZ_OFFSET] = value;
+    }
+    getRefractiveIndex(index) {
+        return this[$49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.REFRACTIVE_INDEX_OFFSET];
+    }
+    setRefractiveIndex(index, value) {
+        this[$49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.REFRACTIVE_INDEX_OFFSET] = value;
+    }
+    getTextureId(index) {
+        return this[$49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.TEXTURE_ID_OFFSET];
+    }
+    setTextureId(index, value) {
+        this[$49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.TEXTURE_ID_OFFSET] = value;
+    }
+    getColor(index, value) {
+        const offset = $49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.COLOR_OFFSET;
+        (0, $3060130e3101af24$exports).set(value, this[offset], this[offset + 1], this[offset + 2]);
+    }
+    setColor(index, value) {
+        const offset = $49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.COLOR_OFFSET;
+        this[offset] = value[0];
+        this[offset + 1] = value[1];
+        this[offset + 2] = value[2];
+    }
+    getGlossiness(index) {
+        return this[$49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.GLOSSINESS_OFFSET];
+    }
+    setGlossiness(index, value) {
+        this[$49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.GLOSSINESS_OFFSET] = value;
+    }
+}
+$49634e74d8151f59$export$673ddcc6bf213111.SIZE = 8;
+class $49634e74d8151f59$export$a2d8b23205c25948 {
+    constructor(options){}
+    get texture() {
+        return this._texture;
+    }
+    toBuffer(buffer, index, textureId) {}
+}
+class $49634e74d8151f59$export$61026b7fc8ee0236 extends $49634e74d8151f59$export$a2d8b23205c25948 {
+    constructor(options){
+        super(options);
+        this._texture = options.texture;
+    }
+    toBuffer(buffer, index, textureId) {
+        buffer.setType(index, $49634e74d8151f59$export$bd062416169c6728.lambertian);
+        buffer.setTextureId(index, textureId);
+    }
+}
+class $49634e74d8151f59$export$bd17d4a4be11a968 extends $49634e74d8151f59$export$a2d8b23205c25948 {
+    constructor(options){
+        super(options);
+        this.fuzz = options.fuzz;
+        this._texture = options.texture;
+    }
+    toBuffer(buffer, index, textureId) {
+        buffer.setType(index, $49634e74d8151f59$export$bd062416169c6728.metal);
+        buffer.setFuzz(index, this.fuzz);
+        buffer.setTextureId(index, textureId);
+    }
+}
+class $49634e74d8151f59$export$9578dd56c4cc3fb4 extends $49634e74d8151f59$export$a2d8b23205c25948 {
+    constructor(options){
+        super(options);
+        this.refractiveIndex = options && options.refractiveIndex || 1.5;
+        this.color = options && options.color || (0, $87037c674fbf0952$export$a002182e51710d39).VECTOR3_ONE;
+    }
+    toBuffer(buffer, index, textureId) {
+        buffer.setType(index, $49634e74d8151f59$export$bd062416169c6728.dielectric);
+        buffer.setRefractiveIndex(index, this.refractiveIndex);
+        buffer.setColor(index, this.color);
+    }
+}
+class $49634e74d8151f59$export$5ea5fb140816887a extends $49634e74d8151f59$export$a2d8b23205c25948 {
+    constructor(options){
+        super(options);
+        this.color = options.color;
+    }
+    toBuffer(buffer, index, textureId) {
+        buffer.setType(index, $49634e74d8151f59$export$bd062416169c6728.diffuseLight);
+        buffer.setColor(index, this.color);
+    }
+}
+class $49634e74d8151f59$export$5e39c2cd3ef82349 extends $49634e74d8151f59$export$a2d8b23205c25948 {
+    constructor(options){
+        super(options);
+        this._texture = options.texture;
+        this.fuzz = options.fuzz;
+        this.refractiveIndex = options.refractiveIndex || 1.5;
+        this.glossiness = options.glossiness !== undefined ? options.glossiness : 1;
+    }
+    toBuffer(buffer, index, textureId) {
+        buffer.setType(index, $49634e74d8151f59$export$bd062416169c6728.glossy);
+        buffer.setFuzz(index, this.fuzz);
+        buffer.setGlossiness(index, this.glossiness);
+        buffer.setRefractiveIndex(index, this.refractiveIndex);
+        buffer.setTextureId(index, textureId);
+    }
+}
+
+
+
+
+const $6c9babe64ee3d26d$export$8490d66844ef9609 = {
+    none: 0,
+    solidColor: 1,
+    image: 2,
+    sdfText: 3,
+    checker: 4,
+    grid: 5
+};
+class $6c9babe64ee3d26d$export$6aa93a36bc90f68e extends Float32Array {
+    constructor(count){
+        super(count * $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE);
+        this.COLOR0_OFFSET = 0;
+        this.TYPE_OFFSET = 3;
+        this.COLOR1_OFFSET = 4;
+        this.SIZE0_OFFSET = 8;
+        this.SIZE1_OFFSET = 12;
+        this.OFFSET_OFFSET = 16;
+    }
+    getType(index) {
+        return this[$6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.TYPE_OFFSET];
+    }
+    setType(index, value) {
+        this[$6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.TYPE_OFFSET] = value;
+    }
+    getColor0(index, value) {
+        const offset = $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.COLOR0_OFFSET;
+        (0, $3060130e3101af24$exports).set(value, this[offset], this[offset + 1], this[offset + 2]);
+    }
+    setColor0(index, value) {
+        const offset = $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.COLOR0_OFFSET;
+        this[offset] = value[0];
+        this[offset + 1] = value[1];
+        this[offset + 2] = value[2];
+    }
+    getColor1(index, value) {
+        const offset = $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.COLOR1_OFFSET;
+        (0, $3060130e3101af24$exports).set(value, this[offset], this[offset + 1], this[offset + 2]);
+    }
+    setColor1(index, value) {
+        const offset = $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.COLOR1_OFFSET;
+        this[offset] = value[0];
+        this[offset + 1] = value[1];
+        this[offset + 2] = value[2];
+    }
+    getSize0(index, value) {
+        const offset = $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.SIZE0_OFFSET;
+        (0, $2e946b626132112f$exports).set(value, this[offset], this[offset + 1], this[offset + 2], this[offset + 3]);
+    }
+    setSize0(index, value) {
+        const offset = $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.SIZE0_OFFSET;
+        this[offset] = value[0];
+        this[offset + 1] = value[1];
+        this[offset + 2] = value[2];
+        this[offset + 3] = value[3];
+    }
+    getSize1(index, value) {
+        const offset = $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.SIZE1_OFFSET;
+        (0, $2e946b626132112f$exports).set(value, this[offset], this[offset + 1], this[offset + 2], this[offset + 3]);
+    }
+    setSize1(index, value) {
+        const offset = $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.SIZE1_OFFSET;
+        this[offset] = value[0];
+        this[offset + 1] = value[1];
+        this[offset + 2] = value[2];
+        this[offset + 3] = value[3];
+    }
+    getOffset(index, value) {
+        const offset = $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.OFFSET_OFFSET;
+        (0, $a3ca522ed0848e85$exports).set(value, this[offset], this[offset + 1]);
+    }
+    setOffset(index, value) {
+        const offset = $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.OFFSET_OFFSET;
+        this[offset] = value[0];
+        this[offset + 1] = value[1];
+    }
+}
+$6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE = 20;
+class $6c9babe64ee3d26d$export$5431306cf43de24a {
+}
+class $6c9babe64ee3d26d$export$b696913510b740d6 extends $6c9babe64ee3d26d$export$5431306cf43de24a {
+    constructor(options){
+        super();
+        this.color = options.color;
+        this._color = (0, $3060130e3101af24$exports).fromValues(Math.pow(this.color[0], 2.2), Math.pow(this.color[1], 2.2), Math.pow(this.color[2], 2.2));
+    }
+    toBuffer(buffer, index) {
+        buffer.setType(index, $6c9babe64ee3d26d$export$8490d66844ef9609.solidColor);
+        buffer.setColor0(index, this._color);
+    }
+}
+class $6c9babe64ee3d26d$export$3ad126b3fdb68b5e extends $6c9babe64ee3d26d$export$5431306cf43de24a {
+    constructor(options){
+        super();
+        this.image = options.image;
+    }
+    toBuffer(buffer, index) {
+        buffer.setType(index, $6c9babe64ee3d26d$export$8490d66844ef9609.image);
+    }
+}
+class $6c9babe64ee3d26d$export$510d156fb224ecac extends $6c9babe64ee3d26d$export$5431306cf43de24a {
+    constructor(options){
+        super();
+        this.color0 = options.color0;
+        this.color1 = options.color1;
+        this.size = options.size;
+        this.offset = options.offset || (0, $87037c674fbf0952$export$a002182e51710d39).VECTOR2_ZERO;
+        this._color0 = (0, $3060130e3101af24$exports).fromValues(Math.pow(this.color0[0], 2.2), Math.pow(this.color0[1], 2.2), Math.pow(this.color0[2], 2.2));
+        this._color1 = (0, $3060130e3101af24$exports).fromValues(Math.pow(this.color1[0], 2.2), Math.pow(this.color1[1], 2.2), Math.pow(this.color1[2], 2.2));
+    }
+    toBuffer(buffer, index) {
+        buffer.setType(index, $6c9babe64ee3d26d$export$8490d66844ef9609.checker);
+        buffer.setColor0(index, this._color0);
+        buffer.setColor1(index, this._color1);
+        buffer.setSize0(index, (0, $2e946b626132112f$exports).fromValues(this.size[0], this.size[1], 0, 0));
+        buffer.setOffset(index, this.offset);
+    }
+}
+class $6c9babe64ee3d26d$export$121882bab8adda73 extends $6c9babe64ee3d26d$export$5431306cf43de24a {
+    constructor(options){
+        super();
+        this.color0 = options.color0;
+        this.color1 = options.color1;
+        this.size = options.size;
+        this.minorSize = options.minorSize;
+        this.thickness = options.thickness;
+        this.minorThickness = options.minorThickness;
+        this.offset = options.offset || (0, $87037c674fbf0952$export$a002182e51710d39).VECTOR2_ZERO;
+        this._color0 = (0, $3060130e3101af24$exports).fromValues(Math.pow(this.color0[0], 2.2), Math.pow(this.color0[1], 2.2), Math.pow(this.color0[2], 2.2));
+        this._color1 = (0, $3060130e3101af24$exports).fromValues(Math.pow(this.color1[0], 2.2), Math.pow(this.color1[1], 2.2), Math.pow(this.color1[2], 2.2));
+    }
+    toBuffer(buffer, index) {
+        buffer.setType(index, $6c9babe64ee3d26d$export$8490d66844ef9609.grid);
+        buffer.setColor0(index, this._color0);
+        buffer.setColor1(index, this._color1);
+        buffer.setSize0(index, (0, $2e946b626132112f$exports).fromValues(this.size[0], this.size[1], this.minorSize[0], this.minorSize[1]));
+        buffer.setSize1(index, (0, $2e946b626132112f$exports).fromValues(this.thickness[0], this.thickness[1], this.minorThickness[0], this.minorThickness[1]));
+        buffer.setOffset(index, this.offset);
+    }
+}
 
 
 class $a05ad00e49c75935$export$29cd7b75162a9425 extends (0, $a33c9818b09ebc0d$export$ecd9923dfd29c8e1) {
@@ -27969,6 +28383,19 @@ class $a05ad00e49c75935$export$29cd7b75162a9425 extends (0, $a33c9818b09ebc0d$ex
     }
     reset() {
         this.aperture = 0;
+        this.exposure = 1;
+        this.maxSamplesPerPixel = 10000;
+        this.defaultMaterial = new (0, $49634e74d8151f59$export$61026b7fc8ee0236)({
+            texture: new (0, $6c9babe64ee3d26d$export$b696913510b740d6)({
+                color: (0, $3060130e3101af24$exports).fromValues(0.5, 0.5, 0.5)
+            })
+        });
+        this.defaultTextMaterial = new (0, $49634e74d8151f59$export$61026b7fc8ee0236)({
+            texture: new (0, $6c9babe64ee3d26d$export$b696913510b740d6)({
+                color: (0, $3060130e3101af24$exports).fromValues(1, 1, 1)
+            })
+        });
+        this.groundSize = (0, $a3ca522ed0848e85$exports).fromValues(10, 10);
     }
 }
 
@@ -28086,7 +28513,7 @@ class $53a562f97577f76a$export$1337e9dd34ffc243 extends Float32Array {
         this.ROTATION_OFFSET = 8;
         this.TEXCOORD0_OFFSET = 12;
         this.TEXCOORD1_OFFSET = 14;
-        this.RADIUS_OFFSET = 16;
+        this.ROUNDING_OFFSET = 16;
     }
     getType(index) {
         return this[$53a562f97577f76a$export$1337e9dd34ffc243.SIZE * index + this.TYPE_OFFSET];
@@ -28149,11 +28576,11 @@ class $53a562f97577f76a$export$1337e9dd34ffc243 extends Float32Array {
         this[offset] = value[0];
         this[offset + 1] = value[1];
     }
-    getRadius(index) {
-        return this[$53a562f97577f76a$export$1337e9dd34ffc243.SIZE * index + this.RADIUS_OFFSET];
+    getRounding(index) {
+        return this[$53a562f97577f76a$export$1337e9dd34ffc243.SIZE * index + this.ROUNDING_OFFSET];
     }
-    setRadius(index, value) {
-        this[$53a562f97577f76a$export$1337e9dd34ffc243.SIZE * index + this.RADIUS_OFFSET] = value;
+    setRounding(index, value) {
+        this[$53a562f97577f76a$export$1337e9dd34ffc243.SIZE * index + this.ROUNDING_OFFSET] = value;
     }
 }
 $53a562f97577f76a$export$1337e9dd34ffc243.SIZE = 20;
@@ -28215,14 +28642,14 @@ class $53a562f97577f76a$export$28497cc10fec95c2 extends $53a562f97577f76a$export
 class $53a562f97577f76a$export$dfaec831a2de7e90 extends $53a562f97577f76a$export$28497cc10fec95c2 {
     constructor(options){
         super(options);
-        this._radius = options.radius;
+        this._rounding = options.rounding;
         (0, $3060130e3101af24$exports).subtract(this._bounds.min, this._center, this._size);
         (0, $3060130e3101af24$exports).add(this._bounds.max, this._center, this._size);
     }
     toBuffer(buffer, index, materialId) {
         super.toBuffer(buffer, index, materialId);
         buffer.setType(index, $53a562f97577f76a$export$8daabe80e4a041.boxSdf);
-        buffer.setRadius(index, this._radius);
+        buffer.setRounding(index, this._rounding);
     }
 }
 class $53a562f97577f76a$export$acdc70fb29a0312b extends $53a562f97577f76a$export$28497cc10fec95c2 {
@@ -28281,22 +28708,22 @@ class $53a562f97577f76a$export$563880b935f7aee2 extends $53a562f97577f76a$export
     constructor(options){
         super(options);
         this._height = options.height;
-        this._radius0 = options.radius0;
-        this._radius1 = options.radius1;
+        this._radius = options.radius;
+        this._rounding = options.rounding;
         const min = this._bounds.min;
         const max = this._bounds.max;
-        min[0] = this._center[0] - this._radius0;
-        max[0] = this._center[0] + this._radius0;
+        min[0] = this._center[0] - this._radius;
+        max[0] = this._center[0] + this._radius;
         min[1] = this._center[1] - this._height;
         max[1] = this._center[1] + this._height;
-        min[2] = this._center[2] - this._radius0;
-        max[2] = this._center[2] + this._radius0;
+        min[2] = this._center[2] - this._radius;
+        max[2] = this._center[2] + this._radius;
     }
     toBuffer(buffer, index, materialId) {
         super.toBuffer(buffer, index, materialId);
         buffer.setType(index, $53a562f97577f76a$export$8daabe80e4a041.cylinderSdf);
-        buffer.setSize(index, (0, $3060130e3101af24$exports).fromValues(this._radius0, this._height, this._radius0));
-        buffer.setRadius(index, this._radius1);
+        buffer.setSize(index, (0, $3060130e3101af24$exports).fromValues(this._radius, this._height, this._radius));
+        buffer.setRounding(index, this._rounding);
     }
 }
 class $53a562f97577f76a$export$2104cbf9d09a457a extends $53a562f97577f76a$export$cb7224ab7735b16e {
@@ -28329,22 +28756,22 @@ class $53a562f97577f76a$export$df234dab64f8469a extends $53a562f97577f76a$export
     constructor(options){
         super(options);
         this._height = options.height;
-        this._radius0 = options.radius0;
-        this._radius1 = options.radius1;
+        this._radius = options.radius;
+        this._rounding = options.rounding;
         const min = this._bounds.min;
         const max = this._bounds.max;
-        min[0] = this._center[0] - this._radius0 * (0, $87037c674fbf0952$export$a002182e51710d39).ROOT_THREE_OVER_TWO;
-        max[0] = this._center[0] + this._radius0 * (0, $87037c674fbf0952$export$a002182e51710d39).ROOT_THREE_OVER_TWO;
+        min[0] = this._center[0] - this._radius * (0, $87037c674fbf0952$export$a002182e51710d39).ROOT_THREE_OVER_TWO;
+        max[0] = this._center[0] + this._radius * (0, $87037c674fbf0952$export$a002182e51710d39).ROOT_THREE_OVER_TWO;
         min[1] = this._center[1] - this._height;
         max[1] = this._center[1] + this._height;
-        min[2] = this._center[2] - this._radius0;
-        max[2] = this._center[2] + this._radius0;
+        min[2] = this._center[2] - this._radius;
+        max[2] = this._center[2] + this._radius;
     }
     toBuffer(buffer, index, materialId) {
         super.toBuffer(buffer, index, materialId);
         buffer.setType(index, $53a562f97577f76a$export$8daabe80e4a041.hexPrismSdf);
-        buffer.setSize(index, (0, $3060130e3101af24$exports).fromValues(this._radius0 * (0, $87037c674fbf0952$export$a002182e51710d39).ROOT_THREE_OVER_TWO, this._height, this._radius0));
-        buffer.setRadius(index, this._radius1);
+        buffer.setSize(index, (0, $3060130e3101af24$exports).fromValues(this._radius * (0, $87037c674fbf0952$export$a002182e51710d39).ROOT_THREE_OVER_TWO, this._height, this._radius));
+        buffer.setRounding(index, this._rounding);
     }
 }
 class $53a562f97577f76a$export$3d594d9378ccaeb1 extends $53a562f97577f76a$export$cb7224ab7735b16e {
@@ -28448,139 +28875,11 @@ class $53a562f97577f76a$export$402b844452575dc9 extends $53a562f97577f76a$export
 
 
 
-const $49634e74d8151f59$export$bd062416169c6728 = {
-    lambertian: 0,
-    metal: 1,
-    dielectric: 2,
-    glossy: 3,
-    diffuseLight: 4
-};
-class $49634e74d8151f59$export$673ddcc6bf213111 extends Float32Array {
-    constructor(count){
-        super(count * $49634e74d8151f59$export$673ddcc6bf213111.SIZE);
-        this.TYPE_OFFSET = 0;
-        this.FUZZ_OFFSET = 1;
-        this.REFRACTIVE_INDEX_OFFSET = 2;
-        this.TEXTURE_ID_OFFSET = 3;
-        this.COLOR_OFFSET = 4;
-        this.GLOSSINESS_OFFSET = 7;
-    }
-    getType(index) {
-        return this[$49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.TYPE_OFFSET];
-    }
-    setType(index, value) {
-        this[$49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.TYPE_OFFSET] = value;
-    }
-    getFuzz(index) {
-        return this[$49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.FUZZ_OFFSET];
-    }
-    setFuzz(index, value) {
-        this[$49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.FUZZ_OFFSET] = value;
-    }
-    getRefractiveIndex(index) {
-        return this[$49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.REFRACTIVE_INDEX_OFFSET];
-    }
-    setRefractiveIndex(index, value) {
-        this[$49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.REFRACTIVE_INDEX_OFFSET] = value;
-    }
-    getTextureId(index) {
-        return this[$49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.TEXTURE_ID_OFFSET];
-    }
-    setTextureId(index, value) {
-        this[$49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.TEXTURE_ID_OFFSET] = value;
-    }
-    getColor(index, value) {
-        const offset = $49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.COLOR_OFFSET;
-        (0, $3060130e3101af24$exports).set(value, this[offset], this[offset + 1], this[offset + 2]);
-    }
-    setColor(index, value) {
-        const offset = $49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.COLOR_OFFSET;
-        this[offset] = value[0];
-        this[offset + 1] = value[1];
-        this[offset + 2] = value[2];
-    }
-    getGlossiness(index) {
-        return this[$49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.GLOSSINESS_OFFSET];
-    }
-    setGlossiness(index, value) {
-        this[$49634e74d8151f59$export$673ddcc6bf213111.SIZE * index + this.GLOSSINESS_OFFSET] = value;
-    }
-}
-$49634e74d8151f59$export$673ddcc6bf213111.SIZE = 8;
-class $49634e74d8151f59$export$a2d8b23205c25948 {
-    constructor(options){}
-    get texture() {
-        return this._texture;
-    }
-    toBuffer(buffer, index, textureId) {}
-}
-class $49634e74d8151f59$export$61026b7fc8ee0236 extends $49634e74d8151f59$export$a2d8b23205c25948 {
-    constructor(options){
-        super(options);
-        this._texture = options.texture;
-    }
-    toBuffer(buffer, index, textureId) {
-        buffer.setType(index, $49634e74d8151f59$export$bd062416169c6728.lambertian);
-        buffer.setTextureId(index, textureId);
-    }
-}
-class $49634e74d8151f59$export$bd17d4a4be11a968 extends $49634e74d8151f59$export$a2d8b23205c25948 {
-    constructor(options){
-        super(options);
-        this.fuzz = options.fuzz;
-        this._texture = options.texture;
-    }
-    toBuffer(buffer, index, textureId) {
-        buffer.setType(index, $49634e74d8151f59$export$bd062416169c6728.metal);
-        buffer.setFuzz(index, this.fuzz);
-        buffer.setTextureId(index, textureId);
-    }
-}
-class $49634e74d8151f59$export$9578dd56c4cc3fb4 extends $49634e74d8151f59$export$a2d8b23205c25948 {
-    constructor(options){
-        super(options);
-        this.refractiveIndex = options.refractiveIndex;
-        this.color = options.color;
-    }
-    toBuffer(buffer, index, textureId) {
-        buffer.setType(index, $49634e74d8151f59$export$bd062416169c6728.dielectric);
-        buffer.setRefractiveIndex(index, this.refractiveIndex);
-        buffer.setColor(index, this.color);
-    }
-}
-class $49634e74d8151f59$export$5ea5fb140816887a extends $49634e74d8151f59$export$a2d8b23205c25948 {
-    constructor(options){
-        super(options);
-        this.color = options.color;
-    }
-    toBuffer(buffer, index, textureId) {
-        buffer.setType(index, $49634e74d8151f59$export$bd062416169c6728.diffuseLight);
-        buffer.setColor(index, this.color);
-    }
-}
-class $49634e74d8151f59$export$5e39c2cd3ef82349 extends $49634e74d8151f59$export$a2d8b23205c25948 {
-    constructor(options){
-        super(options);
-        this._texture = options.texture;
-        this.fuzz = options.fuzz;
-        this.refractiveIndex = options.refractiveIndex || 1.5;
-        this.glossiness = options.glossiness || 1;
-    }
-    toBuffer(buffer, index, textureId) {
-        buffer.setType(index, $49634e74d8151f59$export$bd062416169c6728.glossy);
-        buffer.setFuzz(index, this.fuzz);
-        buffer.setGlossiness(index, this.glossiness);
-        buffer.setRefractiveIndex(index, this.refractiveIndex);
-        buffer.setTextureId(index, textureId);
-    }
-}
-
-
 
 const $280ec1c90493a320$export$7173403786dbea8d = `
 const PI = 3.1415926535897932385f;
 const TWO_PI = 6.2831853071795864769f;
-const ROOT_THREE_OVER_TWO = 0.86602540378443864676;
+const ROOT_THREE_OVER_TWO = 0.86602540378443864676f;
 
 struct ColorBuffer {
     values: array<f32>,
@@ -28714,7 +29013,7 @@ struct Hittable {           // ---------------------------------------
     rotation: vec4<f32>,    //             32      16      16
     texCoord0: vec2<f32>,   //             48       8       8
     texCoord1: vec2<f32>,   //             56       8       8
-    radius: f32,            //             64       4       4
+    rounding: f32,          //             64       4       4
 }                           // ---------------------------------------
                             //                     16      68       80
 
@@ -28838,54 +29137,9 @@ fn hitWorld(ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, HitRecord>)
     var closestSoFar = tMax;
     let invDir = vec3<f32>(1f, 1f, 1f) / ray.direction;
     var tempHitRecord: HitRecord;
-    var hit: bool;
     for (var i: u32 = 0u; i < arrayLength(&hittableBuffer.hittables); i = i + 1u) {
         let hittable = hittableBuffer.hittables[i];
-        switch u32(hittable.typeId) {
-            default: {
-                hit = hitSphere(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 1u: {
-                hit = hitBox(hittable, ray, invDir, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 2u: {
-                hit = hitCylinder(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 3u: {
-                hit = hitHexPrism(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 4u: {
-                hit = hitRotatedBox(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 5u: {
-                hit = hitXyRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 6u: {
-                hit = hitXzRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 7u: {
-                hit = hitYzRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 8u: {
-                hit = hitRotatedXyRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 9u: {
-                hit = hitFontXyRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 10u: {
-                hit = hitRotatedFontXyRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 11u: {
-                hit = hitBoxSdf(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 12u: {
-                hit = hitCylinderSdf(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 13u: {
-                hit = hitHexPrismSdf(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-        }
-        if (hit) {
+        if (hit(hittable, ray, invDir, tMin, closestSoFar, &tempHitRecord)) {
             hitAnything = true;
             closestSoFar = tempHitRecord.t;
             tempHitRecord.material = materialBuffer.materials[u32(hittable.materialId)];
@@ -28901,7 +29155,6 @@ fn hitBVH(ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, HitRecord>) -
     let invDir = vec3<f32>(1f, 1f, 1f) / ray.direction;
     var tempHitRecord: HitRecord;
     var materialId: f32;
-    var hit: bool;
     var toVisitOffset = 0u;
     var currentNodeIndex = 0u;
     var nodesToVisit: array<u32, 64>;
@@ -28914,51 +29167,7 @@ fn hitBVH(ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, HitRecord>) -
                 let primitiveOffset = u32(node.primitivesOffset);
                 for (var i: u32 = 0u; i < nPrimitives; i = i + 1u) {
                     let hittable = hittableBuffer.hittables[primitiveOffset + i];
-                    switch u32(hittable.typeId) {
-                        default: {
-                            hit = hitSphere(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 1u: {
-                            hit = hitBox(hittable, ray, invDir, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 2u: {
-                            hit = hitCylinder(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 3u: {
-                            hit = hitHexPrism(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 4u: {
-                            hit = hitRotatedBox(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 5u: {
-                            hit = hitXyRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 6u: {
-                            hit = hitXzRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 7u: {
-                            hit = hitYzRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 8u: {
-                            hit = hitRotatedXyRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 9u: {
-                            hit = hitFontXyRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 10u: {
-                            hit = hitRotatedFontXyRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 11u: {
-                            hit = hitBoxSdf(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 12u: {
-                            hit = hitCylinderSdf(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 13u: {
-                            hit = hitHexPrismSdf(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                    }
-                    if (hit) {
+                    if (hit(hittable, ray, invDir, tMin, closestSoFar, &tempHitRecord)) {
                         hitAnything = true;
                         closestSoFar = tempHitRecord.t;
                         materialId = hittable.materialId;
@@ -28986,14 +29195,59 @@ fn hitBVH(ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, HitRecord>) -
             currentNodeIndex = nodesToVisit[toVisitOffset];
         }
     }
-
     if (hitAnything) {
         tempHitRecord.material = materialBuffer.materials[u32(materialId)];
         *hitRecord = tempHitRecord;
         return true;
     };
-
     return false;
+}
+
+fn hit(hittable: Hittable, ray: Ray, invDir: vec3<f32>, tMin: f32, tMax: f32, hitRecord: ptr<function, HitRecord>) -> bool {
+    switch u32(hittable.typeId) {
+        default: {
+            return hitSphere(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 1u: {
+            return hitBox(hittable, ray, invDir, tMin, tMax, hitRecord);
+        }
+        case 2u: {
+            return hitCylinder(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 3u: {
+            return hitHexPrism(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 4u: {
+            return hitRotatedBox(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 5u: {
+            return hitXyRect(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 6u: {
+            return hitXzRect(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 7u: {
+            return hitYzRect(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 8u: {
+            return hitRotatedXyRect(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 9u: {
+            return hitFontXyRect(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 10u: {
+            return hitRotatedFontXyRect(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 11u: {
+            return hitBoxSdf(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 12u: {
+            return hitCylinderSdf(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 13u: {
+            return hitHexPrismSdf(hittable, ray, tMin, tMax, hitRecord);
+        }
+    }
 }
 
 fn intersectBox(center: vec3<f32>, size: vec3<f32>, ray: Ray, invDir: vec3<f32>, tMin: f32, tMax: f32) -> bool {
@@ -29364,12 +29618,12 @@ fn mapHexPrismSdf(p: vec3<f32>, hx: f32, hy: f32, r: f32) -> f32 {
     var p0 = abs(p.zxy);
     let p1 = p0.xy - 2f * min(dot(k.xy, p0.xy), 0f) * k.xy;
     let d = vec2<f32>(length(p1.xy - vec2(clamp(p1.x, -k.z * hx, k.z * hx), hx)) * sign(p1.y - hx), p0.z - hy);
-    return min(max(d.x, d.y), 0f) + length(max(d, vec2<f32>(0f, 0f)));
+    return min(max(d.x, d.y), 0f) + length(max(d, vec2<f32>(0f, 0f))) - r;
 }
 
 fn hitBoxSdf(boxSdf: Hittable, ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, HitRecord>) -> bool {
     var t = tMin;
-    let r = boxSdf.radius;
+    let r = boxSdf.rounding;
     let size = boxSdf.size - r;
     for (var i: u32 = 0u; i < 128u; i = i + 1u) {
         let position = rayAt(ray, t);
@@ -29398,7 +29652,7 @@ fn hitBoxSdf(boxSdf: Hittable, ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<fu
 
 fn hitCylinderSdf(cylinderSdf: Hittable, ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, HitRecord>) -> bool {
     var t = tMin;
-    let r1 = cylinderSdf.radius;
+    let r1 = cylinderSdf.rounding;
     let h0 = cylinderSdf.size.x - r1;
     let r0 = cylinderSdf.size.y - r1;
     for (var i: u32 = 0u; i < 128u; i = i + 1u) {
@@ -29428,7 +29682,7 @@ fn hitCylinderSdf(cylinderSdf: Hittable, ray: Ray, tMin: f32, tMax: f32, hitReco
 
 fn hitHexPrismSdf(hexPrismSdf: Hittable, ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, HitRecord>) -> bool {
     var t = tMin;
-    let r = hexPrismSdf.radius;
+    let r = hexPrismSdf.rounding;
     let hx = hexPrismSdf.size.x - r;
     let hy = hexPrismSdf.size.y - r;
     for (var i: u32 = 0u; i < 128u; i = i + 1u) {
@@ -29501,6 +29755,7 @@ fn hitRectLight(rotatedXyRect: Light, ray: Ray) -> bool {
     var rotatedRay: Ray;
     rotatedRay.origin = rotateQuat(ray.origin - center, invRotation) + center;
     rotatedRay.direction = rotateQuat(ray.direction, invRotation);
+    if (dot(rotatedRay.direction, vec3<f32>(0f, 0f, 1f)) < 0f) { return false; } // Directional light
     let oc = rotatedRay.origin - center;
     let t = -oc.z / rotatedRay.direction.z;
     if (t < 0f) { return false; }
@@ -29674,7 +29929,7 @@ fn rayColor(ray: ptr<function, Ray>, seed: ptr<function, u32>) -> vec3<f32> {
             if (depth > 0u) { // Hide lights, background
                 return hitLights(*ray) * color;
             }
-            else { return vec3<f32>(0f, 0f, 0f); }
+            else { return vec3<f32>(0f, 0f, 0f); } // TODO: Background color
 
             // Background
             // let t = 0.5f * ((*ray).direction.y + 1f);
@@ -29868,8 +30123,9 @@ struct Uniforms {           // ------------------------------
     width: f32,             //              0       4       4
     height: f32,            //              4       4       4
     samplesPerPixel: f32,   //              8       4       4
+    exposure: f32,          //             12       4       4
 }                           // ------------------------------
-                            //                      4      12
+                            //                      4      16
 
 @group(0) @binding(0) var<uniform> uniforms : Uniforms;
 @group(0) @binding(1) var<storage, read> colorBuffer : ColorData;
@@ -29901,8 +30157,10 @@ fn frag_main(@builtin(position) coord: vec4<f32>) -> @location(0) vec4<f32> {
     var color = vec3<f32>(colorBuffer.data[index + 0u], colorBuffer.data[index + 1u], colorBuffer.data[index + 2u]) / uniforms.samplesPerPixel;
 
     // Simple tone-mapping from HDR to LDR
-    color = color / (color + vec3<f32>(1f, 1f, 1f));
+    // color = color * uniforms.exposure;
+    // color = color / (color + vec3<f32>(1f, 1f, 1f));
 
+    // Gamma-correct
     return vec4<f32>(pow(color, GAMMA), 1f);
 }`;
 class $4a3992a443ede9c5$export$186ae5dce927ebd1 extends Float32Array {
@@ -29911,6 +30169,7 @@ class $4a3992a443ede9c5$export$186ae5dce927ebd1 extends Float32Array {
         this.WIDTH_OFFSET = 0;
         this.HEIGHT_OFFSET = 1;
         this.SPP_OFFSET = 2;
+        this.EXPOSURE_OFFSET = 3;
     }
     getWidth() {
         return this[this.WIDTH_OFFSET];
@@ -29930,8 +30189,14 @@ class $4a3992a443ede9c5$export$186ae5dce927ebd1 extends Float32Array {
     setSamplesPerPixel(value) {
         this[this.SPP_OFFSET] = value;
     }
+    getExposure() {
+        return this[this.EXPOSURE_OFFSET];
+    }
+    setExposure(value) {
+        this[this.EXPOSURE_OFFSET] = value;
+    }
 }
-$4a3992a443ede9c5$export$186ae5dce927ebd1.SIZE = 3;
+$4a3992a443ede9c5$export$186ae5dce927ebd1.SIZE = 4;
 
 
 
@@ -30245,149 +30510,6 @@ $06a08f56d430b165$export$9e920ed4165673f5.SIZE = 12;
 
 
 
-const $6c9babe64ee3d26d$export$8490d66844ef9609 = {
-    none: 0,
-    solidColor: 1,
-    image: 2,
-    sdfText: 3,
-    checker: 4,
-    grid: 5
-};
-class $6c9babe64ee3d26d$export$6aa93a36bc90f68e extends Float32Array {
-    constructor(count){
-        super(count * $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE);
-        this.COLOR0_OFFSET = 0;
-        this.TYPE_OFFSET = 3;
-        this.COLOR1_OFFSET = 4;
-        this.SIZE0_OFFSET = 8;
-        this.SIZE1_OFFSET = 12;
-        this.OFFSET_OFFSET = 16;
-    }
-    getType(index) {
-        return this[$6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.TYPE_OFFSET];
-    }
-    setType(index, value) {
-        this[$6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.TYPE_OFFSET] = value;
-    }
-    getColor0(index, value) {
-        const offset = $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.COLOR0_OFFSET;
-        (0, $3060130e3101af24$exports).set(value, this[offset], this[offset + 1], this[offset + 2]);
-    }
-    setColor0(index, value) {
-        const offset = $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.COLOR0_OFFSET;
-        this[offset] = value[0];
-        this[offset + 1] = value[1];
-        this[offset + 2] = value[2];
-    }
-    getColor1(index, value) {
-        const offset = $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.COLOR1_OFFSET;
-        (0, $3060130e3101af24$exports).set(value, this[offset], this[offset + 1], this[offset + 2]);
-    }
-    setColor1(index, value) {
-        const offset = $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.COLOR1_OFFSET;
-        this[offset] = value[0];
-        this[offset + 1] = value[1];
-        this[offset + 2] = value[2];
-    }
-    getSize0(index, value) {
-        const offset = $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.SIZE0_OFFSET;
-        (0, $2e946b626132112f$exports).set(value, this[offset], this[offset + 1], this[offset + 2], this[offset + 3]);
-    }
-    setSize0(index, value) {
-        const offset = $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.SIZE0_OFFSET;
-        this[offset] = value[0];
-        this[offset + 1] = value[1];
-        this[offset + 2] = value[2];
-        this[offset + 3] = value[3];
-    }
-    getSize1(index, value) {
-        const offset = $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.SIZE1_OFFSET;
-        (0, $2e946b626132112f$exports).set(value, this[offset], this[offset + 1], this[offset + 2], this[offset + 3]);
-    }
-    setSize1(index, value) {
-        const offset = $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.SIZE1_OFFSET;
-        this[offset] = value[0];
-        this[offset + 1] = value[1];
-        this[offset + 2] = value[2];
-        this[offset + 3] = value[3];
-    }
-    getOffset(index, value) {
-        const offset = $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.OFFSET_OFFSET;
-        (0, $a3ca522ed0848e85$exports).set(value, this[offset], this[offset + 1]);
-    }
-    setOffset(index, value) {
-        const offset = $6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE * index + this.OFFSET_OFFSET;
-        this[offset] = value[0];
-        this[offset + 1] = value[1];
-    }
-}
-$6c9babe64ee3d26d$export$6aa93a36bc90f68e.SIZE = 20;
-class $6c9babe64ee3d26d$export$5431306cf43de24a {
-}
-class $6c9babe64ee3d26d$export$b696913510b740d6 extends $6c9babe64ee3d26d$export$5431306cf43de24a {
-    constructor(options){
-        super();
-        this.color = options.color;
-        this._color = (0, $3060130e3101af24$exports).fromValues(Math.pow(this.color[0], 2.2), Math.pow(this.color[1], 2.2), Math.pow(this.color[2], 2.2));
-    }
-    toBuffer(buffer, index) {
-        buffer.setType(index, $6c9babe64ee3d26d$export$8490d66844ef9609.solidColor);
-        buffer.setColor0(index, this._color);
-    }
-}
-class $6c9babe64ee3d26d$export$3ad126b3fdb68b5e extends $6c9babe64ee3d26d$export$5431306cf43de24a {
-    constructor(options){
-        super();
-        this.image = options.image;
-    }
-    toBuffer(buffer, index) {
-        buffer.setType(index, $6c9babe64ee3d26d$export$8490d66844ef9609.image);
-    }
-}
-class $6c9babe64ee3d26d$export$510d156fb224ecac extends $6c9babe64ee3d26d$export$5431306cf43de24a {
-    constructor(options){
-        super();
-        this.color0 = options.color0;
-        this.color1 = options.color1;
-        this.size = options.size;
-        this.offset = options.offset;
-        this._color0 = (0, $3060130e3101af24$exports).fromValues(Math.pow(this.color0[0], 2.2), Math.pow(this.color0[1], 2.2), Math.pow(this.color0[2], 2.2));
-        this._color1 = (0, $3060130e3101af24$exports).fromValues(Math.pow(this.color1[0], 2.2), Math.pow(this.color1[1], 2.2), Math.pow(this.color1[2], 2.2));
-    }
-    toBuffer(buffer, index) {
-        buffer.setType(index, $6c9babe64ee3d26d$export$8490d66844ef9609.checker);
-        buffer.setColor0(index, this._color0);
-        buffer.setColor1(index, this._color1);
-        buffer.setSize0(index, (0, $2e946b626132112f$exports).fromValues(this.size[0], this.size[1], 0, 0));
-        buffer.setOffset(index, this.offset);
-    }
-}
-class $6c9babe64ee3d26d$export$121882bab8adda73 extends $6c9babe64ee3d26d$export$5431306cf43de24a {
-    constructor(options){
-        super();
-        this.color0 = options.color0;
-        this.color1 = options.color1;
-        this.size = options.size;
-        this.minorSize = options.minorSize;
-        this.thickness = options.thickness;
-        this.minorThickness = options.minorThickness;
-        this.offset = options.offset;
-        this._color0 = (0, $3060130e3101af24$exports).fromValues(Math.pow(this.color0[0], 2.2), Math.pow(this.color0[1], 2.2), Math.pow(this.color0[2], 2.2));
-        this._color1 = (0, $3060130e3101af24$exports).fromValues(Math.pow(this.color1[0], 2.2), Math.pow(this.color1[1], 2.2), Math.pow(this.color1[2], 2.2));
-    }
-    toBuffer(buffer, index) {
-        buffer.setType(index, $6c9babe64ee3d26d$export$8490d66844ef9609.grid);
-        buffer.setColor0(index, this._color0);
-        buffer.setColor1(index, this._color1);
-        buffer.setSize0(index, (0, $2e946b626132112f$exports).fromValues(this.size[0], this.size[1], this.minorSize[0], this.minorSize[1]));
-        buffer.setSize1(index, (0, $2e946b626132112f$exports).fromValues(this.thickness[0], this.thickness[1], this.minorThickness[0], this.minorThickness[1]));
-        buffer.setOffset(index, this.offset);
-    }
-}
-
-
-
-
 
 const $0bb0f5012b8223d3$export$72af01233b4eb08d = {
     distant: 0,
@@ -30457,66 +30579,37 @@ class $0bb0f5012b8223d3$export$82650fd3490ceb3f extends Float32Array {
 $0bb0f5012b8223d3$export$82650fd3490ceb3f.SIZE = 16;
 class $0bb0f5012b8223d3$export$6ecadb6ed240d696 {
     constructor(options){
-        this._color = options.color;
-        this._center = options.center;
-        this._bounds = new (0, $e520d19faead12bb$export$8ec70f2db73b49aa)();
-    }
-    get center() {
-        return this._center;
-    }
-    get bounds() {
-        return this._bounds;
+        this.color = options.color;
+        this.center = options.center;
     }
     toBuffer(buffer, index) {
-        buffer.setCenter(index, this._center);
-        buffer.setColor(index, this._color);
+        buffer.setCenter(index, this.center);
+        buffer.setColor(index, this.color);
     }
 }
 class $0bb0f5012b8223d3$export$f6705b6c922d7219 extends $0bb0f5012b8223d3$export$6ecadb6ed240d696 {
     constructor(options){
         super(options);
-        this._radius = options.radius / 2;
-        const min = this._bounds.min;
-        const max = this._bounds.max;
-        min[0] = this._center[0] - this._radius;
-        min[1] = this._center[1] - this._radius;
-        min[2] = this._center[2] - this._radius;
-        max[0] = this._center[0] + this._radius;
-        max[1] = this._center[1] + this._radius;
-        max[2] = this._center[2] + this._radius;
-    }
-    get radius() {
-        return this._radius;
+        this.radius = options.radius / 2;
     }
     toBuffer(buffer, index) {
         super.toBuffer(buffer, index);
         buffer.setType(index, $0bb0f5012b8223d3$export$72af01233b4eb08d.sphere);
-        buffer.setSize(index, (0, $3060130e3101af24$exports).fromValues(this._radius, this._radius, this._radius));
+        buffer.setSize(index, (0, $3060130e3101af24$exports).fromValues(this.radius, this.radius, this.radius));
     }
 }
 class $0bb0f5012b8223d3$export$1f9284d52f5c21ca extends $0bb0f5012b8223d3$export$6ecadb6ed240d696 {
     constructor(options){
         super(options);
         this._thickness = 0.00001;
-        this._size = options.size;
-        this._rotation = options.rotation;
-        const min = this._bounds.min;
-        const max = this._bounds.max;
-        min[0] = this._center[0] - this._size[0];
-        min[1] = this._center[1] - this._size[1];
-        min[2] = this._center[2] - this._thickness;
-        max[0] = this._center[0] + this._size[0];
-        max[1] = this._center[1] + this._size[1];
-        max[2] = this._center[2] + this._thickness;
-    }
-    get size() {
-        return this._size;
+        this.size = options.size;
+        this.rotation = options.rotation;
     }
     toBuffer(buffer, index) {
         super.toBuffer(buffer, index);
         buffer.setType(index, $0bb0f5012b8223d3$export$72af01233b4eb08d.rect);
-        buffer.setSize(index, (0, $3060130e3101af24$exports).fromValues(this._size[0], this._size[1], this._thickness));
-        buffer.setRotation(index, this._rotation);
+        buffer.setSize(index, (0, $3060130e3101af24$exports).fromValues(this.size[0], this.size[1], this._thickness));
+        buffer.setRotation(index, this.rotation);
     }
 }
 
@@ -30608,19 +30701,19 @@ class $c175e843fb388d77$export$6f251cd327b2ff1 {
     update() {
         if (this._hasChanged && this._isInitialized) {
             this._hasChanged = false;
-            const material = this._main.materials[this._image.material];
+            const material = this._image.material == -1 ? this._main.config.defaultMaterial : this._main.materials[this._image.material];
             const modelPosition = (0, $3060130e3101af24$exports).create();
             const modelScale = this._core.getModelScale();
             const modelRotation = (0, $a75e1c0eea6f029a$exports).create();
             this._core.getModelRotation(modelRotation);
+            const modelSizeX = this._image.maxBoundsX - this._image.minBoundsX;
+            const modelSizeY = this._image.maxBoundsY - this._image.minBoundsY;
+            const modelSizeZ = this._image.maxBoundsZ - this._image.minBoundsZ;
+            const maxBounds = Math.max(modelSizeX, Math.max(modelSizeY, modelSizeZ));
+            const boundsScaling = maxBounds == 0 ? 1 : 1 / maxBounds;
             (0, $3060130e3101af24$exports).set(modelPosition, this._main.mMatrix[12], this._main.mMatrix[13], this._main.mMatrix[14]);
             if (this._image instanceof (0, $66a54358178bc812$export$3f0bd71f9b37d8ee)) {
                 const imageQuad = this._image;
-                const modelSizeX = imageQuad.maxBoundsX - imageQuad.minBoundsX;
-                const modelSizeY = imageQuad.maxBoundsY - imageQuad.minBoundsY;
-                const modelSizeZ = imageQuad.maxBoundsZ - imageQuad.minBoundsZ;
-                const maxBounds = Math.max(modelSizeX, Math.max(modelSizeY, modelSizeZ));
-                const boundsScaling = maxBounds == 0 ? 1 : 1 / maxBounds;
                 const position = (0, $3060130e3101af24$exports).fromValues((imageQuad.minBoundsX + imageQuad.maxBoundsX) / 2, (imageQuad.minBoundsY + imageQuad.maxBoundsY) / 2, (imageQuad.minBoundsZ + imageQuad.maxBoundsZ) / 2);
                 (0, $3060130e3101af24$exports).subtract(position, imageQuad.position, position);
                 (0, $3060130e3101af24$exports).scale(position, position, boundsScaling);
@@ -30638,20 +30731,15 @@ class $c175e843fb388d77$export$6f251cd327b2ff1 {
                 this.hittable = new (0, $53a562f97577f76a$export$71089e9c0fdb5c5)(hittableRotatedXyRectOptions);
             } else if (this._image instanceof (0, $66a54358178bc812$export$f4ca272a8ace4457)) {
                 const imageSphere = this._image;
-                const modelSizeX1 = imageSphere.maxBoundsX - imageSphere.minBoundsX;
-                const modelSizeY1 = imageSphere.maxBoundsY - imageSphere.minBoundsY;
-                const modelSizeZ1 = imageSphere.maxBoundsZ - imageSphere.minBoundsZ;
-                const maxBounds1 = Math.max(modelSizeX1, Math.max(modelSizeY1, modelSizeZ1));
-                const boundsScaling1 = maxBounds1 == 0 ? 1 : 1 / maxBounds1;
                 const position1 = imageSphere.position;
                 (0, $3060130e3101af24$exports).subtract(position1, imageSphere.position, position1);
-                (0, $3060130e3101af24$exports).scale(position1, position1, boundsScaling1);
+                (0, $3060130e3101af24$exports).scale(position1, position1, boundsScaling);
                 (0, $3060130e3101af24$exports).scale(position1, position1, modelScale);
                 (0, $3060130e3101af24$exports).transformQuat(position1, position1, modelRotation);
                 (0, $3060130e3101af24$exports).add(position1, position1, modelPosition);
                 const hittableSphereOptions = {
                     center: position1,
-                    radius: imageSphere.radius / 2,
+                    radius: imageSphere.radius * boundsScaling,
                     material: material
                 };
                 this.hittable = new (0, $53a562f97577f76a$export$f44a85073ff35bb)(hittableSphereOptions);
@@ -30698,8 +30786,6 @@ class $c175e843fb388d77$export$6f251cd327b2ff1 {
 
 
 
-
-
 class $2ba40a47c560a3c3$export$97e93e7019ef67b9 {
     constructor(core, main, labelSet){
         this._core = core;
@@ -30723,13 +30809,7 @@ class $2ba40a47c560a3c3$export$97e93e7019ef67b9 {
     update() {
         if (this._hasChanged && this._isInitialized) {
             this._hasChanged = false;
-            let material;
-            if (this._labelSet.material > -1) material = this._main.materials[this._labelSet.material];
-            else material = new (0, $49634e74d8151f59$export$61026b7fc8ee0236)({
-                texture: new (0, $6c9babe64ee3d26d$export$b696913510b740d6)({
-                    color: (0, $3060130e3101af24$exports).fromValues(1, 1, 1)
-                })
-            });
+            const material = this._labelSet.material == -1 ? this._main.config.defaultTextMaterial : this._main.materials[this._labelSet.material];
             this.hittables = [];
             const modelPosition = (0, $3060130e3101af24$exports).create();
             const modelScale = this._core.getModelScale();
@@ -30742,52 +30822,53 @@ class $2ba40a47c560a3c3$export$97e93e7019ef67b9 {
             const position1 = (0, $3060130e3101af24$exports).create();
             const dataView = this._labelSet.verticesView;
             const labelCount = this._labelSet.text.length;
-            let glyphCount = 0;
-            for(let j = 0; j < labelCount; j++)glyphCount += this._labelSet.text[j].length;
-            for(let j1 = 0; j1 < glyphCount; j1++){
-                (0, $9baea54bf2330932$export$74c3c25430a16442).getPosition(dataView, j1 * 4 + 2, position0);
-                (0, $9baea54bf2330932$export$74c3c25430a16442).getPosition(dataView, j1 * 4 + 1, position1);
-                (0, $3060130e3101af24$exports).scale(position0, position0, modelScale);
-                (0, $3060130e3101af24$exports).scale(position1, position1, modelScale);
-                (0, $3060130e3101af24$exports).transformQuat(position0, position0, modelRotation);
-                (0, $3060130e3101af24$exports).transformQuat(position1, position1, modelRotation);
-                (0, $3060130e3101af24$exports).add(position0, position0, modelPosition);
-                (0, $3060130e3101af24$exports).add(position1, position1, modelPosition);
-                const centroid = (0, $3060130e3101af24$exports).create();
-                (0, $3060130e3101af24$exports).add(centroid, position0, position1);
-                (0, $3060130e3101af24$exports).scale(centroid, centroid, 0.5);
-                if (this._labelSet.rotation) (0, $a75e1c0eea6f029a$exports).set(glpyhRotation, this._labelSet.rotation[0], this._labelSet.rotation[1], this._labelSet.rotation[2], this._labelSet.rotation[3]);
-                else if (this._labelSet.rotations) (0, $a75e1c0eea6f029a$exports).set(glpyhRotation, this._labelSet.rotations[j1 * 4], this._labelSet.rotations[j1 * 4 + 1], this._labelSet.rotations[j1 * 4 + 2], this._labelSet.rotations[j1 * 4 + 3]);
-                else (0, $a75e1c0eea6f029a$exports).identity(glpyhRotation);
-                const rotation = (0, $a75e1c0eea6f029a$exports).clone(glpyhRotation);
-                (0, $a75e1c0eea6f029a$exports).multiply(rotation, modelRotation, rotation);
-                (0, $a75e1c0eea6f029a$exports).conjugate(glyphInvRotation, rotation);
-                (0, $3060130e3101af24$exports).subtract(position0, position0, centroid);
-                (0, $3060130e3101af24$exports).subtract(position1, position1, centroid);
-                (0, $3060130e3101af24$exports).transformQuat(position0, position0, glyphInvRotation);
-                (0, $3060130e3101af24$exports).transformQuat(position1, position1, glyphInvRotation);
-                (0, $3060130e3101af24$exports).add(position0, position0, centroid);
-                (0, $3060130e3101af24$exports).add(position1, position1, centroid);
-                const texCoord0 = (0, $a3ca522ed0848e85$exports).create();
-                const texCoord1 = (0, $a3ca522ed0848e85$exports).create();
-                (0, $9baea54bf2330932$export$74c3c25430a16442).getTexCoord(dataView, j1 * 4 + 2, texCoord0);
-                (0, $9baea54bf2330932$export$74c3c25430a16442).getTexCoord(dataView, j1 * 4 + 1, texCoord1);
-                const hittableRotatedXyRectOptions = {
-                    center: centroid,
-                    size: (0, $a3ca522ed0848e85$exports).fromValues((position1[0] - position0[0]) / 2, (position1[1] - position0[1]) / 2),
-                    material: material,
-                    texCoord0: texCoord0,
-                    texCoord1: texCoord1,
-                    rotation: rotation
-                };
-                this.hittables.push(new (0, $53a562f97577f76a$export$402b844452575dc9)(hittableRotatedXyRectOptions));
+            let glyphIndex = 0;
+            for(let i = 0; i < labelCount; i++){
+                const glyphCount = this._labelSet.text[i].length;
+                for(let j = 0; j < glyphCount; j++){
+                    (0, $9baea54bf2330932$export$74c3c25430a16442).getPosition(dataView, glyphIndex * 4 + 2, position0);
+                    (0, $9baea54bf2330932$export$74c3c25430a16442).getPosition(dataView, glyphIndex * 4 + 1, position1);
+                    (0, $3060130e3101af24$exports).scale(position0, position0, modelScale);
+                    (0, $3060130e3101af24$exports).scale(position1, position1, modelScale);
+                    (0, $3060130e3101af24$exports).transformQuat(position0, position0, modelRotation);
+                    (0, $3060130e3101af24$exports).transformQuat(position1, position1, modelRotation);
+                    (0, $3060130e3101af24$exports).add(position0, position0, modelPosition);
+                    (0, $3060130e3101af24$exports).add(position1, position1, modelPosition);
+                    const centroid = (0, $3060130e3101af24$exports).create();
+                    (0, $3060130e3101af24$exports).add(centroid, position0, position1);
+                    (0, $3060130e3101af24$exports).scale(centroid, centroid, 0.5);
+                    if (this._labelSet.rotation) (0, $a75e1c0eea6f029a$exports).set(glpyhRotation, this._labelSet.rotation[0], this._labelSet.rotation[1], this._labelSet.rotation[2], this._labelSet.rotation[3]);
+                    else if (this._labelSet.rotations) (0, $a75e1c0eea6f029a$exports).set(glpyhRotation, this._labelSet.rotations[i * 4], this._labelSet.rotations[i * 4 + 1], this._labelSet.rotations[i * 4 + 2], this._labelSet.rotations[i * 4 + 3]);
+                    else (0, $a75e1c0eea6f029a$exports).identity(glpyhRotation);
+                    const rotation = (0, $a75e1c0eea6f029a$exports).clone(glpyhRotation);
+                    (0, $a75e1c0eea6f029a$exports).multiply(rotation, modelRotation, rotation);
+                    (0, $a75e1c0eea6f029a$exports).conjugate(glyphInvRotation, rotation);
+                    (0, $3060130e3101af24$exports).subtract(position0, position0, centroid);
+                    (0, $3060130e3101af24$exports).subtract(position1, position1, centroid);
+                    (0, $3060130e3101af24$exports).transformQuat(position0, position0, glyphInvRotation);
+                    (0, $3060130e3101af24$exports).transformQuat(position1, position1, glyphInvRotation);
+                    (0, $3060130e3101af24$exports).add(position0, position0, centroid);
+                    (0, $3060130e3101af24$exports).add(position1, position1, centroid);
+                    const texCoord0 = (0, $a3ca522ed0848e85$exports).create();
+                    const texCoord1 = (0, $a3ca522ed0848e85$exports).create();
+                    (0, $9baea54bf2330932$export$74c3c25430a16442).getTexCoord(dataView, glyphIndex * 4 + 2, texCoord0);
+                    (0, $9baea54bf2330932$export$74c3c25430a16442).getTexCoord(dataView, glyphIndex * 4 + 1, texCoord1);
+                    const hittableRotatedXyRectOptions = {
+                        center: centroid,
+                        size: (0, $a3ca522ed0848e85$exports).fromValues((position1[0] - position0[0]) / 2, (position1[1] - position0[1]) / 2),
+                        material: material,
+                        texCoord0: texCoord0,
+                        texCoord1: texCoord1,
+                        rotation: rotation
+                    };
+                    this.hittables.push(new (0, $53a562f97577f76a$export$402b844452575dc9)(hittableRotatedXyRectOptions));
+                    glyphIndex++;
+                }
             }
             if (this.hasChangedCallback) this.hasChangedCallback();
         }
     }
 }
-
-
 
 
 
@@ -30824,22 +30905,7 @@ class $408f92b1eb8d996f$export$76de936b3c1c4170 extends (0, $4dac639045fe5cb9$ex
         if (this._hasChanged && this._isInitialized) {
             this._hasChanged = false;
             const start = window.performance.now();
-            const textures = [
-                new (0, $6c9babe64ee3d26d$export$b696913510b740d6)({
-                    color: (0, $3060130e3101af24$exports).fromValues(0.8, 0.4, 0.2)
-                }),
-                new (0, $6c9babe64ee3d26d$export$b696913510b740d6)({
-                    color: (0, $3060130e3101af24$exports).fromValues(0.8, 0.8, 0.8)
-                }), 
-            ];
-            const materials = [
-                new (0, $49634e74d8151f59$export$bd17d4a4be11a968)({
-                    texture: textures[1],
-                    fuzz: 0.5
-                }), 
-            ];
             this.hittables = [];
-            const unitScale = (0, $2e946b626132112f$exports).create();
             const modelPosition = (0, $3060130e3101af24$exports).create();
             const modelScale = this._core.getModelScale();
             const modelRotation = (0, $a75e1c0eea6f029a$exports).create();
@@ -30848,39 +30914,41 @@ class $408f92b1eb8d996f$export$76de936b3c1c4170 extends (0, $4dac639045fe5cb9$ex
             (0, $3060130e3101af24$exports).set(modelPosition, this._main.mMatrix[12], this._main.mMatrix[13], this._main.mMatrix[14]);
             const buffer = this.currentBuffer;
             for(let j = 0; j < buffer.ids.length; j++){
+                const unitScale = (0, $3060130e3101af24$exports).create();
+                (0, $9baea54bf2330932$export$849e31d725692576).getScale(buffer.dataView, j, unitScale);
                 const unitTranslation = (0, $3060130e3101af24$exports).create();
                 (0, $9baea54bf2330932$export$849e31d725692576).getTranslation(buffer.dataView, j, unitTranslation);
                 const unitRotation = (0, $a75e1c0eea6f029a$exports).create();
                 (0, $9baea54bf2330932$export$849e31d725692576).getRotation(buffer.dataView, j, unitRotation);
-                (0, $a75e1c0eea6f029a$exports).normalize(unitRotation, unitRotation);
                 (0, $a75e1c0eea6f029a$exports).multiply(unitRotation, modelRotation, unitRotation);
-                (0, $9baea54bf2330932$export$849e31d725692576).getScale(buffer.dataView, j, unitScale);
                 (0, $3060130e3101af24$exports).scale(unitTranslation, unitTranslation, modelScale);
                 (0, $3060130e3101af24$exports).transformQuat(unitTranslation, unitTranslation, modelRotation);
                 (0, $3060130e3101af24$exports).add(unitTranslation, unitTranslation, modelPosition);
-                const size = (0, $3060130e3101af24$exports).fromValues(unitScale[0] / 2, unitScale[1] / 2, unitScale[2] / 2);
-                (0, $3060130e3101af24$exports).scale(size, size, modelScale);
+                (0, $3060130e3101af24$exports).scale(unitScale, unitScale, modelScale / 2);
+                unitScale[0] = Math.max(unitScale[0], 0.00001);
+                unitScale[1] = Math.max(unitScale[1], 0.00001);
+                unitScale[2] = Math.max(unitScale[2], 0.00001);
                 const materialId = (0, $9baea54bf2330932$export$849e31d725692576).getMaterial(buffer.dataView, j);
-                const material = this._main.materials ? this._main.materials[materialId] : materials[j % materials.length];
+                const material = this._main.materials && this._main.materials.length > materialId ? this._main.materials[materialId] : this._main.config.defaultMaterial;
                 let hittable;
                 switch(buffer.unitType){
                     case (0, $b0e0bae684e98192$export$80d48287646c9e3b).sphere:
                     case (0, $b0e0bae684e98192$export$80d48287646c9e3b).sphereSdf:
                         hittable = new (0, $53a562f97577f76a$export$f44a85073ff35bb)({
                             center: unitTranslation,
-                            radius: size[0],
+                            radius: unitScale[0],
                             material: material
                         });
                         break;
                     case (0, $b0e0bae684e98192$export$80d48287646c9e3b).block:
                         if (unitRotation[3] == 1) hittable = new (0, $53a562f97577f76a$export$28497cc10fec95c2)({
                             center: unitTranslation,
-                            size: size,
+                            size: unitScale,
                             material: material
                         });
                         else hittable = new (0, $53a562f97577f76a$export$acdc70fb29a0312b)({
                             center: unitTranslation,
-                            size: size,
+                            size: unitScale,
                             rotation: unitRotation,
                             material: material
                         });
@@ -30888,16 +30956,16 @@ class $408f92b1eb8d996f$export$76de936b3c1c4170 extends (0, $4dac639045fe5cb9$ex
                     case (0, $b0e0bae684e98192$export$80d48287646c9e3b).blockSdf:
                         hittable = new (0, $53a562f97577f76a$export$dfaec831a2de7e90)({
                             center: unitTranslation,
-                            size: size,
-                            radius: Math.min(Math.min(size[0], size[1]), size[2]) * 0.1,
+                            size: unitScale,
+                            rounding: Math.min(Math.min(Math.min((0, $9baea54bf2330932$export$849e31d725692576).getRounding(buffer.dataView, j) * modelScale, unitScale[0]), unitScale[1]), unitScale[2]),
                             material: material
                         });
                         break;
                     case (0, $b0e0bae684e98192$export$80d48287646c9e3b).cylinder:
                         hittable = new (0, $53a562f97577f76a$export$cd2cb390b9add281)({
                             center: unitTranslation,
-                            radius: size[0],
-                            height: size[1],
+                            radius: unitScale[0],
+                            height: unitScale[1],
                             rotation: unitRotation,
                             material: material
                         });
@@ -30905,26 +30973,26 @@ class $408f92b1eb8d996f$export$76de936b3c1c4170 extends (0, $4dac639045fe5cb9$ex
                     case (0, $b0e0bae684e98192$export$80d48287646c9e3b).cylinderSdf:
                         hittable = new (0, $53a562f97577f76a$export$563880b935f7aee2)({
                             center: unitTranslation,
-                            radius0: size[0],
-                            height: size[1],
-                            radius1: size[0] * 0.025,
+                            radius: unitScale[0],
+                            height: unitScale[1],
+                            rounding: Math.min(Math.min((0, $9baea54bf2330932$export$849e31d725692576).getRounding(buffer.dataView, j) * modelScale, unitScale[0]), unitScale[1]),
                             material: material
                         });
                         break;
                     case (0, $b0e0bae684e98192$export$80d48287646c9e3b).hexPrism:
                         hittable = new (0, $53a562f97577f76a$export$2104cbf9d09a457a)({
                             center: unitTranslation,
-                            radius: size[0],
-                            height: size[1],
+                            radius: unitScale[0],
+                            height: unitScale[1],
                             material: material
                         });
                         break;
                     case (0, $b0e0bae684e98192$export$80d48287646c9e3b).hexPrismSdf:
                         hittable = new (0, $53a562f97577f76a$export$df234dab64f8469a)({
                             center: unitTranslation,
-                            radius0: size[0],
-                            height: size[1],
-                            radius1: Math.min(size[0], size[1]) * 0.1,
+                            radius: unitScale[0],
+                            height: unitScale[1],
+                            rounding: Math.min(Math.min((0, $9baea54bf2330932$export$849e31d725692576).getRounding(buffer.dataView, j) * modelScale, unitScale[0]), unitScale[1]),
                             material: material
                         });
                         break;
@@ -30937,6 +31005,22 @@ class $408f92b1eb8d996f$export$76de936b3c1c4170 extends (0, $4dac639045fe5cb9$ex
         }
     }
 }
+
+
+class $a2118f79e1f50c59$export$c6957adcf93c393f {
+    constructor(options){
+        if (options) {
+            this.position = options.position;
+            this.size = options.size;
+            this.material = options.material;
+        }
+    }
+}
+
+
+class $c6c443484d57bad4$export$a002182e51710d39 {
+}
+$c6c443484d57bad4$export$a002182e51710d39.SHADOW_OFFSET = 0.001;
 
 
 /*!
@@ -30976,13 +31060,13 @@ class $7c7a9d64ae8a03b0$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
         this._config = new (0, $a05ad00e49c75935$export$29cd7b75162a9425)();
         this._frameCount = 0;
         this._duration = 0;
-        this._random = new (0, $43b3041aec256b88$export$b8e288c3467acb0e)(0);
         this._position = (0, $3060130e3101af24$exports).create();
         this._right = (0, $3060130e3101af24$exports).create();
         this._up = (0, $3060130e3101af24$exports).create();
         this._forward = (0, $3060130e3101af24$exports).create();
         this._modelPosition = (0, $3060130e3101af24$exports).create();
         this._manipulationOrigin = (0, $3060130e3101af24$exports).create();
+        this.ground = new (0, $a2118f79e1f50c59$export$c6957adcf93c393f)();
     }
     get frameCount() {
         return this._frameCount;
@@ -31000,6 +31084,7 @@ class $7c7a9d64ae8a03b0$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
             this._createWorld();
             this._resizeBackings();
             this._isInitialized = true;
+            this._hasChanged = false;
         });
     }
     _initializeAPI() {
@@ -31063,17 +31148,29 @@ class $7c7a9d64ae8a03b0$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
     }
     _createWorld() {
         const start = performance.now();
-        const world = this.transitionBuffers.length > 0 ? this._getHittables() : this._getHittablesTest();
+        const world = this._getHittables();
         const bvhAccel = new (0, $06a08f56d430b165$export$c191703b2daa3f18)(this._core, world, 1, (0, $06a08f56d430b165$export$17e31acd02f2a1e).sah);
         const hittables = bvhAccel.orderedPrimitives;
-        const lights = this.standardLighting();
+        const lightsCopy = [];
         const modelScale = this._core.getModelScale();
         (0, $3060130e3101af24$exports).set(this._modelPosition, this.mMatrix[12], this.mMatrix[13], this.mMatrix[14]);
-        for(let i = 0; i < lights.length; i++){
-            const light = lights[i];
-            (0, $a3ca522ed0848e85$exports).scale(light.size, light.size, modelScale);
-            (0, $3060130e3101af24$exports).scale(light.center, light.center, modelScale);
-            (0, $3060130e3101af24$exports).add(light.center, light.center, this._modelPosition);
+        for(let i = 0; i < this.lights.length; i++){
+            const light = this.lights[i];
+            let lightCopy;
+            if (light instanceof (0, $0bb0f5012b8223d3$export$1f9284d52f5c21ca)) lightCopy = new (0, $0bb0f5012b8223d3$export$1f9284d52f5c21ca)({
+                center: (0, $3060130e3101af24$exports).clone(light.center),
+                color: (0, $3060130e3101af24$exports).clone(light.color),
+                rotation: (0, $a75e1c0eea6f029a$exports).clone(light.rotation),
+                size: (0, $a3ca522ed0848e85$exports).fromValues(light.size[0] * modelScale, light.size[1] * modelScale)
+            });
+            else if (light instanceof (0, $0bb0f5012b8223d3$export$f6705b6c922d7219)) lightCopy = new (0, $0bb0f5012b8223d3$export$f6705b6c922d7219)({
+                center: (0, $3060130e3101af24$exports).clone(light.center),
+                color: (0, $3060130e3101af24$exports).clone(light.color),
+                radius: light.radius * modelScale
+            });
+            (0, $3060130e3101af24$exports).scale(lightCopy.center, lightCopy.center, modelScale);
+            (0, $3060130e3101af24$exports).add(lightCopy.center, lightCopy.center, this._modelPosition);
+            lightsCopy.push(lightCopy);
         }
         const materials = [];
         const materialIds = [];
@@ -31129,14 +31226,14 @@ class $7c7a9d64ae8a03b0$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
         this._materialBuffer = this._device.createBuffer(materialBufferDescriptor);
         this._materialBufferData = new (0, $49634e74d8151f59$export$673ddcc6bf213111)(materials.length);
         for(let i4 = 0; i4 < materials.length; i4++)materials[i4].toBuffer(this._materialBufferData, i4, textureIds[i4]);
-        const lightBufferSizeBytes = lights.length * (0, $0bb0f5012b8223d3$export$82650fd3490ceb3f).SIZE * 4;
+        const lightBufferSizeBytes = this.lights.length * (0, $0bb0f5012b8223d3$export$82650fd3490ceb3f).SIZE * 4;
         const lightBufferDescriptor = {
             size: lightBufferSizeBytes,
             usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
         };
         this._lightBuffer = this._device.createBuffer(lightBufferDescriptor);
-        this._lightBufferData = new (0, $0bb0f5012b8223d3$export$82650fd3490ceb3f)(lights.length);
-        for(let i5 = 0; i5 < lights.length; i5++)lights[i5].toBuffer(this._lightBufferData, i5);
+        this._lightBufferData = new (0, $0bb0f5012b8223d3$export$82650fd3490ceb3f)(this.lights.length);
+        for(let i5 = 0; i5 < this.lights.length; i5++)lightsCopy[i5].toBuffer(this._lightBufferData, i5);
         const hittableBufferSizeBytes = hittables.length * (0, $53a562f97577f76a$export$1337e9dd34ffc243).SIZE * 4;
         const hittableBufferDescriptor = {
             size: hittableBufferSizeBytes,
@@ -31214,96 +31311,9 @@ class $7c7a9d64ae8a03b0$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
         }));
         return lights;
     }
-    _getHittablesTest() {
-        const textures = [];
-        const dielectricMaterial = new (0, $49634e74d8151f59$export$9578dd56c4cc3fb4)({
-            refractiveIndex: 1.5,
-            color: (0, $87037c674fbf0952$export$a002182e51710d39).VECTOR3_ONE
-        });
-        const spheres = [];
-        spheres.push(new (0, $53a562f97577f76a$export$f44a85073ff35bb)({
-            center: (0, $3060130e3101af24$exports).fromValues(0, 0.1, -1),
-            radius: 0.2,
-            material: dielectricMaterial
-        }));
-        textures.push(new (0, $6c9babe64ee3d26d$export$b696913510b740d6)({
-            color: (0, $3060130e3101af24$exports).fromValues(0.4, 0.2, 0.1)
-        }));
-        spheres.push(new (0, $53a562f97577f76a$export$f44a85073ff35bb)({
-            center: (0, $3060130e3101af24$exports).fromValues(-0.5, 0.1, -1),
-            radius: 0.2,
-            material: new (0, $49634e74d8151f59$export$61026b7fc8ee0236)({
-                texture: textures[textures.length - 1]
-            })
-        }));
-        textures.push(new (0, $6c9babe64ee3d26d$export$b696913510b740d6)({
-            color: (0, $3060130e3101af24$exports).fromValues(0.7, 0.6, 0.5)
-        }));
-        spheres.push(new (0, $53a562f97577f76a$export$f44a85073ff35bb)({
-            center: (0, $3060130e3101af24$exports).fromValues(0.5, 0.1, -1),
-            radius: 0.2,
-            material: new (0, $49634e74d8151f59$export$bd17d4a4be11a968)({
-                texture: textures[textures.length - 1],
-                fuzz: 0
-            })
-        }));
-        const radius = 0.04;
-        let count = 0;
-        while(count < 200){
-            const r = this._random.nextFloat();
-            const theta = this._random.nextFloat() * 2 * Math.PI;
-            const sqrtr = Math.sqrt(r);
-            const center = (0, $3060130e3101af24$exports).fromValues(sqrtr * Math.cos(theta), 0.02, sqrtr * Math.sin(theta) - 1);
-            let overlap;
-            for(let j = 0; j < spheres.length; j++){
-                const sphere = spheres[j];
-                overlap = (0, $3060130e3101af24$exports).distance(center, sphere.center) < radius + sphere.radius;
-                if (overlap) break;
-            }
-            if (!overlap) {
-                count++;
-                const m = this._random.nextFloat();
-                let material;
-                if (m < 0.8) {
-                    textures.push(new (0, $6c9babe64ee3d26d$export$b696913510b740d6)({
-                        color: (0, $3060130e3101af24$exports).fromValues(this._random.nextFloat() * this._random.nextFloat(), this._random.nextFloat() * this._random.nextFloat(), this._random.nextFloat() * this._random.nextFloat())
-                    }));
-                    material = new (0, $49634e74d8151f59$export$61026b7fc8ee0236)({
-                        texture: textures[textures.length - 1]
-                    });
-                } else if (m < 0.95) {
-                    textures.push(new (0, $6c9babe64ee3d26d$export$b696913510b740d6)({
-                        color: (0, $3060130e3101af24$exports).fromValues(this._random.nextFloat() * 0.5, this._random.nextFloat() * 0.5, this._random.nextFloat() * 0.5)
-                    }));
-                    material = new (0, $49634e74d8151f59$export$bd17d4a4be11a968)({
-                        fuzz: this._random.nextFloat() * 0.5,
-                        texture: textures[textures.length - 1]
-                    });
-                } else material = dielectricMaterial;
-                spheres.push(new (0, $53a562f97577f76a$export$f44a85073ff35bb)({
-                    center: center,
-                    radius: radius,
-                    material: material
-                }));
-            }
-        }
-        const hittables = spheres;
-        const height = 0.005;
-        hittables.push(new (0, $53a562f97577f76a$export$cd2cb390b9add281)({
-            center: (0, $3060130e3101af24$exports).fromValues(0, -height / 2 - 0.001, -1),
-            radius: 3,
-            height: height,
-            material: new (0, $49634e74d8151f59$export$61026b7fc8ee0236)({
-                texture: new (0, $6c9babe64ee3d26d$export$b696913510b740d6)({
-                    color: (0, $3060130e3101af24$exports).fromValues(0.8, 0.8, 0.8)
-                })
-            })
-        }));
-        return hittables;
-    }
     _getHittables() {
         const hittables = [];
-        let minY = 0;
+        let minY = Number.MAX_VALUE;
         for(let i = 0; i < this.transitionBuffers.length; i++){
             const transitionBuffer = this.transitionBuffers[i];
             if (transitionBuffer.isVisible && transitionBuffer.hittables && transitionBuffer.hittables.length > 0) {
@@ -31315,28 +31325,34 @@ class $7c7a9d64ae8a03b0$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
             const labelSet = this.labelSets[i1];
             if (labelSet.hittables) for(let j1 = 0; j1 < labelSet.hittables.length; j1++)hittables.push(labelSet.hittables[j1]);
         }
-        if (this.images && this.images.length > 0 && this.images[0].hittable) hittables.push(this.images[0].hittable);
-        const modelPosition = (0, $3060130e3101af24$exports).create();
-        const modelScale = this._core.getModelScale();
-        const modelRotation = (0, $a75e1c0eea6f029a$exports).create();
-        this._core.getModelRotation(modelRotation);
-        (0, $3060130e3101af24$exports).set(modelPosition, this.mMatrix[12], this.mMatrix[13], this.mMatrix[14]);
-        const halfHeight = 10 * modelScale;
-        const halfWidth = 10 * modelScale;
-        const offset = this.images && this.images.length > 0 ? 0.002 : 0.001;
-        const groundOptions = {
-            size: (0, $a3ca522ed0848e85$exports).fromValues(halfWidth, halfHeight),
-            center: (0, $3060130e3101af24$exports).fromValues(0, minY - offset, 0),
-            texCoord0: (0, $a3ca522ed0848e85$exports).fromValues(0, 0),
-            texCoord1: (0, $a3ca522ed0848e85$exports).fromValues(1, 1),
-            material: new (0, $49634e74d8151f59$export$61026b7fc8ee0236)({
-                texture: new (0, $6c9babe64ee3d26d$export$b696913510b740d6)({
-                    color: (0, $3060130e3101af24$exports).fromValues(0.5, 0.5, 0.5)
-                })
-            })
-        };
-        (0, $3060130e3101af24$exports).add(groundOptions.center, groundOptions.center, modelPosition);
-        hittables.push(new (0, $53a562f97577f76a$export$57071e021ef37bbb)(groundOptions));
+        if (this.images && this.images.length > 0) {
+            for(let i2 = 0; i2 < this.images.length; i2++)if (this.images[i2].hittable) {
+                const hittable = this.images[i2].hittable;
+                hittables.push(hittable);
+                minY = Math.min(hittable.bounds.min[1], minY);
+            }
+        }
+        if (this.ground) {
+            const modelPosition = (0, $3060130e3101af24$exports).create();
+            const modelScale = this._core.getModelScale();
+            const modelRotation = (0, $a75e1c0eea6f029a$exports).create();
+            this._core.getModelRotation(modelRotation);
+            (0, $3060130e3101af24$exports).set(modelPosition, this.mMatrix[12], this.mMatrix[13], this.mMatrix[14]);
+            const groundSize = (0, $a3ca522ed0848e85$exports).create();
+            const groundPosition = (0, $3060130e3101af24$exports).create();
+            (0, $a3ca522ed0848e85$exports).scale(groundSize, this.ground.size || this._config.groundSize, modelScale);
+            if (this.ground.position) (0, $3060130e3101af24$exports).scale(groundPosition, this.ground.position, modelScale);
+            else (0, $3060130e3101af24$exports).set(groundPosition, 0, minY - (0, $c6c443484d57bad4$export$a002182e51710d39).SHADOW_OFFSET, 0);
+            const options = {
+                size: groundSize,
+                center: groundPosition,
+                texCoord0: (0, $a3ca522ed0848e85$exports).fromValues(0, 0),
+                texCoord1: (0, $a3ca522ed0848e85$exports).fromValues(1, 1),
+                material: this.ground.material || this.config.defaultMaterial
+            };
+            (0, $3060130e3101af24$exports).add(options.center, options.center, modelPosition);
+            hittables.push(new (0, $53a562f97577f76a$export$57071e021ef37bbb)(options));
+        }
         return hittables;
     }
     createFontVisual(font) {
@@ -31670,13 +31686,12 @@ class $7c7a9d64ae8a03b0$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
     render(elapsedTime) {
         if (!this._isInitialized) return;
         const epsilon = 0.000001;
-        let clear = this._frameCount == 0;
         if (Math.abs(this._computeUniformBufferData.getFieldOfView() - this._core.config.fov) > epsilon) {
-            clear = true;
+            this._frameCount = 0;
             this._computeUniformBufferData.setFieldOfView(this._core.config.fov);
         }
         if (Math.abs(this._computeUniformBufferData.getAperture() - this._config.aperture) > epsilon) {
-            clear = true;
+            this._frameCount = 0;
             this._computeUniformBufferData.setAperture(this._config.aperture);
         }
         const m = this.inverseVMatrices[0];
@@ -31685,7 +31700,7 @@ class $7c7a9d64ae8a03b0$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
         this._computeUniformBufferData.getUp(this._up);
         this._computeUniformBufferData.getForward(this._forward);
         if (Math.abs(this._position[0] - m[12]) > epsilon || Math.abs(this._position[1] - m[13]) > epsilon || Math.abs(this._position[2] - m[14]) > epsilon || Math.abs(this._right[0] - m[0]) > epsilon || Math.abs(this._right[1] - m[1]) > epsilon || Math.abs(this._right[2] - m[2]) > epsilon || Math.abs(this._up[0] - m[4]) > epsilon || Math.abs(this._up[1] - m[5]) > epsilon || Math.abs(this._up[2] - m[6]) > epsilon || Math.abs(this._forward[0] - m[8]) > epsilon || Math.abs(this._forward[1] - m[9]) > epsilon || Math.abs(this._forward[2] - m[10]) > epsilon) {
-            clear = true;
+            this._frameCount = 0;
             (0, $3060130e3101af24$exports).set(this._position, m[12], m[13], m[14]);
             (0, $3060130e3101af24$exports).set(this._right, m[0], m[1], m[2]);
             (0, $3060130e3101af24$exports).set(this._up, m[4], m[5], m[6]);
@@ -31699,19 +31714,26 @@ class $7c7a9d64ae8a03b0$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
             (0, $3060130e3101af24$exports).add(this._modelPosition, this._modelPosition, this._manipulationOrigin);
             this._computeUniformBufferData.setLookAt(this._modelPosition);
         }
-        if (clear) this.clear();
+        const clear = this._frameCount == 0;
+        if (clear) {
+            this._duration = 0;
+            this._startTime = performance.now();
+        }
+        if (this._frameCount >= this._config.maxSamplesPerPixel) {
+            this._core.stop();
+            return;
+        }
         this._computeUniformBufferData.setSeed(this._core.totalFrames);
         this._device.queue.writeBuffer(this._computeUniformBuffer, 0, this._computeUniformBufferData.buffer, this._computeUniformBufferData.byteOffset, this._computeUniformBufferData.byteLength);
         this._frameCount++;
         this._fullscreenQuadUniformBufferData.setSamplesPerPixel(this._frameCount);
+        this._fullscreenQuadUniformBufferData.setExposure(this._config.exposure);
         this._device.queue.writeBuffer(this._fullscreenQuadUniformBuffer, 0, this._fullscreenQuadUniformBufferData.buffer, this._fullscreenQuadUniformBufferData.byteOffset, this._fullscreenQuadUniformBufferData.byteLength);
         this._encodeCommands(clear);
         this._duration = performance.now() - this._startTime;
     }
     clear() {
         this._frameCount = 0;
-        this._duration = 0;
-        this._startTime = performance.now();
     }
     _encodeCommands(clear) {
         const commandEncoder = this._device.createCommandEncoder();
@@ -31778,6 +31800,10 @@ class $7c7a9d64ae8a03b0$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
 
 
 
+
+
+
+
 class $d942e8f1a6a1d946$export$647e10fa8ac00c88 extends (0, $458f5db886f95d9a$export$c755714d282122f0) {
     getTwist(value) {
         (0, $a75e1c0eea6f029a$exports).copy(value, this._cameraRotation);
@@ -31805,7 +31831,6 @@ class $d942e8f1a6a1d946$export$647e10fa8ac00c88 extends (0, $458f5db886f95d9a$ex
         (0, $a75e1c0eea6f029a$exports).multiply(this._orbitRotation, this._quat, this._orbitRotation);
     }
 }
-
 
 
 

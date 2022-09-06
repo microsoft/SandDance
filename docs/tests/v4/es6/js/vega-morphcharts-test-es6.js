@@ -45717,7 +45717,7 @@ parcelHelpers.defineInteropFlag(exports);
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
  */ parcelHelpers.export(exports, "Core", ()=>(0, _mainJs.Core));
-parcelHelpers.export(exports, "PlotType", ()=>(0, _mainJs.PlotType));
+parcelHelpers.export(exports, "ModelView", ()=>(0, _mainJs.ModelView));
 parcelHelpers.export(exports, "SingleTouchAction", ()=>(0, _mainJs.SingleTouchAction));
 parcelHelpers.export(exports, "UnitType", ()=>(0, _mainJs.UnitType));
 parcelHelpers.export(exports, "Theme", ()=>(0, _mainJs.Theme));
@@ -45939,6 +45939,7 @@ f 5/6/6 1/12/6 8/11/6`;
 },{"../main.js":"2JYph","../helpers/obj.js":"aHITK","gl-matrix":"3mrln","../meshes/cube.js":"dgOpu","../vertex.js":"7T2qu","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"2JYph":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "ModelView", ()=>ModelView);
 parcelHelpers.export(exports, "Core", ()=>Core);
 parcelHelpers.export(exports, "CameraMode", ()=>CameraMode);
 parcelHelpers.export(exports, "StereoMode", ()=>StereoMode);
@@ -45982,10 +45983,21 @@ var _fontJs = require("./font.js");
 var _vertexJs = require("./vertex.js");
 var _managerJs = require("./input/manager.js");
 var _logJs = require("./log.js");
+var _mathJs = require("./helpers/math.js");
+class ModelView {
+    constructor(core){
+        this.position = (0, _glMatrix.vec3).create();
+        this.manipulationOrigin = (0, _glMatrix.vec3).create();
+        this.rotation = (0, _glMatrix.quat).create();
+        (0, _glMatrix.vec3).set(this.position, 0, 0, -core.config.modelDistance);
+        this.scale = core.config.modelSize;
+    }
+}
 class Core {
     constructor(options){
         (0, _glMatrix.glMatrix).setMatrixArrayType(Array);
         this._vec3 = (0, _glMatrix.vec3).create();
+        this._quat = (0, _glMatrix.quat).create();
         this._mat4 = (0, _glMatrix.mat4).create();
         this._container = options && options.container ? options.container : document.body;
         this._config = new (0, _configJs.Config)(this);
@@ -46133,6 +46145,23 @@ class Core {
     get inputManager() {
         return this._inputManager;
     }
+    getView(view) {
+        this.getModelPosition(view.position);
+        this.getModelRotation(view.rotation);
+        view.scale = this.getModelScale();
+    }
+    setView(view, isSmooth) {
+        this.setModelPosition(view.position, isSmooth);
+        this.setModelRotation(view.rotation, isSmooth);
+        this.setModelScale(view.scale, isSmooth);
+    }
+    lerpView(from, to, time) {
+        (0, _glMatrix.vec3).lerp(this._vec3, from.position, to.position, time);
+        this.setModelPosition(this._vec3, false);
+        (0, _glMatrix.quat).slerp(this._quat, from.rotation, to.rotation, time);
+        this.setModelRotation(this._quat, false);
+        this.setModelScale((0, _mathJs.MathHelper).lerp(from.scale, to.scale, time), false);
+    }
     resetModel(isSmooth) {
         (0, _glMatrix.vec3).set(this._modelPosition, 0, 0, -this._config.modelDistance);
         (0, _glMatrix.vec3).set(this._modelScale, this._config.modelSize, this._config.modelSize, this._config.modelSize);
@@ -46152,6 +46181,7 @@ class Core {
             this._windowAnimationFrame = window.requestAnimationFrame((currentTime)=>this._tick(currentTime));
             this._started = true;
             this._log.write(LogLevel.info, "render loop started");
+            if (this.startCallback) this.startCallback();
         }
     }
     stop() {
@@ -46162,14 +46192,15 @@ class Core {
                 this._windowAnimationFrame = null;
                 this._log.write(LogLevel.info, "render loop stopped");
             }
+            if (this.stopCallback) this.stopCallback();
         }
     }
     checkWebXRSupport() {
         const xrSystem = navigator.xr;
         if (xrSystem) xrSystem.isSessionSupported("immersive-vr").then((supported)=>{
             if (supported) {
-                if (this.webXRSupportedCallback) this.webXRSupportedCallback();
                 this._log.write(LogLevel.info, "WebXR supported");
+                if (this.webXRSupportedCallback) this.webXRSupportedCallback();
             }
         });
     }
@@ -46227,7 +46258,6 @@ class Core {
         let elapsedTime = currentTime - this._previousTime;
         this._previousTime = currentTime;
         if (elapsedTime > 0) {
-            if (elapsedTime > 100) elapsedTime = 100;
             this.update(elapsedTime, xrFrame);
             this.render(elapsedTime, xrFrame);
         }
@@ -46300,6 +46330,7 @@ class Core {
         (0, _glMatrix.vec3).transformMat4(this._vec3, this._modelManipulationOrigin, this._modelMMatrix);
         (0, _glMatrix.vec3).subtract(this._modelPosition, this._vec3, this._modelManipulationOrigin);
         (0, _glMatrix.vec3).copy(this._smoothedModelPosition, this._modelPosition);
+        this._log.write(LogLevel.info, `manipulation origin ${position[0].toFixed(3)},${position[1].toFixed(3)},${position[2].toFixed(3)}`);
         if (this.manipulationOriginChangedCallback) {
             const result = {
                 x: position[0],
@@ -46308,7 +46339,6 @@ class Core {
             };
             this.manipulationOriginChangedCallback(result);
         }
-        this._log.write(LogLevel.info, `manipulation origin ${position[0].toFixed(3)},${position[1].toFixed(3)},${position[2].toFixed(3)}`);
     }
     pickLasso(x0, y0, x1, y1, pickType) {
         const inverseMMatrix = (0, _glMatrix.mat4).create();
@@ -46531,7 +46561,7 @@ const HexOrientation = {
     flatTop: "flatTop"
 };
 
-},{"gl-matrix":"3mrln","./cameras/altazimuth.js":"jbaDq","./config.js":"01Ouk","./constants.js":"dtECF","./debug.js":"8y4TE","./fps.js":"hgbGA","./helpers/angle.js":"3PBRj","./palette.js":"46mvC","./components/controller.js":"9Kfa8","./helpers/matrix.js":"b0nxw","./components/axes/cartesian3d.js":"9v1Q6","./components/axes/cartesian2d.js":"23fwZ","./font.js":"kD06g","./vertex.js":"7T2qu","./input/manager.js":"a5l41","./log.js":"2oDqL","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3mrln":[function(require,module,exports) {
+},{"gl-matrix":"3mrln","./cameras/altazimuth.js":"jbaDq","./config.js":"01Ouk","./constants.js":"dtECF","./debug.js":"8y4TE","./fps.js":"hgbGA","./helpers/angle.js":"3PBRj","./palette.js":"46mvC","./components/controller.js":"9Kfa8","./helpers/matrix.js":"b0nxw","./components/axes/cartesian3d.js":"9v1Q6","./components/axes/cartesian2d.js":"23fwZ","./font.js":"kD06g","./vertex.js":"7T2qu","./input/manager.js":"a5l41","./log.js":"2oDqL","./helpers/math.js":"jeH35","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3mrln":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "glMatrix", ()=>_commonJs);
@@ -52544,6 +52574,7 @@ var forEach = function() {
 },{"./common.js":"ceXpS","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jbaDq":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "AltAzimuthCameraView", ()=>AltAzimuthCameraView);
 parcelHelpers.export(exports, "AltAzimuthCamera", ()=>AltAzimuthCamera);
 /*!
  * Copyright (c) Microsoft Corporation.
@@ -52551,8 +52582,33 @@ parcelHelpers.export(exports, "AltAzimuthCamera", ()=>AltAzimuthCamera);
  */ var _glMatrix = require("gl-matrix");
 var _constantsJs = require("../constants.js");
 var _angleJs = require("../helpers/angle.js");
+var _mathJs = require("../helpers/math.js");
 var _cameraJs = require("./camera.js");
+class AltAzimuthCameraView extends (0, _cameraJs.CameraView) {
+    constructor(core){
+        super(core);
+        this.fov = core.config.fov;
+        this.altitude = 0;
+        this.azimuth = 0;
+    }
+}
 class AltAzimuthCamera extends (0, _cameraJs.CameraBase) {
+    getView(view) {
+        super.getView(view);
+        view.altitude = this.altitude;
+        view.azimuth = this.azimuth;
+        view.fov = this._core.config.fov;
+    }
+    setView(view, isSmooth) {
+        super.setView(view, isSmooth);
+        this.setAltAzimuth(view.altitude, view.azimuth, isSmooth);
+        this._core.config.fov = view.fov;
+    }
+    lerpView(from, to, time) {
+        super.lerpView(from, to, time);
+        this.setAltAzimuth((0, _mathJs.MathHelper).lerp(from.altitude, to.altitude, time), (0, _mathJs.MathHelper).lerp(from.azimuth, to.azimuth, time), false);
+        this._core.config.fov = (0, _mathJs.MathHelper).lerp(from.fov, to.fov, time);
+    }
     update(elapsedTime) {
         super.update(elapsedTime);
         if (this._core.config.isDebugVisible) {
@@ -52590,7 +52646,7 @@ class AltAzimuthCamera extends (0, _cameraJs.CameraBase) {
     }
 }
 
-},{"gl-matrix":"3mrln","../constants.js":"dtECF","../helpers/angle.js":"3PBRj","./camera.js":"ielbK","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"dtECF":[function(require,module,exports) {
+},{"gl-matrix":"3mrln","../constants.js":"dtECF","../helpers/angle.js":"3PBRj","../helpers/math.js":"jeH35","./camera.js":"ielbK","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"dtECF":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Constants", ()=>Constants);
@@ -52752,6 +52808,7 @@ class PseudoRandom {
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"ielbK":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "CameraView", ()=>CameraView);
 parcelHelpers.export(exports, "CameraBase", ()=>CameraBase);
 /*!
  * Copyright (c) Microsoft Corporation.
@@ -52759,6 +52816,11 @@ parcelHelpers.export(exports, "CameraBase", ()=>CameraBase);
  */ var _glMatrix = require("gl-matrix");
 var _mainJs = require("../main.js");
 var _constantsJs = require("../constants.js");
+class CameraView {
+    constructor(core){
+        this.position = (0, _glMatrix.vec3).create();
+    }
+}
 class CameraBase {
     constructor(core){
         this._core = core;
@@ -52807,6 +52869,16 @@ class CameraBase {
             (0, _glMatrix.mat4).create(),
             (0, _glMatrix.mat4).create()
         ];
+    }
+    getView(view) {
+        this.getPosition(view.position);
+    }
+    setView(view, isSmooth) {
+        this.setPosition(view.position, isSmooth);
+    }
+    lerpView(from, to, time) {
+        (0, _glMatrix.vec3).lerp(this._vec3, from.position, to.position, time);
+        this.setPosition(this._vec3, false);
     }
     get vMatrices() {
         return this._vMatrices;
@@ -53085,13 +53157,14 @@ class Config {
         this.selectionColor = (0, _glMatrix.vec3).create();
         this.hoverColor = (0, _glMatrix.vec3).create();
         this.activeColor = (0, _glMatrix.vec3).create();
-        this.hightlightMode = (0, _mainJs.HighlightMode).color;
+        this.highlightMode = (0, _mainJs.HighlightMode).color;
         this.lassoThickness = 4;
         this.lassoDashWidth = 2;
         this.lassoColor = (0, _glMatrix.vec3).create();
         this.minCubifiedTreeMapSlice = 0.01;
         this.transitionDuration = 400;
         this.transitionStaggering = 100;
+        this.transitionView = true;
         this.backgroundColor = (0, _glMatrix.vec3).create();
         this.theme = (0, _mainJs.Theme).light;
     }
@@ -56414,6 +56487,9 @@ class UnitVertex {
     static setIdHover(bufferView, index, value) {
         bufferView.setFloat32(UnitVertex.SIZE_BYTES * index + this.ID_HOVER_OFFSET_BYTES, value, true);
     }
+    static copyIdHover(fromBufferView, fromIndex, toBufferView, toIndex) {
+        toBufferView.setFloat32(UnitVertex.SIZE_BYTES * toIndex + this.ID_HOVER_OFFSET_BYTES, fromBufferView.getFloat32(UnitVertex.SIZE_BYTES * fromIndex + this.ID_HOVER_OFFSET_BYTES, true), true);
+    }
     static getTranslation(bufferView, index, value) {
         const offset = UnitVertex.SIZE_BYTES * index + this.TRANSLATION_OFFSET_BYTES;
         (0, _glMatrix.vec3).set(value, bufferView.getFloat32(offset, true), bufferView.getFloat32(offset + 4, true), bufferView.getFloat32(offset + 8, true));
@@ -56424,6 +56500,13 @@ class UnitVertex {
         bufferView.setFloat32(offset + 4, value[1], true);
         bufferView.setFloat32(offset + 8, value[2], true);
     }
+    static copyTranslation(fromBufferView, fromIndex, toBufferView, toIndex) {
+        const fromOffset = UnitVertex.SIZE_BYTES * fromIndex + this.TRANSLATION_OFFSET_BYTES;
+        const toOffset = UnitVertex.SIZE_BYTES * toIndex + this.TRANSLATION_OFFSET_BYTES;
+        toBufferView.setFloat32(toOffset, fromBufferView.getFloat32(fromOffset, true), true);
+        toBufferView.setFloat32(toOffset + 4, fromBufferView.getFloat32(fromOffset + 4, true), true);
+        toBufferView.setFloat32(toOffset + 8, fromBufferView.getFloat32(fromOffset + 8, true), true);
+    }
     static getColor(bufferView, index, value) {
         const offset = UnitVertex.SIZE_BYTES * index + this.COLOR_OFFSET_BYTES;
         (0, _glMatrix.vec2).set(value, bufferView.getUint8(offset) / 0xFF, bufferView.getUint8(offset + 1) / 0xFF);
@@ -56433,27 +56516,47 @@ class UnitVertex {
         bufferView.setUint8(offset, value[0] * 0xFF);
         bufferView.setUint8(offset + 1, value[1] * 0xFF);
     }
+    static copyColor(fromBufferView, fromIndex, toBufferView, toIndex) {
+        const fromOffset = UnitVertex.SIZE_BYTES * fromIndex + this.COLOR_OFFSET_BYTES;
+        const toOffset = UnitVertex.SIZE_BYTES * toIndex + this.COLOR_OFFSET_BYTES;
+        toBufferView.setUint8(toOffset, fromBufferView.getUint8(fromOffset));
+        toBufferView.setUint8(toOffset + 1, fromBufferView.getUint8(fromOffset + 1));
+    }
     static getScale(bufferView, index, value) {
         const offset = UnitVertex.SIZE_BYTES * index + this.SCALE_OFFSET_BYTES;
-        (0, _glMatrix.vec4).set(value, bufferView.getFloat32(offset, true), bufferView.getFloat32(offset + 4, true), bufferView.getFloat32(offset + 8, true), bufferView.getFloat32(offset + 12, true));
+        (0, _glMatrix.vec3).set(value, bufferView.getFloat32(offset, true), bufferView.getFloat32(offset + 4, true), bufferView.getFloat32(offset + 8, true));
     }
     static setScale(bufferView, index, value) {
         const offset = UnitVertex.SIZE_BYTES * index + this.SCALE_OFFSET_BYTES;
         bufferView.setFloat32(offset, value[0], true);
         bufferView.setFloat32(offset + 4, value[1], true);
         bufferView.setFloat32(offset + 8, value[2], true);
-        bufferView.setFloat32(offset + 12, value[3], true);
+    }
+    static copyScale(fromBufferView, fromIndex, toBufferView, toIndex) {
+        const fromOffset = UnitVertex.SIZE_BYTES * fromIndex + this.SCALE_OFFSET_BYTES;
+        const toOffset = UnitVertex.SIZE_BYTES * toIndex + this.SCALE_OFFSET_BYTES;
+        toBufferView.setFloat32(toOffset, fromBufferView.getFloat32(fromOffset, true), true);
+        toBufferView.setFloat32(toOffset + 4, fromBufferView.getFloat32(fromOffset + 4, true), true);
+        toBufferView.setFloat32(toOffset + 8, fromBufferView.getFloat32(fromOffset + 8, true), true);
     }
     static getRotation(bufferView, index, value) {
         const offset = UnitVertex.SIZE_BYTES * index + this.ROTATION_OFFSET_BYTES;
-        (0, _glMatrix.quat).set(value, bufferView.getInt16(offset, true) / 0x7FFF, bufferView.getInt16(offset + 2, true) / 0x7FFF, bufferView.getInt16(offset + 4, true) / 0x7FFF, bufferView.getInt16(offset + 6, true) / 0x7FFF);
+        (0, _glMatrix.quat).set(value, bufferView.getFloat32(offset, true), bufferView.getFloat32(offset + 4, true), bufferView.getFloat32(offset + 8, true), bufferView.getFloat32(offset + 12, true));
     }
     static setRotation(bufferView, index, value) {
         const offset = UnitVertex.SIZE_BYTES * index + this.ROTATION_OFFSET_BYTES;
-        bufferView.setInt16(offset, value[0] * 0x7FFF, true);
-        bufferView.setInt16(offset + 2, value[1] * 0x7FFF, true);
-        bufferView.setInt16(offset + 4, value[2] * 0x7FFF, true);
-        bufferView.setInt16(offset + 6, value[3] * 0x7FFF, true);
+        bufferView.setFloat32(offset, value[0], true);
+        bufferView.setFloat32(offset + 4, value[1], true);
+        bufferView.setFloat32(offset + 8, value[2], true);
+        bufferView.setFloat32(offset + 12, value[3], true);
+    }
+    static copyRotation(fromBufferView, fromIndex, toBufferView, toIndex) {
+        const fromOffset = UnitVertex.SIZE_BYTES * fromIndex + this.ROTATION_OFFSET_BYTES;
+        const toOffset = UnitVertex.SIZE_BYTES * toIndex + this.ROTATION_OFFSET_BYTES;
+        toBufferView.setFloat32(toOffset, fromBufferView.getFloat32(fromOffset, true), true);
+        toBufferView.setFloat32(toOffset + 4, fromBufferView.getFloat32(fromOffset + 4, true), true);
+        toBufferView.setFloat32(toOffset + 8, fromBufferView.getFloat32(fromOffset + 8, true), true);
+        toBufferView.setFloat32(toOffset + 12, fromBufferView.getFloat32(fromOffset + 12, true), true);
     }
     static getIdColor(bufferView, index, value) {
         const offset = UnitVertex.SIZE_BYTES * index + this.ID_COLOR_OFFSET_BYTES;
@@ -56472,11 +56575,17 @@ class UnitVertex {
     static setOrder(bufferView, index, value) {
         bufferView.setFloat32(UnitVertex.SIZE_BYTES * index + this.ORDER_OFFSET_BYTES, value, true);
     }
+    static copyOrder(fromBufferView, fromIndex, toBufferView, toIndex) {
+        toBufferView.setFloat32(UnitVertex.SIZE_BYTES * toIndex + this.ORDER_OFFSET_BYTES, fromBufferView.getFloat32(UnitVertex.SIZE_BYTES * fromIndex + this.ORDER_OFFSET_BYTES, true), true);
+    }
     static getStaggerOrder(bufferView, index) {
         return bufferView.getUint16(UnitVertex.SIZE_BYTES * index + this.STAGGER_ORDER_OFFSET_BYTES, true) / 0xFFFF;
     }
     static setStaggerOrder(bufferView, index, value) {
         bufferView.setUint16(UnitVertex.SIZE_BYTES * index + this.STAGGER_ORDER_OFFSET_BYTES, value * 0xFFFF, true);
+    }
+    static copyStaggerOrder(fromBufferView, fromIndex, toBufferView, toIndex) {
+        toBufferView.setUint16(UnitVertex.SIZE_BYTES * toIndex + this.STAGGER_ORDER_OFFSET_BYTES, fromBufferView.getUint16(UnitVertex.SIZE_BYTES * fromIndex + this.STAGGER_ORDER_OFFSET_BYTES, true), true);
     }
     static getSelected(bufferView, index) {
         return bufferView.getInt8(UnitVertex.SIZE_BYTES * index + this.SELECTED_OFFSET_BYTES) / 0x7F;
@@ -56484,24 +56593,40 @@ class UnitVertex {
     static setSelected(bufferView, index, value) {
         bufferView.setInt8(UnitVertex.SIZE_BYTES * index + this.SELECTED_OFFSET_BYTES, value * 0x7F);
     }
+    static copySelected(fromBufferView, fromIndex, toBufferView, toIndex) {
+        toBufferView.setInt8(UnitVertex.SIZE_BYTES * toIndex + this.SELECTED_OFFSET_BYTES, fromBufferView.getInt8(UnitVertex.SIZE_BYTES * fromIndex + this.SELECTED_OFFSET_BYTES));
+    }
+    static getRounding(bufferView, index) {
+        return bufferView.getFloat32(UnitVertex.SIZE_BYTES * index + this.ROUNDING_OFFSET_BYTES, true);
+    }
+    static setRounding(bufferView, index, value) {
+        bufferView.setFloat32(UnitVertex.SIZE_BYTES * index + this.ROUNDING_OFFSET_BYTES, value, true);
+    }
+    static copyRounding(fromBufferView, fromIndex, toBufferView, toIndex) {
+        toBufferView.setFloat32(UnitVertex.SIZE_BYTES * toIndex + this.ROUNDING_OFFSET_BYTES, fromBufferView.getFloat32(UnitVertex.SIZE_BYTES * fromIndex + this.ROUNDING_OFFSET_BYTES, true), true);
+    }
     static getMaterial(bufferView, index) {
         return bufferView.getUint16(UnitVertex.SIZE_BYTES * index + this.MATERIAL_OFFSET_BYTES);
     }
     static setMaterial(bufferView, index, value) {
         bufferView.setUint16(UnitVertex.SIZE_BYTES * index + this.MATERIAL_OFFSET_BYTES, value);
     }
+    static copyMaterial(fromBufferView, fromIndex, toBufferView, toIndex) {
+        toBufferView.setUint16(UnitVertex.SIZE_BYTES * toIndex + this.MATERIAL_OFFSET_BYTES, fromBufferView.getUint16(UnitVertex.SIZE_BYTES * fromIndex + this.MATERIAL_OFFSET_BYTES, true), true);
+    }
 }
-UnitVertex.SIZE_BYTES = 56;
+UnitVertex.SIZE_BYTES = 64;
 UnitVertex.ID_HOVER_OFFSET_BYTES = 0;
 UnitVertex.ID_COLOR_OFFSET_BYTES = 4;
 UnitVertex.ORDER_OFFSET_BYTES = 8;
 UnitVertex.STAGGER_ORDER_OFFSET_BYTES = 12;
+UnitVertex.SELECTED_OFFSET_BYTES = 14;
 UnitVertex.TRANSLATION_OFFSET_BYTES = 16;
 UnitVertex.COLOR_OFFSET_BYTES = 28;
-UnitVertex.SCALE_OFFSET_BYTES = 32;
-UnitVertex.SELECTED_OFFSET_BYTES = 14;
-UnitVertex.ROTATION_OFFSET_BYTES = 48;
 UnitVertex.MATERIAL_OFFSET_BYTES = 30;
+UnitVertex.SCALE_OFFSET_BYTES = 32;
+UnitVertex.ROUNDING_OFFSET_BYTES = 44;
+UnitVertex.ROTATION_OFFSET_BYTES = 48;
 
 },{"gl-matrix":"3mrln","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"dgOpu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -58521,7 +58646,7 @@ class Manager {
             this._keyboard.update(elapsedTime);
             if (this._mouseWheel.delta != 0) switch(this.mouseWheelAction(this._keyboard)){
                 case (0, _mainJs.MouseWheelAction).zoom:
-                    camera.zoom(this._mouseWheel.delta * this.mouseWheelZoomScale, this._pointers.hoverX, this._pointers.hoverY);
+                    if (this._pointers.hoverX, this._pointers.hoverY) camera.zoom(this._mouseWheel.delta * this.mouseWheelZoomScale, this._pointers.hoverX, this._pointers.hoverY);
                     break;
                 case (0, _mainJs.MouseWheelAction).rotateY:
                     (0, _glMatrix.quat).setAxisAngle(this._quat0, (0, _constantsJs.Constants).VECTOR3_UNITY, this._mouseWheel.delta * this.mouseWheelRotationScale);
@@ -59364,7 +59489,7 @@ class LabelBase {
         this.maxGlyphTop = options.maxGlyphTop;
         this.horizontalAlignment = options.horizontalAlignment === undefined ? (0, _mainJs.HorizontalAlignment).center : options.horizontalAlignment;
         this.verticalAlignment = options.verticalAlignment === undefined ? (0, _mainJs.VerticalAlignment).center : options.verticalAlignment;
-        this._material = options.material;
+        this._material = options.material === undefined ? -1 : options.material;
         this.borderWidth = core.config.textBorderWidth;
         this.gamma = 0;
     }
@@ -59946,7 +60071,7 @@ class ImageBase {
         this._rotation = options.rotation ? (0, _glMatrix.quat).clone(options.rotation) : (0, _glMatrix.quat).create();
         this._texCoord0 = options.texCoord0 ? (0, _glMatrix.vec2).clone(options.texCoord0) : (0, _glMatrix.vec2).fromValues(0, 0);
         this._texCoord1 = options.texCoord1 ? (0, _glMatrix.vec2).clone(options.texCoord1) : (0, _glMatrix.vec2).fromValues(1, 1);
-        this._material = options.material === undefined ? 0 : options.material;
+        this._material = options.material === undefined ? -1 : options.material;
         this._hasChanged = true;
     }
     get material() {
@@ -60777,7 +60902,6 @@ class Scatter extends (0, _layoutJs.LayoutBase) {
         const dataView = buffer.dataView;
         const _vec2 = (0, _glMatrix.vec2).create();
         const _vec3 = (0, _glMatrix.vec3).create();
-        const _vec4 = (0, _glMatrix.vec4).create();
         const _quat = (0, _glMatrix.quat).create();
         const sizeScalingX = options.sizeScaling === undefined ? options.sizeScalingX === undefined ? 1 : options.sizeScalingX : options.sizeScaling;
         const sizeScalingY = options.sizeScaling === undefined ? options.sizeScalingY === undefined ? 1 : options.sizeScalingY : options.sizeScaling;
@@ -60821,10 +60945,10 @@ class Scatter extends (0, _layoutJs.LayoutBase) {
             _vec3[1] = (positionY - this.modelOriginY) * this._boundsScaling;
             _vec3[2] = (positionZ - this.modelOriginZ) * this._boundsScaling;
             (0, _vertexJs.UnitVertex).setTranslation(dataView, index, _vec3);
-            _vec4[0] = Math.max((sizesX ? Math.abs(sizesX[id]) : 1) * sizeScalingX, minSize) * this._boundsScaling;
-            _vec4[1] = Math.max((sizesY ? Math.abs(sizesY[id]) : 1) * sizeScalingY, minSize) * this._boundsScaling;
-            _vec4[2] = Math.max((sizesZ ? Math.abs(sizesZ[id]) : 1) * sizeScalingZ, minSize) * this._boundsScaling;
-            (0, _vertexJs.UnitVertex).setScale(dataView, index, _vec4);
+            _vec3[0] = Math.max((sizesX ? Math.abs(sizesX[id]) : 1) * sizeScalingX, minSize) * this._boundsScaling;
+            _vec3[1] = Math.max((sizesY ? Math.abs(sizesY[id]) : 1) * sizeScalingY, minSize) * this._boundsScaling;
+            _vec3[2] = Math.max((sizesZ ? Math.abs(sizesZ[id]) : 1) * sizeScalingZ, minSize) * this._boundsScaling;
+            (0, _vertexJs.UnitVertex).setScale(dataView, index, _vec3);
             if (options.rotations) {
                 _quat[0] = options.rotations[id * 4];
                 _quat[1] = options.rotations[id * 4 + 1];
@@ -60852,6 +60976,7 @@ class Scatter extends (0, _layoutJs.LayoutBase) {
                 (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, i / (count - 1));
             (0, _vertexJs.UnitVertex).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            (0, _vertexJs.UnitVertex).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, _mainJs.LogLevel).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -60960,8 +61085,8 @@ class LayoutBase {
         this.maxCumulativeLayoutBoundsY = this.maxCumulativeLayoutBoundsY === undefined ? this.maxLayoutBoundsY : Math.max(this.maxCumulativeLayoutBoundsY, this.maxLayoutBoundsY);
         this.maxCumulativeLayoutBoundsZ = this.maxCumulativeLayoutBoundsZ === undefined ? this.maxLayoutBoundsZ : Math.max(this.maxCumulativeLayoutBoundsZ, this.maxLayoutBoundsZ);
     }
-    unitToModelSize(unit) {
-        return unit / this._boundsScaling;
+    unitToModelSize(unitSize) {
+        return unitSize / this._boundsScaling;
     }
     unitToModelPositionX(unitPositionX) {
         return this.unitToModelSize(unitPositionX) + this.modelOriginX;
@@ -60997,7 +61122,7 @@ class LayoutBase {
     inclusiveUnitBounds(buffer, ids, unitType, offset, count, minBounds, maxBounds) {
         (0, _glMatrix.vec3).set(minBounds, Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE);
         (0, _glMatrix.vec3).set(maxBounds, -Number.MAX_VALUE, -Number.MAX_VALUE, -Number.MAX_VALUE);
-        const unitScale = (0, _glMatrix.vec4).create();
+        const unitScale = (0, _glMatrix.vec3).create();
         const unitRotation = (0, _glMatrix.quat).create();
         const unitTranslation = (0, _glMatrix.vec3).create();
         const lookup = buffer.lookup;
@@ -61036,7 +61161,6 @@ class LayoutBase {
                     const index1 = lookup[id1];
                     (0, _vertexJs.UnitVertex).getTranslation(dataView, index1, unitTranslation);
                     (0, _vertexJs.UnitVertex).getRotation(dataView, index1, unitRotation);
-                    (0, _glMatrix.quat).normalize(unitRotation, unitRotation);
                     (0, _vertexJs.UnitVertex).getScale(dataView, index1, unitScale);
                     minBounds0[0] = unitTranslation[0] - unitScale[0] / 2;
                     minBounds0[1] = unitTranslation[1] - unitScale[1] / 2;
@@ -61062,7 +61186,6 @@ class LayoutBase {
                     const index2 = lookup[id2];
                     (0, _vertexJs.UnitVertex).getTranslation(dataView, index2, unitTranslation);
                     (0, _vertexJs.UnitVertex).getRotation(dataView, index2, unitRotation);
-                    (0, _glMatrix.quat).normalize(unitRotation, unitRotation);
                     (0, _vertexJs.UnitVertex).getScale(dataView, index2, unitScale);
                     const length = unitScale[1];
                     const radius1 = Math.max(unitScale[0], unitScale[2]);
@@ -62086,7 +62209,6 @@ class Filter {
         this._core = core;
         this._ids = ids;
         this._data = data;
-        this._headings = headings;
         this._columnTypes = columnTypes;
         this._numericValues = numericValues;
         this._stringValues = Array(columnTypes.length).fill(null);
@@ -62122,19 +62244,18 @@ class Filter {
         const rows = [];
         for(let i = 0; i < ids.length; i++){
             const rowIndex = ids[i];
-            const row = {};
+            const row = [];
             for(let j = 0; j < columns.length; j++){
                 const columnIndex = columns[j];
-                const heading = this._headings[columnIndex].replace(/\s/g, "");
                 switch(this._columnTypes[columnIndex]){
                     case (0, _tableJs.ColumnType).date:
                     case (0, _tableJs.ColumnType).string:
-                        row[heading] = this._data[rowIndex][columnIndex];
+                        row.push(this._data[rowIndex][columnIndex]);
                         break;
                     case (0, _tableJs.ColumnType).integer:
                     case (0, _tableJs.ColumnType).float:
                         const numericValues = this._createNumericValues(columnIndex);
-                        row[heading] = numericValues[rowIndex];
+                        row.push(numericValues[rowIndex]);
                         break;
                 }
             }
@@ -62452,7 +62573,6 @@ class Bar extends (0, _layoutJs.LayoutBase) {
         const dataView = buffer.dataView;
         const _vec2 = (0, _glMatrix.vec2).create();
         const _vec3 = (0, _glMatrix.vec3).create();
-        const _vec4 = (0, _glMatrix.vec4).create();
         const _quat = (0, _glMatrix.quat).create();
         const minColor = options.minColor === undefined ? 0 : options.minColor;
         const maxColor = options.maxColor === undefined ? 1 : options.maxColor;
@@ -62486,10 +62606,10 @@ class Bar extends (0, _layoutJs.LayoutBase) {
             _vec3[1] = (positionY - this.modelOriginY) * this._boundsScaling;
             _vec3[2] = reverseZ ? (this.modelOriginZ - positionZ) * this._boundsScaling : (positionZ - this.modelOriginZ) * this._boundsScaling;
             (0, _vertexJs.UnitVertex).setTranslation(dataView, index, _vec3);
-            _vec4[0] = this._sizes[index * 3] * this._boundsScaling;
-            _vec4[1] = this._sizes[index * 3 + 1] * this._boundsScaling;
-            _vec4[2] = this._sizes[index * 3 + 2] * this._boundsScaling;
-            (0, _vertexJs.UnitVertex).setScale(dataView, index, _vec4);
+            _vec3[0] = this._sizes[index * 3] * this._boundsScaling;
+            _vec3[1] = this._sizes[index * 3 + 1] * this._boundsScaling;
+            _vec3[2] = this._sizes[index * 3 + 2] * this._boundsScaling;
+            (0, _vertexJs.UnitVertex).setScale(dataView, index, _vec3);
             (0, _vertexJs.UnitVertex).setRotation(dataView, index, _quat);
             if (options.colors) {
                 const color = (0, _mathJs.MathHelper).normalize(options.colors[id], minColor, maxColor, 0, 1);
@@ -62511,6 +62631,7 @@ class Bar extends (0, _layoutJs.LayoutBase) {
                 (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, i / (count - 1));
             (0, _vertexJs.UnitVertex).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            (0, _vertexJs.UnitVertex).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, _mainJs.LogLevel).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -62577,7 +62698,7 @@ class Cube extends (0, _layoutJs.LayoutBase) {
         const staggerOrderReverse = options.staggerOrderReverse === undefined ? false : options.staggerOrderReverse;
         const padding = options.padding === undefined ? 0 : options.padding;
         this._updateModelBounds(options);
-        const scale = (0, _glMatrix.vec4).fromValues((1 - padding) * this._boundsScaling, (1 - padding) * this._boundsScaling, (1 - padding) * this._boundsScaling, 0);
+        const scale = (0, _glMatrix.vec3).fromValues((1 - padding) * this._boundsScaling, (1 - padding) * this._boundsScaling, (1 - padding) * this._boundsScaling);
         const lookup = buffer.lookup;
         const selection = options.selected && options.selected.size > 0;
         for(let i = 0; i < count; i++){
@@ -62607,6 +62728,7 @@ class Cube extends (0, _layoutJs.LayoutBase) {
                 (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, i / (count - 1));
             (0, _vertexJs.UnitVertex).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            (0, _vertexJs.UnitVertex).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, _mainJs.LogLevel).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)} ms`);
@@ -62734,7 +62856,6 @@ class Line extends (0, _layoutJs.LayoutBase) {
         const dataView = buffer.dataView;
         const _vec2 = (0, _glMatrix.vec2).create();
         const _vec3 = (0, _glMatrix.vec3).create();
-        const _vec4 = (0, _glMatrix.vec4).create();
         const _quat = (0, _glMatrix.quat).create();
         const endMinColor = options.endMinColor === undefined ? 0 : options.endMinColor;
         const endMaxColor = options.endMaxColor === undefined ? 1 : options.endMaxColor;
@@ -62769,10 +62890,10 @@ class Line extends (0, _layoutJs.LayoutBase) {
             _vec3[1] = (positionY - this.modelOriginY) * this._boundsScaling;
             _vec3[2] = (positionZ - this.modelOriginZ) * this._boundsScaling;
             (0, _vertexJs.UnitVertex).setTranslation(dataView, index, _vec3);
-            _vec4[0] = this._sizes[index * 3] * this._boundsScaling;
-            _vec4[1] = this._sizes[index * 3 + 1] * this._boundsScaling;
-            _vec4[2] = this._sizes[index * 3 + 2] * this._boundsScaling;
-            (0, _vertexJs.UnitVertex).setScale(dataView, index, _vec4);
+            _vec3[0] = this._sizes[index * 3] * this._boundsScaling;
+            _vec3[1] = this._sizes[index * 3 + 1] * this._boundsScaling;
+            _vec3[2] = this._sizes[index * 3 + 2] * this._boundsScaling;
+            (0, _vertexJs.UnitVertex).setScale(dataView, index, _vec3);
             _quat[0] = this._rotations[index * 4];
             _quat[1] = this._rotations[index * 4 + 1];
             _quat[2] = this._rotations[index * 4 + 2];
@@ -62800,6 +62921,7 @@ class Line extends (0, _layoutJs.LayoutBase) {
                 (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, i / (count - 1));
             (0, _vertexJs.UnitVertex).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            (0, _vertexJs.UnitVertex).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, _mainJs.LogLevel).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -62899,7 +63021,6 @@ class PythagorasTree extends (0, _layoutJs.LayoutBase) {
         const dataView = buffer.dataView;
         const _vec2 = (0, _glMatrix.vec2).create();
         const _vec3 = (0, _glMatrix.vec3).create();
-        const _vec4 = (0, _glMatrix.vec4).create();
         const _quat = (0, _glMatrix.quat).create();
         const minColor = options.minColor === undefined ? 0 : options.minColor;
         const maxColor = options.maxColor === undefined ? 1 : options.maxColor;
@@ -62919,10 +63040,10 @@ class PythagorasTree extends (0, _layoutJs.LayoutBase) {
             _vec3[1] = (this._positions[index * 3 + 1] - this.modelOriginY) * this._boundsScaling;
             _vec3[2] = (this._positions[index * 3 + 2] - this.modelOriginZ) * this._boundsScaling;
             (0, _vertexJs.UnitVertex).setTranslation(dataView, index, _vec3);
-            _vec4[0] = this._sizes[index * 3] * this._boundsScaling;
-            _vec4[1] = this._sizes[index * 3 + 1] * this._boundsScaling;
-            _vec4[2] = this._sizes[index * 3 + 2] * this._boundsScaling;
-            (0, _vertexJs.UnitVertex).setScale(dataView, index, _vec4);
+            _vec3[0] = this._sizes[index * 3] * this._boundsScaling;
+            _vec3[1] = this._sizes[index * 3 + 1] * this._boundsScaling;
+            _vec3[2] = this._sizes[index * 3 + 2] * this._boundsScaling;
+            (0, _vertexJs.UnitVertex).setScale(dataView, index, _vec3);
             _quat[0] = this._rotations[index * 4];
             _quat[1] = this._rotations[index * 4 + 1];
             _quat[2] = this._rotations[index * 4 + 2];
@@ -62945,6 +63066,7 @@ class PythagorasTree extends (0, _layoutJs.LayoutBase) {
                 (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, i / (ids.length - 1));
             (0, _vertexJs.UnitVertex).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            (0, _vertexJs.UnitVertex).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, _mainJs.LogLevel).info, `${this.constructor.name.toLowerCase()} update ${ids.length} vertices ${Math.round(window.performance.now() - start)}ms`);
@@ -63118,7 +63240,6 @@ class Tree extends (0, _layoutJs.LayoutBase) {
         const dataView = buffer.dataView;
         const _vec2 = (0, _glMatrix.vec2).create();
         const _vec3 = (0, _glMatrix.vec3).create();
-        const _vec4 = (0, _glMatrix.vec4).create();
         const _quat = (0, _glMatrix.quat).create();
         const minColor = options.minColor === undefined ? 0 : options.minColor;
         const maxColor = options.maxColor === undefined ? 1 : options.maxColor;
@@ -63138,10 +63259,10 @@ class Tree extends (0, _layoutJs.LayoutBase) {
             _vec3[1] = (this._positions[index * 3 + 1] - this.modelOriginY) * this._boundsScaling;
             _vec3[2] = (this._positions[index * 3 + 2] - this.modelOriginZ) * this._boundsScaling;
             (0, _vertexJs.UnitVertex).setTranslation(dataView, index, _vec3);
-            _vec4[0] = this._sizes[index * 3] * this._boundsScaling;
-            _vec4[1] = this._sizes[index * 3 + 1] * this._boundsScaling;
-            _vec4[2] = this._sizes[index * 3 + 2] * this._boundsScaling;
-            (0, _vertexJs.UnitVertex).setScale(dataView, index, _vec4);
+            _vec3[0] = this._sizes[index * 3] * this._boundsScaling;
+            _vec3[1] = this._sizes[index * 3 + 1] * this._boundsScaling;
+            _vec3[2] = this._sizes[index * 3 + 2] * this._boundsScaling;
+            (0, _vertexJs.UnitVertex).setScale(dataView, index, _vec3);
             _quat[0] = this._rotations[index * 4];
             _quat[1] = this._rotations[index * 4 + 1];
             _quat[2] = this._rotations[index * 4 + 2];
@@ -63164,6 +63285,7 @@ class Tree extends (0, _layoutJs.LayoutBase) {
                 (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - i / (ids.length - 1) : i / (ids.length - 1));
             (0, _vertexJs.UnitVertex).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            (0, _vertexJs.UnitVertex).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, _mainJs.LogLevel).info, `${this.constructor.name.toLowerCase()} update ${ids.length} vertices ${Math.round(window.performance.now() - start)}ms`);
@@ -63305,7 +63427,7 @@ class Sheet extends (0, _layoutJs.LayoutBase) {
         const padding = options.padding === undefined ? 0 : options.padding;
         const thickness = options.thickness === undefined ? 1 : options.thickness;
         this._updateModelBounds(options);
-        const scale = (0, _glMatrix.vec4).fromValues((1 - padding) * this._boundsScaling, (1 - padding) * this._boundsScaling, thickness * this._boundsScaling, 0);
+        const scale = (0, _glMatrix.vec3).fromValues((1 - padding) * this._boundsScaling, (1 - padding) * this._boundsScaling, thickness * this._boundsScaling);
         const lookup = buffer.lookup;
         const selection = options.selected && options.selected.size > 0;
         for(let i = 0; i < count; i++){
@@ -63348,6 +63470,7 @@ class Sheet extends (0, _layoutJs.LayoutBase) {
                 (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, i / (count - 1));
             (0, _vertexJs.UnitVertex).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            (0, _vertexJs.UnitVertex).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, _mainJs.LogLevel).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)} ms`);
@@ -63419,7 +63542,6 @@ class SquarifiedTreeMap extends (0, _layoutJs.LayoutBase) {
         const dataView = buffer.dataView;
         const _vec2 = (0, _glMatrix.vec2).create();
         const _vec3 = (0, _glMatrix.vec3).create();
-        const _vec4 = (0, _glMatrix.vec4).create();
         const _quat = (0, _glMatrix.quat).create();
         const heights = options.heights;
         const minHeight = options.minHeight === undefined ? 0 : options.minHeight;
@@ -63464,10 +63586,10 @@ class SquarifiedTreeMap extends (0, _layoutJs.LayoutBase) {
             _vec3[1] = (positionY - this.modelOriginY) * this._boundsScaling;
             _vec3[2] = (positionZ - this.modelOriginZ) * this._boundsScaling;
             (0, _vertexJs.UnitVertex).setTranslation(dataView, index, _vec3);
-            _vec4[0] = Math.max((this._sizesX[index] - padding) * this._boundsScaling, 0);
-            _vec4[1] = Math.max((this._sizesY[index] - padding) * this._boundsScaling, 0);
-            _vec4[2] = height * this._boundsScaling;
-            (0, _vertexJs.UnitVertex).setScale(dataView, index, _vec4);
+            _vec3[0] = Math.max((this._sizesX[index] - padding) * this._boundsScaling, 0);
+            _vec3[1] = Math.max((this._sizesY[index] - padding) * this._boundsScaling, 0);
+            _vec3[2] = height * this._boundsScaling;
+            (0, _vertexJs.UnitVertex).setScale(dataView, index, _vec3);
             (0, _vertexJs.UnitVertex).setRotation(dataView, index, _quat);
             if (options.colors) {
                 const color = (0, _mathJs.MathHelper).normalize(options.colors[id1], minColor, maxColor, 0, 1);
@@ -63486,6 +63608,7 @@ class SquarifiedTreeMap extends (0, _layoutJs.LayoutBase) {
                 (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, i1 / (count - 1));
             (0, _vertexJs.UnitVertex).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id1] : 0);
+            (0, _vertexJs.UnitVertex).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id1] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, _mainJs.LogLevel).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -63535,7 +63658,6 @@ class CubifiedTreeMap extends (0, _layoutJs.LayoutBase) {
         const dataView = buffer.dataView;
         const _vec2 = (0, _glMatrix.vec2).create();
         const _vec3 = (0, _glMatrix.vec3).create();
-        const _vec4 = (0, _glMatrix.vec4).create();
         const minColor = options.minColor === undefined ? 0 : options.minColor;
         const maxColor = options.maxColor === undefined ? 1 : options.maxColor;
         const minOrder = options.minOrder === undefined ? 0 : options.minOrder;
@@ -63568,10 +63690,10 @@ class CubifiedTreeMap extends (0, _layoutJs.LayoutBase) {
             _vec3[1] = (positionY - this.modelOriginY) * this._boundsScaling;
             _vec3[2] = (positionZ - this.modelOriginZ) * this._boundsScaling;
             (0, _vertexJs.UnitVertex).setTranslation(dataView, index, _vec3);
-            _vec4[0] = Math.max((this._sizesX[index] - padding) * this._boundsScaling, 0);
-            _vec4[1] = Math.max((this._sizesY[index] - padding) * this._boundsScaling, 0);
-            _vec4[2] = Math.max((this._sizesZ[index] - paddingZ) * this._boundsScaling, 0) * thickness;
-            (0, _vertexJs.UnitVertex).setScale(dataView, index, _vec4);
+            _vec3[0] = Math.max((this._sizesX[index] - padding) * this._boundsScaling, 0);
+            _vec3[1] = Math.max((this._sizesY[index] - padding) * this._boundsScaling, 0);
+            _vec3[2] = Math.max((this._sizesZ[index] - paddingZ) * this._boundsScaling, 0) * thickness;
+            (0, _vertexJs.UnitVertex).setScale(dataView, index, _vec3);
             (0, _vertexJs.UnitVertex).setRotation(dataView, index, (0, _constantsJs.Constants).QUAT_IDENTITY);
             if (options.colors) {
                 const color = (0, _mathJs.MathHelper).normalize(options.colors[id], minColor, maxColor, 0, 1);
@@ -63590,6 +63712,7 @@ class CubifiedTreeMap extends (0, _layoutJs.LayoutBase) {
                 (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, i / (count - 1));
             (0, _vertexJs.UnitVertex).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            (0, _vertexJs.UnitVertex).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, _mainJs.LogLevel).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -63800,7 +63923,7 @@ class Stack extends StackBase {
         const thickness = options.thickness === undefined ? 1 - padding : options.thickness;
         this._updateModelBounds(options);
         (0, _glMatrix.quat).rotationTo(_quat, this._core.config.identityRotation, (0, _constantsJs.Constants).VECTOR3_UNITY);
-        const scale = (0, _glMatrix.vec4).fromValues((1 - padding) * this._boundsScaling, (1 - padding) * this._boundsScaling, thickness * this._boundsScaling, 0);
+        const scale = (0, _glMatrix.vec3).fromValues((1 - padding) * this._boundsScaling, (1 - padding) * this._boundsScaling, thickness * this._boundsScaling);
         const lookup = buffer.lookup;
         const selection = options.selected && options.selected.size > 0;
         for(let i = 0; i < count; i++){
@@ -63840,6 +63963,7 @@ class Stack extends StackBase {
                 (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, i / (count - 1));
             (0, _vertexJs.UnitVertex).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            (0, _vertexJs.UnitVertex).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, _mainJs.LogLevel).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -64019,7 +64143,6 @@ class StackTreeMap extends StackBase {
         const dataView = buffer.dataView;
         const _vec2 = (0, _glMatrix.vec2).create();
         const _vec3 = (0, _glMatrix.vec3).create();
-        const _vec4 = (0, _glMatrix.vec4).create();
         const _quat = (0, _glMatrix.quat).create();
         const minColor = options.minColor === undefined ? 0 : options.minColor;
         const maxColor = options.maxColor === undefined ? 1 : options.maxColor;
@@ -64054,10 +64177,10 @@ class StackTreeMap extends StackBase {
             _vec3[1] = (positionY - this.modelOriginY) * this._boundsScaling;
             _vec3[2] = (positionZ - this.modelOriginZ) * this._boundsScaling;
             (0, _vertexJs.UnitVertex).setTranslation(dataView, index, _vec3);
-            _vec4[0] = Math.max((this._sizesX[index] - padding) * this._boundsScaling, 0);
-            _vec4[1] = Math.max((this._sizesY[index] - padding) * this._boundsScaling, 0);
-            _vec4[2] = Math.max((this._sizesZ[index] - paddingZ) * this._boundsScaling, 0) * thickness;
-            (0, _vertexJs.UnitVertex).setScale(dataView, index, _vec4);
+            _vec3[0] = Math.max((this._sizesX[index] - padding) * this._boundsScaling, 0);
+            _vec3[1] = Math.max((this._sizesY[index] - padding) * this._boundsScaling, 0);
+            _vec3[2] = Math.max((this._sizesZ[index] - paddingZ) * this._boundsScaling, 0) * thickness;
+            (0, _vertexJs.UnitVertex).setScale(dataView, index, _vec3);
             (0, _vertexJs.UnitVertex).setRotation(dataView, index, _quat);
             if (options.colors) {
                 const color = (0, _mathJs.MathHelper).normalize(options.colors[id], minColor, maxColor, 0, 1);
@@ -64076,6 +64199,7 @@ class StackTreeMap extends StackBase {
                 (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
             } else (0, _vertexJs.UnitVertex).setStaggerOrder(dataView, index, i / (count - 1));
             (0, _vertexJs.UnitVertex).setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+            (0, _vertexJs.UnitVertex).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
         }
         buffer.update();
         this._core.log.write((0, _mainJs.LogLevel).info, `${this.constructor.name.toLowerCase()} update ${ids.length} ${Math.round(window.performance.now() - start)}ms`);
@@ -64454,13 +64578,11 @@ class Main extends (0, _rendererJs.RendererBase) {
     }
     _createContext(canvas) {
         const antialias = this._options ? this._options.antialias === undefined ? false : this._options.antialias : false;
-        const gl = canvas.getContext("webgl", {
+        return canvas.getContext("webgl", {
             stencil: true,
             alpha: false,
             antialias: antialias
         });
-        if (gl === null) this._core.log.write((0, _mainJs.LogLevel).error, "WebGL initialization failed");
-        return gl;
     }
     initializeWebXR(session) {
         const promise = new Promise((resolve, reject)=>{
@@ -64669,6 +64791,8 @@ class Main extends (0, _rendererJs.RendererBase) {
             const imageVisual = this.images[i4];
             if (imageVisual.isVisible) {
                 imageVisual.framebuffers = this._framebuffers;
+                imageVisual.pickFramebuffer = this._pickFrameBuffer;
+                imageVisual.isPickingEnabled = this.isPickingEnabled;
                 imageVisual.render(elapsedTime, xrFrame);
             }
         }
@@ -64697,6 +64821,11 @@ class Main extends (0, _rendererJs.RendererBase) {
                     data[i6 * 4 + 2] = 0;
                     data[i6 * 4 + 3] = 0;
                 }
+                const length = this._core.config.pickWidth * this._core.config.pickHeight * 4;
+                const row = this._core.config.pickWidth * 4;
+                const end = (this._core.config.pickHeight - 1) * row;
+                const flipped = new Uint8ClampedArray(length);
+                for(let i7 = 0; i7 < length; i7 += row)flipped.set(data.subarray(i7, i7 + row), end - i7);
                 this.capturePickImageCallback(data, this._core.config.pickWidth, this._core.config.pickHeight);
             }
         } else {
@@ -64713,8 +64842,8 @@ class Main extends (0, _rendererJs.RendererBase) {
             this._lassoShader.dashWidth = this.lassoDashWidth ? this.lassoDashWidth : this._core.config.lassoDashWidth;
             this._lassoShader.apply();
             const lassoThickness = this.lassoThickness ? this.lassoThickness : this._core.config.lassoThickness;
-            for(let i7 = 0; i7 < this._viewportCount; i7++){
-                const viewportIndex = i7 + this._viewportOffset;
+            for(let i8 = 0; i8 < this._viewportCount; i8++){
+                const viewportIndex = i8 + this._viewportOffset;
                 this._shaderResources.bindFramebuffer(this._framebuffers[viewportIndex]);
                 const viewport = this._viewports[viewportIndex];
                 this._gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
@@ -64768,7 +64897,7 @@ class Main extends (0, _rendererJs.RendererBase) {
             this._blockShader.selectedColor = this._core.config.selectionColor;
             this._blockShader.hoverColor = this._core.config.hoverColor;
             this._blockShader.activeColor = this._core.config.activeColor;
-            this._blockShader.highlightMode = this._core.config.hightlightMode;
+            this._blockShader.highlightMode = this._core.config.highlightMode;
             this._blockShader.specularPower = this._config.specularPower;
             this._blockShader.specularIntensity = this._config.specularIntensity;
             this._blockShader.apply();
@@ -64827,7 +64956,7 @@ class Main extends (0, _rendererJs.RendererBase) {
             this._sphereShader.selectedColor = this._core.config.selectionColor;
             this._sphereShader.hoverColor = this._core.config.hoverColor;
             this._sphereShader.activeColor = this._core.config.activeColor;
-            this._sphereShader.highlightMode = this._core.config.hightlightMode;
+            this._sphereShader.highlightMode = this._core.config.highlightMode;
             this._sphereShader.specularPower = this._config.specularPower;
             this._sphereShader.specularIntensity = this._config.specularIntensity;
             this._sphereShader.apply();
@@ -64886,7 +65015,7 @@ class Main extends (0, _rendererJs.RendererBase) {
             this._cylinderShader.selectedColor = this._core.config.selectionColor;
             this._cylinderShader.hoverColor = this._core.config.hoverColor;
             this._cylinderShader.activeColor = this._core.config.activeColor;
-            this._cylinderShader.highlightMode = this._core.config.hightlightMode;
+            this._cylinderShader.highlightMode = this._core.config.highlightMode;
             this._cylinderShader.specularPower = this._config.specularPower;
             this._cylinderShader.specularIntensity = this._config.specularIntensity;
             this._cylinderShader.apply();
@@ -64945,7 +65074,7 @@ class Main extends (0, _rendererJs.RendererBase) {
             this._hexPrismShader.selectedColor = this._core.config.selectionColor;
             this._hexPrismShader.hoverColor = this._core.config.hoverColor;
             this._hexPrismShader.activeColor = this._core.config.activeColor;
-            this._hexPrismShader.highlightMode = this._core.config.hightlightMode;
+            this._hexPrismShader.highlightMode = this._core.config.highlightMode;
             this._hexPrismShader.specularPower = this._config.specularPower;
             this._hexPrismShader.specularIntensity = this._config.specularIntensity;
             this._hexPrismShader.apply();
@@ -65108,7 +65237,8 @@ class RendererBase {
     initialize(core) {
         this._core = core;
         this._canvas = document.createElement("canvas");
-        this._canvas.addEventListener("contextmenu", (e)=>{
+        const contextmenu = this._options && this._options.contextmenu;
+        if (!contextmenu) this._canvas.addEventListener("contextmenu", (e)=>{
             e.preventDefault();
         });
         this._canvas.tabIndex = this._core.container.tabIndex;
@@ -65158,7 +65288,7 @@ class RendererBase {
             this._previousResizeWidth = this._resizeWidth;
             this._previousResizeHeight = this._resizeHeight;
             this._isResizing = true;
-            this._resizeElapsedTime = 0;
+            this._resizeElapsedTime = elapsedTime;
         }
         if (this._isResizing) {
             if (this._resizeElapsedTime > this._resizeMinimumDelay && this._isInitialized) {
@@ -65220,6 +65350,9 @@ class RendererBase {
                 imageVisual.mMatrix = this.mMatrix;
                 imageVisual.vMatrices = this.vMatrices;
                 imageVisual.pMatrices = this.pMatrices;
+                imageVisual.isPickingEnabled = this.isPickingEnabled;
+                imageVisual.pickPMatrix = this.pickPMatrix;
+                imageVisual.pickVMatrix = this.pickVMatrix;
                 imageVisual.viewports = this._viewports;
                 imageVisual.viewportOffset = this._viewportOffset;
                 imageVisual.viewportCount = this._viewportCount;
@@ -65346,29 +65479,23 @@ class BufferBase {
     }
     copyFrom(buffer) {
         const start = window.performance.now();
-        const _vec2 = (0, _glMatrix.vec2).create();
-        const _vec3 = (0, _glMatrix.vec3).create();
-        const _vec4 = (0, _glMatrix.vec4).create();
-        const _quat = (0, _glMatrix.quat).create();
-        const dataView = buffer.dataView;
+        const fromDataView = buffer.dataView;
+        const toDataView = this._dataView;
         const lookup = buffer.lookup;
         for(let i = 0; i < this._length; i++){
             const index = lookup[this._ids[i]];
             if (index != null) {
-                (0, _vertexJs.UnitVertex).setIdHover(this._dataView, i, (0, _vertexJs.UnitVertex).getIdHover(dataView, index));
-                (0, _vertexJs.UnitVertex).getTranslation(dataView, index, _vec3);
-                (0, _vertexJs.UnitVertex).setTranslation(this._dataView, i, _vec3);
-                (0, _vertexJs.UnitVertex).getScale(dataView, index, _vec4);
-                (0, _vertexJs.UnitVertex).setScale(this._dataView, i, _vec4);
-                (0, _vertexJs.UnitVertex).getRotation(dataView, index, _quat);
-                (0, _vertexJs.UnitVertex).setRotation(this._dataView, i, _quat);
-                (0, _vertexJs.UnitVertex).getColor(dataView, index, _vec2);
-                (0, _vertexJs.UnitVertex).setColor(this._dataView, i, _vec2);
-                (0, _vertexJs.UnitVertex).setSelected(this._dataView, i, (0, _vertexJs.UnitVertex).getSelected(dataView, index));
-                (0, _vertexJs.UnitVertex).setMaterial(this._dataView, i, (0, _vertexJs.UnitVertex).getMaterial(dataView, index));
-                (0, _vertexJs.UnitVertex).setOrder(this._dataView, i, (0, _vertexJs.UnitVertex).getOrder(dataView, index));
-                (0, _vertexJs.UnitVertex).setStaggerOrder(this._dataView, i, (0, _vertexJs.UnitVertex).getStaggerOrder(dataView, index));
-            } else (0, _vertexJs.UnitVertex).setRotation(this._dataView, i, (0, _constantsJs.Constants).QUAT_IDENTITY);
+                (0, _vertexJs.UnitVertex).copyIdHover(fromDataView, index, toDataView, i);
+                (0, _vertexJs.UnitVertex).copyTranslation(fromDataView, index, toDataView, i);
+                (0, _vertexJs.UnitVertex).copyScale(fromDataView, index, toDataView, i);
+                (0, _vertexJs.UnitVertex).copyRotation(fromDataView, index, toDataView, i);
+                (0, _vertexJs.UnitVertex).copyColor(fromDataView, index, toDataView, i);
+                (0, _vertexJs.UnitVertex).copySelected(fromDataView, index, toDataView, i);
+                (0, _vertexJs.UnitVertex).copyMaterial(fromDataView, index, toDataView, i);
+                (0, _vertexJs.UnitVertex).copyRounding(fromDataView, index, toDataView, i);
+                (0, _vertexJs.UnitVertex).copyOrder(fromDataView, index, toDataView, i);
+                (0, _vertexJs.UnitVertex).copyStaggerOrder(fromDataView, index, toDataView, i);
+            } else (0, _vertexJs.UnitVertex).setRotation(toDataView, i, (0, _constantsJs.Constants).QUAT_IDENTITY);
         }
         this.unitType = buffer.unitType;
         this._selected = buffer.selected;
@@ -65381,10 +65508,11 @@ class BufferBase {
         const offset = options && options.offset !== undefined ? options.offset : 0;
         const count = options && options.count !== undefined ? options.count : ids.length;
         const selection = this._selected.size > 0;
+        const dataView = this._dataView;
         for(let i = 0; i < count; i++){
             const id = ids[i + offset];
             const index = this._lookup[id];
-            (0, _vertexJs.UnitVertex).setSelected(this._dataView, index, selection ? this._selected.has(id) ? 1 : -1 : 0);
+            (0, _vertexJs.UnitVertex).setSelected(dataView, index, selection ? this._selected.has(id) ? 1 : -1 : 0);
         }
         this.update();
         this._core.log.write((0, _mainJs.LogLevel).info, `buffer update selection ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -65753,7 +65881,7 @@ Resources.glsl = {
     "sdftext.fragment.fx": '#version 100\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include "common.include.fx"\n#define Derivatives\nuniform sampler2D uSampler;\nuniform bool uPick;\nuniform vec3 uColor;\nuniform vec3 uHoverColor;\nuniform float uGamma;\nuniform vec3 uBorderColor;\nuniform float uBuffer;\nuniform float uBorderWidth;\nvarying mediump vec2 vTexCoord;\nvarying lowp vec4 vIdColor;\nvarying lowp float vHover;\n#ifdef Derivatives\n#extension GL_OES_standard_derivatives : enable\n#endif\nvoid main(void)\n{\nif (uPick) {\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat distance = texture2D(uSampler, vTexCoord).r;\nif (distance < uBuffer - uBorderWidth)\n{\ndiscard;\n}\nfloat gamma;\n#ifdef Derivatives\ngamma = fwidth(distance);\n#else\ngamma = uGamma;\n#endif\nfloat value = smoothstep(uBuffer - gamma, uBuffer + gamma, distance);\ngl_FragColor = vec4(pow(mix(uBorderColor, mix(uColor, uHoverColor, vHover), value), GAMMA), 1.0);\n}\n}\n',
     "sdftext.vertex.fx": "#version 100\nattribute lowp vec4 aIdColor;\nattribute vec3 aPosition;\nattribute mediump vec2 aTexCoord;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform vec4 uPickedIdColor;\nvarying mediump vec2 vTexCoord;\nvarying lowp vec4 vIdColor;\nvarying lowp float vHover;\nvoid main(void) {\ngl_Position = uPMatrix * uVMatrix * uMMatrix * vec4(aPosition, 1.0);\nvTexCoord = aTexCoord;\nvIdColor = aIdColor;\nvHover = uPickedIdColor == aIdColor ? 1.0 : 0.0;\n}\n",
     "simple.vertex.fx": "#version 100\nattribute vec3 aPosition;\nvoid main(void) {\ngl_Position = vec4(aPosition, 1.0);\n}\n",
-    "texture.fragment.fx": "#version 100\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\nuniform sampler2D uSampler;\nvarying mediump vec2 vTexCoord;\nvoid main(void)\n{\ngl_FragColor = vec4(texture2D(uSampler, vTexCoord).xyz, 1.0);\n}\n",
+    "texture.fragment.fx": "#version 100\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\nuniform sampler2D uSampler;\nuniform bool uPick;\nvarying mediump vec2 vTexCoord;\nvoid main(void)\n{\nif (uPick) {\ngl_FragColor = vec4(0.0);\n}\nelse {\ngl_FragColor = vec4(texture2D(uSampler, vTexCoord).xyz, 1.0);\n}\n}\n",
     "texture.vertex.fx": "#version 100\nattribute vec3 aPosition;\nattribute mediump vec3 aNormal;\nattribute mediump vec2 aTexCoord;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nvarying mediump vec3 vNormal;\nvarying mediump vec2 vTexCoord;\nvoid main(void) {\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvNormal = normalize((mvMatrix * vec4(aNormal, 0.0)).xyz);\ngl_Position = uPMatrix * mvMatrix * vec4(aPosition, 1.0);\nvTexCoord = aTexCoord;\n}\n",
     "unitblock.fragment.fx": '#version 100\n#define Derivatives\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include "common.include.fx"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\n#ifdef Derivatives\nvarying vec3 vViewPosition;\n#endif\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\n#ifdef Derivatives\n#extension GL_OES_standard_derivatives : enable\n#endif\nvoid main(void)\n{\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat ambient = 0.01;\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uActiveColor, vActive);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nfloat diffuse, specular;\n#ifdef Derivatives\nvec3 normal = normalize(cross(dFdx(vViewPosition), dFdy(vViewPosition)));\ndiffuse = dot(uDirectionToLight, normal);\nspecular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\n#else\ndiffuse = 1.0;\nspecular = 0.0;\n#endif\ncolor *= (ambient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n',
     "unitblock.vertex.fx": '#version 100\n#include "quat.include.fx"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute mediump vec4 aRotation;\nattribute mediump vec4 aPreviousRotation;\nattribute lowp vec2 aColor;\nattribute lowp vec2 aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute mediump float aStaggerOrder;\nattribute float aOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\n#define Derivatives\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\n#ifdef Derivatives\nvarying vec3 vViewPosition;\n#endif\nvoid main(void)\n{\nif (aOrder < uOrderFrom || aOrder > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\ngl_Position = vec4(0.0);\n#ifdef Derivatives\nvViewPosition = vec3(0.0);\n#endif\n}\nelse\n{\nvIdColor = aIdColor;\nfloat startTime = aStaggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvec3 position = aPosition * scale;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\n}\nposition += mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\n#ifdef Derivatives\nvec4 viewPosition = mvMatrix * vec4(position, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\n#else\ngl_Position = uPMatrix * mvMatrix * vec4(position, 1.0);\n#endif\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\n}\n}\n',
@@ -65763,7 +65891,7 @@ Resources.glsl = {
     "unithexprism.vertex.fx": '#version 100\n#include "common.include.fx"\n#include "quat.include.fx"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute mediump vec4 aRotation;\nattribute mediump vec4 aPreviousRotation;\nattribute lowp vec2 aColor;\nattribute lowp vec2 aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute float aOrder;\nattribute mediump float aStaggerOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nuniform vec3 uIdentityRotation;\n#define Derivatives\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvarying float vRadius;\nvarying float vHeight;\nvarying float vScaling;\nvoid main(void)\n{\nif (aOrder < uOrderFrom || aOrder > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvViewPosition = vec3(0.0);\nvRadius = 0.0;\nvHeight = 0.0;\ngl_Position = vec4(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nfloat startTime = aStaggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 translation = mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvViewCenter = (mvMatrix * vec4(translation, 1.0)).xyz;\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvRadius = scale.x * ROOT_THREE_OVER_TWO;\nvHeight = scale.y;\nvec3 position = aPosition;\nposition.y *= scale.y;\nposition.z *= scale.x;\nposition.x *= scale.x * ROOT_THREE_OVER_TWO;\nvec3 direction = IDENTITY_ROTATION;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\ndirection = rotate(direction, quat);\n}\nvec3 viewDirection = (mvMatrix * vec4(direction, 0.0)).xyz;\nvec4 viewPosition = mvMatrix * vec4(position + translation, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\nvScaling = length(uMMatrix[0].xyz) / 2.0;\n}\n}\n',
     "unitsphere.fragment.fx": '#version 100\n#define FragDepth\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include "common.include.fx"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvarying mediump float vRadius;\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\n#ifdef FragDepth\n#extension GL_EXT_frag_depth : enable\n#endif\nfloat sphIntersect(in vec3 ro, in vec3 rd, in vec4 sph)\n{\nvec3 oc = ro - sph.xyz;\nfloat b = dot(oc, rd);\nfloat c = dot(oc, oc) - sph.w * sph.w;\nfloat h = b * b - c;\nif (h < 0.0) return -1.0;\nreturn -b - sqrt(h);\n}\nvoid main(void)\n{\nvec3 rd = normalize(vViewPosition);\nvec3 ro = vec3(0.0);\nvec4 s = vec4(vViewCenter, vRadius);\nfloat t = sphIntersect(ro, rd, s);\nif (t < 0.0)\n{\ndiscard;\n}\nelse\n{\nvec3 viewPosition = rd * t;\n#ifdef FragDepth\nfloat ndcDepth = DEPTH_A + DEPTH_B / viewPosition.z;\ngl_FragDepthEXT = ndcDepth * 0.5 + 0.5;\n#endif\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat ambient = 0.01;\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uActiveColor, vActive);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nvec3 normal = (viewPosition - vViewCenter) / s.w;\nfloat diffuse = dot(uDirectionToLight, normal);\nfloat specular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\ncolor *= (ambient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n}\n',
     "unitsphere.vertex.fx": '#version 100\n#include "common.include.fx"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute lowp float aColor;\nattribute lowp float aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute float aOrder;\nattribute mediump float aStaggerOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying mediump float vRadius;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvoid main(void)\n{\nif (aOrder < uOrderFrom || aOrder > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvViewPosition = vec3(0.0);\nvViewCenter = vec3(0.0);\nvRadius = 0.0;\ngl_Position = vec4(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nfloat startTime = aStaggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nfloat scale = mix(min(aPreviousScale.x, min(aPreviousScale.y, aPreviousScale.z)), min(aScale.x, min(aScale.y, aScale.z)), animation);\nvec4 translation = vec4(mix(aPreviousTranslation, aTranslation, animation), 1.0);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvViewCenter = (mvMatrix * translation).xyz;\ntranslation.xyz += aPosition * scale;\nvViewPosition = (mvMatrix * translation).xyz;\ngl_Position = uPMatrix * vec4(vViewPosition, 1.0);\nvVertexColor = vec2(aColor, aPreviousColor);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\nvRadius = distance(vViewPosition, vViewCenter) / ROOT_THREE;\n}\n}\n',
-    "common.include.fx": "const float NEAR_PLANE = 0.01;\nconst float FAR_PLANE = 100.0;\nconst float DEPTH_A = 1.0002000200020003;\nconst float DEPTH_B = 0.020002000200020003;\nconst vec3 GAMMA = vec3(0.45454545454545453);\nconst vec3 LUMINANCE = vec3(0.2126, 0.7152, 0.0722);\nconst float PI = 3.1415926538;\nconst float ROOT_TWO = 1.4142135624;\nconst float ROOT_TWO_OVER_TWO = 0.7071067811865476;\nconst float ROOT_THREE = 1.7320508075688772;\nconst float ROOT_THREE_OVER_TWO = 0.8660254037844386;\nconst vec3 IDENTITY_ROTATION = vec3(0.0, 1.0, 0.0);\nmat3 transpose(in mat3 mat) {\nvec3 i0 = mat[0];\nvec3 i1 = mat[1];\nvec3 i2 = mat[2];\nreturn mat3\n(\nvec3(i0.x, i1.x, i2.x),\nvec3(i0.y, i1.y, i2.y),\nvec3(i0.z, i1.z, i2.z)\n);\n}\n",
+    "common.include.fx": "const float NEAR_PLANE = 0.01;\nconst float FAR_PLANE = 100.0;\nconst float DEPTH_A = 1.0002000200020003;\nconst float DEPTH_B = 0.020002000200020003;\nconst vec3 GAMMA = vec3(0.45454545454545453);\nconst vec3 INV_GAMMA = vec3(2.2);\nconst vec3 LUMINANCE = vec3(0.2126, 0.7152, 0.0722);\nconst float PI = 3.1415926538;\nconst float ROOT_TWO = 1.4142135624;\nconst float ROOT_TWO_OVER_TWO = 0.7071067811865476;\nconst float ROOT_THREE = 1.7320508075688772;\nconst float ROOT_THREE_OVER_TWO = 0.8660254037844386;\nconst vec3 IDENTITY_ROTATION = vec3(0.0, 1.0, 0.0);\nmat3 transpose(in mat3 mat) {\nvec3 i0 = mat[0];\nvec3 i1 = mat[1];\nvec3 i2 = mat[2];\nreturn mat3\n(\nvec3(i0.x, i1.x, i2.x),\nvec3(i0.y, i1.y, i2.y),\nvec3(i0.z, i1.z, i2.z)\n);\n}\n",
     "quat.include.fx": "const float EPSILON = 0.000001;\nmat3 fromQuat(in vec4 q) {\nfloat x = q.x;\nfloat y = q.y;\nfloat z = q.z;\nfloat w = q.w;\nfloat x2 = x + x;\nfloat y2 = y + y;\nfloat z2 = z + z;\nfloat xx = x * x2;\nfloat yx = y * x2;\nfloat yy = y * y2;\nfloat zx = z * x2;\nfloat zy = z * y2;\nfloat zz = z * z2;\nfloat wx = w * x2;\nfloat wy = w * y2;\nfloat wz = w * z2;\nmat3 m;\nm[0][0] = 1.0 - yy - zz;\nm[0][1] = yx - wz;\nm[0][2] = zx + wy;\nm[1][0] = yx + wz;\nm[1][1] = 1.0 - xx - zz;\nm[1][2] = zy - wx;\nm[2][0] = zx - wy;\nm[2][1] = zy + wx;\nm[2][2] = 1.0 - xx - yy;\nreturn m;\n}\nvec3 rotate(in vec3 p, in vec4 q) {\nreturn p + 2.0 * cross(q.xyz, cross(q.xyz, p) + q.w * p);\n}\nvec4 slerp(in vec4 a, in vec4 b, in float t) {\nfloat cosom = dot(a, b);\nif (cosom < 0.0) {\ncosom = -cosom;\nb = -b;\n}\nfloat scale0, scale1;\nif (1.0 - cosom > EPSILON) {\nfloat omega = acos(cosom);\nfloat sinom = sin(omega);\nscale0 = sin((1.0 - t) * omega) / sinom;\nscale1 = sin(t * omega) / sinom;\n}\nelse {\nscale0 = 1.0 - t;\nscale1 = t;\n}\nreturn vec4(scale0 * a + scale1 * b);\n}\n"
 };
 class ShaderBase {
@@ -65981,6 +66109,7 @@ class Texture extends (0, _shaderJs.ShaderBase) {
         this._texCoordAttribute = gl.getAttribLocation(this._program, "aTexCoord");
         this._normalAttribute = gl.getAttribLocation(this._program, "aNormal");
         this._samplerUniform = gl.getUniformLocation(this._program, "uSampler");
+        this._pickUniform = gl.getUniformLocation(this._program, "uPick");
         this._mMatrixUniform = gl.getUniformLocation(this._program, "uMMatrix");
         this._vMatrixUniform = gl.getUniformLocation(this._program, "uVMatrix");
         this._pMatrixUniform = gl.getUniformLocation(this._program, "uPMatrix");
@@ -65991,6 +66120,7 @@ class Texture extends (0, _shaderJs.ShaderBase) {
         this._gl.uniform1i(this._samplerUniform, 0);
     }
     applyView() {
+        this._gl.uniform1i(this._pickUniform, this.isPickShader ? 1 : 0);
         this._gl.uniformMatrix4fv(this._vMatrixUniform, false, this.vMatrix);
         this._gl.uniformMatrix4fv(this._pMatrixUniform, false, this.pMatrix);
     }
@@ -66348,7 +66478,7 @@ class UnitBlock extends (0, _unitshaderJs.UnitShader) {
     _updateCurrentBuffer() {
         super._updateCurrentBuffer();
         const ANGLE_instanced_arrays = this._main.shaderResources.ANGLE_instanced_arrays;
-        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.SHORT, true, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).ROTATION_OFFSET_BYTES);
+        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.FLOAT, false, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).ROTATION_OFFSET_BYTES);
         ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._rotationAttribute, 1);
         this._gl.enableVertexAttribArray(this._rotationAttribute);
         this._gl.vertexAttribPointer(this._colorAttribute, 2, this._gl.UNSIGNED_BYTE, true, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).COLOR_OFFSET_BYTES);
@@ -66358,7 +66488,7 @@ class UnitBlock extends (0, _unitshaderJs.UnitShader) {
     _updatePreviousBuffer() {
         super._updatePreviousBuffer();
         const ANGLE_instanced_arrays = this._main.shaderResources.ANGLE_instanced_arrays;
-        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.SHORT, true, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).ROTATION_OFFSET_BYTES);
+        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.FLOAT, false, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).ROTATION_OFFSET_BYTES);
         ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousRotationAttribute, 1);
         this._gl.enableVertexAttribArray(this._previousRotationAttribute);
         this._gl.vertexAttribPointer(this._previousColorAttribute, 2, this._gl.UNSIGNED_BYTE, true, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).COLOR_OFFSET_BYTES);
@@ -66631,7 +66761,7 @@ class UnitCylinder extends (0, _unitshaderJs.UnitShader) {
     _updateCurrentBuffer() {
         super._updateCurrentBuffer();
         const ANGLE_instanced_arrays = this._main.shaderResources.ANGLE_instanced_arrays;
-        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.SHORT, true, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).ROTATION_OFFSET_BYTES);
+        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.FLOAT, false, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).ROTATION_OFFSET_BYTES);
         ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._rotationAttribute, 1);
         this._gl.enableVertexAttribArray(this._rotationAttribute);
         this._gl.vertexAttribPointer(this._colorAttribute, 2, this._gl.UNSIGNED_BYTE, true, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).COLOR_OFFSET_BYTES);
@@ -66641,7 +66771,7 @@ class UnitCylinder extends (0, _unitshaderJs.UnitShader) {
     _updatePreviousBuffer() {
         super._updatePreviousBuffer();
         const ANGLE_instanced_arrays = this._main.shaderResources.ANGLE_instanced_arrays;
-        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.SHORT, true, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).ROTATION_OFFSET_BYTES);
+        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.FLOAT, false, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).ROTATION_OFFSET_BYTES);
         ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousRotationAttribute, 1);
         this._gl.enableVertexAttribArray(this._previousRotationAttribute);
         this._gl.vertexAttribPointer(this._previousColorAttribute, 2, this._gl.UNSIGNED_BYTE, true, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).COLOR_OFFSET_BYTES);
@@ -66686,7 +66816,7 @@ class UnitHexPrism extends (0, _unitshaderJs.UnitShader) {
     _updateCurrentBuffer() {
         super._updateCurrentBuffer();
         const ANGLE_instanced_arrays = this._main.shaderResources.ANGLE_instanced_arrays;
-        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.SHORT, true, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).ROTATION_OFFSET_BYTES);
+        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.FLOAT, false, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).ROTATION_OFFSET_BYTES);
         ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._rotationAttribute, 1);
         this._gl.enableVertexAttribArray(this._rotationAttribute);
         this._gl.vertexAttribPointer(this._colorAttribute, 2, this._gl.UNSIGNED_BYTE, true, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).COLOR_OFFSET_BYTES);
@@ -66696,7 +66826,7 @@ class UnitHexPrism extends (0, _unitshaderJs.UnitShader) {
     _updatePreviousBuffer() {
         super._updatePreviousBuffer();
         const ANGLE_instanced_arrays = this._main.shaderResources.ANGLE_instanced_arrays;
-        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.SHORT, true, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).ROTATION_OFFSET_BYTES);
+        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.FLOAT, false, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).ROTATION_OFFSET_BYTES);
         ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousRotationAttribute, 1);
         this._gl.enableVertexAttribArray(this._previousRotationAttribute);
         this._gl.vertexAttribPointer(this._previousColorAttribute, 2, this._gl.UNSIGNED_BYTE, true, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).COLOR_OFFSET_BYTES);
@@ -67584,6 +67714,7 @@ class ImageVisual {
             textureShader.texture2D = this.texture;
             textureShader.prepare();
             textureShader.mMatrix = this.mMatrix;
+            textureShader.isPickShader = false;
             textureShader.apply();
             for(let i = 0; i < this.viewportCount; i++){
                 const viewport = i + this.viewportOffset;
@@ -67592,6 +67723,15 @@ class ImageVisual {
                 textureShader.vMatrix = this.vMatrices[viewport];
                 textureShader.pMatrix = this.pMatrices[viewport];
                 textureShader.applyView();
+                this._gl.drawElements(this._gl.TRIANGLES, this._image.indexCount, this._gl.UNSIGNED_SHORT, 0);
+            }
+            if (this.isPickingEnabled) {
+                textureShader.isPickShader = true;
+                textureShader.vMatrix = this.pickVMatrix;
+                textureShader.pMatrix = this.pickPMatrix;
+                textureShader.applyView();
+                shaderResources.bindFramebuffer(this.pickFramebuffer);
+                this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
                 this._gl.drawElements(this._gl.TRIANGLES, this._image.indexCount, this._gl.UNSIGNED_SHORT, 0);
             }
         }
@@ -68083,25 +68223,25 @@ class Main extends (0, _rendererJs.RendererBase) {
         this._core.log.write((0, _mainJs.LogLevel).info, `buffers resized ${width},${height}`);
     }
     _createContext(canvas) {
-        var options = {
+        let supported = false;
+        const options = {
             stencil: true,
             alpha: false,
             antialias: false
         };
         const gl = canvas.getContext("webgl2", options);
-        if (gl === null) this._core.log.write((0, _mainJs.LogLevel).error, "WebGL initialization failed");
-        const OES_texture_float_linear = gl.getExtension("OES_texture_float_linear");
-        const EXT_color_buffer_float = gl.getExtension("EXT_color_buffer_float");
-        let supported = false;
-        if (OES_texture_float_linear && EXT_color_buffer_float && gl.MAX_DRAW_BUFFERS > 3) {
-            const texture = (0, _textureJs1.TextureHelper).create(gl, 1, 1, gl.RGBA, gl.FLOAT, gl.LINEAR, null, gl.RGBA32F);
-            const framebuffer = gl.createFramebuffer();
-            gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-            gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
-            const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
-            if (status == gl.FRAMEBUFFER_COMPLETE) supported = true;
-            else this._core.log.write((0, _mainJs.LogLevel).warn, "Advanced renderer not supported");
-            gl.bindTexture(gl.TEXTURE_2D, null);
+        if (gl) {
+            const OES_texture_float_linear = gl.getExtension("OES_texture_float_linear");
+            const EXT_color_buffer_float = gl.getExtension("EXT_color_buffer_float");
+            if (OES_texture_float_linear && EXT_color_buffer_float && gl.MAX_DRAW_BUFFERS > 3) {
+                const texture = (0, _textureJs1.TextureHelper).create(gl, 1, 1, gl.RGBA, gl.FLOAT, gl.LINEAR, null, gl.RGBA32F);
+                const framebuffer = gl.createFramebuffer();
+                gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+                gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+                const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+                if (status == gl.FRAMEBUFFER_COMPLETE) supported = true;
+                gl.bindTexture(gl.TEXTURE_2D, null);
+            }
         }
         return supported ? gl : null;
     }
@@ -68379,7 +68519,7 @@ class Main extends (0, _rendererJs.RendererBase) {
                 this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
                 this._gl.drawElementsInstanced(this._gl.TRIANGLE_STRIP, this._blockShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
             }
-        } else if (this._sphereShader.isInitialized && unitType == (0, _mainJs.UnitType).sphere) {
+        } else if (this._sphereShader.isInitialized && (unitType == (0, _mainJs.UnitType).sphere || unitType == (0, _mainJs.UnitType).sphereSdf)) {
             this._sphereShader.instanceBuffer = currentBuffer.vertexBuffer;
             this._sphereShader.previousInstanceBuffer = previousBuffer.vertexBuffer;
             this._sphereShader.paletteTexture = currentPalette.texture || currentPalette.defaultTexture;
@@ -68427,7 +68567,7 @@ class Main extends (0, _rendererJs.RendererBase) {
                 this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
                 this._gl.drawElementsInstanced(this._gl.TRIANGLE_STRIP, this._sphereShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
             }
-        } else if (this._cylinderShader.isInitialized && unitType == (0, _mainJs.UnitType).cylinder) {
+        } else if (this._cylinderShader.isInitialized && (unitType == (0, _mainJs.UnitType).cylinder || unitType == (0, _mainJs.UnitType).cylinderSdf)) {
             this._cylinderShader.instanceBuffer = currentBuffer.vertexBuffer;
             this._cylinderShader.previousInstanceBuffer = previousBuffer.vertexBuffer;
             this._cylinderShader.paletteTexture = currentPalette.texture || currentPalette.defaultTexture;
@@ -69490,7 +69630,7 @@ class UnitBlock extends (0, _unitshaderJs.UnitShader) {
     }
     _updateCurrentBuffer() {
         super._updateCurrentBuffer();
-        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.SHORT, true, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).ROTATION_OFFSET_BYTES);
+        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.FLOAT, false, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).ROTATION_OFFSET_BYTES);
         this._gl.vertexAttribDivisor(this._rotationAttribute, 1);
         this._gl.enableVertexAttribArray(this._rotationAttribute);
         this._gl.vertexAttribPointer(this._colorAttribute, 2, this._gl.UNSIGNED_BYTE, true, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).COLOR_OFFSET_BYTES);
@@ -69499,7 +69639,7 @@ class UnitBlock extends (0, _unitshaderJs.UnitShader) {
     }
     _updatePreviousBuffer() {
         super._updatePreviousBuffer();
-        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.SHORT, true, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).ROTATION_OFFSET_BYTES);
+        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.FLOAT, false, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).ROTATION_OFFSET_BYTES);
         this._gl.vertexAttribDivisor(this._previousRotationAttribute, 1);
         this._gl.enableVertexAttribArray(this._previousRotationAttribute);
         this._gl.vertexAttribPointer(this._previousColorAttribute, 2, this._gl.UNSIGNED_BYTE, true, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).COLOR_OFFSET_BYTES);
@@ -69748,7 +69888,7 @@ class UnitCylinder extends (0, _unitshaderJs.UnitShader) {
     }
     _updateCurrentBuffer() {
         super._updateCurrentBuffer();
-        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.SHORT, true, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).ROTATION_OFFSET_BYTES);
+        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.FLOAT, false, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).ROTATION_OFFSET_BYTES);
         this._gl.vertexAttribDivisor(this._rotationAttribute, 1);
         this._gl.enableVertexAttribArray(this._rotationAttribute);
         this._gl.vertexAttribPointer(this._colorAttribute, 2, this._gl.UNSIGNED_BYTE, true, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).COLOR_OFFSET_BYTES);
@@ -69757,7 +69897,7 @@ class UnitCylinder extends (0, _unitshaderJs.UnitShader) {
     }
     _updatePreviousBuffer() {
         super._updatePreviousBuffer();
-        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.SHORT, true, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).ROTATION_OFFSET_BYTES);
+        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.FLOAT, false, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).ROTATION_OFFSET_BYTES);
         this._gl.vertexAttribDivisor(this._previousRotationAttribute, 1);
         this._gl.enableVertexAttribArray(this._previousRotationAttribute);
         this._gl.vertexAttribPointer(this._previousColorAttribute, 2, this._gl.UNSIGNED_BYTE, true, (0, _vertexJs.UnitVertex).SIZE_BYTES, (0, _vertexJs.UnitVertex).COLOR_OFFSET_BYTES);
@@ -71494,11 +71634,17 @@ parcelHelpers.export(exports, "SolidColorTexture", ()=>(0, _textureJs.SolidColor
 parcelHelpers.export(exports, "ImageTexture", ()=>(0, _textureJs.ImageTexture));
 parcelHelpers.export(exports, "CheckerTexture", ()=>(0, _textureJs.CheckerTexture));
 parcelHelpers.export(exports, "GridTexture", ()=>(0, _textureJs.GridTexture));
+parcelHelpers.export(exports, "Light", ()=>(0, _lightJs.Light));
+parcelHelpers.export(exports, "Ground", ()=>(0, _groundJs.Ground));
+parcelHelpers.export(exports, "Constants", ()=>(0, _constantsJs.Constants));
 var _mainJs = require("./main.js");
 var _materialJs = require("./material.js");
 var _textureJs = require("./texture.js");
+var _lightJs = require("./light.js");
+var _groundJs = require("./ground.js");
+var _constantsJs = require("./constants.js");
 
-},{"./main.js":"jigo6","./material.js":"kU48f","./texture.js":"1xqM3","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jigo6":[function(require,module,exports) {
+},{"./main.js":"jigo6","./material.js":"kU48f","./texture.js":"1xqM3","./light.js":"1kubX","./ground.js":"bR49Z","./constants.js":"coNIr","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jigo6":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Main", ()=>Main);
@@ -71512,7 +71658,6 @@ var _raytraceJs = require("./shaders/raytrace.js");
 var _fullscreenquadJs = require("./shaders/fullscreenquad.js");
 var _bvhJs = require("./bvh.js");
 var _textureJs = require("./texture.js");
-var _mathJs = require("../../helpers/math.js");
 var _lightJs = require("./light.js");
 var _constantsJs = require("../../constants.js");
 var _angleJs = require("../../helpers/angle.js");
@@ -71520,6 +71665,8 @@ var _fontJs = require("./font.js");
 var _imageJs = require("./image.js");
 var _labelsJs = require("./labels.js");
 var _bufferJs = require("./buffer.js");
+var _groundJs = require("./ground.js");
+var _constantsJs1 = require("./constants.js");
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -71557,13 +71704,13 @@ class Main extends (0, _rendererJs.RendererBase) {
         this._config = new (0, _configJs.Config)();
         this._frameCount = 0;
         this._duration = 0;
-        this._random = new (0, _mathJs.PseudoRandom)(0);
         this._position = (0, _glMatrix.vec3).create();
         this._right = (0, _glMatrix.vec3).create();
         this._up = (0, _glMatrix.vec3).create();
         this._forward = (0, _glMatrix.vec3).create();
         this._modelPosition = (0, _glMatrix.vec3).create();
         this._manipulationOrigin = (0, _glMatrix.vec3).create();
+        this.ground = new (0, _groundJs.Ground)();
     }
     get frameCount() {
         return this._frameCount;
@@ -71581,6 +71728,7 @@ class Main extends (0, _rendererJs.RendererBase) {
             this._createWorld();
             this._resizeBackings();
             this._isInitialized = true;
+            this._hasChanged = false;
         });
     }
     _initializeAPI() {
@@ -71644,17 +71792,29 @@ class Main extends (0, _rendererJs.RendererBase) {
     }
     _createWorld() {
         const start = performance.now();
-        const world = this.transitionBuffers.length > 0 ? this._getHittables() : this._getHittablesTest();
+        const world = this._getHittables();
         const bvhAccel = new (0, _bvhJs.BVHAccel)(this._core, world, 1, (0, _bvhJs.SplitMethod).sah);
         const hittables = bvhAccel.orderedPrimitives;
-        const lights = this.standardLighting();
+        const lightsCopy = [];
         const modelScale = this._core.getModelScale();
         (0, _glMatrix.vec3).set(this._modelPosition, this.mMatrix[12], this.mMatrix[13], this.mMatrix[14]);
-        for(let i = 0; i < lights.length; i++){
-            const light = lights[i];
-            (0, _glMatrix.vec2).scale(light.size, light.size, modelScale);
-            (0, _glMatrix.vec3).scale(light.center, light.center, modelScale);
-            (0, _glMatrix.vec3).add(light.center, light.center, this._modelPosition);
+        for(let i = 0; i < this.lights.length; i++){
+            const light = this.lights[i];
+            let lightCopy;
+            if (light instanceof (0, _lightJs.RectLight)) lightCopy = new (0, _lightJs.RectLight)({
+                center: (0, _glMatrix.vec3).clone(light.center),
+                color: (0, _glMatrix.vec3).clone(light.color),
+                rotation: (0, _glMatrix.quat).clone(light.rotation),
+                size: (0, _glMatrix.vec2).fromValues(light.size[0] * modelScale, light.size[1] * modelScale)
+            });
+            else if (light instanceof (0, _lightJs.SphereLight)) lightCopy = new (0, _lightJs.SphereLight)({
+                center: (0, _glMatrix.vec3).clone(light.center),
+                color: (0, _glMatrix.vec3).clone(light.color),
+                radius: light.radius * modelScale
+            });
+            (0, _glMatrix.vec3).scale(lightCopy.center, lightCopy.center, modelScale);
+            (0, _glMatrix.vec3).add(lightCopy.center, lightCopy.center, this._modelPosition);
+            lightsCopy.push(lightCopy);
         }
         const materials = [];
         const materialIds = [];
@@ -71710,14 +71870,14 @@ class Main extends (0, _rendererJs.RendererBase) {
         this._materialBuffer = this._device.createBuffer(materialBufferDescriptor);
         this._materialBufferData = new (0, _materialJs.MaterialBufferData)(materials.length);
         for(let i4 = 0; i4 < materials.length; i4++)materials[i4].toBuffer(this._materialBufferData, i4, textureIds[i4]);
-        const lightBufferSizeBytes = lights.length * (0, _lightJs.LightBufferData).SIZE * 4;
+        const lightBufferSizeBytes = this.lights.length * (0, _lightJs.LightBufferData).SIZE * 4;
         const lightBufferDescriptor = {
             size: lightBufferSizeBytes,
             usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
         };
         this._lightBuffer = this._device.createBuffer(lightBufferDescriptor);
-        this._lightBufferData = new (0, _lightJs.LightBufferData)(lights.length);
-        for(let i5 = 0; i5 < lights.length; i5++)lights[i5].toBuffer(this._lightBufferData, i5);
+        this._lightBufferData = new (0, _lightJs.LightBufferData)(this.lights.length);
+        for(let i5 = 0; i5 < this.lights.length; i5++)lightsCopy[i5].toBuffer(this._lightBufferData, i5);
         const hittableBufferSizeBytes = hittables.length * (0, _hittableJs.HittableBufferData).SIZE * 4;
         const hittableBufferDescriptor = {
             size: hittableBufferSizeBytes,
@@ -71795,96 +71955,9 @@ class Main extends (0, _rendererJs.RendererBase) {
         }));
         return lights;
     }
-    _getHittablesTest() {
-        const textures = [];
-        const dielectricMaterial = new (0, _materialJs.DielectricMaterial)({
-            refractiveIndex: 1.5,
-            color: (0, _constantsJs.Constants).VECTOR3_ONE
-        });
-        const spheres = [];
-        spheres.push(new (0, _hittableJs.HittableSphere)({
-            center: (0, _glMatrix.vec3).fromValues(0, 0.1, -1),
-            radius: 0.2,
-            material: dielectricMaterial
-        }));
-        textures.push(new (0, _textureJs.SolidColorTexture)({
-            color: (0, _glMatrix.vec3).fromValues(0.4, 0.2, 0.1)
-        }));
-        spheres.push(new (0, _hittableJs.HittableSphere)({
-            center: (0, _glMatrix.vec3).fromValues(-0.5, 0.1, -1),
-            radius: 0.2,
-            material: new (0, _materialJs.LambertianMaterial)({
-                texture: textures[textures.length - 1]
-            })
-        }));
-        textures.push(new (0, _textureJs.SolidColorTexture)({
-            color: (0, _glMatrix.vec3).fromValues(0.7, 0.6, 0.5)
-        }));
-        spheres.push(new (0, _hittableJs.HittableSphere)({
-            center: (0, _glMatrix.vec3).fromValues(0.5, 0.1, -1),
-            radius: 0.2,
-            material: new (0, _materialJs.MetalMaterial)({
-                texture: textures[textures.length - 1],
-                fuzz: 0
-            })
-        }));
-        const radius = 0.04;
-        let count = 0;
-        while(count < 200){
-            const r = this._random.nextFloat();
-            const theta = this._random.nextFloat() * 2 * Math.PI;
-            const sqrtr = Math.sqrt(r);
-            const center = (0, _glMatrix.vec3).fromValues(sqrtr * Math.cos(theta), 0.02, sqrtr * Math.sin(theta) - 1);
-            let overlap;
-            for(let j = 0; j < spheres.length; j++){
-                const sphere = spheres[j];
-                overlap = (0, _glMatrix.vec3).distance(center, sphere.center) < radius + sphere.radius;
-                if (overlap) break;
-            }
-            if (!overlap) {
-                count++;
-                const m = this._random.nextFloat();
-                let material;
-                if (m < 0.8) {
-                    textures.push(new (0, _textureJs.SolidColorTexture)({
-                        color: (0, _glMatrix.vec3).fromValues(this._random.nextFloat() * this._random.nextFloat(), this._random.nextFloat() * this._random.nextFloat(), this._random.nextFloat() * this._random.nextFloat())
-                    }));
-                    material = new (0, _materialJs.LambertianMaterial)({
-                        texture: textures[textures.length - 1]
-                    });
-                } else if (m < 0.95) {
-                    textures.push(new (0, _textureJs.SolidColorTexture)({
-                        color: (0, _glMatrix.vec3).fromValues(this._random.nextFloat() * 0.5, this._random.nextFloat() * 0.5, this._random.nextFloat() * 0.5)
-                    }));
-                    material = new (0, _materialJs.MetalMaterial)({
-                        fuzz: this._random.nextFloat() * 0.5,
-                        texture: textures[textures.length - 1]
-                    });
-                } else material = dielectricMaterial;
-                spheres.push(new (0, _hittableJs.HittableSphere)({
-                    center: center,
-                    radius: radius,
-                    material: material
-                }));
-            }
-        }
-        const hittables = spheres;
-        const height = 0.005;
-        hittables.push(new (0, _hittableJs.HittableCylinder)({
-            center: (0, _glMatrix.vec3).fromValues(0, -height / 2 - 0.001, -1),
-            radius: 3,
-            height: height,
-            material: new (0, _materialJs.LambertianMaterial)({
-                texture: new (0, _textureJs.SolidColorTexture)({
-                    color: (0, _glMatrix.vec3).fromValues(0.8, 0.8, 0.8)
-                })
-            })
-        }));
-        return hittables;
-    }
     _getHittables() {
         const hittables = [];
-        let minY = 0;
+        let minY = Number.MAX_VALUE;
         for(let i = 0; i < this.transitionBuffers.length; i++){
             const transitionBuffer = this.transitionBuffers[i];
             if (transitionBuffer.isVisible && transitionBuffer.hittables && transitionBuffer.hittables.length > 0) {
@@ -71896,28 +71969,34 @@ class Main extends (0, _rendererJs.RendererBase) {
             const labelSet = this.labelSets[i1];
             if (labelSet.hittables) for(let j1 = 0; j1 < labelSet.hittables.length; j1++)hittables.push(labelSet.hittables[j1]);
         }
-        if (this.images && this.images.length > 0 && this.images[0].hittable) hittables.push(this.images[0].hittable);
-        const modelPosition = (0, _glMatrix.vec3).create();
-        const modelScale = this._core.getModelScale();
-        const modelRotation = (0, _glMatrix.quat).create();
-        this._core.getModelRotation(modelRotation);
-        (0, _glMatrix.vec3).set(modelPosition, this.mMatrix[12], this.mMatrix[13], this.mMatrix[14]);
-        const halfHeight = 10 * modelScale;
-        const halfWidth = 10 * modelScale;
-        const offset = this.images && this.images.length > 0 ? 0.002 : 0.001;
-        const groundOptions = {
-            size: (0, _glMatrix.vec2).fromValues(halfWidth, halfHeight),
-            center: (0, _glMatrix.vec3).fromValues(0, minY - offset, 0),
-            texCoord0: (0, _glMatrix.vec2).fromValues(0, 0),
-            texCoord1: (0, _glMatrix.vec2).fromValues(1, 1),
-            material: new (0, _materialJs.LambertianMaterial)({
-                texture: new (0, _textureJs.SolidColorTexture)({
-                    color: (0, _glMatrix.vec3).fromValues(0.5, 0.5, 0.5)
-                })
-            })
-        };
-        (0, _glMatrix.vec3).add(groundOptions.center, groundOptions.center, modelPosition);
-        hittables.push(new (0, _hittableJs.HittableXzRect)(groundOptions));
+        if (this.images && this.images.length > 0) {
+            for(let i2 = 0; i2 < this.images.length; i2++)if (this.images[i2].hittable) {
+                const hittable = this.images[i2].hittable;
+                hittables.push(hittable);
+                minY = Math.min(hittable.bounds.min[1], minY);
+            }
+        }
+        if (this.ground) {
+            const modelPosition = (0, _glMatrix.vec3).create();
+            const modelScale = this._core.getModelScale();
+            const modelRotation = (0, _glMatrix.quat).create();
+            this._core.getModelRotation(modelRotation);
+            (0, _glMatrix.vec3).set(modelPosition, this.mMatrix[12], this.mMatrix[13], this.mMatrix[14]);
+            const groundSize = (0, _glMatrix.vec2).create();
+            const groundPosition = (0, _glMatrix.vec3).create();
+            (0, _glMatrix.vec2).scale(groundSize, this.ground.size || this._config.groundSize, modelScale);
+            if (this.ground.position) (0, _glMatrix.vec3).scale(groundPosition, this.ground.position, modelScale);
+            else (0, _glMatrix.vec3).set(groundPosition, 0, minY - (0, _constantsJs1.Constants).SHADOW_OFFSET, 0);
+            const options = {
+                size: groundSize,
+                center: groundPosition,
+                texCoord0: (0, _glMatrix.vec2).fromValues(0, 0),
+                texCoord1: (0, _glMatrix.vec2).fromValues(1, 1),
+                material: this.ground.material || this.config.defaultMaterial
+            };
+            (0, _glMatrix.vec3).add(options.center, options.center, modelPosition);
+            hittables.push(new (0, _hittableJs.HittableXzRect)(options));
+        }
         return hittables;
     }
     createFontVisual(font) {
@@ -72251,13 +72330,12 @@ class Main extends (0, _rendererJs.RendererBase) {
     render(elapsedTime) {
         if (!this._isInitialized) return;
         const epsilon = 0.000001;
-        let clear = this._frameCount == 0;
         if (Math.abs(this._computeUniformBufferData.getFieldOfView() - this._core.config.fov) > epsilon) {
-            clear = true;
+            this._frameCount = 0;
             this._computeUniformBufferData.setFieldOfView(this._core.config.fov);
         }
         if (Math.abs(this._computeUniformBufferData.getAperture() - this._config.aperture) > epsilon) {
-            clear = true;
+            this._frameCount = 0;
             this._computeUniformBufferData.setAperture(this._config.aperture);
         }
         const m = this.inverseVMatrices[0];
@@ -72266,7 +72344,7 @@ class Main extends (0, _rendererJs.RendererBase) {
         this._computeUniformBufferData.getUp(this._up);
         this._computeUniformBufferData.getForward(this._forward);
         if (Math.abs(this._position[0] - m[12]) > epsilon || Math.abs(this._position[1] - m[13]) > epsilon || Math.abs(this._position[2] - m[14]) > epsilon || Math.abs(this._right[0] - m[0]) > epsilon || Math.abs(this._right[1] - m[1]) > epsilon || Math.abs(this._right[2] - m[2]) > epsilon || Math.abs(this._up[0] - m[4]) > epsilon || Math.abs(this._up[1] - m[5]) > epsilon || Math.abs(this._up[2] - m[6]) > epsilon || Math.abs(this._forward[0] - m[8]) > epsilon || Math.abs(this._forward[1] - m[9]) > epsilon || Math.abs(this._forward[2] - m[10]) > epsilon) {
-            clear = true;
+            this._frameCount = 0;
             (0, _glMatrix.vec3).set(this._position, m[12], m[13], m[14]);
             (0, _glMatrix.vec3).set(this._right, m[0], m[1], m[2]);
             (0, _glMatrix.vec3).set(this._up, m[4], m[5], m[6]);
@@ -72280,19 +72358,26 @@ class Main extends (0, _rendererJs.RendererBase) {
             (0, _glMatrix.vec3).add(this._modelPosition, this._modelPosition, this._manipulationOrigin);
             this._computeUniformBufferData.setLookAt(this._modelPosition);
         }
-        if (clear) this.clear();
+        const clear = this._frameCount == 0;
+        if (clear) {
+            this._duration = 0;
+            this._startTime = performance.now();
+        }
+        if (this._frameCount >= this._config.maxSamplesPerPixel) {
+            this._core.stop();
+            return;
+        }
         this._computeUniformBufferData.setSeed(this._core.totalFrames);
         this._device.queue.writeBuffer(this._computeUniformBuffer, 0, this._computeUniformBufferData.buffer, this._computeUniformBufferData.byteOffset, this._computeUniformBufferData.byteLength);
         this._frameCount++;
         this._fullscreenQuadUniformBufferData.setSamplesPerPixel(this._frameCount);
+        this._fullscreenQuadUniformBufferData.setExposure(this._config.exposure);
         this._device.queue.writeBuffer(this._fullscreenQuadUniformBuffer, 0, this._fullscreenQuadUniformBufferData.buffer, this._fullscreenQuadUniformBufferData.byteOffset, this._fullscreenQuadUniformBufferData.byteLength);
         this._encodeCommands(clear);
         this._duration = performance.now() - this._startTime;
     }
     clear() {
         this._frameCount = 0;
-        this._duration = 0;
-        this._startTime = performance.now();
     }
     _encodeCommands(clear) {
         const commandEncoder = this._device.createCommandEncoder();
@@ -72343,14 +72428,17 @@ class Main extends (0, _rendererJs.RendererBase) {
     }
 }
 
-},{"gl-matrix":"3mrln","../renderer.js":"aTXAw","../../main.js":"2JYph","./config.js":"5Ynw4","./hittable.js":"9GVRY","./material.js":"kU48f","./shaders/raytrace.js":"OOqNf","./shaders/fullscreenquad.js":"h6Hz9","./bvh.js":"gTIjl","./texture.js":"1xqM3","../../helpers/math.js":"jeH35","./light.js":"1kubX","../../constants.js":"dtECF","../../helpers/angle.js":"3PBRj","./font.js":"g1W7O","./image.js":"2rRl3","./labels.js":"9OoIc","./buffer.js":"aSkNF","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"5Ynw4":[function(require,module,exports) {
+},{"gl-matrix":"3mrln","../renderer.js":"aTXAw","../../main.js":"2JYph","./config.js":"5Ynw4","./hittable.js":"9GVRY","./material.js":"kU48f","./shaders/raytrace.js":"OOqNf","./shaders/fullscreenquad.js":"h6Hz9","./bvh.js":"gTIjl","./texture.js":"1xqM3","./light.js":"1kubX","../../constants.js":"dtECF","../../helpers/angle.js":"3PBRj","./font.js":"g1W7O","./image.js":"2rRl3","./labels.js":"9OoIc","./buffer.js":"aSkNF","./ground.js":"bR49Z","./constants.js":"coNIr","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"5Ynw4":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Config", ()=>Config);
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
- */ var _rendererJs = require("../renderer.js");
+ */ var _glMatrix = require("gl-matrix");
+var _rendererJs = require("../renderer.js");
+var _materialJs = require("./material.js");
+var _textureJs = require("./texture.js");
 class Config extends (0, _rendererJs.RendererConfig) {
     constructor(){
         super();
@@ -72358,10 +72446,321 @@ class Config extends (0, _rendererJs.RendererConfig) {
     }
     reset() {
         this.aperture = 0;
+        this.exposure = 1;
+        this.maxSamplesPerPixel = 10000;
+        this.defaultMaterial = new (0, _materialJs.LambertianMaterial)({
+            texture: new (0, _textureJs.SolidColorTexture)({
+                color: (0, _glMatrix.vec3).fromValues(0.5, 0.5, 0.5)
+            })
+        });
+        this.defaultTextMaterial = new (0, _materialJs.LambertianMaterial)({
+            texture: new (0, _textureJs.SolidColorTexture)({
+                color: (0, _glMatrix.vec3).fromValues(1, 1, 1)
+            })
+        });
+        this.groundSize = (0, _glMatrix.vec2).fromValues(10, 10);
     }
 }
 
-},{"../renderer.js":"aTXAw","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"9GVRY":[function(require,module,exports) {
+},{"gl-matrix":"3mrln","../renderer.js":"aTXAw","./material.js":"kU48f","./texture.js":"1xqM3","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"kU48f":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "MaterialType", ()=>MaterialType);
+parcelHelpers.export(exports, "MaterialBufferData", ()=>MaterialBufferData);
+parcelHelpers.export(exports, "Material", ()=>Material);
+parcelHelpers.export(exports, "LambertianMaterial", ()=>LambertianMaterial);
+parcelHelpers.export(exports, "MetalMaterial", ()=>MetalMaterial);
+parcelHelpers.export(exports, "DielectricMaterial", ()=>DielectricMaterial);
+parcelHelpers.export(exports, "DiffuseLightMaterial", ()=>DiffuseLightMaterial);
+parcelHelpers.export(exports, "GlossyMaterial", ()=>GlossyMaterial);
+/*!
+ * Copyright (c) Microsoft Corporation.
+ * Licensed under the MIT License.
+ */ var _glMatrix = require("gl-matrix");
+var _constantsJs = require("../../constants.js");
+const MaterialType = {
+    lambertian: 0,
+    metal: 1,
+    dielectric: 2,
+    glossy: 3,
+    diffuseLight: 4
+};
+class MaterialBufferData extends Float32Array {
+    constructor(count){
+        super(count * MaterialBufferData.SIZE);
+        this.TYPE_OFFSET = 0;
+        this.FUZZ_OFFSET = 1;
+        this.REFRACTIVE_INDEX_OFFSET = 2;
+        this.TEXTURE_ID_OFFSET = 3;
+        this.COLOR_OFFSET = 4;
+        this.GLOSSINESS_OFFSET = 7;
+    }
+    getType(index) {
+        return this[MaterialBufferData.SIZE * index + this.TYPE_OFFSET];
+    }
+    setType(index, value) {
+        this[MaterialBufferData.SIZE * index + this.TYPE_OFFSET] = value;
+    }
+    getFuzz(index) {
+        return this[MaterialBufferData.SIZE * index + this.FUZZ_OFFSET];
+    }
+    setFuzz(index, value) {
+        this[MaterialBufferData.SIZE * index + this.FUZZ_OFFSET] = value;
+    }
+    getRefractiveIndex(index) {
+        return this[MaterialBufferData.SIZE * index + this.REFRACTIVE_INDEX_OFFSET];
+    }
+    setRefractiveIndex(index, value) {
+        this[MaterialBufferData.SIZE * index + this.REFRACTIVE_INDEX_OFFSET] = value;
+    }
+    getTextureId(index) {
+        return this[MaterialBufferData.SIZE * index + this.TEXTURE_ID_OFFSET];
+    }
+    setTextureId(index, value) {
+        this[MaterialBufferData.SIZE * index + this.TEXTURE_ID_OFFSET] = value;
+    }
+    getColor(index, value) {
+        const offset = MaterialBufferData.SIZE * index + this.COLOR_OFFSET;
+        (0, _glMatrix.vec3).set(value, this[offset], this[offset + 1], this[offset + 2]);
+    }
+    setColor(index, value) {
+        const offset = MaterialBufferData.SIZE * index + this.COLOR_OFFSET;
+        this[offset] = value[0];
+        this[offset + 1] = value[1];
+        this[offset + 2] = value[2];
+    }
+    getGlossiness(index) {
+        return this[MaterialBufferData.SIZE * index + this.GLOSSINESS_OFFSET];
+    }
+    setGlossiness(index, value) {
+        this[MaterialBufferData.SIZE * index + this.GLOSSINESS_OFFSET] = value;
+    }
+}
+MaterialBufferData.SIZE = 8;
+class Material {
+    constructor(options){}
+    get texture() {
+        return this._texture;
+    }
+    toBuffer(buffer, index, textureId) {}
+}
+class LambertianMaterial extends Material {
+    constructor(options){
+        super(options);
+        this._texture = options.texture;
+    }
+    toBuffer(buffer, index, textureId) {
+        buffer.setType(index, MaterialType.lambertian);
+        buffer.setTextureId(index, textureId);
+    }
+}
+class MetalMaterial extends Material {
+    constructor(options){
+        super(options);
+        this.fuzz = options.fuzz;
+        this._texture = options.texture;
+    }
+    toBuffer(buffer, index, textureId) {
+        buffer.setType(index, MaterialType.metal);
+        buffer.setFuzz(index, this.fuzz);
+        buffer.setTextureId(index, textureId);
+    }
+}
+class DielectricMaterial extends Material {
+    constructor(options){
+        super(options);
+        this.refractiveIndex = options && options.refractiveIndex || 1.5;
+        this.color = options && options.color || (0, _constantsJs.Constants).VECTOR3_ONE;
+    }
+    toBuffer(buffer, index, textureId) {
+        buffer.setType(index, MaterialType.dielectric);
+        buffer.setRefractiveIndex(index, this.refractiveIndex);
+        buffer.setColor(index, this.color);
+    }
+}
+class DiffuseLightMaterial extends Material {
+    constructor(options){
+        super(options);
+        this.color = options.color;
+    }
+    toBuffer(buffer, index, textureId) {
+        buffer.setType(index, MaterialType.diffuseLight);
+        buffer.setColor(index, this.color);
+    }
+}
+class GlossyMaterial extends Material {
+    constructor(options){
+        super(options);
+        this._texture = options.texture;
+        this.fuzz = options.fuzz;
+        this.refractiveIndex = options.refractiveIndex || 1.5;
+        this.glossiness = options.glossiness !== undefined ? options.glossiness : 1;
+    }
+    toBuffer(buffer, index, textureId) {
+        buffer.setType(index, MaterialType.glossy);
+        buffer.setFuzz(index, this.fuzz);
+        buffer.setGlossiness(index, this.glossiness);
+        buffer.setRefractiveIndex(index, this.refractiveIndex);
+        buffer.setTextureId(index, textureId);
+    }
+}
+
+},{"gl-matrix":"3mrln","../../constants.js":"dtECF","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1xqM3":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "TextureType", ()=>TextureType);
+parcelHelpers.export(exports, "TextureBufferData", ()=>TextureBufferData);
+parcelHelpers.export(exports, "Texture", ()=>Texture);
+parcelHelpers.export(exports, "SolidColorTexture", ()=>SolidColorTexture);
+parcelHelpers.export(exports, "ImageTexture", ()=>ImageTexture);
+parcelHelpers.export(exports, "CheckerTexture", ()=>CheckerTexture);
+parcelHelpers.export(exports, "GridTexture", ()=>GridTexture);
+/*!
+ * Copyright (c) Microsoft Corporation.
+ * Licensed under the MIT License.
+ */ var _glMatrix = require("gl-matrix");
+var _constantsJs = require("../../constants.js");
+const TextureType = {
+    none: 0,
+    solidColor: 1,
+    image: 2,
+    sdfText: 3,
+    checker: 4,
+    grid: 5
+};
+class TextureBufferData extends Float32Array {
+    constructor(count){
+        super(count * TextureBufferData.SIZE);
+        this.COLOR0_OFFSET = 0;
+        this.TYPE_OFFSET = 3;
+        this.COLOR1_OFFSET = 4;
+        this.SIZE0_OFFSET = 8;
+        this.SIZE1_OFFSET = 12;
+        this.OFFSET_OFFSET = 16;
+    }
+    getType(index) {
+        return this[TextureBufferData.SIZE * index + this.TYPE_OFFSET];
+    }
+    setType(index, value) {
+        this[TextureBufferData.SIZE * index + this.TYPE_OFFSET] = value;
+    }
+    getColor0(index, value) {
+        const offset = TextureBufferData.SIZE * index + this.COLOR0_OFFSET;
+        (0, _glMatrix.vec3).set(value, this[offset], this[offset + 1], this[offset + 2]);
+    }
+    setColor0(index, value) {
+        const offset = TextureBufferData.SIZE * index + this.COLOR0_OFFSET;
+        this[offset] = value[0];
+        this[offset + 1] = value[1];
+        this[offset + 2] = value[2];
+    }
+    getColor1(index, value) {
+        const offset = TextureBufferData.SIZE * index + this.COLOR1_OFFSET;
+        (0, _glMatrix.vec3).set(value, this[offset], this[offset + 1], this[offset + 2]);
+    }
+    setColor1(index, value) {
+        const offset = TextureBufferData.SIZE * index + this.COLOR1_OFFSET;
+        this[offset] = value[0];
+        this[offset + 1] = value[1];
+        this[offset + 2] = value[2];
+    }
+    getSize0(index, value) {
+        const offset = TextureBufferData.SIZE * index + this.SIZE0_OFFSET;
+        (0, _glMatrix.vec4).set(value, this[offset], this[offset + 1], this[offset + 2], this[offset + 3]);
+    }
+    setSize0(index, value) {
+        const offset = TextureBufferData.SIZE * index + this.SIZE0_OFFSET;
+        this[offset] = value[0];
+        this[offset + 1] = value[1];
+        this[offset + 2] = value[2];
+        this[offset + 3] = value[3];
+    }
+    getSize1(index, value) {
+        const offset = TextureBufferData.SIZE * index + this.SIZE1_OFFSET;
+        (0, _glMatrix.vec4).set(value, this[offset], this[offset + 1], this[offset + 2], this[offset + 3]);
+    }
+    setSize1(index, value) {
+        const offset = TextureBufferData.SIZE * index + this.SIZE1_OFFSET;
+        this[offset] = value[0];
+        this[offset + 1] = value[1];
+        this[offset + 2] = value[2];
+        this[offset + 3] = value[3];
+    }
+    getOffset(index, value) {
+        const offset = TextureBufferData.SIZE * index + this.OFFSET_OFFSET;
+        (0, _glMatrix.vec2).set(value, this[offset], this[offset + 1]);
+    }
+    setOffset(index, value) {
+        const offset = TextureBufferData.SIZE * index + this.OFFSET_OFFSET;
+        this[offset] = value[0];
+        this[offset + 1] = value[1];
+    }
+}
+TextureBufferData.SIZE = 20;
+class Texture {
+}
+class SolidColorTexture extends Texture {
+    constructor(options){
+        super();
+        this.color = options.color;
+        this._color = (0, _glMatrix.vec3).fromValues(Math.pow(this.color[0], 2.2), Math.pow(this.color[1], 2.2), Math.pow(this.color[2], 2.2));
+    }
+    toBuffer(buffer, index) {
+        buffer.setType(index, TextureType.solidColor);
+        buffer.setColor0(index, this._color);
+    }
+}
+class ImageTexture extends Texture {
+    constructor(options){
+        super();
+        this.image = options.image;
+    }
+    toBuffer(buffer, index) {
+        buffer.setType(index, TextureType.image);
+    }
+}
+class CheckerTexture extends Texture {
+    constructor(options){
+        super();
+        this.color0 = options.color0;
+        this.color1 = options.color1;
+        this.size = options.size;
+        this.offset = options.offset || (0, _constantsJs.Constants).VECTOR2_ZERO;
+        this._color0 = (0, _glMatrix.vec3).fromValues(Math.pow(this.color0[0], 2.2), Math.pow(this.color0[1], 2.2), Math.pow(this.color0[2], 2.2));
+        this._color1 = (0, _glMatrix.vec3).fromValues(Math.pow(this.color1[0], 2.2), Math.pow(this.color1[1], 2.2), Math.pow(this.color1[2], 2.2));
+    }
+    toBuffer(buffer, index) {
+        buffer.setType(index, TextureType.checker);
+        buffer.setColor0(index, this._color0);
+        buffer.setColor1(index, this._color1);
+        buffer.setSize0(index, (0, _glMatrix.vec4).fromValues(this.size[0], this.size[1], 0, 0));
+        buffer.setOffset(index, this.offset);
+    }
+}
+class GridTexture extends Texture {
+    constructor(options){
+        super();
+        this.color0 = options.color0;
+        this.color1 = options.color1;
+        this.size = options.size;
+        this.minorSize = options.minorSize;
+        this.thickness = options.thickness;
+        this.minorThickness = options.minorThickness;
+        this.offset = options.offset || (0, _constantsJs.Constants).VECTOR2_ZERO;
+        this._color0 = (0, _glMatrix.vec3).fromValues(Math.pow(this.color0[0], 2.2), Math.pow(this.color0[1], 2.2), Math.pow(this.color0[2], 2.2));
+        this._color1 = (0, _glMatrix.vec3).fromValues(Math.pow(this.color1[0], 2.2), Math.pow(this.color1[1], 2.2), Math.pow(this.color1[2], 2.2));
+    }
+    toBuffer(buffer, index) {
+        buffer.setType(index, TextureType.grid);
+        buffer.setColor0(index, this._color0);
+        buffer.setColor1(index, this._color1);
+        buffer.setSize0(index, (0, _glMatrix.vec4).fromValues(this.size[0], this.size[1], this.minorSize[0], this.minorSize[1]));
+        buffer.setSize1(index, (0, _glMatrix.vec4).fromValues(this.thickness[0], this.thickness[1], this.minorThickness[0], this.minorThickness[1]));
+        buffer.setOffset(index, this.offset);
+    }
+}
+
+},{"gl-matrix":"3mrln","../../constants.js":"dtECF","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"9GVRY":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "HittableType", ()=>HittableType);
@@ -72415,7 +72814,7 @@ class HittableBufferData extends Float32Array {
         this.ROTATION_OFFSET = 8;
         this.TEXCOORD0_OFFSET = 12;
         this.TEXCOORD1_OFFSET = 14;
-        this.RADIUS_OFFSET = 16;
+        this.ROUNDING_OFFSET = 16;
     }
     getType(index) {
         return this[HittableBufferData.SIZE * index + this.TYPE_OFFSET];
@@ -72478,11 +72877,11 @@ class HittableBufferData extends Float32Array {
         this[offset] = value[0];
         this[offset + 1] = value[1];
     }
-    getRadius(index) {
-        return this[HittableBufferData.SIZE * index + this.RADIUS_OFFSET];
+    getRounding(index) {
+        return this[HittableBufferData.SIZE * index + this.ROUNDING_OFFSET];
     }
-    setRadius(index, value) {
-        this[HittableBufferData.SIZE * index + this.RADIUS_OFFSET] = value;
+    setRounding(index, value) {
+        this[HittableBufferData.SIZE * index + this.ROUNDING_OFFSET] = value;
     }
 }
 HittableBufferData.SIZE = 20;
@@ -72544,14 +72943,14 @@ class HittableBox extends Hittable {
 class HittableBoxSdf extends HittableBox {
     constructor(options){
         super(options);
-        this._radius = options.radius;
+        this._rounding = options.rounding;
         (0, _glMatrix.vec3).subtract(this._bounds.min, this._center, this._size);
         (0, _glMatrix.vec3).add(this._bounds.max, this._center, this._size);
     }
     toBuffer(buffer, index, materialId) {
         super.toBuffer(buffer, index, materialId);
         buffer.setType(index, HittableType.boxSdf);
-        buffer.setRadius(index, this._radius);
+        buffer.setRounding(index, this._rounding);
     }
 }
 class HittableRotatedBox extends HittableBox {
@@ -72610,22 +73009,22 @@ class HittableCylinderSdf extends Hittable {
     constructor(options){
         super(options);
         this._height = options.height;
-        this._radius0 = options.radius0;
-        this._radius1 = options.radius1;
+        this._radius = options.radius;
+        this._rounding = options.rounding;
         const min = this._bounds.min;
         const max = this._bounds.max;
-        min[0] = this._center[0] - this._radius0;
-        max[0] = this._center[0] + this._radius0;
+        min[0] = this._center[0] - this._radius;
+        max[0] = this._center[0] + this._radius;
         min[1] = this._center[1] - this._height;
         max[1] = this._center[1] + this._height;
-        min[2] = this._center[2] - this._radius0;
-        max[2] = this._center[2] + this._radius0;
+        min[2] = this._center[2] - this._radius;
+        max[2] = this._center[2] + this._radius;
     }
     toBuffer(buffer, index, materialId) {
         super.toBuffer(buffer, index, materialId);
         buffer.setType(index, HittableType.cylinderSdf);
-        buffer.setSize(index, (0, _glMatrix.vec3).fromValues(this._radius0, this._height, this._radius0));
-        buffer.setRadius(index, this._radius1);
+        buffer.setSize(index, (0, _glMatrix.vec3).fromValues(this._radius, this._height, this._radius));
+        buffer.setRounding(index, this._rounding);
     }
 }
 class HittableHexPrism extends Hittable {
@@ -72658,22 +73057,22 @@ class HittableHexPrismSdf extends Hittable {
     constructor(options){
         super(options);
         this._height = options.height;
-        this._radius0 = options.radius0;
-        this._radius1 = options.radius1;
+        this._radius = options.radius;
+        this._rounding = options.rounding;
         const min = this._bounds.min;
         const max = this._bounds.max;
-        min[0] = this._center[0] - this._radius0 * (0, _constantsJs.Constants).ROOT_THREE_OVER_TWO;
-        max[0] = this._center[0] + this._radius0 * (0, _constantsJs.Constants).ROOT_THREE_OVER_TWO;
+        min[0] = this._center[0] - this._radius * (0, _constantsJs.Constants).ROOT_THREE_OVER_TWO;
+        max[0] = this._center[0] + this._radius * (0, _constantsJs.Constants).ROOT_THREE_OVER_TWO;
         min[1] = this._center[1] - this._height;
         max[1] = this._center[1] + this._height;
-        min[2] = this._center[2] - this._radius0;
-        max[2] = this._center[2] + this._radius0;
+        min[2] = this._center[2] - this._radius;
+        max[2] = this._center[2] + this._radius;
     }
     toBuffer(buffer, index, materialId) {
         super.toBuffer(buffer, index, materialId);
         buffer.setType(index, HittableType.hexPrismSdf);
-        buffer.setSize(index, (0, _glMatrix.vec3).fromValues(this._radius0 * (0, _constantsJs.Constants).ROOT_THREE_OVER_TWO, this._height, this._radius0));
-        buffer.setRadius(index, this._radius1);
+        buffer.setSize(index, (0, _glMatrix.vec3).fromValues(this._radius * (0, _constantsJs.Constants).ROOT_THREE_OVER_TWO, this._height, this._radius));
+        buffer.setRounding(index, this._rounding);
     }
 }
 class HittableRect extends Hittable {
@@ -72865,149 +73264,7 @@ class AABB {
     }
 }
 
-},{"gl-matrix":"3mrln","../../meshes/cube.js":"dgOpu","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"kU48f":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "MaterialType", ()=>MaterialType);
-parcelHelpers.export(exports, "MaterialBufferData", ()=>MaterialBufferData);
-parcelHelpers.export(exports, "Material", ()=>Material);
-parcelHelpers.export(exports, "LambertianMaterial", ()=>LambertianMaterial);
-parcelHelpers.export(exports, "MetalMaterial", ()=>MetalMaterial);
-parcelHelpers.export(exports, "DielectricMaterial", ()=>DielectricMaterial);
-parcelHelpers.export(exports, "DiffuseLightMaterial", ()=>DiffuseLightMaterial);
-parcelHelpers.export(exports, "GlossyMaterial", ()=>GlossyMaterial);
-/*!
- * Copyright (c) Microsoft Corporation.
- * Licensed under the MIT License.
- */ var _glMatrix = require("gl-matrix");
-const MaterialType = {
-    lambertian: 0,
-    metal: 1,
-    dielectric: 2,
-    glossy: 3,
-    diffuseLight: 4
-};
-class MaterialBufferData extends Float32Array {
-    constructor(count){
-        super(count * MaterialBufferData.SIZE);
-        this.TYPE_OFFSET = 0;
-        this.FUZZ_OFFSET = 1;
-        this.REFRACTIVE_INDEX_OFFSET = 2;
-        this.TEXTURE_ID_OFFSET = 3;
-        this.COLOR_OFFSET = 4;
-        this.GLOSSINESS_OFFSET = 7;
-    }
-    getType(index) {
-        return this[MaterialBufferData.SIZE * index + this.TYPE_OFFSET];
-    }
-    setType(index, value) {
-        this[MaterialBufferData.SIZE * index + this.TYPE_OFFSET] = value;
-    }
-    getFuzz(index) {
-        return this[MaterialBufferData.SIZE * index + this.FUZZ_OFFSET];
-    }
-    setFuzz(index, value) {
-        this[MaterialBufferData.SIZE * index + this.FUZZ_OFFSET] = value;
-    }
-    getRefractiveIndex(index) {
-        return this[MaterialBufferData.SIZE * index + this.REFRACTIVE_INDEX_OFFSET];
-    }
-    setRefractiveIndex(index, value) {
-        this[MaterialBufferData.SIZE * index + this.REFRACTIVE_INDEX_OFFSET] = value;
-    }
-    getTextureId(index) {
-        return this[MaterialBufferData.SIZE * index + this.TEXTURE_ID_OFFSET];
-    }
-    setTextureId(index, value) {
-        this[MaterialBufferData.SIZE * index + this.TEXTURE_ID_OFFSET] = value;
-    }
-    getColor(index, value) {
-        const offset = MaterialBufferData.SIZE * index + this.COLOR_OFFSET;
-        (0, _glMatrix.vec3).set(value, this[offset], this[offset + 1], this[offset + 2]);
-    }
-    setColor(index, value) {
-        const offset = MaterialBufferData.SIZE * index + this.COLOR_OFFSET;
-        this[offset] = value[0];
-        this[offset + 1] = value[1];
-        this[offset + 2] = value[2];
-    }
-    getGlossiness(index) {
-        return this[MaterialBufferData.SIZE * index + this.GLOSSINESS_OFFSET];
-    }
-    setGlossiness(index, value) {
-        this[MaterialBufferData.SIZE * index + this.GLOSSINESS_OFFSET] = value;
-    }
-}
-MaterialBufferData.SIZE = 8;
-class Material {
-    constructor(options){}
-    get texture() {
-        return this._texture;
-    }
-    toBuffer(buffer, index, textureId) {}
-}
-class LambertianMaterial extends Material {
-    constructor(options){
-        super(options);
-        this._texture = options.texture;
-    }
-    toBuffer(buffer, index, textureId) {
-        buffer.setType(index, MaterialType.lambertian);
-        buffer.setTextureId(index, textureId);
-    }
-}
-class MetalMaterial extends Material {
-    constructor(options){
-        super(options);
-        this.fuzz = options.fuzz;
-        this._texture = options.texture;
-    }
-    toBuffer(buffer, index, textureId) {
-        buffer.setType(index, MaterialType.metal);
-        buffer.setFuzz(index, this.fuzz);
-        buffer.setTextureId(index, textureId);
-    }
-}
-class DielectricMaterial extends Material {
-    constructor(options){
-        super(options);
-        this.refractiveIndex = options.refractiveIndex;
-        this.color = options.color;
-    }
-    toBuffer(buffer, index, textureId) {
-        buffer.setType(index, MaterialType.dielectric);
-        buffer.setRefractiveIndex(index, this.refractiveIndex);
-        buffer.setColor(index, this.color);
-    }
-}
-class DiffuseLightMaterial extends Material {
-    constructor(options){
-        super(options);
-        this.color = options.color;
-    }
-    toBuffer(buffer, index, textureId) {
-        buffer.setType(index, MaterialType.diffuseLight);
-        buffer.setColor(index, this.color);
-    }
-}
-class GlossyMaterial extends Material {
-    constructor(options){
-        super(options);
-        this._texture = options.texture;
-        this.fuzz = options.fuzz;
-        this.refractiveIndex = options.refractiveIndex || 1.5;
-        this.glossiness = options.glossiness || 1;
-    }
-    toBuffer(buffer, index, textureId) {
-        buffer.setType(index, MaterialType.glossy);
-        buffer.setFuzz(index, this.fuzz);
-        buffer.setGlossiness(index, this.glossiness);
-        buffer.setRefractiveIndex(index, this.refractiveIndex);
-        buffer.setTextureId(index, textureId);
-    }
-}
-
-},{"gl-matrix":"3mrln","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"OOqNf":[function(require,module,exports) {
+},{"gl-matrix":"3mrln","../../meshes/cube.js":"dgOpu","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"OOqNf":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ComputeShaderWgsl", ()=>ComputeShaderWgsl);
@@ -73019,7 +73276,7 @@ parcelHelpers.export(exports, "ComputeUniformBufferData", ()=>ComputeUniformBuff
 const ComputeShaderWgsl = `
 const PI = 3.1415926535897932385f;
 const TWO_PI = 6.2831853071795864769f;
-const ROOT_THREE_OVER_TWO = 0.86602540378443864676;
+const ROOT_THREE_OVER_TWO = 0.86602540378443864676f;
 
 struct ColorBuffer {
     values: array<f32>,
@@ -73153,7 +73410,7 @@ struct Hittable {           // ---------------------------------------
     rotation: vec4<f32>,    //             32      16      16
     texCoord0: vec2<f32>,   //             48       8       8
     texCoord1: vec2<f32>,   //             56       8       8
-    radius: f32,            //             64       4       4
+    rounding: f32,          //             64       4       4
 }                           // ---------------------------------------
                             //                     16      68       80
 
@@ -73277,54 +73534,9 @@ fn hitWorld(ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, HitRecord>)
     var closestSoFar = tMax;
     let invDir = vec3<f32>(1f, 1f, 1f) / ray.direction;
     var tempHitRecord: HitRecord;
-    var hit: bool;
     for (var i: u32 = 0u; i < arrayLength(&hittableBuffer.hittables); i = i + 1u) {
         let hittable = hittableBuffer.hittables[i];
-        switch u32(hittable.typeId) {
-            default: {
-                hit = hitSphere(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 1u: {
-                hit = hitBox(hittable, ray, invDir, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 2u: {
-                hit = hitCylinder(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 3u: {
-                hit = hitHexPrism(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 4u: {
-                hit = hitRotatedBox(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 5u: {
-                hit = hitXyRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 6u: {
-                hit = hitXzRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 7u: {
-                hit = hitYzRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 8u: {
-                hit = hitRotatedXyRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 9u: {
-                hit = hitFontXyRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 10u: {
-                hit = hitRotatedFontXyRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 11u: {
-                hit = hitBoxSdf(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 12u: {
-                hit = hitCylinderSdf(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-            case 13u: {
-                hit = hitHexPrismSdf(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-            }
-        }
-        if (hit) {
+        if (hit(hittable, ray, invDir, tMin, closestSoFar, &tempHitRecord)) {
             hitAnything = true;
             closestSoFar = tempHitRecord.t;
             tempHitRecord.material = materialBuffer.materials[u32(hittable.materialId)];
@@ -73340,7 +73552,6 @@ fn hitBVH(ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, HitRecord>) -
     let invDir = vec3<f32>(1f, 1f, 1f) / ray.direction;
     var tempHitRecord: HitRecord;
     var materialId: f32;
-    var hit: bool;
     var toVisitOffset = 0u;
     var currentNodeIndex = 0u;
     var nodesToVisit: array<u32, 64>;
@@ -73353,51 +73564,7 @@ fn hitBVH(ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, HitRecord>) -
                 let primitiveOffset = u32(node.primitivesOffset);
                 for (var i: u32 = 0u; i < nPrimitives; i = i + 1u) {
                     let hittable = hittableBuffer.hittables[primitiveOffset + i];
-                    switch u32(hittable.typeId) {
-                        default: {
-                            hit = hitSphere(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 1u: {
-                            hit = hitBox(hittable, ray, invDir, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 2u: {
-                            hit = hitCylinder(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 3u: {
-                            hit = hitHexPrism(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 4u: {
-                            hit = hitRotatedBox(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 5u: {
-                            hit = hitXyRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 6u: {
-                            hit = hitXzRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 7u: {
-                            hit = hitYzRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 8u: {
-                            hit = hitRotatedXyRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 9u: {
-                            hit = hitFontXyRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 10u: {
-                            hit = hitRotatedFontXyRect(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 11u: {
-                            hit = hitBoxSdf(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 12u: {
-                            hit = hitCylinderSdf(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                        case 13u: {
-                            hit = hitHexPrismSdf(hittable, ray, tMin, closestSoFar, &tempHitRecord);
-                        }
-                    }
-                    if (hit) {
+                    if (hit(hittable, ray, invDir, tMin, closestSoFar, &tempHitRecord)) {
                         hitAnything = true;
                         closestSoFar = tempHitRecord.t;
                         materialId = hittable.materialId;
@@ -73425,14 +73592,59 @@ fn hitBVH(ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, HitRecord>) -
             currentNodeIndex = nodesToVisit[toVisitOffset];
         }
     }
-
     if (hitAnything) {
         tempHitRecord.material = materialBuffer.materials[u32(materialId)];
         *hitRecord = tempHitRecord;
         return true;
     };
-
     return false;
+}
+
+fn hit(hittable: Hittable, ray: Ray, invDir: vec3<f32>, tMin: f32, tMax: f32, hitRecord: ptr<function, HitRecord>) -> bool {
+    switch u32(hittable.typeId) {
+        default: {
+            return hitSphere(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 1u: {
+            return hitBox(hittable, ray, invDir, tMin, tMax, hitRecord);
+        }
+        case 2u: {
+            return hitCylinder(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 3u: {
+            return hitHexPrism(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 4u: {
+            return hitRotatedBox(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 5u: {
+            return hitXyRect(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 6u: {
+            return hitXzRect(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 7u: {
+            return hitYzRect(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 8u: {
+            return hitRotatedXyRect(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 9u: {
+            return hitFontXyRect(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 10u: {
+            return hitRotatedFontXyRect(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 11u: {
+            return hitBoxSdf(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 12u: {
+            return hitCylinderSdf(hittable, ray, tMin, tMax, hitRecord);
+        }
+        case 13u: {
+            return hitHexPrismSdf(hittable, ray, tMin, tMax, hitRecord);
+        }
+    }
 }
 
 fn intersectBox(center: vec3<f32>, size: vec3<f32>, ray: Ray, invDir: vec3<f32>, tMin: f32, tMax: f32) -> bool {
@@ -73803,12 +74015,12 @@ fn mapHexPrismSdf(p: vec3<f32>, hx: f32, hy: f32, r: f32) -> f32 {
     var p0 = abs(p.zxy);
     let p1 = p0.xy - 2f * min(dot(k.xy, p0.xy), 0f) * k.xy;
     let d = vec2<f32>(length(p1.xy - vec2(clamp(p1.x, -k.z * hx, k.z * hx), hx)) * sign(p1.y - hx), p0.z - hy);
-    return min(max(d.x, d.y), 0f) + length(max(d, vec2<f32>(0f, 0f)));
+    return min(max(d.x, d.y), 0f) + length(max(d, vec2<f32>(0f, 0f))) - r;
 }
 
 fn hitBoxSdf(boxSdf: Hittable, ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, HitRecord>) -> bool {
     var t = tMin;
-    let r = boxSdf.radius;
+    let r = boxSdf.rounding;
     let size = boxSdf.size - r;
     for (var i: u32 = 0u; i < 128u; i = i + 1u) {
         let position = rayAt(ray, t);
@@ -73837,7 +74049,7 @@ fn hitBoxSdf(boxSdf: Hittable, ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<fu
 
 fn hitCylinderSdf(cylinderSdf: Hittable, ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, HitRecord>) -> bool {
     var t = tMin;
-    let r1 = cylinderSdf.radius;
+    let r1 = cylinderSdf.rounding;
     let h0 = cylinderSdf.size.x - r1;
     let r0 = cylinderSdf.size.y - r1;
     for (var i: u32 = 0u; i < 128u; i = i + 1u) {
@@ -73867,7 +74079,7 @@ fn hitCylinderSdf(cylinderSdf: Hittable, ray: Ray, tMin: f32, tMax: f32, hitReco
 
 fn hitHexPrismSdf(hexPrismSdf: Hittable, ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, HitRecord>) -> bool {
     var t = tMin;
-    let r = hexPrismSdf.radius;
+    let r = hexPrismSdf.rounding;
     let hx = hexPrismSdf.size.x - r;
     let hy = hexPrismSdf.size.y - r;
     for (var i: u32 = 0u; i < 128u; i = i + 1u) {
@@ -73940,6 +74152,7 @@ fn hitRectLight(rotatedXyRect: Light, ray: Ray) -> bool {
     var rotatedRay: Ray;
     rotatedRay.origin = rotateQuat(ray.origin - center, invRotation) + center;
     rotatedRay.direction = rotateQuat(ray.direction, invRotation);
+    if (dot(rotatedRay.direction, vec3<f32>(0f, 0f, 1f)) < 0f) { return false; } // Directional light
     let oc = rotatedRay.origin - center;
     let t = -oc.z / rotatedRay.direction.z;
     if (t < 0f) { return false; }
@@ -74113,7 +74326,7 @@ fn rayColor(ray: ptr<function, Ray>, seed: ptr<function, u32>) -> vec3<f32> {
             if (depth > 0u) { // Hide lights, background
                 return hitLights(*ray) * color;
             }
-            else { return vec3<f32>(0f, 0f, 0f); }
+            else { return vec3<f32>(0f, 0f, 0f); } // TODO: Background color
 
             // Background
             // let t = 0.5f * ((*ray).direction.y + 1f);
@@ -74311,8 +74524,9 @@ struct Uniforms {           // ------------------------------
     width: f32,             //              0       4       4
     height: f32,            //              4       4       4
     samplesPerPixel: f32,   //              8       4       4
+    exposure: f32,          //             12       4       4
 }                           // ------------------------------
-                            //                      4      12
+                            //                      4      16
 
 @group(0) @binding(0) var<uniform> uniforms : Uniforms;
 @group(0) @binding(1) var<storage, read> colorBuffer : ColorData;
@@ -74344,8 +74558,10 @@ fn frag_main(@builtin(position) coord: vec4<f32>) -> @location(0) vec4<f32> {
     var color = vec3<f32>(colorBuffer.data[index + 0u], colorBuffer.data[index + 1u], colorBuffer.data[index + 2u]) / uniforms.samplesPerPixel;
 
     // Simple tone-mapping from HDR to LDR
-    color = color / (color + vec3<f32>(1f, 1f, 1f));
+    // color = color * uniforms.exposure;
+    // color = color / (color + vec3<f32>(1f, 1f, 1f));
 
+    // Gamma-correct
     return vec4<f32>(pow(color, GAMMA), 1f);
 }`;
 class FullscreenQuadUniformBufferData extends Float32Array {
@@ -74354,6 +74570,7 @@ class FullscreenQuadUniformBufferData extends Float32Array {
         this.WIDTH_OFFSET = 0;
         this.HEIGHT_OFFSET = 1;
         this.SPP_OFFSET = 2;
+        this.EXPOSURE_OFFSET = 3;
     }
     getWidth() {
         return this[this.WIDTH_OFFSET];
@@ -74373,8 +74590,14 @@ class FullscreenQuadUniformBufferData extends Float32Array {
     setSamplesPerPixel(value) {
         this[this.SPP_OFFSET] = value;
     }
+    getExposure() {
+        return this[this.EXPOSURE_OFFSET];
+    }
+    setExposure(value) {
+        this[this.EXPOSURE_OFFSET] = value;
+    }
 }
-FullscreenQuadUniformBufferData.SIZE = 3;
+FullscreenQuadUniformBufferData.SIZE = 4;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"gTIjl":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -74695,161 +74918,7 @@ class LinearBVHNodeBufferData extends Float32Array {
 }
 LinearBVHNodeBufferData.SIZE = 12;
 
-},{"gl-matrix":"3mrln","../../main.js":"2JYph","./aabb.js":"1HNfg","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1xqM3":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "TextureType", ()=>TextureType);
-parcelHelpers.export(exports, "TextureBufferData", ()=>TextureBufferData);
-parcelHelpers.export(exports, "Texture", ()=>Texture);
-parcelHelpers.export(exports, "SolidColorTexture", ()=>SolidColorTexture);
-parcelHelpers.export(exports, "ImageTexture", ()=>ImageTexture);
-parcelHelpers.export(exports, "CheckerTexture", ()=>CheckerTexture);
-parcelHelpers.export(exports, "GridTexture", ()=>GridTexture);
-/*!
- * Copyright (c) Microsoft Corporation.
- * Licensed under the MIT License.
- */ var _glMatrix = require("gl-matrix");
-const TextureType = {
-    none: 0,
-    solidColor: 1,
-    image: 2,
-    sdfText: 3,
-    checker: 4,
-    grid: 5
-};
-class TextureBufferData extends Float32Array {
-    constructor(count){
-        super(count * TextureBufferData.SIZE);
-        this.COLOR0_OFFSET = 0;
-        this.TYPE_OFFSET = 3;
-        this.COLOR1_OFFSET = 4;
-        this.SIZE0_OFFSET = 8;
-        this.SIZE1_OFFSET = 12;
-        this.OFFSET_OFFSET = 16;
-    }
-    getType(index) {
-        return this[TextureBufferData.SIZE * index + this.TYPE_OFFSET];
-    }
-    setType(index, value) {
-        this[TextureBufferData.SIZE * index + this.TYPE_OFFSET] = value;
-    }
-    getColor0(index, value) {
-        const offset = TextureBufferData.SIZE * index + this.COLOR0_OFFSET;
-        (0, _glMatrix.vec3).set(value, this[offset], this[offset + 1], this[offset + 2]);
-    }
-    setColor0(index, value) {
-        const offset = TextureBufferData.SIZE * index + this.COLOR0_OFFSET;
-        this[offset] = value[0];
-        this[offset + 1] = value[1];
-        this[offset + 2] = value[2];
-    }
-    getColor1(index, value) {
-        const offset = TextureBufferData.SIZE * index + this.COLOR1_OFFSET;
-        (0, _glMatrix.vec3).set(value, this[offset], this[offset + 1], this[offset + 2]);
-    }
-    setColor1(index, value) {
-        const offset = TextureBufferData.SIZE * index + this.COLOR1_OFFSET;
-        this[offset] = value[0];
-        this[offset + 1] = value[1];
-        this[offset + 2] = value[2];
-    }
-    getSize0(index, value) {
-        const offset = TextureBufferData.SIZE * index + this.SIZE0_OFFSET;
-        (0, _glMatrix.vec4).set(value, this[offset], this[offset + 1], this[offset + 2], this[offset + 3]);
-    }
-    setSize0(index, value) {
-        const offset = TextureBufferData.SIZE * index + this.SIZE0_OFFSET;
-        this[offset] = value[0];
-        this[offset + 1] = value[1];
-        this[offset + 2] = value[2];
-        this[offset + 3] = value[3];
-    }
-    getSize1(index, value) {
-        const offset = TextureBufferData.SIZE * index + this.SIZE1_OFFSET;
-        (0, _glMatrix.vec4).set(value, this[offset], this[offset + 1], this[offset + 2], this[offset + 3]);
-    }
-    setSize1(index, value) {
-        const offset = TextureBufferData.SIZE * index + this.SIZE1_OFFSET;
-        this[offset] = value[0];
-        this[offset + 1] = value[1];
-        this[offset + 2] = value[2];
-        this[offset + 3] = value[3];
-    }
-    getOffset(index, value) {
-        const offset = TextureBufferData.SIZE * index + this.OFFSET_OFFSET;
-        (0, _glMatrix.vec2).set(value, this[offset], this[offset + 1]);
-    }
-    setOffset(index, value) {
-        const offset = TextureBufferData.SIZE * index + this.OFFSET_OFFSET;
-        this[offset] = value[0];
-        this[offset + 1] = value[1];
-    }
-}
-TextureBufferData.SIZE = 20;
-class Texture {
-}
-class SolidColorTexture extends Texture {
-    constructor(options){
-        super();
-        this.color = options.color;
-        this._color = (0, _glMatrix.vec3).fromValues(Math.pow(this.color[0], 2.2), Math.pow(this.color[1], 2.2), Math.pow(this.color[2], 2.2));
-    }
-    toBuffer(buffer, index) {
-        buffer.setType(index, TextureType.solidColor);
-        buffer.setColor0(index, this._color);
-    }
-}
-class ImageTexture extends Texture {
-    constructor(options){
-        super();
-        this.image = options.image;
-    }
-    toBuffer(buffer, index) {
-        buffer.setType(index, TextureType.image);
-    }
-}
-class CheckerTexture extends Texture {
-    constructor(options){
-        super();
-        this.color0 = options.color0;
-        this.color1 = options.color1;
-        this.size = options.size;
-        this.offset = options.offset;
-        this._color0 = (0, _glMatrix.vec3).fromValues(Math.pow(this.color0[0], 2.2), Math.pow(this.color0[1], 2.2), Math.pow(this.color0[2], 2.2));
-        this._color1 = (0, _glMatrix.vec3).fromValues(Math.pow(this.color1[0], 2.2), Math.pow(this.color1[1], 2.2), Math.pow(this.color1[2], 2.2));
-    }
-    toBuffer(buffer, index) {
-        buffer.setType(index, TextureType.checker);
-        buffer.setColor0(index, this._color0);
-        buffer.setColor1(index, this._color1);
-        buffer.setSize0(index, (0, _glMatrix.vec4).fromValues(this.size[0], this.size[1], 0, 0));
-        buffer.setOffset(index, this.offset);
-    }
-}
-class GridTexture extends Texture {
-    constructor(options){
-        super();
-        this.color0 = options.color0;
-        this.color1 = options.color1;
-        this.size = options.size;
-        this.minorSize = options.minorSize;
-        this.thickness = options.thickness;
-        this.minorThickness = options.minorThickness;
-        this.offset = options.offset;
-        this._color0 = (0, _glMatrix.vec3).fromValues(Math.pow(this.color0[0], 2.2), Math.pow(this.color0[1], 2.2), Math.pow(this.color0[2], 2.2));
-        this._color1 = (0, _glMatrix.vec3).fromValues(Math.pow(this.color1[0], 2.2), Math.pow(this.color1[1], 2.2), Math.pow(this.color1[2], 2.2));
-    }
-    toBuffer(buffer, index) {
-        buffer.setType(index, TextureType.grid);
-        buffer.setColor0(index, this._color0);
-        buffer.setColor1(index, this._color1);
-        buffer.setSize0(index, (0, _glMatrix.vec4).fromValues(this.size[0], this.size[1], this.minorSize[0], this.minorSize[1]));
-        buffer.setSize1(index, (0, _glMatrix.vec4).fromValues(this.thickness[0], this.thickness[1], this.minorThickness[0], this.minorThickness[1]));
-        buffer.setOffset(index, this.offset);
-    }
-}
-
-},{"gl-matrix":"3mrln","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1kubX":[function(require,module,exports) {
+},{"gl-matrix":"3mrln","../../main.js":"2JYph","./aabb.js":"1HNfg","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1kubX":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "LightType", ()=>LightType);
@@ -74861,7 +74930,6 @@ parcelHelpers.export(exports, "RectLight", ()=>RectLight);
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
  */ var _glMatrix = require("gl-matrix");
-var _aabbJs = require("./aabb.js");
 const LightType = {
     distant: 0,
     sphere: 1,
@@ -74930,70 +74998,41 @@ class LightBufferData extends Float32Array {
 LightBufferData.SIZE = 16;
 class Light {
     constructor(options){
-        this._color = options.color;
-        this._center = options.center;
-        this._bounds = new (0, _aabbJs.AABB)();
-    }
-    get center() {
-        return this._center;
-    }
-    get bounds() {
-        return this._bounds;
+        this.color = options.color;
+        this.center = options.center;
     }
     toBuffer(buffer, index) {
-        buffer.setCenter(index, this._center);
-        buffer.setColor(index, this._color);
+        buffer.setCenter(index, this.center);
+        buffer.setColor(index, this.color);
     }
 }
 class SphereLight extends Light {
     constructor(options){
         super(options);
-        this._radius = options.radius / 2;
-        const min = this._bounds.min;
-        const max = this._bounds.max;
-        min[0] = this._center[0] - this._radius;
-        min[1] = this._center[1] - this._radius;
-        min[2] = this._center[2] - this._radius;
-        max[0] = this._center[0] + this._radius;
-        max[1] = this._center[1] + this._radius;
-        max[2] = this._center[2] + this._radius;
-    }
-    get radius() {
-        return this._radius;
+        this.radius = options.radius / 2;
     }
     toBuffer(buffer, index) {
         super.toBuffer(buffer, index);
         buffer.setType(index, LightType.sphere);
-        buffer.setSize(index, (0, _glMatrix.vec3).fromValues(this._radius, this._radius, this._radius));
+        buffer.setSize(index, (0, _glMatrix.vec3).fromValues(this.radius, this.radius, this.radius));
     }
 }
 class RectLight extends Light {
     constructor(options){
         super(options);
         this._thickness = 0.00001;
-        this._size = options.size;
-        this._rotation = options.rotation;
-        const min = this._bounds.min;
-        const max = this._bounds.max;
-        min[0] = this._center[0] - this._size[0];
-        min[1] = this._center[1] - this._size[1];
-        min[2] = this._center[2] - this._thickness;
-        max[0] = this._center[0] + this._size[0];
-        max[1] = this._center[1] + this._size[1];
-        max[2] = this._center[2] + this._thickness;
-    }
-    get size() {
-        return this._size;
+        this.size = options.size;
+        this.rotation = options.rotation;
     }
     toBuffer(buffer, index) {
         super.toBuffer(buffer, index);
         buffer.setType(index, LightType.rect);
-        buffer.setSize(index, (0, _glMatrix.vec3).fromValues(this._size[0], this._size[1], this._thickness));
-        buffer.setRotation(index, this._rotation);
+        buffer.setSize(index, (0, _glMatrix.vec3).fromValues(this.size[0], this.size[1], this._thickness));
+        buffer.setRotation(index, this.rotation);
     }
 }
 
-},{"gl-matrix":"3mrln","./aabb.js":"1HNfg","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"g1W7O":[function(require,module,exports) {
+},{"gl-matrix":"3mrln","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"g1W7O":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "FontVisual", ()=>FontVisual);
@@ -75091,19 +75130,19 @@ class ImageVisual {
     update() {
         if (this._hasChanged && this._isInitialized) {
             this._hasChanged = false;
-            const material = this._main.materials[this._image.material];
+            const material = this._image.material == -1 ? this._main.config.defaultMaterial : this._main.materials[this._image.material];
             const modelPosition = (0, _glMatrix.vec3).create();
             const modelScale = this._core.getModelScale();
             const modelRotation = (0, _glMatrix.quat).create();
             this._core.getModelRotation(modelRotation);
+            const modelSizeX = this._image.maxBoundsX - this._image.minBoundsX;
+            const modelSizeY = this._image.maxBoundsY - this._image.minBoundsY;
+            const modelSizeZ = this._image.maxBoundsZ - this._image.minBoundsZ;
+            const maxBounds = Math.max(modelSizeX, Math.max(modelSizeY, modelSizeZ));
+            const boundsScaling = maxBounds == 0 ? 1 : 1 / maxBounds;
             (0, _glMatrix.vec3).set(modelPosition, this._main.mMatrix[12], this._main.mMatrix[13], this._main.mMatrix[14]);
             if (this._image instanceof (0, _imageJs.ImageQuad)) {
                 const imageQuad = this._image;
-                const modelSizeX = imageQuad.maxBoundsX - imageQuad.minBoundsX;
-                const modelSizeY = imageQuad.maxBoundsY - imageQuad.minBoundsY;
-                const modelSizeZ = imageQuad.maxBoundsZ - imageQuad.minBoundsZ;
-                const maxBounds = Math.max(modelSizeX, Math.max(modelSizeY, modelSizeZ));
-                const boundsScaling = maxBounds == 0 ? 1 : 1 / maxBounds;
                 const position = (0, _glMatrix.vec3).fromValues((imageQuad.minBoundsX + imageQuad.maxBoundsX) / 2, (imageQuad.minBoundsY + imageQuad.maxBoundsY) / 2, (imageQuad.minBoundsZ + imageQuad.maxBoundsZ) / 2);
                 (0, _glMatrix.vec3).subtract(position, imageQuad.position, position);
                 (0, _glMatrix.vec3).scale(position, position, boundsScaling);
@@ -75121,20 +75160,15 @@ class ImageVisual {
                 this.hittable = new (0, _hittableJs.HittableRotatedXyRect)(hittableRotatedXyRectOptions);
             } else if (this._image instanceof (0, _imageJs.ImageSphere)) {
                 const imageSphere = this._image;
-                const modelSizeX1 = imageSphere.maxBoundsX - imageSphere.minBoundsX;
-                const modelSizeY1 = imageSphere.maxBoundsY - imageSphere.minBoundsY;
-                const modelSizeZ1 = imageSphere.maxBoundsZ - imageSphere.minBoundsZ;
-                const maxBounds1 = Math.max(modelSizeX1, Math.max(modelSizeY1, modelSizeZ1));
-                const boundsScaling1 = maxBounds1 == 0 ? 1 : 1 / maxBounds1;
                 const position1 = imageSphere.position;
                 (0, _glMatrix.vec3).subtract(position1, imageSphere.position, position1);
-                (0, _glMatrix.vec3).scale(position1, position1, boundsScaling1);
+                (0, _glMatrix.vec3).scale(position1, position1, boundsScaling);
                 (0, _glMatrix.vec3).scale(position1, position1, modelScale);
                 (0, _glMatrix.vec3).transformQuat(position1, position1, modelRotation);
                 (0, _glMatrix.vec3).add(position1, position1, modelPosition);
                 const hittableSphereOptions = {
                     center: position1,
-                    radius: imageSphere.radius / 2,
+                    radius: imageSphere.radius * boundsScaling,
                     material: material
                 };
                 this.hittable = new (0, _hittableJs.HittableSphere)(hittableSphereOptions);
@@ -75187,8 +75221,6 @@ parcelHelpers.export(exports, "LabelSetVisual", ()=>LabelSetVisual);
  */ var _glMatrix = require("gl-matrix");
 var _vertexJs = require("../../vertex.js");
 var _hittableJs = require("./hittable.js");
-var _materialJs = require("./material.js");
-var _textureJs = require("./texture.js");
 class LabelSetVisual {
     constructor(core, main, labelSet){
         this._core = core;
@@ -75212,13 +75244,7 @@ class LabelSetVisual {
     update() {
         if (this._hasChanged && this._isInitialized) {
             this._hasChanged = false;
-            let material;
-            if (this._labelSet.material > -1) material = this._main.materials[this._labelSet.material];
-            else material = new (0, _materialJs.LambertianMaterial)({
-                texture: new (0, _textureJs.SolidColorTexture)({
-                    color: (0, _glMatrix.vec3).fromValues(1, 1, 1)
-                })
-            });
+            const material = this._labelSet.material == -1 ? this._main.config.defaultTextMaterial : this._main.materials[this._labelSet.material];
             this.hittables = [];
             const modelPosition = (0, _glMatrix.vec3).create();
             const modelScale = this._core.getModelScale();
@@ -75231,52 +75257,55 @@ class LabelSetVisual {
             const position1 = (0, _glMatrix.vec3).create();
             const dataView = this._labelSet.verticesView;
             const labelCount = this._labelSet.text.length;
-            let glyphCount = 0;
-            for(let j = 0; j < labelCount; j++)glyphCount += this._labelSet.text[j].length;
-            for(let j1 = 0; j1 < glyphCount; j1++){
-                (0, _vertexJs.PositionTexturePickVertex).getPosition(dataView, j1 * 4 + 2, position0);
-                (0, _vertexJs.PositionTexturePickVertex).getPosition(dataView, j1 * 4 + 1, position1);
-                (0, _glMatrix.vec3).scale(position0, position0, modelScale);
-                (0, _glMatrix.vec3).scale(position1, position1, modelScale);
-                (0, _glMatrix.vec3).transformQuat(position0, position0, modelRotation);
-                (0, _glMatrix.vec3).transformQuat(position1, position1, modelRotation);
-                (0, _glMatrix.vec3).add(position0, position0, modelPosition);
-                (0, _glMatrix.vec3).add(position1, position1, modelPosition);
-                const centroid = (0, _glMatrix.vec3).create();
-                (0, _glMatrix.vec3).add(centroid, position0, position1);
-                (0, _glMatrix.vec3).scale(centroid, centroid, 0.5);
-                if (this._labelSet.rotation) (0, _glMatrix.quat).set(glpyhRotation, this._labelSet.rotation[0], this._labelSet.rotation[1], this._labelSet.rotation[2], this._labelSet.rotation[3]);
-                else if (this._labelSet.rotations) (0, _glMatrix.quat).set(glpyhRotation, this._labelSet.rotations[j1 * 4], this._labelSet.rotations[j1 * 4 + 1], this._labelSet.rotations[j1 * 4 + 2], this._labelSet.rotations[j1 * 4 + 3]);
-                else (0, _glMatrix.quat).identity(glpyhRotation);
-                const rotation = (0, _glMatrix.quat).clone(glpyhRotation);
-                (0, _glMatrix.quat).multiply(rotation, modelRotation, rotation);
-                (0, _glMatrix.quat).conjugate(glyphInvRotation, rotation);
-                (0, _glMatrix.vec3).subtract(position0, position0, centroid);
-                (0, _glMatrix.vec3).subtract(position1, position1, centroid);
-                (0, _glMatrix.vec3).transformQuat(position0, position0, glyphInvRotation);
-                (0, _glMatrix.vec3).transformQuat(position1, position1, glyphInvRotation);
-                (0, _glMatrix.vec3).add(position0, position0, centroid);
-                (0, _glMatrix.vec3).add(position1, position1, centroid);
-                const texCoord0 = (0, _glMatrix.vec2).create();
-                const texCoord1 = (0, _glMatrix.vec2).create();
-                (0, _vertexJs.PositionTexturePickVertex).getTexCoord(dataView, j1 * 4 + 2, texCoord0);
-                (0, _vertexJs.PositionTexturePickVertex).getTexCoord(dataView, j1 * 4 + 1, texCoord1);
-                const hittableRotatedXyRectOptions = {
-                    center: centroid,
-                    size: (0, _glMatrix.vec2).fromValues((position1[0] - position0[0]) / 2, (position1[1] - position0[1]) / 2),
-                    material: material,
-                    texCoord0: texCoord0,
-                    texCoord1: texCoord1,
-                    rotation: rotation
-                };
-                this.hittables.push(new (0, _hittableJs.HittableRotatedFontXyRect)(hittableRotatedXyRectOptions));
+            let glyphIndex = 0;
+            for(let i = 0; i < labelCount; i++){
+                const glyphCount = this._labelSet.text[i].length;
+                for(let j = 0; j < glyphCount; j++){
+                    (0, _vertexJs.PositionTexturePickVertex).getPosition(dataView, glyphIndex * 4 + 2, position0);
+                    (0, _vertexJs.PositionTexturePickVertex).getPosition(dataView, glyphIndex * 4 + 1, position1);
+                    (0, _glMatrix.vec3).scale(position0, position0, modelScale);
+                    (0, _glMatrix.vec3).scale(position1, position1, modelScale);
+                    (0, _glMatrix.vec3).transformQuat(position0, position0, modelRotation);
+                    (0, _glMatrix.vec3).transformQuat(position1, position1, modelRotation);
+                    (0, _glMatrix.vec3).add(position0, position0, modelPosition);
+                    (0, _glMatrix.vec3).add(position1, position1, modelPosition);
+                    const centroid = (0, _glMatrix.vec3).create();
+                    (0, _glMatrix.vec3).add(centroid, position0, position1);
+                    (0, _glMatrix.vec3).scale(centroid, centroid, 0.5);
+                    if (this._labelSet.rotation) (0, _glMatrix.quat).set(glpyhRotation, this._labelSet.rotation[0], this._labelSet.rotation[1], this._labelSet.rotation[2], this._labelSet.rotation[3]);
+                    else if (this._labelSet.rotations) (0, _glMatrix.quat).set(glpyhRotation, this._labelSet.rotations[i * 4], this._labelSet.rotations[i * 4 + 1], this._labelSet.rotations[i * 4 + 2], this._labelSet.rotations[i * 4 + 3]);
+                    else (0, _glMatrix.quat).identity(glpyhRotation);
+                    const rotation = (0, _glMatrix.quat).clone(glpyhRotation);
+                    (0, _glMatrix.quat).multiply(rotation, modelRotation, rotation);
+                    (0, _glMatrix.quat).conjugate(glyphInvRotation, rotation);
+                    (0, _glMatrix.vec3).subtract(position0, position0, centroid);
+                    (0, _glMatrix.vec3).subtract(position1, position1, centroid);
+                    (0, _glMatrix.vec3).transformQuat(position0, position0, glyphInvRotation);
+                    (0, _glMatrix.vec3).transformQuat(position1, position1, glyphInvRotation);
+                    (0, _glMatrix.vec3).add(position0, position0, centroid);
+                    (0, _glMatrix.vec3).add(position1, position1, centroid);
+                    const texCoord0 = (0, _glMatrix.vec2).create();
+                    const texCoord1 = (0, _glMatrix.vec2).create();
+                    (0, _vertexJs.PositionTexturePickVertex).getTexCoord(dataView, glyphIndex * 4 + 2, texCoord0);
+                    (0, _vertexJs.PositionTexturePickVertex).getTexCoord(dataView, glyphIndex * 4 + 1, texCoord1);
+                    const hittableRotatedXyRectOptions = {
+                        center: centroid,
+                        size: (0, _glMatrix.vec2).fromValues((position1[0] - position0[0]) / 2, (position1[1] - position0[1]) / 2),
+                        material: material,
+                        texCoord0: texCoord0,
+                        texCoord1: texCoord1,
+                        rotation: rotation
+                    };
+                    this.hittables.push(new (0, _hittableJs.HittableRotatedFontXyRect)(hittableRotatedXyRectOptions));
+                    glyphIndex++;
+                }
             }
             if (this.hasChangedCallback) this.hasChangedCallback();
         }
     }
 }
 
-},{"gl-matrix":"3mrln","../../vertex.js":"7T2qu","./hittable.js":"9GVRY","./material.js":"kU48f","./texture.js":"1xqM3","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"aSkNF":[function(require,module,exports) {
+},{"gl-matrix":"3mrln","../../vertex.js":"7T2qu","./hittable.js":"9GVRY","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"aSkNF":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Buffer", ()=>Buffer);
@@ -75291,8 +75320,6 @@ var _mainJs = require("../../main.js");
 var _paletteJs = require("../../palette.js");
 var _vertexJs = require("../../vertex.js");
 var _hittableJs = require("./hittable.js");
-var _materialJs = require("./material.js");
-var _textureJs = require("./texture.js");
 class Buffer extends (0, _bufferJs.BufferBase) {
     constructor(core, ids){
         super(core, ids);
@@ -75320,22 +75347,7 @@ class TransitionBuffer extends (0, _bufferJs.TransitionBufferBase) {
         if (this._hasChanged && this._isInitialized) {
             this._hasChanged = false;
             const start = window.performance.now();
-            const textures = [
-                new (0, _textureJs.SolidColorTexture)({
-                    color: (0, _glMatrix.vec3).fromValues(0.8, 0.4, 0.2)
-                }),
-                new (0, _textureJs.SolidColorTexture)({
-                    color: (0, _glMatrix.vec3).fromValues(0.8, 0.8, 0.8)
-                }), 
-            ];
-            const materials = [
-                new (0, _materialJs.MetalMaterial)({
-                    texture: textures[1],
-                    fuzz: 0.5
-                }), 
-            ];
             this.hittables = [];
-            const unitScale = (0, _glMatrix.vec4).create();
             const modelPosition = (0, _glMatrix.vec3).create();
             const modelScale = this._core.getModelScale();
             const modelRotation = (0, _glMatrix.quat).create();
@@ -75344,39 +75356,41 @@ class TransitionBuffer extends (0, _bufferJs.TransitionBufferBase) {
             (0, _glMatrix.vec3).set(modelPosition, this._main.mMatrix[12], this._main.mMatrix[13], this._main.mMatrix[14]);
             const buffer = this.currentBuffer;
             for(let j = 0; j < buffer.ids.length; j++){
+                const unitScale = (0, _glMatrix.vec3).create();
+                (0, _vertexJs.UnitVertex).getScale(buffer.dataView, j, unitScale);
                 const unitTranslation = (0, _glMatrix.vec3).create();
                 (0, _vertexJs.UnitVertex).getTranslation(buffer.dataView, j, unitTranslation);
                 const unitRotation = (0, _glMatrix.quat).create();
                 (0, _vertexJs.UnitVertex).getRotation(buffer.dataView, j, unitRotation);
-                (0, _glMatrix.quat).normalize(unitRotation, unitRotation);
                 (0, _glMatrix.quat).multiply(unitRotation, modelRotation, unitRotation);
-                (0, _vertexJs.UnitVertex).getScale(buffer.dataView, j, unitScale);
                 (0, _glMatrix.vec3).scale(unitTranslation, unitTranslation, modelScale);
                 (0, _glMatrix.vec3).transformQuat(unitTranslation, unitTranslation, modelRotation);
                 (0, _glMatrix.vec3).add(unitTranslation, unitTranslation, modelPosition);
-                const size = (0, _glMatrix.vec3).fromValues(unitScale[0] / 2, unitScale[1] / 2, unitScale[2] / 2);
-                (0, _glMatrix.vec3).scale(size, size, modelScale);
+                (0, _glMatrix.vec3).scale(unitScale, unitScale, modelScale / 2);
+                unitScale[0] = Math.max(unitScale[0], 0.00001);
+                unitScale[1] = Math.max(unitScale[1], 0.00001);
+                unitScale[2] = Math.max(unitScale[2], 0.00001);
                 const materialId = (0, _vertexJs.UnitVertex).getMaterial(buffer.dataView, j);
-                const material = this._main.materials ? this._main.materials[materialId] : materials[j % materials.length];
+                const material = this._main.materials && this._main.materials.length > materialId ? this._main.materials[materialId] : this._main.config.defaultMaterial;
                 let hittable;
                 switch(buffer.unitType){
                     case (0, _indexJs.UnitType).sphere:
                     case (0, _indexJs.UnitType).sphereSdf:
                         hittable = new (0, _hittableJs.HittableSphere)({
                             center: unitTranslation,
-                            radius: size[0],
+                            radius: unitScale[0],
                             material: material
                         });
                         break;
                     case (0, _indexJs.UnitType).block:
                         if (unitRotation[3] == 1) hittable = new (0, _hittableJs.HittableBox)({
                             center: unitTranslation,
-                            size: size,
+                            size: unitScale,
                             material: material
                         });
                         else hittable = new (0, _hittableJs.HittableRotatedBox)({
                             center: unitTranslation,
-                            size: size,
+                            size: unitScale,
                             rotation: unitRotation,
                             material: material
                         });
@@ -75384,16 +75398,16 @@ class TransitionBuffer extends (0, _bufferJs.TransitionBufferBase) {
                     case (0, _indexJs.UnitType).blockSdf:
                         hittable = new (0, _hittableJs.HittableBoxSdf)({
                             center: unitTranslation,
-                            size: size,
-                            radius: Math.min(Math.min(size[0], size[1]), size[2]) * 0.1,
+                            size: unitScale,
+                            rounding: Math.min(Math.min(Math.min((0, _vertexJs.UnitVertex).getRounding(buffer.dataView, j) * modelScale, unitScale[0]), unitScale[1]), unitScale[2]),
                             material: material
                         });
                         break;
                     case (0, _indexJs.UnitType).cylinder:
                         hittable = new (0, _hittableJs.HittableCylinder)({
                             center: unitTranslation,
-                            radius: size[0],
-                            height: size[1],
+                            radius: unitScale[0],
+                            height: unitScale[1],
                             rotation: unitRotation,
                             material: material
                         });
@@ -75401,26 +75415,26 @@ class TransitionBuffer extends (0, _bufferJs.TransitionBufferBase) {
                     case (0, _indexJs.UnitType).cylinderSdf:
                         hittable = new (0, _hittableJs.HittableCylinderSdf)({
                             center: unitTranslation,
-                            radius0: size[0],
-                            height: size[1],
-                            radius1: size[0] * 0.025,
+                            radius: unitScale[0],
+                            height: unitScale[1],
+                            rounding: Math.min(Math.min((0, _vertexJs.UnitVertex).getRounding(buffer.dataView, j) * modelScale, unitScale[0]), unitScale[1]),
                             material: material
                         });
                         break;
                     case (0, _indexJs.UnitType).hexPrism:
                         hittable = new (0, _hittableJs.HittableHexPrism)({
                             center: unitTranslation,
-                            radius: size[0],
-                            height: size[1],
+                            radius: unitScale[0],
+                            height: unitScale[1],
                             material: material
                         });
                         break;
                     case (0, _indexJs.UnitType).hexPrismSdf:
                         hittable = new (0, _hittableJs.HittableHexPrismSdf)({
                             center: unitTranslation,
-                            radius0: size[0],
-                            height: size[1],
-                            radius1: Math.min(size[0], size[1]) * 0.1,
+                            radius: unitScale[0],
+                            height: unitScale[1],
+                            rounding: Math.min(Math.min((0, _vertexJs.UnitVertex).getRounding(buffer.dataView, j) * modelScale, unitScale[0]), unitScale[1]),
                             material: material
                         });
                         break;
@@ -75434,7 +75448,32 @@ class TransitionBuffer extends (0, _bufferJs.TransitionBufferBase) {
     }
 }
 
-},{"gl-matrix":"3mrln","../../buffer.js":"lnUI7","../../index.js":"dzm75","../../main.js":"2JYph","../../palette.js":"46mvC","../../vertex.js":"7T2qu","./hittable.js":"9GVRY","./material.js":"kU48f","./texture.js":"1xqM3","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7tmC7":[function(require,module,exports) {
+},{"gl-matrix":"3mrln","../../buffer.js":"lnUI7","../../index.js":"dzm75","../../main.js":"2JYph","../../palette.js":"46mvC","../../vertex.js":"7T2qu","./hittable.js":"9GVRY","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"bR49Z":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Ground", ()=>Ground);
+class Ground {
+    constructor(options){
+        if (options) {
+            this.position = options.position;
+            this.size = options.size;
+            this.material = options.material;
+        }
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"coNIr":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+/*!
+ * Copyright (c) Microsoft Corporation.
+ * Licensed under the MIT License.
+ */ parcelHelpers.export(exports, "Constants", ()=>Constants);
+class Constants {
+}
+Constants.SHADOW_OFFSET = 0.001;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7tmC7":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 /*!
@@ -75453,13 +75492,15 @@ parcelHelpers.defineInteropFlag(exports);
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
  */ parcelHelpers.export(exports, "CameraBase", ()=>(0, _cameraJs.CameraBase));
-parcelHelpers.export(exports, "OrbitCamera", ()=>(0, _orbitJs.OrbitCamera));
+parcelHelpers.export(exports, "CameraView", ()=>(0, _cameraJs.CameraView));
 parcelHelpers.export(exports, "AltAzimuthCamera", ()=>(0, _altazimuthJs.AltAzimuthCamera));
+parcelHelpers.export(exports, "AltAzimuthCameraView", ()=>(0, _altazimuthJs.AltAzimuthCameraView));
+parcelHelpers.export(exports, "OrbitCamera", ()=>(0, _orbitJs.OrbitCamera));
 var _cameraJs = require("./camera.js");
-var _orbitJs = require("./orbit.js");
 var _altazimuthJs = require("./altazimuth.js");
+var _orbitJs = require("./orbit.js");
 
-},{"./camera.js":"ielbK","./orbit.js":"71pR9","./altazimuth.js":"jbaDq","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"71pR9":[function(require,module,exports) {
+},{"./camera.js":"ielbK","./altazimuth.js":"jbaDq","./orbit.js":"71pR9","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"71pR9":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "OrbitCamera", ()=>OrbitCamera);
