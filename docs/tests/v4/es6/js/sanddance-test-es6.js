@@ -86896,9 +86896,9 @@ function assignTransitionStagger(transition, currentData, selection, presenter) 
             case "position":
                 {
                     const dimensions = {
-                        "x": cubelayer.positionsX,
-                        "y": cubelayer.positionsY,
-                        "z": cubelayer.positionsZ
+                        x: cubelayer.positionsX,
+                        y: cubelayer.positionsY,
+                        z: cubelayer.positionsZ
                     };
                     const positions = dimensions[transition.dimension];
                     const values1 = new Float64Array(currentData.length);
