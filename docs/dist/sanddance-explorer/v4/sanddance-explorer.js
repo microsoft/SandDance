@@ -36896,9 +36896,9 @@ function $09e8510904f131d2$export$2be97f482a239d30(transition, currentData, sele
             case "position":
                 {
                     const dimensions = {
-                        "x": cubelayer.positionsX,
-                        "y": cubelayer.positionsY,
-                        "z": cubelayer.positionsZ
+                        x: cubelayer.positionsX,
+                        y: cubelayer.positionsY,
+                        z: cubelayer.positionsZ
                     };
                     const positions = dimensions[transition.dimension];
                     const values1 = new Float64Array(currentData.length);

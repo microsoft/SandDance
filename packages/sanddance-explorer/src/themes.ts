@@ -34,7 +34,7 @@ themePalettes[''] = {
     neutralPrimary: '#000000',
     neutralDark: '#151515',
     black: '#0b0b0b',
-    white: '#ffffff'
+    white: '#ffffff',
 };
 
 themePalettes['dark-theme'] = {
@@ -60,7 +60,7 @@ themePalettes['dark-theme'] = {
     neutralPrimary: '#ffffff',
     neutralDark: '#f4f4f4',
     black: '#f8f8f8',
-    white: '#000000'
+    white: '#000000',
 };
 
 export function getColorSettingsFromThemePalette(themePalette: Partial<FluentUITypes.IPalette>): Partial<ColorSettings> {

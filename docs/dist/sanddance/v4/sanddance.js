@@ -3717,7 +3717,7 @@
                                     }
                                 :
                                     {
-                                        value: 0
+                                        value: 0,
                                     },
                         ],
                     }),
@@ -4131,7 +4131,7 @@
                                     }
                                 :
                                     {
-                                        value: 0
+                                        value: 0,
                                     },
                         ],
                     }),
@@ -4335,7 +4335,7 @@
                                     }
                                 :
                                     {
-                                        value: 0
+                                        value: 0,
                                     },
                         ],
                     }),
@@ -27443,9 +27443,9 @@ f 5/6/6 1/12/6 8/11/6`;
                 }
                 case 'position': {
                     const dimensions = {
-                        'x': cubelayer.positionsX,
-                        'y': cubelayer.positionsY,
-                        'z': cubelayer.positionsZ,
+                        x: cubelayer.positionsX,
+                        y: cubelayer.positionsY,
+                        z: cubelayer.positionsZ,
                     };
                     const positions = dimensions[transition.dimension];
                     const values = new Float64Array(currentData.length);
