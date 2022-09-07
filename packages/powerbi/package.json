@@ -34,5 +34,8 @@
     "powerbi-visuals-tools": "^4",
     "tslint": "^5.20.1",
     "tslint-microsoft-contrib": "^6.2.0"
+  },
+  "overrides": {
+    "typescript": "^4.8.2"
   }
 }
