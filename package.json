@@ -74,7 +74,7 @@
         "rollup": "^2.70.1",
         "sass": "^1.32.4",
         "ts-loader": "^7.0.5",
-        "typedoc": "^0.21.9",
+        "typedoc": "^0.23.14",
         "typescript": "^4.8.2",
         "unified": "^7.0.2",
         "vsce": "^2.9.2",
