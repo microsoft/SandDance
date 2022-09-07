@@ -32,7 +32,7 @@
     "@msrvida/chart-types": "^1",
     "@msrvida/search-expression": "^1",
     "d3-color": "^1.4.0",
-    "vega-typings": "0.21.0"
+    "vega-typings": "0.22.3"
   },
   "devDependencies": {
     "vega": "5.20"

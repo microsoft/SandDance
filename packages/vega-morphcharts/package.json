@@ -30,7 +30,7 @@
 		"is-plain-object": "^5.0.0",
 		"morphcharts": "^1",
 		"tsx-create-element": "^2.2.5",
-		"vega-typings": "0.21.0"
+		"vega-typings": "0.22.3"
 	},
 	"devDependencies": {
 		"@types/d3-color": "^3.1.0",

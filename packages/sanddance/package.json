@@ -34,6 +34,6 @@
     "@msrvida/sanddance-specs": "^1",
     "@msrvida/search-expression": "^1",
     "@msrvida/vega-morphcharts": "^1",
-    "vega-typings": "0.21.0"
+    "vega-typings": "0.22.3"
   }
 }
