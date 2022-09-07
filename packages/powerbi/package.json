@@ -36,6 +36,6 @@
     "tslint-microsoft-contrib": "^6.2.0"
   },
   "overrides": {
-    "typescript": "^4.8.2"
+    "typescript": "4.4"
   }
 }
