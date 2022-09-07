@@ -4,7 +4,7 @@
 */
 
 import * as VegaMorphCharts from '@msrvida/vega-morphcharts';
-import { Transition } from "./types";
+import { Transition } from './types';
 import { getStats } from '@msrvida/sanddance-specs';
 import { scaleLinear } from 'd3-scale';
 import { GL_ORDINAL } from './constants';
@@ -59,9 +59,9 @@ export function assignTransitionStagger(transition: Transition, currentData: obj
             }
             case 'position': {
                 const dimensions: { [key in Dimension3D]: Float64Array } = {
-                    'x': cubelayer.positionsX,
-                    'y': cubelayer.positionsY,
-                    'z': cubelayer.positionsZ,
+                    x: cubelayer.positionsX,
+                    y: cubelayer.positionsY,
+                    z: cubelayer.positionsZ,
                 };
                 const positions = dimensions[transition.dimension];
                 const values = new Float64Array(currentData.length);
@@ -80,5 +80,5 @@ export function assignTransitionStagger(transition: Transition, currentData: obj
         }
         layerStagger.cubes = { staggerOrders, maxStaggerOrder: 1, minStaggerOrder: 0 };
     }
-    cubelayer.update(morphChartsRenderResult.bounds, selection, layerStagger.cubes)
+    cubelayer.update(morphChartsRenderResult.bounds, selection, layerStagger.cubes);
 }

@@ -27,11 +27,11 @@ export const defaultRenderer: SandDance.VegaMorphCharts.types.MorphChartsRendere
         dofFocusRange: 0.25,
         isFxaaEnabled: false,
         isShadowEnabled: true,
-        isSsaoEnabled: true
+        isSsaoEnabled: true,
     },
     basicOptions: {
-        antialias: true
-    }
+        antialias: true,
+    },
 };
 
 export function initialExplorerState(props: Props) {

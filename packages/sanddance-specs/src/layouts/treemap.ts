@@ -229,7 +229,7 @@ export class Treemap extends Layout {
                                 }
                                 :
                                 {
-                                    value: 0
+                                    value: 0,
                                 },
                         ],
                     },

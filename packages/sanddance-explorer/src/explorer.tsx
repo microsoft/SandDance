@@ -175,8 +175,8 @@ function _Explorer(_props: Props) {
                                     }
                                 }
                                 return ret;
-                            })
-                        }
+                            }),
+                        },
                     },
                     this.viewerOptions,
                     viewerOptions,

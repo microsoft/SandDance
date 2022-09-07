@@ -319,10 +319,10 @@ function _Chart(_props: Props) {
                                         switch (props.chart) {
                                             case 'scatterplot':
                                             case 'stacks':
-                                                {
-                                                    insightColumns = props.insightColumns;
-                                                    break;
-                                                }
+                                            {
+                                                insightColumns = props.insightColumns;
+                                                break;
+                                            }
                                         }
                                         if (!insightColumns) {
                                             insightColumns = props.explorer.changeChartType('scatterplot');

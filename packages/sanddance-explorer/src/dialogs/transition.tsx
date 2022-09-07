@@ -72,7 +72,7 @@ function _TransitionEditor(_props: Props) {
                         this.autoScrubber.stop();
                     }
                     this.setScrubState(scrub);
-                }
+                },
             );
         }
 
