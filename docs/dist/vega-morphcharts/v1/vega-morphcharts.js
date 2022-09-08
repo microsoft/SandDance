@@ -19399,7 +19399,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	* Copyright (c) Microsoft Corporation.
 	* Licensed under the MIT License.
 	*/
-	const version = '1.0.2';
+	const version = '1.0.3';
 
 	exports.Presenter = Presenter;
 	exports.ViewGl = ViewGl;
