@@ -32,12 +32,6 @@
                     "type": {
                         "bool": true
                     }
-                },
-                "showdebug": {
-                    "displayName": "Show debug",
-                    "type": {
-                        "bool": true
-                    }
                 }
             }
         },
