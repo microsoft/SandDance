@@ -15,7 +15,7 @@ title: Examples
 * [vega spec test](../tests/v4/es6/vega-morphcharts-test-es6.html) using bundled es6
 * [transition between vega specs](../tests/v4/umd/transition.html) using UMD/CDN
 
-## <a name="component"></a>SandDance component v4 Beta
+## <a name="component"></a>SandDance component v4
 * [simple scatterplot](../tests/v4/umd/test.html) using UMD/CDN
 * [scatterplot fetch + transform](../tests/v4/umd/transforms.html) using UMD/CDN
 * [scatterplot](../tests/v4/es6/sanddance-test-es6.html) using bundled ES6
@@ -25,10 +25,11 @@ title: Examples
 * [titanic treemap](../tests/v4/umd/treeMapTest.html) using UMD/CDN
 * [react component](../tests/v4/umd/sanddance-react.html) using UMD/CDN
 
-## <a name="apps"></a>SandDance apps v4 Beta
+## <a name="apps"></a>SandDance apps v4
 * [Web app](../tests/v4/es6/app)
-* [Power BI custom visual](../dist/powerbi/v4/SandDance2019beta4.4.0.9.pbiviz) SandDance 2019 beta4 4.0.9
-* [VSCode extension](../dist/vscode/v4/vscode-sanddance-4.0.0.vsix) SandDance 4.0.0
+* [Power BI custom visual](../dist/powerbi/v4/SandDance2019.4.0.0.pbiviz) SandDance 4.0.0
+* [Azure Data Studio extension](../dist/azdata/v4/azdata-sanddance-4.0.0.vsix) SandDance 4.0.0
+* [VSCode extension](../dist/vscode/v4/vscode-sanddance-4.0.1.vsix) SandDance 4.0.1
 
 ## Previous versions
 

@@ -7,7 +7,7 @@ body {
 body {
     display: grid;
     font-family: 'Segoe UI', sans-serif;
-    grid-template-rows: 0fr auto 0fr;
+    grid-template-rows: auto 0fr;
 }
 select,
 button,

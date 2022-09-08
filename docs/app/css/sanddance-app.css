@@ -24,6 +24,7 @@
 }
 
 .sanddance-gl {
+  overflow: hidden;
   position: absolute;
   top: 0;
   left: 0;
@@ -33,6 +34,10 @@
 
 .sanddance-gl.show-center {
   background: linear-gradient(to right, transparent 49.9%, rgba(255, 0, 0, 0.7), transparent 50.1%), linear-gradient(to bottom, transparent 49.9%, rgba(255, 0, 0, 0.7), transparent 50.1%);
+}
+
+.sanddance-gl canvas {
+  outline: none;
 }
 
 .sanddance-panel {
@@ -161,14 +166,14 @@
 }
 
 .sanddance-explorer-topbar .logo {
-  color: #0078d4;
+  color: rgb(0, 120, 212);
   display: grid;
   grid-template-columns: 50px auto;
   padding: 6px 0;
 }
 
 .sanddance-explorer-topbar .logo svg {
-  fill: #0078d4;
+  fill: rgb(0, 120, 212);
   height: 24px;
   margin: 0 auto;
   width: 24px;
@@ -300,11 +305,11 @@
 }
 
 .sanddance-sidebar .vbutton button .ms-Button-icon {
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .sanddance-sidebar .sidebar-dialogs .vbutton {
-  height: 16%;
+  height: 16.6666666667%;
   max-height: 60px;
   min-height: 32px;
 }
@@ -400,7 +405,7 @@
 }
 
 .sanddance-datascope .datascope-button:hover {
-  background-color: #0078d4;
+  background-color: rgb(0, 120, 212);
   color: #fff;
 }
 
@@ -409,7 +414,7 @@
 }
 
 .sanddance-datascope.active .datascope-button.selected {
-  border-color: #0078d4;
+  border-color: rgb(0, 120, 212);
 }
 
 .dark-theme .sanddance-datascope {
@@ -424,7 +429,7 @@
 }
 
 .dark-theme .sanddance-datascope .datascope-button:hover {
-  background-color: #0078d4;
+  background-color: rgb(0, 120, 212);
   color: #fff;
 }
 
@@ -442,7 +447,7 @@
 }
 
 .sanddance-dataItem .name-value:hover {
-  background-color: #0078d4;
+  background-color: rgb(0, 120, 212);
   color: #fff;
 }
 
@@ -635,7 +640,7 @@
 }
 
 .dark-theme .sanddance-snapshots .snapshot:hover {
-  background-color: black;
+  background-color: rgb(0, 0, 0);
 }
 
 .dark-theme .sanddance-snapshots .actions a {
@@ -728,7 +733,8 @@
   z-index: 2;
 }
 
-.sanddance-tooltipMap {
+.sanddance-chart-button {
+  display: block;
   margin-top: 10px;
 }
 
@@ -789,8 +795,8 @@
 .sanddance-main .sanddance-layout-unpinned, .sanddance-main .sanddance-layout-pinned {
   position: absolute;
   top: 0;
-  left: 50px;
-  right: 150px;
+  left: 0;
+  right: 0;
   bottom: 0;
 }
 
@@ -803,9 +809,10 @@
 }
 
 .sanddance-main .sanddance-ReactViewer {
+  overflow: hidden;
   position: absolute;
   top: 0;
-  left: -100px;
+  left: 0;
   bottom: 0;
   right: 0;
 }
@@ -848,6 +855,53 @@
 
 .sanddance-main span.ms-layer {
   display: none;
+}
+
+.sanddance-advanced-renderer {
+  height: 36px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 40px;
+}
+
+.sanddance-renderer-dialog ul {
+  list-style-type: none;
+  padding-left: 2em;
+}
+
+.sanddance-background-image-dialog {
+  min-width: 32em;
+}
+
+.sanddance-background-image-dialog .thumbnail {
+  border-bottom: 1px solid #ccc;
+  display: grid;
+  grid-template-columns: auto auto;
+  padding-bottom: 1em;
+}
+
+.sanddance-background-image-dialog .thumbnail > * {
+  align-self: center;
+}
+
+.sanddance-background-image-dialog .thumbnail img {
+  margin-right: 1em;
+  max-height: 160px;
+  max-width: 16em;
+  object-fit: contain;
+}
+
+.sanddance-background-image-dialog .axis-bounds {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1em;
+}
+
+.sanddance-background-image-dialog .axis-bound-fields {
+  display: grid;
+  column-gap: 1em;
+  grid-template-columns: auto auto;
+  margin-bottom: 1em;
 }
 
 #sanddance-vega-spec {
@@ -909,7 +963,7 @@
 }
 
 .sanddance-legend .legend-row:hover {
-  background-color: #0078d4;
+  background-color: rgb(0, 120, 212);
   color: #fff;
 }
 
