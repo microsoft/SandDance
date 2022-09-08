@@ -61,7 +61,7 @@ export interface State {
 export class App extends React.Component<Props, State> {
     private viewerOptions: Partial<SandDance.types.ViewerOptions>;
     public explorer: Explorer_Class;
-    private cameraTimer: number;
+    private cameraTimer: NodeJS.Timeout;
     public lastCamera: SandDance.types.Camera;
     public lastCameraStable: boolean;
 
@@ -88,7 +88,7 @@ export class App extends React.Component<Props, State> {
         return {
             colors: getColorSettingsFromThemePalette(themePalettes[darkTheme ? 'dark-theme' : '']),
             onCubeClick: (e, cube) => {
-                const { button } = e as unknown as PointerEvent;
+                const { button } = <PointerEvent>e;
                 if (button === RIGHT_MOUSE_BUTTON) {
                     const row = this.explorer.state.dataContent.data[cube.ordinal];
                     const selectionId = row[SandDance.constants.FieldNames.PowerBISelectionId];
@@ -147,7 +147,7 @@ export class App extends React.Component<Props, State> {
         this.lastCameraStable = stable;
         this.lastCamera = viewer.getCamera(transitionFinal);
         const { transitionDurations } = viewer.setup;
-        this.cameraTimer = setTimeout(() => this.listenToCamera(), transitionDurations.position + transitionDurations.stagger + cameraSettle) as unknown as number;
+        this.cameraTimer = setTimeout(() => this.listenToCamera(), transitionDurations.position + transitionDurations.stagger + cameraSettle);
     }
 
     private endCameraListener() {

@@ -14,7 +14,7 @@ You will need to consider how to load the libraries that `sanddance` depends on,
 
 Load dependencies via `<script>` tags in your HTML:
 ```html
-<script src="https://unpkg.com/vega@^5.20/build/vega.js" charset="utf-8"></script>
+<script src="https://unpkg.com/vega@^5.22/build/vega.js" charset="utf-8"></script>
 <script src="https://unpkg.com/@msrvida/sanddance@^4/dist/umd/sanddance.js"></script>
 ```
 
@@ -30,7 +30,7 @@ Add these to the `dependencies` section of your `package.json`, then run `npm in
 
 ```json
 "@msrvida/sanddance": "^4",
-"vega": "^5.20"
+"vega": "^5.22"
 ```
 
 Import these in your JavaScript, then call the `use()` function to pass the dependency libraries to `SandDance.VegaMorphCharts`:

@@ -98,7 +98,7 @@ var $818261f0bc10eb56$var$BarChartRecommenderSummary = /** @class */ function() 
             if (column.name === this.best.columns.x || column.stats.isSequential) continue;
             if (column.quantitative || column.stats.distinctValueCount < $mKnoG.maxCategoricalColors && column.stats.distinctValueCount > 1) {
                 this.best.columns.color = this.best.columns.sort = column.name;
-                this.best.scheme = $mKnoG.defaultColorScheme(column);
+                this.best.scheme = (0, $mKnoG.defaultColorScheme)(column);
                 if (column.quantitative) this.best.colorBin = "quantile";
                 break;
             }
@@ -243,16 +243,16 @@ var $482125d789b1323b$var$ScatterPlotRecommenderSummary = /** @class */ function
         columns.forEach(function(column) {
             if (!rec.columns.x) {
                 if (column.name.toLowerCase() === "x") return rec.columns.x = column.name;
-                else if ($a7afS.isLongitude(column)) return rec.columns.x = column.name;
+                else if ((0, $a7afS.isLongitude)(column)) return rec.columns.x = column.name;
             }
             if (!rec.columns.y) {
                 if (column.name.toLowerCase() === "y") return rec.columns.y = column.name;
-                else if ($a7afS.isLatitude(column)) return rec.columns.y = column.name;
+                else if ((0, $a7afS.isLatitude)(column)) return rec.columns.y = column.name;
             }
             if (!rec.columns.color && !column.stats.isSequential) {
                 if (column.quantitative || column.stats.distinctValueCount < $mKnoG.maxCategoricalColors) {
                     rec.columns.color = rec.columns.sort = column.name;
-                    rec.scheme = $mKnoG.defaultColorScheme(column);
+                    rec.scheme = (0, $mKnoG.defaultColorScheme)(column);
                     if (column.quantitative) rec.colorBin = "quantile";
                     return;
                 }
@@ -286,7 +286,7 @@ function $178167658ad4c5ea$var$preferredColumnForTreemapSize(columns, strict) {
         if (c.quantitative) {
             if (strict && c.stats.hasNegative) continue;
             if (strict && c.stats.isSequential) continue;
-            if (strict && $a7afS.isGeo(c)) continue;
+            if (strict && (0, $a7afS.isGeo)(c)) continue;
             return c;
         }
     }
@@ -38860,7 +38860,7 @@ const $8f1b85a9470d3af5$export$c4b7cd609ccf4a5a = (title, embed)=>`<!DOCTYPE htm
 <body>
     <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/vega@5.20/build/vega.min.js"></script>
+    <script src="https://unpkg.com/vega@5.22/build/vega.min.js"></script>
     <script src="https://unpkg.com/@fluentui/react@8/dist/fluentui-react.js"></script>
     <script src="https://unpkg.com/@msrvida/sanddance-explorer@4/dist/umd/sanddance-explorer.js"></script>
     <script src="https://unpkg.com/@msrvida/sanddance-embed@4/dist/umd/sanddance-embed.js"></script>
