@@ -216,9 +216,9 @@ parcelHelpers.export(exports, "timeFormatLocale", ()=>(0, _vegaFormat.timeFormat
 parcelHelpers.export(exports, "expressionFunction", ()=>(0, _vegaFunctions.expressionFunction));
 parcelHelpers.export(exports, "parse", ()=>(0, _vegaParser.parse));
 parcelHelpers.export(exports, "runtimeContext", ()=>(0, _vegaRuntime.context));
-parcelHelpers.export(exports, "codegenExpression", ()=>(0, _vegaExpression.codegen));
-parcelHelpers.export(exports, "parseExpression", ()=>(0, _vegaExpression.parse));
-parcelHelpers.export(exports, "parseSelector", ()=>(0, _vegaEventSelector.selector));
+parcelHelpers.export(exports, "codegenExpression", ()=>(0, _vegaExpression.codegenExpression));
+parcelHelpers.export(exports, "parseExpression", ()=>(0, _vegaExpression.parseExpression));
+parcelHelpers.export(exports, "parseSelector", ()=>(0, _vegaEventSelector.parseSelector));
 parcelHelpers.export(exports, "version", ()=>version);
 var _vegaUtil = require("vega-util");
 var _vegaDataflow = require("vega-dataflow");
@@ -251,90 +251,9 @@ var _vegaParser = require("vega-parser");
 var _vegaRuntime = require("vega-runtime");
 var _vegaExpression = require("vega-expression");
 var _vegaEventSelector = require("vega-event-selector");
-var name = "vega";
-var version$1 = "5.20.2";
-var description = "The Vega visualization grammar.";
-var keywords = [
-    "vega",
-    "visualization",
-    "interaction",
-    "dataflow",
-    "library",
-    "data",
-    "d3"
-];
-var license = "BSD-3-Clause";
-var author = "UW Interactive Data Lab (http://idl.cs.washington.edu)";
-var main = "build/vega-node.js";
-var module = "build/vega.module.js";
-var unpkg = "build/vega.min.js";
-var jsdelivr = "build/vega.min.js";
-var types = "index.d.ts";
-var repository = "vega/vega";
-var scripts = {
-    bundle: "rollup -c --config-bundle",
-    prebuild: "rimraf build && rimraf build-es5",
-    build: "rollup -c --config-core --config-bundle --config-ie",
-    postbuild: "node schema-copy",
-    pretest: "yarn build --config-test",
-    test: "TZ=America/Los_Angeles tape 'test/**/*-test.js'",
-    prepublishOnly: "yarn test && yarn build",
-    postpublish: "./schema-deploy.sh"
-};
-var dependencies = {
-    "vega-crossfilter": "~4.0.5",
-    "vega-dataflow": "~5.7.4",
-    "vega-encode": "~4.8.3",
-    "vega-event-selector": "~2.0.6",
-    "vega-expression": "~4.0.1",
-    "vega-force": "~4.0.7",
-    "vega-format": "~1.0.4",
-    "vega-functions": "~5.12.0",
-    "vega-geo": "~4.3.8",
-    "vega-hierarchy": "~4.0.9",
-    "vega-label": "~1.0.0",
-    "vega-loader": "~4.4.0",
-    "vega-parser": "~6.1.3",
-    "vega-projection": "~1.4.5",
-    "vega-regression": "~1.0.9",
-    "vega-runtime": "~6.1.3",
-    "vega-scale": "~7.1.1",
-    "vega-scenegraph": "~4.9.4",
-    "vega-statistics": "~1.7.9",
-    "vega-time": "~2.0.4",
-    "vega-transforms": "~4.9.4",
-    "vega-typings": "~0.21.0",
-    "vega-util": "~1.16.1",
-    "vega-view": "~5.10.1",
-    "vega-view-transforms": "~4.5.8",
-    "vega-voronoi": "~4.1.5",
-    "vega-wordcloud": "~4.1.3"
-};
-var devDependencies = {
-    "vega-schema": "*"
-};
-var gitHead = "e251dbc61ab6645689d9f349e7dd9d15ddb85bce";
-var pkg = {
-    name: name,
-    version: version$1,
-    description: description,
-    keywords: keywords,
-    license: license,
-    author: author,
-    main: main,
-    module: module,
-    unpkg: unpkg,
-    jsdelivr: jsdelivr,
-    types: types,
-    repository: repository,
-    scripts: scripts,
-    dependencies: dependencies,
-    devDependencies: devDependencies,
-    gitHead: gitHead
-};
+var version = "5.22.1";
 // -- Transforms -----
 (0, _vegaUtil.extend)((0, _vegaDataflow.transforms), _vegaTransforms, _vegaViewTransforms, _vegaEncode, _vegaGeo, _vegaForce, _vegaLabel, _vegaHierarchy, _vegaRegression, _vegaVoronoi, _vegaWordcloud, _vegaCrossfilter); // -- Exports -----
-const version = pkg.version;
 
 },{"vega-util":"bApja","vega-dataflow":"3NitK","vega-transforms":"gA9mK","vega-view-transforms":"i63Ad","vega-encode":"fpesP","vega-geo":"3rF9B","vega-force":"4JCry","vega-hierarchy":"lserr","vega-label":"lZyUZ","vega-regression":"elv3U","vega-voronoi":"96rkJ","vega-wordcloud":"7Z7Aq","vega-crossfilter":"8iEZv","vega-statistics":"5ncfv","vega-time":"27kpp","vega-loader":"gmbOr","vega-scenegraph":"jattk","vega-scale":"bEydG","vega-projection":"4wv4C","vega-view":"cGC2i","vega-format":"47kOt","vega-functions":"iuqsd","vega-parser":"hsy9Z","vega-runtime":"k7ppL","vega-expression":"2l1no","vega-event-selector":"gXMNx","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"bApja":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -506,7 +425,7 @@ const Error$1 = 1;
 const Warn = 2;
 const Info = 3;
 const Debug = 4;
-function logger(_, method) {
+function logger(_, method, handler = log$1) {
     let level = _ || None;
     return {
         level (_) {
@@ -516,19 +435,19 @@ function logger(_, method) {
             } else return level;
         },
         error () {
-            if (level >= Error$1) log$1(method || "error", "ERROR", arguments);
+            if (level >= Error$1) handler(method || "error", "ERROR", arguments);
             return this;
         },
         warn () {
-            if (level >= Warn) log$1(method || "warn", "WARN", arguments);
+            if (level >= Warn) handler(method || "warn", "WARN", arguments);
             return this;
         },
         info () {
-            if (level >= Info) log$1(method || "log", "INFO", arguments);
+            if (level >= Info) handler(method || "log", "INFO", arguments);
             return this;
         },
         debug () {
-            if (level >= Debug) log$1(method || "log", "DEBUG", arguments);
+            if (level >= Debug) handler(method || "log", "DEBUG", arguments);
             return this;
         }
     };
@@ -4034,6 +3953,9 @@ parcelHelpers.export(exports, "bisectLeft", ()=>(0, _bisectJs.bisectLeft));
 parcelHelpers.export(exports, "bisectCenter", ()=>(0, _bisectJs.bisectCenter));
 parcelHelpers.export(exports, "ascending", ()=>(0, _ascendingJsDefault.default));
 parcelHelpers.export(exports, "bisector", ()=>(0, _bisectorJsDefault.default));
+parcelHelpers.export(exports, "blur", ()=>(0, _blurJs.blur));
+parcelHelpers.export(exports, "blur2", ()=>(0, _blurJs.blur2));
+parcelHelpers.export(exports, "blurImage", ()=>(0, _blurJs.blurImage));
 parcelHelpers.export(exports, "count", ()=>(0, _countJsDefault.default));
 parcelHelpers.export(exports, "cross", ()=>(0, _crossJsDefault.default));
 parcelHelpers.export(exports, "cumsum", ()=>(0, _cumsumJsDefault.default));
@@ -4044,6 +3966,8 @@ parcelHelpers.export(exports, "Adder", ()=>(0, _fsumJs.Adder));
 parcelHelpers.export(exports, "fsum", ()=>(0, _fsumJs.fsum));
 parcelHelpers.export(exports, "fcumsum", ()=>(0, _fsumJs.fcumsum));
 parcelHelpers.export(exports, "group", ()=>(0, _groupJsDefault.default));
+parcelHelpers.export(exports, "flatGroup", ()=>(0, _groupJs.flatGroup));
+parcelHelpers.export(exports, "flatRollup", ()=>(0, _groupJs.flatRollup));
 parcelHelpers.export(exports, "groups", ()=>(0, _groupJs.groups));
 parcelHelpers.export(exports, "index", ()=>(0, _groupJs.index));
 parcelHelpers.export(exports, "indexes", ()=>(0, _groupJs.indexes));
@@ -4060,16 +3984,20 @@ parcelHelpers.export(exports, "max", ()=>(0, _maxJsDefault.default));
 parcelHelpers.export(exports, "maxIndex", ()=>(0, _maxIndexJsDefault.default));
 parcelHelpers.export(exports, "mean", ()=>(0, _meanJsDefault.default));
 parcelHelpers.export(exports, "median", ()=>(0, _medianJsDefault.default));
+parcelHelpers.export(exports, "medianIndex", ()=>(0, _medianJs.medianIndex));
 parcelHelpers.export(exports, "merge", ()=>(0, _mergeJsDefault.default));
 parcelHelpers.export(exports, "min", ()=>(0, _minJsDefault.default));
 parcelHelpers.export(exports, "minIndex", ()=>(0, _minIndexJsDefault.default));
+parcelHelpers.export(exports, "mode", ()=>(0, _modeJsDefault.default));
 parcelHelpers.export(exports, "nice", ()=>(0, _niceJsDefault.default));
 parcelHelpers.export(exports, "pairs", ()=>(0, _pairsJsDefault.default));
 parcelHelpers.export(exports, "permute", ()=>(0, _permuteJsDefault.default));
 parcelHelpers.export(exports, "quantile", ()=>(0, _quantileJsDefault.default));
+parcelHelpers.export(exports, "quantileIndex", ()=>(0, _quantileJs.quantileIndex));
 parcelHelpers.export(exports, "quantileSorted", ()=>(0, _quantileJs.quantileSorted));
 parcelHelpers.export(exports, "quickselect", ()=>(0, _quickselectJsDefault.default));
 parcelHelpers.export(exports, "range", ()=>(0, _rangeJsDefault.default));
+parcelHelpers.export(exports, "rank", ()=>(0, _rankJsDefault.default));
 parcelHelpers.export(exports, "least", ()=>(0, _leastJsDefault.default));
 parcelHelpers.export(exports, "leastIndex", ()=>(0, _leastIndexJsDefault.default));
 parcelHelpers.export(exports, "greatest", ()=>(0, _greatestJsDefault.default));
@@ -4106,6 +4034,7 @@ var _ascendingJs = require("./ascending.js");
 var _ascendingJsDefault = parcelHelpers.interopDefault(_ascendingJs);
 var _bisectorJs = require("./bisector.js");
 var _bisectorJsDefault = parcelHelpers.interopDefault(_bisectorJs);
+var _blurJs = require("./blur.js");
 var _countJs = require("./count.js");
 var _countJsDefault = parcelHelpers.interopDefault(_countJs);
 var _crossJs = require("./cross.js");
@@ -4145,6 +4074,8 @@ var _minJs = require("./min.js");
 var _minJsDefault = parcelHelpers.interopDefault(_minJs);
 var _minIndexJs = require("./minIndex.js");
 var _minIndexJsDefault = parcelHelpers.interopDefault(_minIndexJs);
+var _modeJs = require("./mode.js");
+var _modeJsDefault = parcelHelpers.interopDefault(_modeJs);
 var _niceJs = require("./nice.js");
 var _niceJsDefault = parcelHelpers.interopDefault(_niceJs);
 var _pairsJs = require("./pairs.js");
@@ -4157,6 +4088,8 @@ var _quickselectJs = require("./quickselect.js");
 var _quickselectJsDefault = parcelHelpers.interopDefault(_quickselectJs);
 var _rangeJs = require("./range.js");
 var _rangeJsDefault = parcelHelpers.interopDefault(_rangeJs);
+var _rankJs = require("./rank.js");
+var _rankJsDefault = parcelHelpers.interopDefault(_rankJs);
 var _leastJs = require("./least.js");
 var _leastJsDefault = parcelHelpers.interopDefault(_leastJs);
 var _leastIndexJs = require("./leastIndex.js");
@@ -4207,7 +4140,7 @@ var _unionJs = require("./union.js");
 var _unionJsDefault = parcelHelpers.interopDefault(_unionJs);
 var _internmap = require("internmap");
 
-},{"./bisect.js":"iJojn","./ascending.js":"60o1Z","./bisector.js":"k5JwJ","./count.js":false,"./cross.js":false,"./cumsum.js":false,"./descending.js":false,"./deviation.js":"euifj","./extent.js":false,"./fsum.js":"g7Aa0","./group.js":false,"./groupSort.js":false,"./bin.js":false,"./threshold/freedmanDiaconis.js":false,"./threshold/scott.js":false,"./threshold/sturges.js":false,"./max.js":"5fCPh","./maxIndex.js":false,"./mean.js":"8HbAa","./median.js":"ai1Kc","./merge.js":"d56l7","./min.js":"h0RAg","./minIndex.js":false,"./nice.js":false,"./pairs.js":false,"./permute.js":"3ydIg","./quantile.js":"49cDh","./quickselect.js":"doA4Q","./range.js":"7QVPN","./least.js":false,"./leastIndex.js":false,"./greatest.js":false,"./greatestIndex.js":false,"./scan.js":false,"./shuffle.js":false,"./sum.js":"hdZOC","./ticks.js":"71MAh","./transpose.js":false,"./variance.js":"gba1Y","./zip.js":false,"./every.js":false,"./some.js":false,"./filter.js":false,"./map.js":false,"./reduce.js":false,"./reverse.js":false,"./sort.js":false,"./difference.js":false,"./disjoint.js":false,"./intersection.js":false,"./subset.js":false,"./superset.js":false,"./union.js":false,"internmap":"3ULAv","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"iJojn":[function(require,module,exports) {
+},{"./bisect.js":"iJojn","./ascending.js":"60o1Z","./bisector.js":"k5JwJ","./blur.js":false,"./count.js":false,"./cross.js":false,"./cumsum.js":false,"./descending.js":"kIC2x","./deviation.js":"euifj","./extent.js":false,"./fsum.js":"g7Aa0","./group.js":false,"./groupSort.js":false,"./bin.js":false,"./threshold/freedmanDiaconis.js":false,"./threshold/scott.js":false,"./threshold/sturges.js":false,"./max.js":"5fCPh","./maxIndex.js":"fm7WL","./mean.js":"8HbAa","./median.js":"ai1Kc","./merge.js":"d56l7","./min.js":"h0RAg","./minIndex.js":"3rpRW","./mode.js":false,"./nice.js":false,"./pairs.js":false,"./permute.js":"3ydIg","./quantile.js":"49cDh","./quickselect.js":"doA4Q","./range.js":"7QVPN","./rank.js":false,"./least.js":false,"./leastIndex.js":false,"./greatest.js":"c4GrS","./greatestIndex.js":false,"./scan.js":false,"./shuffle.js":false,"./sum.js":"hdZOC","./ticks.js":"71MAh","./transpose.js":false,"./variance.js":"gba1Y","./zip.js":false,"./every.js":false,"./some.js":false,"./filter.js":false,"./map.js":false,"./reduce.js":false,"./reverse.js":false,"./sort.js":"bV3FZ","./difference.js":false,"./disjoint.js":false,"./intersection.js":false,"./subset.js":false,"./superset.js":false,"./union.js":false,"internmap":"3ULAv","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"iJojn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "bisectRight", ()=>bisectRight);
@@ -4228,45 +4161,57 @@ exports.default = bisectRight;
 },{"./ascending.js":"60o1Z","./bisector.js":"k5JwJ","./number.js":"gcMRK","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"60o1Z":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-exports.default = function(a, b) {
-    return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
-};
+function ascending(a, b) {
+    return a == null || b == null ? NaN : a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+}
+exports.default = ascending;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"k5JwJ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _ascendingJs = require("./ascending.js");
 var _ascendingJsDefault = parcelHelpers.interopDefault(_ascendingJs);
-exports.default = function(f) {
-    let delta = f;
-    let compare = f;
-    if (f.length === 1) {
+var _descendingJs = require("./descending.js");
+var _descendingJsDefault = parcelHelpers.interopDefault(_descendingJs);
+function bisector(f) {
+    let compare1, compare2, delta;
+    // If an accessor is specified, promote it to a comparator. In this case we
+    // can test whether the search value is (self-) comparable. We can’t do this
+    // for a comparator (except for specific, known comparators) because we can’t
+    // tell if the comparator is symmetric, and an asymmetric comparator can’t be
+    // used to test whether a single value is comparable.
+    if (f.length !== 2) {
+        compare1 = (0, _ascendingJsDefault.default);
+        compare2 = (d, x)=>(0, _ascendingJsDefault.default)(f(d), x);
         delta = (d, x)=>f(d) - x;
-        compare = ascendingComparator(f);
+    } else {
+        compare1 = f === (0, _ascendingJsDefault.default) || f === (0, _descendingJsDefault.default) ? f : zero;
+        compare2 = f;
+        delta = f;
     }
-    function left(a, x, lo, hi) {
-        if (lo == null) lo = 0;
-        if (hi == null) hi = a.length;
-        while(lo < hi){
-            const mid = lo + hi >>> 1;
-            if (compare(a[mid], x) < 0) lo = mid + 1;
-            else hi = mid;
+    function left(a, x, lo = 0, hi = a.length) {
+        if (lo < hi) {
+            if (compare1(x, x) !== 0) return hi;
+            do {
+                const mid = lo + hi >>> 1;
+                if (compare2(a[mid], x) < 0) lo = mid + 1;
+                else hi = mid;
+            }while (lo < hi);
         }
         return lo;
     }
-    function right(a, x, lo, hi) {
-        if (lo == null) lo = 0;
-        if (hi == null) hi = a.length;
-        while(lo < hi){
-            const mid = lo + hi >>> 1;
-            if (compare(a[mid], x) > 0) hi = mid;
-            else lo = mid + 1;
+    function right(a, x, lo = 0, hi = a.length) {
+        if (lo < hi) {
+            if (compare1(x, x) !== 0) return hi;
+            do {
+                const mid = lo + hi >>> 1;
+                if (compare2(a[mid], x) <= 0) lo = mid + 1;
+                else hi = mid;
+            }while (lo < hi);
         }
         return lo;
     }
-    function center(a, x, lo, hi) {
-        if (lo == null) lo = 0;
-        if (hi == null) hi = a.length;
+    function center(a, x, lo = 0, hi = a.length) {
         const i = left(a, x, lo, hi - 1);
         return i > lo && delta(a[i - 1], x) > -delta(a[i], x) ? i - 1 : i;
     }
@@ -4275,18 +4220,28 @@ exports.default = function(f) {
         center,
         right
     };
-};
-function ascendingComparator(f) {
-    return (d, x)=>(0, _ascendingJsDefault.default)(f(d), x);
+}
+exports.default = bisector;
+function zero() {
+    return 0;
 }
 
-},{"./ascending.js":"60o1Z","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"gcMRK":[function(require,module,exports) {
+},{"./ascending.js":"60o1Z","./descending.js":"kIC2x","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"kIC2x":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+function descending(a, b) {
+    return a == null || b == null ? NaN : b < a ? -1 : b > a ? 1 : b >= a ? 0 : NaN;
+}
+exports.default = descending;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"gcMRK":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "numbers", ()=>numbers);
-exports.default = function(x) {
+function number(x) {
     return x === null ? NaN : +x;
-};
+}
+exports.default = number;
 function* numbers(values, valueof) {
     if (valueof === undefined) {
         for (let value of values)if (value != null && (value = +value) >= value) yield value;
@@ -4409,6 +4364,24 @@ function max(values, valueof) {
 }
 exports.default = max;
 
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fm7WL":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+function maxIndex(values, valueof) {
+    let max;
+    let maxIndex = -1;
+    let index = -1;
+    if (valueof === undefined) for (const value of values){
+        ++index;
+        if (value != null && (max < value || max === undefined && value >= value)) max = value, maxIndex = index;
+    }
+    else {
+        for (let value1 of values)if ((value1 = valueof(value1, ++index, values)) != null && (max < value1 || max === undefined && value1 >= value1)) max = value1, maxIndex = index;
+    }
+    return maxIndex;
+}
+exports.default = maxIndex;
+
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8HbAa":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
@@ -4428,24 +4401,37 @@ exports.default = mean;
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"ai1Kc":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "medianIndex", ()=>medianIndex);
 var _quantileJs = require("./quantile.js");
 var _quantileJsDefault = parcelHelpers.interopDefault(_quantileJs);
-exports.default = function(values, valueof) {
+function median(values, valueof) {
     return (0, _quantileJsDefault.default)(values, 0.5, valueof);
-};
+}
+exports.default = median;
+function medianIndex(values, valueof) {
+    return (0, _quantileJs.quantileIndex)(values, 0.5, valueof);
+}
 
 },{"./quantile.js":"49cDh","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"49cDh":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "quantileSorted", ()=>quantileSorted);
+parcelHelpers.export(exports, "quantileIndex", ()=>quantileIndex);
 var _maxJs = require("./max.js");
 var _maxJsDefault = parcelHelpers.interopDefault(_maxJs);
+var _maxIndexJs = require("./maxIndex.js");
+var _maxIndexJsDefault = parcelHelpers.interopDefault(_maxIndexJs);
 var _minJs = require("./min.js");
 var _minJsDefault = parcelHelpers.interopDefault(_minJs);
+var _minIndexJs = require("./minIndex.js");
+var _minIndexJsDefault = parcelHelpers.interopDefault(_minIndexJs);
 var _quickselectJs = require("./quickselect.js");
 var _quickselectJsDefault = parcelHelpers.interopDefault(_quickselectJs);
 var _numberJs = require("./number.js");
 var _numberJsDefault = parcelHelpers.interopDefault(_numberJs);
+var _sortJs = require("./sort.js");
+var _greatestJs = require("./greatest.js");
+var _greatestJsDefault = parcelHelpers.interopDefault(_greatestJs);
 function quantile(values, p, valueof) {
     values = Float64Array.from((0, _numberJs.numbers)(values, valueof));
     if (!(n = values.length)) return;
@@ -4462,8 +4448,16 @@ function quantileSorted(values, p, valueof = (0, _numberJsDefault.default)) {
     var n, i = (n - 1) * p, i0 = Math.floor(i), value0 = +valueof(values[i0], i0, values), value1 = +valueof(values[i0 + 1], i0 + 1, values);
     return value0 + (value1 - value0) * (i - i0);
 }
+function quantileIndex(values, p, valueof) {
+    values = Float64Array.from((0, _numberJs.numbers)(values, valueof));
+    if (!(n = values.length)) return;
+    if ((p = +p) <= 0 || n < 2) return (0, _minIndexJsDefault.default)(values);
+    if (p >= 1) return (0, _maxIndexJsDefault.default)(values);
+    var n, i = Math.floor((n - 1) * p), order = (i, j)=>(0, _sortJs.ascendingDefined)(values[i], values[j]), index = (0, _quickselectJsDefault.default)(Uint32Array.from(values, (_, i)=>i), i, 0, n - 1, order);
+    return (0, _greatestJsDefault.default)(index.subarray(0, i + 1), (i)=>values[i]);
+}
 
-},{"./max.js":"5fCPh","./min.js":"h0RAg","./quickselect.js":"doA4Q","./number.js":"gcMRK","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"h0RAg":[function(require,module,exports) {
+},{"./max.js":"5fCPh","./maxIndex.js":"fm7WL","./min.js":"h0RAg","./minIndex.js":"3rpRW","./quickselect.js":"doA4Q","./number.js":"gcMRK","./sort.js":"bV3FZ","./greatest.js":"c4GrS","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"h0RAg":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 function min(values, valueof) {
@@ -4478,12 +4472,30 @@ function min(values, valueof) {
 }
 exports.default = min;
 
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3rpRW":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+function minIndex(values, valueof) {
+    let min;
+    let minIndex = -1;
+    let index = -1;
+    if (valueof === undefined) for (const value of values){
+        ++index;
+        if (value != null && (min > value || min === undefined && value >= value)) min = value, minIndex = index;
+    }
+    else {
+        for (let value1 of values)if ((value1 = valueof(value1, ++index, values)) != null && (min > value1 || min === undefined && value1 >= value1)) min = value1, minIndex = index;
+    }
+    return minIndex;
+}
+exports.default = minIndex;
+
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"doA4Q":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-var _ascendingJs = require("./ascending.js");
-var _ascendingJsDefault = parcelHelpers.interopDefault(_ascendingJs);
-function quickselect(array, k, left = 0, right = array.length - 1, compare = (0, _ascendingJsDefault.default)) {
+var _sortJs = require("./sort.js");
+function quickselect(array, k, left = 0, right = array.length - 1, compare) {
+    compare = compare === undefined ? (0, _sortJs.ascendingDefined) : (0, _sortJs.compareDefined)(compare);
     while(right > left){
         if (right - left > 600) {
             const n = right - left + 1;
@@ -4519,6 +4531,87 @@ function swap(array, i, j) {
     array[j] = t;
 }
 
+},{"./sort.js":"bV3FZ","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"bV3FZ":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "compareDefined", ()=>compareDefined);
+parcelHelpers.export(exports, "ascendingDefined", ()=>ascendingDefined);
+var _ascendingJs = require("./ascending.js");
+var _ascendingJsDefault = parcelHelpers.interopDefault(_ascendingJs);
+var _permuteJs = require("./permute.js");
+var _permuteJsDefault = parcelHelpers.interopDefault(_permuteJs);
+function sort(values, ...F) {
+    if (typeof values[Symbol.iterator] !== "function") throw new TypeError("values is not iterable");
+    values = Array.from(values);
+    let [f] = F;
+    if (f && f.length !== 2 || F.length > 1) {
+        const index = Uint32Array.from(values, (d, i)=>i);
+        if (F.length > 1) {
+            F = F.map((f)=>values.map(f));
+            index.sort((i, j)=>{
+                for (const f of F){
+                    const c = ascendingDefined(f[i], f[j]);
+                    if (c) return c;
+                }
+            });
+        } else {
+            f = values.map(f);
+            index.sort((i, j)=>ascendingDefined(f[i], f[j]));
+        }
+        return (0, _permuteJsDefault.default)(values, index);
+    }
+    return values.sort(compareDefined(f));
+}
+exports.default = sort;
+function compareDefined(compare = (0, _ascendingJsDefault.default)) {
+    if (compare === (0, _ascendingJsDefault.default)) return ascendingDefined;
+    if (typeof compare !== "function") throw new TypeError("compare is not a function");
+    return (a, b)=>{
+        const x = compare(a, b);
+        if (x || x === 0) return x;
+        return (compare(b, b) === 0) - (compare(a, a) === 0);
+    };
+}
+function ascendingDefined(a, b) {
+    return (a == null || !(a >= a)) - (b == null || !(b >= b)) || (a < b ? -1 : a > b ? 1 : 0);
+}
+
+},{"./ascending.js":"60o1Z","./permute.js":"3ydIg","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3ydIg":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+function permute(source, keys) {
+    return Array.from(keys, (key)=>source[key]);
+}
+exports.default = permute;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"c4GrS":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _ascendingJs = require("./ascending.js");
+var _ascendingJsDefault = parcelHelpers.interopDefault(_ascendingJs);
+function greatest(values, compare = (0, _ascendingJsDefault.default)) {
+    let max;
+    let defined = false;
+    if (compare.length === 1) {
+        let maxValue;
+        for (const element of values){
+            const value = compare(element);
+            if (defined ? (0, _ascendingJsDefault.default)(value, maxValue) > 0 : (0, _ascendingJsDefault.default)(value, value) === 0) {
+                max = element;
+                maxValue = value;
+                defined = true;
+            }
+        }
+    } else {
+        for (const value1 of values)if (defined ? compare(value1, max) > 0 : compare(value1, value1) === 0) {
+            max = value1;
+            defined = true;
+        }
+    }
+    return max;
+}
+exports.default = greatest;
+
 },{"./ascending.js":"60o1Z","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"d56l7":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
@@ -4530,22 +4623,16 @@ function merge(arrays) {
 }
 exports.default = merge;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3ydIg":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-exports.default = function(source, keys) {
-    return Array.from(keys, (key)=>source[key]);
-};
-
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7QVPN":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-exports.default = function(start, stop, step) {
+function range(start, stop, step) {
     start = +start, stop = +stop, step = (n = arguments.length) < 2 ? (stop = start, start = 0, 1) : n < 3 ? 1 : +step;
     var i = -1, n = Math.max(0, Math.ceil((stop - start) / step)) | 0, range = new Array(n);
     while(++i < n)range[i] = start + i * step;
     return range;
-};
+}
+exports.default = range;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"hdZOC":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -4568,7 +4655,7 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "tickIncrement", ()=>tickIncrement);
 parcelHelpers.export(exports, "tickStep", ()=>tickStep);
 var e10 = Math.sqrt(50), e5 = Math.sqrt(10), e2 = Math.sqrt(2);
-exports.default = function(start, stop, count) {
+function ticks(start, stop, count) {
     var reverse, i = -1, n, ticks, step;
     stop = +stop, start = +start, count = +count;
     if (start === stop && count > 0) return [
@@ -4592,7 +4679,8 @@ exports.default = function(start, stop, count) {
     }
     if (reverse) ticks.reverse();
     return ticks;
-};
+}
+exports.default = ticks;
 function tickIncrement(start, stop, count) {
     var step = (stop - start) / Math.max(0, count), power = Math.floor(Math.log(step) / Math.LN10), error = step / Math.pow(10, power);
     return power >= 0 ? (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1) * Math.pow(10, power) : -Math.pow(10, -power) / (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1);
@@ -4672,7 +4760,7 @@ function intern_set({ _intern , _key  }, value) {
 function intern_delete({ _intern , _key  }, value) {
     const key = _key(value);
     if (_intern.has(key)) {
-        value = _intern.get(value);
+        value = _intern.get(key);
         _intern.delete(key);
     }
     return value;
@@ -11032,8 +11120,8 @@ Extent.Definition = {
         });
         if (!Number.isFinite(min) || !Number.isFinite(max)) {
             let name = (0, _vegaUtil.accessorName)(field);
-            if (name) name = ` for field "${name}"`;
-            pulse.dataflow.warn(`Infinite extent${name}: [${min}, ${max}]`);
+            if (name) name = ' for field "'.concat(name, '"');
+            pulse.dataflow.warn("Infinite extent".concat(name, ": [").concat(min, ", ").concat(max, "]"));
             min = max = undefined;
         }
         this.value = [
@@ -12551,7 +12639,7 @@ TimeUnit.Definition = {
     transform (_, pulse) {
         const field = _.field, band = _.interval !== false, utc = _.timezone === "utc", floor = this._floor(_, pulse), offset = (utc ? (0, _vegaTime.utcInterval) : (0, _vegaTime.timeInterval))(floor.unit).offset, as = _.as || OUTPUT, u0 = as[0], u1 = as[1], step = floor.step;
         let min = floor.start || Infinity, max = floor.stop || -Infinity, flag = pulse.ADD;
-        if (_.modified() || pulse.modified((0, _vegaUtil.accessorFields)(field))) {
+        if (_.modified() || pulse.changed(pulse.REM) || pulse.modified((0, _vegaUtil.accessorFields)(field))) {
             pulse = pulse.reflow(true);
             flag = pulse.SOURCE;
             min = Infinity;
@@ -14906,6 +14994,7 @@ function viewSizeLayout(view, group, viewBounds, _) {
 },{"vega-dataflow":"3NitK","vega-scenegraph":"jattk","vega-util":"bApja","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"jattk":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "path", ()=>(0, _d3Path.path));
 parcelHelpers.export(exports, "Bounds", ()=>Bounds);
 parcelHelpers.export(exports, "CanvasHandler", ()=>CanvasHandler);
 parcelHelpers.export(exports, "CanvasRenderer", ()=>CanvasRenderer);
@@ -14943,7 +15032,7 @@ parcelHelpers.export(exports, "markup", ()=>markup);
 parcelHelpers.export(exports, "multiLineOffset", ()=>multiLineOffset);
 parcelHelpers.export(exports, "pathCurves", ()=>curves);
 parcelHelpers.export(exports, "pathEqual", ()=>pathEqual);
-parcelHelpers.export(exports, "pathParse", ()=>pathParse);
+parcelHelpers.export(exports, "pathParse", ()=>parse);
 parcelHelpers.export(exports, "pathRectangle", ()=>vg_rect);
 parcelHelpers.export(exports, "pathRender", ()=>pathRender);
 parcelHelpers.export(exports, "pathSymbols", ()=>symbols);
@@ -15094,51 +15183,60 @@ function curves(type, orientation, tension) {
     }
     return curve;
 }
-// Path parsing and rendering code adapted from fabric.js -- Thanks!
-const cmdlen = {
+const paramCounts = {
     m: 2,
     l: 2,
     h: 1,
     v: 1,
+    z: 0,
     c: 6,
     s: 4,
     q: 4,
     t: 2,
     a: 7
-}, regexp = [
-    /([MLHVCSQTAZmlhvcsqtaz])/g,
-    /###/,
-    /(\.\d+)(\.\d)/g,
-    /(\d)([-+])/g,
-    /\s|,|###/
-];
-function pathParse(pathstr) {
-    const result = [];
-    let curr, chunks, parsed, param, cmd, len, i, j, n, m; // First, break path into command sequence
-    const path = pathstr.slice().replace(regexp[0], "###$1").split(regexp[1]).slice(1); // Next, parse each command in turn
-    for(i = 0, n = path.length; i < n; ++i){
-        curr = path[i];
-        chunks = curr.slice(1).trim().replace(regexp[2], "$1###$2").replace(regexp[3], "$1###$2").split(regexp[4]);
-        cmd = curr.charAt(0);
-        parsed = [
-            cmd
-        ];
-        for(j = 0, m = chunks.length; j < m; ++j)if ((param = +chunks[j]) === param) // not NaN
-        parsed.push(param);
-        len = cmdlen[cmd.toLowerCase()];
-        if (parsed.length - 1 > len) {
-            const m1 = parsed.length;
-            j = 1;
-            result.push([
-                cmd
-            ].concat(parsed.slice(j, j += len))); // handle implicit lineTo (#2803)
-            cmd = cmd === "M" ? "L" : cmd === "m" ? "l" : cmd;
-            for(; j < m1; j += len)result.push([
-                cmd
-            ].concat(parsed.slice(j, j + len)));
-        } else result.push(parsed);
+};
+const commandPattern = /[mlhvzcsqta]([^mlhvzcsqta]+|$)/gi;
+const numberPattern = /^[+-]?(([0-9]*\.[0-9]+)|([0-9]+\.)|([0-9]+))([eE][+-]?[0-9]+)?/;
+const spacePattern = /^((\s+,?\s*)|(,\s*))/;
+const flagPattern = /^[01]/;
+function parse(path) {
+    const commands = [];
+    const matches = path.match(commandPattern) || [];
+    matches.forEach((str)=>{
+        let cmd = str[0];
+        const type = cmd.toLowerCase(); // parse parameters
+        const paramCount = paramCounts[type];
+        const params = parseParams(type, paramCount, str.slice(1).trim());
+        const count = params.length; // error checking based on parameter count
+        if (count < paramCount || count && count % paramCount !== 0) throw Error("Invalid SVG path, incorrect parameter count");
+         // register the command
+        commands.push([
+            cmd,
+            ...params.slice(0, paramCount)
+        ]); // exit now if we're done, also handles zero-param 'z'
+        if (count === paramCount) return;
+         // handle implicit line-to
+        if (type === "m") cmd = cmd === "M" ? "L" : "l";
+         // repeat command when given extended param list
+        for(let i = paramCount; i < count; i += paramCount)commands.push([
+            cmd,
+            ...params.slice(i, i + paramCount)
+        ]);
+    });
+    return commands;
+}
+function parseParams(type, paramCount, segment) {
+    const params = [];
+    for(let index = 0; paramCount && index < segment.length;)for(let i = 0; i < paramCount; ++i){
+        const pattern = type === "a" && (i === 3 || i === 4) ? flagPattern : numberPattern;
+        const match = segment.slice(index).match(pattern);
+        if (match === null) throw Error("Invalid SVG path, incorrect parameter type");
+        index += match[0].length;
+        params.push(+match[0]);
+        const ws = segment.slice(index).match(spacePattern);
+        if (ws !== null) index += ws[0].length;
     }
-    return result;
+    return params;
 }
 const DegToRad = Math.PI / 180;
 const Epsilon = 1e-14;
@@ -15263,7 +15361,7 @@ function pathRender(context, path, l, t, sX, sY) {
     y = 0, // current y
     controlX = 0, // current control point x
     controlY = 0, // current control point y
-    tempX, tempY, tempControlX, tempControlY;
+    tempX, tempY, tempControlX, tempControlY, anchorX = 0, anchorY = 0;
     if (l == null) l = 0;
     if (t == null) t = 0;
     if (sX == null) sX = 1;
@@ -15310,12 +15408,16 @@ function pathRender(context, path, l, t, sX, sY) {
                 // moveTo, relative
                 x += current[1];
                 y += current[2];
+                anchorX = x;
+                anchorY = y;
                 context.moveTo(x + l, y + t);
                 break;
             case "M":
                 // moveTo, absolute
                 x = current[1];
                 y = current[2];
+                anchorX = x;
+                anchorY = y;
                 context.moveTo(x + l, y + t);
                 break;
             case "c":
@@ -15452,6 +15554,8 @@ function pathRender(context, path, l, t, sX, sY) {
                 break;
             case "z":
             case "Z":
+                x = anchorX;
+                y = anchorY;
                 context.closePath();
                 break;
         }
@@ -15589,7 +15693,7 @@ function symbols(_) {
 var custom = {};
 function customSymbol(path) {
     if (!(0, _vegaUtil.hasOwnProperty)(custom, path)) {
-        const parsed = pathParse(path);
+        const parsed = parse(path);
         custom[path] = {
             draw: function(context, size) {
                 pathRender(context, parsed, 0, 0, Math.sqrt(size) / 2);
@@ -16679,7 +16783,7 @@ function path$1(context, item) {
     var path = item.path;
     if (path == null) return true;
     var x = item.x || 0, y = item.y || 0, sx = item.scaleX || 1, sy = item.scaleY || 1, a = (item.angle || 0) * DegToRad, cache = item.pathCache;
-    if (!cache || cache.path !== path) (item.pathCache = cache = pathParse(path)).path = path;
+    if (!cache || cache.path !== path) (item.pathCache = cache = parse(path)).path = path;
     if (a && context.rotate && context.translate) {
         context.translate(x, y);
         context.rotate(a);
@@ -16793,7 +16897,7 @@ function measureWidth(item, text) {
     return fontSize(item) <= 0 || !(text = textValue(item, text)) ? 0 : _measureWidth(text, font(item));
 }
 function _measureWidth(text, currentFont) {
-    const key = `(${currentFont}) ${text}`;
+    const key = "(".concat(currentFont, ") ").concat(text);
     let width = widthCache.get(key);
     if (width === undefined) {
         context.font = currentFont;
@@ -17250,10 +17354,10 @@ Handler.prototype = {
     },
     /**
    * Add an event handler. Subclasses should override this method.
-   */ on () /*type, handler*/ {},
+   */ on () {},
     /**
    * Remove an event handler. Subclasses should override this method.
-   */ off () /*type, handler*/ {},
+   */ off () {},
     /**
    * Utility method for finding the array index of an event handler.
    * @param {Array} h - An array of registered event handlers.
@@ -17414,7 +17518,7 @@ Renderer.prototype = {
    * This base class method does nothing. Subclasses that perform
    * incremental should implement this method.
    * @param {Item} item - The dirty item whose bounds should be redrawn.
-   */ dirty () /*item*/ {},
+   */ dirty () {},
     /**
    * Render an input scenegraph, potentially with a set of dirty items.
    * This method will perform an immediate rendering with available resources.
@@ -17439,7 +17543,7 @@ Renderer.prototype = {
    * Internal rendering method. Renderer subclasses should override this
    * method to actually perform rendering.
    * @param {object} scene - The root mark of a scenegraph to render.
-   */ _render () /*scene*/ {},
+   */ _render () {},
     /**
    * Asynchronous rendering method. Similar to render, but returns a Promise
    * that resolves when all rendering is completed. Sometimes a renderer must
@@ -17869,11 +17973,11 @@ const AriaGuides = {
     },
     "title-text": {
         desc: "title",
-        caption: (item)=>`Title text '${titleCaption(item)}'`
+        caption: (item)=>"Title text '".concat(titleCaption(item), "'")
     },
     "title-subtitle": {
         desc: "subtitle",
-        caption: (item)=>`Subtitle text '${titleCaption(item)}'`
+        caption: (item)=>"Subtitle text '".concat(titleCaption(item), "'")
     }
 }; // aria properties generated for mark item encoding channels
 const AriaEncode = {
@@ -17889,7 +17993,7 @@ function ariaItemAttributes(emit, item) {
         const type = item.mark.marktype;
         emit(ARIA_LABEL, item.description);
         emit(ARIA_ROLE, item.ariaRole || (type === "group" ? GRAPHICS_OBJECT : GRAPHICS_SYMBOL));
-        emit(ARIA_ROLEDESCRIPTION, item.ariaRoleDescription || `${type} mark`);
+        emit(ARIA_ROLEDESCRIPTION, item.ariaRoleDescription || "".concat(type, " mark"));
     }
 }
 function ariaMarkAttributes(mark) {
@@ -17900,7 +18004,7 @@ function ariaMarkAttributes(mark) {
 function ariaMark(mark) {
     const type = mark.marktype;
     const recurse = type === "group" || type === "text" || mark.items.some((_)=>_.description != null && _.aria !== false);
-    return bundle(recurse ? GRAPHICS_OBJECT : GRAPHICS_SYMBOL, `${type} mark container`, mark.description);
+    return bundle(recurse ? GRAPHICS_OBJECT : GRAPHICS_SYMBOL, "".concat(type, " mark container"), mark.description);
 }
 function ariaGuide(mark, opt) {
     try {
@@ -17915,11 +18019,11 @@ function titleCaption(item) {
 }
 function axisCaption(item) {
     const datum = item.datum, orient = item.orient, title = datum.title ? extractTitle(item) : null, ctx = item.context, scale = ctx.scales[datum.scale].value, locale = ctx.dataflow.locale(), type = scale.type, xy = orient === "left" || orient === "right" ? "Y" : "X";
-    return `${xy}-axis` + (title ? ` titled '${title}'` : "") + ` for a ${(0, _vegaScale.isDiscrete)(type) ? "discrete" : type} scale` + ` with ${(0, _vegaScale.domainCaption)(locale, scale, item)}`;
+    return "".concat(xy, "-axis") + (title ? " titled '".concat(title, "'") : "") + " for a ".concat((0, _vegaScale.isDiscrete)(type) ? "discrete" : type, " scale") + " with ".concat((0, _vegaScale.domainCaption)(locale, scale, item));
 }
 function legendCaption(item) {
-    const datum = item.datum, title = datum.title ? extractTitle(item) : null, type = `${datum.type || ""} legend`.trim(), scales = datum.scales, props = Object.keys(scales), ctx = item.context, scale = ctx.scales[scales[props[0]]].value, locale = ctx.dataflow.locale();
-    return capitalize(type) + (title ? ` titled '${title}'` : "") + ` for ${channelCaption(props)}` + ` with ${(0, _vegaScale.domainCaption)(locale, scale, item)}`;
+    const datum = item.datum, title = datum.title ? extractTitle(item) : null, type = "".concat(datum.type || "", " legend").trim(), scales = datum.scales, props = Object.keys(scales), ctx = item.context, scale = ctx.scales[scales[props[0]]].value, locale = ctx.dataflow.locale();
+    return capitalize(type) + (title ? " titled '".concat(title, "'") : "") + " for ".concat(channelCaption(props)) + " with ".concat((0, _vegaScale.domainCaption)(locale, scale, item));
 }
 function extractTitle(item) {
     try {
@@ -17941,24 +18045,25 @@ function markup() {
     let buf = "", outer = "", inner = "";
     const stack = [], clear = ()=>outer = inner = "", push = (tag)=>{
         if (outer) {
-            buf += `${outer}>${inner}`;
+            buf += "".concat(outer, ">").concat(inner);
             clear();
         }
         stack.push(tag);
     }, attr = (name, value)=>{
-        if (value != null) outer += ` ${name}="${attrText(value)}"`;
+        if (value != null) outer += " ".concat(name, '="').concat(attrText(value), '"');
         return m;
     }, m = {
-        open (tag, ...attrs) {
+        open (tag) {
             push(tag);
             outer = "<" + tag;
+            for(var _len = arguments.length, attrs = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++)attrs[_key - 1] = arguments[_key];
             for (const set of attrs)for(const key in set)attr(key, set[key]);
             return m;
         },
         close () {
             const tag = stack.pop();
-            if (outer) buf += outer + (inner ? `>${inner}</${tag}>` : "/>");
-            else buf += `</${tag}>`;
+            if (outer) buf += outer + (inner ? ">".concat(inner, "</").concat(tag, ">") : "/>");
+            else buf += "</".concat(tag, ">");
             clear();
             return m;
         },
@@ -17976,16 +18081,13 @@ function _serialize(m, node) {
         for(let i = 0; i < n; ++i)m.attr(attrs[i].name, attrs[i].value);
     }
     if (node.hasChildNodes()) {
-        const children = node.childNodes, n1 = children.length;
-        for(let i1 = 0; i1 < n1; i1++){
-            const child = children[i1];
-            child.nodeType === 3 // text node
-             ? m.text(child.nodeValue) : _serialize(m, child);
-        }
+        const children = node.childNodes;
+        for (const child of children)child.nodeType === 3 // text node
+         ? m.text(child.nodeValue) : _serialize(m, child);
     }
     return m.close();
 }
-const styles = {
+const stylesAttr = {
     fill: "fill",
     fillOpacity: "fill-opacity",
     stroke: "stroke",
@@ -17996,7 +18098,9 @@ const styles = {
     strokeDash: "stroke-dasharray",
     strokeDashOffset: "stroke-dashoffset",
     strokeMiterLimit: "stroke-miterlimit",
-    opacity: "opacity",
+    opacity: "opacity"
+};
+const stylesCss = {
     blend: "mix-blend-mode"
 }; // ensure miter limit default is consistent with canvas (#2498)
 const rootAttributes = {
@@ -18063,9 +18167,9 @@ const base = Renderer.prototype;
             setAttributes(this._svg, {
                 width: this._width * this._scale,
                 height: this._height * this._scale,
-                viewBox: `0 0 ${this._width} ${this._height}`
+                viewBox: "0 0 ".concat(this._width, " ").concat(this._height)
             });
-            this._root.setAttribute("transform", `translate(${this._origin})`);
+            this._root.setAttribute("transform", "translate(".concat(this._origin, ")"));
         }
         this._dirty = [];
         return this;
@@ -18128,7 +18232,7 @@ const base = Renderer.prototype;
    * Check if a mark item is considered dirty.
    * @param {Item} item - The mark item.
    */ isDirty (item) {
-        return this._dirtyAll || !item._svg || item.dirty === this._dirtyID;
+        return this._dirtyAll || !item._svg || !item._svg.ownerSVGElement || item.dirty === this._dirtyID;
     },
     /**
    * Internal method to check dirty status and, if possible,
@@ -18190,13 +18294,13 @@ const base = Renderer.prototype;
    */ mark (el, scene, prev) {
         if (!this.isDirty(scene)) return scene._svg;
         const svg = this._svg, mdef = Marks[scene.marktype], events = scene.interactive === false ? "none" : null, isGroup = mdef.tag === "g";
-        let sibling = null, i = 0;
         const parent = bind(scene, el, prev, "g", svg);
         parent.setAttribute("class", cssClass(scene)); // apply aria attributes to parent container element
         const aria = ariaMarkAttributes(scene);
         for(const key in aria)setAttribute(parent, key, aria[key]);
         if (!isGroup) setAttribute(parent, "pointer-events", events);
         setAttribute(parent, "clip-path", scene.clip ? clip$1(this, scene, scene.group) : null);
+        let sibling = null, i = 0;
         const process = (item)=>{
             const dirty = this.isDirty(item), node = bind(item, parent, sibling, mdef.tag, svg);
             if (dirty) {
@@ -18235,10 +18339,10 @@ const base = Renderer.prototype;
    * @param {Item} item - The mark item.
    */ style (el, item) {
         if (item == null) return;
-        for(const prop in styles){
+        for(const prop in stylesAttr){
             let value = prop === "font" ? fontFamily(item) : item[prop];
             if (value === values[prop]) continue;
-            const name = styles[prop];
+            const name = stylesAttr[prop];
             if (value == null) el.removeAttribute(name);
             else {
                 if (isGradient(value)) value = gradientRef(value, this._defs.gradient, href());
@@ -18246,6 +18350,7 @@ const base = Renderer.prototype;
             }
             values[prop] = value;
         }
+        for(const prop1 in stylesCss)setStyle(el, stylesCss[prop1], item[prop1]);
     },
     /**
    * Render SVG defs, as needed.
@@ -18298,7 +18403,7 @@ function updateGradient(el, grad, index) {
         setAttributes(pt, {
             width: 1,
             height: 1,
-            fill: `url(${href()}#${grad.id})`
+            fill: "url(".concat(href(), "#").concat(grad.id, ")")
         });
         el = domChild(el, index++, "radialGradient", svgns);
         setAttributes(el, {
@@ -18348,6 +18453,8 @@ function updateClipping(el, clip, index) {
     return index + 1;
 } // Recursively process group contents.
 function recurse(renderer, el, group) {
+    // child 'g' element is second to last among children (path, g, path)
+    // other children here are foreground and background path elements
     el = el.lastChild.previousSibling;
     let prev, idx = 0;
     visit(group, (item)=>{
@@ -18524,7 +18631,7 @@ function SVGStringRenderer(loader) {
             class: "marks",
             width: this._width * this._scale,
             height: this._height * this._scale,
-            viewBox: `0 0 ${this._width} ${this._height}`
+            viewBox: "0 0 ".concat(this._width, " ").concat(this._height)
         })); // background, if defined
         const bg = this._bgcolor;
         if (bg && bg !== "transparent" && bg !== "none") m.open("rect", {
@@ -18700,6 +18807,7 @@ function SVGStringRenderer(loader) {
     }
 }); // Helper function for attr for style presentation attributes
 function style(s, item, scene, tag, defs) {
+    let styleList;
     if (item == null) return s;
     if (tag === "bgrect" && scene.interactive === false) s["pointer-events"] = "none";
     if (tag === "bgfore") {
@@ -18707,7 +18815,10 @@ function style(s, item, scene, tag, defs) {
         s.display = "none";
         if (item.fill !== null) return s;
     }
-    if (tag === "image" && item.smooth === false) s.style = "image-rendering: optimizeSpeed; image-rendering: pixelated;";
+    if (tag === "image" && item.smooth === false) styleList = [
+        "image-rendering: optimizeSpeed;",
+        "image-rendering: pixelated;"
+    ];
     if (tag === "text") {
         s["font-family"] = fontFamily(item);
         s["font-size"] = fontSize(item) + "px";
@@ -18715,15 +18826,23 @@ function style(s, item, scene, tag, defs) {
         s["font-variant"] = item.fontVariant;
         s["font-weight"] = item.fontWeight;
     }
-    for(const prop in styles){
+    for(const prop in stylesAttr){
         let value = item[prop];
-        const name = styles[prop];
+        const name = stylesAttr[prop];
         if (value === "transparent" && (name === "fill" || name === "stroke")) ;
         else if (value != null) {
             if (isGradient(value)) value = gradientRef(value, defs.gradient, "");
             s[name] = value;
         }
     }
+    for(const prop1 in stylesCss){
+        const value1 = item[prop1];
+        if (value1 != null) {
+            styleList = styleList || [];
+            styleList.push("".concat(stylesCss[prop1], ": ").concat(value1, ";"));
+        }
+    }
+    if (styleList) s.style = styleList.join(" ");
     return s;
 }
 const Canvas = "canvas";
@@ -18812,7 +18931,7 @@ function sceneEqual(a, b, key) {
     return a === b ? true : key === "path" ? pathEqual(a, b) : a instanceof Date && b instanceof Date ? +a === +b : (0, _vegaUtil.isNumber)(a) && (0, _vegaUtil.isNumber)(b) ? Math.abs(a - b) <= TOLERANCE : !a || !b || !(0, _vegaUtil.isObject)(a) && !(0, _vegaUtil.isObject)(b) ? a == b : objectEqual(a, b);
 }
 function pathEqual(a, b) {
-    return sceneEqual(pathParse(a), pathParse(b));
+    return sceneEqual(parse(a), parse(b));
 }
 function objectEqual(a, b) {
     var ka = Object.keys(a), kb = Object.keys(b), key, i;
@@ -18847,18 +18966,27 @@ parcelHelpers.export(exports, "lineRadial", ()=>(0, _lineRadialJsDefault.default
 ;
 parcelHelpers.export(exports, "radialLine", ()=>(0, _lineRadialJsDefault.default));
 parcelHelpers.export(exports, "pointRadial", ()=>(0, _pointRadialJsDefault.default));
-parcelHelpers.export(exports, "linkHorizontal", ()=>(0, _indexJs.linkHorizontal));
-parcelHelpers.export(exports, "linkVertical", ()=>(0, _indexJs.linkVertical));
-parcelHelpers.export(exports, "linkRadial", ()=>(0, _indexJs.linkRadial));
+parcelHelpers.export(exports, "link", ()=>(0, _linkJs.link));
+parcelHelpers.export(exports, "linkHorizontal", ()=>(0, _linkJs.linkHorizontal));
+parcelHelpers.export(exports, "linkVertical", ()=>(0, _linkJs.linkVertical));
+parcelHelpers.export(exports, "linkRadial", ()=>(0, _linkJs.linkRadial));
 parcelHelpers.export(exports, "symbol", ()=>(0, _symbolJsDefault.default));
-parcelHelpers.export(exports, "symbols", ()=>(0, _symbolJs.symbols));
+parcelHelpers.export(exports, "symbolsStroke", ()=>(0, _symbolJs.symbolsStroke));
+parcelHelpers.export(exports, "symbolsFill", ()=>(0, _symbolJs.symbolsFill));
+parcelHelpers.export(exports, "symbols", ()=>(0, _symbolJs.symbolsFill));
+parcelHelpers.export(exports, "symbolAsterisk", ()=>(0, _asteriskJsDefault.default));
 parcelHelpers.export(exports, "symbolCircle", ()=>(0, _circleJsDefault.default));
 parcelHelpers.export(exports, "symbolCross", ()=>(0, _crossJsDefault.default));
 parcelHelpers.export(exports, "symbolDiamond", ()=>(0, _diamondJsDefault.default));
+parcelHelpers.export(exports, "symbolDiamond2", ()=>(0, _diamond2JsDefault.default));
+parcelHelpers.export(exports, "symbolPlus", ()=>(0, _plusJsDefault.default));
 parcelHelpers.export(exports, "symbolSquare", ()=>(0, _squareJsDefault.default));
+parcelHelpers.export(exports, "symbolSquare2", ()=>(0, _square2JsDefault.default));
 parcelHelpers.export(exports, "symbolStar", ()=>(0, _starJsDefault.default));
 parcelHelpers.export(exports, "symbolTriangle", ()=>(0, _triangleJsDefault.default));
+parcelHelpers.export(exports, "symbolTriangle2", ()=>(0, _triangle2JsDefault.default));
 parcelHelpers.export(exports, "symbolWye", ()=>(0, _wyeJsDefault.default));
+parcelHelpers.export(exports, "symbolX", ()=>(0, _xJsDefault.default));
 parcelHelpers.export(exports, "curveBasisClosed", ()=>(0, _basisClosedJsDefault.default));
 parcelHelpers.export(exports, "curveBasisOpen", ()=>(0, _basisOpenJsDefault.default));
 parcelHelpers.export(exports, "curveBasis", ()=>(0, _basisJsDefault.default));
@@ -18905,23 +19033,35 @@ var _lineRadialJs = require("./lineRadial.js");
 var _lineRadialJsDefault = parcelHelpers.interopDefault(_lineRadialJs);
 var _pointRadialJs = require("./pointRadial.js");
 var _pointRadialJsDefault = parcelHelpers.interopDefault(_pointRadialJs);
-var _indexJs = require("./link/index.js");
+var _linkJs = require("./link.js");
 var _symbolJs = require("./symbol.js");
 var _symbolJsDefault = parcelHelpers.interopDefault(_symbolJs);
+var _asteriskJs = require("./symbol/asterisk.js");
+var _asteriskJsDefault = parcelHelpers.interopDefault(_asteriskJs);
 var _circleJs = require("./symbol/circle.js");
 var _circleJsDefault = parcelHelpers.interopDefault(_circleJs);
 var _crossJs = require("./symbol/cross.js");
 var _crossJsDefault = parcelHelpers.interopDefault(_crossJs);
 var _diamondJs = require("./symbol/diamond.js");
 var _diamondJsDefault = parcelHelpers.interopDefault(_diamondJs);
+var _diamond2Js = require("./symbol/diamond2.js");
+var _diamond2JsDefault = parcelHelpers.interopDefault(_diamond2Js);
+var _plusJs = require("./symbol/plus.js");
+var _plusJsDefault = parcelHelpers.interopDefault(_plusJs);
 var _squareJs = require("./symbol/square.js");
 var _squareJsDefault = parcelHelpers.interopDefault(_squareJs);
+var _square2Js = require("./symbol/square2.js");
+var _square2JsDefault = parcelHelpers.interopDefault(_square2Js);
 var _starJs = require("./symbol/star.js");
 var _starJsDefault = parcelHelpers.interopDefault(_starJs);
 var _triangleJs = require("./symbol/triangle.js");
 var _triangleJsDefault = parcelHelpers.interopDefault(_triangleJs);
+var _triangle2Js = require("./symbol/triangle2.js");
+var _triangle2JsDefault = parcelHelpers.interopDefault(_triangle2Js);
 var _wyeJs = require("./symbol/wye.js");
 var _wyeJsDefault = parcelHelpers.interopDefault(_wyeJs);
+var _xJs = require("./symbol/x.js");
+var _xJsDefault = parcelHelpers.interopDefault(_xJs);
 var _basisClosedJs = require("./curve/basisClosed.js");
 var _basisClosedJsDefault = parcelHelpers.interopDefault(_basisClosedJs);
 var _basisOpenJs = require("./curve/basisOpen.js");
@@ -18977,7 +19117,7 @@ var _noneJsDefault1 = parcelHelpers.interopDefault(_noneJs1);
 var _reverseJs = require("./order/reverse.js");
 var _reverseJsDefault = parcelHelpers.interopDefault(_reverseJs);
 
-},{"./arc.js":"c3ptb","./area.js":"lblzF","./line.js":"jVTJi","./pie.js":false,"./areaRadial.js":false,"./lineRadial.js":false,"./pointRadial.js":false,"./link/index.js":false,"./symbol.js":"bcejp","./symbol/circle.js":"7RXTA","./symbol/cross.js":"4cmA2","./symbol/diamond.js":"1gK3j","./symbol/square.js":"fXRAH","./symbol/star.js":"8nJiq","./symbol/triangle.js":"bClaq","./symbol/wye.js":"2D9bg","./curve/basisClosed.js":"3uf9r","./curve/basisOpen.js":"4LPKP","./curve/basis.js":"gNfFM","./curve/bump.js":false,"./curve/bundle.js":"7Gw48","./curve/cardinalClosed.js":"e0Ty2","./curve/cardinalOpen.js":"4cTvH","./curve/cardinal.js":"i0afA","./curve/catmullRomClosed.js":"kfNnJ","./curve/catmullRomOpen.js":"amodp","./curve/catmullRom.js":"8d6GP","./curve/linearClosed.js":"gpcM0","./curve/linear.js":"huz8f","./curve/monotone.js":"kghkb","./curve/natural.js":"4f94Q","./curve/step.js":"l5kmS","./stack.js":false,"./offset/expand.js":false,"./offset/diverging.js":false,"./offset/none.js":false,"./offset/silhouette.js":false,"./offset/wiggle.js":false,"./order/appearance.js":false,"./order/ascending.js":false,"./order/descending.js":false,"./order/insideOut.js":false,"./order/none.js":false,"./order/reverse.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"c3ptb":[function(require,module,exports) {
+},{"./arc.js":"c3ptb","./area.js":"lblzF","./line.js":"jVTJi","./pie.js":false,"./areaRadial.js":false,"./lineRadial.js":false,"./pointRadial.js":false,"./link.js":false,"./symbol.js":"bcejp","./symbol/asterisk.js":"kHR3A","./symbol/circle.js":"7RXTA","./symbol/cross.js":"4cmA2","./symbol/diamond.js":"1gK3j","./symbol/diamond2.js":"WsFhi","./symbol/plus.js":"a9FVq","./symbol/square.js":"fXRAH","./symbol/square2.js":"69bxi","./symbol/star.js":"8nJiq","./symbol/triangle.js":"bClaq","./symbol/triangle2.js":"8s1uD","./symbol/wye.js":"2D9bg","./symbol/x.js":"fnfky","./curve/basisClosed.js":"3uf9r","./curve/basisOpen.js":"4LPKP","./curve/basis.js":"gNfFM","./curve/bump.js":false,"./curve/bundle.js":"7Gw48","./curve/cardinalClosed.js":"e0Ty2","./curve/cardinalOpen.js":"4cTvH","./curve/cardinal.js":"i0afA","./curve/catmullRomClosed.js":"kfNnJ","./curve/catmullRomOpen.js":"amodp","./curve/catmullRom.js":"8d6GP","./curve/linearClosed.js":"gpcM0","./curve/linear.js":"huz8f","./curve/monotone.js":"kghkb","./curve/natural.js":"4f94Q","./curve/step.js":"l5kmS","./stack.js":false,"./offset/expand.js":false,"./offset/diverging.js":false,"./offset/none.js":false,"./offset/silhouette.js":false,"./offset/wiggle.js":false,"./order/appearance.js":false,"./order/ascending.js":false,"./order/descending.js":false,"./order/insideOut.js":false,"./order/none.js":false,"./order/reverse.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"c3ptb":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _d3Path = require("d3-path");
@@ -19232,17 +19372,17 @@ parcelHelpers.export(exports, "halfPi", ()=>halfPi);
 parcelHelpers.export(exports, "tau", ()=>tau);
 parcelHelpers.export(exports, "acos", ()=>acos);
 parcelHelpers.export(exports, "asin", ()=>asin);
-var abs = Math.abs;
-var atan2 = Math.atan2;
-var cos = Math.cos;
-var max = Math.max;
-var min = Math.min;
-var sin = Math.sin;
-var sqrt = Math.sqrt;
-var epsilon = 1e-12;
-var pi = Math.PI;
-var halfPi = pi / 2;
-var tau = 2 * pi;
+const abs = Math.abs;
+const atan2 = Math.atan2;
+const cos = Math.cos;
+const max = Math.max;
+const min = Math.min;
+const sin = Math.sin;
+const sqrt = Math.sqrt;
+const epsilon = 1e-12;
+const pi = Math.PI;
+const halfPi = pi / 2;
+const tau = 2 * pi;
 function acos(x) {
     return x > 1 ? 0 : x < -1 ? pi : Math.acos(x);
 }
@@ -19372,7 +19512,7 @@ Linear.prototype = {
                 this._line ? this._context.lineTo(x, y) : this._context.moveTo(x, y);
                 break;
             case 1:
-                this._point = 2; // proceed
+                this._point = 2; // falls through
             default:
                 this._context.lineTo(x, y);
                 break;
@@ -19443,25 +19583,38 @@ function y(p) {
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"bcejp":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "symbols", ()=>symbols);
+parcelHelpers.export(exports, "symbolsFill", ()=>symbolsFill);
+parcelHelpers.export(exports, "symbolsStroke", ()=>symbolsStroke);
 var _d3Path = require("d3-path");
+var _constantJs = require("./constant.js");
+var _constantJsDefault = parcelHelpers.interopDefault(_constantJs);
+var _asteriskJs = require("./symbol/asterisk.js");
+var _asteriskJsDefault = parcelHelpers.interopDefault(_asteriskJs);
 var _circleJs = require("./symbol/circle.js");
 var _circleJsDefault = parcelHelpers.interopDefault(_circleJs);
 var _crossJs = require("./symbol/cross.js");
 var _crossJsDefault = parcelHelpers.interopDefault(_crossJs);
 var _diamondJs = require("./symbol/diamond.js");
 var _diamondJsDefault = parcelHelpers.interopDefault(_diamondJs);
-var _starJs = require("./symbol/star.js");
-var _starJsDefault = parcelHelpers.interopDefault(_starJs);
+var _diamond2Js = require("./symbol/diamond2.js");
+var _diamond2JsDefault = parcelHelpers.interopDefault(_diamond2Js);
+var _plusJs = require("./symbol/plus.js");
+var _plusJsDefault = parcelHelpers.interopDefault(_plusJs);
 var _squareJs = require("./symbol/square.js");
 var _squareJsDefault = parcelHelpers.interopDefault(_squareJs);
+var _square2Js = require("./symbol/square2.js");
+var _square2JsDefault = parcelHelpers.interopDefault(_square2Js);
+var _starJs = require("./symbol/star.js");
+var _starJsDefault = parcelHelpers.interopDefault(_starJs);
 var _triangleJs = require("./symbol/triangle.js");
 var _triangleJsDefault = parcelHelpers.interopDefault(_triangleJs);
+var _triangle2Js = require("./symbol/triangle2.js");
+var _triangle2JsDefault = parcelHelpers.interopDefault(_triangle2Js);
 var _wyeJs = require("./symbol/wye.js");
 var _wyeJsDefault = parcelHelpers.interopDefault(_wyeJs);
-var _constantJs = require("./constant.js");
-var _constantJsDefault = parcelHelpers.interopDefault(_constantJs);
-var symbols = [
+var _xJs = require("./symbol/x.js");
+var _xJsDefault = parcelHelpers.interopDefault(_xJs);
+const symbolsFill = [
     (0, _circleJsDefault.default),
     (0, _crossJsDefault.default),
     (0, _diamondJsDefault.default),
@@ -19470,12 +19623,21 @@ var symbols = [
     (0, _triangleJsDefault.default),
     (0, _wyeJsDefault.default)
 ];
-exports.default = function(type, size) {
-    var context = null;
+const symbolsStroke = [
+    (0, _circleJsDefault.default),
+    (0, _plusJsDefault.default),
+    (0, _xJsDefault.default),
+    (0, _triangle2JsDefault.default),
+    (0, _asteriskJsDefault.default),
+    (0, _square2JsDefault.default),
+    (0, _diamond2JsDefault.default)
+];
+function Symbol(type, size) {
+    let context = null;
     type = typeof type === "function" ? type : (0, _constantJsDefault.default)(type || (0, _circleJsDefault.default));
     size = typeof size === "function" ? size : (0, _constantJsDefault.default)(size === undefined ? 64 : +size);
     function symbol() {
-        var buffer;
+        let buffer;
         if (!context) context = buffer = (0, _d3Path.path)();
         type.apply(this, arguments).draw(context, +size.apply(this, arguments));
         if (buffer) return context = null, buffer + "" || null;
@@ -19490,15 +19652,35 @@ exports.default = function(type, size) {
         return arguments.length ? (context = _ == null ? null : _, symbol) : context;
     };
     return symbol;
+}
+exports.default = Symbol;
+
+},{"d3-path":"cRa94","./constant.js":"12DQf","./symbol/asterisk.js":"kHR3A","./symbol/circle.js":"7RXTA","./symbol/cross.js":"4cmA2","./symbol/diamond.js":"1gK3j","./symbol/diamond2.js":"WsFhi","./symbol/plus.js":"a9FVq","./symbol/square.js":"fXRAH","./symbol/square2.js":"69bxi","./symbol/star.js":"8nJiq","./symbol/triangle.js":"bClaq","./symbol/triangle2.js":"8s1uD","./symbol/wye.js":"2D9bg","./symbol/x.js":"fnfky","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"kHR3A":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _mathJs = require("../math.js");
+const sqrt3 = (0, _mathJs.sqrt)(3);
+exports.default = {
+    draw (context, size) {
+        const r = (0, _mathJs.sqrt)(size + (0, _mathJs.min)(size / 28, 0.75)) * 0.59436;
+        const t = r / 2;
+        const u = t * sqrt3;
+        context.moveTo(0, r);
+        context.lineTo(0, -r);
+        context.moveTo(-u, -t);
+        context.lineTo(u, t);
+        context.moveTo(-u, t);
+        context.lineTo(u, -t);
+    }
 };
 
-},{"d3-path":"cRa94","./symbol/circle.js":"7RXTA","./symbol/cross.js":"4cmA2","./symbol/diamond.js":"1gK3j","./symbol/star.js":"8nJiq","./symbol/square.js":"fXRAH","./symbol/triangle.js":"bClaq","./symbol/wye.js":"2D9bg","./constant.js":"12DQf","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7RXTA":[function(require,module,exports) {
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"7RXTA":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _mathJs = require("../math.js");
 exports.default = {
-    draw: function(context, size) {
-        var r = Math.sqrt(size / (0, _mathJs.pi));
+    draw (context, size) {
+        const r = (0, _mathJs.sqrt)(size / (0, _mathJs.pi));
         context.moveTo(r, 0);
         context.arc(0, 0, r, 0, (0, _mathJs.tau));
     }
@@ -19507,9 +19689,10 @@ exports.default = {
 },{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"4cmA2":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+var _mathJs = require("../math.js");
 exports.default = {
-    draw: function(context, size) {
-        var r = Math.sqrt(size / 5) / 2;
+    draw (context, size) {
+        const r = (0, _mathJs.sqrt)(size / 5) / 2;
         context.moveTo(-3 * r, -r);
         context.lineTo(-r, -r);
         context.lineTo(-r, -3 * r);
@@ -19526,13 +19709,16 @@ exports.default = {
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1gK3j":[function(require,module,exports) {
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1gK3j":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-var tan30 = Math.sqrt(1 / 3), tan30_2 = tan30 * 2;
+var _mathJs = require("../math.js");
+const tan30 = (0, _mathJs.sqrt)(1 / 3);
+const tan30_2 = tan30 * 2;
 exports.default = {
-    draw: function(context, size) {
-        var y = Math.sqrt(size / tan30_2), x = y * tan30;
+    draw (context, size) {
+        const y = (0, _mathJs.sqrt)(size / tan30_2);
+        const x = y * tan30;
         context.moveTo(0, -y);
         context.lineTo(x, 0);
         context.lineTo(0, y);
@@ -19541,18 +19727,81 @@ exports.default = {
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8nJiq":[function(require,module,exports) {
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"WsFhi":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _mathJs = require("../math.js");
-var ka = 0.89081309152928522810, kr = Math.sin((0, _mathJs.pi) / 10) / Math.sin(7 * (0, _mathJs.pi) / 10), kx = Math.sin((0, _mathJs.tau) / 10) * kr, ky = -Math.cos((0, _mathJs.tau) / 10) * kr;
 exports.default = {
-    draw: function(context, size) {
-        var r = Math.sqrt(size * ka), x = kx * r, y = ky * r;
+    draw (context, size) {
+        const r = (0, _mathJs.sqrt)(size) * 0.62625;
+        context.moveTo(0, -r);
+        context.lineTo(r, 0);
+        context.lineTo(0, r);
+        context.lineTo(-r, 0);
+        context.closePath();
+    }
+};
+
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"a9FVq":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _mathJs = require("../math.js");
+exports.default = {
+    draw (context, size) {
+        const r = (0, _mathJs.sqrt)(size - (0, _mathJs.min)(size / 7, 2)) * 0.87559;
+        context.moveTo(-r, 0);
+        context.lineTo(r, 0);
+        context.moveTo(0, r);
+        context.lineTo(0, -r);
+    }
+};
+
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fXRAH":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _mathJs = require("../math.js");
+exports.default = {
+    draw (context, size) {
+        const w = (0, _mathJs.sqrt)(size);
+        const x = -w / 2;
+        context.rect(x, x, w, w);
+    }
+};
+
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"69bxi":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _mathJs = require("../math.js");
+exports.default = {
+    draw (context, size) {
+        const r = (0, _mathJs.sqrt)(size) * 0.4431;
+        context.moveTo(r, r);
+        context.lineTo(r, -r);
+        context.lineTo(-r, -r);
+        context.lineTo(-r, r);
+        context.closePath();
+    }
+};
+
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8nJiq":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _mathJs = require("../math.js");
+const ka = 0.89081309152928522810;
+const kr = (0, _mathJs.sin)((0, _mathJs.pi) / 10) / (0, _mathJs.sin)(7 * (0, _mathJs.pi) / 10);
+const kx = (0, _mathJs.sin)((0, _mathJs.tau) / 10) * kr;
+const ky = -(0, _mathJs.cos)((0, _mathJs.tau) / 10) * kr;
+exports.default = {
+    draw (context, size) {
+        const r = (0, _mathJs.sqrt)(size * ka);
+        const x = kx * r;
+        const y = ky * r;
         context.moveTo(0, -r);
         context.lineTo(x, y);
-        for(var i = 1; i < 5; ++i){
-            var a = (0, _mathJs.tau) * i / 5, c = Math.cos(a), s = Math.sin(a);
+        for(let i = 1; i < 5; ++i){
+            const a = (0, _mathJs.tau) * i / 5;
+            const c = (0, _mathJs.cos)(a);
+            const s = (0, _mathJs.sin)(a);
             context.lineTo(s * r, -c * r);
             context.lineTo(c * x - s * y, s * x + c * y);
         }
@@ -19560,23 +19809,14 @@ exports.default = {
     }
 };
 
-},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fXRAH":[function(require,module,exports) {
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"bClaq":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+var _mathJs = require("../math.js");
+const sqrt3 = (0, _mathJs.sqrt)(3);
 exports.default = {
-    draw: function(context, size) {
-        var w = Math.sqrt(size), x = -w / 2;
-        context.rect(x, x, w, w);
-    }
-};
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"bClaq":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-var sqrt3 = Math.sqrt(3);
-exports.default = {
-    draw: function(context, size) {
-        var y = -Math.sqrt(size / (sqrt3 * 3));
+    draw (context, size) {
+        const y = -(0, _mathJs.sqrt)(size / (sqrt3 * 3));
         context.moveTo(0, y * 2);
         context.lineTo(-sqrt3 * y, -y);
         context.lineTo(sqrt3 * y, -y);
@@ -19584,13 +19824,37 @@ exports.default = {
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"2D9bg":[function(require,module,exports) {
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8s1uD":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-var c = -0.5, s = Math.sqrt(3) / 2, k = 1 / Math.sqrt(12), a = (k / 2 + 1) * 3;
+var _mathJs = require("../math.js");
+const sqrt3 = (0, _mathJs.sqrt)(3);
 exports.default = {
-    draw: function(context, size) {
-        var r = Math.sqrt(size / a), x0 = r / 2, y0 = r * k, x1 = x0, y1 = r * k + r, x2 = -x1, y2 = y1;
+    draw (context, size) {
+        const s = (0, _mathJs.sqrt)(size) * 0.6824;
+        const t = s / 2;
+        const u = s * sqrt3 / 2; // cos(Math.PI / 6)
+        context.moveTo(0, -s);
+        context.lineTo(u, t);
+        context.lineTo(-u, t);
+        context.closePath();
+    }
+};
+
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"2D9bg":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _mathJs = require("../math.js");
+const c = -0.5;
+const s = (0, _mathJs.sqrt)(3) / 2;
+const k = 1 / (0, _mathJs.sqrt)(12);
+const a = (k / 2 + 1) * 3;
+exports.default = {
+    draw (context, size) {
+        const r = (0, _mathJs.sqrt)(size / a);
+        const x0 = r / 2, y0 = r * k;
+        const x1 = x0, y1 = r * k + r;
+        const x2 = -x1, y2 = y1;
         context.moveTo(x0, y0);
         context.lineTo(x1, y1);
         context.lineTo(x2, y2);
@@ -19604,7 +19868,21 @@ exports.default = {
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3uf9r":[function(require,module,exports) {
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fnfky":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _mathJs = require("../math.js");
+exports.default = {
+    draw (context, size) {
+        const r = (0, _mathJs.sqrt)(size - (0, _mathJs.min)(size / 6, 1.7)) * 0.6189;
+        context.moveTo(-r, -r);
+        context.lineTo(r, r);
+        context.moveTo(-r, r);
+        context.lineTo(r, -r);
+    }
+};
+
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3uf9r":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _noopJs = require("../noop.js");
@@ -19696,7 +19974,7 @@ Basis.prototype = {
     lineEnd: function() {
         switch(this._point){
             case 3:
-                point(this, this._x1, this._y1); // proceed
+                point(this, this._x1, this._y1); // falls through
             case 2:
                 this._context.lineTo(this._x1, this._y1);
                 break;
@@ -19716,7 +19994,7 @@ Basis.prototype = {
                 break;
             case 2:
                 this._point = 3;
-                this._context.lineTo((5 * this._x0 + this._x1) / 6, (5 * this._y0 + this._y1) / 6); // proceed
+                this._context.lineTo((5 * this._x0 + this._x1) / 6, (5 * this._y0 + this._y1) / 6); // falls through
             default:
                 point(this, x, y);
                 break;
@@ -19766,7 +20044,7 @@ BasisOpen.prototype = {
                 this._line ? this._context.lineTo(x0, y0) : this._context.moveTo(x0, y0);
                 break;
             case 3:
-                this._point = 4; // proceed
+                this._point = 4; // falls through
             default:
                 (0, _basisJs.point)(this, x, y);
                 break;
@@ -19935,7 +20213,7 @@ Cardinal.prototype = {
                 this._x1 = x, this._y1 = y;
                 break;
             case 2:
-                this._point = 3; // proceed
+                this._point = 3; // falls through
             default:
                 point(this, x, y);
                 break;
@@ -19992,7 +20270,7 @@ CardinalOpen.prototype = {
                 this._line ? this._context.lineTo(this._x2, this._y2) : this._context.moveTo(this._x2, this._y2);
                 break;
             case 3:
-                this._point = 4; // proceed
+                this._point = 4; // falls through
             default:
                 (0, _cardinalJs.point)(this, x, y);
                 break;
@@ -20147,7 +20425,7 @@ CatmullRom.prototype = {
                 this._point = 2;
                 break;
             case 2:
-                this._point = 3; // proceed
+                this._point = 3; // falls through
             default:
                 point(this, x, y);
                 break;
@@ -20210,7 +20488,7 @@ CatmullRomOpen.prototype = {
                 this._line ? this._context.lineTo(this._x2, this._y2) : this._context.moveTo(this._x2, this._y2);
                 break;
             case 3:
-                this._point = 4; // proceed
+                this._point = 4; // falls through
             default:
                 (0, _catmullRomJs.point)(this, x, y);
                 break;
@@ -20456,7 +20734,7 @@ Step.prototype = {
                 this._line ? this._context.lineTo(x, y) : this._context.moveTo(x, y);
                 break;
             case 1:
-                this._point = 2; // proceed
+                this._point = 2; // falls through
             default:
                 if (this._t <= 0) {
                     this._context.lineTo(this._x, y);
@@ -20800,80 +21078,80 @@ function scale(type, scale, metadata) {
         return this;
     } else return isValidScaleType(type) ? scales[type] : undefined;
 } // identity scale
-scale(Identity, (0, _d3Scale.scaleIdentity)); // continuous scales
-scale(Linear, (0, _d3Scale.scaleLinear), Continuous);
-scale(Log, (0, _d3Scale.scaleLog), [
+scale(Identity, _d3Scale.scaleIdentity); // continuous scales
+scale(Linear, _d3Scale.scaleLinear, Continuous);
+scale(Log, _d3Scale.scaleLog, [
     Continuous,
     Log
 ]);
-scale(Pow, (0, _d3Scale.scalePow), Continuous);
-scale(Sqrt, (0, _d3Scale.scaleSqrt), Continuous);
-scale(Symlog, (0, _d3Scale.scaleSymlog), Continuous);
-scale(Time, (0, _d3Scale.scaleTime), [
+scale(Pow, _d3Scale.scalePow, Continuous);
+scale(Sqrt, _d3Scale.scaleSqrt, Continuous);
+scale(Symlog, _d3Scale.scaleSymlog, Continuous);
+scale(Time, _d3Scale.scaleTime, [
     Continuous,
     Temporal
 ]);
-scale(UTC, (0, _d3Scale.scaleUtc), [
+scale(UTC, _d3Scale.scaleUtc, [
     Continuous,
     Temporal
 ]); // sequential scales
-scale(Sequential, (0, _d3Scale.scaleSequential), [
+scale(Sequential, _d3Scale.scaleSequential, [
     Continuous,
     Interpolating
 ]); // backwards compat
-scale("".concat(Sequential, "-").concat(Linear), (0, _d3Scale.scaleSequential), [
+scale("".concat(Sequential, "-").concat(Linear), _d3Scale.scaleSequential, [
     Continuous,
     Interpolating
 ]);
-scale("".concat(Sequential, "-").concat(Log), (0, _d3Scale.scaleSequentialLog), [
+scale("".concat(Sequential, "-").concat(Log), _d3Scale.scaleSequentialLog, [
     Continuous,
     Interpolating,
     Log
 ]);
-scale("".concat(Sequential, "-").concat(Pow), (0, _d3Scale.scaleSequentialPow), [
+scale("".concat(Sequential, "-").concat(Pow), _d3Scale.scaleSequentialPow, [
     Continuous,
     Interpolating
 ]);
-scale("".concat(Sequential, "-").concat(Sqrt), (0, _d3Scale.scaleSequentialSqrt), [
+scale("".concat(Sequential, "-").concat(Sqrt), _d3Scale.scaleSequentialSqrt, [
     Continuous,
     Interpolating
 ]);
-scale("".concat(Sequential, "-").concat(Symlog), (0, _d3Scale.scaleSequentialSymlog), [
+scale("".concat(Sequential, "-").concat(Symlog), _d3Scale.scaleSequentialSymlog, [
     Continuous,
     Interpolating
 ]); // diverging scales
-scale("".concat(Diverging, "-").concat(Linear), (0, _d3Scale.scaleDiverging), [
+scale("".concat(Diverging, "-").concat(Linear), _d3Scale.scaleDiverging, [
     Continuous,
     Interpolating
 ]);
-scale("".concat(Diverging, "-").concat(Log), (0, _d3Scale.scaleDivergingLog), [
+scale("".concat(Diverging, "-").concat(Log), _d3Scale.scaleDivergingLog, [
     Continuous,
     Interpolating,
     Log
 ]);
-scale("".concat(Diverging, "-").concat(Pow), (0, _d3Scale.scaleDivergingPow), [
+scale("".concat(Diverging, "-").concat(Pow), _d3Scale.scaleDivergingPow, [
     Continuous,
     Interpolating
 ]);
-scale("".concat(Diverging, "-").concat(Sqrt), (0, _d3Scale.scaleDivergingSqrt), [
+scale("".concat(Diverging, "-").concat(Sqrt), _d3Scale.scaleDivergingSqrt, [
     Continuous,
     Interpolating
 ]);
-scale("".concat(Diverging, "-").concat(Symlog), (0, _d3Scale.scaleDivergingSymlog), [
+scale("".concat(Diverging, "-").concat(Symlog), _d3Scale.scaleDivergingSymlog, [
     Continuous,
     Interpolating
 ]); // discretizing scales
-scale(Quantile, (0, _d3Scale.scaleQuantile), [
+scale(Quantile, _d3Scale.scaleQuantile, [
     Discretizing,
     Quantile
 ]);
-scale(Quantize, (0, _d3Scale.scaleQuantize), Discretizing);
-scale(Threshold, (0, _d3Scale.scaleThreshold), Discretizing); // discrete scales
+scale(Quantize, _d3Scale.scaleQuantize, Discretizing);
+scale(Threshold, _d3Scale.scaleThreshold, Discretizing); // discrete scales
 scale(BinOrdinal, scaleBinOrdinal, [
     Discrete,
     Discretizing
 ]);
-scale(Ordinal, (0, _d3Scale.scaleOrdinal), Discrete);
+scale(Ordinal, _d3Scale.scaleOrdinal, Discrete);
 scale(Band, band, Discrete);
 scale(Point, point, Discrete);
 function isValidScaleType(type) {
@@ -20917,7 +21195,7 @@ function interpolateRange(interpolator, range) {
     };
 }
 function interpolateColors(colors, type, gamma) {
-    return (0, _d3Interpolate.piecewise)(interpolate(type || "rgb", gamma), colors);
+    return _d3Interpolate.piecewise(interpolate(type || "rgb", gamma), colors);
 }
 function quantizeInterpolator(interpolator, count) {
     const samples = new Array(count), n = count + 1;
@@ -21297,7 +21575,161 @@ var _divergingJsDefault = parcelHelpers.interopDefault(_divergingJs);
 var _tickFormatJs = require("./tickFormat.js");
 var _tickFormatJsDefault = parcelHelpers.interopDefault(_tickFormatJs);
 
-},{"./band.js":false,"./identity.js":"le9d2","./linear.js":"5CETT","./log.js":"2gcSE","./symlog.js":"iUUr7","./ordinal.js":"1j3zZ","./pow.js":"i4lyo","./radial.js":false,"./quantile.js":"aAURo","./quantize.js":"jjcn6","./threshold.js":"8ndX3","./time.js":"cjAqm","./utcTime.js":"cM5gE","./sequential.js":"f1sM1","./sequentialQuantile.js":false,"./diverging.js":"9Qcq3","./tickFormat.js":"dksn9","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"le9d2":[function(require,module,exports) {
+},{"./band.js":"6WWiS","./identity.js":"le9d2","./linear.js":"5CETT","./log.js":"2gcSE","./symlog.js":"iUUr7","./ordinal.js":"1j3zZ","./pow.js":"i4lyo","./radial.js":"5ODOz","./quantile.js":"aAURo","./quantize.js":"jjcn6","./threshold.js":"8ndX3","./time.js":"cjAqm","./utcTime.js":"cM5gE","./sequential.js":"f1sM1","./sequentialQuantile.js":"cSmYu","./diverging.js":"9Qcq3","./tickFormat.js":"dksn9","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"6WWiS":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "point", ()=>point);
+var _d3Array = require("d3-array");
+var _initJs = require("./init.js");
+var _ordinalJs = require("./ordinal.js");
+var _ordinalJsDefault = parcelHelpers.interopDefault(_ordinalJs);
+function band() {
+    var scale = (0, _ordinalJsDefault.default)().unknown(undefined), domain = scale.domain, ordinalRange = scale.range, r0 = 0, r1 = 1, step, bandwidth, round = false, paddingInner = 0, paddingOuter = 0, align = 0.5;
+    delete scale.unknown;
+    function rescale() {
+        var n = domain().length, reverse = r1 < r0, start = reverse ? r1 : r0, stop = reverse ? r0 : r1;
+        step = (stop - start) / Math.max(1, n - paddingInner + paddingOuter * 2);
+        if (round) step = Math.floor(step);
+        start += (stop - start - step * (n - paddingInner)) * align;
+        bandwidth = step * (1 - paddingInner);
+        if (round) start = Math.round(start), bandwidth = Math.round(bandwidth);
+        var values = (0, _d3Array.range)(n).map(function(i) {
+            return start + step * i;
+        });
+        return ordinalRange(reverse ? values.reverse() : values);
+    }
+    scale.domain = function(_) {
+        return arguments.length ? (domain(_), rescale()) : domain();
+    };
+    scale.range = function(_) {
+        return arguments.length ? ([r0, r1] = _, r0 = +r0, r1 = +r1, rescale()) : [
+            r0,
+            r1
+        ];
+    };
+    scale.rangeRound = function(_) {
+        return [r0, r1] = _, r0 = +r0, r1 = +r1, round = true, rescale();
+    };
+    scale.bandwidth = function() {
+        return bandwidth;
+    };
+    scale.step = function() {
+        return step;
+    };
+    scale.round = function(_) {
+        return arguments.length ? (round = !!_, rescale()) : round;
+    };
+    scale.padding = function(_) {
+        return arguments.length ? (paddingInner = Math.min(1, paddingOuter = +_), rescale()) : paddingInner;
+    };
+    scale.paddingInner = function(_) {
+        return arguments.length ? (paddingInner = Math.min(1, _), rescale()) : paddingInner;
+    };
+    scale.paddingOuter = function(_) {
+        return arguments.length ? (paddingOuter = +_, rescale()) : paddingOuter;
+    };
+    scale.align = function(_) {
+        return arguments.length ? (align = Math.max(0, Math.min(1, _)), rescale()) : align;
+    };
+    scale.copy = function() {
+        return band(domain(), [
+            r0,
+            r1
+        ]).round(round).paddingInner(paddingInner).paddingOuter(paddingOuter).align(align);
+    };
+    return (0, _initJs.initRange).apply(rescale(), arguments);
+}
+exports.default = band;
+function pointish(scale) {
+    var copy = scale.copy;
+    scale.padding = scale.paddingOuter;
+    delete scale.paddingInner;
+    delete scale.paddingOuter;
+    scale.copy = function() {
+        return pointish(copy());
+    };
+    return scale;
+}
+function point() {
+    return pointish(band.apply(null, arguments).paddingInner(1));
+}
+
+},{"d3-array":"6IwJG","./init.js":"kLKEv","./ordinal.js":"1j3zZ","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"kLKEv":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "initRange", ()=>initRange);
+parcelHelpers.export(exports, "initInterpolator", ()=>initInterpolator);
+function initRange(domain, range) {
+    switch(arguments.length){
+        case 0:
+            break;
+        case 1:
+            this.range(domain);
+            break;
+        default:
+            this.range(range).domain(domain);
+            break;
+    }
+    return this;
+}
+function initInterpolator(domain, interpolator) {
+    switch(arguments.length){
+        case 0:
+            break;
+        case 1:
+            if (typeof domain === "function") this.interpolator(domain);
+            else this.range(domain);
+            break;
+        default:
+            this.domain(domain);
+            if (typeof interpolator === "function") this.interpolator(interpolator);
+            else this.range(interpolator);
+            break;
+    }
+    return this;
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1j3zZ":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "implicit", ()=>implicit);
+var _d3Array = require("d3-array");
+var _initJs = require("./init.js");
+const implicit = Symbol("implicit");
+function ordinal() {
+    var index = new (0, _d3Array.InternMap)(), domain = [], range = [], unknown = implicit;
+    function scale(d) {
+        let i = index.get(d);
+        if (i === undefined) {
+            if (unknown !== implicit) return unknown;
+            index.set(d, i = domain.push(d) - 1);
+        }
+        return range[i % range.length];
+    }
+    scale.domain = function(_) {
+        if (!arguments.length) return domain.slice();
+        domain = [], index = new (0, _d3Array.InternMap)();
+        for (const value of _){
+            if (index.has(value)) continue;
+            index.set(value, domain.push(value) - 1);
+        }
+        return scale;
+    };
+    scale.range = function(_) {
+        return arguments.length ? (range = Array.from(_), scale) : range.slice();
+    };
+    scale.unknown = function(_) {
+        return arguments.length ? (unknown = _, scale) : unknown;
+    };
+    scale.copy = function() {
+        return ordinal(domain, range).unknown(unknown);
+    };
+    (0, _initJs.initRange).apply(scale, arguments);
+    return scale;
+}
+exports.default = ordinal;
+
+},{"d3-array":"6IwJG","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"le9d2":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _linearJs = require("./linear.js");
@@ -21622,34 +22054,7 @@ var _defineJsDefault = parcelHelpers.interopDefault(_defineJs);
 function Color() {}
 var darker = 0.7;
 var brighter = 1 / darker;
-var reI = "\\s*([+-]?\\d+)\\s*", reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*", reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*", reHex = /^#([0-9a-f]{3,8})$/, reRgbInteger = new RegExp("^rgb\\(" + [
-    reI,
-    reI,
-    reI
-] + "\\)$"), reRgbPercent = new RegExp("^rgb\\(" + [
-    reP,
-    reP,
-    reP
-] + "\\)$"), reRgbaInteger = new RegExp("^rgba\\(" + [
-    reI,
-    reI,
-    reI,
-    reN
-] + "\\)$"), reRgbaPercent = new RegExp("^rgba\\(" + [
-    reP,
-    reP,
-    reP,
-    reN
-] + "\\)$"), reHslPercent = new RegExp("^hsl\\(" + [
-    reN,
-    reP,
-    reP
-] + "\\)$"), reHslaPercent = new RegExp("^hsla\\(" + [
-    reN,
-    reP,
-    reP,
-    reN
-] + "\\)$");
+var reI = "\\s*([+-]?\\d+)\\s*", reN = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*", reP = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*", reHex = /^#([0-9a-f]{3,8})$/, reRgbInteger = new RegExp(`^rgb\\(${reI},${reI},${reI}\\)$`), reRgbPercent = new RegExp(`^rgb\\(${reP},${reP},${reP}\\)$`), reRgbaInteger = new RegExp(`^rgba\\(${reI},${reI},${reI},${reN}\\)$`), reRgbaPercent = new RegExp(`^rgba\\(${reP},${reP},${reP},${reN}\\)$`), reHslPercent = new RegExp(`^hsl\\(${reN},${reP},${reP}\\)$`), reHslaPercent = new RegExp(`^hsla\\(${reN},${reP},${reP},${reN}\\)$`);
 var named = {
     aliceblue: 0xf0f8ff,
     antiquewhite: 0xfaebd7,
@@ -21801,20 +22206,24 @@ var named = {
     yellowgreen: 0x9acd32
 };
 (0, _defineJsDefault.default)(Color, color, {
-    copy: function(channels) {
+    copy (channels) {
         return Object.assign(new this.constructor, this, channels);
     },
-    displayable: function() {
+    displayable () {
         return this.rgb().displayable();
     },
     hex: color_formatHex,
     formatHex: color_formatHex,
+    formatHex8: color_formatHex8,
     formatHsl: color_formatHsl,
     formatRgb: color_formatRgb,
     toString: color_formatRgb
 });
 function color_formatHex() {
     return this.rgb().formatHex();
+}
+function color_formatHex8() {
+    return this.rgb().formatHex8();
 }
 function color_formatHsl() {
     return hslConvert(this).formatHsl();
@@ -21863,35 +22272,47 @@ function Rgb(r, g, b, opacity) {
     this.opacity = +opacity;
 }
 (0, _defineJsDefault.default)(Rgb, rgb, (0, _defineJs.extend)(Color, {
-    brighter: function(k) {
+    brighter (k) {
         k = k == null ? brighter : Math.pow(brighter, k);
         return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
     },
-    darker: function(k) {
+    darker (k) {
         k = k == null ? darker : Math.pow(darker, k);
         return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
     },
-    rgb: function() {
+    rgb () {
         return this;
     },
-    displayable: function() {
+    clamp () {
+        return new Rgb(clampi(this.r), clampi(this.g), clampi(this.b), clampa(this.opacity));
+    },
+    displayable () {
         return -0.5 <= this.r && this.r < 255.5 && -0.5 <= this.g && this.g < 255.5 && -0.5 <= this.b && this.b < 255.5 && 0 <= this.opacity && this.opacity <= 1;
     },
     hex: rgb_formatHex,
     formatHex: rgb_formatHex,
+    formatHex8: rgb_formatHex8,
     formatRgb: rgb_formatRgb,
     toString: rgb_formatRgb
 }));
 function rgb_formatHex() {
-    return "#" + hex(this.r) + hex(this.g) + hex(this.b);
+    return `#${hex(this.r)}${hex(this.g)}${hex(this.b)}`;
+}
+function rgb_formatHex8() {
+    return `#${hex(this.r)}${hex(this.g)}${hex(this.b)}${hex((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
 }
 function rgb_formatRgb() {
-    var a = this.opacity;
-    a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-    return (a === 1 ? "rgb(" : "rgba(") + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.b) || 0)) + (a === 1 ? ")" : ", " + a + ")");
+    const a = clampa(this.opacity);
+    return `${a === 1 ? "rgb(" : "rgba("}${clampi(this.r)}, ${clampi(this.g)}, ${clampi(this.b)}${a === 1 ? ")" : `, ${a})`}`;
+}
+function clampa(opacity) {
+    return isNaN(opacity) ? 1 : Math.max(0, Math.min(1, opacity));
+}
+function clampi(value) {
+    return Math.max(0, Math.min(255, Math.round(value) || 0));
 }
 function hex(value) {
-    value = Math.max(0, Math.min(255, Math.round(value) || 0));
+    value = clampi(value);
     return (value < 16 ? "0" : "") + value.toString(16);
 }
 function hsla(h, s, l, a) {
@@ -21926,27 +22347,36 @@ function Hsl(h, s, l, opacity) {
     this.opacity = +opacity;
 }
 (0, _defineJsDefault.default)(Hsl, hsl, (0, _defineJs.extend)(Color, {
-    brighter: function(k) {
+    brighter (k) {
         k = k == null ? brighter : Math.pow(brighter, k);
         return new Hsl(this.h, this.s, this.l * k, this.opacity);
     },
-    darker: function(k) {
+    darker (k) {
         k = k == null ? darker : Math.pow(darker, k);
         return new Hsl(this.h, this.s, this.l * k, this.opacity);
     },
-    rgb: function() {
+    rgb () {
         var h = this.h % 360 + (this.h < 0) * 360, s = isNaN(h) || isNaN(this.s) ? 0 : this.s, l = this.l, m2 = l + (l < 0.5 ? l : 1 - l) * s, m1 = 2 * l - m2;
         return new Rgb(hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), hsl2rgb(h, m1, m2), hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
     },
-    displayable: function() {
+    clamp () {
+        return new Hsl(clamph(this.h), clampt(this.s), clampt(this.l), clampa(this.opacity));
+    },
+    displayable () {
         return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && 0 <= this.l && this.l <= 1 && 0 <= this.opacity && this.opacity <= 1;
     },
-    formatHsl: function() {
-        var a = this.opacity;
-        a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-        return (a === 1 ? "hsl(" : "hsla(") + (this.h || 0) + ", " + (this.s || 0) * 100 + "%, " + (this.l || 0) * 100 + "%" + (a === 1 ? ")" : ", " + a + ")");
+    formatHsl () {
+        const a = clampa(this.opacity);
+        return `${a === 1 ? "hsl(" : "hsla("}${clamph(this.h)}, ${clampt(this.s) * 100}%, ${clampt(this.l) * 100}%${a === 1 ? ")" : `, ${a})`}`;
     }
 }));
+function clamph(value) {
+    value = (value || 0) % 360;
+    return value < 0 ? value + 360 : value;
+}
+function clampt(value) {
+    return Math.max(0, Math.min(1, value || 0));
+}
 /* From FvD 13.37, CSS Color Module Level 3 */ function hsl2rgb(h, m1, m2) {
     return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
 }
@@ -22005,13 +22435,13 @@ function Lab(l, a, b, opacity) {
     this.opacity = +opacity;
 }
 (0, _defineJsDefault.default)(Lab, lab, (0, _defineJs.extend)((0, _colorJs.Color), {
-    brighter: function(k) {
+    brighter (k) {
         return new Lab(this.l + K * (k == null ? 1 : k), this.a, this.b, this.opacity);
     },
-    darker: function(k) {
+    darker (k) {
         return new Lab(this.l - K * (k == null ? 1 : k), this.a, this.b, this.opacity);
     },
-    rgb: function() {
+    rgb () {
         var y = (this.l + 16) / 116, x = isNaN(this.a) ? y : y + this.a / 500, z = isNaN(this.b) ? y : y - this.b / 200;
         x = Xn * lab2xyz(x);
         y = Yn * lab2xyz(y);
@@ -22056,13 +22486,13 @@ function hcl2lab(o) {
     return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
 }
 (0, _defineJsDefault.default)(Hcl, hcl, (0, _defineJs.extend)((0, _colorJs.Color), {
-    brighter: function(k) {
+    brighter (k) {
         return new Hcl(this.h, this.c, this.l + K * (k == null ? 1 : k), this.opacity);
     },
-    darker: function(k) {
+    darker (k) {
         return new Hcl(this.h, this.c, this.l - K * (k == null ? 1 : k), this.opacity);
     },
-    rgb: function() {
+    rgb () {
         return hcl2lab(this).rgb();
     }
 }));
@@ -22101,15 +22531,15 @@ function Cubehelix(h, s, l, opacity) {
     this.opacity = +opacity;
 }
 (0, _defineJsDefault.default)(Cubehelix, cubehelix, (0, _defineJs.extend)((0, _colorJs.Color), {
-    brighter: function(k) {
+    brighter (k) {
         k = k == null ? (0, _colorJs.brighter) : Math.pow((0, _colorJs.brighter), k);
         return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
     },
-    darker: function(k) {
+    darker (k) {
         k = k == null ? (0, _colorJs.darker) : Math.pow((0, _colorJs.darker), k);
         return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
     },
-    rgb: function() {
+    rgb () {
         var h = isNaN(this.h) ? 0 : (this.h + 120) * (0, _mathJs.radians), l = +this.l, a = isNaN(this.s) ? 0 : this.s * l * (1 - l), cosh = Math.cos(h), sinh = Math.sin(h);
         return new (0, _colorJs.Rgb)(255 * (l + a * (A * cosh + B * sinh)), 255 * (l + a * (C * cosh + D * sinh)), 255 * (l + a * (E * cosh)), this.opacity);
     }
@@ -22691,41 +23121,6 @@ function number(x) {
 }
 exports.default = number;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"kLKEv":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "initRange", ()=>initRange);
-parcelHelpers.export(exports, "initInterpolator", ()=>initInterpolator);
-function initRange(domain, range) {
-    switch(arguments.length){
-        case 0:
-            break;
-        case 1:
-            this.range(domain);
-            break;
-        default:
-            this.range(range).domain(domain);
-            break;
-    }
-    return this;
-}
-function initInterpolator(domain, interpolator) {
-    switch(arguments.length){
-        case 0:
-            break;
-        case 1:
-            if (typeof domain === "function") this.interpolator(domain);
-            else this.range(domain);
-            break;
-        default:
-            this.domain(domain);
-            if (typeof interpolator === "function") this.interpolator(interpolator);
-            else this.range(interpolator);
-            break;
-    }
-    return this;
-}
-
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"dksn9":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
@@ -22781,22 +23176,20 @@ function pow10(x) {
     return isFinite(x) ? +("1e" + x) : x < 0 ? 0 : x;
 }
 function powp(base) {
-    return base === 10 ? pow10 : base === Math.E ? Math.exp : function(x) {
-        return Math.pow(base, x);
-    };
+    return base === 10 ? pow10 : base === Math.E ? Math.exp : (x)=>Math.pow(base, x);
 }
 function logp(base) {
-    return base === Math.E ? Math.log : base === 10 && Math.log10 || base === 2 && Math.log2 || (base = Math.log(base), function(x) {
-        return Math.log(x) / base;
-    });
+    return base === Math.E ? Math.log : base === 10 && Math.log10 || base === 2 && Math.log2 || (base = Math.log(base), (x)=>Math.log(x) / base);
 }
 function reflect(f) {
-    return function(x) {
-        return -f(-x);
-    };
+    return (x, k)=>-f(-x, k);
 }
 function loggish(transform) {
-    var scale = transform(transformLog, transformExp), domain = scale.domain, base = 10, logs, pows;
+    const scale = transform(transformLog, transformExp);
+    const domain = scale.domain;
+    let base = 10;
+    let logs;
+    let pows;
     function rescale() {
         logs = logp(base), pows = powp(base);
         if (domain()[0] < 0) {
@@ -22811,20 +23204,31 @@ function loggish(transform) {
     scale.domain = function(_) {
         return arguments.length ? (domain(_), rescale()) : domain();
     };
-    scale.ticks = function(count) {
-        var d = domain(), u = d[0], v = d[d.length - 1], r;
-        if (r = v < u) i = u, u = v, v = i;
-        var i = logs(u), j = logs(v), p, k, t, n = count == null ? 10 : +count, z = [];
+    scale.ticks = (count)=>{
+        const d = domain();
+        let u = d[0];
+        let v = d[d.length - 1];
+        const r = v < u;
+        if (r) [u, v] = [
+            v,
+            u
+        ];
+        let i = logs(u);
+        let j = logs(v);
+        let k;
+        let t;
+        const n = count == null ? 10 : +count;
+        let z = [];
         if (!(base % 1) && j - i < n) {
             i = Math.floor(i), j = Math.ceil(j);
-            if (u > 0) for(; i <= j; ++i)for(k = 1, p = pows(i); k < base; ++k){
-                t = p * k;
+            if (u > 0) for(; i <= j; ++i)for(k = 1; k < base; ++k){
+                t = i < 0 ? k / pows(-i) : k * pows(i);
                 if (t < u) continue;
                 if (t > v) break;
                 z.push(t);
             }
-            else for(; i <= j; ++i)for(k = base - 1, p = pows(i); k >= 1; --k){
-                t = p * k;
+            else for(; i <= j; ++i)for(k = base - 1; k >= 1; --k){
+                t = i > 0 ? k / pows(-i) : k * pows(i);
                 if (t < u) continue;
                 if (t > v) break;
                 z.push(t);
@@ -22833,38 +23237,35 @@ function loggish(transform) {
         } else z = (0, _d3Array.ticks)(i, j, Math.min(j - i, n)).map(pows);
         return r ? z.reverse() : z;
     };
-    scale.tickFormat = function(count, specifier) {
-        if (specifier == null) specifier = base === 10 ? ".0e" : ",";
-        if (typeof specifier !== "function") specifier = (0, _d3Format.format)(specifier);
-        if (count === Infinity) return specifier;
+    scale.tickFormat = (count, specifier)=>{
         if (count == null) count = 10;
-        var k = Math.max(1, base * count / scale.ticks().length); // TODO fast estimate?
-        return function(d) {
-            var i = d / pows(Math.round(logs(d)));
+        if (specifier == null) specifier = base === 10 ? "s" : ",";
+        if (typeof specifier !== "function") {
+            if (!(base % 1) && (specifier = (0, _d3Format.formatSpecifier)(specifier)).precision == null) specifier.trim = true;
+            specifier = (0, _d3Format.format)(specifier);
+        }
+        if (count === Infinity) return specifier;
+        const k = Math.max(1, base * count / scale.ticks().length); // TODO fast estimate?
+        return (d)=>{
+            let i = d / pows(Math.round(logs(d)));
             if (i * base < base - 0.5) i *= base;
             return i <= k ? specifier(d) : "";
         };
     };
-    scale.nice = function() {
+    scale.nice = ()=>{
         return domain((0, _niceJsDefault.default)(domain(), {
-            floor: function(x) {
-                return pows(Math.floor(logs(x)));
-            },
-            ceil: function(x) {
-                return pows(Math.ceil(logs(x)));
-            }
+            floor: (x)=>pows(Math.floor(logs(x))),
+            ceil: (x)=>pows(Math.ceil(logs(x)))
         }));
     };
     return scale;
 }
 function log() {
-    var scale = loggish((0, _continuousJs.transformer)()).domain([
+    const scale = loggish((0, _continuousJs.transformer)()).domain([
         1,
         10
     ]);
-    scale.copy = function() {
-        return (0, _continuousJs.copy)(scale, log()).base(scale.base());
-    };
+    scale.copy = ()=>(0, _continuousJs.copy)(scale, log()).base(scale.base());
     (0, _initJs.initRange).apply(scale, arguments);
     return scale;
 }
@@ -22919,47 +23320,7 @@ function symlog() {
 }
 exports.default = symlog;
 
-},{"./linear.js":"5CETT","./continuous.js":"it8xE","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"1j3zZ":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "implicit", ()=>implicit);
-var _initJs = require("./init.js");
-const implicit = Symbol("implicit");
-function ordinal() {
-    var index = new Map(), domain = [], range = [], unknown = implicit;
-    function scale(d) {
-        var key = d + "", i = index.get(key);
-        if (!i) {
-            if (unknown !== implicit) return unknown;
-            index.set(key, i = domain.push(d));
-        }
-        return range[(i - 1) % range.length];
-    }
-    scale.domain = function(_) {
-        if (!arguments.length) return domain.slice();
-        domain = [], index = new Map();
-        for (const value of _){
-            const key = value + "";
-            if (index.has(key)) continue;
-            index.set(key, domain.push(value));
-        }
-        return scale;
-    };
-    scale.range = function(_) {
-        return arguments.length ? (range = Array.from(_), scale) : range.slice();
-    };
-    scale.unknown = function(_) {
-        return arguments.length ? (unknown = _, scale) : unknown;
-    };
-    scale.copy = function() {
-        return ordinal(domain, range).unknown(unknown);
-    };
-    (0, _initJs.initRange).apply(scale, arguments);
-    return scale;
-}
-exports.default = ordinal;
-
-},{"./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"i4lyo":[function(require,module,exports) {
+},{"./linear.js":"5CETT","./continuous.js":"it8xE","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"i4lyo":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "powish", ()=>powish);
@@ -23001,7 +23362,60 @@ function sqrt() {
     return pow.apply(null, arguments).exponent(0.5);
 }
 
-},{"./linear.js":"5CETT","./continuous.js":"it8xE","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"aAURo":[function(require,module,exports) {
+},{"./linear.js":"5CETT","./continuous.js":"it8xE","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"5ODOz":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _continuousJs = require("./continuous.js");
+var _continuousJsDefault = parcelHelpers.interopDefault(_continuousJs);
+var _initJs = require("./init.js");
+var _linearJs = require("./linear.js");
+var _numberJs = require("./number.js");
+var _numberJsDefault = parcelHelpers.interopDefault(_numberJs);
+function square(x) {
+    return Math.sign(x) * x * x;
+}
+function unsquare(x) {
+    return Math.sign(x) * Math.sqrt(Math.abs(x));
+}
+function radial() {
+    var squared = (0, _continuousJsDefault.default)(), range = [
+        0,
+        1
+    ], round = false, unknown;
+    function scale(x) {
+        var y = unsquare(squared(x));
+        return isNaN(y) ? unknown : round ? Math.round(y) : y;
+    }
+    scale.invert = function(y) {
+        return squared.invert(square(y));
+    };
+    scale.domain = function(_) {
+        return arguments.length ? (squared.domain(_), scale) : squared.domain();
+    };
+    scale.range = function(_) {
+        return arguments.length ? (squared.range((range = Array.from(_, (0, _numberJsDefault.default))).map(square)), scale) : range.slice();
+    };
+    scale.rangeRound = function(_) {
+        return scale.range(_).round(true);
+    };
+    scale.round = function(_) {
+        return arguments.length ? (round = !!_, scale) : round;
+    };
+    scale.clamp = function(_) {
+        return arguments.length ? (squared.clamp(_), scale) : squared.clamp();
+    };
+    scale.unknown = function(_) {
+        return arguments.length ? (unknown = _, scale) : unknown;
+    };
+    scale.copy = function() {
+        return radial(squared.domain(), range).round(round).clamp(squared.clamp()).unknown(unknown);
+    };
+    (0, _initJs.initRange).apply(scale, arguments);
+    return (0, _linearJs.linearish)(scale);
+}
+exports.default = radial;
+
+},{"./continuous.js":"it8xE","./init.js":"kLKEv","./linear.js":"5CETT","./number.js":"bOzsY","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"aAURo":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _d3Array = require("d3-array");
@@ -23310,7 +23724,43 @@ function sequentialSqrt() {
     return sequentialPow.apply(null, arguments).exponent(0.5);
 }
 
-},{"d3-interpolate":"6gbPP","./continuous.js":"it8xE","./init.js":"kLKEv","./linear.js":"5CETT","./log.js":"2gcSE","./symlog.js":"iUUr7","./pow.js":"i4lyo","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"9Qcq3":[function(require,module,exports) {
+},{"d3-interpolate":"6gbPP","./continuous.js":"it8xE","./init.js":"kLKEv","./linear.js":"5CETT","./log.js":"2gcSE","./symlog.js":"iUUr7","./pow.js":"i4lyo","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"cSmYu":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _d3Array = require("d3-array");
+var _continuousJs = require("./continuous.js");
+var _initJs = require("./init.js");
+function sequentialQuantile() {
+    var domain = [], interpolator = (0, _continuousJs.identity);
+    function scale(x) {
+        if (x != null && !isNaN(x = +x)) return interpolator(((0, _d3Array.bisect)(domain, x, 1) - 1) / (domain.length - 1));
+    }
+    scale.domain = function(_) {
+        if (!arguments.length) return domain.slice();
+        domain = [];
+        for (let d of _)if (d != null && !isNaN(d = +d)) domain.push(d);
+        domain.sort((0, _d3Array.ascending));
+        return scale;
+    };
+    scale.interpolator = function(_) {
+        return arguments.length ? (interpolator = _, scale) : interpolator;
+    };
+    scale.range = function() {
+        return domain.map((d, i)=>interpolator(i / (domain.length - 1)));
+    };
+    scale.quantiles = function(n) {
+        return Array.from({
+            length: n + 1
+        }, (_, i)=>(0, _d3Array.quantile)(domain, i / n));
+    };
+    scale.copy = function() {
+        return sequentialQuantile(interpolator).domain(domain);
+    };
+    return (0, _initJs.initInterpolator).apply(scale, arguments);
+}
+exports.default = sequentialQuantile;
+
+},{"d3-array":"6IwJG","./continuous.js":"it8xE","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"9Qcq3":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "divergingLog", ()=>divergingLog);
@@ -26809,8 +27259,7 @@ var _d3Array = require("d3-array");
 var _cartesianJs = require("./cartesian.js");
 var _mathJs = require("./math.js");
 function longitude(point) {
-    if ((0, _mathJs.abs)(point[0]) <= (0, _mathJs.pi)) return point[0];
-    else return (0, _mathJs.sign)(point[0]) * (((0, _mathJs.abs)(point[0]) + (0, _mathJs.pi)) % (0, _mathJs.tau) - (0, _mathJs.pi));
+    return (0, _mathJs.abs)(point[0]) <= (0, _mathJs.pi) ? point[0] : (0, _mathJs.sign)(point[0]) * (((0, _mathJs.abs)(point[0]) + (0, _mathJs.pi)) % (0, _mathJs.tau) - (0, _mathJs.pi));
 }
 exports.default = function(polygon, point) {
     var lambda = longitude(point), phi = point[1], sinPhi = (0, _mathJs.sin)(phi), normal = [
@@ -28824,41 +29273,41 @@ exports.default = function() {
 },{"../math.js":"74X19","./mercator.js":"iIGjZ","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"ixW8K":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "geoAiry", ()=>(0, _airyDefault.default));
-parcelHelpers.export(exports, "geoAiryRaw", ()=>(0, _airy.airyRaw));
-parcelHelpers.export(exports, "geoAitoff", ()=>(0, _aitoffDefault.default));
-parcelHelpers.export(exports, "geoAitoffRaw", ()=>(0, _aitoff.aitoffRaw));
-parcelHelpers.export(exports, "geoArmadillo", ()=>(0, _armadilloDefault.default));
-parcelHelpers.export(exports, "geoArmadilloRaw", ()=>(0, _armadillo.armadilloRaw));
-parcelHelpers.export(exports, "geoAugust", ()=>(0, _augustDefault.default));
-parcelHelpers.export(exports, "geoAugustRaw", ()=>(0, _august.augustRaw));
-parcelHelpers.export(exports, "geoBaker", ()=>(0, _bakerDefault.default));
-parcelHelpers.export(exports, "geoBakerRaw", ()=>(0, _baker.bakerRaw));
-parcelHelpers.export(exports, "geoBerghaus", ()=>(0, _berghausDefault.default));
-parcelHelpers.export(exports, "geoBerghausRaw", ()=>(0, _berghaus.berghausRaw));
-parcelHelpers.export(exports, "geoBertin1953", ()=>(0, _bertinDefault.default));
-parcelHelpers.export(exports, "geoBertin1953Raw", ()=>(0, _bertin.bertin1953Raw));
-parcelHelpers.export(exports, "geoBoggs", ()=>(0, _boggsDefault.default));
-parcelHelpers.export(exports, "geoBoggsRaw", ()=>(0, _boggs.boggsRaw));
-parcelHelpers.export(exports, "geoBonne", ()=>(0, _bonneDefault.default));
-parcelHelpers.export(exports, "geoBonneRaw", ()=>(0, _bonne.bonneRaw));
-parcelHelpers.export(exports, "geoBottomley", ()=>(0, _bottomleyDefault.default));
-parcelHelpers.export(exports, "geoBottomleyRaw", ()=>(0, _bottomley.bottomleyRaw));
-parcelHelpers.export(exports, "geoBromley", ()=>(0, _bromleyDefault.default));
-parcelHelpers.export(exports, "geoBromleyRaw", ()=>(0, _bromley.bromleyRaw));
-parcelHelpers.export(exports, "geoChamberlin", ()=>(0, _chamberlinDefault.default));
-parcelHelpers.export(exports, "geoChamberlinRaw", ()=>(0, _chamberlin.chamberlinRaw));
-parcelHelpers.export(exports, "geoChamberlinAfrica", ()=>(0, _chamberlin.chamberlinAfrica));
-parcelHelpers.export(exports, "geoCollignon", ()=>(0, _collignonDefault.default));
-parcelHelpers.export(exports, "geoCollignonRaw", ()=>(0, _collignon.collignonRaw));
-parcelHelpers.export(exports, "geoCraig", ()=>(0, _craigDefault.default));
-parcelHelpers.export(exports, "geoCraigRaw", ()=>(0, _craig.craigRaw));
-parcelHelpers.export(exports, "geoCraster", ()=>(0, _crasterDefault.default));
-parcelHelpers.export(exports, "geoCrasterRaw", ()=>(0, _craster.crasterRaw));
-parcelHelpers.export(exports, "geoCylindricalEqualArea", ()=>(0, _cylindricalEqualAreaDefault.default));
-parcelHelpers.export(exports, "geoCylindricalEqualAreaRaw", ()=>(0, _cylindricalEqualArea.cylindricalEqualAreaRaw));
-parcelHelpers.export(exports, "geoCylindricalStereographic", ()=>(0, _cylindricalStereographicDefault.default));
-parcelHelpers.export(exports, "geoCylindricalStereographicRaw", ()=>(0, _cylindricalStereographic.cylindricalStereographicRaw));
+parcelHelpers.export(exports, "geoAiry", ()=>(0, _airyJsDefault.default));
+parcelHelpers.export(exports, "geoAiryRaw", ()=>(0, _airyJs.airyRaw));
+parcelHelpers.export(exports, "geoAitoff", ()=>(0, _aitoffJsDefault.default));
+parcelHelpers.export(exports, "geoAitoffRaw", ()=>(0, _aitoffJs.aitoffRaw));
+parcelHelpers.export(exports, "geoArmadillo", ()=>(0, _armadilloJsDefault.default));
+parcelHelpers.export(exports, "geoArmadilloRaw", ()=>(0, _armadilloJs.armadilloRaw));
+parcelHelpers.export(exports, "geoAugust", ()=>(0, _augustJsDefault.default));
+parcelHelpers.export(exports, "geoAugustRaw", ()=>(0, _augustJs.augustRaw));
+parcelHelpers.export(exports, "geoBaker", ()=>(0, _bakerJsDefault.default));
+parcelHelpers.export(exports, "geoBakerRaw", ()=>(0, _bakerJs.bakerRaw));
+parcelHelpers.export(exports, "geoBerghaus", ()=>(0, _berghausJsDefault.default));
+parcelHelpers.export(exports, "geoBerghausRaw", ()=>(0, _berghausJs.berghausRaw));
+parcelHelpers.export(exports, "geoBertin1953", ()=>(0, _bertinJsDefault.default));
+parcelHelpers.export(exports, "geoBertin1953Raw", ()=>(0, _bertinJs.bertin1953Raw));
+parcelHelpers.export(exports, "geoBoggs", ()=>(0, _boggsJsDefault.default));
+parcelHelpers.export(exports, "geoBoggsRaw", ()=>(0, _boggsJs.boggsRaw));
+parcelHelpers.export(exports, "geoBonne", ()=>(0, _bonneJsDefault.default));
+parcelHelpers.export(exports, "geoBonneRaw", ()=>(0, _bonneJs.bonneRaw));
+parcelHelpers.export(exports, "geoBottomley", ()=>(0, _bottomleyJsDefault.default));
+parcelHelpers.export(exports, "geoBottomleyRaw", ()=>(0, _bottomleyJs.bottomleyRaw));
+parcelHelpers.export(exports, "geoBromley", ()=>(0, _bromleyJsDefault.default));
+parcelHelpers.export(exports, "geoBromleyRaw", ()=>(0, _bromleyJs.bromleyRaw));
+parcelHelpers.export(exports, "geoChamberlin", ()=>(0, _chamberlinJsDefault.default));
+parcelHelpers.export(exports, "geoChamberlinRaw", ()=>(0, _chamberlinJs.chamberlinRaw));
+parcelHelpers.export(exports, "geoChamberlinAfrica", ()=>(0, _chamberlinJs.chamberlinAfrica));
+parcelHelpers.export(exports, "geoCollignon", ()=>(0, _collignonJsDefault.default));
+parcelHelpers.export(exports, "geoCollignonRaw", ()=>(0, _collignonJs.collignonRaw));
+parcelHelpers.export(exports, "geoCraig", ()=>(0, _craigJsDefault.default));
+parcelHelpers.export(exports, "geoCraigRaw", ()=>(0, _craigJs.craigRaw));
+parcelHelpers.export(exports, "geoCraster", ()=>(0, _crasterJsDefault.default));
+parcelHelpers.export(exports, "geoCrasterRaw", ()=>(0, _crasterJs.crasterRaw));
+parcelHelpers.export(exports, "geoCylindricalEqualArea", ()=>(0, _cylindricalEqualAreaJsDefault.default));
+parcelHelpers.export(exports, "geoCylindricalEqualAreaRaw", ()=>(0, _cylindricalEqualAreaJs.cylindricalEqualAreaRaw));
+parcelHelpers.export(exports, "geoCylindricalStereographic", ()=>(0, _cylindricalStereographicJsDefault.default));
+parcelHelpers.export(exports, "geoCylindricalStereographicRaw", ()=>(0, _cylindricalStereographicJs.cylindricalStereographicRaw));
 parcelHelpers.export(exports, "geoEckert1", ()=>(0, _eckert1JsDefault.default));
 parcelHelpers.export(exports, "geoEckert1Raw", ()=>(0, _eckert1Js.eckert1Raw));
 parcelHelpers.export(exports, "geoEckert2", ()=>(0, _eckert2JsDefault.default));
@@ -28908,91 +29357,91 @@ parcelHelpers.export(exports, "geoHomolosine", ()=>(0, _homolosineJsDefault.defa
 parcelHelpers.export(exports, "geoHomolosineRaw", ()=>(0, _homolosineJs.homolosineRaw));
 parcelHelpers.export(exports, "geoHufnagel", ()=>(0, _hufnagelJsDefault.default));
 parcelHelpers.export(exports, "geoHufnagelRaw", ()=>(0, _hufnagelJs.hufnagelRaw));
-parcelHelpers.export(exports, "geoHyperelliptical", ()=>(0, _hyperellipticalDefault.default));
-parcelHelpers.export(exports, "geoHyperellipticalRaw", ()=>(0, _hyperelliptical.hyperellipticalRaw));
-parcelHelpers.export(exports, "geoInterrupt", ()=>(0, _indexDefault.default));
-parcelHelpers.export(exports, "geoInterruptedBoggs", ()=>(0, _boggsDefault1.default));
-parcelHelpers.export(exports, "geoInterruptedHomolosine", ()=>(0, _homolosineDefault.default));
-parcelHelpers.export(exports, "geoInterruptedMollweide", ()=>(0, _mollweideDefault.default));
-parcelHelpers.export(exports, "geoInterruptedMollweideHemispheres", ()=>(0, _mollweideHemispheresDefault.default));
-parcelHelpers.export(exports, "geoInterruptedSinuMollweide", ()=>(0, _sinuMollweideDefault.default));
-parcelHelpers.export(exports, "geoInterruptedSinusoidal", ()=>(0, _sinusoidalDefault.default));
+parcelHelpers.export(exports, "geoHyperelliptical", ()=>(0, _hyperellipticalJsDefault.default));
+parcelHelpers.export(exports, "geoHyperellipticalRaw", ()=>(0, _hyperellipticalJs.hyperellipticalRaw));
+parcelHelpers.export(exports, "geoInterrupt", ()=>(0, _indexJsDefault.default));
+parcelHelpers.export(exports, "geoInterruptedBoggs", ()=>(0, _boggsJsDefault1.default));
+parcelHelpers.export(exports, "geoInterruptedHomolosine", ()=>(0, _homolosineJsDefault1.default));
+parcelHelpers.export(exports, "geoInterruptedMollweide", ()=>(0, _mollweideJsDefault.default));
+parcelHelpers.export(exports, "geoInterruptedMollweideHemispheres", ()=>(0, _mollweideHemispheresJsDefault.default));
+parcelHelpers.export(exports, "geoInterruptedSinuMollweide", ()=>(0, _sinuMollweideJsDefault.default));
+parcelHelpers.export(exports, "geoInterruptedSinusoidal", ()=>(0, _sinusoidalJsDefault.default));
 parcelHelpers.export(exports, "geoKavrayskiy7", ()=>(0, _kavrayskiy7JsDefault.default));
 parcelHelpers.export(exports, "geoKavrayskiy7Raw", ()=>(0, _kavrayskiy7Js.kavrayskiy7Raw));
 parcelHelpers.export(exports, "geoLagrange", ()=>(0, _lagrangeJsDefault.default));
 parcelHelpers.export(exports, "geoLagrangeRaw", ()=>(0, _lagrangeJs.lagrangeRaw));
-parcelHelpers.export(exports, "geoLarrivee", ()=>(0, _larriveeDefault.default));
-parcelHelpers.export(exports, "geoLarriveeRaw", ()=>(0, _larrivee.larriveeRaw));
-parcelHelpers.export(exports, "geoLaskowski", ()=>(0, _laskowskiDefault.default));
-parcelHelpers.export(exports, "geoLaskowskiRaw", ()=>(0, _laskowski.laskowskiRaw));
+parcelHelpers.export(exports, "geoLarrivee", ()=>(0, _larriveeJsDefault.default));
+parcelHelpers.export(exports, "geoLarriveeRaw", ()=>(0, _larriveeJs.larriveeRaw));
+parcelHelpers.export(exports, "geoLaskowski", ()=>(0, _laskowskiJsDefault.default));
+parcelHelpers.export(exports, "geoLaskowskiRaw", ()=>(0, _laskowskiJs.laskowskiRaw));
 parcelHelpers.export(exports, "geoLittrow", ()=>(0, _littrowJsDefault.default));
 parcelHelpers.export(exports, "geoLittrowRaw", ()=>(0, _littrowJs.littrowRaw));
 parcelHelpers.export(exports, "geoLoximuthal", ()=>(0, _loximuthalJsDefault.default));
 parcelHelpers.export(exports, "geoLoximuthalRaw", ()=>(0, _loximuthalJs.loximuthalRaw));
-parcelHelpers.export(exports, "geoMiller", ()=>(0, _millerDefault.default));
-parcelHelpers.export(exports, "geoMillerRaw", ()=>(0, _miller.millerRaw));
-parcelHelpers.export(exports, "geoModifiedStereographic", ()=>(0, _modifiedStereographicDefault.default));
-parcelHelpers.export(exports, "geoModifiedStereographicRaw", ()=>(0, _modifiedStereographic.modifiedStereographicRaw));
-parcelHelpers.export(exports, "geoModifiedStereographicAlaska", ()=>(0, _modifiedStereographic.modifiedStereographicAlaska));
-parcelHelpers.export(exports, "geoModifiedStereographicGs48", ()=>(0, _modifiedStereographic.modifiedStereographicGs48));
-parcelHelpers.export(exports, "geoModifiedStereographicGs50", ()=>(0, _modifiedStereographic.modifiedStereographicGs50));
-parcelHelpers.export(exports, "geoModifiedStereographicMiller", ()=>(0, _modifiedStereographic.modifiedStereographicMiller));
-parcelHelpers.export(exports, "geoModifiedStereographicLee", ()=>(0, _modifiedStereographic.modifiedStereographicLee));
-parcelHelpers.export(exports, "geoMollweide", ()=>(0, _mollweideDefault1.default));
-parcelHelpers.export(exports, "geoMollweideRaw", ()=>(0, _mollweide1.mollweideRaw));
-parcelHelpers.export(exports, "geoMtFlatPolarParabolic", ()=>(0, _mtFlatPolarParabolicDefault.default));
-parcelHelpers.export(exports, "geoMtFlatPolarParabolicRaw", ()=>(0, _mtFlatPolarParabolic.mtFlatPolarParabolicRaw));
-parcelHelpers.export(exports, "geoMtFlatPolarQuartic", ()=>(0, _mtFlatPolarQuarticDefault.default));
-parcelHelpers.export(exports, "geoMtFlatPolarQuarticRaw", ()=>(0, _mtFlatPolarQuartic.mtFlatPolarQuarticRaw));
-parcelHelpers.export(exports, "geoMtFlatPolarSinusoidal", ()=>(0, _mtFlatPolarSinusoidalDefault.default));
-parcelHelpers.export(exports, "geoMtFlatPolarSinusoidalRaw", ()=>(0, _mtFlatPolarSinusoidal.mtFlatPolarSinusoidalRaw));
-parcelHelpers.export(exports, "geoNaturalEarth2", ()=>(0, _naturalEarth2Default.default));
-parcelHelpers.export(exports, "geoNaturalEarth2Raw", ()=>(0, _naturalEarth2.naturalEarth2Raw));
-parcelHelpers.export(exports, "geoNellHammer", ()=>(0, _nellHammerDefault.default));
-parcelHelpers.export(exports, "geoNellHammerRaw", ()=>(0, _nellHammer.nellHammerRaw));
-parcelHelpers.export(exports, "geoInterruptedQuarticAuthalic", ()=>(0, _quarticAuthalicDefault.default));
-parcelHelpers.export(exports, "geoNicolosi", ()=>(0, _nicolosiDefault.default));
-parcelHelpers.export(exports, "geoNicolosiRaw", ()=>(0, _nicolosi.nicolosiRaw));
-parcelHelpers.export(exports, "geoPatterson", ()=>(0, _pattersonDefault.default));
-parcelHelpers.export(exports, "geoPattersonRaw", ()=>(0, _patterson.pattersonRaw));
-parcelHelpers.export(exports, "geoPolyconic", ()=>(0, _polyconicDefault.default));
-parcelHelpers.export(exports, "geoPolyconicRaw", ()=>(0, _polyconic.polyconicRaw));
-parcelHelpers.export(exports, "geoPolyhedral", ()=>(0, _indexJsDefault.default));
+parcelHelpers.export(exports, "geoMiller", ()=>(0, _millerJsDefault.default));
+parcelHelpers.export(exports, "geoMillerRaw", ()=>(0, _millerJs.millerRaw));
+parcelHelpers.export(exports, "geoModifiedStereographic", ()=>(0, _modifiedStereographicJsDefault.default));
+parcelHelpers.export(exports, "geoModifiedStereographicRaw", ()=>(0, _modifiedStereographicJs.modifiedStereographicRaw));
+parcelHelpers.export(exports, "geoModifiedStereographicAlaska", ()=>(0, _modifiedStereographicJs.modifiedStereographicAlaska));
+parcelHelpers.export(exports, "geoModifiedStereographicGs48", ()=>(0, _modifiedStereographicJs.modifiedStereographicGs48));
+parcelHelpers.export(exports, "geoModifiedStereographicGs50", ()=>(0, _modifiedStereographicJs.modifiedStereographicGs50));
+parcelHelpers.export(exports, "geoModifiedStereographicMiller", ()=>(0, _modifiedStereographicJs.modifiedStereographicMiller));
+parcelHelpers.export(exports, "geoModifiedStereographicLee", ()=>(0, _modifiedStereographicJs.modifiedStereographicLee));
+parcelHelpers.export(exports, "geoMollweide", ()=>(0, _mollweideJsDefault1.default));
+parcelHelpers.export(exports, "geoMollweideRaw", ()=>(0, _mollweideJs1.mollweideRaw));
+parcelHelpers.export(exports, "geoMtFlatPolarParabolic", ()=>(0, _mtFlatPolarParabolicJsDefault.default));
+parcelHelpers.export(exports, "geoMtFlatPolarParabolicRaw", ()=>(0, _mtFlatPolarParabolicJs.mtFlatPolarParabolicRaw));
+parcelHelpers.export(exports, "geoMtFlatPolarQuartic", ()=>(0, _mtFlatPolarQuarticJsDefault.default));
+parcelHelpers.export(exports, "geoMtFlatPolarQuarticRaw", ()=>(0, _mtFlatPolarQuarticJs.mtFlatPolarQuarticRaw));
+parcelHelpers.export(exports, "geoMtFlatPolarSinusoidal", ()=>(0, _mtFlatPolarSinusoidalJsDefault.default));
+parcelHelpers.export(exports, "geoMtFlatPolarSinusoidalRaw", ()=>(0, _mtFlatPolarSinusoidalJs.mtFlatPolarSinusoidalRaw));
+parcelHelpers.export(exports, "geoNaturalEarth2", ()=>(0, _naturalEarth2JsDefault.default));
+parcelHelpers.export(exports, "geoNaturalEarth2Raw", ()=>(0, _naturalEarth2Js.naturalEarth2Raw));
+parcelHelpers.export(exports, "geoNellHammer", ()=>(0, _nellHammerJsDefault.default));
+parcelHelpers.export(exports, "geoNellHammerRaw", ()=>(0, _nellHammerJs.nellHammerRaw));
+parcelHelpers.export(exports, "geoInterruptedQuarticAuthalic", ()=>(0, _quarticAuthalicJsDefault.default));
+parcelHelpers.export(exports, "geoNicolosi", ()=>(0, _nicolosiJsDefault.default));
+parcelHelpers.export(exports, "geoNicolosiRaw", ()=>(0, _nicolosiJs.nicolosiRaw));
+parcelHelpers.export(exports, "geoPatterson", ()=>(0, _pattersonJsDefault.default));
+parcelHelpers.export(exports, "geoPattersonRaw", ()=>(0, _pattersonJs.pattersonRaw));
+parcelHelpers.export(exports, "geoPolyconic", ()=>(0, _polyconicJsDefault.default));
+parcelHelpers.export(exports, "geoPolyconicRaw", ()=>(0, _polyconicJs.polyconicRaw));
+parcelHelpers.export(exports, "geoPolyhedral", ()=>(0, _indexJsDefault1.default));
 parcelHelpers.export(exports, "geoPolyhedralButterfly", ()=>(0, _butterflyJsDefault.default));
-parcelHelpers.export(exports, "geoPolyhedralCollignon", ()=>(0, _collignonJsDefault.default));
+parcelHelpers.export(exports, "geoPolyhedralCollignon", ()=>(0, _collignonJsDefault1.default));
 parcelHelpers.export(exports, "geoPolyhedralWaterman", ()=>(0, _watermanJsDefault.default));
-parcelHelpers.export(exports, "geoProject", ()=>(0, _indexDefault1.default));
+parcelHelpers.export(exports, "geoProject", ()=>(0, _indexJsDefault2.default));
 parcelHelpers.export(exports, "geoGringortenQuincuncial", ()=>(0, _gringortenJsDefault1.default));
 parcelHelpers.export(exports, "geoPeirceQuincuncial", ()=>(0, _peirceJsDefault.default));
-parcelHelpers.export(exports, "geoQuantize", ()=>(0, _quantizeDefault.default));
-parcelHelpers.export(exports, "geoQuincuncial", ()=>(0, _indexJsDefault1.default));
-parcelHelpers.export(exports, "geoRectangularPolyconic", ()=>(0, _rectangularPolyconicDefault.default));
-parcelHelpers.export(exports, "geoRectangularPolyconicRaw", ()=>(0, _rectangularPolyconic.rectangularPolyconicRaw));
-parcelHelpers.export(exports, "geoRobinson", ()=>(0, _robinsonDefault.default));
-parcelHelpers.export(exports, "geoRobinsonRaw", ()=>(0, _robinson.robinsonRaw));
-parcelHelpers.export(exports, "geoSatellite", ()=>(0, _satelliteDefault.default));
-parcelHelpers.export(exports, "geoSatelliteRaw", ()=>(0, _satellite.satelliteRaw));
-parcelHelpers.export(exports, "geoSinuMollweide", ()=>(0, _sinuMollweideDefault1.default));
-parcelHelpers.export(exports, "geoSinuMollweideRaw", ()=>(0, _sinuMollweide1.sinuMollweideRaw));
-parcelHelpers.export(exports, "geoSinusoidal", ()=>(0, _sinusoidalDefault1.default));
-parcelHelpers.export(exports, "geoSinusoidalRaw", ()=>(0, _sinusoidal1.sinusoidalRaw));
-parcelHelpers.export(exports, "geoStitch", ()=>(0, _stitchDefault.default));
-parcelHelpers.export(exports, "geoTimes", ()=>(0, _timesDefault.default));
-parcelHelpers.export(exports, "geoTimesRaw", ()=>(0, _times.timesRaw));
-parcelHelpers.export(exports, "geoTwoPointAzimuthal", ()=>(0, _twoPointAzimuthalDefault.default));
-parcelHelpers.export(exports, "geoTwoPointAzimuthalRaw", ()=>(0, _twoPointAzimuthal.twoPointAzimuthalRaw));
-parcelHelpers.export(exports, "geoTwoPointAzimuthalUsa", ()=>(0, _twoPointAzimuthal.twoPointAzimuthalUsa));
-parcelHelpers.export(exports, "geoTwoPointEquidistant", ()=>(0, _twoPointEquidistantDefault.default));
-parcelHelpers.export(exports, "geoTwoPointEquidistantRaw", ()=>(0, _twoPointEquidistant.twoPointEquidistantRaw));
-parcelHelpers.export(exports, "geoTwoPointEquidistantUsa", ()=>(0, _twoPointEquidistant.twoPointEquidistantUsa));
-parcelHelpers.export(exports, "geoVanDerGrinten", ()=>(0, _vanDerGrintenDefault.default));
-parcelHelpers.export(exports, "geoVanDerGrintenRaw", ()=>(0, _vanDerGrinten.vanDerGrintenRaw));
-parcelHelpers.export(exports, "geoVanDerGrinten2", ()=>(0, _vanDerGrinten2Default.default));
-parcelHelpers.export(exports, "geoVanDerGrinten2Raw", ()=>(0, _vanDerGrinten2.vanDerGrinten2Raw));
-parcelHelpers.export(exports, "geoVanDerGrinten3", ()=>(0, _vanDerGrinten3Default.default));
-parcelHelpers.export(exports, "geoVanDerGrinten3Raw", ()=>(0, _vanDerGrinten3.vanDerGrinten3Raw));
-parcelHelpers.export(exports, "geoVanDerGrinten4", ()=>(0, _vanDerGrinten4Default.default));
-parcelHelpers.export(exports, "geoVanDerGrinten4Raw", ()=>(0, _vanDerGrinten4.vanDerGrinten4Raw));
+parcelHelpers.export(exports, "geoQuantize", ()=>(0, _quantizeJsDefault.default));
+parcelHelpers.export(exports, "geoQuincuncial", ()=>(0, _indexJsDefault3.default));
+parcelHelpers.export(exports, "geoRectangularPolyconic", ()=>(0, _rectangularPolyconicJsDefault.default));
+parcelHelpers.export(exports, "geoRectangularPolyconicRaw", ()=>(0, _rectangularPolyconicJs.rectangularPolyconicRaw));
+parcelHelpers.export(exports, "geoRobinson", ()=>(0, _robinsonJsDefault.default));
+parcelHelpers.export(exports, "geoRobinsonRaw", ()=>(0, _robinsonJs.robinsonRaw));
+parcelHelpers.export(exports, "geoSatellite", ()=>(0, _satelliteJsDefault.default));
+parcelHelpers.export(exports, "geoSatelliteRaw", ()=>(0, _satelliteJs.satelliteRaw));
+parcelHelpers.export(exports, "geoSinuMollweide", ()=>(0, _sinuMollweideJsDefault1.default));
+parcelHelpers.export(exports, "geoSinuMollweideRaw", ()=>(0, _sinuMollweideJs1.sinuMollweideRaw));
+parcelHelpers.export(exports, "geoSinusoidal", ()=>(0, _sinusoidalJsDefault1.default));
+parcelHelpers.export(exports, "geoSinusoidalRaw", ()=>(0, _sinusoidalJs1.sinusoidalRaw));
+parcelHelpers.export(exports, "geoStitch", ()=>(0, _stitchJsDefault.default));
+parcelHelpers.export(exports, "geoTimes", ()=>(0, _timesJsDefault.default));
+parcelHelpers.export(exports, "geoTimesRaw", ()=>(0, _timesJs.timesRaw));
+parcelHelpers.export(exports, "geoTwoPointAzimuthal", ()=>(0, _twoPointAzimuthalJsDefault.default));
+parcelHelpers.export(exports, "geoTwoPointAzimuthalRaw", ()=>(0, _twoPointAzimuthalJs.twoPointAzimuthalRaw));
+parcelHelpers.export(exports, "geoTwoPointAzimuthalUsa", ()=>(0, _twoPointAzimuthalJs.twoPointAzimuthalUsa));
+parcelHelpers.export(exports, "geoTwoPointEquidistant", ()=>(0, _twoPointEquidistantJsDefault.default));
+parcelHelpers.export(exports, "geoTwoPointEquidistantRaw", ()=>(0, _twoPointEquidistantJs.twoPointEquidistantRaw));
+parcelHelpers.export(exports, "geoTwoPointEquidistantUsa", ()=>(0, _twoPointEquidistantJs.twoPointEquidistantUsa));
+parcelHelpers.export(exports, "geoVanDerGrinten", ()=>(0, _vanDerGrintenJsDefault.default));
+parcelHelpers.export(exports, "geoVanDerGrintenRaw", ()=>(0, _vanDerGrintenJs.vanDerGrintenRaw));
+parcelHelpers.export(exports, "geoVanDerGrinten2", ()=>(0, _vanDerGrinten2JsDefault.default));
+parcelHelpers.export(exports, "geoVanDerGrinten2Raw", ()=>(0, _vanDerGrinten2Js.vanDerGrinten2Raw));
+parcelHelpers.export(exports, "geoVanDerGrinten3", ()=>(0, _vanDerGrinten3JsDefault.default));
+parcelHelpers.export(exports, "geoVanDerGrinten3Raw", ()=>(0, _vanDerGrinten3Js.vanDerGrinten3Raw));
+parcelHelpers.export(exports, "geoVanDerGrinten4", ()=>(0, _vanDerGrinten4JsDefault.default));
+parcelHelpers.export(exports, "geoVanDerGrinten4Raw", ()=>(0, _vanDerGrinten4Js.vanDerGrinten4Raw));
 parcelHelpers.export(exports, "geoWagner", ()=>(0, _wagnerJsDefault.default));
 parcelHelpers.export(exports, "geoWagner7", ()=>(0, _wagnerJs.wagner7));
 parcelHelpers.export(exports, "geoWagnerRaw", ()=>(0, _wagnerJs.wagnerRaw));
@@ -29002,42 +29451,42 @@ parcelHelpers.export(exports, "geoWagner6", ()=>(0, _wagner6JsDefault.default));
 parcelHelpers.export(exports, "geoWagner6Raw", ()=>(0, _wagner6Js.wagner6Raw));
 parcelHelpers.export(exports, "geoWiechel", ()=>(0, _wiechelJsDefault.default));
 parcelHelpers.export(exports, "geoWiechelRaw", ()=>(0, _wiechelJs.wiechelRaw));
-parcelHelpers.export(exports, "geoWinkel3", ()=>(0, _winkel3Default.default));
-parcelHelpers.export(exports, "geoWinkel3Raw", ()=>(0, _winkel3.winkel3Raw));
-var _airy = require("./airy");
-var _airyDefault = parcelHelpers.interopDefault(_airy);
-var _aitoff = require("./aitoff");
-var _aitoffDefault = parcelHelpers.interopDefault(_aitoff);
-var _armadillo = require("./armadillo");
-var _armadilloDefault = parcelHelpers.interopDefault(_armadillo);
-var _august = require("./august");
-var _augustDefault = parcelHelpers.interopDefault(_august);
-var _baker = require("./baker");
-var _bakerDefault = parcelHelpers.interopDefault(_baker);
-var _berghaus = require("./berghaus");
-var _berghausDefault = parcelHelpers.interopDefault(_berghaus);
-var _bertin = require("./bertin");
-var _bertinDefault = parcelHelpers.interopDefault(_bertin);
-var _boggs = require("./boggs");
-var _boggsDefault = parcelHelpers.interopDefault(_boggs);
-var _bonne = require("./bonne");
-var _bonneDefault = parcelHelpers.interopDefault(_bonne);
-var _bottomley = require("./bottomley");
-var _bottomleyDefault = parcelHelpers.interopDefault(_bottomley);
-var _bromley = require("./bromley");
-var _bromleyDefault = parcelHelpers.interopDefault(_bromley);
-var _chamberlin = require("./chamberlin");
-var _chamberlinDefault = parcelHelpers.interopDefault(_chamberlin);
-var _collignon = require("./collignon");
-var _collignonDefault = parcelHelpers.interopDefault(_collignon);
-var _craig = require("./craig");
-var _craigDefault = parcelHelpers.interopDefault(_craig);
-var _craster = require("./craster");
-var _crasterDefault = parcelHelpers.interopDefault(_craster);
-var _cylindricalEqualArea = require("./cylindricalEqualArea");
-var _cylindricalEqualAreaDefault = parcelHelpers.interopDefault(_cylindricalEqualArea);
-var _cylindricalStereographic = require("./cylindricalStereographic");
-var _cylindricalStereographicDefault = parcelHelpers.interopDefault(_cylindricalStereographic);
+parcelHelpers.export(exports, "geoWinkel3", ()=>(0, _winkel3JsDefault.default));
+parcelHelpers.export(exports, "geoWinkel3Raw", ()=>(0, _winkel3Js.winkel3Raw));
+var _airyJs = require("./airy.js");
+var _airyJsDefault = parcelHelpers.interopDefault(_airyJs);
+var _aitoffJs = require("./aitoff.js");
+var _aitoffJsDefault = parcelHelpers.interopDefault(_aitoffJs);
+var _armadilloJs = require("./armadillo.js");
+var _armadilloJsDefault = parcelHelpers.interopDefault(_armadilloJs);
+var _augustJs = require("./august.js");
+var _augustJsDefault = parcelHelpers.interopDefault(_augustJs);
+var _bakerJs = require("./baker.js");
+var _bakerJsDefault = parcelHelpers.interopDefault(_bakerJs);
+var _berghausJs = require("./berghaus.js");
+var _berghausJsDefault = parcelHelpers.interopDefault(_berghausJs);
+var _bertinJs = require("./bertin.js");
+var _bertinJsDefault = parcelHelpers.interopDefault(_bertinJs);
+var _boggsJs = require("./boggs.js");
+var _boggsJsDefault = parcelHelpers.interopDefault(_boggsJs);
+var _bonneJs = require("./bonne.js");
+var _bonneJsDefault = parcelHelpers.interopDefault(_bonneJs);
+var _bottomleyJs = require("./bottomley.js");
+var _bottomleyJsDefault = parcelHelpers.interopDefault(_bottomleyJs);
+var _bromleyJs = require("./bromley.js");
+var _bromleyJsDefault = parcelHelpers.interopDefault(_bromleyJs);
+var _chamberlinJs = require("./chamberlin.js");
+var _chamberlinJsDefault = parcelHelpers.interopDefault(_chamberlinJs);
+var _collignonJs = require("./collignon.js");
+var _collignonJsDefault = parcelHelpers.interopDefault(_collignonJs);
+var _craigJs = require("./craig.js");
+var _craigJsDefault = parcelHelpers.interopDefault(_craigJs);
+var _crasterJs = require("./craster.js");
+var _crasterJsDefault = parcelHelpers.interopDefault(_crasterJs);
+var _cylindricalEqualAreaJs = require("./cylindricalEqualArea.js");
+var _cylindricalEqualAreaJsDefault = parcelHelpers.interopDefault(_cylindricalEqualAreaJs);
+var _cylindricalStereographicJs = require("./cylindricalStereographic.js");
+var _cylindricalStereographicJsDefault = parcelHelpers.interopDefault(_cylindricalStereographicJs);
 var _eckert1Js = require("./eckert1.js");
 var _eckert1JsDefault = parcelHelpers.interopDefault(_eckert1Js);
 var _eckert2Js = require("./eckert2.js");
@@ -29088,102 +29537,102 @@ var _homolosineJs = require("./homolosine.js");
 var _homolosineJsDefault = parcelHelpers.interopDefault(_homolosineJs);
 var _hufnagelJs = require("./hufnagel.js");
 var _hufnagelJsDefault = parcelHelpers.interopDefault(_hufnagelJs);
-var _hyperelliptical = require("./hyperelliptical");
-var _hyperellipticalDefault = parcelHelpers.interopDefault(_hyperelliptical);
-var _index = require("./interrupted/index");
-var _indexDefault = parcelHelpers.interopDefault(_index);
-var _boggs1 = require("./interrupted/boggs");
-var _boggsDefault1 = parcelHelpers.interopDefault(_boggs1);
-var _homolosine = require("./interrupted/homolosine");
-var _homolosineDefault = parcelHelpers.interopDefault(_homolosine);
-var _mollweide = require("./interrupted/mollweide");
-var _mollweideDefault = parcelHelpers.interopDefault(_mollweide);
-var _mollweideHemispheres = require("./interrupted/mollweideHemispheres");
-var _mollweideHemispheresDefault = parcelHelpers.interopDefault(_mollweideHemispheres);
-var _sinuMollweide = require("./interrupted/sinuMollweide");
-var _sinuMollweideDefault = parcelHelpers.interopDefault(_sinuMollweide);
-var _sinusoidal = require("./interrupted/sinusoidal");
-var _sinusoidalDefault = parcelHelpers.interopDefault(_sinusoidal);
+var _hyperellipticalJs = require("./hyperelliptical.js");
+var _hyperellipticalJsDefault = parcelHelpers.interopDefault(_hyperellipticalJs);
+var _indexJs = require("./interrupted/index.js");
+var _indexJsDefault = parcelHelpers.interopDefault(_indexJs);
+var _boggsJs1 = require("./interrupted/boggs.js");
+var _boggsJsDefault1 = parcelHelpers.interopDefault(_boggsJs1);
+var _homolosineJs1 = require("./interrupted/homolosine.js");
+var _homolosineJsDefault1 = parcelHelpers.interopDefault(_homolosineJs1);
+var _mollweideJs = require("./interrupted/mollweide.js");
+var _mollweideJsDefault = parcelHelpers.interopDefault(_mollweideJs);
+var _mollweideHemispheresJs = require("./interrupted/mollweideHemispheres.js");
+var _mollweideHemispheresJsDefault = parcelHelpers.interopDefault(_mollweideHemispheresJs);
+var _sinuMollweideJs = require("./interrupted/sinuMollweide.js");
+var _sinuMollweideJsDefault = parcelHelpers.interopDefault(_sinuMollweideJs);
+var _sinusoidalJs = require("./interrupted/sinusoidal.js");
+var _sinusoidalJsDefault = parcelHelpers.interopDefault(_sinusoidalJs);
 var _kavrayskiy7Js = require("./kavrayskiy7.js");
 var _kavrayskiy7JsDefault = parcelHelpers.interopDefault(_kavrayskiy7Js);
 var _lagrangeJs = require("./lagrange.js");
 var _lagrangeJsDefault = parcelHelpers.interopDefault(_lagrangeJs);
-var _larrivee = require("./larrivee");
-var _larriveeDefault = parcelHelpers.interopDefault(_larrivee);
-var _laskowski = require("./laskowski");
-var _laskowskiDefault = parcelHelpers.interopDefault(_laskowski);
+var _larriveeJs = require("./larrivee.js");
+var _larriveeJsDefault = parcelHelpers.interopDefault(_larriveeJs);
+var _laskowskiJs = require("./laskowski.js");
+var _laskowskiJsDefault = parcelHelpers.interopDefault(_laskowskiJs);
 var _littrowJs = require("./littrow.js");
 var _littrowJsDefault = parcelHelpers.interopDefault(_littrowJs);
 var _loximuthalJs = require("./loximuthal.js");
 var _loximuthalJsDefault = parcelHelpers.interopDefault(_loximuthalJs);
-var _miller = require("./miller");
-var _millerDefault = parcelHelpers.interopDefault(_miller);
-var _modifiedStereographic = require("./modifiedStereographic");
-var _modifiedStereographicDefault = parcelHelpers.interopDefault(_modifiedStereographic);
-var _mollweide1 = require("./mollweide");
-var _mollweideDefault1 = parcelHelpers.interopDefault(_mollweide1);
-var _mtFlatPolarParabolic = require("./mtFlatPolarParabolic");
-var _mtFlatPolarParabolicDefault = parcelHelpers.interopDefault(_mtFlatPolarParabolic);
-var _mtFlatPolarQuartic = require("./mtFlatPolarQuartic");
-var _mtFlatPolarQuarticDefault = parcelHelpers.interopDefault(_mtFlatPolarQuartic);
-var _mtFlatPolarSinusoidal = require("./mtFlatPolarSinusoidal");
-var _mtFlatPolarSinusoidalDefault = parcelHelpers.interopDefault(_mtFlatPolarSinusoidal);
-var _naturalEarth2 = require("./naturalEarth2");
-var _naturalEarth2Default = parcelHelpers.interopDefault(_naturalEarth2);
-var _nellHammer = require("./nellHammer");
-var _nellHammerDefault = parcelHelpers.interopDefault(_nellHammer);
-var _quarticAuthalic = require("./interrupted/quarticAuthalic");
-var _quarticAuthalicDefault = parcelHelpers.interopDefault(_quarticAuthalic);
-var _nicolosi = require("./nicolosi");
-var _nicolosiDefault = parcelHelpers.interopDefault(_nicolosi);
-var _patterson = require("./patterson");
-var _pattersonDefault = parcelHelpers.interopDefault(_patterson);
-var _polyconic = require("./polyconic");
-var _polyconicDefault = parcelHelpers.interopDefault(_polyconic);
-var _indexJs = require("./polyhedral/index.js");
-var _indexJsDefault = parcelHelpers.interopDefault(_indexJs);
+var _millerJs = require("./miller.js");
+var _millerJsDefault = parcelHelpers.interopDefault(_millerJs);
+var _modifiedStereographicJs = require("./modifiedStereographic.js");
+var _modifiedStereographicJsDefault = parcelHelpers.interopDefault(_modifiedStereographicJs);
+var _mollweideJs1 = require("./mollweide.js");
+var _mollweideJsDefault1 = parcelHelpers.interopDefault(_mollweideJs1);
+var _mtFlatPolarParabolicJs = require("./mtFlatPolarParabolic.js");
+var _mtFlatPolarParabolicJsDefault = parcelHelpers.interopDefault(_mtFlatPolarParabolicJs);
+var _mtFlatPolarQuarticJs = require("./mtFlatPolarQuartic.js");
+var _mtFlatPolarQuarticJsDefault = parcelHelpers.interopDefault(_mtFlatPolarQuarticJs);
+var _mtFlatPolarSinusoidalJs = require("./mtFlatPolarSinusoidal.js");
+var _mtFlatPolarSinusoidalJsDefault = parcelHelpers.interopDefault(_mtFlatPolarSinusoidalJs);
+var _naturalEarth2Js = require("./naturalEarth2.js");
+var _naturalEarth2JsDefault = parcelHelpers.interopDefault(_naturalEarth2Js);
+var _nellHammerJs = require("./nellHammer.js");
+var _nellHammerJsDefault = parcelHelpers.interopDefault(_nellHammerJs);
+var _quarticAuthalicJs = require("./interrupted/quarticAuthalic.js");
+var _quarticAuthalicJsDefault = parcelHelpers.interopDefault(_quarticAuthalicJs);
+var _nicolosiJs = require("./nicolosi.js");
+var _nicolosiJsDefault = parcelHelpers.interopDefault(_nicolosiJs);
+var _pattersonJs = require("./patterson.js");
+var _pattersonJsDefault = parcelHelpers.interopDefault(_pattersonJs);
+var _polyconicJs = require("./polyconic.js");
+var _polyconicJsDefault = parcelHelpers.interopDefault(_polyconicJs);
+var _indexJs1 = require("./polyhedral/index.js");
+var _indexJsDefault1 = parcelHelpers.interopDefault(_indexJs1);
 var _butterflyJs = require("./polyhedral/butterfly.js");
 var _butterflyJsDefault = parcelHelpers.interopDefault(_butterflyJs);
-var _collignonJs = require("./polyhedral/collignon.js");
-var _collignonJsDefault = parcelHelpers.interopDefault(_collignonJs);
+var _collignonJs1 = require("./polyhedral/collignon.js");
+var _collignonJsDefault1 = parcelHelpers.interopDefault(_collignonJs1);
 var _watermanJs = require("./polyhedral/waterman.js");
 var _watermanJsDefault = parcelHelpers.interopDefault(_watermanJs);
-var _index1 = require("./project/index");
-var _indexDefault1 = parcelHelpers.interopDefault(_index1);
+var _indexJs2 = require("./project/index.js");
+var _indexJsDefault2 = parcelHelpers.interopDefault(_indexJs2);
 var _gringortenJs1 = require("./quincuncial/gringorten.js");
 var _gringortenJsDefault1 = parcelHelpers.interopDefault(_gringortenJs1);
 var _peirceJs = require("./quincuncial/peirce.js");
 var _peirceJsDefault = parcelHelpers.interopDefault(_peirceJs);
-var _quantize = require("./quantize");
-var _quantizeDefault = parcelHelpers.interopDefault(_quantize);
-var _indexJs1 = require("./quincuncial/index.js");
-var _indexJsDefault1 = parcelHelpers.interopDefault(_indexJs1);
-var _rectangularPolyconic = require("./rectangularPolyconic");
-var _rectangularPolyconicDefault = parcelHelpers.interopDefault(_rectangularPolyconic);
-var _robinson = require("./robinson");
-var _robinsonDefault = parcelHelpers.interopDefault(_robinson);
-var _satellite = require("./satellite");
-var _satelliteDefault = parcelHelpers.interopDefault(_satellite);
-var _sinuMollweide1 = require("./sinuMollweide");
-var _sinuMollweideDefault1 = parcelHelpers.interopDefault(_sinuMollweide1);
-var _sinusoidal1 = require("./sinusoidal");
-var _sinusoidalDefault1 = parcelHelpers.interopDefault(_sinusoidal1);
-var _stitch = require("./stitch");
-var _stitchDefault = parcelHelpers.interopDefault(_stitch);
-var _times = require("./times");
-var _timesDefault = parcelHelpers.interopDefault(_times);
-var _twoPointAzimuthal = require("./twoPointAzimuthal");
-var _twoPointAzimuthalDefault = parcelHelpers.interopDefault(_twoPointAzimuthal);
-var _twoPointEquidistant = require("./twoPointEquidistant");
-var _twoPointEquidistantDefault = parcelHelpers.interopDefault(_twoPointEquidistant);
-var _vanDerGrinten = require("./vanDerGrinten");
-var _vanDerGrintenDefault = parcelHelpers.interopDefault(_vanDerGrinten);
-var _vanDerGrinten2 = require("./vanDerGrinten2");
-var _vanDerGrinten2Default = parcelHelpers.interopDefault(_vanDerGrinten2);
-var _vanDerGrinten3 = require("./vanDerGrinten3");
-var _vanDerGrinten3Default = parcelHelpers.interopDefault(_vanDerGrinten3);
-var _vanDerGrinten4 = require("./vanDerGrinten4");
-var _vanDerGrinten4Default = parcelHelpers.interopDefault(_vanDerGrinten4);
+var _quantizeJs = require("./quantize.js");
+var _quantizeJsDefault = parcelHelpers.interopDefault(_quantizeJs);
+var _indexJs3 = require("./quincuncial/index.js");
+var _indexJsDefault3 = parcelHelpers.interopDefault(_indexJs3);
+var _rectangularPolyconicJs = require("./rectangularPolyconic.js");
+var _rectangularPolyconicJsDefault = parcelHelpers.interopDefault(_rectangularPolyconicJs);
+var _robinsonJs = require("./robinson.js");
+var _robinsonJsDefault = parcelHelpers.interopDefault(_robinsonJs);
+var _satelliteJs = require("./satellite.js");
+var _satelliteJsDefault = parcelHelpers.interopDefault(_satelliteJs);
+var _sinuMollweideJs1 = require("./sinuMollweide.js");
+var _sinuMollweideJsDefault1 = parcelHelpers.interopDefault(_sinuMollweideJs1);
+var _sinusoidalJs1 = require("./sinusoidal.js");
+var _sinusoidalJsDefault1 = parcelHelpers.interopDefault(_sinusoidalJs1);
+var _stitchJs = require("./stitch.js");
+var _stitchJsDefault = parcelHelpers.interopDefault(_stitchJs);
+var _timesJs = require("./times.js");
+var _timesJsDefault = parcelHelpers.interopDefault(_timesJs);
+var _twoPointAzimuthalJs = require("./twoPointAzimuthal.js");
+var _twoPointAzimuthalJsDefault = parcelHelpers.interopDefault(_twoPointAzimuthalJs);
+var _twoPointEquidistantJs = require("./twoPointEquidistant.js");
+var _twoPointEquidistantJsDefault = parcelHelpers.interopDefault(_twoPointEquidistantJs);
+var _vanDerGrintenJs = require("./vanDerGrinten.js");
+var _vanDerGrintenJsDefault = parcelHelpers.interopDefault(_vanDerGrintenJs);
+var _vanDerGrinten2Js = require("./vanDerGrinten2.js");
+var _vanDerGrinten2JsDefault = parcelHelpers.interopDefault(_vanDerGrinten2Js);
+var _vanDerGrinten3Js = require("./vanDerGrinten3.js");
+var _vanDerGrinten3JsDefault = parcelHelpers.interopDefault(_vanDerGrinten3Js);
+var _vanDerGrinten4Js = require("./vanDerGrinten4.js");
+var _vanDerGrinten4JsDefault = parcelHelpers.interopDefault(_vanDerGrinten4Js);
 var _wagnerJs = require("./wagner.js");
 var _wagnerJsDefault = parcelHelpers.interopDefault(_wagnerJs);
 var _wagner4Js = require("./wagner4.js");
@@ -29192,10 +29641,10 @@ var _wagner6Js = require("./wagner6.js");
 var _wagner6JsDefault = parcelHelpers.interopDefault(_wagner6Js);
 var _wiechelJs = require("./wiechel.js");
 var _wiechelJsDefault = parcelHelpers.interopDefault(_wiechelJs);
-var _winkel3 = require("./winkel3");
-var _winkel3Default = parcelHelpers.interopDefault(_winkel3);
+var _winkel3Js = require("./winkel3.js");
+var _winkel3JsDefault = parcelHelpers.interopDefault(_winkel3Js);
 
-},{"./airy":false,"./aitoff":false,"./armadillo":false,"./august":false,"./baker":false,"./berghaus":false,"./bertin":false,"./boggs":false,"./bonne":false,"./bottomley":false,"./bromley":false,"./chamberlin":false,"./collignon":false,"./craig":false,"./craster":false,"./cylindricalEqualArea":false,"./cylindricalStereographic":false,"./eckert1.js":false,"./eckert2.js":false,"./eckert3.js":false,"./eckert4.js":false,"./eckert5.js":false,"./eckert6.js":false,"./eisenlohr.js":false,"./fahey.js":false,"./foucaut.js":false,"./foucautSinusoidal.js":false,"./gilbert.js":false,"./gingery.js":false,"./ginzburg4.js":false,"./ginzburg5.js":false,"./ginzburg6.js":false,"./ginzburg8.js":false,"./ginzburg9.js":false,"./gringorten.js":false,"./guyou.js":false,"./hammer.js":false,"./hammerRetroazimuthal.js":false,"./healpix.js":false,"./hill.js":false,"./homolosine.js":false,"./hufnagel.js":false,"./hyperelliptical":false,"./interrupted/index":false,"./interrupted/boggs":false,"./interrupted/homolosine":false,"./interrupted/mollweide":false,"./interrupted/mollweideHemispheres":false,"./interrupted/sinuMollweide":false,"./interrupted/sinusoidal":false,"./kavrayskiy7.js":false,"./lagrange.js":false,"./larrivee":false,"./laskowski":false,"./littrow.js":false,"./loximuthal.js":false,"./miller":false,"./modifiedStereographic":false,"./mollweide":"dkpmT","./mtFlatPolarParabolic":false,"./mtFlatPolarQuartic":false,"./mtFlatPolarSinusoidal":false,"./naturalEarth2":false,"./nellHammer":false,"./interrupted/quarticAuthalic":false,"./nicolosi":false,"./patterson":false,"./polyconic":false,"./polyhedral/index.js":false,"./polyhedral/butterfly.js":false,"./polyhedral/collignon.js":false,"./polyhedral/waterman.js":false,"./project/index":false,"./quincuncial/gringorten.js":false,"./quincuncial/peirce.js":false,"./quantize":false,"./quincuncial/index.js":false,"./rectangularPolyconic":false,"./robinson":false,"./satellite":false,"./sinuMollweide":false,"./sinusoidal":false,"./stitch":false,"./times":false,"./twoPointAzimuthal":false,"./twoPointEquidistant":false,"./vanDerGrinten":false,"./vanDerGrinten2":false,"./vanDerGrinten3":false,"./vanDerGrinten4":false,"./wagner.js":false,"./wagner4.js":false,"./wagner6.js":false,"./wiechel.js":false,"./winkel3":false,"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"dkpmT":[function(require,module,exports) {
+},{"./airy.js":false,"./aitoff.js":false,"./armadillo.js":false,"./august.js":false,"./baker.js":false,"./berghaus.js":false,"./bertin.js":false,"./boggs.js":false,"./bonne.js":false,"./bottomley.js":false,"./bromley.js":false,"./chamberlin.js":false,"./collignon.js":false,"./craig.js":false,"./craster.js":false,"./cylindricalEqualArea.js":false,"./cylindricalStereographic.js":false,"./eckert1.js":false,"./eckert2.js":false,"./eckert3.js":false,"./eckert4.js":false,"./eckert5.js":false,"./eckert6.js":false,"./eisenlohr.js":false,"./fahey.js":false,"./foucaut.js":false,"./foucautSinusoidal.js":false,"./gilbert.js":false,"./gingery.js":false,"./ginzburg4.js":false,"./ginzburg5.js":false,"./ginzburg6.js":false,"./ginzburg8.js":false,"./ginzburg9.js":false,"./gringorten.js":false,"./guyou.js":false,"./hammer.js":false,"./hammerRetroazimuthal.js":false,"./healpix.js":false,"./hill.js":false,"./homolosine.js":false,"./hufnagel.js":false,"./hyperelliptical.js":false,"./interrupted/index.js":false,"./interrupted/boggs.js":false,"./interrupted/homolosine.js":false,"./interrupted/mollweide.js":false,"./interrupted/mollweideHemispheres.js":false,"./interrupted/sinuMollweide.js":false,"./interrupted/sinusoidal.js":false,"./kavrayskiy7.js":false,"./lagrange.js":false,"./larrivee.js":false,"./laskowski.js":false,"./littrow.js":false,"./loximuthal.js":false,"./miller.js":false,"./modifiedStereographic.js":false,"./mollweide.js":"dkpmT","./mtFlatPolarParabolic.js":false,"./mtFlatPolarQuartic.js":false,"./mtFlatPolarSinusoidal.js":false,"./naturalEarth2.js":false,"./nellHammer.js":false,"./interrupted/quarticAuthalic.js":false,"./nicolosi.js":false,"./patterson.js":false,"./polyconic.js":false,"./polyhedral/index.js":false,"./polyhedral/butterfly.js":false,"./polyhedral/collignon.js":false,"./polyhedral/waterman.js":false,"./project/index.js":false,"./quincuncial/gringorten.js":false,"./quincuncial/peirce.js":false,"./quantize.js":false,"./quincuncial/index.js":false,"./rectangularPolyconic.js":false,"./robinson.js":false,"./satellite.js":false,"./sinuMollweide.js":false,"./sinusoidal.js":false,"./stitch.js":false,"./times.js":false,"./twoPointAzimuthal.js":false,"./twoPointEquidistant.js":false,"./vanDerGrinten.js":false,"./vanDerGrinten2.js":false,"./vanDerGrinten3.js":false,"./vanDerGrinten4.js":false,"./wagner.js":false,"./wagner4.js":false,"./wagner6.js":false,"./wiechel.js":false,"./winkel3.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"dkpmT":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "mollweideBromleyTheta", ()=>mollweideBromleyTheta);
@@ -30606,7 +31055,7 @@ function timerFlush() {
     ++frame; // Pretend we’ve set an alarm, if we haven’t already.
     var t = taskHead, e;
     while(t){
-        if ((e = clockNow - t._time) >= 0) t._call.call(null, e);
+        if ((e = clockNow - t._time) >= 0) t._call.call(undefined, e);
         t = t._next;
     }
     --frame;
@@ -30896,7 +31345,7 @@ function setFields(node, fields, as) {
     for(let i = 0; i < n; ++i)t[as[i]] = node[fields[i]];
     t[as[n]] = node.children ? node.children.length : 0;
 }
-const Output = [
+const Output$3 = [
     "x",
     "y",
     "r",
@@ -30946,8 +31395,8 @@ Pack.Definition = {
             "name": "as",
             "type": "string",
             "array": true,
-            "length": Output.length,
-            "default": Output
+            "length": Output$3.length,
+            "default": Output$3
         }
     ]
 };
@@ -30958,9 +31407,9 @@ Pack.Definition = {
         "size",
         "padding"
     ],
-    fields: Output
+    fields: Output$3
 });
-const Output$1 = [
+const Output$2 = [
     "x0",
     "y0",
     "x1",
@@ -31011,8 +31460,8 @@ Partition.Definition = {
             "name": "as",
             "type": "string",
             "array": true,
-            "length": Output$1.length,
-            "default": Output$1
+            "length": Output$2.length,
+            "default": Output$2
         }
     ]
 };
@@ -31023,7 +31472,7 @@ Partition.Definition = {
         "round",
         "padding"
     ],
-    fields: Output$1
+    fields: Output$2
 });
 /**
  * Stratify a collection of tuples into a tree structure based on
@@ -31070,7 +31519,7 @@ const Layouts = {
     tidy: (0, _d3Hierarchy.tree),
     cluster: (0, _d3Hierarchy.cluster)
 };
-const Output$2 = [
+const Output$1 = [
     "x",
     "y",
     "depth",
@@ -31129,8 +31578,8 @@ Tree.Definition = {
             "name": "as",
             "type": "string",
             "array": true,
-            "length": Output$2.length,
-            "default": Output$2
+            "length": Output$1.length,
+            "default": Output$1
         }
     ]
 };
@@ -31146,7 +31595,7 @@ Tree.Definition = {
         "size",
         "nodeSize"
     ],
-    fields: Output$2
+    fields: Output$1
 });
 /**
  * Generate tuples representing links between tree nodes.
@@ -31200,7 +31649,7 @@ const Tiles = {
     squarify: (0, _d3Hierarchy.treemapSquarify),
     resquarify: (0, _d3Hierarchy.treemapResquarify)
 };
-const Output$3 = [
+const Output = [
     "x0",
     "y0",
     "x1",
@@ -31299,8 +31748,8 @@ Treemap.Definition = {
             "name": "as",
             "type": "string",
             "array": true,
-            "length": Output$3.length,
-            "default": Output$3
+            "length": Output.length,
+            "default": Output
         }
     ]
 };
@@ -31333,7 +31782,7 @@ Treemap.Definition = {
         "paddingBottom",
         "paddingLeft"
     ],
-    fields: Output$3
+    fields: Output
 });
 
 },{"vega-dataflow":"3NitK","vega-util":"bApja","d3-hierarchy":"4fr5p","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"4fr5p":[function(require,module,exports) {
@@ -31341,6 +31790,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "cluster", ()=>(0, _clusterJsDefault.default));
 parcelHelpers.export(exports, "hierarchy", ()=>(0, _indexJsDefault.default));
+parcelHelpers.export(exports, "Node", ()=>(0, _indexJs.Node));
 parcelHelpers.export(exports, "pack", ()=>(0, _indexJsDefault1.default));
 parcelHelpers.export(exports, "packSiblings", ()=>(0, _siblingsJsDefault.default));
 parcelHelpers.export(exports, "packEnclose", ()=>(0, _encloseJsDefault.default));
@@ -31725,19 +32175,22 @@ exports.default = function*() {
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"eQFOB":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-var _siblingsJs = require("./siblings.js");
 var _accessorsJs = require("../accessors.js");
 var _constantJs = require("../constant.js");
 var _constantJsDefault = parcelHelpers.interopDefault(_constantJs);
+var _lcgJs = require("../lcg.js");
+var _lcgJsDefault = parcelHelpers.interopDefault(_lcgJs);
+var _siblingsJs = require("./siblings.js");
 function defaultRadius(d) {
     return Math.sqrt(d.value);
 }
 exports.default = function() {
     var radius = null, dx = 1, dy = 1, padding = (0, _constantJs.constantZero);
     function pack(root) {
+        const random = (0, _lcgJsDefault.default)();
         root.x = dx / 2, root.y = dy / 2;
-        if (radius) root.eachBefore(radiusLeaf(radius)).eachAfter(packChildren(padding, 0.5)).eachBefore(translateChild(1));
-        else root.eachBefore(radiusLeaf(defaultRadius)).eachAfter(packChildren((0, _constantJs.constantZero), 1)).eachAfter(packChildren(padding, root.r / Math.min(dx, dy))).eachBefore(translateChild(Math.min(dx, dy) / (2 * root.r)));
+        if (radius) root.eachBefore(radiusLeaf(radius)).eachAfter(packChildrenRandom(padding, 0.5, random)).eachBefore(translateChild(1));
+        else root.eachBefore(radiusLeaf(defaultRadius)).eachAfter(packChildrenRandom((0, _constantJs.constantZero), 1, random)).eachAfter(packChildrenRandom(padding, root.r / Math.min(dx, dy), random)).eachBefore(translateChild(Math.min(dx, dy) / (2 * root.r)));
         return root;
     }
     pack.radius = function(x) {
@@ -31759,12 +32212,12 @@ function radiusLeaf(radius) {
         if (!node.children) node.r = Math.max(0, +radius(node) || 0);
     };
 }
-function packChildren(padding, k) {
+function packChildrenRandom(padding, k, random) {
     return function(node) {
         if (children = node.children) {
             var children, i, n = children.length, r = padding(node) * k || 0, e;
             if (r) for(i = 0; i < n; ++i)children[i].r += r;
-            e = (0, _siblingsJs.packEnclose)(children);
+            e = (0, _siblingsJs.packSiblingsRandom)(children, random);
             if (r) for(i = 0; i < n; ++i)children[i].r -= r;
             node.r = e + r;
         }
@@ -31781,14 +32234,53 @@ function translateChild(k) {
     };
 }
 
-},{"./siblings.js":"8RhM7","../accessors.js":"i242w","../constant.js":"i6Ely","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8RhM7":[function(require,module,exports) {
+},{"../accessors.js":"i242w","../constant.js":"i6Ely","../lcg.js":"9jKig","./siblings.js":"8RhM7","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"i242w":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "packEnclose", ()=>packEnclose);
+parcelHelpers.export(exports, "optional", ()=>optional);
+parcelHelpers.export(exports, "required", ()=>required);
+function optional(f) {
+    return f == null ? null : required(f);
+}
+function required(f) {
+    if (typeof f !== "function") throw new Error;
+    return f;
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"i6Ely":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "constantZero", ()=>constantZero);
+function constantZero() {
+    return 0;
+}
+exports.default = function(x) {
+    return function() {
+        return x;
+    };
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"9jKig":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+// https://en.wikipedia.org/wiki/Linear_congruential_generator#Parameters_in_common_use
+const a = 1664525;
+const c = 1013904223;
+const m = 4294967296; // 2^32
+exports.default = function() {
+    let s = 1;
+    return ()=>(s = (a * s + c) % m) / m;
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"8RhM7":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "packSiblingsRandom", ()=>packSiblingsRandom);
 var _arrayJs = require("../array.js");
 var _arrayJsDefault = parcelHelpers.interopDefault(_arrayJs);
+var _lcgJs = require("../lcg.js");
+var _lcgJsDefault = parcelHelpers.interopDefault(_lcgJs);
 var _encloseJs = require("./enclose.js");
-var _encloseJsDefault = parcelHelpers.interopDefault(_encloseJs);
 function place(b, a, c) {
     var dx = b.x - a.x, x, a2, dy = b.y - a.y, y, b2, d2 = dx * dx + dy * dy;
     if (d2) {
@@ -31823,7 +32315,7 @@ function Node(circle) {
     this.next = null;
     this.previous = null;
 }
-function packEnclose(circles) {
+function packSiblingsRandom(circles, random) {
     if (!(n = (circles = (0, _arrayJsDefault.default)(circles)).length)) return 0;
     var a, b, c, n, aa, ca, i, j, k, sj, sk;
     // Place the first circle.
@@ -31872,17 +32364,17 @@ function packEnclose(circles) {
         b._
     ], c = b;
     while((c = c.next) !== b)a.push(c._);
-    c = (0, _encloseJsDefault.default)(a);
+    c = (0, _encloseJs.packEncloseRandom)(a, random);
     // Translate the circles to put the enclosing circle around the origin.
     for(i = 0; i < n; ++i)a = circles[i], a.x -= c.x, a.y -= c.y;
     return c.r;
 }
 exports.default = function(circles) {
-    packEnclose(circles);
+    packSiblingsRandom(circles, (0, _lcgJsDefault.default)());
     return circles;
 };
 
-},{"../array.js":"4vcaT","./enclose.js":"gBh5f","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"4vcaT":[function(require,module,exports) {
+},{"../array.js":"4vcaT","../lcg.js":"9jKig","./enclose.js":"gBh5f","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"4vcaT":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "shuffle", ()=>shuffle);
@@ -31890,10 +32382,10 @@ exports.default = function(x) {
     return typeof x === "object" && "length" in x ? x // Array, TypedArray, NodeList, array-like
      : Array.from(x); // Map, Set, iterable, string, or anything else
 };
-function shuffle(array) {
-    var m = array.length, t, i;
+function shuffle(array, random) {
+    let m = array.length, t, i;
     while(m){
-        i = Math.random() * m-- | 0;
+        i = random() * m-- | 0;
         t = array[m];
         array[m] = array[i];
         array[i] = t;
@@ -31904,16 +32396,22 @@ function shuffle(array) {
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"gBh5f":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "packEncloseRandom", ()=>packEncloseRandom);
 var _arrayJs = require("../array.js");
+var _lcgJs = require("../lcg.js");
+var _lcgJsDefault = parcelHelpers.interopDefault(_lcgJs);
 exports.default = function(circles) {
-    var i = 0, n = (circles = (0, _arrayJs.shuffle)(Array.from(circles))).length, B = [], p, e;
+    return packEncloseRandom(circles, (0, _lcgJsDefault.default)());
+};
+function packEncloseRandom(circles, random) {
+    var i = 0, n = (circles = (0, _arrayJs.shuffle)(Array.from(circles), random)).length, B = [], p, e;
     while(i < n){
         p = circles[i];
         if (e && enclosesWeak(e, p)) ++i;
         else e = encloseBasis(B = extendBasis(B, p)), i = 0;
     }
     return e;
-};
+}
 function extendBasis(B, p) {
     var i, j;
     if (enclosesWeakAll(p, B)) return [
@@ -31977,7 +32475,7 @@ function encloseBasis2(a, b) {
     };
 }
 function encloseBasis3(a, b, c) {
-    var x1 = a.x, y1 = a.y, r1 = a.r, x2 = b.x, y2 = b.y, r2 = b.r, x3 = c.x, y3 = c.y, r3 = c.r, a2 = x1 - x2, a3 = x1 - x3, b2 = y1 - y2, b3 = y1 - y3, c2 = r2 - r1, c3 = r3 - r1, d1 = x1 * x1 + y1 * y1 - r1 * r1, d2 = d1 - x2 * x2 - y2 * y2 + r2 * r2, d3 = d1 - x3 * x3 - y3 * y3 + r3 * r3, ab = a3 * b2 - a2 * b3, xa = (b2 * d3 - b3 * d2) / (ab * 2) - x1, xb = (b3 * c2 - b2 * c3) / ab, ya = (a3 * d2 - a2 * d3) / (ab * 2) - y1, yb = (a2 * c3 - a3 * c2) / ab, A = xb * xb + yb * yb - 1, B = 2 * (r1 + xa * xb + ya * yb), C = xa * xa + ya * ya - r1 * r1, r = -(A ? (B + Math.sqrt(B * B - 4 * A * C)) / (2 * A) : C / B);
+    var x1 = a.x, y1 = a.y, r1 = a.r, x2 = b.x, y2 = b.y, r2 = b.r, x3 = c.x, y3 = c.y, r3 = c.r, a2 = x1 - x2, a3 = x1 - x3, b2 = y1 - y2, b3 = y1 - y3, c2 = r2 - r1, c3 = r3 - r1, d1 = x1 * x1 + y1 * y1 - r1 * r1, d2 = d1 - x2 * x2 - y2 * y2 + r2 * r2, d3 = d1 - x3 * x3 - y3 * y3 + r3 * r3, ab = a3 * b2 - a2 * b3, xa = (b2 * d3 - b3 * d2) / (ab * 2) - x1, xb = (b3 * c2 - b2 * c3) / ab, ya = (a3 * d2 - a2 * d3) / (ab * 2) - y1, yb = (a2 * c3 - a3 * c2) / ab, A = xb * xb + yb * yb - 1, B = 2 * (r1 + xa * xb + ya * yb), C = xa * xa + ya * ya - r1 * r1, r = -(Math.abs(A) > 1e-6 ? (B + Math.sqrt(B * B - 4 * A * C)) / (2 * A) : C / B);
     return {
         x: x1 + xa + xb * r,
         y: y1 + ya + yb * r,
@@ -31985,33 +32483,7 @@ function encloseBasis3(a, b, c) {
     };
 }
 
-},{"../array.js":"4vcaT","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"i242w":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "optional", ()=>optional);
-parcelHelpers.export(exports, "required", ()=>required);
-function optional(f) {
-    return f == null ? null : required(f);
-}
-function required(f) {
-    if (typeof f !== "function") throw new Error;
-    return f;
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"i6Ely":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "constantZero", ()=>constantZero);
-function constantZero() {
-    return 0;
-}
-exports.default = function(x) {
-    return function() {
-        return x;
-    };
-};
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"hfHoW":[function(require,module,exports) {
+},{"../array.js":"4vcaT","../lcg.js":"9jKig","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"hfHoW":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _roundJs = require("./treemap/round.js");
@@ -32084,7 +32556,7 @@ var _accessorsJs = require("./accessors.js");
 var _indexJs = require("./hierarchy/index.js");
 var preroot = {
     depth: -1
-}, ambiguous = {};
+}, ambiguous = {}, imputed = {};
 function defaultId(d) {
     return d.id;
 }
@@ -32092,16 +32564,29 @@ function defaultParentId(d) {
     return d.parentId;
 }
 exports.default = function() {
-    var id = defaultId, parentId = defaultParentId;
+    var id = defaultId, parentId = defaultParentId, path;
     function stratify(data) {
-        var nodes = Array.from(data), n = nodes.length, d, i, root, parent, node, nodeId, nodeKey, nodeByKey = new Map;
-        for(i = 0; i < n; ++i){
+        var nodes = Array.from(data), currentId = id, currentParentId = parentId, n, d, i, root, parent, node, nodeId, nodeKey, nodeByKey = new Map;
+        if (path != null) {
+            const I = nodes.map((d, i)=>normalize(path(d, i, data)));
+            const P = I.map(parentof);
+            const S = new Set(I).add("");
+            for (const i1 of P)if (!S.has(i1)) {
+                S.add(i1);
+                I.push(i1);
+                P.push(parentof(i1));
+                nodes.push(imputed);
+            }
+            currentId = (_, i)=>I[i];
+            currentParentId = (_, i)=>P[i];
+        }
+        for(i = 0, n = nodes.length; i < n; ++i){
             d = nodes[i], node = nodes[i] = new (0, _indexJs.Node)(d);
-            if ((nodeId = id(d, i, data)) != null && (nodeId += "")) {
+            if ((nodeId = currentId(d, i, data)) != null && (nodeId += "")) {
                 nodeKey = node.id = nodeId;
                 nodeByKey.set(nodeKey, nodeByKey.has(nodeKey) ? ambiguous : node);
             }
-            if ((nodeId = parentId(d, i, data)) != null && (nodeId += "")) node.parent = nodeId;
+            if ((nodeId = currentParentId(d, i, data)) != null && (nodeId += "")) node.parent = nodeId;
         }
         for(i = 0; i < n; ++i){
             node = nodes[i];
@@ -32120,6 +32605,16 @@ exports.default = function() {
             }
         }
         if (!root) throw new Error("no root");
+        // When imputing internal nodes, only introduce roots if needed.
+        // Then replace the imputed marker data with null.
+        if (path != null) {
+            while(root.data === imputed && root.children.length === 1)root = root.children[0], --n;
+            for(let i2 = nodes.length - 1; i2 >= 0; --i2){
+                node = nodes[i2];
+                if (node.data !== imputed) break;
+                node.data = null;
+            }
+        }
         root.parent = preroot;
         root.eachBefore(function(node) {
             node.depth = node.parent.depth + 1;
@@ -32130,13 +32625,45 @@ exports.default = function() {
         return root;
     }
     stratify.id = function(x) {
-        return arguments.length ? (id = (0, _accessorsJs.required)(x), stratify) : id;
+        return arguments.length ? (id = (0, _accessorsJs.optional)(x), stratify) : id;
     };
     stratify.parentId = function(x) {
-        return arguments.length ? (parentId = (0, _accessorsJs.required)(x), stratify) : parentId;
+        return arguments.length ? (parentId = (0, _accessorsJs.optional)(x), stratify) : parentId;
+    };
+    stratify.path = function(x) {
+        return arguments.length ? (path = (0, _accessorsJs.optional)(x), stratify) : path;
     };
     return stratify;
 };
+// To normalize a path, we coerce to a string, strip the trailing slash if any
+// (as long as the trailing slash is not immediately preceded by another slash),
+// and add leading slash if missing.
+function normalize(path) {
+    path = `${path}`;
+    let i = path.length;
+    if (slash(path, i - 1) && !slash(path, i - 2)) path = path.slice(0, -1);
+    return path[0] === "/" ? path : `/${path}`;
+}
+// Walk backwards to find the first slash that is not the leading slash, e.g.:
+// "/foo/bar" ⇥ "/foo", "/foo" ⇥ "/", "/" ↦ "". (The root is special-cased
+// because the id of the root must be a truthy value.)
+function parentof(path) {
+    let i = path.length;
+    if (i < 2) return "";
+    while(--i > 1)if (slash(path, i)) break;
+    return path.slice(0, i);
+}
+// Slashes can be escaped; to determine whether a slash is a path delimiter, we
+// count the number of preceding backslashes escaping the forward slash: an odd
+// number indicates an escaped forward slash.
+function slash(path, i) {
+    if (path[i] === "/") {
+        let k = 0;
+        while(i > 0 && path[--i] === "\\")++k;
+        if ((k & 1) === 0) return true;
+    }
+    return false;
+}
 
 },{"./accessors.js":"i242w","./hierarchy/index.js":"jtgBj","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"5MDZW":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -32553,13 +33080,11 @@ exports.default = function custom(ratio) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "label", ()=>Label);
+var _vegaScenegraph = require("vega-scenegraph");
 var _vegaCanvas = require("vega-canvas");
 var _vegaDataflow = require("vega-dataflow");
-var _vegaScenegraph = require("vega-scenegraph");
 var _vegaUtil = require("vega-util");
-const ALPHA_MASK = 0xff000000; // alpha value equivalent to opacity 0.0625
-const INSIDE_OPACITY_IN_ALPHA = 0x10000000;
-const INSIDE_OPACITY = 0.0625;
+const ALPHA_MASK = 0xff000000;
 function baseBitmaps($, data) {
     const bitmap = $.bitmap(); // when there is no base mark but data points are to be avoided
     (data || []).forEach((d)=>bitmap.set($(d.boundary[0]), $(d.boundary[3])));
@@ -32568,25 +33093,34 @@ function baseBitmaps($, data) {
         undefined
     ];
 }
-function markBitmaps($, avoidMarks, labelInside, isGroupArea) {
+function markBitmaps($, baseMark, avoidMarks, labelInside, isGroupArea) {
     // create canvas
-    const width = $.width, height = $.height, border = labelInside || isGroupArea, context = (0, _vegaCanvas.canvas)(width, height).getContext("2d"); // render all marks to be avoided into canvas
-    avoidMarks.forEach((items)=>draw(context, items, border)); // get canvas buffer, create bitmaps
-    const buffer = new Uint32Array(context.getImageData(0, 0, width, height).data.buffer), layer1 = $.bitmap(), layer2 = border && $.bitmap(); // populate bitmap layers
-    let x, y, u, v, alpha;
+    const width = $.width, height = $.height, border = labelInside || isGroupArea, context = (0, _vegaCanvas.canvas)(width, height).getContext("2d"), baseMarkContext = (0, _vegaCanvas.canvas)(width, height).getContext("2d"), strokeContext = border && (0, _vegaCanvas.canvas)(width, height).getContext("2d"); // render all marks to be avoided into canvas
+    avoidMarks.forEach((items)=>draw(context, items, false));
+    draw(baseMarkContext, baseMark, false);
+    if (border) draw(strokeContext, baseMark, true);
+     // get canvas buffer, create bitmaps
+    const buffer = getBuffer(context, width, height), baseMarkBuffer = getBuffer(baseMarkContext, width, height), strokeBuffer = border && getBuffer(strokeContext, width, height), layer1 = $.bitmap(), layer2 = border && $.bitmap(); // populate bitmap layers
+    let x, y, u, v, index, alpha, strokeAlpha, baseMarkAlpha;
     for(y = 0; y < height; ++y)for(x = 0; x < width; ++x){
-        alpha = buffer[y * width + x] & ALPHA_MASK;
-        if (alpha) {
+        index = y * width + x;
+        alpha = buffer[index] & ALPHA_MASK;
+        baseMarkAlpha = baseMarkBuffer[index] & ALPHA_MASK;
+        strokeAlpha = border && strokeBuffer[index] & ALPHA_MASK;
+        if (alpha || strokeAlpha || baseMarkAlpha) {
             u = $(x);
             v = $(y);
-            if (!isGroupArea) layer1.set(u, v); // update interior bitmap
-            if (border && alpha ^ INSIDE_OPACITY_IN_ALPHA) layer2.set(u, v); // update border bitmap
+            if (!isGroupArea && (alpha || baseMarkAlpha)) layer1.set(u, v); // update interior bitmap
+            if (border && (alpha || strokeAlpha)) layer2.set(u, v); // update border bitmap
         }
     }
     return [
         layer1,
         layer2
     ];
+}
+function getBuffer(context, width, height) {
+    return new Uint32Array(context.getImageData(0, 0, width, height).data.buffer);
 }
 function draw(context, items, interior) {
     if (!items.length) return;
@@ -32604,13 +33138,12 @@ function draw(context, items, interior) {
  * @returns prepared item
  */ function prepare(source) {
     const item = (0, _vegaDataflow.rederive)(source, {});
-    if (item.stroke) item.strokeOpacity = 1;
-    if (item.fill) {
-        item.fillOpacity = INSIDE_OPACITY;
-        item.stroke = "#000";
-        item.strokeOpacity = 1;
-        item.strokeWidth = 2;
-    }
+    if (item.stroke && item.strokeOpacity !== 0 || item.fill && item.fillOpacity !== 0) return {
+        ...item,
+        strokeOpacity: 1,
+        stroke: "#000",
+        fillOpacity: 0
+    };
     return item;
 }
 const DIV = 5, // bit shift from x, y index to bit vector array index
@@ -32938,9 +33471,10 @@ const Aligns = [
 function placeMarkLabel($, bitmaps, anchors, offsets) {
     const width = $.width, height = $.height, bm0 = bitmaps[0], bm1 = bitmaps[1], n = offsets.length;
     return function(d) {
+        var _d$textWidth;
         const boundary = d.boundary, textHeight = d.datum.fontSize; // can not be placed if the mark is not visible in the graph bound
         if (boundary[2] < 0 || boundary[5] < 0 || boundary[0] > width || boundary[3] > height) return false;
-        let textWidth = 0, dx, dy, isInside, sizeFactor, insideFactor, x1, x2, y1, y2, xc, yc, _x1, _x2, _y1, _y2; // for each anchor and offset
+        let textWidth = (_d$textWidth = d.textWidth) !== null && _d$textWidth !== void 0 ? _d$textWidth : 0, dx, dy, isInside, sizeFactor, insideFactor, x1, x2, y1, y2, xc, yc, _x1, _x2, _y1, _y2; // for each anchor and offset
         for(let i = 0; i < n; ++i){
             dx = (anchors[i] & 0x3) - 1;
             dy = (anchors[i] >>> 0x2 & 0x3) - 1;
@@ -32979,10 +33513,7 @@ function placeMarkLabel($, bitmaps, anchors, offsets) {
     };
 } // Test if a label with the given dimensions can be added without overlap
 function test(_x1, _x2, _y1, _y2, bm0, bm1, x1, x2, y1, y2, boundary, isInside) {
-    return !(bm0.outOfBounds(_x1, _y1, _x2, _y2) || (isInside && bm1 ? bm1.getRange(_x1, _y1, _x2, _y2) || !isInMarkBound(x1, y1, x2, y2, boundary) : bm0.getRange(_x1, _y1, _x2, _y2)));
-}
-function isInMarkBound(x1, y1, x2, y2, boundary) {
-    return boundary[0] <= x1 && x2 <= boundary[2] && boundary[3] <= y1 && y2 <= boundary[5];
+    return !(bm0.outOfBounds(_x1, _y1, _x2, _y2) || (isInside && bm1 || bm0).getRange(_x1, _y1, _x2, _y2));
 }
 const TOP = 0x0, MIDDLE = 0x4, BOTTOM = 0x8, LEFT = 0x0, CENTER = 0x1, RIGHT = 0x2; // Mapping from text anchor to number representation
 const anchorCode = {
@@ -33004,16 +33535,25 @@ const placeAreaLabel = {
 function labelLayout(texts, size, compare, offset, anchor, avoidMarks, avoidBaseMark, lineAnchor, markIndex, padding, method) {
     // early exit for empty data
     if (!texts.length) return texts;
-    const positions = Math.max(offset.length, anchor.length), offsets = getOffsets(offset, positions), anchors = getAnchors(anchor, positions), marktype = markType(texts[0].datum), grouptype = marktype === "group" && texts[0].datum.items[markIndex].marktype, isGroupArea = grouptype === "area", boundary = markBoundary(marktype, grouptype, lineAnchor, markIndex), $ = scaler(size[0], size[1], padding), isNaiveGroupArea = isGroupArea && method === "naive"; // prepare text mark data for placing
-    const data = texts.map((d)=>({
+    const positions = Math.max(offset.length, anchor.length), offsets = getOffsets(offset, positions), anchors = getAnchors(anchor, positions), marktype = markType(texts[0].datum), grouptype = marktype === "group" && texts[0].datum.items[markIndex].marktype, isGroupArea = grouptype === "area", boundary = markBoundary(marktype, grouptype, lineAnchor, markIndex), infPadding = padding === null || padding === Infinity, isNaiveGroupArea = isGroupArea && method === "naive";
+    let maxTextWidth = -1, maxTextHeight = -1; // prepare text mark data for placing
+    const data = texts.map((d)=>{
+        const textWidth = infPadding ? (0, _vegaScenegraph.textMetrics).width(d, d.text) : undefined;
+        maxTextWidth = Math.max(maxTextWidth, textWidth);
+        maxTextHeight = Math.max(maxTextHeight, d.fontSize);
+        return {
             datum: d,
             opacity: 0,
             x: undefined,
             y: undefined,
             align: undefined,
             baseline: undefined,
-            boundary: boundary(d)
-        }));
+            boundary: boundary(d),
+            textWidth
+        };
+    });
+    padding = padding === null || padding === Infinity ? Math.max(maxTextWidth, maxTextHeight) + Math.max(...offset) : padding;
+    const $ = scaler(size[0], size[1], padding);
     let bitmaps;
     if (!isNaiveGroupArea) {
         // sort labels in priority order, if comparator is provided
@@ -33025,11 +33565,8 @@ function labelLayout(texts, size, compare, offset, anchor, avoidMarks, avoidBase
         labelInside = anchors[i] === 0x5 || offsets[i] < 0;
          // extract data information from base mark when base mark is to be avoided
         // base mark is implicitly avoided if it is a group area
-        if (marktype && (avoidBaseMark || isGroupArea)) avoidMarks = [
-            texts.map((d)=>d.datum)
-        ].concat(avoidMarks);
-         // generate bitmaps for layout calculation
-        bitmaps = avoidMarks.length ? markBitmaps($, avoidMarks, labelInside, isGroupArea) : baseBitmaps($, avoidBaseMark && data);
+        const baseMark = (marktype && avoidBaseMark || isGroupArea) && texts.map((d)=>d.datum); // generate bitmaps for layout calculation
+        bitmaps = avoidMarks.length || baseMark ? markBitmaps($, baseMark || [], avoidMarks, labelInside, isGroupArea) : baseBitmaps($, avoidBaseMark && data);
     } // generate label placement function
     const place = isGroupArea ? placeAreaLabel[method]($, bitmaps, avoidBaseMark, markIndex) : placeMarkLabel($, bitmaps, anchors, offsets); // place all labels
     data.forEach((d)=>d.opacity = +place(d));
@@ -33054,7 +33591,7 @@ function markType(item) {
  * Factory function for function for getting base mark boundary, depending
  * on mark and group type. When mark type is undefined, line or area: boundary
  * is the coordinate of each data point. When base mark is grouped line,
- * boundary is either at the beginning or end of the line depending on the
+ * boundary is either at the start or end of the line depending on the
  * value of lineAnchor. Otherwise, use bounds of base mark.
  */ function markBoundary(marktype, grouptype, lineAnchor, markIndex) {
     const xy = (d)=>[
@@ -33114,8 +33651,9 @@ const Anchors = [
  *   The available options are 'top-left', 'left', 'bottom-left', 'top',
  *   'bottom', 'top-right', 'right', 'bottom-right', 'middle'.
  * @param {Array<number>} [params.offset] - Label offsets (in pixels) from the base mark bounding box.
- *   This parameter  is parallel to the list of anchor points.
- * @param {number} [params.padding=0] - The amount (in pixels) that a label may exceed the layout size.
+ *   This parameter is parallel to the list of anchor points.
+ * @param {number | null} [params.padding=0] - The amount (in pixels) that a label may exceed the layout size.
+ *   If this parameter is null, a label may exceed the layout size without any boundary.
  * @param {string} [params.lineAnchor='end'] - For group line mark labels only, indicates the anchor
  *   position for labels. One of 'start' or 'end'.
  * @param {string} [params.markIndex=0] - For group mark labels only, an index indicating
@@ -33165,7 +33703,8 @@ Label.Definition = {
         {
             name: "padding",
             type: "number",
-            default: 0
+            default: 0,
+            null: true
         },
         {
             name: "lineAnchor",
@@ -33215,7 +33754,7 @@ Label.Definition = {
         if (!(mod || pulse.changed(pulse.ADD_REM) || modp("sort"))) return;
         if (!_.size || _.size.length !== 2) (0, _vegaUtil.error)("Size parameter should be specified as a [width, height] array.");
         const as = _.as || Output; // run label layout
-        labelLayout(pulse.materialize(pulse.SOURCE).source, _.size, _.sort, (0, _vegaUtil.array)(_.offset || 1), (0, _vegaUtil.array)(_.anchor || Anchors), _.avoidMarks || [], _.avoidBaseMark === false ? false : true, _.lineAnchor || "end", _.markIndex || 0, _.padding || 0, _.method || "naive").forEach((l)=>{
+        labelLayout(pulse.materialize(pulse.SOURCE).source || [], _.size, _.sort, (0, _vegaUtil.array)(_.offset == null ? 1 : _.offset), (0, _vegaUtil.array)(_.anchor || Anchors), _.avoidMarks || [], _.avoidBaseMark !== false, _.lineAnchor || "end", _.markIndex || 0, _.padding === undefined ? 0 : _.padding, _.method || "naive").forEach((l)=>{
             // write layout results to data stream
             const t = l.datum;
             t[as[0]] = l.x;
@@ -33228,7 +33767,7 @@ Label.Definition = {
     }
 });
 
-},{"vega-canvas":"f0yaA","vega-dataflow":"3NitK","vega-scenegraph":"jattk","vega-util":"bApja","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"elv3U":[function(require,module,exports) {
+},{"vega-scenegraph":"jattk","vega-canvas":"f0yaA","vega-dataflow":"3NitK","vega-util":"bApja","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"elv3U":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "loess", ()=>Loess);
@@ -33641,10 +34180,12 @@ class Delaunay {
             this.triangles = new Int32Array(3).fill(-1);
             this.halfedges = new Int32Array(3).fill(-1);
             this.triangles[0] = hull[0];
-            this.triangles[1] = hull[1];
-            this.triangles[2] = hull[1];
             inedges[hull[0]] = 1;
-            if (hull.length === 2) inedges[hull[1]] = 0;
+            if (hull.length === 2) {
+                inedges[hull[1]] = 0;
+                this.triangles[1] = hull[1];
+                this.triangles[2] = hull[1];
+            }
         }
     }
     voronoi(bounds) {
@@ -33719,7 +34260,9 @@ class Delaunay {
         this.renderHull(context);
         return buffer && buffer.value();
     }
-    renderPoints(context, r = 2) {
+    renderPoints(context, r) {
+        if (r === undefined && (!context || typeof context.moveTo !== "function")) r = context, context = null;
+        r = r == undefined ? 2 : +r;
         const buffer = context == null ? context = new (0, _pathJsDefault.default) : undefined;
         const { points  } = this;
         for(let i = 0, n = points.length; i < n; i += 2){
@@ -33791,6 +34334,7 @@ function* flatIterable(points, fx, fy, that) {
 },{"delaunator":"auyGo","./path.js":"60Yfe","./polygon.js":"5nsXD","./voronoi.js":"a33Bo","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"auyGo":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+var _robustPredicates = require("robust-predicates");
 const EPSILON = Math.pow(2, -52);
 const EDGE_STACK = new Uint32Array(512);
 class Delaunator {
@@ -33898,7 +34442,7 @@ class Delaunator {
             return;
         }
         // swap the order of the seed points for counter-clockwise orientation
-        if (orient(i0x, i0y, i1x, i1y, i2x, i2y)) {
+        if ((0, _robustPredicates.orient2d)(i0x, i0y, i1x, i1y, i2x, i2y) < 0) {
             const i8 = i1;
             const x1 = i1x;
             const y1 = i1y;
@@ -33948,7 +34492,7 @@ class Delaunator {
             }
             start = hullPrev[start];
             let e = start, q;
-            while(q = hullNext[e], !orient(x2, y2, coords[2 * e], coords[2 * e + 1], coords[2 * q], coords[2 * q + 1])){
+            while(q = hullNext[e], (0, _robustPredicates.orient2d)(x2, y2, coords[2 * e], coords[2 * e + 1], coords[2 * q], coords[2 * q + 1]) >= 0){
                 e = q;
                 if (e === start) {
                     e = -1;
@@ -33964,7 +34508,7 @@ class Delaunator {
             hullSize++;
             // walk forward through the hull, adding more triangles and flipping recursively
             let n1 = hullNext[e];
-            while(q = hullNext[n1], orient(x2, y2, coords[2 * n1], coords[2 * n1 + 1], coords[2 * q], coords[2 * q + 1])){
+            while(q = hullNext[n1], (0, _robustPredicates.orient2d)(x2, y2, coords[2 * n1], coords[2 * n1 + 1], coords[2 * q], coords[2 * q + 1]) < 0){
                 t = this._addTriangle(n1, i10, q, hullTri[i10], -1, hullTri[n1]);
                 hullTri[i10] = this._legalize(t + 2);
                 hullNext[n1] = n1; // mark as removed
@@ -33972,7 +34516,7 @@ class Delaunator {
                 n1 = q;
             }
             // walk backward from the other side, adding more triangles and flipping
-            if (e === start) while(q = hullPrev[e], orient(x2, y2, coords[2 * q], coords[2 * q + 1], coords[2 * e], coords[2 * e + 1])){
+            if (e === start) while(q = hullPrev[e], (0, _robustPredicates.orient2d)(x2, y2, coords[2 * q], coords[2 * q + 1], coords[2 * e], coords[2 * e + 1]) < 0){
                 t = this._addTriangle(q, i10, e, -1, hullTri[e], hullTri[q]);
                 this._legalize(t + 2);
                 hullTri[q] = t;
@@ -34092,17 +34636,6 @@ function dist(ax, ay, bx, by) {
     const dy = ay - by;
     return dx * dx + dy * dy;
 }
-// return 2d orientation sign if we're confident in it through J. Shewchuk's error bound check
-function orientIfSure(px, py, rx, ry, qx, qy) {
-    const l = (ry - py) * (qx - px);
-    const r = (rx - px) * (qy - py);
-    return Math.abs(l - r) >= 3.3306690738754716e-16 * Math.abs(l + r) ? l - r : 0;
-}
-// a more robust orientation test that's stable in a given triangle (to fix robustness issues)
-function orient(rx, ry, qx, qy, px, py) {
-    const sign = orientIfSure(px, py, rx, ry, qx, qy) || orientIfSure(rx, ry, qx, qy, px, py) || orientIfSure(qx, qy, px, py, rx, ry);
-    return sign < 0;
-}
 function inCircle(ax, ay, bx, by, cx, cy, px, py) {
     const dx = ax - px;
     const dy = ay - py;
@@ -34191,7 +34724,2058 @@ function defaultGetY(p) {
     return p[1];
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"60Yfe":[function(require,module,exports) {
+},{"robust-predicates":"KLZHK","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"KLZHK":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "orient2d", ()=>(0, _orient2DJs.orient2d));
+parcelHelpers.export(exports, "orient2dfast", ()=>(0, _orient2DJs.orient2dfast));
+parcelHelpers.export(exports, "orient3d", ()=>(0, _orient3DJs.orient3d));
+parcelHelpers.export(exports, "orient3dfast", ()=>(0, _orient3DJs.orient3dfast));
+parcelHelpers.export(exports, "incircle", ()=>(0, _incircleJs.incircle));
+parcelHelpers.export(exports, "incirclefast", ()=>(0, _incircleJs.incirclefast));
+parcelHelpers.export(exports, "insphere", ()=>(0, _insphereJs.insphere));
+parcelHelpers.export(exports, "inspherefast", ()=>(0, _insphereJs.inspherefast));
+var _orient2DJs = require("./esm/orient2d.js");
+var _orient3DJs = require("./esm/orient3d.js");
+var _incircleJs = require("./esm/incircle.js");
+var _insphereJs = require("./esm/insphere.js");
+
+},{"./esm/orient2d.js":"9dV6v","./esm/orient3d.js":"60Ijp","./esm/incircle.js":"eSgV9","./esm/insphere.js":"lKwEh","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"9dV6v":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "orient2d", ()=>orient2d);
+parcelHelpers.export(exports, "orient2dfast", ()=>orient2dfast);
+var _utilJs = require("./util.js");
+const ccwerrboundA = (3 + 16 * (0, _utilJs.epsilon)) * (0, _utilJs.epsilon);
+const ccwerrboundB = (2 + 12 * (0, _utilJs.epsilon)) * (0, _utilJs.epsilon);
+const ccwerrboundC = (9 + 64 * (0, _utilJs.epsilon)) * (0, _utilJs.epsilon) * (0, _utilJs.epsilon);
+const B = (0, _utilJs.vec)(4);
+const C1 = (0, _utilJs.vec)(8);
+const C2 = (0, _utilJs.vec)(12);
+const D = (0, _utilJs.vec)(16);
+const u = (0, _utilJs.vec)(4);
+function orient2dadapt(ax, ay, bx, by, cx, cy, detsum) {
+    let acxtail, acytail, bcxtail, bcytail;
+    let bvirt, c, ahi, alo, bhi, blo, _i, _j, _0, s1, s0, t1, t0, u3;
+    const acx = ax - cx;
+    const bcx = bx - cx;
+    const acy = ay - cy;
+    const bcy = by - cy;
+    s1 = acx * bcy;
+    c = (0, _utilJs.splitter) * acx;
+    ahi = c - (c - acx);
+    alo = acx - ahi;
+    c = (0, _utilJs.splitter) * bcy;
+    bhi = c - (c - bcy);
+    blo = bcy - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = acy * bcx;
+    c = (0, _utilJs.splitter) * acy;
+    ahi = c - (c - acy);
+    alo = acy - ahi;
+    c = (0, _utilJs.splitter) * bcx;
+    bhi = c - (c - bcx);
+    blo = bcx - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    B[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    B[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    u3 = _j + _i;
+    bvirt = u3 - _j;
+    B[2] = _j - (u3 - bvirt) + (_i - bvirt);
+    B[3] = u3;
+    let det = (0, _utilJs.estimate)(4, B);
+    let errbound = ccwerrboundB * detsum;
+    if (det >= errbound || -det >= errbound) return det;
+    bvirt = ax - acx;
+    acxtail = ax - (acx + bvirt) + (bvirt - cx);
+    bvirt = bx - bcx;
+    bcxtail = bx - (bcx + bvirt) + (bvirt - cx);
+    bvirt = ay - acy;
+    acytail = ay - (acy + bvirt) + (bvirt - cy);
+    bvirt = by - bcy;
+    bcytail = by - (bcy + bvirt) + (bvirt - cy);
+    if (acxtail === 0 && acytail === 0 && bcxtail === 0 && bcytail === 0) return det;
+    errbound = ccwerrboundC * detsum + (0, _utilJs.resulterrbound) * Math.abs(det);
+    det += acx * bcytail + bcy * acxtail - (acy * bcxtail + bcx * acytail);
+    if (det >= errbound || -det >= errbound) return det;
+    s1 = acxtail * bcy;
+    c = (0, _utilJs.splitter) * acxtail;
+    ahi = c - (c - acxtail);
+    alo = acxtail - ahi;
+    c = (0, _utilJs.splitter) * bcy;
+    bhi = c - (c - bcy);
+    blo = bcy - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = acytail * bcx;
+    c = (0, _utilJs.splitter) * acytail;
+    ahi = c - (c - acytail);
+    alo = acytail - ahi;
+    c = (0, _utilJs.splitter) * bcx;
+    bhi = c - (c - bcx);
+    blo = bcx - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    u[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    u[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    u3 = _j + _i;
+    bvirt = u3 - _j;
+    u[2] = _j - (u3 - bvirt) + (_i - bvirt);
+    u[3] = u3;
+    const C1len = (0, _utilJs.sum)(4, B, 4, u, C1);
+    s1 = acx * bcytail;
+    c = (0, _utilJs.splitter) * acx;
+    ahi = c - (c - acx);
+    alo = acx - ahi;
+    c = (0, _utilJs.splitter) * bcytail;
+    bhi = c - (c - bcytail);
+    blo = bcytail - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = acy * bcxtail;
+    c = (0, _utilJs.splitter) * acy;
+    ahi = c - (c - acy);
+    alo = acy - ahi;
+    c = (0, _utilJs.splitter) * bcxtail;
+    bhi = c - (c - bcxtail);
+    blo = bcxtail - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    u[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    u[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    u3 = _j + _i;
+    bvirt = u3 - _j;
+    u[2] = _j - (u3 - bvirt) + (_i - bvirt);
+    u[3] = u3;
+    const C2len = (0, _utilJs.sum)(C1len, C1, 4, u, C2);
+    s1 = acxtail * bcytail;
+    c = (0, _utilJs.splitter) * acxtail;
+    ahi = c - (c - acxtail);
+    alo = acxtail - ahi;
+    c = (0, _utilJs.splitter) * bcytail;
+    bhi = c - (c - bcytail);
+    blo = bcytail - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = acytail * bcxtail;
+    c = (0, _utilJs.splitter) * acytail;
+    ahi = c - (c - acytail);
+    alo = acytail - ahi;
+    c = (0, _utilJs.splitter) * bcxtail;
+    bhi = c - (c - bcxtail);
+    blo = bcxtail - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    u[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    u[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    u3 = _j + _i;
+    bvirt = u3 - _j;
+    u[2] = _j - (u3 - bvirt) + (_i - bvirt);
+    u[3] = u3;
+    const Dlen = (0, _utilJs.sum)(C2len, C2, 4, u, D);
+    return D[Dlen - 1];
+}
+function orient2d(ax, ay, bx, by, cx, cy) {
+    const detleft = (ay - cy) * (bx - cx);
+    const detright = (ax - cx) * (by - cy);
+    const det = detleft - detright;
+    if (detleft === 0 || detright === 0 || detleft > 0 !== detright > 0) return det;
+    const detsum = Math.abs(detleft + detright);
+    if (Math.abs(det) >= ccwerrboundA * detsum) return det;
+    return -orient2dadapt(ax, ay, bx, by, cx, cy, detsum);
+}
+function orient2dfast(ax, ay, bx, by, cx, cy) {
+    return (ay - cy) * (bx - cx) - (ax - cx) * (by - cy);
+}
+
+},{"./util.js":"3WWl7","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"3WWl7":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "epsilon", ()=>epsilon);
+parcelHelpers.export(exports, "splitter", ()=>splitter);
+parcelHelpers.export(exports, "resulterrbound", ()=>resulterrbound);
+// fast_expansion_sum_zeroelim routine from oritinal code
+parcelHelpers.export(exports, "sum", ()=>sum);
+parcelHelpers.export(exports, "sum_three", ()=>sum_three);
+// scale_expansion_zeroelim routine from oritinal code
+parcelHelpers.export(exports, "scale", ()=>scale);
+parcelHelpers.export(exports, "negate", ()=>negate);
+parcelHelpers.export(exports, "estimate", ()=>estimate);
+parcelHelpers.export(exports, "vec", ()=>vec);
+const epsilon = 1.1102230246251565e-16;
+const splitter = 134217729;
+const resulterrbound = (3 + 8 * epsilon) * epsilon;
+function sum(elen, e, flen, f, h) {
+    let Q, Qnew, hh, bvirt;
+    let enow = e[0];
+    let fnow = f[0];
+    let eindex = 0;
+    let findex = 0;
+    if (fnow > enow === fnow > -enow) {
+        Q = enow;
+        enow = e[++eindex];
+    } else {
+        Q = fnow;
+        fnow = f[++findex];
+    }
+    let hindex = 0;
+    if (eindex < elen && findex < flen) {
+        if (fnow > enow === fnow > -enow) {
+            Qnew = enow + Q;
+            hh = Q - (Qnew - enow);
+            enow = e[++eindex];
+        } else {
+            Qnew = fnow + Q;
+            hh = Q - (Qnew - fnow);
+            fnow = f[++findex];
+        }
+        Q = Qnew;
+        if (hh !== 0) h[hindex++] = hh;
+        while(eindex < elen && findex < flen){
+            if (fnow > enow === fnow > -enow) {
+                Qnew = Q + enow;
+                bvirt = Qnew - Q;
+                hh = Q - (Qnew - bvirt) + (enow - bvirt);
+                enow = e[++eindex];
+            } else {
+                Qnew = Q + fnow;
+                bvirt = Qnew - Q;
+                hh = Q - (Qnew - bvirt) + (fnow - bvirt);
+                fnow = f[++findex];
+            }
+            Q = Qnew;
+            if (hh !== 0) h[hindex++] = hh;
+        }
+    }
+    while(eindex < elen){
+        Qnew = Q + enow;
+        bvirt = Qnew - Q;
+        hh = Q - (Qnew - bvirt) + (enow - bvirt);
+        enow = e[++eindex];
+        Q = Qnew;
+        if (hh !== 0) h[hindex++] = hh;
+    }
+    while(findex < flen){
+        Qnew = Q + fnow;
+        bvirt = Qnew - Q;
+        hh = Q - (Qnew - bvirt) + (fnow - bvirt);
+        fnow = f[++findex];
+        Q = Qnew;
+        if (hh !== 0) h[hindex++] = hh;
+    }
+    if (Q !== 0 || hindex === 0) h[hindex++] = Q;
+    return hindex;
+}
+function sum_three(alen, a, blen, b, clen, c, tmp, out) {
+    return sum(sum(alen, a, blen, b, tmp), tmp, clen, c, out);
+}
+function scale(elen, e, b, h) {
+    let Q, sum, hh, product1, product0;
+    let bvirt, c, ahi, alo, bhi, blo;
+    c = splitter * b;
+    bhi = c - (c - b);
+    blo = b - bhi;
+    let enow = e[0];
+    Q = enow * b;
+    c = splitter * enow;
+    ahi = c - (c - enow);
+    alo = enow - ahi;
+    hh = alo * blo - (Q - ahi * bhi - alo * bhi - ahi * blo);
+    let hindex = 0;
+    if (hh !== 0) h[hindex++] = hh;
+    for(let i = 1; i < elen; i++){
+        enow = e[i];
+        product1 = enow * b;
+        c = splitter * enow;
+        ahi = c - (c - enow);
+        alo = enow - ahi;
+        product0 = alo * blo - (product1 - ahi * bhi - alo * bhi - ahi * blo);
+        sum = Q + product0;
+        bvirt = sum - Q;
+        hh = Q - (sum - bvirt) + (product0 - bvirt);
+        if (hh !== 0) h[hindex++] = hh;
+        Q = product1 + sum;
+        hh = sum - (Q - product1);
+        if (hh !== 0) h[hindex++] = hh;
+    }
+    if (Q !== 0 || hindex === 0) h[hindex++] = Q;
+    return hindex;
+}
+function negate(elen, e) {
+    for(let i = 0; i < elen; i++)e[i] = -e[i];
+    return elen;
+}
+function estimate(elen, e) {
+    let Q = e[0];
+    for(let i = 1; i < elen; i++)Q += e[i];
+    return Q;
+}
+function vec(n) {
+    return new Float64Array(n);
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"60Ijp":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "orient3d", ()=>orient3d);
+parcelHelpers.export(exports, "orient3dfast", ()=>orient3dfast);
+var _utilJs = require("./util.js");
+const o3derrboundA = (7 + 56 * (0, _utilJs.epsilon)) * (0, _utilJs.epsilon);
+const o3derrboundB = (3 + 28 * (0, _utilJs.epsilon)) * (0, _utilJs.epsilon);
+const o3derrboundC = (26 + 288 * (0, _utilJs.epsilon)) * (0, _utilJs.epsilon) * (0, _utilJs.epsilon);
+const bc = (0, _utilJs.vec)(4);
+const ca = (0, _utilJs.vec)(4);
+const ab = (0, _utilJs.vec)(4);
+const at_b = (0, _utilJs.vec)(4);
+const at_c = (0, _utilJs.vec)(4);
+const bt_c = (0, _utilJs.vec)(4);
+const bt_a = (0, _utilJs.vec)(4);
+const ct_a = (0, _utilJs.vec)(4);
+const ct_b = (0, _utilJs.vec)(4);
+const bct = (0, _utilJs.vec)(8);
+const cat = (0, _utilJs.vec)(8);
+const abt = (0, _utilJs.vec)(8);
+const u = (0, _utilJs.vec)(4);
+const _8 = (0, _utilJs.vec)(8);
+const _8b = (0, _utilJs.vec)(8);
+const _16 = (0, _utilJs.vec)(8);
+const _12 = (0, _utilJs.vec)(12);
+let fin = (0, _utilJs.vec)(192);
+let fin2 = (0, _utilJs.vec)(192);
+function finadd(finlen, alen, a) {
+    finlen = (0, _utilJs.sum)(finlen, fin, alen, a, fin2);
+    const tmp = fin;
+    fin = fin2;
+    fin2 = tmp;
+    return finlen;
+}
+function tailinit(xtail, ytail, ax, ay, bx, by, a, b) {
+    let bvirt, c, ahi, alo, bhi, blo, _i, _j, _k, _0, s1, s0, t1, t0, u3, negate;
+    if (xtail === 0) {
+        if (ytail === 0) {
+            a[0] = 0;
+            b[0] = 0;
+            return 1;
+        } else {
+            negate = -ytail;
+            s1 = negate * ax;
+            c = (0, _utilJs.splitter) * negate;
+            ahi = c - (c - negate);
+            alo = negate - ahi;
+            c = (0, _utilJs.splitter) * ax;
+            bhi = c - (c - ax);
+            blo = ax - bhi;
+            a[0] = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+            a[1] = s1;
+            s1 = ytail * bx;
+            c = (0, _utilJs.splitter) * ytail;
+            ahi = c - (c - ytail);
+            alo = ytail - ahi;
+            c = (0, _utilJs.splitter) * bx;
+            bhi = c - (c - bx);
+            blo = bx - bhi;
+            b[0] = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+            b[1] = s1;
+            return 2;
+        }
+    } else if (ytail === 0) {
+        s1 = xtail * ay;
+        c = (0, _utilJs.splitter) * xtail;
+        ahi = c - (c - xtail);
+        alo = xtail - ahi;
+        c = (0, _utilJs.splitter) * ay;
+        bhi = c - (c - ay);
+        blo = ay - bhi;
+        a[0] = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+        a[1] = s1;
+        negate = -xtail;
+        s1 = negate * by;
+        c = (0, _utilJs.splitter) * negate;
+        ahi = c - (c - negate);
+        alo = negate - ahi;
+        c = (0, _utilJs.splitter) * by;
+        bhi = c - (c - by);
+        blo = by - bhi;
+        b[0] = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+        b[1] = s1;
+        return 2;
+    } else {
+        s1 = xtail * ay;
+        c = (0, _utilJs.splitter) * xtail;
+        ahi = c - (c - xtail);
+        alo = xtail - ahi;
+        c = (0, _utilJs.splitter) * ay;
+        bhi = c - (c - ay);
+        blo = ay - bhi;
+        s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+        t1 = ytail * ax;
+        c = (0, _utilJs.splitter) * ytail;
+        ahi = c - (c - ytail);
+        alo = ytail - ahi;
+        c = (0, _utilJs.splitter) * ax;
+        bhi = c - (c - ax);
+        blo = ax - bhi;
+        t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+        _i = s0 - t0;
+        bvirt = s0 - _i;
+        a[0] = s0 - (_i + bvirt) + (bvirt - t0);
+        _j = s1 + _i;
+        bvirt = _j - s1;
+        _0 = s1 - (_j - bvirt) + (_i - bvirt);
+        _i = _0 - t1;
+        bvirt = _0 - _i;
+        a[1] = _0 - (_i + bvirt) + (bvirt - t1);
+        u3 = _j + _i;
+        bvirt = u3 - _j;
+        a[2] = _j - (u3 - bvirt) + (_i - bvirt);
+        a[3] = u3;
+        s1 = ytail * bx;
+        c = (0, _utilJs.splitter) * ytail;
+        ahi = c - (c - ytail);
+        alo = ytail - ahi;
+        c = (0, _utilJs.splitter) * bx;
+        bhi = c - (c - bx);
+        blo = bx - bhi;
+        s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+        t1 = xtail * by;
+        c = (0, _utilJs.splitter) * xtail;
+        ahi = c - (c - xtail);
+        alo = xtail - ahi;
+        c = (0, _utilJs.splitter) * by;
+        bhi = c - (c - by);
+        blo = by - bhi;
+        t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+        _i = s0 - t0;
+        bvirt = s0 - _i;
+        b[0] = s0 - (_i + bvirt) + (bvirt - t0);
+        _j = s1 + _i;
+        bvirt = _j - s1;
+        _0 = s1 - (_j - bvirt) + (_i - bvirt);
+        _i = _0 - t1;
+        bvirt = _0 - _i;
+        b[1] = _0 - (_i + bvirt) + (bvirt - t1);
+        u3 = _j + _i;
+        bvirt = u3 - _j;
+        b[2] = _j - (u3 - bvirt) + (_i - bvirt);
+        b[3] = u3;
+        return 4;
+    }
+}
+function tailadd(finlen, a, b, k, z) {
+    let bvirt, c, ahi, alo, bhi, blo, _i, _j, _k, _0, s1, s0, u3;
+    s1 = a * b;
+    c = (0, _utilJs.splitter) * a;
+    ahi = c - (c - a);
+    alo = a - ahi;
+    c = (0, _utilJs.splitter) * b;
+    bhi = c - (c - b);
+    blo = b - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    c = (0, _utilJs.splitter) * k;
+    bhi = c - (c - k);
+    blo = k - bhi;
+    _i = s0 * k;
+    c = (0, _utilJs.splitter) * s0;
+    ahi = c - (c - s0);
+    alo = s0 - ahi;
+    u[0] = alo * blo - (_i - ahi * bhi - alo * bhi - ahi * blo);
+    _j = s1 * k;
+    c = (0, _utilJs.splitter) * s1;
+    ahi = c - (c - s1);
+    alo = s1 - ahi;
+    _0 = alo * blo - (_j - ahi * bhi - alo * bhi - ahi * blo);
+    _k = _i + _0;
+    bvirt = _k - _i;
+    u[1] = _i - (_k - bvirt) + (_0 - bvirt);
+    u3 = _j + _k;
+    u[2] = _k - (u3 - _j);
+    u[3] = u3;
+    finlen = finadd(finlen, 4, u);
+    if (z !== 0) {
+        c = (0, _utilJs.splitter) * z;
+        bhi = c - (c - z);
+        blo = z - bhi;
+        _i = s0 * z;
+        c = (0, _utilJs.splitter) * s0;
+        ahi = c - (c - s0);
+        alo = s0 - ahi;
+        u[0] = alo * blo - (_i - ahi * bhi - alo * bhi - ahi * blo);
+        _j = s1 * z;
+        c = (0, _utilJs.splitter) * s1;
+        ahi = c - (c - s1);
+        alo = s1 - ahi;
+        _0 = alo * blo - (_j - ahi * bhi - alo * bhi - ahi * blo);
+        _k = _i + _0;
+        bvirt = _k - _i;
+        u[1] = _i - (_k - bvirt) + (_0 - bvirt);
+        u3 = _j + _k;
+        u[2] = _k - (u3 - _j);
+        u[3] = u3;
+        finlen = finadd(finlen, 4, u);
+    }
+    return finlen;
+}
+function orient3dadapt(ax, ay, az, bx, by, bz, cx, cy, cz, dx, dy, dz, permanent) {
+    let finlen;
+    let adxtail, bdxtail, cdxtail;
+    let adytail, bdytail, cdytail;
+    let adztail, bdztail, cdztail;
+    let bvirt, c, ahi, alo, bhi, blo, _i, _j, _k, _0, s1, s0, t1, t0, u3;
+    const adx = ax - dx;
+    const bdx = bx - dx;
+    const cdx = cx - dx;
+    const ady = ay - dy;
+    const bdy = by - dy;
+    const cdy = cy - dy;
+    const adz = az - dz;
+    const bdz = bz - dz;
+    const cdz = cz - dz;
+    s1 = bdx * cdy;
+    c = (0, _utilJs.splitter) * bdx;
+    ahi = c - (c - bdx);
+    alo = bdx - ahi;
+    c = (0, _utilJs.splitter) * cdy;
+    bhi = c - (c - cdy);
+    blo = cdy - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = cdx * bdy;
+    c = (0, _utilJs.splitter) * cdx;
+    ahi = c - (c - cdx);
+    alo = cdx - ahi;
+    c = (0, _utilJs.splitter) * bdy;
+    bhi = c - (c - bdy);
+    blo = bdy - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    bc[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    bc[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    u3 = _j + _i;
+    bvirt = u3 - _j;
+    bc[2] = _j - (u3 - bvirt) + (_i - bvirt);
+    bc[3] = u3;
+    s1 = cdx * ady;
+    c = (0, _utilJs.splitter) * cdx;
+    ahi = c - (c - cdx);
+    alo = cdx - ahi;
+    c = (0, _utilJs.splitter) * ady;
+    bhi = c - (c - ady);
+    blo = ady - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = adx * cdy;
+    c = (0, _utilJs.splitter) * adx;
+    ahi = c - (c - adx);
+    alo = adx - ahi;
+    c = (0, _utilJs.splitter) * cdy;
+    bhi = c - (c - cdy);
+    blo = cdy - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    ca[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    ca[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    u3 = _j + _i;
+    bvirt = u3 - _j;
+    ca[2] = _j - (u3 - bvirt) + (_i - bvirt);
+    ca[3] = u3;
+    s1 = adx * bdy;
+    c = (0, _utilJs.splitter) * adx;
+    ahi = c - (c - adx);
+    alo = adx - ahi;
+    c = (0, _utilJs.splitter) * bdy;
+    bhi = c - (c - bdy);
+    blo = bdy - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = bdx * ady;
+    c = (0, _utilJs.splitter) * bdx;
+    ahi = c - (c - bdx);
+    alo = bdx - ahi;
+    c = (0, _utilJs.splitter) * ady;
+    bhi = c - (c - ady);
+    blo = ady - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    ab[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    ab[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    u3 = _j + _i;
+    bvirt = u3 - _j;
+    ab[2] = _j - (u3 - bvirt) + (_i - bvirt);
+    ab[3] = u3;
+    finlen = (0, _utilJs.sum)((0, _utilJs.sum)((0, _utilJs.scale)(4, bc, adz, _8), _8, (0, _utilJs.scale)(4, ca, bdz, _8b), _8b, _16), _16, (0, _utilJs.scale)(4, ab, cdz, _8), _8, fin);
+    let det = (0, _utilJs.estimate)(finlen, fin);
+    let errbound = o3derrboundB * permanent;
+    if (det >= errbound || -det >= errbound) return det;
+    bvirt = ax - adx;
+    adxtail = ax - (adx + bvirt) + (bvirt - dx);
+    bvirt = bx - bdx;
+    bdxtail = bx - (bdx + bvirt) + (bvirt - dx);
+    bvirt = cx - cdx;
+    cdxtail = cx - (cdx + bvirt) + (bvirt - dx);
+    bvirt = ay - ady;
+    adytail = ay - (ady + bvirt) + (bvirt - dy);
+    bvirt = by - bdy;
+    bdytail = by - (bdy + bvirt) + (bvirt - dy);
+    bvirt = cy - cdy;
+    cdytail = cy - (cdy + bvirt) + (bvirt - dy);
+    bvirt = az - adz;
+    adztail = az - (adz + bvirt) + (bvirt - dz);
+    bvirt = bz - bdz;
+    bdztail = bz - (bdz + bvirt) + (bvirt - dz);
+    bvirt = cz - cdz;
+    cdztail = cz - (cdz + bvirt) + (bvirt - dz);
+    if (adxtail === 0 && bdxtail === 0 && cdxtail === 0 && adytail === 0 && bdytail === 0 && cdytail === 0 && adztail === 0 && bdztail === 0 && cdztail === 0) return det;
+    errbound = o3derrboundC * permanent + (0, _utilJs.resulterrbound) * Math.abs(det);
+    det += adz * (bdx * cdytail + cdy * bdxtail - (bdy * cdxtail + cdx * bdytail)) + adztail * (bdx * cdy - bdy * cdx) + bdz * (cdx * adytail + ady * cdxtail - (cdy * adxtail + adx * cdytail)) + bdztail * (cdx * ady - cdy * adx) + cdz * (adx * bdytail + bdy * adxtail - (ady * bdxtail + bdx * adytail)) + cdztail * (adx * bdy - ady * bdx);
+    if (det >= errbound || -det >= errbound) return det;
+    const at_len = tailinit(adxtail, adytail, bdx, bdy, cdx, cdy, at_b, at_c);
+    const bt_len = tailinit(bdxtail, bdytail, cdx, cdy, adx, ady, bt_c, bt_a);
+    const ct_len = tailinit(cdxtail, cdytail, adx, ady, bdx, bdy, ct_a, ct_b);
+    const bctlen = (0, _utilJs.sum)(bt_len, bt_c, ct_len, ct_b, bct);
+    finlen = finadd(finlen, (0, _utilJs.scale)(bctlen, bct, adz, _16), _16);
+    const catlen = (0, _utilJs.sum)(ct_len, ct_a, at_len, at_c, cat);
+    finlen = finadd(finlen, (0, _utilJs.scale)(catlen, cat, bdz, _16), _16);
+    const abtlen = (0, _utilJs.sum)(at_len, at_b, bt_len, bt_a, abt);
+    finlen = finadd(finlen, (0, _utilJs.scale)(abtlen, abt, cdz, _16), _16);
+    if (adztail !== 0) {
+        finlen = finadd(finlen, (0, _utilJs.scale)(4, bc, adztail, _12), _12);
+        finlen = finadd(finlen, (0, _utilJs.scale)(bctlen, bct, adztail, _16), _16);
+    }
+    if (bdztail !== 0) {
+        finlen = finadd(finlen, (0, _utilJs.scale)(4, ca, bdztail, _12), _12);
+        finlen = finadd(finlen, (0, _utilJs.scale)(catlen, cat, bdztail, _16), _16);
+    }
+    if (cdztail !== 0) {
+        finlen = finadd(finlen, (0, _utilJs.scale)(4, ab, cdztail, _12), _12);
+        finlen = finadd(finlen, (0, _utilJs.scale)(abtlen, abt, cdztail, _16), _16);
+    }
+    if (adxtail !== 0) {
+        if (bdytail !== 0) finlen = tailadd(finlen, adxtail, bdytail, cdz, cdztail);
+        if (cdytail !== 0) finlen = tailadd(finlen, -adxtail, cdytail, bdz, bdztail);
+    }
+    if (bdxtail !== 0) {
+        if (cdytail !== 0) finlen = tailadd(finlen, bdxtail, cdytail, adz, adztail);
+        if (adytail !== 0) finlen = tailadd(finlen, -bdxtail, adytail, cdz, cdztail);
+    }
+    if (cdxtail !== 0) {
+        if (adytail !== 0) finlen = tailadd(finlen, cdxtail, adytail, bdz, bdztail);
+        if (bdytail !== 0) finlen = tailadd(finlen, -cdxtail, bdytail, adz, adztail);
+    }
+    return fin[finlen - 1];
+}
+function orient3d(ax, ay, az, bx, by, bz, cx, cy, cz, dx, dy, dz) {
+    const adx = ax - dx;
+    const bdx = bx - dx;
+    const cdx = cx - dx;
+    const ady = ay - dy;
+    const bdy = by - dy;
+    const cdy = cy - dy;
+    const adz = az - dz;
+    const bdz = bz - dz;
+    const cdz = cz - dz;
+    const bdxcdy = bdx * cdy;
+    const cdxbdy = cdx * bdy;
+    const cdxady = cdx * ady;
+    const adxcdy = adx * cdy;
+    const adxbdy = adx * bdy;
+    const bdxady = bdx * ady;
+    const det = adz * (bdxcdy - cdxbdy) + bdz * (cdxady - adxcdy) + cdz * (adxbdy - bdxady);
+    const permanent = (Math.abs(bdxcdy) + Math.abs(cdxbdy)) * Math.abs(adz) + (Math.abs(cdxady) + Math.abs(adxcdy)) * Math.abs(bdz) + (Math.abs(adxbdy) + Math.abs(bdxady)) * Math.abs(cdz);
+    const errbound = o3derrboundA * permanent;
+    if (det > errbound || -det > errbound) return det;
+    return orient3dadapt(ax, ay, az, bx, by, bz, cx, cy, cz, dx, dy, dz, permanent);
+}
+function orient3dfast(ax, ay, az, bx, by, bz, cx, cy, cz, dx, dy, dz) {
+    const adx = ax - dx;
+    const bdx = bx - dx;
+    const cdx = cx - dx;
+    const ady = ay - dy;
+    const bdy = by - dy;
+    const cdy = cy - dy;
+    const adz = az - dz;
+    const bdz = bz - dz;
+    const cdz = cz - dz;
+    return adx * (bdy * cdz - bdz * cdy) + bdx * (cdy * adz - cdz * ady) + cdx * (ady * bdz - adz * bdy);
+}
+
+},{"./util.js":"3WWl7","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"eSgV9":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "incircle", ()=>incircle);
+parcelHelpers.export(exports, "incirclefast", ()=>incirclefast);
+var _utilJs = require("./util.js");
+const iccerrboundA = (10 + 96 * (0, _utilJs.epsilon)) * (0, _utilJs.epsilon);
+const iccerrboundB = (4 + 48 * (0, _utilJs.epsilon)) * (0, _utilJs.epsilon);
+const iccerrboundC = (44 + 576 * (0, _utilJs.epsilon)) * (0, _utilJs.epsilon) * (0, _utilJs.epsilon);
+const bc = (0, _utilJs.vec)(4);
+const ca = (0, _utilJs.vec)(4);
+const ab = (0, _utilJs.vec)(4);
+const aa = (0, _utilJs.vec)(4);
+const bb = (0, _utilJs.vec)(4);
+const cc = (0, _utilJs.vec)(4);
+const u = (0, _utilJs.vec)(4);
+const v = (0, _utilJs.vec)(4);
+const axtbc = (0, _utilJs.vec)(8);
+const aytbc = (0, _utilJs.vec)(8);
+const bxtca = (0, _utilJs.vec)(8);
+const bytca = (0, _utilJs.vec)(8);
+const cxtab = (0, _utilJs.vec)(8);
+const cytab = (0, _utilJs.vec)(8);
+const abt = (0, _utilJs.vec)(8);
+const bct = (0, _utilJs.vec)(8);
+const cat = (0, _utilJs.vec)(8);
+const abtt = (0, _utilJs.vec)(4);
+const bctt = (0, _utilJs.vec)(4);
+const catt = (0, _utilJs.vec)(4);
+const _8 = (0, _utilJs.vec)(8);
+const _16 = (0, _utilJs.vec)(16);
+const _16b = (0, _utilJs.vec)(16);
+const _16c = (0, _utilJs.vec)(16);
+const _32 = (0, _utilJs.vec)(32);
+const _32b = (0, _utilJs.vec)(32);
+const _48 = (0, _utilJs.vec)(48);
+const _64 = (0, _utilJs.vec)(64);
+let fin = (0, _utilJs.vec)(1152);
+let fin2 = (0, _utilJs.vec)(1152);
+function finadd(finlen, a, alen) {
+    finlen = (0, _utilJs.sum)(finlen, fin, a, alen, fin2);
+    const tmp = fin;
+    fin = fin2;
+    fin2 = tmp;
+    return finlen;
+}
+function incircleadapt(ax, ay, bx, by, cx, cy, dx, dy, permanent) {
+    let finlen;
+    let adxtail, bdxtail, cdxtail, adytail, bdytail, cdytail;
+    let axtbclen, aytbclen, bxtcalen, bytcalen, cxtablen, cytablen;
+    let abtlen, bctlen, catlen;
+    let abttlen, bcttlen, cattlen;
+    let n1, n0;
+    let bvirt, c, ahi, alo, bhi, blo, _i, _j, _0, s1, s0, t1, t0, u3;
+    const adx = ax - dx;
+    const bdx = bx - dx;
+    const cdx = cx - dx;
+    const ady = ay - dy;
+    const bdy = by - dy;
+    const cdy = cy - dy;
+    s1 = bdx * cdy;
+    c = (0, _utilJs.splitter) * bdx;
+    ahi = c - (c - bdx);
+    alo = bdx - ahi;
+    c = (0, _utilJs.splitter) * cdy;
+    bhi = c - (c - cdy);
+    blo = cdy - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = cdx * bdy;
+    c = (0, _utilJs.splitter) * cdx;
+    ahi = c - (c - cdx);
+    alo = cdx - ahi;
+    c = (0, _utilJs.splitter) * bdy;
+    bhi = c - (c - bdy);
+    blo = bdy - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    bc[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    bc[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    u3 = _j + _i;
+    bvirt = u3 - _j;
+    bc[2] = _j - (u3 - bvirt) + (_i - bvirt);
+    bc[3] = u3;
+    s1 = cdx * ady;
+    c = (0, _utilJs.splitter) * cdx;
+    ahi = c - (c - cdx);
+    alo = cdx - ahi;
+    c = (0, _utilJs.splitter) * ady;
+    bhi = c - (c - ady);
+    blo = ady - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = adx * cdy;
+    c = (0, _utilJs.splitter) * adx;
+    ahi = c - (c - adx);
+    alo = adx - ahi;
+    c = (0, _utilJs.splitter) * cdy;
+    bhi = c - (c - cdy);
+    blo = cdy - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    ca[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    ca[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    u3 = _j + _i;
+    bvirt = u3 - _j;
+    ca[2] = _j - (u3 - bvirt) + (_i - bvirt);
+    ca[3] = u3;
+    s1 = adx * bdy;
+    c = (0, _utilJs.splitter) * adx;
+    ahi = c - (c - adx);
+    alo = adx - ahi;
+    c = (0, _utilJs.splitter) * bdy;
+    bhi = c - (c - bdy);
+    blo = bdy - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = bdx * ady;
+    c = (0, _utilJs.splitter) * bdx;
+    ahi = c - (c - bdx);
+    alo = bdx - ahi;
+    c = (0, _utilJs.splitter) * ady;
+    bhi = c - (c - ady);
+    blo = ady - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    ab[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    ab[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    u3 = _j + _i;
+    bvirt = u3 - _j;
+    ab[2] = _j - (u3 - bvirt) + (_i - bvirt);
+    ab[3] = u3;
+    finlen = (0, _utilJs.sum)((0, _utilJs.sum)((0, _utilJs.sum)((0, _utilJs.scale)((0, _utilJs.scale)(4, bc, adx, _8), _8, adx, _16), _16, (0, _utilJs.scale)((0, _utilJs.scale)(4, bc, ady, _8), _8, ady, _16b), _16b, _32), _32, (0, _utilJs.sum)((0, _utilJs.scale)((0, _utilJs.scale)(4, ca, bdx, _8), _8, bdx, _16), _16, (0, _utilJs.scale)((0, _utilJs.scale)(4, ca, bdy, _8), _8, bdy, _16b), _16b, _32b), _32b, _64), _64, (0, _utilJs.sum)((0, _utilJs.scale)((0, _utilJs.scale)(4, ab, cdx, _8), _8, cdx, _16), _16, (0, _utilJs.scale)((0, _utilJs.scale)(4, ab, cdy, _8), _8, cdy, _16b), _16b, _32), _32, fin);
+    let det = (0, _utilJs.estimate)(finlen, fin);
+    let errbound = iccerrboundB * permanent;
+    if (det >= errbound || -det >= errbound) return det;
+    bvirt = ax - adx;
+    adxtail = ax - (adx + bvirt) + (bvirt - dx);
+    bvirt = ay - ady;
+    adytail = ay - (ady + bvirt) + (bvirt - dy);
+    bvirt = bx - bdx;
+    bdxtail = bx - (bdx + bvirt) + (bvirt - dx);
+    bvirt = by - bdy;
+    bdytail = by - (bdy + bvirt) + (bvirt - dy);
+    bvirt = cx - cdx;
+    cdxtail = cx - (cdx + bvirt) + (bvirt - dx);
+    bvirt = cy - cdy;
+    cdytail = cy - (cdy + bvirt) + (bvirt - dy);
+    if (adxtail === 0 && bdxtail === 0 && cdxtail === 0 && adytail === 0 && bdytail === 0 && cdytail === 0) return det;
+    errbound = iccerrboundC * permanent + (0, _utilJs.resulterrbound) * Math.abs(det);
+    det += (adx * adx + ady * ady) * (bdx * cdytail + cdy * bdxtail - (bdy * cdxtail + cdx * bdytail)) + 2 * (adx * adxtail + ady * adytail) * (bdx * cdy - bdy * cdx) + ((bdx * bdx + bdy * bdy) * (cdx * adytail + ady * cdxtail - (cdy * adxtail + adx * cdytail)) + 2 * (bdx * bdxtail + bdy * bdytail) * (cdx * ady - cdy * adx)) + ((cdx * cdx + cdy * cdy) * (adx * bdytail + bdy * adxtail - (ady * bdxtail + bdx * adytail)) + 2 * (cdx * cdxtail + cdy * cdytail) * (adx * bdy - ady * bdx));
+    if (det >= errbound || -det >= errbound) return det;
+    if (bdxtail !== 0 || bdytail !== 0 || cdxtail !== 0 || cdytail !== 0) {
+        s1 = adx * adx;
+        c = (0, _utilJs.splitter) * adx;
+        ahi = c - (c - adx);
+        alo = adx - ahi;
+        s0 = alo * alo - (s1 - ahi * ahi - (ahi + ahi) * alo);
+        t1 = ady * ady;
+        c = (0, _utilJs.splitter) * ady;
+        ahi = c - (c - ady);
+        alo = ady - ahi;
+        t0 = alo * alo - (t1 - ahi * ahi - (ahi + ahi) * alo);
+        _i = s0 + t0;
+        bvirt = _i - s0;
+        aa[0] = s0 - (_i - bvirt) + (t0 - bvirt);
+        _j = s1 + _i;
+        bvirt = _j - s1;
+        _0 = s1 - (_j - bvirt) + (_i - bvirt);
+        _i = _0 + t1;
+        bvirt = _i - _0;
+        aa[1] = _0 - (_i - bvirt) + (t1 - bvirt);
+        u3 = _j + _i;
+        bvirt = u3 - _j;
+        aa[2] = _j - (u3 - bvirt) + (_i - bvirt);
+        aa[3] = u3;
+    }
+    if (cdxtail !== 0 || cdytail !== 0 || adxtail !== 0 || adytail !== 0) {
+        s1 = bdx * bdx;
+        c = (0, _utilJs.splitter) * bdx;
+        ahi = c - (c - bdx);
+        alo = bdx - ahi;
+        s0 = alo * alo - (s1 - ahi * ahi - (ahi + ahi) * alo);
+        t1 = bdy * bdy;
+        c = (0, _utilJs.splitter) * bdy;
+        ahi = c - (c - bdy);
+        alo = bdy - ahi;
+        t0 = alo * alo - (t1 - ahi * ahi - (ahi + ahi) * alo);
+        _i = s0 + t0;
+        bvirt = _i - s0;
+        bb[0] = s0 - (_i - bvirt) + (t0 - bvirt);
+        _j = s1 + _i;
+        bvirt = _j - s1;
+        _0 = s1 - (_j - bvirt) + (_i - bvirt);
+        _i = _0 + t1;
+        bvirt = _i - _0;
+        bb[1] = _0 - (_i - bvirt) + (t1 - bvirt);
+        u3 = _j + _i;
+        bvirt = u3 - _j;
+        bb[2] = _j - (u3 - bvirt) + (_i - bvirt);
+        bb[3] = u3;
+    }
+    if (adxtail !== 0 || adytail !== 0 || bdxtail !== 0 || bdytail !== 0) {
+        s1 = cdx * cdx;
+        c = (0, _utilJs.splitter) * cdx;
+        ahi = c - (c - cdx);
+        alo = cdx - ahi;
+        s0 = alo * alo - (s1 - ahi * ahi - (ahi + ahi) * alo);
+        t1 = cdy * cdy;
+        c = (0, _utilJs.splitter) * cdy;
+        ahi = c - (c - cdy);
+        alo = cdy - ahi;
+        t0 = alo * alo - (t1 - ahi * ahi - (ahi + ahi) * alo);
+        _i = s0 + t0;
+        bvirt = _i - s0;
+        cc[0] = s0 - (_i - bvirt) + (t0 - bvirt);
+        _j = s1 + _i;
+        bvirt = _j - s1;
+        _0 = s1 - (_j - bvirt) + (_i - bvirt);
+        _i = _0 + t1;
+        bvirt = _i - _0;
+        cc[1] = _0 - (_i - bvirt) + (t1 - bvirt);
+        u3 = _j + _i;
+        bvirt = u3 - _j;
+        cc[2] = _j - (u3 - bvirt) + (_i - bvirt);
+        cc[3] = u3;
+    }
+    if (adxtail !== 0) {
+        axtbclen = (0, _utilJs.scale)(4, bc, adxtail, axtbc);
+        finlen = finadd(finlen, (0, _utilJs.sum_three)((0, _utilJs.scale)(axtbclen, axtbc, 2 * adx, _16), _16, (0, _utilJs.scale)((0, _utilJs.scale)(4, cc, adxtail, _8), _8, bdy, _16b), _16b, (0, _utilJs.scale)((0, _utilJs.scale)(4, bb, adxtail, _8), _8, -cdy, _16c), _16c, _32, _48), _48);
+    }
+    if (adytail !== 0) {
+        aytbclen = (0, _utilJs.scale)(4, bc, adytail, aytbc);
+        finlen = finadd(finlen, (0, _utilJs.sum_three)((0, _utilJs.scale)(aytbclen, aytbc, 2 * ady, _16), _16, (0, _utilJs.scale)((0, _utilJs.scale)(4, bb, adytail, _8), _8, cdx, _16b), _16b, (0, _utilJs.scale)((0, _utilJs.scale)(4, cc, adytail, _8), _8, -bdx, _16c), _16c, _32, _48), _48);
+    }
+    if (bdxtail !== 0) {
+        bxtcalen = (0, _utilJs.scale)(4, ca, bdxtail, bxtca);
+        finlen = finadd(finlen, (0, _utilJs.sum_three)((0, _utilJs.scale)(bxtcalen, bxtca, 2 * bdx, _16), _16, (0, _utilJs.scale)((0, _utilJs.scale)(4, aa, bdxtail, _8), _8, cdy, _16b), _16b, (0, _utilJs.scale)((0, _utilJs.scale)(4, cc, bdxtail, _8), _8, -ady, _16c), _16c, _32, _48), _48);
+    }
+    if (bdytail !== 0) {
+        bytcalen = (0, _utilJs.scale)(4, ca, bdytail, bytca);
+        finlen = finadd(finlen, (0, _utilJs.sum_three)((0, _utilJs.scale)(bytcalen, bytca, 2 * bdy, _16), _16, (0, _utilJs.scale)((0, _utilJs.scale)(4, cc, bdytail, _8), _8, adx, _16b), _16b, (0, _utilJs.scale)((0, _utilJs.scale)(4, aa, bdytail, _8), _8, -cdx, _16c), _16c, _32, _48), _48);
+    }
+    if (cdxtail !== 0) {
+        cxtablen = (0, _utilJs.scale)(4, ab, cdxtail, cxtab);
+        finlen = finadd(finlen, (0, _utilJs.sum_three)((0, _utilJs.scale)(cxtablen, cxtab, 2 * cdx, _16), _16, (0, _utilJs.scale)((0, _utilJs.scale)(4, bb, cdxtail, _8), _8, ady, _16b), _16b, (0, _utilJs.scale)((0, _utilJs.scale)(4, aa, cdxtail, _8), _8, -bdy, _16c), _16c, _32, _48), _48);
+    }
+    if (cdytail !== 0) {
+        cytablen = (0, _utilJs.scale)(4, ab, cdytail, cytab);
+        finlen = finadd(finlen, (0, _utilJs.sum_three)((0, _utilJs.scale)(cytablen, cytab, 2 * cdy, _16), _16, (0, _utilJs.scale)((0, _utilJs.scale)(4, aa, cdytail, _8), _8, bdx, _16b), _16b, (0, _utilJs.scale)((0, _utilJs.scale)(4, bb, cdytail, _8), _8, -adx, _16c), _16c, _32, _48), _48);
+    }
+    if (adxtail !== 0 || adytail !== 0) {
+        if (bdxtail !== 0 || bdytail !== 0 || cdxtail !== 0 || cdytail !== 0) {
+            s1 = bdxtail * cdy;
+            c = (0, _utilJs.splitter) * bdxtail;
+            ahi = c - (c - bdxtail);
+            alo = bdxtail - ahi;
+            c = (0, _utilJs.splitter) * cdy;
+            bhi = c - (c - cdy);
+            blo = cdy - bhi;
+            s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+            t1 = bdx * cdytail;
+            c = (0, _utilJs.splitter) * bdx;
+            ahi = c - (c - bdx);
+            alo = bdx - ahi;
+            c = (0, _utilJs.splitter) * cdytail;
+            bhi = c - (c - cdytail);
+            blo = cdytail - bhi;
+            t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+            _i = s0 + t0;
+            bvirt = _i - s0;
+            u[0] = s0 - (_i - bvirt) + (t0 - bvirt);
+            _j = s1 + _i;
+            bvirt = _j - s1;
+            _0 = s1 - (_j - bvirt) + (_i - bvirt);
+            _i = _0 + t1;
+            bvirt = _i - _0;
+            u[1] = _0 - (_i - bvirt) + (t1 - bvirt);
+            u3 = _j + _i;
+            bvirt = u3 - _j;
+            u[2] = _j - (u3 - bvirt) + (_i - bvirt);
+            u[3] = u3;
+            s1 = cdxtail * -bdy;
+            c = (0, _utilJs.splitter) * cdxtail;
+            ahi = c - (c - cdxtail);
+            alo = cdxtail - ahi;
+            c = (0, _utilJs.splitter) * -bdy;
+            bhi = c - (c - -bdy);
+            blo = -bdy - bhi;
+            s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+            t1 = cdx * -bdytail;
+            c = (0, _utilJs.splitter) * cdx;
+            ahi = c - (c - cdx);
+            alo = cdx - ahi;
+            c = (0, _utilJs.splitter) * -bdytail;
+            bhi = c - (c - -bdytail);
+            blo = -bdytail - bhi;
+            t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+            _i = s0 + t0;
+            bvirt = _i - s0;
+            v[0] = s0 - (_i - bvirt) + (t0 - bvirt);
+            _j = s1 + _i;
+            bvirt = _j - s1;
+            _0 = s1 - (_j - bvirt) + (_i - bvirt);
+            _i = _0 + t1;
+            bvirt = _i - _0;
+            v[1] = _0 - (_i - bvirt) + (t1 - bvirt);
+            u3 = _j + _i;
+            bvirt = u3 - _j;
+            v[2] = _j - (u3 - bvirt) + (_i - bvirt);
+            v[3] = u3;
+            bctlen = (0, _utilJs.sum)(4, u, 4, v, bct);
+            s1 = bdxtail * cdytail;
+            c = (0, _utilJs.splitter) * bdxtail;
+            ahi = c - (c - bdxtail);
+            alo = bdxtail - ahi;
+            c = (0, _utilJs.splitter) * cdytail;
+            bhi = c - (c - cdytail);
+            blo = cdytail - bhi;
+            s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+            t1 = cdxtail * bdytail;
+            c = (0, _utilJs.splitter) * cdxtail;
+            ahi = c - (c - cdxtail);
+            alo = cdxtail - ahi;
+            c = (0, _utilJs.splitter) * bdytail;
+            bhi = c - (c - bdytail);
+            blo = bdytail - bhi;
+            t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+            _i = s0 - t0;
+            bvirt = s0 - _i;
+            bctt[0] = s0 - (_i + bvirt) + (bvirt - t0);
+            _j = s1 + _i;
+            bvirt = _j - s1;
+            _0 = s1 - (_j - bvirt) + (_i - bvirt);
+            _i = _0 - t1;
+            bvirt = _0 - _i;
+            bctt[1] = _0 - (_i + bvirt) + (bvirt - t1);
+            u3 = _j + _i;
+            bvirt = u3 - _j;
+            bctt[2] = _j - (u3 - bvirt) + (_i - bvirt);
+            bctt[3] = u3;
+            bcttlen = 4;
+        } else {
+            bct[0] = 0;
+            bctlen = 1;
+            bctt[0] = 0;
+            bcttlen = 1;
+        }
+        if (adxtail !== 0) {
+            const len = (0, _utilJs.scale)(bctlen, bct, adxtail, _16c);
+            finlen = finadd(finlen, (0, _utilJs.sum)((0, _utilJs.scale)(axtbclen, axtbc, adxtail, _16), _16, (0, _utilJs.scale)(len, _16c, 2 * adx, _32), _32, _48), _48);
+            const len2 = (0, _utilJs.scale)(bcttlen, bctt, adxtail, _8);
+            finlen = finadd(finlen, (0, _utilJs.sum_three)((0, _utilJs.scale)(len2, _8, 2 * adx, _16), _16, (0, _utilJs.scale)(len2, _8, adxtail, _16b), _16b, (0, _utilJs.scale)(len, _16c, adxtail, _32), _32, _32b, _64), _64);
+            if (bdytail !== 0) finlen = finadd(finlen, (0, _utilJs.scale)((0, _utilJs.scale)(4, cc, adxtail, _8), _8, bdytail, _16), _16);
+            if (cdytail !== 0) finlen = finadd(finlen, (0, _utilJs.scale)((0, _utilJs.scale)(4, bb, -adxtail, _8), _8, cdytail, _16), _16);
+        }
+        if (adytail !== 0) {
+            const len1 = (0, _utilJs.scale)(bctlen, bct, adytail, _16c);
+            finlen = finadd(finlen, (0, _utilJs.sum)((0, _utilJs.scale)(aytbclen, aytbc, adytail, _16), _16, (0, _utilJs.scale)(len1, _16c, 2 * ady, _32), _32, _48), _48);
+            const len21 = (0, _utilJs.scale)(bcttlen, bctt, adytail, _8);
+            finlen = finadd(finlen, (0, _utilJs.sum_three)((0, _utilJs.scale)(len21, _8, 2 * ady, _16), _16, (0, _utilJs.scale)(len21, _8, adytail, _16b), _16b, (0, _utilJs.scale)(len1, _16c, adytail, _32), _32, _32b, _64), _64);
+        }
+    }
+    if (bdxtail !== 0 || bdytail !== 0) {
+        if (cdxtail !== 0 || cdytail !== 0 || adxtail !== 0 || adytail !== 0) {
+            s1 = cdxtail * ady;
+            c = (0, _utilJs.splitter) * cdxtail;
+            ahi = c - (c - cdxtail);
+            alo = cdxtail - ahi;
+            c = (0, _utilJs.splitter) * ady;
+            bhi = c - (c - ady);
+            blo = ady - bhi;
+            s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+            t1 = cdx * adytail;
+            c = (0, _utilJs.splitter) * cdx;
+            ahi = c - (c - cdx);
+            alo = cdx - ahi;
+            c = (0, _utilJs.splitter) * adytail;
+            bhi = c - (c - adytail);
+            blo = adytail - bhi;
+            t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+            _i = s0 + t0;
+            bvirt = _i - s0;
+            u[0] = s0 - (_i - bvirt) + (t0 - bvirt);
+            _j = s1 + _i;
+            bvirt = _j - s1;
+            _0 = s1 - (_j - bvirt) + (_i - bvirt);
+            _i = _0 + t1;
+            bvirt = _i - _0;
+            u[1] = _0 - (_i - bvirt) + (t1 - bvirt);
+            u3 = _j + _i;
+            bvirt = u3 - _j;
+            u[2] = _j - (u3 - bvirt) + (_i - bvirt);
+            u[3] = u3;
+            n1 = -cdy;
+            n0 = -cdytail;
+            s1 = adxtail * n1;
+            c = (0, _utilJs.splitter) * adxtail;
+            ahi = c - (c - adxtail);
+            alo = adxtail - ahi;
+            c = (0, _utilJs.splitter) * n1;
+            bhi = c - (c - n1);
+            blo = n1 - bhi;
+            s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+            t1 = adx * n0;
+            c = (0, _utilJs.splitter) * adx;
+            ahi = c - (c - adx);
+            alo = adx - ahi;
+            c = (0, _utilJs.splitter) * n0;
+            bhi = c - (c - n0);
+            blo = n0 - bhi;
+            t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+            _i = s0 + t0;
+            bvirt = _i - s0;
+            v[0] = s0 - (_i - bvirt) + (t0 - bvirt);
+            _j = s1 + _i;
+            bvirt = _j - s1;
+            _0 = s1 - (_j - bvirt) + (_i - bvirt);
+            _i = _0 + t1;
+            bvirt = _i - _0;
+            v[1] = _0 - (_i - bvirt) + (t1 - bvirt);
+            u3 = _j + _i;
+            bvirt = u3 - _j;
+            v[2] = _j - (u3 - bvirt) + (_i - bvirt);
+            v[3] = u3;
+            catlen = (0, _utilJs.sum)(4, u, 4, v, cat);
+            s1 = cdxtail * adytail;
+            c = (0, _utilJs.splitter) * cdxtail;
+            ahi = c - (c - cdxtail);
+            alo = cdxtail - ahi;
+            c = (0, _utilJs.splitter) * adytail;
+            bhi = c - (c - adytail);
+            blo = adytail - bhi;
+            s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+            t1 = adxtail * cdytail;
+            c = (0, _utilJs.splitter) * adxtail;
+            ahi = c - (c - adxtail);
+            alo = adxtail - ahi;
+            c = (0, _utilJs.splitter) * cdytail;
+            bhi = c - (c - cdytail);
+            blo = cdytail - bhi;
+            t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+            _i = s0 - t0;
+            bvirt = s0 - _i;
+            catt[0] = s0 - (_i + bvirt) + (bvirt - t0);
+            _j = s1 + _i;
+            bvirt = _j - s1;
+            _0 = s1 - (_j - bvirt) + (_i - bvirt);
+            _i = _0 - t1;
+            bvirt = _0 - _i;
+            catt[1] = _0 - (_i + bvirt) + (bvirt - t1);
+            u3 = _j + _i;
+            bvirt = u3 - _j;
+            catt[2] = _j - (u3 - bvirt) + (_i - bvirt);
+            catt[3] = u3;
+            cattlen = 4;
+        } else {
+            cat[0] = 0;
+            catlen = 1;
+            catt[0] = 0;
+            cattlen = 1;
+        }
+        if (bdxtail !== 0) {
+            const len3 = (0, _utilJs.scale)(catlen, cat, bdxtail, _16c);
+            finlen = finadd(finlen, (0, _utilJs.sum)((0, _utilJs.scale)(bxtcalen, bxtca, bdxtail, _16), _16, (0, _utilJs.scale)(len3, _16c, 2 * bdx, _32), _32, _48), _48);
+            const len22 = (0, _utilJs.scale)(cattlen, catt, bdxtail, _8);
+            finlen = finadd(finlen, (0, _utilJs.sum_three)((0, _utilJs.scale)(len22, _8, 2 * bdx, _16), _16, (0, _utilJs.scale)(len22, _8, bdxtail, _16b), _16b, (0, _utilJs.scale)(len3, _16c, bdxtail, _32), _32, _32b, _64), _64);
+            if (cdytail !== 0) finlen = finadd(finlen, (0, _utilJs.scale)((0, _utilJs.scale)(4, aa, bdxtail, _8), _8, cdytail, _16), _16);
+            if (adytail !== 0) finlen = finadd(finlen, (0, _utilJs.scale)((0, _utilJs.scale)(4, cc, -bdxtail, _8), _8, adytail, _16), _16);
+        }
+        if (bdytail !== 0) {
+            const len4 = (0, _utilJs.scale)(catlen, cat, bdytail, _16c);
+            finlen = finadd(finlen, (0, _utilJs.sum)((0, _utilJs.scale)(bytcalen, bytca, bdytail, _16), _16, (0, _utilJs.scale)(len4, _16c, 2 * bdy, _32), _32, _48), _48);
+            const len23 = (0, _utilJs.scale)(cattlen, catt, bdytail, _8);
+            finlen = finadd(finlen, (0, _utilJs.sum_three)((0, _utilJs.scale)(len23, _8, 2 * bdy, _16), _16, (0, _utilJs.scale)(len23, _8, bdytail, _16b), _16b, (0, _utilJs.scale)(len4, _16c, bdytail, _32), _32, _32b, _64), _64);
+        }
+    }
+    if (cdxtail !== 0 || cdytail !== 0) {
+        if (adxtail !== 0 || adytail !== 0 || bdxtail !== 0 || bdytail !== 0) {
+            s1 = adxtail * bdy;
+            c = (0, _utilJs.splitter) * adxtail;
+            ahi = c - (c - adxtail);
+            alo = adxtail - ahi;
+            c = (0, _utilJs.splitter) * bdy;
+            bhi = c - (c - bdy);
+            blo = bdy - bhi;
+            s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+            t1 = adx * bdytail;
+            c = (0, _utilJs.splitter) * adx;
+            ahi = c - (c - adx);
+            alo = adx - ahi;
+            c = (0, _utilJs.splitter) * bdytail;
+            bhi = c - (c - bdytail);
+            blo = bdytail - bhi;
+            t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+            _i = s0 + t0;
+            bvirt = _i - s0;
+            u[0] = s0 - (_i - bvirt) + (t0 - bvirt);
+            _j = s1 + _i;
+            bvirt = _j - s1;
+            _0 = s1 - (_j - bvirt) + (_i - bvirt);
+            _i = _0 + t1;
+            bvirt = _i - _0;
+            u[1] = _0 - (_i - bvirt) + (t1 - bvirt);
+            u3 = _j + _i;
+            bvirt = u3 - _j;
+            u[2] = _j - (u3 - bvirt) + (_i - bvirt);
+            u[3] = u3;
+            n1 = -ady;
+            n0 = -adytail;
+            s1 = bdxtail * n1;
+            c = (0, _utilJs.splitter) * bdxtail;
+            ahi = c - (c - bdxtail);
+            alo = bdxtail - ahi;
+            c = (0, _utilJs.splitter) * n1;
+            bhi = c - (c - n1);
+            blo = n1 - bhi;
+            s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+            t1 = bdx * n0;
+            c = (0, _utilJs.splitter) * bdx;
+            ahi = c - (c - bdx);
+            alo = bdx - ahi;
+            c = (0, _utilJs.splitter) * n0;
+            bhi = c - (c - n0);
+            blo = n0 - bhi;
+            t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+            _i = s0 + t0;
+            bvirt = _i - s0;
+            v[0] = s0 - (_i - bvirt) + (t0 - bvirt);
+            _j = s1 + _i;
+            bvirt = _j - s1;
+            _0 = s1 - (_j - bvirt) + (_i - bvirt);
+            _i = _0 + t1;
+            bvirt = _i - _0;
+            v[1] = _0 - (_i - bvirt) + (t1 - bvirt);
+            u3 = _j + _i;
+            bvirt = u3 - _j;
+            v[2] = _j - (u3 - bvirt) + (_i - bvirt);
+            v[3] = u3;
+            abtlen = (0, _utilJs.sum)(4, u, 4, v, abt);
+            s1 = adxtail * bdytail;
+            c = (0, _utilJs.splitter) * adxtail;
+            ahi = c - (c - adxtail);
+            alo = adxtail - ahi;
+            c = (0, _utilJs.splitter) * bdytail;
+            bhi = c - (c - bdytail);
+            blo = bdytail - bhi;
+            s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+            t1 = bdxtail * adytail;
+            c = (0, _utilJs.splitter) * bdxtail;
+            ahi = c - (c - bdxtail);
+            alo = bdxtail - ahi;
+            c = (0, _utilJs.splitter) * adytail;
+            bhi = c - (c - adytail);
+            blo = adytail - bhi;
+            t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+            _i = s0 - t0;
+            bvirt = s0 - _i;
+            abtt[0] = s0 - (_i + bvirt) + (bvirt - t0);
+            _j = s1 + _i;
+            bvirt = _j - s1;
+            _0 = s1 - (_j - bvirt) + (_i - bvirt);
+            _i = _0 - t1;
+            bvirt = _0 - _i;
+            abtt[1] = _0 - (_i + bvirt) + (bvirt - t1);
+            u3 = _j + _i;
+            bvirt = u3 - _j;
+            abtt[2] = _j - (u3 - bvirt) + (_i - bvirt);
+            abtt[3] = u3;
+            abttlen = 4;
+        } else {
+            abt[0] = 0;
+            abtlen = 1;
+            abtt[0] = 0;
+            abttlen = 1;
+        }
+        if (cdxtail !== 0) {
+            const len5 = (0, _utilJs.scale)(abtlen, abt, cdxtail, _16c);
+            finlen = finadd(finlen, (0, _utilJs.sum)((0, _utilJs.scale)(cxtablen, cxtab, cdxtail, _16), _16, (0, _utilJs.scale)(len5, _16c, 2 * cdx, _32), _32, _48), _48);
+            const len24 = (0, _utilJs.scale)(abttlen, abtt, cdxtail, _8);
+            finlen = finadd(finlen, (0, _utilJs.sum_three)((0, _utilJs.scale)(len24, _8, 2 * cdx, _16), _16, (0, _utilJs.scale)(len24, _8, cdxtail, _16b), _16b, (0, _utilJs.scale)(len5, _16c, cdxtail, _32), _32, _32b, _64), _64);
+            if (adytail !== 0) finlen = finadd(finlen, (0, _utilJs.scale)((0, _utilJs.scale)(4, bb, cdxtail, _8), _8, adytail, _16), _16);
+            if (bdytail !== 0) finlen = finadd(finlen, (0, _utilJs.scale)((0, _utilJs.scale)(4, aa, -cdxtail, _8), _8, bdytail, _16), _16);
+        }
+        if (cdytail !== 0) {
+            const len6 = (0, _utilJs.scale)(abtlen, abt, cdytail, _16c);
+            finlen = finadd(finlen, (0, _utilJs.sum)((0, _utilJs.scale)(cytablen, cytab, cdytail, _16), _16, (0, _utilJs.scale)(len6, _16c, 2 * cdy, _32), _32, _48), _48);
+            const len25 = (0, _utilJs.scale)(abttlen, abtt, cdytail, _8);
+            finlen = finadd(finlen, (0, _utilJs.sum_three)((0, _utilJs.scale)(len25, _8, 2 * cdy, _16), _16, (0, _utilJs.scale)(len25, _8, cdytail, _16b), _16b, (0, _utilJs.scale)(len6, _16c, cdytail, _32), _32, _32b, _64), _64);
+        }
+    }
+    return fin[finlen - 1];
+}
+function incircle(ax, ay, bx, by, cx, cy, dx, dy) {
+    const adx = ax - dx;
+    const bdx = bx - dx;
+    const cdx = cx - dx;
+    const ady = ay - dy;
+    const bdy = by - dy;
+    const cdy = cy - dy;
+    const bdxcdy = bdx * cdy;
+    const cdxbdy = cdx * bdy;
+    const alift = adx * adx + ady * ady;
+    const cdxady = cdx * ady;
+    const adxcdy = adx * cdy;
+    const blift = bdx * bdx + bdy * bdy;
+    const adxbdy = adx * bdy;
+    const bdxady = bdx * ady;
+    const clift = cdx * cdx + cdy * cdy;
+    const det = alift * (bdxcdy - cdxbdy) + blift * (cdxady - adxcdy) + clift * (adxbdy - bdxady);
+    const permanent = (Math.abs(bdxcdy) + Math.abs(cdxbdy)) * alift + (Math.abs(cdxady) + Math.abs(adxcdy)) * blift + (Math.abs(adxbdy) + Math.abs(bdxady)) * clift;
+    const errbound = iccerrboundA * permanent;
+    if (det > errbound || -det > errbound) return det;
+    return incircleadapt(ax, ay, bx, by, cx, cy, dx, dy, permanent);
+}
+function incirclefast(ax, ay, bx, by, cx, cy, dx, dy) {
+    const adx = ax - dx;
+    const ady = ay - dy;
+    const bdx = bx - dx;
+    const bdy = by - dy;
+    const cdx = cx - dx;
+    const cdy = cy - dy;
+    const abdet = adx * bdy - bdx * ady;
+    const bcdet = bdx * cdy - cdx * bdy;
+    const cadet = cdx * ady - adx * cdy;
+    const alift = adx * adx + ady * ady;
+    const blift = bdx * bdx + bdy * bdy;
+    const clift = cdx * cdx + cdy * cdy;
+    return alift * bcdet + blift * cadet + clift * abdet;
+}
+
+},{"./util.js":"3WWl7","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"lKwEh":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "insphere", ()=>insphere);
+parcelHelpers.export(exports, "inspherefast", ()=>inspherefast);
+var _utilJs = require("./util.js");
+const isperrboundA = (16 + 224 * (0, _utilJs.epsilon)) * (0, _utilJs.epsilon);
+const isperrboundB = (5 + 72 * (0, _utilJs.epsilon)) * (0, _utilJs.epsilon);
+const isperrboundC = (71 + 1408 * (0, _utilJs.epsilon)) * (0, _utilJs.epsilon) * (0, _utilJs.epsilon);
+const ab = (0, _utilJs.vec)(4);
+const bc = (0, _utilJs.vec)(4);
+const cd = (0, _utilJs.vec)(4);
+const de = (0, _utilJs.vec)(4);
+const ea = (0, _utilJs.vec)(4);
+const ac = (0, _utilJs.vec)(4);
+const bd = (0, _utilJs.vec)(4);
+const ce = (0, _utilJs.vec)(4);
+const da = (0, _utilJs.vec)(4);
+const eb = (0, _utilJs.vec)(4);
+const abc = (0, _utilJs.vec)(24);
+const bcd = (0, _utilJs.vec)(24);
+const cde = (0, _utilJs.vec)(24);
+const dea = (0, _utilJs.vec)(24);
+const eab = (0, _utilJs.vec)(24);
+const abd = (0, _utilJs.vec)(24);
+const bce = (0, _utilJs.vec)(24);
+const cda = (0, _utilJs.vec)(24);
+const deb = (0, _utilJs.vec)(24);
+const eac = (0, _utilJs.vec)(24);
+const adet = (0, _utilJs.vec)(1152);
+const bdet = (0, _utilJs.vec)(1152);
+const cdet = (0, _utilJs.vec)(1152);
+const ddet = (0, _utilJs.vec)(1152);
+const edet = (0, _utilJs.vec)(1152);
+const abdet = (0, _utilJs.vec)(2304);
+const cddet = (0, _utilJs.vec)(2304);
+const cdedet = (0, _utilJs.vec)(3456);
+const deter = (0, _utilJs.vec)(5760);
+const _8 = (0, _utilJs.vec)(8);
+const _8b = (0, _utilJs.vec)(8);
+const _8c = (0, _utilJs.vec)(8);
+const _16 = (0, _utilJs.vec)(16);
+const _24 = (0, _utilJs.vec)(24);
+const _48 = (0, _utilJs.vec)(48);
+const _48b = (0, _utilJs.vec)(48);
+const _96 = (0, _utilJs.vec)(96);
+const _192 = (0, _utilJs.vec)(192);
+const _384x = (0, _utilJs.vec)(384);
+const _384y = (0, _utilJs.vec)(384);
+const _384z = (0, _utilJs.vec)(384);
+const _768 = (0, _utilJs.vec)(768);
+function sum_three_scale(a, b, c, az, bz, cz, out) {
+    return (0, _utilJs.sum_three)((0, _utilJs.scale)(4, a, az, _8), _8, (0, _utilJs.scale)(4, b, bz, _8b), _8b, (0, _utilJs.scale)(4, c, cz, _8c), _8c, _16, out);
+}
+function liftexact(alen, a, blen, b, clen, c, dlen, d, x, y, z, out) {
+    const len = (0, _utilJs.sum)((0, _utilJs.sum)(alen, a, blen, b, _48), _48, (0, _utilJs.negate)((0, _utilJs.sum)(clen, c, dlen, d, _48b), _48b), _48b, _96);
+    return (0, _utilJs.sum_three)((0, _utilJs.scale)((0, _utilJs.scale)(len, _96, x, _192), _192, x, _384x), _384x, (0, _utilJs.scale)((0, _utilJs.scale)(len, _96, y, _192), _192, y, _384y), _384y, (0, _utilJs.scale)((0, _utilJs.scale)(len, _96, z, _192), _192, z, _384z), _384z, _768, out);
+}
+function insphereexact(ax, ay, az, bx, by, bz, cx, cy, cz, dx, dy, dz, ex, ey, ez) {
+    let bvirt, c, ahi, alo, bhi, blo, _i, _j, _0, s1, s0, t1, t0, u3;
+    s1 = ax * by;
+    c = (0, _utilJs.splitter) * ax;
+    ahi = c - (c - ax);
+    alo = ax - ahi;
+    c = (0, _utilJs.splitter) * by;
+    bhi = c - (c - by);
+    blo = by - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = bx * ay;
+    c = (0, _utilJs.splitter) * bx;
+    ahi = c - (c - bx);
+    alo = bx - ahi;
+    c = (0, _utilJs.splitter) * ay;
+    bhi = c - (c - ay);
+    blo = ay - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    ab[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    ab[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    u3 = _j + _i;
+    bvirt = u3 - _j;
+    ab[2] = _j - (u3 - bvirt) + (_i - bvirt);
+    ab[3] = u3;
+    s1 = bx * cy;
+    c = (0, _utilJs.splitter) * bx;
+    ahi = c - (c - bx);
+    alo = bx - ahi;
+    c = (0, _utilJs.splitter) * cy;
+    bhi = c - (c - cy);
+    blo = cy - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = cx * by;
+    c = (0, _utilJs.splitter) * cx;
+    ahi = c - (c - cx);
+    alo = cx - ahi;
+    c = (0, _utilJs.splitter) * by;
+    bhi = c - (c - by);
+    blo = by - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    bc[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    bc[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    u3 = _j + _i;
+    bvirt = u3 - _j;
+    bc[2] = _j - (u3 - bvirt) + (_i - bvirt);
+    bc[3] = u3;
+    s1 = cx * dy;
+    c = (0, _utilJs.splitter) * cx;
+    ahi = c - (c - cx);
+    alo = cx - ahi;
+    c = (0, _utilJs.splitter) * dy;
+    bhi = c - (c - dy);
+    blo = dy - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = dx * cy;
+    c = (0, _utilJs.splitter) * dx;
+    ahi = c - (c - dx);
+    alo = dx - ahi;
+    c = (0, _utilJs.splitter) * cy;
+    bhi = c - (c - cy);
+    blo = cy - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    cd[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    cd[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    u3 = _j + _i;
+    bvirt = u3 - _j;
+    cd[2] = _j - (u3 - bvirt) + (_i - bvirt);
+    cd[3] = u3;
+    s1 = dx * ey;
+    c = (0, _utilJs.splitter) * dx;
+    ahi = c - (c - dx);
+    alo = dx - ahi;
+    c = (0, _utilJs.splitter) * ey;
+    bhi = c - (c - ey);
+    blo = ey - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = ex * dy;
+    c = (0, _utilJs.splitter) * ex;
+    ahi = c - (c - ex);
+    alo = ex - ahi;
+    c = (0, _utilJs.splitter) * dy;
+    bhi = c - (c - dy);
+    blo = dy - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    de[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    de[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    u3 = _j + _i;
+    bvirt = u3 - _j;
+    de[2] = _j - (u3 - bvirt) + (_i - bvirt);
+    de[3] = u3;
+    s1 = ex * ay;
+    c = (0, _utilJs.splitter) * ex;
+    ahi = c - (c - ex);
+    alo = ex - ahi;
+    c = (0, _utilJs.splitter) * ay;
+    bhi = c - (c - ay);
+    blo = ay - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = ax * ey;
+    c = (0, _utilJs.splitter) * ax;
+    ahi = c - (c - ax);
+    alo = ax - ahi;
+    c = (0, _utilJs.splitter) * ey;
+    bhi = c - (c - ey);
+    blo = ey - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    ea[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    ea[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    u3 = _j + _i;
+    bvirt = u3 - _j;
+    ea[2] = _j - (u3 - bvirt) + (_i - bvirt);
+    ea[3] = u3;
+    s1 = ax * cy;
+    c = (0, _utilJs.splitter) * ax;
+    ahi = c - (c - ax);
+    alo = ax - ahi;
+    c = (0, _utilJs.splitter) * cy;
+    bhi = c - (c - cy);
+    blo = cy - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = cx * ay;
+    c = (0, _utilJs.splitter) * cx;
+    ahi = c - (c - cx);
+    alo = cx - ahi;
+    c = (0, _utilJs.splitter) * ay;
+    bhi = c - (c - ay);
+    blo = ay - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    ac[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    ac[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    u3 = _j + _i;
+    bvirt = u3 - _j;
+    ac[2] = _j - (u3 - bvirt) + (_i - bvirt);
+    ac[3] = u3;
+    s1 = bx * dy;
+    c = (0, _utilJs.splitter) * bx;
+    ahi = c - (c - bx);
+    alo = bx - ahi;
+    c = (0, _utilJs.splitter) * dy;
+    bhi = c - (c - dy);
+    blo = dy - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = dx * by;
+    c = (0, _utilJs.splitter) * dx;
+    ahi = c - (c - dx);
+    alo = dx - ahi;
+    c = (0, _utilJs.splitter) * by;
+    bhi = c - (c - by);
+    blo = by - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    bd[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    bd[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    u3 = _j + _i;
+    bvirt = u3 - _j;
+    bd[2] = _j - (u3 - bvirt) + (_i - bvirt);
+    bd[3] = u3;
+    s1 = cx * ey;
+    c = (0, _utilJs.splitter) * cx;
+    ahi = c - (c - cx);
+    alo = cx - ahi;
+    c = (0, _utilJs.splitter) * ey;
+    bhi = c - (c - ey);
+    blo = ey - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = ex * cy;
+    c = (0, _utilJs.splitter) * ex;
+    ahi = c - (c - ex);
+    alo = ex - ahi;
+    c = (0, _utilJs.splitter) * cy;
+    bhi = c - (c - cy);
+    blo = cy - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    ce[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    ce[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    u3 = _j + _i;
+    bvirt = u3 - _j;
+    ce[2] = _j - (u3 - bvirt) + (_i - bvirt);
+    ce[3] = u3;
+    s1 = dx * ay;
+    c = (0, _utilJs.splitter) * dx;
+    ahi = c - (c - dx);
+    alo = dx - ahi;
+    c = (0, _utilJs.splitter) * ay;
+    bhi = c - (c - ay);
+    blo = ay - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = ax * dy;
+    c = (0, _utilJs.splitter) * ax;
+    ahi = c - (c - ax);
+    alo = ax - ahi;
+    c = (0, _utilJs.splitter) * dy;
+    bhi = c - (c - dy);
+    blo = dy - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    da[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    da[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    u3 = _j + _i;
+    bvirt = u3 - _j;
+    da[2] = _j - (u3 - bvirt) + (_i - bvirt);
+    da[3] = u3;
+    s1 = ex * by;
+    c = (0, _utilJs.splitter) * ex;
+    ahi = c - (c - ex);
+    alo = ex - ahi;
+    c = (0, _utilJs.splitter) * by;
+    bhi = c - (c - by);
+    blo = by - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = bx * ey;
+    c = (0, _utilJs.splitter) * bx;
+    ahi = c - (c - bx);
+    alo = bx - ahi;
+    c = (0, _utilJs.splitter) * ey;
+    bhi = c - (c - ey);
+    blo = ey - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    eb[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    eb[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    u3 = _j + _i;
+    bvirt = u3 - _j;
+    eb[2] = _j - (u3 - bvirt) + (_i - bvirt);
+    eb[3] = u3;
+    const abclen = sum_three_scale(ab, bc, ac, cz, az, -bz, abc);
+    const bcdlen = sum_three_scale(bc, cd, bd, dz, bz, -cz, bcd);
+    const cdelen = sum_three_scale(cd, de, ce, ez, cz, -dz, cde);
+    const dealen = sum_three_scale(de, ea, da, az, dz, -ez, dea);
+    const eablen = sum_three_scale(ea, ab, eb, bz, ez, -az, eab);
+    const abdlen = sum_three_scale(ab, bd, da, dz, az, bz, abd);
+    const bcelen = sum_three_scale(bc, ce, eb, ez, bz, cz, bce);
+    const cdalen = sum_three_scale(cd, da, ac, az, cz, dz, cda);
+    const deblen = sum_three_scale(de, eb, bd, bz, dz, ez, deb);
+    const eaclen = sum_three_scale(ea, ac, ce, cz, ez, az, eac);
+    const deterlen = (0, _utilJs.sum_three)(liftexact(cdelen, cde, bcelen, bce, deblen, deb, bcdlen, bcd, ax, ay, az, adet), adet, liftexact(dealen, dea, cdalen, cda, eaclen, eac, cdelen, cde, bx, by, bz, bdet), bdet, (0, _utilJs.sum_three)(liftexact(eablen, eab, deblen, deb, abdlen, abd, dealen, dea, cx, cy, cz, cdet), cdet, liftexact(abclen, abc, eaclen, eac, bcelen, bce, eablen, eab, dx, dy, dz, ddet), ddet, liftexact(bcdlen, bcd, abdlen, abd, cdalen, cda, abclen, abc, ex, ey, ez, edet), edet, cddet, cdedet), cdedet, abdet, deter);
+    return deter[deterlen - 1];
+}
+const xdet = (0, _utilJs.vec)(96);
+const ydet = (0, _utilJs.vec)(96);
+const zdet = (0, _utilJs.vec)(96);
+const fin = (0, _utilJs.vec)(1152);
+function liftadapt(a, b, c, az, bz, cz, x, y, z, out) {
+    const len = sum_three_scale(a, b, c, az, bz, cz, _24);
+    return (0, _utilJs.sum_three)((0, _utilJs.scale)((0, _utilJs.scale)(len, _24, x, _48), _48, x, xdet), xdet, (0, _utilJs.scale)((0, _utilJs.scale)(len, _24, y, _48), _48, y, ydet), ydet, (0, _utilJs.scale)((0, _utilJs.scale)(len, _24, z, _48), _48, z, zdet), zdet, _192, out);
+}
+function insphereadapt(ax, ay, az, bx, by, bz, cx, cy, cz, dx, dy, dz, ex, ey, ez, permanent) {
+    let ab3, bc3, cd3, da3, ac3, bd3;
+    let aextail, bextail, cextail, dextail;
+    let aeytail, beytail, ceytail, deytail;
+    let aeztail, beztail, ceztail, deztail;
+    let bvirt, c, ahi, alo, bhi, blo, _i, _j, _0, s1, s0, t1, t0;
+    const aex = ax - ex;
+    const bex = bx - ex;
+    const cex = cx - ex;
+    const dex = dx - ex;
+    const aey = ay - ey;
+    const bey = by - ey;
+    const cey = cy - ey;
+    const dey = dy - ey;
+    const aez = az - ez;
+    const bez = bz - ez;
+    const cez = cz - ez;
+    const dez = dz - ez;
+    s1 = aex * bey;
+    c = (0, _utilJs.splitter) * aex;
+    ahi = c - (c - aex);
+    alo = aex - ahi;
+    c = (0, _utilJs.splitter) * bey;
+    bhi = c - (c - bey);
+    blo = bey - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = bex * aey;
+    c = (0, _utilJs.splitter) * bex;
+    ahi = c - (c - bex);
+    alo = bex - ahi;
+    c = (0, _utilJs.splitter) * aey;
+    bhi = c - (c - aey);
+    blo = aey - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    ab[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    ab[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    ab3 = _j + _i;
+    bvirt = ab3 - _j;
+    ab[2] = _j - (ab3 - bvirt) + (_i - bvirt);
+    ab[3] = ab3;
+    s1 = bex * cey;
+    c = (0, _utilJs.splitter) * bex;
+    ahi = c - (c - bex);
+    alo = bex - ahi;
+    c = (0, _utilJs.splitter) * cey;
+    bhi = c - (c - cey);
+    blo = cey - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = cex * bey;
+    c = (0, _utilJs.splitter) * cex;
+    ahi = c - (c - cex);
+    alo = cex - ahi;
+    c = (0, _utilJs.splitter) * bey;
+    bhi = c - (c - bey);
+    blo = bey - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    bc[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    bc[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    bc3 = _j + _i;
+    bvirt = bc3 - _j;
+    bc[2] = _j - (bc3 - bvirt) + (_i - bvirt);
+    bc[3] = bc3;
+    s1 = cex * dey;
+    c = (0, _utilJs.splitter) * cex;
+    ahi = c - (c - cex);
+    alo = cex - ahi;
+    c = (0, _utilJs.splitter) * dey;
+    bhi = c - (c - dey);
+    blo = dey - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = dex * cey;
+    c = (0, _utilJs.splitter) * dex;
+    ahi = c - (c - dex);
+    alo = dex - ahi;
+    c = (0, _utilJs.splitter) * cey;
+    bhi = c - (c - cey);
+    blo = cey - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    cd[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    cd[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    cd3 = _j + _i;
+    bvirt = cd3 - _j;
+    cd[2] = _j - (cd3 - bvirt) + (_i - bvirt);
+    cd[3] = cd3;
+    s1 = dex * aey;
+    c = (0, _utilJs.splitter) * dex;
+    ahi = c - (c - dex);
+    alo = dex - ahi;
+    c = (0, _utilJs.splitter) * aey;
+    bhi = c - (c - aey);
+    blo = aey - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = aex * dey;
+    c = (0, _utilJs.splitter) * aex;
+    ahi = c - (c - aex);
+    alo = aex - ahi;
+    c = (0, _utilJs.splitter) * dey;
+    bhi = c - (c - dey);
+    blo = dey - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    da[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    da[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    da3 = _j + _i;
+    bvirt = da3 - _j;
+    da[2] = _j - (da3 - bvirt) + (_i - bvirt);
+    da[3] = da3;
+    s1 = aex * cey;
+    c = (0, _utilJs.splitter) * aex;
+    ahi = c - (c - aex);
+    alo = aex - ahi;
+    c = (0, _utilJs.splitter) * cey;
+    bhi = c - (c - cey);
+    blo = cey - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = cex * aey;
+    c = (0, _utilJs.splitter) * cex;
+    ahi = c - (c - cex);
+    alo = cex - ahi;
+    c = (0, _utilJs.splitter) * aey;
+    bhi = c - (c - aey);
+    blo = aey - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    ac[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    ac[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    ac3 = _j + _i;
+    bvirt = ac3 - _j;
+    ac[2] = _j - (ac3 - bvirt) + (_i - bvirt);
+    ac[3] = ac3;
+    s1 = bex * dey;
+    c = (0, _utilJs.splitter) * bex;
+    ahi = c - (c - bex);
+    alo = bex - ahi;
+    c = (0, _utilJs.splitter) * dey;
+    bhi = c - (c - dey);
+    blo = dey - bhi;
+    s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+    t1 = dex * bey;
+    c = (0, _utilJs.splitter) * dex;
+    ahi = c - (c - dex);
+    alo = dex - ahi;
+    c = (0, _utilJs.splitter) * bey;
+    bhi = c - (c - bey);
+    blo = bey - bhi;
+    t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+    _i = s0 - t0;
+    bvirt = s0 - _i;
+    bd[0] = s0 - (_i + bvirt) + (bvirt - t0);
+    _j = s1 + _i;
+    bvirt = _j - s1;
+    _0 = s1 - (_j - bvirt) + (_i - bvirt);
+    _i = _0 - t1;
+    bvirt = _0 - _i;
+    bd[1] = _0 - (_i + bvirt) + (bvirt - t1);
+    bd3 = _j + _i;
+    bvirt = bd3 - _j;
+    bd[2] = _j - (bd3 - bvirt) + (_i - bvirt);
+    bd[3] = bd3;
+    const finlen = (0, _utilJs.sum)((0, _utilJs.sum)((0, _utilJs.negate)(liftadapt(bc, cd, bd, dez, bez, -cez, aex, aey, aez, adet), adet), adet, liftadapt(cd, da, ac, aez, cez, dez, bex, bey, bez, bdet), bdet, abdet), abdet, (0, _utilJs.sum)((0, _utilJs.negate)(liftadapt(da, ab, bd, bez, dez, aez, cex, cey, cez, cdet), cdet), cdet, liftadapt(ab, bc, ac, cez, aez, -bez, dex, dey, dez, ddet), ddet, cddet), cddet, fin);
+    let det = (0, _utilJs.estimate)(finlen, fin);
+    let errbound = isperrboundB * permanent;
+    if (det >= errbound || -det >= errbound) return det;
+    bvirt = ax - aex;
+    aextail = ax - (aex + bvirt) + (bvirt - ex);
+    bvirt = ay - aey;
+    aeytail = ay - (aey + bvirt) + (bvirt - ey);
+    bvirt = az - aez;
+    aeztail = az - (aez + bvirt) + (bvirt - ez);
+    bvirt = bx - bex;
+    bextail = bx - (bex + bvirt) + (bvirt - ex);
+    bvirt = by - bey;
+    beytail = by - (bey + bvirt) + (bvirt - ey);
+    bvirt = bz - bez;
+    beztail = bz - (bez + bvirt) + (bvirt - ez);
+    bvirt = cx - cex;
+    cextail = cx - (cex + bvirt) + (bvirt - ex);
+    bvirt = cy - cey;
+    ceytail = cy - (cey + bvirt) + (bvirt - ey);
+    bvirt = cz - cez;
+    ceztail = cz - (cez + bvirt) + (bvirt - ez);
+    bvirt = dx - dex;
+    dextail = dx - (dex + bvirt) + (bvirt - ex);
+    bvirt = dy - dey;
+    deytail = dy - (dey + bvirt) + (bvirt - ey);
+    bvirt = dz - dez;
+    deztail = dz - (dez + bvirt) + (bvirt - ez);
+    if (aextail === 0 && aeytail === 0 && aeztail === 0 && bextail === 0 && beytail === 0 && beztail === 0 && cextail === 0 && ceytail === 0 && ceztail === 0 && dextail === 0 && deytail === 0 && deztail === 0) return det;
+    errbound = isperrboundC * permanent + (0, _utilJs.resulterrbound) * Math.abs(det);
+    const abeps = aex * beytail + bey * aextail - (aey * bextail + bex * aeytail);
+    const bceps = bex * ceytail + cey * bextail - (bey * cextail + cex * beytail);
+    const cdeps = cex * deytail + dey * cextail - (cey * dextail + dex * ceytail);
+    const daeps = dex * aeytail + aey * dextail - (dey * aextail + aex * deytail);
+    const aceps = aex * ceytail + cey * aextail - (aey * cextail + cex * aeytail);
+    const bdeps = bex * deytail + dey * bextail - (bey * dextail + dex * beytail);
+    det += (bex * bex + bey * bey + bez * bez) * (cez * daeps + dez * aceps + aez * cdeps + (ceztail * da3 + deztail * ac3 + aeztail * cd3)) + (dex * dex + dey * dey + dez * dez) * (aez * bceps - bez * aceps + cez * abeps + (aeztail * bc3 - beztail * ac3 + ceztail * ab3)) - ((aex * aex + aey * aey + aez * aez) * (bez * cdeps - cez * bdeps + dez * bceps + (beztail * cd3 - ceztail * bd3 + deztail * bc3)) + (cex * cex + cey * cey + cez * cez) * (dez * abeps + aez * bdeps + bez * daeps + (deztail * ab3 + aeztail * bd3 + beztail * da3))) + 2 * ((bex * bextail + bey * beytail + bez * beztail) * (cez * da3 + dez * ac3 + aez * cd3) + (dex * dextail + dey * deytail + dez * deztail) * (aez * bc3 - bez * ac3 + cez * ab3) - ((aex * aextail + aey * aeytail + aez * aeztail) * (bez * cd3 - cez * bd3 + dez * bc3) + (cex * cextail + cey * ceytail + cez * ceztail) * (dez * ab3 + aez * bd3 + bez * da3)));
+    if (det >= errbound || -det >= errbound) return det;
+    return insphereexact(ax, ay, az, bx, by, bz, cx, cy, cz, dx, dy, dz, ex, ey, ez);
+}
+function insphere(ax, ay, az, bx, by, bz, cx, cy, cz, dx, dy, dz, ex, ey, ez) {
+    const aex = ax - ex;
+    const bex = bx - ex;
+    const cex = cx - ex;
+    const dex = dx - ex;
+    const aey = ay - ey;
+    const bey = by - ey;
+    const cey = cy - ey;
+    const dey = dy - ey;
+    const aez = az - ez;
+    const bez = bz - ez;
+    const cez = cz - ez;
+    const dez = dz - ez;
+    const aexbey = aex * bey;
+    const bexaey = bex * aey;
+    const ab = aexbey - bexaey;
+    const bexcey = bex * cey;
+    const cexbey = cex * bey;
+    const bc = bexcey - cexbey;
+    const cexdey = cex * dey;
+    const dexcey = dex * cey;
+    const cd = cexdey - dexcey;
+    const dexaey = dex * aey;
+    const aexdey = aex * dey;
+    const da = dexaey - aexdey;
+    const aexcey = aex * cey;
+    const cexaey = cex * aey;
+    const ac = aexcey - cexaey;
+    const bexdey = bex * dey;
+    const dexbey = dex * bey;
+    const bd = bexdey - dexbey;
+    const abc = aez * bc - bez * ac + cez * ab;
+    const bcd = bez * cd - cez * bd + dez * bc;
+    const cda = cez * da + dez * ac + aez * cd;
+    const dab = dez * ab + aez * bd + bez * da;
+    const alift = aex * aex + aey * aey + aez * aez;
+    const blift = bex * bex + bey * bey + bez * bez;
+    const clift = cex * cex + cey * cey + cez * cez;
+    const dlift = dex * dex + dey * dey + dez * dez;
+    const det = clift * dab - dlift * abc + (alift * bcd - blift * cda);
+    const aezplus = Math.abs(aez);
+    const bezplus = Math.abs(bez);
+    const cezplus = Math.abs(cez);
+    const dezplus = Math.abs(dez);
+    const aexbeyplus = Math.abs(aexbey);
+    const bexaeyplus = Math.abs(bexaey);
+    const bexceyplus = Math.abs(bexcey);
+    const cexbeyplus = Math.abs(cexbey);
+    const cexdeyplus = Math.abs(cexdey);
+    const dexceyplus = Math.abs(dexcey);
+    const dexaeyplus = Math.abs(dexaey);
+    const aexdeyplus = Math.abs(aexdey);
+    const aexceyplus = Math.abs(aexcey);
+    const cexaeyplus = Math.abs(cexaey);
+    const bexdeyplus = Math.abs(bexdey);
+    const dexbeyplus = Math.abs(dexbey);
+    const permanent = ((cexdeyplus + dexceyplus) * bezplus + (dexbeyplus + bexdeyplus) * cezplus + (bexceyplus + cexbeyplus) * dezplus) * alift + ((dexaeyplus + aexdeyplus) * cezplus + (aexceyplus + cexaeyplus) * dezplus + (cexdeyplus + dexceyplus) * aezplus) * blift + ((aexbeyplus + bexaeyplus) * dezplus + (bexdeyplus + dexbeyplus) * aezplus + (dexaeyplus + aexdeyplus) * bezplus) * clift + ((bexceyplus + cexbeyplus) * aezplus + (cexaeyplus + aexceyplus) * bezplus + (aexbeyplus + bexaeyplus) * cezplus) * dlift;
+    const errbound = isperrboundA * permanent;
+    if (det > errbound || -det > errbound) return det;
+    return -insphereadapt(ax, ay, az, bx, by, bz, cx, cy, cz, dx, dy, dz, ex, ey, ez, permanent);
+}
+function inspherefast(pax, pay, paz, pbx, pby, pbz, pcx, pcy, pcz, pdx, pdy, pdz, pex, pey, pez) {
+    const aex = pax - pex;
+    const bex = pbx - pex;
+    const cex = pcx - pex;
+    const dex = pdx - pex;
+    const aey = pay - pey;
+    const bey = pby - pey;
+    const cey = pcy - pey;
+    const dey = pdy - pey;
+    const aez = paz - pez;
+    const bez = pbz - pez;
+    const cez = pcz - pez;
+    const dez = pdz - pez;
+    const ab = aex * bey - bex * aey;
+    const bc = bex * cey - cex * bey;
+    const cd = cex * dey - dex * cey;
+    const da = dex * aey - aex * dey;
+    const ac = aex * cey - cex * aey;
+    const bd = bex * dey - dex * bey;
+    const abc = aez * bc - bez * ac + cez * ab;
+    const bcd = bez * cd - cez * bd + dez * bc;
+    const cda = cez * da + dez * ac + aez * cd;
+    const dab = dez * ab + aez * bd + bez * da;
+    const alift = aex * aex + aey * aey + aez * aez;
+    const blift = bex * bex + bey * bey + bez * bez;
+    const clift = cex * cex + cey * cey + cez * cez;
+    const dlift = dex * dex + dey * dey + dez * dez;
+    return clift * dab - dlift * abc + (alift * bcd - blift * cda);
+}
+
+},{"./util.js":"3WWl7","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"60Yfe":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 const epsilon = 1e-6;
@@ -34304,19 +36888,25 @@ class Voronoi {
             const dy = y2 - y1;
             const ex = x3 - x1;
             const ey = y3 - y1;
-            const bl = dx * dx + dy * dy;
-            const cl = ex * ex + ey * ey;
             const ab = (dx * ey - dy * ex) * 2;
-            if (!ab) {
+            if (Math.abs(ab) < 1e-9) {
                 // degenerate case (collinear diagram)
-                x = (x1 + x3) / 2 - 1e8 * ey;
-                y = (y1 + y3) / 2 + 1e8 * ex;
-            } else if (Math.abs(ab) < 1e-8) {
                 // almost equal points (degenerate triangle)
-                x = (x1 + x3) / 2;
-                y = (y1 + y3) / 2;
+                // the circumcenter is at the infinity, in a
+                // direction that is:
+                // 1. orthogonal to the halfedge.
+                let a = 1e9;
+                // 2. points away from the center; since the list of triangles starts
+                // in the center, the first point of the first triangle
+                // will be our reference
+                const r = triangles[0] * 2;
+                a *= Math.sign((points[r] - x1) * ey - (points[r + 1] - y1) * ex);
+                x = (x1 + x3) / 2 - a * ey;
+                y = (y1 + y3) / 2 + a * ex;
             } else {
                 const d = 1 / ab;
+                const bl = dx * dx + dy * dy;
+                const cl = ex * ex + ey * ey;
                 x = x1 + (ey * bl - dy * cl) * d;
                 y = y1 + (dx * cl - ex * bl) * d;
             }
@@ -34459,7 +37049,7 @@ class Voronoi {
         let P = null;
         let x0, y0, x1 = points[n - 2], y1 = points[n - 1];
         let c0, c1 = this._regioncode(x1, y1);
-        let e0, e1;
+        let e0, e1 = 0;
         for(let j = 0; j < n; j += 2){
             x0 = x1, y0 = y1, x1 = points[j], y1 = points[j + 1];
             c0 = c1, c1 = this._regioncode(x1, y1);
@@ -34577,6 +37167,8 @@ class Voronoi {
                     e0 = 5, x = this.xmin, y = this.ymin;
                     break; // left
             }
+            // Note: this implicitly checks for out of bounds: if P[j] or P[j+1] are
+            // undefined, the conditional statement will be executed.
             if ((P[j] !== x || P[j + 1] !== y) && this.contains(i, x, y)) P.splice(j, 0, x, y), j += 2;
         }
         if (P.length > 4) for(let i1 = 0; i1 < P.length; i1 += 2){
@@ -35802,7 +38394,7 @@ function prevent(view, type) {
 function permit(view, key, type) {
     const rule = view._eventConfig && view._eventConfig[key];
     if (rule === false || (0, _vegaUtil.isObject)(rule) && !rule[type]) {
-        view.warn(`Blocked ${key} ${type} event listener.`);
+        view.warn("Blocked ".concat(key, " ").concat(type, " event listener."));
         return false;
     }
     return true;
@@ -36151,7 +38743,7 @@ function lookup(view, el, clear) {
         }
     }
     if (el && clear) try {
-        el.innerHTML = "";
+        el.textContent = "";
     } catch (e) {
         el = null;
         view.error(e);
@@ -36799,9 +39391,9 @@ function internalScaleFunctions(codegen, fnctx, visitors) {
     const ref = (arg)=>"_[" + (arg.type === (0, _vegaExpression.Literal) ? (0, _vegaUtil.stringValue)(ScalePrefix + arg.value) : (0, _vegaUtil.stringValue)(ScalePrefix) + "+" + codegen(arg)) + "]"; // define and return internal scale function code generators
     // these internal functions are called by mark encoders
     return {
-        _bandwidth: (args)=>`this.__bandwidth(${ref(args[0])})`,
-        _range: (args)=>`${ref(args[0])}.range()`,
-        _scale: (args)=>`${ref(args[0])}(${codegen(args[1])})`
+        _bandwidth: (args)=>"this.__bandwidth(".concat(ref(args[0]), ")"),
+        _range: (args)=>"".concat(ref(args[0]), ".range()"),
+        _scale: (args)=>"".concat(ref(args[0]), "(").concat(codegen(args[1]), ")")
     };
 }
 function geoMethod(methodName, globalMethod) {
@@ -36929,16 +39521,20 @@ function array(seq) {
 function sequence(seq) {
     return array(seq) || ((0, _vegaUtil.isString)(seq) ? seq : null);
 }
-function join(seq, ...args) {
+function join(seq) {
+    for(var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++)args[_key - 1] = arguments[_key];
     return array(seq).join(...args);
 }
-function indexof(seq, ...args) {
+function indexof(seq) {
+    for(var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++)args[_key2 - 1] = arguments[_key2];
     return sequence(seq).indexOf(...args);
 }
-function lastindexof(seq, ...args) {
+function lastindexof(seq) {
+    for(var _len3 = arguments.length, args = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++)args[_key3 - 1] = arguments[_key3];
     return sequence(seq).lastIndexOf(...args);
 }
-function slice(seq, ...args) {
+function slice(seq) {
+    for(var _len4 = arguments.length, args = new Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++)args[_key4 - 1] = arguments[_key4];
     return sequence(seq).slice(...args);
 }
 function replace(str, pattern, repl) {
@@ -37056,6 +39652,87 @@ function filter(opt) {
     }
     return p;
 }
+/**
+ * Appends a new point to the lasso
+ * 
+ * @param {*} lasso the lasso in pixel space
+ * @param {*} x the x coordinate in pixel space
+ * @param {*} y the y coordinate in pixel space
+ * @param {*} minDist the minimum distance, in pixels, that thenew point needs to be apart from the last point
+ * @returns a new array containing the lasso with the new point
+ */ function lassoAppend(lasso, x, y) {
+    let minDist = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 5;
+    const last = lasso[lasso.length - 1]; // Add point to lasso if distance to last point exceed minDist or its the first point
+    if (last === undefined || Math.sqrt((last[0] - x) ** 2 + (last[1] - y) ** 2) > minDist) {
+        lasso.push([
+            x,
+            y
+        ]);
+        return [
+            ...lasso
+        ];
+    }
+    return lasso;
+}
+/**
+ * Generates a svg path command which draws a lasso
+ * 
+ * @param {*} lasso the lasso in pixel space in the form [[x,y], [x,y], ...]
+ * @returns the svg path command that draws the lasso
+ */ function lassoPath(lasso) {
+    return (lasso !== null && lasso !== void 0 ? lasso : []).reduce((svg, _ref, i)=>{
+        let [x, y] = _ref;
+        return svg += i == 0 ? "M ".concat(x, ",").concat(y, " ") : i === lasso.length - 1 ? " Z" : "L ".concat(x, ",").concat(y, " ");
+    }, "");
+}
+/**
+ * Inverts the lasso from pixel space to an array of vega scenegraph tuples
+ * 
+ * @param {*} data the dataset
+ * @param {*} pixelLasso the lasso in pixel space, [[x,y], [x,y], ...]
+ * @param {*} unit the unit where the lasso is defined
+ * 
+ * @returns an array of vega scenegraph tuples
+ */ function intersectLasso(markname, pixelLasso, unit) {
+    const { x , y , mark  } = unit;
+    const bb = new (0, _vegaScenegraph.Bounds)().set(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER, Number.MIN_SAFE_INTEGER); // Get bounding box around lasso
+    for (const [px, py] of pixelLasso){
+        if (px < bb.x1) bb.x1 = px;
+        if (px > bb.x2) bb.x2 = px;
+        if (py < bb.y1) bb.y1 = py;
+        if (py > bb.y2) bb.y2 = py;
+    } // Translate bb against unit coordinates
+    bb.translate(x, y);
+    const intersection = intersect([
+        [
+            bb.x1,
+            bb.y1
+        ],
+        [
+            bb.x2,
+            bb.y2
+        ]
+    ], markname, mark); // Check every point against the lasso
+    return intersection.filter((tuple)=>pointInPolygon(tuple.x, tuple.y, pixelLasso));
+}
+/**
+ * Performs a test if a point is inside a polygon based on the idea from
+ * https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html
+ * 
+ * This method will not need the same start/end point since it wraps around the edges of the array
+ * 
+ * @param {*} test a point to test against
+ * @param {*} polygon a polygon in the form [[x,y], [x,y], ...]
+ * @returns true if the point lies inside the polygon, false otherwise
+ */ function pointInPolygon(testx, testy, polygon) {
+    let intersections = 0;
+    for(let i = 0, j = polygon.length - 1; i < polygon.length; j = i++){
+        const [prevX, prevY] = polygon[j];
+        const [x, y] = polygon[i]; // count intersections
+        if (y > testy != prevY > testy && testx < (prevX - x) * (testy - y) / (prevY - y) + x) intersections++;
+    } // point is in polygon if intersection count is odd
+    return intersections & 1;
+}
 const functionContext = {
     random () {
         return (0, _vegaStatistics.random)();
@@ -37088,8 +39765,11 @@ const functionContext = {
         return _ != null && _ === _;
     },
     toBoolean: (0, _vegaUtil.toBoolean),
-    toDate: (0, _vegaUtil.toDate),
-    toNumber: (0, _vegaUtil.toNumber),
+    toDate (_) {
+        return (0, _vegaUtil.toDate)(_);
+    },
+    toNumber: // suppress extra arguments
+    (0, _vegaUtil.toNumber),
     toString: (0, _vegaUtil.toString),
     indexof,
     join,
@@ -37136,7 +39816,10 @@ const functionContext = {
     warn,
     info,
     debug,
-    extent: (0, _vegaUtil.extent),
+    extent (_) {
+        return (0, _vegaUtil.extent)(_);
+    },
+    // suppress extra arguments
     inScope,
     intersect,
     clampRange: (0, _vegaUtil.clampRange),
@@ -37157,7 +39840,10 @@ const functionContext = {
     zoomPow: (0, _vegaUtil.zoomPow),
     zoomSymlog: (0, _vegaUtil.zoomSymlog),
     encode,
-    modify
+    modify,
+    lassoAppend,
+    lassoPath,
+    intersectLasso
 };
 const eventFunctions = [
     "view",
@@ -37181,7 +39867,7 @@ const codegenParams = {
         "item"
     ],
     fieldvar: "datum",
-    globalvar: (id)=>`_[${(0, _vegaUtil.stringValue)(SignalPrefix + id)}]`,
+    globalvar: (id)=>"_[".concat((0, _vegaUtil.stringValue)(SignalPrefix + id), "]"),
     functions: buildFunctions,
     constants: (0, _vegaExpression.constants),
     visitors: astVisitors
@@ -37252,7 +39938,7 @@ function parser(expr, scope) {
     };
 }
 
-},{"vega-util":"bApja","vega-expression":"53Uxk","d3-geo":"lY61T","d3-color":"7SCp9","vega-dataflow":"3NitK","vega-scale":"bEydG","vega-scenegraph":"jattk","vega-selections":"674qo","vega-statistics":"5ncfv","vega-time":"27kpp","d3-array":"6IwJG","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"53Uxk":[function(require,module,exports) {
+},{"vega-util":"bApja","vega-expression":"2l1no","d3-geo":"lY61T","d3-color":"7SCp9","vega-dataflow":"3NitK","vega-scale":"bEydG","vega-scenegraph":"jattk","vega-selections":"674qo","vega-statistics":"5ncfv","vega-time":"27kpp","d3-array":"6IwJG","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"2l1no":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ASTNode", ()=>ASTNode);
@@ -38731,7 +41417,7 @@ function selectionVisitor(name, args, scope, params) {
     if (!(0, _vegaUtil.hasOwnProperty)(params, dataName)) params[dataName] = scope.getData(data).tuplesRef();
 }
 
-},{"d3-array":"lLsmU","vega-util":"bApja","vega-expression":"9KcWf","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"lLsmU":[function(require,module,exports) {
+},{"d3-array":"lLsmU","vega-util":"bApja","vega-expression":"2l1no","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"lLsmU":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "bisect", ()=>(0, _bisectJsDefault.default));
@@ -39008,1252 +41694,7 @@ function union(...others) {
 }
 exports.default = union;
 
-},{"internmap":"3ULAv","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"9KcWf":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "ASTNode", ()=>ASTNode);
-parcelHelpers.export(exports, "ArrayExpression", ()=>ArrayExpression);
-parcelHelpers.export(exports, "BinaryExpression", ()=>BinaryExpression);
-parcelHelpers.export(exports, "CallExpression", ()=>CallExpression);
-parcelHelpers.export(exports, "ConditionalExpression", ()=>ConditionalExpression);
-parcelHelpers.export(exports, "Identifier", ()=>Identifier);
-parcelHelpers.export(exports, "Literal", ()=>Literal);
-parcelHelpers.export(exports, "LogicalExpression", ()=>LogicalExpression);
-parcelHelpers.export(exports, "MemberExpression", ()=>MemberExpression);
-parcelHelpers.export(exports, "ObjectExpression", ()=>ObjectExpression);
-parcelHelpers.export(exports, "Property", ()=>Property);
-parcelHelpers.export(exports, "RawCode", ()=>RawCode);
-parcelHelpers.export(exports, "UnaryExpression", ()=>UnaryExpression);
-parcelHelpers.export(exports, "codegenExpression", ()=>codegen);
-parcelHelpers.export(exports, "constants", ()=>Constants);
-parcelHelpers.export(exports, "functions", ()=>Functions);
-parcelHelpers.export(exports, "parseExpression", ()=>parser);
-var _vegaUtil = require("vega-util");
-const RawCode = "RawCode";
-const Literal = "Literal";
-const Property = "Property";
-const Identifier = "Identifier";
-const ArrayExpression = "ArrayExpression";
-const BinaryExpression = "BinaryExpression";
-const CallExpression = "CallExpression";
-const ConditionalExpression = "ConditionalExpression";
-const LogicalExpression = "LogicalExpression";
-const MemberExpression = "MemberExpression";
-const ObjectExpression = "ObjectExpression";
-const UnaryExpression = "UnaryExpression";
-function ASTNode(type) {
-    this.type = type;
-}
-ASTNode.prototype.visit = function(visitor) {
-    let c, i, n;
-    if (visitor(this)) return 1;
-    for(c = children(this), i = 0, n = c.length; i < n; ++i){
-        if (c[i].visit(visitor)) return 1;
-    }
-};
-function children(node) {
-    switch(node.type){
-        case ArrayExpression:
-            return node.elements;
-        case BinaryExpression:
-        case LogicalExpression:
-            return [
-                node.left,
-                node.right
-            ];
-        case CallExpression:
-            return [
-                node.callee
-            ].concat(node.arguments);
-        case ConditionalExpression:
-            return [
-                node.test,
-                node.consequent,
-                node.alternate
-            ];
-        case MemberExpression:
-            return [
-                node.object,
-                node.property
-            ];
-        case ObjectExpression:
-            return node.properties;
-        case Property:
-            return [
-                node.key,
-                node.value
-            ];
-        case UnaryExpression:
-            return [
-                node.argument
-            ];
-        case Identifier:
-        case Literal:
-        case RawCode:
-        default:
-            return [];
-    }
-}
-/*
-  The following expression parser is based on Esprima (http://esprima.org/).
-  Original header comment and license for Esprima is included here:
-
-  Copyright (C) 2013 Ariya Hidayat <ariya.hidayat@gmail.com>
-  Copyright (C) 2013 Thaddee Tyl <thaddee.tyl@gmail.com>
-  Copyright (C) 2013 Mathias Bynens <mathias@qiwi.be>
-  Copyright (C) 2012 Ariya Hidayat <ariya.hidayat@gmail.com>
-  Copyright (C) 2012 Mathias Bynens <mathias@qiwi.be>
-  Copyright (C) 2012 Joost-Wim Boekesteijn <joost-wim@boekesteijn.nl>
-  Copyright (C) 2012 Kris Kowal <kris.kowal@cixar.com>
-  Copyright (C) 2012 Yusuke Suzuki <utatane.tea@gmail.com>
-  Copyright (C) 2012 Arpad Borsos <arpad.borsos@googlemail.com>
-  Copyright (C) 2011 Ariya Hidayat <ariya.hidayat@gmail.com>
-
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions are met:
-
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-  ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
-  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/ var TokenName, source, index, length, lookahead;
-var TokenBooleanLiteral = 1, TokenEOF = 2, TokenIdentifier = 3, TokenKeyword = 4, TokenNullLiteral = 5, TokenNumericLiteral = 6, TokenPunctuator = 7, TokenStringLiteral = 8, TokenRegularExpression = 9;
-TokenName = {};
-TokenName[TokenBooleanLiteral] = "Boolean";
-TokenName[TokenEOF] = "<end>";
-TokenName[TokenIdentifier] = "Identifier";
-TokenName[TokenKeyword] = "Keyword";
-TokenName[TokenNullLiteral] = "Null";
-TokenName[TokenNumericLiteral] = "Numeric";
-TokenName[TokenPunctuator] = "Punctuator";
-TokenName[TokenStringLiteral] = "String";
-TokenName[TokenRegularExpression] = "RegularExpression";
-var SyntaxArrayExpression = "ArrayExpression", SyntaxBinaryExpression = "BinaryExpression", SyntaxCallExpression = "CallExpression", SyntaxConditionalExpression = "ConditionalExpression", SyntaxIdentifier = "Identifier", SyntaxLiteral = "Literal", SyntaxLogicalExpression = "LogicalExpression", SyntaxMemberExpression = "MemberExpression", SyntaxObjectExpression = "ObjectExpression", SyntaxProperty = "Property", SyntaxUnaryExpression = "UnaryExpression"; // Error messages should be identical to V8.
-var MessageUnexpectedToken = "Unexpected token %0", MessageUnexpectedNumber = "Unexpected number", MessageUnexpectedString = "Unexpected string", MessageUnexpectedIdentifier = "Unexpected identifier", MessageUnexpectedReserved = "Unexpected reserved word", MessageUnexpectedEOS = "Unexpected end of input", MessageInvalidRegExp = "Invalid regular expression", MessageUnterminatedRegExp = "Invalid regular expression: missing /", MessageStrictOctalLiteral = "Octal literals are not allowed in strict mode.", MessageStrictDuplicateProperty = "Duplicate data property in object literal not allowed in strict mode";
-var ILLEGAL = "ILLEGAL", DISABLED = "Disabled."; // See also tools/generate-unicode-regex.py.
-var RegexNonAsciiIdentifierStart = new RegExp("[\\xAA\\xB5\\xBA\\xC0-\\xD6\\xD8-\\xF6\\xF8-\\u02C1\\u02C6-\\u02D1\\u02E0-\\u02E4\\u02EC\\u02EE\\u0370-\\u0374\\u0376\\u0377\\u037A-\\u037D\\u037F\\u0386\\u0388-\\u038A\\u038C\\u038E-\\u03A1\\u03A3-\\u03F5\\u03F7-\\u0481\\u048A-\\u052F\\u0531-\\u0556\\u0559\\u0561-\\u0587\\u05D0-\\u05EA\\u05F0-\\u05F2\\u0620-\\u064A\\u066E\\u066F\\u0671-\\u06D3\\u06D5\\u06E5\\u06E6\\u06EE\\u06EF\\u06FA-\\u06FC\\u06FF\\u0710\\u0712-\\u072F\\u074D-\\u07A5\\u07B1\\u07CA-\\u07EA\\u07F4\\u07F5\\u07FA\\u0800-\\u0815\\u081A\\u0824\\u0828\\u0840-\\u0858\\u08A0-\\u08B2\\u0904-\\u0939\\u093D\\u0950\\u0958-\\u0961\\u0971-\\u0980\\u0985-\\u098C\\u098F\\u0990\\u0993-\\u09A8\\u09AA-\\u09B0\\u09B2\\u09B6-\\u09B9\\u09BD\\u09CE\\u09DC\\u09DD\\u09DF-\\u09E1\\u09F0\\u09F1\\u0A05-\\u0A0A\\u0A0F\\u0A10\\u0A13-\\u0A28\\u0A2A-\\u0A30\\u0A32\\u0A33\\u0A35\\u0A36\\u0A38\\u0A39\\u0A59-\\u0A5C\\u0A5E\\u0A72-\\u0A74\\u0A85-\\u0A8D\\u0A8F-\\u0A91\\u0A93-\\u0AA8\\u0AAA-\\u0AB0\\u0AB2\\u0AB3\\u0AB5-\\u0AB9\\u0ABD\\u0AD0\\u0AE0\\u0AE1\\u0B05-\\u0B0C\\u0B0F\\u0B10\\u0B13-\\u0B28\\u0B2A-\\u0B30\\u0B32\\u0B33\\u0B35-\\u0B39\\u0B3D\\u0B5C\\u0B5D\\u0B5F-\\u0B61\\u0B71\\u0B83\\u0B85-\\u0B8A\\u0B8E-\\u0B90\\u0B92-\\u0B95\\u0B99\\u0B9A\\u0B9C\\u0B9E\\u0B9F\\u0BA3\\u0BA4\\u0BA8-\\u0BAA\\u0BAE-\\u0BB9\\u0BD0\\u0C05-\\u0C0C\\u0C0E-\\u0C10\\u0C12-\\u0C28\\u0C2A-\\u0C39\\u0C3D\\u0C58\\u0C59\\u0C60\\u0C61\\u0C85-\\u0C8C\\u0C8E-\\u0C90\\u0C92-\\u0CA8\\u0CAA-\\u0CB3\\u0CB5-\\u0CB9\\u0CBD\\u0CDE\\u0CE0\\u0CE1\\u0CF1\\u0CF2\\u0D05-\\u0D0C\\u0D0E-\\u0D10\\u0D12-\\u0D3A\\u0D3D\\u0D4E\\u0D60\\u0D61\\u0D7A-\\u0D7F\\u0D85-\\u0D96\\u0D9A-\\u0DB1\\u0DB3-\\u0DBB\\u0DBD\\u0DC0-\\u0DC6\\u0E01-\\u0E30\\u0E32\\u0E33\\u0E40-\\u0E46\\u0E81\\u0E82\\u0E84\\u0E87\\u0E88\\u0E8A\\u0E8D\\u0E94-\\u0E97\\u0E99-\\u0E9F\\u0EA1-\\u0EA3\\u0EA5\\u0EA7\\u0EAA\\u0EAB\\u0EAD-\\u0EB0\\u0EB2\\u0EB3\\u0EBD\\u0EC0-\\u0EC4\\u0EC6\\u0EDC-\\u0EDF\\u0F00\\u0F40-\\u0F47\\u0F49-\\u0F6C\\u0F88-\\u0F8C\\u1000-\\u102A\\u103F\\u1050-\\u1055\\u105A-\\u105D\\u1061\\u1065\\u1066\\u106E-\\u1070\\u1075-\\u1081\\u108E\\u10A0-\\u10C5\\u10C7\\u10CD\\u10D0-\\u10FA\\u10FC-\\u1248\\u124A-\\u124D\\u1250-\\u1256\\u1258\\u125A-\\u125D\\u1260-\\u1288\\u128A-\\u128D\\u1290-\\u12B0\\u12B2-\\u12B5\\u12B8-\\u12BE\\u12C0\\u12C2-\\u12C5\\u12C8-\\u12D6\\u12D8-\\u1310\\u1312-\\u1315\\u1318-\\u135A\\u1380-\\u138F\\u13A0-\\u13F4\\u1401-\\u166C\\u166F-\\u167F\\u1681-\\u169A\\u16A0-\\u16EA\\u16EE-\\u16F8\\u1700-\\u170C\\u170E-\\u1711\\u1720-\\u1731\\u1740-\\u1751\\u1760-\\u176C\\u176E-\\u1770\\u1780-\\u17B3\\u17D7\\u17DC\\u1820-\\u1877\\u1880-\\u18A8\\u18AA\\u18B0-\\u18F5\\u1900-\\u191E\\u1950-\\u196D\\u1970-\\u1974\\u1980-\\u19AB\\u19C1-\\u19C7\\u1A00-\\u1A16\\u1A20-\\u1A54\\u1AA7\\u1B05-\\u1B33\\u1B45-\\u1B4B\\u1B83-\\u1BA0\\u1BAE\\u1BAF\\u1BBA-\\u1BE5\\u1C00-\\u1C23\\u1C4D-\\u1C4F\\u1C5A-\\u1C7D\\u1CE9-\\u1CEC\\u1CEE-\\u1CF1\\u1CF5\\u1CF6\\u1D00-\\u1DBF\\u1E00-\\u1F15\\u1F18-\\u1F1D\\u1F20-\\u1F45\\u1F48-\\u1F4D\\u1F50-\\u1F57\\u1F59\\u1F5B\\u1F5D\\u1F5F-\\u1F7D\\u1F80-\\u1FB4\\u1FB6-\\u1FBC\\u1FBE\\u1FC2-\\u1FC4\\u1FC6-\\u1FCC\\u1FD0-\\u1FD3\\u1FD6-\\u1FDB\\u1FE0-\\u1FEC\\u1FF2-\\u1FF4\\u1FF6-\\u1FFC\\u2071\\u207F\\u2090-\\u209C\\u2102\\u2107\\u210A-\\u2113\\u2115\\u2119-\\u211D\\u2124\\u2126\\u2128\\u212A-\\u212D\\u212F-\\u2139\\u213C-\\u213F\\u2145-\\u2149\\u214E\\u2160-\\u2188\\u2C00-\\u2C2E\\u2C30-\\u2C5E\\u2C60-\\u2CE4\\u2CEB-\\u2CEE\\u2CF2\\u2CF3\\u2D00-\\u2D25\\u2D27\\u2D2D\\u2D30-\\u2D67\\u2D6F\\u2D80-\\u2D96\\u2DA0-\\u2DA6\\u2DA8-\\u2DAE\\u2DB0-\\u2DB6\\u2DB8-\\u2DBE\\u2DC0-\\u2DC6\\u2DC8-\\u2DCE\\u2DD0-\\u2DD6\\u2DD8-\\u2DDE\\u2E2F\\u3005-\\u3007\\u3021-\\u3029\\u3031-\\u3035\\u3038-\\u303C\\u3041-\\u3096\\u309D-\\u309F\\u30A1-\\u30FA\\u30FC-\\u30FF\\u3105-\\u312D\\u3131-\\u318E\\u31A0-\\u31BA\\u31F0-\\u31FF\\u3400-\\u4DB5\\u4E00-\\u9FCC\\uA000-\\uA48C\\uA4D0-\\uA4FD\\uA500-\\uA60C\\uA610-\\uA61F\\uA62A\\uA62B\\uA640-\\uA66E\\uA67F-\\uA69D\\uA6A0-\\uA6EF\\uA717-\\uA71F\\uA722-\\uA788\\uA78B-\\uA78E\\uA790-\\uA7AD\\uA7B0\\uA7B1\\uA7F7-\\uA801\\uA803-\\uA805\\uA807-\\uA80A\\uA80C-\\uA822\\uA840-\\uA873\\uA882-\\uA8B3\\uA8F2-\\uA8F7\\uA8FB\\uA90A-\\uA925\\uA930-\\uA946\\uA960-\\uA97C\\uA984-\\uA9B2\\uA9CF\\uA9E0-\\uA9E4\\uA9E6-\\uA9EF\\uA9FA-\\uA9FE\\uAA00-\\uAA28\\uAA40-\\uAA42\\uAA44-\\uAA4B\\uAA60-\\uAA76\\uAA7A\\uAA7E-\\uAAAF\\uAAB1\\uAAB5\\uAAB6\\uAAB9-\\uAABD\\uAAC0\\uAAC2\\uAADB-\\uAADD\\uAAE0-\\uAAEA\\uAAF2-\\uAAF4\\uAB01-\\uAB06\\uAB09-\\uAB0E\\uAB11-\\uAB16\\uAB20-\\uAB26\\uAB28-\\uAB2E\\uAB30-\\uAB5A\\uAB5C-\\uAB5F\\uAB64\\uAB65\\uABC0-\\uABE2\\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\\uF900-\\uFA6D\\uFA70-\\uFAD9\\uFB00-\\uFB06\\uFB13-\\uFB17\\uFB1D\\uFB1F-\\uFB28\\uFB2A-\\uFB36\\uFB38-\\uFB3C\\uFB3E\\uFB40\\uFB41\\uFB43\\uFB44\\uFB46-\\uFBB1\\uFBD3-\\uFD3D\\uFD50-\\uFD8F\\uFD92-\\uFDC7\\uFDF0-\\uFDFB\\uFE70-\\uFE74\\uFE76-\\uFEFC\\uFF21-\\uFF3A\\uFF41-\\uFF5A\\uFF66-\\uFFBE\\uFFC2-\\uFFC7\\uFFCA-\\uFFCF\\uFFD2-\\uFFD7\\uFFDA-\\uFFDC]"), // eslint-disable-next-line no-misleading-character-class
-RegexNonAsciiIdentifierPart = new RegExp("[\\xAA\\xB5\\xBA\\xC0-\\xD6\\xD8-\\xF6\\xF8-\\u02C1\\u02C6-\\u02D1\\u02E0-\\u02E4\\u02EC\\u02EE\\u0300-\\u0374\\u0376\\u0377\\u037A-\\u037D\\u037F\\u0386\\u0388-\\u038A\\u038C\\u038E-\\u03A1\\u03A3-\\u03F5\\u03F7-\\u0481\\u0483-\\u0487\\u048A-\\u052F\\u0531-\\u0556\\u0559\\u0561-\\u0587\\u0591-\\u05BD\\u05BF\\u05C1\\u05C2\\u05C4\\u05C5\\u05C7\\u05D0-\\u05EA\\u05F0-\\u05F2\\u0610-\\u061A\\u0620-\\u0669\\u066E-\\u06D3\\u06D5-\\u06DC\\u06DF-\\u06E8\\u06EA-\\u06FC\\u06FF\\u0710-\\u074A\\u074D-\\u07B1\\u07C0-\\u07F5\\u07FA\\u0800-\\u082D\\u0840-\\u085B\\u08A0-\\u08B2\\u08E4-\\u0963\\u0966-\\u096F\\u0971-\\u0983\\u0985-\\u098C\\u098F\\u0990\\u0993-\\u09A8\\u09AA-\\u09B0\\u09B2\\u09B6-\\u09B9\\u09BC-\\u09C4\\u09C7\\u09C8\\u09CB-\\u09CE\\u09D7\\u09DC\\u09DD\\u09DF-\\u09E3\\u09E6-\\u09F1\\u0A01-\\u0A03\\u0A05-\\u0A0A\\u0A0F\\u0A10\\u0A13-\\u0A28\\u0A2A-\\u0A30\\u0A32\\u0A33\\u0A35\\u0A36\\u0A38\\u0A39\\u0A3C\\u0A3E-\\u0A42\\u0A47\\u0A48\\u0A4B-\\u0A4D\\u0A51\\u0A59-\\u0A5C\\u0A5E\\u0A66-\\u0A75\\u0A81-\\u0A83\\u0A85-\\u0A8D\\u0A8F-\\u0A91\\u0A93-\\u0AA8\\u0AAA-\\u0AB0\\u0AB2\\u0AB3\\u0AB5-\\u0AB9\\u0ABC-\\u0AC5\\u0AC7-\\u0AC9\\u0ACB-\\u0ACD\\u0AD0\\u0AE0-\\u0AE3\\u0AE6-\\u0AEF\\u0B01-\\u0B03\\u0B05-\\u0B0C\\u0B0F\\u0B10\\u0B13-\\u0B28\\u0B2A-\\u0B30\\u0B32\\u0B33\\u0B35-\\u0B39\\u0B3C-\\u0B44\\u0B47\\u0B48\\u0B4B-\\u0B4D\\u0B56\\u0B57\\u0B5C\\u0B5D\\u0B5F-\\u0B63\\u0B66-\\u0B6F\\u0B71\\u0B82\\u0B83\\u0B85-\\u0B8A\\u0B8E-\\u0B90\\u0B92-\\u0B95\\u0B99\\u0B9A\\u0B9C\\u0B9E\\u0B9F\\u0BA3\\u0BA4\\u0BA8-\\u0BAA\\u0BAE-\\u0BB9\\u0BBE-\\u0BC2\\u0BC6-\\u0BC8\\u0BCA-\\u0BCD\\u0BD0\\u0BD7\\u0BE6-\\u0BEF\\u0C00-\\u0C03\\u0C05-\\u0C0C\\u0C0E-\\u0C10\\u0C12-\\u0C28\\u0C2A-\\u0C39\\u0C3D-\\u0C44\\u0C46-\\u0C48\\u0C4A-\\u0C4D\\u0C55\\u0C56\\u0C58\\u0C59\\u0C60-\\u0C63\\u0C66-\\u0C6F\\u0C81-\\u0C83\\u0C85-\\u0C8C\\u0C8E-\\u0C90\\u0C92-\\u0CA8\\u0CAA-\\u0CB3\\u0CB5-\\u0CB9\\u0CBC-\\u0CC4\\u0CC6-\\u0CC8\\u0CCA-\\u0CCD\\u0CD5\\u0CD6\\u0CDE\\u0CE0-\\u0CE3\\u0CE6-\\u0CEF\\u0CF1\\u0CF2\\u0D01-\\u0D03\\u0D05-\\u0D0C\\u0D0E-\\u0D10\\u0D12-\\u0D3A\\u0D3D-\\u0D44\\u0D46-\\u0D48\\u0D4A-\\u0D4E\\u0D57\\u0D60-\\u0D63\\u0D66-\\u0D6F\\u0D7A-\\u0D7F\\u0D82\\u0D83\\u0D85-\\u0D96\\u0D9A-\\u0DB1\\u0DB3-\\u0DBB\\u0DBD\\u0DC0-\\u0DC6\\u0DCA\\u0DCF-\\u0DD4\\u0DD6\\u0DD8-\\u0DDF\\u0DE6-\\u0DEF\\u0DF2\\u0DF3\\u0E01-\\u0E3A\\u0E40-\\u0E4E\\u0E50-\\u0E59\\u0E81\\u0E82\\u0E84\\u0E87\\u0E88\\u0E8A\\u0E8D\\u0E94-\\u0E97\\u0E99-\\u0E9F\\u0EA1-\\u0EA3\\u0EA5\\u0EA7\\u0EAA\\u0EAB\\u0EAD-\\u0EB9\\u0EBB-\\u0EBD\\u0EC0-\\u0EC4\\u0EC6\\u0EC8-\\u0ECD\\u0ED0-\\u0ED9\\u0EDC-\\u0EDF\\u0F00\\u0F18\\u0F19\\u0F20-\\u0F29\\u0F35\\u0F37\\u0F39\\u0F3E-\\u0F47\\u0F49-\\u0F6C\\u0F71-\\u0F84\\u0F86-\\u0F97\\u0F99-\\u0FBC\\u0FC6\\u1000-\\u1049\\u1050-\\u109D\\u10A0-\\u10C5\\u10C7\\u10CD\\u10D0-\\u10FA\\u10FC-\\u1248\\u124A-\\u124D\\u1250-\\u1256\\u1258\\u125A-\\u125D\\u1260-\\u1288\\u128A-\\u128D\\u1290-\\u12B0\\u12B2-\\u12B5\\u12B8-\\u12BE\\u12C0\\u12C2-\\u12C5\\u12C8-\\u12D6\\u12D8-\\u1310\\u1312-\\u1315\\u1318-\\u135A\\u135D-\\u135F\\u1380-\\u138F\\u13A0-\\u13F4\\u1401-\\u166C\\u166F-\\u167F\\u1681-\\u169A\\u16A0-\\u16EA\\u16EE-\\u16F8\\u1700-\\u170C\\u170E-\\u1714\\u1720-\\u1734\\u1740-\\u1753\\u1760-\\u176C\\u176E-\\u1770\\u1772\\u1773\\u1780-\\u17D3\\u17D7\\u17DC\\u17DD\\u17E0-\\u17E9\\u180B-\\u180D\\u1810-\\u1819\\u1820-\\u1877\\u1880-\\u18AA\\u18B0-\\u18F5\\u1900-\\u191E\\u1920-\\u192B\\u1930-\\u193B\\u1946-\\u196D\\u1970-\\u1974\\u1980-\\u19AB\\u19B0-\\u19C9\\u19D0-\\u19D9\\u1A00-\\u1A1B\\u1A20-\\u1A5E\\u1A60-\\u1A7C\\u1A7F-\\u1A89\\u1A90-\\u1A99\\u1AA7\\u1AB0-\\u1ABD\\u1B00-\\u1B4B\\u1B50-\\u1B59\\u1B6B-\\u1B73\\u1B80-\\u1BF3\\u1C00-\\u1C37\\u1C40-\\u1C49\\u1C4D-\\u1C7D\\u1CD0-\\u1CD2\\u1CD4-\\u1CF6\\u1CF8\\u1CF9\\u1D00-\\u1DF5\\u1DFC-\\u1F15\\u1F18-\\u1F1D\\u1F20-\\u1F45\\u1F48-\\u1F4D\\u1F50-\\u1F57\\u1F59\\u1F5B\\u1F5D\\u1F5F-\\u1F7D\\u1F80-\\u1FB4\\u1FB6-\\u1FBC\\u1FBE\\u1FC2-\\u1FC4\\u1FC6-\\u1FCC\\u1FD0-\\u1FD3\\u1FD6-\\u1FDB\\u1FE0-\\u1FEC\\u1FF2-\\u1FF4\\u1FF6-\\u1FFC\\u200C\\u200D\\u203F\\u2040\\u2054\\u2071\\u207F\\u2090-\\u209C\\u20D0-\\u20DC\\u20E1\\u20E5-\\u20F0\\u2102\\u2107\\u210A-\\u2113\\u2115\\u2119-\\u211D\\u2124\\u2126\\u2128\\u212A-\\u212D\\u212F-\\u2139\\u213C-\\u213F\\u2145-\\u2149\\u214E\\u2160-\\u2188\\u2C00-\\u2C2E\\u2C30-\\u2C5E\\u2C60-\\u2CE4\\u2CEB-\\u2CF3\\u2D00-\\u2D25\\u2D27\\u2D2D\\u2D30-\\u2D67\\u2D6F\\u2D7F-\\u2D96\\u2DA0-\\u2DA6\\u2DA8-\\u2DAE\\u2DB0-\\u2DB6\\u2DB8-\\u2DBE\\u2DC0-\\u2DC6\\u2DC8-\\u2DCE\\u2DD0-\\u2DD6\\u2DD8-\\u2DDE\\u2DE0-\\u2DFF\\u2E2F\\u3005-\\u3007\\u3021-\\u302F\\u3031-\\u3035\\u3038-\\u303C\\u3041-\\u3096\\u3099\\u309A\\u309D-\\u309F\\u30A1-\\u30FA\\u30FC-\\u30FF\\u3105-\\u312D\\u3131-\\u318E\\u31A0-\\u31BA\\u31F0-\\u31FF\\u3400-\\u4DB5\\u4E00-\\u9FCC\\uA000-\\uA48C\\uA4D0-\\uA4FD\\uA500-\\uA60C\\uA610-\\uA62B\\uA640-\\uA66F\\uA674-\\uA67D\\uA67F-\\uA69D\\uA69F-\\uA6F1\\uA717-\\uA71F\\uA722-\\uA788\\uA78B-\\uA78E\\uA790-\\uA7AD\\uA7B0\\uA7B1\\uA7F7-\\uA827\\uA840-\\uA873\\uA880-\\uA8C4\\uA8D0-\\uA8D9\\uA8E0-\\uA8F7\\uA8FB\\uA900-\\uA92D\\uA930-\\uA953\\uA960-\\uA97C\\uA980-\\uA9C0\\uA9CF-\\uA9D9\\uA9E0-\\uA9FE\\uAA00-\\uAA36\\uAA40-\\uAA4D\\uAA50-\\uAA59\\uAA60-\\uAA76\\uAA7A-\\uAAC2\\uAADB-\\uAADD\\uAAE0-\\uAAEF\\uAAF2-\\uAAF6\\uAB01-\\uAB06\\uAB09-\\uAB0E\\uAB11-\\uAB16\\uAB20-\\uAB26\\uAB28-\\uAB2E\\uAB30-\\uAB5A\\uAB5C-\\uAB5F\\uAB64\\uAB65\\uABC0-\\uABEA\\uABEC\\uABED\\uABF0-\\uABF9\\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\\uF900-\\uFA6D\\uFA70-\\uFAD9\\uFB00-\\uFB06\\uFB13-\\uFB17\\uFB1D-\\uFB28\\uFB2A-\\uFB36\\uFB38-\\uFB3C\\uFB3E\\uFB40\\uFB41\\uFB43\\uFB44\\uFB46-\\uFBB1\\uFBD3-\\uFD3D\\uFD50-\\uFD8F\\uFD92-\\uFDC7\\uFDF0-\\uFDFB\\uFE00-\\uFE0F\\uFE20-\\uFE2D\\uFE33\\uFE34\\uFE4D-\\uFE4F\\uFE70-\\uFE74\\uFE76-\\uFEFC\\uFF10-\\uFF19\\uFF21-\\uFF3A\\uFF3F\\uFF41-\\uFF5A\\uFF66-\\uFFBE\\uFFC2-\\uFFC7\\uFFCA-\\uFFCF\\uFFD2-\\uFFD7\\uFFDA-\\uFFDC]"); // Ensure the condition is true, otherwise throw an error.
-// This is only to have a better contract semantic, i.e. another safety net
-// to catch a logic error. The condition shall be fulfilled in normal case.
-// Do NOT use this to enforce a certain condition on any user input.
-function assert(condition, message) {
-    /* istanbul ignore next */ if (!condition) throw new Error("ASSERT: " + message);
-}
-function isDecimalDigit(ch) {
-    return ch >= 0x30 && ch <= 0x39; // 0..9
-}
-function isHexDigit(ch) {
-    return "0123456789abcdefABCDEF".indexOf(ch) >= 0;
-}
-function isOctalDigit(ch) {
-    return "01234567".indexOf(ch) >= 0;
-} // 7.2 White Space
-function isWhiteSpace(ch) {
-    return ch === 0x20 || ch === 0x09 || ch === 0x0B || ch === 0x0C || ch === 0xA0 || ch >= 0x1680 && [
-        0x1680,
-        0x180E,
-        0x2000,
-        0x2001,
-        0x2002,
-        0x2003,
-        0x2004,
-        0x2005,
-        0x2006,
-        0x2007,
-        0x2008,
-        0x2009,
-        0x200A,
-        0x202F,
-        0x205F,
-        0x3000,
-        0xFEFF
-    ].indexOf(ch) >= 0;
-} // 7.3 Line Terminators
-function isLineTerminator(ch) {
-    return ch === 0x0A || ch === 0x0D || ch === 0x2028 || ch === 0x2029;
-} // 7.6 Identifier Names and Identifiers
-function isIdentifierStart(ch) {
-    return ch === 0x24 || ch === 0x5F || ch >= 0x41 && ch <= 0x5A || ch >= 0x61 && ch <= 0x7A || ch === 0x5C || ch >= 0x80 && RegexNonAsciiIdentifierStart.test(String.fromCharCode(ch));
-}
-function isIdentifierPart(ch) {
-    return ch === 0x24 || ch === 0x5F || ch >= 0x41 && ch <= 0x5A || ch >= 0x61 && ch <= 0x7A || ch >= 0x30 && ch <= 0x39 || ch === 0x5C || ch >= 0x80 && RegexNonAsciiIdentifierPart.test(String.fromCharCode(ch));
-} // 7.6.1.1 Keywords
-const keywords = {
-    "if": 1,
-    "in": 1,
-    "do": 1,
-    "var": 1,
-    "for": 1,
-    "new": 1,
-    "try": 1,
-    "let": 1,
-    "this": 1,
-    "else": 1,
-    "case": 1,
-    "void": 1,
-    "with": 1,
-    "enum": 1,
-    "while": 1,
-    "break": 1,
-    "catch": 1,
-    "throw": 1,
-    "const": 1,
-    "yield": 1,
-    "class": 1,
-    "super": 1,
-    "return": 1,
-    "typeof": 1,
-    "delete": 1,
-    "switch": 1,
-    "export": 1,
-    "import": 1,
-    "public": 1,
-    "static": 1,
-    "default": 1,
-    "finally": 1,
-    "extends": 1,
-    "package": 1,
-    "private": 1,
-    "function": 1,
-    "continue": 1,
-    "debugger": 1,
-    "interface": 1,
-    "protected": 1,
-    "instanceof": 1,
-    "implements": 1
-};
-function skipComment() {
-    while(index < length){
-        const ch = source.charCodeAt(index);
-        if (isWhiteSpace(ch) || isLineTerminator(ch)) ++index;
-        else break;
-    }
-}
-function scanHexEscape(prefix) {
-    var i, len, ch, code = 0;
-    len = prefix === "u" ? 4 : 2;
-    for(i = 0; i < len; ++i)if (index < length && isHexDigit(source[index])) {
-        ch = source[index++];
-        code = code * 16 + "0123456789abcdef".indexOf(ch.toLowerCase());
-    } else throwError({}, MessageUnexpectedToken, ILLEGAL);
-    return String.fromCharCode(code);
-}
-function scanUnicodeCodePointEscape() {
-    var ch, code, cu1, cu2;
-    ch = source[index];
-    code = 0; // At least, one hex digit is required.
-    if (ch === "}") throwError({}, MessageUnexpectedToken, ILLEGAL);
-    while(index < length){
-        ch = source[index++];
-        if (!isHexDigit(ch)) break;
-        code = code * 16 + "0123456789abcdef".indexOf(ch.toLowerCase());
-    }
-    if (code > 0x10FFFF || ch !== "}") throwError({}, MessageUnexpectedToken, ILLEGAL);
-     // UTF-16 Encoding
-    if (code <= 0xFFFF) return String.fromCharCode(code);
-    cu1 = (code - 0x10000 >> 10) + 0xD800;
-    cu2 = (code - 0x10000 & 1023) + 0xDC00;
-    return String.fromCharCode(cu1, cu2);
-}
-function getEscapedIdentifier() {
-    var ch, id;
-    ch = source.charCodeAt(index++);
-    id = String.fromCharCode(ch); // '\u' (U+005C, U+0075) denotes an escaped character.
-    if (ch === 0x5C) {
-        if (source.charCodeAt(index) !== 0x75) throwError({}, MessageUnexpectedToken, ILLEGAL);
-        ++index;
-        ch = scanHexEscape("u");
-        if (!ch || ch === "\\" || !isIdentifierStart(ch.charCodeAt(0))) throwError({}, MessageUnexpectedToken, ILLEGAL);
-        id = ch;
-    }
-    while(index < length){
-        ch = source.charCodeAt(index);
-        if (!isIdentifierPart(ch)) break;
-        ++index;
-        id += String.fromCharCode(ch); // '\u' (U+005C, U+0075) denotes an escaped character.
-        if (ch === 0x5C) {
-            id = id.substr(0, id.length - 1);
-            if (source.charCodeAt(index) !== 0x75) throwError({}, MessageUnexpectedToken, ILLEGAL);
-            ++index;
-            ch = scanHexEscape("u");
-            if (!ch || ch === "\\" || !isIdentifierPart(ch.charCodeAt(0))) throwError({}, MessageUnexpectedToken, ILLEGAL);
-            id += ch;
-        }
-    }
-    return id;
-}
-function getIdentifier() {
-    var start, ch;
-    start = index++;
-    while(index < length){
-        ch = source.charCodeAt(index);
-        if (ch === 0x5C) {
-            // Blackslash (U+005C) marks Unicode escape sequence.
-            index = start;
-            return getEscapedIdentifier();
-        }
-        if (isIdentifierPart(ch)) ++index;
-        else break;
-    }
-    return source.slice(start, index);
-}
-function scanIdentifier() {
-    var start, id, type;
-    start = index; // Backslash (U+005C) starts an escaped character.
-    id = source.charCodeAt(index) === 0x5C ? getEscapedIdentifier() : getIdentifier(); // There is no keyword or literal with only one character.
-    // Thus, it must be an identifier.
-    if (id.length === 1) type = TokenIdentifier;
-    else if (keywords.hasOwnProperty(id)) // eslint-disable-line no-prototype-builtins
-    type = TokenKeyword;
-    else if (id === "null") type = TokenNullLiteral;
-    else if (id === "true" || id === "false") type = TokenBooleanLiteral;
-    else type = TokenIdentifier;
-    return {
-        type: type,
-        value: id,
-        start: start,
-        end: index
-    };
-} // 7.7 Punctuators
-function scanPunctuator() {
-    var start = index, code = source.charCodeAt(index), code2, ch1 = source[index], ch2, ch3, ch4;
-    switch(code){
-        // Check for most common single-character punctuators.
-        case 0x2E:
-        case 0x28:
-        case 0x29:
-        case 0x3B:
-        case 0x2C:
-        case 0x7B:
-        case 0x7D:
-        case 0x5B:
-        case 0x5D:
-        case 0x3A:
-        case 0x3F:
-        case 0x7E:
-            // ~
-            ++index;
-            return {
-                type: TokenPunctuator,
-                value: String.fromCharCode(code),
-                start: start,
-                end: index
-            };
-        default:
-            code2 = source.charCodeAt(index + 1); // '=' (U+003D) marks an assignment or comparison operator.
-            if (code2 === 0x3D) switch(code){
-                case 0x2B:
-                case 0x2D:
-                case 0x2F:
-                case 0x3C:
-                case 0x3E:
-                case 0x5E:
-                case 0x7C:
-                case 0x25:
-                case 0x26:
-                case 0x2A:
-                    // *
-                    index += 2;
-                    return {
-                        type: TokenPunctuator,
-                        value: String.fromCharCode(code) + String.fromCharCode(code2),
-                        start: start,
-                        end: index
-                    };
-                case 0x21:
-                case 0x3D:
-                    // =
-                    index += 2; // !== and ===
-                    if (source.charCodeAt(index) === 0x3D) ++index;
-                    return {
-                        type: TokenPunctuator,
-                        value: source.slice(start, index),
-                        start: start,
-                        end: index
-                    };
-            }
-    } // 4-character punctuator: >>>=
-    ch4 = source.substr(index, 4);
-    if (ch4 === ">>>=") {
-        index += 4;
-        return {
-            type: TokenPunctuator,
-            value: ch4,
-            start: start,
-            end: index
-        };
-    } // 3-character punctuators: === !== >>> <<= >>=
-    ch3 = ch4.substr(0, 3);
-    if (ch3 === ">>>" || ch3 === "<<=" || ch3 === ">>=") {
-        index += 3;
-        return {
-            type: TokenPunctuator,
-            value: ch3,
-            start: start,
-            end: index
-        };
-    } // Other 2-character punctuators: ++ -- << >> && ||
-    ch2 = ch3.substr(0, 2);
-    if (ch1 === ch2[1] && "+-<>&|".indexOf(ch1) >= 0 || ch2 === "=>") {
-        index += 2;
-        return {
-            type: TokenPunctuator,
-            value: ch2,
-            start: start,
-            end: index
-        };
-    }
-    if (ch2 === "//") throwError({}, MessageUnexpectedToken, ILLEGAL);
-     // 1-character punctuators: < > = ! + - * % & | ^ /
-    if ("<>=!+-*%&|^/".indexOf(ch1) >= 0) {
-        ++index;
-        return {
-            type: TokenPunctuator,
-            value: ch1,
-            start: start,
-            end: index
-        };
-    }
-    throwError({}, MessageUnexpectedToken, ILLEGAL);
-} // 7.8.3 Numeric Literals
-function scanHexLiteral(start) {
-    let number = "";
-    while(index < length){
-        if (!isHexDigit(source[index])) break;
-        number += source[index++];
-    }
-    if (number.length === 0) throwError({}, MessageUnexpectedToken, ILLEGAL);
-    if (isIdentifierStart(source.charCodeAt(index))) throwError({}, MessageUnexpectedToken, ILLEGAL);
-    return {
-        type: TokenNumericLiteral,
-        value: parseInt("0x" + number, 16),
-        start: start,
-        end: index
-    };
-}
-function scanOctalLiteral(start) {
-    let number = "0" + source[index++];
-    while(index < length){
-        if (!isOctalDigit(source[index])) break;
-        number += source[index++];
-    }
-    if (isIdentifierStart(source.charCodeAt(index)) || isDecimalDigit(source.charCodeAt(index))) throwError({}, MessageUnexpectedToken, ILLEGAL);
-    return {
-        type: TokenNumericLiteral,
-        value: parseInt(number, 8),
-        octal: true,
-        start: start,
-        end: index
-    };
-}
-function scanNumericLiteral() {
-    var number, start, ch;
-    ch = source[index];
-    assert(isDecimalDigit(ch.charCodeAt(0)) || ch === ".", "Numeric literal must start with a decimal digit or a decimal point");
-    start = index;
-    number = "";
-    if (ch !== ".") {
-        number = source[index++];
-        ch = source[index]; // Hex number starts with '0x'.
-        // Octal number starts with '0'.
-        if (number === "0") {
-            if (ch === "x" || ch === "X") {
-                ++index;
-                return scanHexLiteral(start);
-            }
-            if (isOctalDigit(ch)) return scanOctalLiteral(start);
-             // decimal number starts with '0' such as '09' is illegal.
-            if (ch && isDecimalDigit(ch.charCodeAt(0))) throwError({}, MessageUnexpectedToken, ILLEGAL);
-        }
-        while(isDecimalDigit(source.charCodeAt(index)))number += source[index++];
-        ch = source[index];
-    }
-    if (ch === ".") {
-        number += source[index++];
-        while(isDecimalDigit(source.charCodeAt(index)))number += source[index++];
-        ch = source[index];
-    }
-    if (ch === "e" || ch === "E") {
-        number += source[index++];
-        ch = source[index];
-        if (ch === "+" || ch === "-") number += source[index++];
-        if (isDecimalDigit(source.charCodeAt(index))) while(isDecimalDigit(source.charCodeAt(index)))number += source[index++];
-        else throwError({}, MessageUnexpectedToken, ILLEGAL);
-    }
-    if (isIdentifierStart(source.charCodeAt(index))) throwError({}, MessageUnexpectedToken, ILLEGAL);
-    return {
-        type: TokenNumericLiteral,
-        value: parseFloat(number),
-        start: start,
-        end: index
-    };
-} // 7.8.4 String Literals
-function scanStringLiteral() {
-    var str = "", quote, start, ch, code, octal = false;
-    quote = source[index];
-    assert(quote === "'" || quote === '"', "String literal must starts with a quote");
-    start = index;
-    ++index;
-    while(index < length){
-        ch = source[index++];
-        if (ch === quote) {
-            quote = "";
-            break;
-        } else if (ch === "\\") {
-            ch = source[index++];
-            if (!ch || !isLineTerminator(ch.charCodeAt(0))) switch(ch){
-                case "u":
-                case "x":
-                    if (source[index] === "{") {
-                        ++index;
-                        str += scanUnicodeCodePointEscape();
-                    } else str += scanHexEscape(ch);
-                    break;
-                case "n":
-                    str += "\n";
-                    break;
-                case "r":
-                    str += "\r";
-                    break;
-                case "t":
-                    str += "	";
-                    break;
-                case "b":
-                    str += "\b";
-                    break;
-                case "f":
-                    str += "\f";
-                    break;
-                case "v":
-                    str += "\v";
-                    break;
-                default:
-                    if (isOctalDigit(ch)) {
-                        code = "01234567".indexOf(ch); // \0 is not octal escape sequence
-                        if (code !== 0) octal = true;
-                        if (index < length && isOctalDigit(source[index])) {
-                            octal = true;
-                            code = code * 8 + "01234567".indexOf(source[index++]); // 3 digits are only allowed when string starts
-                            // with 0, 1, 2, 3
-                            if ("0123".indexOf(ch) >= 0 && index < length && isOctalDigit(source[index])) code = code * 8 + "01234567".indexOf(source[index++]);
-                        }
-                        str += String.fromCharCode(code);
-                    } else str += ch;
-                    break;
-            }
-            else if (ch === "\r" && source[index] === "\n") ++index;
-        } else if (isLineTerminator(ch.charCodeAt(0))) break;
-        else str += ch;
-    }
-    if (quote !== "") throwError({}, MessageUnexpectedToken, ILLEGAL);
-    return {
-        type: TokenStringLiteral,
-        value: str,
-        octal: octal,
-        start: start,
-        end: index
-    };
-}
-function testRegExp(pattern, flags) {
-    let tmp = pattern;
-    if (flags.indexOf("u") >= 0) // Replace each astral symbol and every Unicode code point
-    // escape sequence with a single ASCII symbol to avoid throwing on
-    // regular expressions that are only valid in combination with the
-    // `/u` flag.
-    // Note: replacing with the ASCII symbol `x` might cause false
-    // negatives in unlikely scenarios. For example, `[\u{61}-b]` is a
-    // perfectly valid pattern that is equivalent to `[a-b]`, but it
-    // would be replaced by `[x-b]` which throws an error.
-    tmp = tmp.replace(/\\u\{([0-9a-fA-F]+)\}/g, ($0, $1)=>{
-        if (parseInt($1, 16) <= 0x10FFFF) return "x";
-        throwError({}, MessageInvalidRegExp);
-    }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, "x");
-     // First, detect invalid regular expressions.
-    try {
-        new RegExp(tmp);
-    } catch (e) {
-        throwError({}, MessageInvalidRegExp);
-    } // Return a regular expression object for this pattern-flag pair, or
-    // `null` in case the current environment doesn't support the flags it
-    // uses.
-    try {
-        return new RegExp(pattern, flags);
-    } catch (exception) {
-        return null;
-    }
-}
-function scanRegExpBody() {
-    var ch, str, classMarker, terminated, body;
-    ch = source[index];
-    assert(ch === "/", "Regular expression literal must start with a slash");
-    str = source[index++];
-    classMarker = false;
-    terminated = false;
-    while(index < length){
-        ch = source[index++];
-        str += ch;
-        if (ch === "\\") {
-            ch = source[index++]; // ECMA-262 7.8.5
-            if (isLineTerminator(ch.charCodeAt(0))) throwError({}, MessageUnterminatedRegExp);
-            str += ch;
-        } else if (isLineTerminator(ch.charCodeAt(0))) throwError({}, MessageUnterminatedRegExp);
-        else if (classMarker) {
-            if (ch === "]") classMarker = false;
-        } else {
-            if (ch === "/") {
-                terminated = true;
-                break;
-            } else if (ch === "[") classMarker = true;
-        }
-    }
-    if (!terminated) throwError({}, MessageUnterminatedRegExp);
-     // Exclude leading and trailing slash.
-    body = str.substr(1, str.length - 2);
-    return {
-        value: body,
-        literal: str
-    };
-}
-function scanRegExpFlags() {
-    var ch, str, flags;
-    str = "";
-    flags = "";
-    while(index < length){
-        ch = source[index];
-        if (!isIdentifierPart(ch.charCodeAt(0))) break;
-        ++index;
-        if (ch === "\\" && index < length) throwError({}, MessageUnexpectedToken, ILLEGAL);
-        else {
-            flags += ch;
-            str += ch;
-        }
-    }
-    if (flags.search(/[^gimuy]/g) >= 0) throwError({}, MessageInvalidRegExp, flags);
-    return {
-        value: flags,
-        literal: str
-    };
-}
-function scanRegExp() {
-    var start, body, flags, value;
-    lookahead = null;
-    skipComment();
-    start = index;
-    body = scanRegExpBody();
-    flags = scanRegExpFlags();
-    value = testRegExp(body.value, flags.value);
-    return {
-        literal: body.literal + flags.literal,
-        value: value,
-        regex: {
-            pattern: body.value,
-            flags: flags.value
-        },
-        start: start,
-        end: index
-    };
-}
-function isIdentifierName(token) {
-    return token.type === TokenIdentifier || token.type === TokenKeyword || token.type === TokenBooleanLiteral || token.type === TokenNullLiteral;
-}
-function advance() {
-    skipComment();
-    if (index >= length) return {
-        type: TokenEOF,
-        start: index,
-        end: index
-    };
-    const ch = source.charCodeAt(index);
-    if (isIdentifierStart(ch)) return scanIdentifier();
-     // Very common: ( and ) and ;
-    if (ch === 0x28 || ch === 0x29 || ch === 0x3B) return scanPunctuator();
-     // String literal starts with single quote (U+0027) or double quote (U+0022).
-    if (ch === 0x27 || ch === 0x22) return scanStringLiteral();
-     // Dot (.) U+002E can also start a floating-point number, hence the need
-    // to check the next character.
-    if (ch === 0x2E) {
-        if (isDecimalDigit(source.charCodeAt(index + 1))) return scanNumericLiteral();
-        return scanPunctuator();
-    }
-    if (isDecimalDigit(ch)) return scanNumericLiteral();
-    return scanPunctuator();
-}
-function lex() {
-    const token = lookahead;
-    index = token.end;
-    lookahead = advance();
-    index = token.end;
-    return token;
-}
-function peek() {
-    const pos = index;
-    lookahead = advance();
-    index = pos;
-}
-function finishArrayExpression(elements) {
-    const node = new ASTNode(SyntaxArrayExpression);
-    node.elements = elements;
-    return node;
-}
-function finishBinaryExpression(operator, left, right) {
-    const node = new ASTNode(operator === "||" || operator === "&&" ? SyntaxLogicalExpression : SyntaxBinaryExpression);
-    node.operator = operator;
-    node.left = left;
-    node.right = right;
-    return node;
-}
-function finishCallExpression(callee, args) {
-    const node = new ASTNode(SyntaxCallExpression);
-    node.callee = callee;
-    node.arguments = args;
-    return node;
-}
-function finishConditionalExpression(test, consequent, alternate) {
-    const node = new ASTNode(SyntaxConditionalExpression);
-    node.test = test;
-    node.consequent = consequent;
-    node.alternate = alternate;
-    return node;
-}
-function finishIdentifier(name) {
-    const node = new ASTNode(SyntaxIdentifier);
-    node.name = name;
-    return node;
-}
-function finishLiteral(token) {
-    const node = new ASTNode(SyntaxLiteral);
-    node.value = token.value;
-    node.raw = source.slice(token.start, token.end);
-    if (token.regex) {
-        if (node.raw === "//") node.raw = "/(?:)/";
-        node.regex = token.regex;
-    }
-    return node;
-}
-function finishMemberExpression(accessor, object, property) {
-    const node = new ASTNode(SyntaxMemberExpression);
-    node.computed = accessor === "[";
-    node.object = object;
-    node.property = property;
-    if (!node.computed) property.member = true;
-    return node;
-}
-function finishObjectExpression(properties) {
-    const node = new ASTNode(SyntaxObjectExpression);
-    node.properties = properties;
-    return node;
-}
-function finishProperty(kind, key, value) {
-    const node = new ASTNode(SyntaxProperty);
-    node.key = key;
-    node.value = value;
-    node.kind = kind;
-    return node;
-}
-function finishUnaryExpression(operator, argument) {
-    const node = new ASTNode(SyntaxUnaryExpression);
-    node.operator = operator;
-    node.argument = argument;
-    node.prefix = true;
-    return node;
-} // Throw an exception
-function throwError(token, messageFormat) {
-    var error, args = Array.prototype.slice.call(arguments, 2), msg = messageFormat.replace(/%(\d)/g, (whole, index)=>{
-        assert(index < args.length, "Message reference must be in range");
-        return args[index];
-    });
-    error = new Error(msg);
-    error.index = index;
-    error.description = msg;
-    throw error;
-} // Throw an exception because of the token.
-function throwUnexpected(token) {
-    if (token.type === TokenEOF) throwError(token, MessageUnexpectedEOS);
-    if (token.type === TokenNumericLiteral) throwError(token, MessageUnexpectedNumber);
-    if (token.type === TokenStringLiteral) throwError(token, MessageUnexpectedString);
-    if (token.type === TokenIdentifier) throwError(token, MessageUnexpectedIdentifier);
-    if (token.type === TokenKeyword) throwError(token, MessageUnexpectedReserved);
-     // BooleanLiteral, NullLiteral, or Punctuator.
-    throwError(token, MessageUnexpectedToken, token.value);
-} // Expect the next token to match the specified punctuator.
-// If not, an exception will be thrown.
-function expect(value) {
-    const token = lex();
-    if (token.type !== TokenPunctuator || token.value !== value) throwUnexpected(token);
-} // Return true if the next token matches the specified punctuator.
-function match(value) {
-    return lookahead.type === TokenPunctuator && lookahead.value === value;
-} // Return true if the next token matches the specified keyword
-function matchKeyword(keyword) {
-    return lookahead.type === TokenKeyword && lookahead.value === keyword;
-} // 11.1.4 Array Initialiser
-function parseArrayInitialiser() {
-    const elements = [];
-    index = lookahead.start;
-    expect("[");
-    while(!match("]"))if (match(",")) {
-        lex();
-        elements.push(null);
-    } else {
-        elements.push(parseConditionalExpression());
-        if (!match("]")) expect(",");
-    }
-    lex();
-    return finishArrayExpression(elements);
-} // 11.1.5 Object Initialiser
-function parseObjectPropertyKey() {
-    index = lookahead.start;
-    const token = lex(); // Note: This function is called only from parseObjectProperty(), where
-    // EOF and Punctuator tokens are already filtered out.
-    if (token.type === TokenStringLiteral || token.type === TokenNumericLiteral) {
-        if (token.octal) throwError(token, MessageStrictOctalLiteral);
-        return finishLiteral(token);
-    }
-    return finishIdentifier(token.value);
-}
-function parseObjectProperty() {
-    var token, key, id, value;
-    index = lookahead.start;
-    token = lookahead;
-    if (token.type === TokenIdentifier) {
-        id = parseObjectPropertyKey();
-        expect(":");
-        value = parseConditionalExpression();
-        return finishProperty("init", id, value);
-    }
-    if (token.type === TokenEOF || token.type === TokenPunctuator) throwUnexpected(token);
-    else {
-        key = parseObjectPropertyKey();
-        expect(":");
-        value = parseConditionalExpression();
-        return finishProperty("init", key, value);
-    }
-}
-function parseObjectInitialiser() {
-    var properties = [], property, name, key, map = {}, toString = String;
-    index = lookahead.start;
-    expect("{");
-    while(!match("}")){
-        property = parseObjectProperty();
-        if (property.key.type === SyntaxIdentifier) name = property.key.name;
-        else name = toString(property.key.value);
-        key = "$" + name;
-        if (Object.prototype.hasOwnProperty.call(map, key)) throwError({}, MessageStrictDuplicateProperty);
-        else map[key] = true;
-        properties.push(property);
-        if (!match("}")) expect(",");
-    }
-    expect("}");
-    return finishObjectExpression(properties);
-} // 11.1.6 The Grouping Operator
-function parseGroupExpression() {
-    expect("(");
-    const expr = parseExpression();
-    expect(")");
-    return expr;
-} // 11.1 Primary Expressions
-const legalKeywords = {
-    "if": 1
-};
-function parsePrimaryExpression() {
-    var type, token, expr;
-    if (match("(")) return parseGroupExpression();
-    if (match("[")) return parseArrayInitialiser();
-    if (match("{")) return parseObjectInitialiser();
-    type = lookahead.type;
-    index = lookahead.start;
-    if (type === TokenIdentifier || legalKeywords[lookahead.value]) expr = finishIdentifier(lex().value);
-    else if (type === TokenStringLiteral || type === TokenNumericLiteral) {
-        if (lookahead.octal) throwError(lookahead, MessageStrictOctalLiteral);
-        expr = finishLiteral(lex());
-    } else if (type === TokenKeyword) throw new Error(DISABLED);
-    else if (type === TokenBooleanLiteral) {
-        token = lex();
-        token.value = token.value === "true";
-        expr = finishLiteral(token);
-    } else if (type === TokenNullLiteral) {
-        token = lex();
-        token.value = null;
-        expr = finishLiteral(token);
-    } else if (match("/") || match("/=")) {
-        expr = finishLiteral(scanRegExp());
-        peek();
-    } else throwUnexpected(lex());
-    return expr;
-} // 11.2 Left-Hand-Side Expressions
-function parseArguments() {
-    const args = [];
-    expect("(");
-    if (!match(")")) while(index < length){
-        args.push(parseConditionalExpression());
-        if (match(")")) break;
-        expect(",");
-    }
-    expect(")");
-    return args;
-}
-function parseNonComputedProperty() {
-    index = lookahead.start;
-    const token = lex();
-    if (!isIdentifierName(token)) throwUnexpected(token);
-    return finishIdentifier(token.value);
-}
-function parseNonComputedMember() {
-    expect(".");
-    return parseNonComputedProperty();
-}
-function parseComputedMember() {
-    expect("[");
-    const expr = parseExpression();
-    expect("]");
-    return expr;
-}
-function parseLeftHandSideExpressionAllowCall() {
-    var expr, args, property;
-    expr = parsePrimaryExpression();
-    for(;;){
-        if (match(".")) {
-            property = parseNonComputedMember();
-            expr = finishMemberExpression(".", expr, property);
-        } else if (match("(")) {
-            args = parseArguments();
-            expr = finishCallExpression(expr, args);
-        } else if (match("[")) {
-            property = parseComputedMember();
-            expr = finishMemberExpression("[", expr, property);
-        } else break;
-    }
-    return expr;
-} // 11.3 Postfix Expressions
-function parsePostfixExpression() {
-    const expr = parseLeftHandSideExpressionAllowCall();
-    if (lookahead.type === TokenPunctuator) {
-        if (match("++") || match("--")) throw new Error(DISABLED);
-    }
-    return expr;
-} // 11.4 Unary Operators
-function parseUnaryExpression() {
-    var token, expr;
-    if (lookahead.type !== TokenPunctuator && lookahead.type !== TokenKeyword) expr = parsePostfixExpression();
-    else if (match("++") || match("--")) throw new Error(DISABLED);
-    else if (match("+") || match("-") || match("~") || match("!")) {
-        token = lex();
-        expr = parseUnaryExpression();
-        expr = finishUnaryExpression(token.value, expr);
-    } else if (matchKeyword("delete") || matchKeyword("void") || matchKeyword("typeof")) throw new Error(DISABLED);
-    else expr = parsePostfixExpression();
-    return expr;
-}
-function binaryPrecedence(token) {
-    let prec = 0;
-    if (token.type !== TokenPunctuator && token.type !== TokenKeyword) return 0;
-    switch(token.value){
-        case "||":
-            prec = 1;
-            break;
-        case "&&":
-            prec = 2;
-            break;
-        case "|":
-            prec = 3;
-            break;
-        case "^":
-            prec = 4;
-            break;
-        case "&":
-            prec = 5;
-            break;
-        case "==":
-        case "!=":
-        case "===":
-        case "!==":
-            prec = 6;
-            break;
-        case "<":
-        case ">":
-        case "<=":
-        case ">=":
-        case "instanceof":
-        case "in":
-            prec = 7;
-            break;
-        case "<<":
-        case ">>":
-        case ">>>":
-            prec = 8;
-            break;
-        case "+":
-        case "-":
-            prec = 9;
-            break;
-        case "*":
-        case "/":
-        case "%":
-            prec = 11;
-            break;
-    }
-    return prec;
-} // 11.5 Multiplicative Operators
-// 11.6 Additive Operators
-// 11.7 Bitwise Shift Operators
-// 11.8 Relational Operators
-// 11.9 Equality Operators
-// 11.10 Binary Bitwise Operators
-// 11.11 Binary Logical Operators
-function parseBinaryExpression() {
-    var marker, markers, expr, token, prec, stack, right, operator, left, i;
-    marker = lookahead;
-    left = parseUnaryExpression();
-    token = lookahead;
-    prec = binaryPrecedence(token);
-    if (prec === 0) return left;
-    token.prec = prec;
-    lex();
-    markers = [
-        marker,
-        lookahead
-    ];
-    right = parseUnaryExpression();
-    stack = [
-        left,
-        token,
-        right
-    ];
-    while((prec = binaryPrecedence(lookahead)) > 0){
-        // Reduce: make a binary expression from the three topmost entries.
-        while(stack.length > 2 && prec <= stack[stack.length - 2].prec){
-            right = stack.pop();
-            operator = stack.pop().value;
-            left = stack.pop();
-            markers.pop();
-            expr = finishBinaryExpression(operator, left, right);
-            stack.push(expr);
-        } // Shift.
-        token = lex();
-        token.prec = prec;
-        stack.push(token);
-        markers.push(lookahead);
-        expr = parseUnaryExpression();
-        stack.push(expr);
-    } // Final reduce to clean-up the stack.
-    i = stack.length - 1;
-    expr = stack[i];
-    markers.pop();
-    while(i > 1){
-        markers.pop();
-        expr = finishBinaryExpression(stack[i - 1].value, stack[i - 2], expr);
-        i -= 2;
-    }
-    return expr;
-} // 11.12 Conditional Operator
-function parseConditionalExpression() {
-    var expr, consequent, alternate;
-    expr = parseBinaryExpression();
-    if (match("?")) {
-        lex();
-        consequent = parseConditionalExpression();
-        expect(":");
-        alternate = parseConditionalExpression();
-        expr = finishConditionalExpression(expr, consequent, alternate);
-    }
-    return expr;
-} // 11.14 Comma Operator
-function parseExpression() {
-    const expr = parseConditionalExpression();
-    if (match(",")) throw new Error(DISABLED); // no sequence expressions
-    return expr;
-}
-function parser(code) {
-    source = code;
-    index = 0;
-    length = source.length;
-    lookahead = null;
-    peek();
-    const expr = parseExpression();
-    if (lookahead.type !== TokenEOF) throw new Error("Unexpect token after expression.");
-    return expr;
-}
-var Constants = {
-    NaN: "NaN",
-    E: "Math.E",
-    LN2: "Math.LN2",
-    LN10: "Math.LN10",
-    LOG2E: "Math.LOG2E",
-    LOG10E: "Math.LOG10E",
-    PI: "Math.PI",
-    SQRT1_2: "Math.SQRT1_2",
-    SQRT2: "Math.SQRT2",
-    MIN_VALUE: "Number.MIN_VALUE",
-    MAX_VALUE: "Number.MAX_VALUE"
-};
-function Functions(codegen) {
-    function fncall(name, args, cast, type) {
-        let obj = codegen(args[0]);
-        if (cast) {
-            obj = cast + "(" + obj + ")";
-            if (cast.lastIndexOf("new ", 0) === 0) obj = "(" + obj + ")";
-        }
-        return obj + "." + name + (type < 0 ? "" : type === 0 ? "()" : "(" + args.slice(1).map(codegen).join(",") + ")");
-    }
-    function fn(name, cast, type) {
-        return (args)=>fncall(name, args, cast, type);
-    }
-    const DATE = "new Date", STRING = "String", REGEXP = "RegExp";
-    return {
-        // MATH functions
-        isNaN: "Number.isNaN",
-        isFinite: "Number.isFinite",
-        abs: "Math.abs",
-        acos: "Math.acos",
-        asin: "Math.asin",
-        atan: "Math.atan",
-        atan2: "Math.atan2",
-        ceil: "Math.ceil",
-        cos: "Math.cos",
-        exp: "Math.exp",
-        floor: "Math.floor",
-        log: "Math.log",
-        max: "Math.max",
-        min: "Math.min",
-        pow: "Math.pow",
-        random: "Math.random",
-        round: "Math.round",
-        sin: "Math.sin",
-        sqrt: "Math.sqrt",
-        tan: "Math.tan",
-        clamp: function(args) {
-            if (args.length < 3) (0, _vegaUtil.error)("Missing arguments to clamp function.");
-            if (args.length > 3) (0, _vegaUtil.error)("Too many arguments to clamp function.");
-            const a = args.map(codegen);
-            return "Math.max(" + a[1] + ", Math.min(" + a[2] + "," + a[0] + "))";
-        },
-        // DATE functions
-        now: "Date.now",
-        utc: "Date.UTC",
-        datetime: DATE,
-        date: fn("getDate", DATE, 0),
-        day: fn("getDay", DATE, 0),
-        year: fn("getFullYear", DATE, 0),
-        month: fn("getMonth", DATE, 0),
-        hours: fn("getHours", DATE, 0),
-        minutes: fn("getMinutes", DATE, 0),
-        seconds: fn("getSeconds", DATE, 0),
-        milliseconds: fn("getMilliseconds", DATE, 0),
-        time: fn("getTime", DATE, 0),
-        timezoneoffset: fn("getTimezoneOffset", DATE, 0),
-        utcdate: fn("getUTCDate", DATE, 0),
-        utcday: fn("getUTCDay", DATE, 0),
-        utcyear: fn("getUTCFullYear", DATE, 0),
-        utcmonth: fn("getUTCMonth", DATE, 0),
-        utchours: fn("getUTCHours", DATE, 0),
-        utcminutes: fn("getUTCMinutes", DATE, 0),
-        utcseconds: fn("getUTCSeconds", DATE, 0),
-        utcmilliseconds: fn("getUTCMilliseconds", DATE, 0),
-        // sequence functions
-        length: fn("length", null, -1),
-        // STRING functions
-        parseFloat: "parseFloat",
-        parseInt: "parseInt",
-        upper: fn("toUpperCase", STRING, 0),
-        lower: fn("toLowerCase", STRING, 0),
-        substring: fn("substring", STRING),
-        split: fn("split", STRING),
-        trim: fn("trim", STRING, 0),
-        // REGEXP functions
-        regexp: REGEXP,
-        test: fn("test", REGEXP),
-        // Control Flow functions
-        if: function(args) {
-            if (args.length < 3) (0, _vegaUtil.error)("Missing arguments to if function.");
-            if (args.length > 3) (0, _vegaUtil.error)("Too many arguments to if function.");
-            const a = args.map(codegen);
-            return "(" + a[0] + "?" + a[1] + ":" + a[2] + ")";
-        }
-    };
-}
-function stripQuotes(s) {
-    const n = s && s.length - 1;
-    return n && (s[0] === '"' && s[n] === '"' || s[0] === "'" && s[n] === "'") ? s.slice(1, -1) : s;
-}
-function codegen(opt) {
-    opt = opt || {};
-    const allowed = opt.allowed ? (0, _vegaUtil.toSet)(opt.allowed) : {}, forbidden = opt.forbidden ? (0, _vegaUtil.toSet)(opt.forbidden) : {}, constants = opt.constants || Constants, functions = (opt.functions || Functions)(visit), globalvar = opt.globalvar, fieldvar = opt.fieldvar, outputGlobal = (0, _vegaUtil.isFunction)(globalvar) ? globalvar : (id)=>`${globalvar}["${id}"]`;
-    let globals = {}, fields = {}, memberDepth = 0;
-    function visit(ast) {
-        if ((0, _vegaUtil.isString)(ast)) return ast;
-        const generator = Generators[ast.type];
-        if (generator == null) (0, _vegaUtil.error)("Unsupported type: " + ast.type);
-        return generator(ast);
-    }
-    const Generators = {
-        Literal: (n)=>n.raw,
-        Identifier: (n)=>{
-            const id = n.name;
-            if (memberDepth > 0) return id;
-            else if ((0, _vegaUtil.hasOwnProperty)(forbidden, id)) return (0, _vegaUtil.error)("Illegal identifier: " + id);
-            else if ((0, _vegaUtil.hasOwnProperty)(constants, id)) return constants[id];
-            else if ((0, _vegaUtil.hasOwnProperty)(allowed, id)) return id;
-            else {
-                globals[id] = 1;
-                return outputGlobal(id);
-            }
-        },
-        MemberExpression: (n)=>{
-            const d = !n.computed, o = visit(n.object);
-            if (d) memberDepth += 1;
-            const p = visit(n.property);
-            if (o === fieldvar) // strip quotes to sanitize field name (#1653)
-            fields[stripQuotes(p)] = 1;
-            if (d) memberDepth -= 1;
-            return o + (d ? "." + p : "[" + p + "]");
-        },
-        CallExpression: (n)=>{
-            if (n.callee.type !== "Identifier") (0, _vegaUtil.error)("Illegal callee type: " + n.callee.type);
-            const callee = n.callee.name, args = n.arguments, fn = (0, _vegaUtil.hasOwnProperty)(functions, callee) && functions[callee];
-            if (!fn) (0, _vegaUtil.error)("Unrecognized function: " + callee);
-            return (0, _vegaUtil.isFunction)(fn) ? fn(args) : fn + "(" + args.map(visit).join(",") + ")";
-        },
-        ArrayExpression: (n)=>"[" + n.elements.map(visit).join(",") + "]",
-        BinaryExpression: (n)=>"(" + visit(n.left) + " " + n.operator + " " + visit(n.right) + ")",
-        UnaryExpression: (n)=>"(" + n.operator + visit(n.argument) + ")",
-        ConditionalExpression: (n)=>"(" + visit(n.test) + "?" + visit(n.consequent) + ":" + visit(n.alternate) + ")",
-        LogicalExpression: (n)=>"(" + visit(n.left) + n.operator + visit(n.right) + ")",
-        ObjectExpression: (n)=>"{" + n.properties.map(visit).join(",") + "}",
-        Property: (n)=>{
-            memberDepth += 1;
-            const k = visit(n.key);
-            memberDepth -= 1;
-            return k + ":" + visit(n.value);
-        }
-    };
-    function codegen(ast) {
-        const result = {
-            code: visit(ast),
-            globals: Object.keys(globals),
-            fields: Object.keys(fields)
-        };
-        globals = {};
-        fields = {};
-        return result;
-    }
-    codegen.functions = functions;
-    codegen.constants = constants;
-    return codegen;
-}
-
-},{"vega-util":"bApja","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"k7ppL":[function(require,module,exports) {
+},{"internmap":"3ULAv","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"k7ppL":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "context", ()=>context);
@@ -43929,1398 +45370,10 @@ function parse(spec, config, options) {
     return parseView(spec, new Scope(config, options)).toRuntime();
 }
 
-},{"vega-util":"bApja","vega-functions":"iuqsd","vega-event-selector":"fFzhr","vega-scale":"bEydG","vega-dataflow":"3NitK","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"fFzhr":[function(require,module,exports) {
+},{"vega-util":"bApja","vega-functions":"iuqsd","vega-event-selector":"gXMNx","vega-scale":"bEydG","vega-dataflow":"3NitK","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"gXMNx":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "parseSelector", ()=>eventSelector);
-const VIEW = "view", LBRACK = "[", RBRACK = "]", LBRACE = "{", RBRACE = "}", COLON = ":", COMMA = ",", NAME = "@", GT = ">", ILLEGAL = /[[\]{}]/, DEFAULT_MARKS = {
-    "*": 1,
-    arc: 1,
-    area: 1,
-    group: 1,
-    image: 1,
-    line: 1,
-    path: 1,
-    rect: 1,
-    rule: 1,
-    shape: 1,
-    symbol: 1,
-    text: 1,
-    trail: 1
-};
-let DEFAULT_SOURCE, MARKS;
-/**
- * Parse an event selector string.
- * Returns an array of event stream definitions.
- */ function eventSelector(selector, source, marks) {
-    DEFAULT_SOURCE = source || VIEW;
-    MARKS = marks || DEFAULT_MARKS;
-    return parseMerge(selector.trim()).map(parseSelector);
-}
-function isMarkType(type) {
-    return MARKS[type];
-}
-function find(s, i, endChar, pushChar, popChar) {
-    const n = s.length;
-    let count = 0, c;
-    for(; i < n; ++i){
-        c = s[i];
-        if (!count && c === endChar) return i;
-        else if (popChar && popChar.indexOf(c) >= 0) --count;
-        else if (pushChar && pushChar.indexOf(c) >= 0) ++count;
-    }
-    return i;
-}
-function parseMerge(s) {
-    const output = [], n = s.length;
-    let start = 0, i = 0;
-    while(i < n){
-        i = find(s, i, COMMA, LBRACK + LBRACE, RBRACK + RBRACE);
-        output.push(s.substring(start, i).trim());
-        start = ++i;
-    }
-    if (output.length === 0) throw "Empty event selector: " + s;
-    return output;
-}
-function parseSelector(s) {
-    return s[0] === "[" ? parseBetween(s) : parseStream(s);
-}
-function parseBetween(s) {
-    const n = s.length;
-    let i = 1, b;
-    i = find(s, i, RBRACK, LBRACK, RBRACK);
-    if (i === n) throw "Empty between selector: " + s;
-    b = parseMerge(s.substring(1, i));
-    if (b.length !== 2) throw "Between selector must have two elements: " + s;
-    s = s.slice(i + 1).trim();
-    if (s[0] !== GT) throw "Expected '>' after between selector: " + s;
-    b = b.map(parseSelector);
-    const stream = parseSelector(s.slice(1).trim());
-    if (stream.between) return {
-        between: b,
-        stream: stream
-    };
-    else stream.between = b;
-    return stream;
-}
-function parseStream(s) {
-    const stream = {
-        source: DEFAULT_SOURCE
-    }, source = [];
-    let throttle = [
-        0,
-        0
-    ], markname = 0, start = 0, n = s.length, i = 0, j, filter; // extract throttle from end
-    if (s[n - 1] === RBRACE) {
-        i = s.lastIndexOf(LBRACE);
-        if (i >= 0) {
-            try {
-                throttle = parseThrottle(s.substring(i + 1, n - 1));
-            } catch (e) {
-                throw "Invalid throttle specification: " + s;
-            }
-            s = s.slice(0, i).trim();
-            n = s.length;
-        } else throw "Unmatched right brace: " + s;
-        i = 0;
-    }
-    if (!n) throw s; // set name flag based on first char
-    if (s[0] === NAME) markname = ++i; // extract first part of multi-part stream selector
-    j = find(s, i, COLON);
-    if (j < n) {
-        source.push(s.substring(start, j).trim());
-        start = i = ++j;
-    } // extract remaining part of stream selector
-    i = find(s, i, LBRACK);
-    if (i === n) source.push(s.substring(start, n).trim());
-    else {
-        source.push(s.substring(start, i).trim());
-        filter = [];
-        start = ++i;
-        if (start === n) throw "Unmatched left bracket: " + s;
-    } // extract filters
-    while(i < n){
-        i = find(s, i, RBRACK);
-        if (i === n) throw "Unmatched left bracket: " + s;
-        filter.push(s.substring(start, i).trim());
-        if (i < n - 1 && s[++i] !== LBRACK) throw "Expected left bracket: " + s;
-        start = ++i;
-    } // marshall event stream specification
-    if (!(n = source.length) || ILLEGAL.test(source[n - 1])) throw "Invalid event selector: " + s;
-    if (n > 1) {
-        stream.type = source[1];
-        if (markname) stream.markname = source[0].slice(1);
-        else if (isMarkType(source[0])) stream.marktype = source[0];
-        else stream.source = source[0];
-    } else stream.type = source[0];
-    if (stream.type.slice(-1) === "!") {
-        stream.consume = true;
-        stream.type = stream.type.slice(0, -1);
-    }
-    if (filter != null) stream.filter = filter;
-    if (throttle[0]) stream.throttle = throttle[0];
-    if (throttle[1]) stream.debounce = throttle[1];
-    return stream;
-}
-function parseThrottle(s) {
-    const a = s.split(COMMA);
-    if (!s.length || a.length > 2) throw s;
-    return a.map((_)=>{
-        const x = +_;
-        if (x !== x) throw s;
-        return x;
-    });
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"2l1no":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "ASTNode", ()=>ASTNode);
-parcelHelpers.export(exports, "ArrayExpression", ()=>ArrayExpression);
-parcelHelpers.export(exports, "BinaryExpression", ()=>BinaryExpression);
-parcelHelpers.export(exports, "CallExpression", ()=>CallExpression);
-parcelHelpers.export(exports, "ConditionalExpression", ()=>ConditionalExpression);
-parcelHelpers.export(exports, "Identifier", ()=>Identifier);
-parcelHelpers.export(exports, "Literal", ()=>Literal);
-parcelHelpers.export(exports, "LogicalExpression", ()=>LogicalExpression);
-parcelHelpers.export(exports, "MemberExpression", ()=>MemberExpression);
-parcelHelpers.export(exports, "ObjectExpression", ()=>ObjectExpression);
-parcelHelpers.export(exports, "Property", ()=>Property);
-parcelHelpers.export(exports, "RawCode", ()=>RawCode);
-parcelHelpers.export(exports, "UnaryExpression", ()=>UnaryExpression);
-parcelHelpers.export(exports, "codegen", ()=>codegen);
-parcelHelpers.export(exports, "constants", ()=>Constants);
-parcelHelpers.export(exports, "functions", ()=>Functions);
-parcelHelpers.export(exports, "parse", ()=>parser);
-var _vegaUtil = require("vega-util");
-const RawCode = "RawCode";
-const Literal = "Literal";
-const Property = "Property";
-const Identifier = "Identifier";
-const ArrayExpression = "ArrayExpression";
-const BinaryExpression = "BinaryExpression";
-const CallExpression = "CallExpression";
-const ConditionalExpression = "ConditionalExpression";
-const LogicalExpression = "LogicalExpression";
-const MemberExpression = "MemberExpression";
-const ObjectExpression = "ObjectExpression";
-const UnaryExpression = "UnaryExpression";
-function ASTNode(type) {
-    this.type = type;
-}
-ASTNode.prototype.visit = function(visitor) {
-    let c, i, n;
-    if (visitor(this)) return 1;
-    for(c = children(this), i = 0, n = c.length; i < n; ++i){
-        if (c[i].visit(visitor)) return 1;
-    }
-};
-function children(node) {
-    switch(node.type){
-        case ArrayExpression:
-            return node.elements;
-        case BinaryExpression:
-        case LogicalExpression:
-            return [
-                node.left,
-                node.right
-            ];
-        case CallExpression:
-            return [
-                node.callee
-            ].concat(node.arguments);
-        case ConditionalExpression:
-            return [
-                node.test,
-                node.consequent,
-                node.alternate
-            ];
-        case MemberExpression:
-            return [
-                node.object,
-                node.property
-            ];
-        case ObjectExpression:
-            return node.properties;
-        case Property:
-            return [
-                node.key,
-                node.value
-            ];
-        case UnaryExpression:
-            return [
-                node.argument
-            ];
-        case Identifier:
-        case Literal:
-        case RawCode:
-        default:
-            return [];
-    }
-}
-/*
-  The following expression parser is based on Esprima (http://esprima.org/).
-  Original header comment and license for Esprima is included here:
-
-  Copyright (C) 2013 Ariya Hidayat <ariya.hidayat@gmail.com>
-  Copyright (C) 2013 Thaddee Tyl <thaddee.tyl@gmail.com>
-  Copyright (C) 2013 Mathias Bynens <mathias@qiwi.be>
-  Copyright (C) 2012 Ariya Hidayat <ariya.hidayat@gmail.com>
-  Copyright (C) 2012 Mathias Bynens <mathias@qiwi.be>
-  Copyright (C) 2012 Joost-Wim Boekesteijn <joost-wim@boekesteijn.nl>
-  Copyright (C) 2012 Kris Kowal <kris.kowal@cixar.com>
-  Copyright (C) 2012 Yusuke Suzuki <utatane.tea@gmail.com>
-  Copyright (C) 2012 Arpad Borsos <arpad.borsos@googlemail.com>
-  Copyright (C) 2011 Ariya Hidayat <ariya.hidayat@gmail.com>
-
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions are met:
-
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-  ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
-  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/ var TokenName, source, index, length, lookahead;
-var TokenBooleanLiteral = 1, TokenEOF = 2, TokenIdentifier = 3, TokenKeyword = 4, TokenNullLiteral = 5, TokenNumericLiteral = 6, TokenPunctuator = 7, TokenStringLiteral = 8, TokenRegularExpression = 9;
-TokenName = {};
-TokenName[TokenBooleanLiteral] = "Boolean";
-TokenName[TokenEOF] = "<end>";
-TokenName[TokenIdentifier] = "Identifier";
-TokenName[TokenKeyword] = "Keyword";
-TokenName[TokenNullLiteral] = "Null";
-TokenName[TokenNumericLiteral] = "Numeric";
-TokenName[TokenPunctuator] = "Punctuator";
-TokenName[TokenStringLiteral] = "String";
-TokenName[TokenRegularExpression] = "RegularExpression";
-var SyntaxArrayExpression = "ArrayExpression", SyntaxBinaryExpression = "BinaryExpression", SyntaxCallExpression = "CallExpression", SyntaxConditionalExpression = "ConditionalExpression", SyntaxIdentifier = "Identifier", SyntaxLiteral = "Literal", SyntaxLogicalExpression = "LogicalExpression", SyntaxMemberExpression = "MemberExpression", SyntaxObjectExpression = "ObjectExpression", SyntaxProperty = "Property", SyntaxUnaryExpression = "UnaryExpression"; // Error messages should be identical to V8.
-var MessageUnexpectedToken = "Unexpected token %0", MessageUnexpectedNumber = "Unexpected number", MessageUnexpectedString = "Unexpected string", MessageUnexpectedIdentifier = "Unexpected identifier", MessageUnexpectedReserved = "Unexpected reserved word", MessageUnexpectedEOS = "Unexpected end of input", MessageInvalidRegExp = "Invalid regular expression", MessageUnterminatedRegExp = "Invalid regular expression: missing /", MessageStrictOctalLiteral = "Octal literals are not allowed in strict mode.", MessageStrictDuplicateProperty = "Duplicate data property in object literal not allowed in strict mode";
-var ILLEGAL = "ILLEGAL", DISABLED = "Disabled."; // See also tools/generate-unicode-regex.py.
-var RegexNonAsciiIdentifierStart = new RegExp("[\\xAA\\xB5\\xBA\\xC0-\\xD6\\xD8-\\xF6\\xF8-\\u02C1\\u02C6-\\u02D1\\u02E0-\\u02E4\\u02EC\\u02EE\\u0370-\\u0374\\u0376\\u0377\\u037A-\\u037D\\u037F\\u0386\\u0388-\\u038A\\u038C\\u038E-\\u03A1\\u03A3-\\u03F5\\u03F7-\\u0481\\u048A-\\u052F\\u0531-\\u0556\\u0559\\u0561-\\u0587\\u05D0-\\u05EA\\u05F0-\\u05F2\\u0620-\\u064A\\u066E\\u066F\\u0671-\\u06D3\\u06D5\\u06E5\\u06E6\\u06EE\\u06EF\\u06FA-\\u06FC\\u06FF\\u0710\\u0712-\\u072F\\u074D-\\u07A5\\u07B1\\u07CA-\\u07EA\\u07F4\\u07F5\\u07FA\\u0800-\\u0815\\u081A\\u0824\\u0828\\u0840-\\u0858\\u08A0-\\u08B2\\u0904-\\u0939\\u093D\\u0950\\u0958-\\u0961\\u0971-\\u0980\\u0985-\\u098C\\u098F\\u0990\\u0993-\\u09A8\\u09AA-\\u09B0\\u09B2\\u09B6-\\u09B9\\u09BD\\u09CE\\u09DC\\u09DD\\u09DF-\\u09E1\\u09F0\\u09F1\\u0A05-\\u0A0A\\u0A0F\\u0A10\\u0A13-\\u0A28\\u0A2A-\\u0A30\\u0A32\\u0A33\\u0A35\\u0A36\\u0A38\\u0A39\\u0A59-\\u0A5C\\u0A5E\\u0A72-\\u0A74\\u0A85-\\u0A8D\\u0A8F-\\u0A91\\u0A93-\\u0AA8\\u0AAA-\\u0AB0\\u0AB2\\u0AB3\\u0AB5-\\u0AB9\\u0ABD\\u0AD0\\u0AE0\\u0AE1\\u0B05-\\u0B0C\\u0B0F\\u0B10\\u0B13-\\u0B28\\u0B2A-\\u0B30\\u0B32\\u0B33\\u0B35-\\u0B39\\u0B3D\\u0B5C\\u0B5D\\u0B5F-\\u0B61\\u0B71\\u0B83\\u0B85-\\u0B8A\\u0B8E-\\u0B90\\u0B92-\\u0B95\\u0B99\\u0B9A\\u0B9C\\u0B9E\\u0B9F\\u0BA3\\u0BA4\\u0BA8-\\u0BAA\\u0BAE-\\u0BB9\\u0BD0\\u0C05-\\u0C0C\\u0C0E-\\u0C10\\u0C12-\\u0C28\\u0C2A-\\u0C39\\u0C3D\\u0C58\\u0C59\\u0C60\\u0C61\\u0C85-\\u0C8C\\u0C8E-\\u0C90\\u0C92-\\u0CA8\\u0CAA-\\u0CB3\\u0CB5-\\u0CB9\\u0CBD\\u0CDE\\u0CE0\\u0CE1\\u0CF1\\u0CF2\\u0D05-\\u0D0C\\u0D0E-\\u0D10\\u0D12-\\u0D3A\\u0D3D\\u0D4E\\u0D60\\u0D61\\u0D7A-\\u0D7F\\u0D85-\\u0D96\\u0D9A-\\u0DB1\\u0DB3-\\u0DBB\\u0DBD\\u0DC0-\\u0DC6\\u0E01-\\u0E30\\u0E32\\u0E33\\u0E40-\\u0E46\\u0E81\\u0E82\\u0E84\\u0E87\\u0E88\\u0E8A\\u0E8D\\u0E94-\\u0E97\\u0E99-\\u0E9F\\u0EA1-\\u0EA3\\u0EA5\\u0EA7\\u0EAA\\u0EAB\\u0EAD-\\u0EB0\\u0EB2\\u0EB3\\u0EBD\\u0EC0-\\u0EC4\\u0EC6\\u0EDC-\\u0EDF\\u0F00\\u0F40-\\u0F47\\u0F49-\\u0F6C\\u0F88-\\u0F8C\\u1000-\\u102A\\u103F\\u1050-\\u1055\\u105A-\\u105D\\u1061\\u1065\\u1066\\u106E-\\u1070\\u1075-\\u1081\\u108E\\u10A0-\\u10C5\\u10C7\\u10CD\\u10D0-\\u10FA\\u10FC-\\u1248\\u124A-\\u124D\\u1250-\\u1256\\u1258\\u125A-\\u125D\\u1260-\\u1288\\u128A-\\u128D\\u1290-\\u12B0\\u12B2-\\u12B5\\u12B8-\\u12BE\\u12C0\\u12C2-\\u12C5\\u12C8-\\u12D6\\u12D8-\\u1310\\u1312-\\u1315\\u1318-\\u135A\\u1380-\\u138F\\u13A0-\\u13F4\\u1401-\\u166C\\u166F-\\u167F\\u1681-\\u169A\\u16A0-\\u16EA\\u16EE-\\u16F8\\u1700-\\u170C\\u170E-\\u1711\\u1720-\\u1731\\u1740-\\u1751\\u1760-\\u176C\\u176E-\\u1770\\u1780-\\u17B3\\u17D7\\u17DC\\u1820-\\u1877\\u1880-\\u18A8\\u18AA\\u18B0-\\u18F5\\u1900-\\u191E\\u1950-\\u196D\\u1970-\\u1974\\u1980-\\u19AB\\u19C1-\\u19C7\\u1A00-\\u1A16\\u1A20-\\u1A54\\u1AA7\\u1B05-\\u1B33\\u1B45-\\u1B4B\\u1B83-\\u1BA0\\u1BAE\\u1BAF\\u1BBA-\\u1BE5\\u1C00-\\u1C23\\u1C4D-\\u1C4F\\u1C5A-\\u1C7D\\u1CE9-\\u1CEC\\u1CEE-\\u1CF1\\u1CF5\\u1CF6\\u1D00-\\u1DBF\\u1E00-\\u1F15\\u1F18-\\u1F1D\\u1F20-\\u1F45\\u1F48-\\u1F4D\\u1F50-\\u1F57\\u1F59\\u1F5B\\u1F5D\\u1F5F-\\u1F7D\\u1F80-\\u1FB4\\u1FB6-\\u1FBC\\u1FBE\\u1FC2-\\u1FC4\\u1FC6-\\u1FCC\\u1FD0-\\u1FD3\\u1FD6-\\u1FDB\\u1FE0-\\u1FEC\\u1FF2-\\u1FF4\\u1FF6-\\u1FFC\\u2071\\u207F\\u2090-\\u209C\\u2102\\u2107\\u210A-\\u2113\\u2115\\u2119-\\u211D\\u2124\\u2126\\u2128\\u212A-\\u212D\\u212F-\\u2139\\u213C-\\u213F\\u2145-\\u2149\\u214E\\u2160-\\u2188\\u2C00-\\u2C2E\\u2C30-\\u2C5E\\u2C60-\\u2CE4\\u2CEB-\\u2CEE\\u2CF2\\u2CF3\\u2D00-\\u2D25\\u2D27\\u2D2D\\u2D30-\\u2D67\\u2D6F\\u2D80-\\u2D96\\u2DA0-\\u2DA6\\u2DA8-\\u2DAE\\u2DB0-\\u2DB6\\u2DB8-\\u2DBE\\u2DC0-\\u2DC6\\u2DC8-\\u2DCE\\u2DD0-\\u2DD6\\u2DD8-\\u2DDE\\u2E2F\\u3005-\\u3007\\u3021-\\u3029\\u3031-\\u3035\\u3038-\\u303C\\u3041-\\u3096\\u309D-\\u309F\\u30A1-\\u30FA\\u30FC-\\u30FF\\u3105-\\u312D\\u3131-\\u318E\\u31A0-\\u31BA\\u31F0-\\u31FF\\u3400-\\u4DB5\\u4E00-\\u9FCC\\uA000-\\uA48C\\uA4D0-\\uA4FD\\uA500-\\uA60C\\uA610-\\uA61F\\uA62A\\uA62B\\uA640-\\uA66E\\uA67F-\\uA69D\\uA6A0-\\uA6EF\\uA717-\\uA71F\\uA722-\\uA788\\uA78B-\\uA78E\\uA790-\\uA7AD\\uA7B0\\uA7B1\\uA7F7-\\uA801\\uA803-\\uA805\\uA807-\\uA80A\\uA80C-\\uA822\\uA840-\\uA873\\uA882-\\uA8B3\\uA8F2-\\uA8F7\\uA8FB\\uA90A-\\uA925\\uA930-\\uA946\\uA960-\\uA97C\\uA984-\\uA9B2\\uA9CF\\uA9E0-\\uA9E4\\uA9E6-\\uA9EF\\uA9FA-\\uA9FE\\uAA00-\\uAA28\\uAA40-\\uAA42\\uAA44-\\uAA4B\\uAA60-\\uAA76\\uAA7A\\uAA7E-\\uAAAF\\uAAB1\\uAAB5\\uAAB6\\uAAB9-\\uAABD\\uAAC0\\uAAC2\\uAADB-\\uAADD\\uAAE0-\\uAAEA\\uAAF2-\\uAAF4\\uAB01-\\uAB06\\uAB09-\\uAB0E\\uAB11-\\uAB16\\uAB20-\\uAB26\\uAB28-\\uAB2E\\uAB30-\\uAB5A\\uAB5C-\\uAB5F\\uAB64\\uAB65\\uABC0-\\uABE2\\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\\uF900-\\uFA6D\\uFA70-\\uFAD9\\uFB00-\\uFB06\\uFB13-\\uFB17\\uFB1D\\uFB1F-\\uFB28\\uFB2A-\\uFB36\\uFB38-\\uFB3C\\uFB3E\\uFB40\\uFB41\\uFB43\\uFB44\\uFB46-\\uFBB1\\uFBD3-\\uFD3D\\uFD50-\\uFD8F\\uFD92-\\uFDC7\\uFDF0-\\uFDFB\\uFE70-\\uFE74\\uFE76-\\uFEFC\\uFF21-\\uFF3A\\uFF41-\\uFF5A\\uFF66-\\uFFBE\\uFFC2-\\uFFC7\\uFFCA-\\uFFCF\\uFFD2-\\uFFD7\\uFFDA-\\uFFDC]"), // eslint-disable-next-line no-misleading-character-class
-RegexNonAsciiIdentifierPart = new RegExp("[\\xAA\\xB5\\xBA\\xC0-\\xD6\\xD8-\\xF6\\xF8-\\u02C1\\u02C6-\\u02D1\\u02E0-\\u02E4\\u02EC\\u02EE\\u0300-\\u0374\\u0376\\u0377\\u037A-\\u037D\\u037F\\u0386\\u0388-\\u038A\\u038C\\u038E-\\u03A1\\u03A3-\\u03F5\\u03F7-\\u0481\\u0483-\\u0487\\u048A-\\u052F\\u0531-\\u0556\\u0559\\u0561-\\u0587\\u0591-\\u05BD\\u05BF\\u05C1\\u05C2\\u05C4\\u05C5\\u05C7\\u05D0-\\u05EA\\u05F0-\\u05F2\\u0610-\\u061A\\u0620-\\u0669\\u066E-\\u06D3\\u06D5-\\u06DC\\u06DF-\\u06E8\\u06EA-\\u06FC\\u06FF\\u0710-\\u074A\\u074D-\\u07B1\\u07C0-\\u07F5\\u07FA\\u0800-\\u082D\\u0840-\\u085B\\u08A0-\\u08B2\\u08E4-\\u0963\\u0966-\\u096F\\u0971-\\u0983\\u0985-\\u098C\\u098F\\u0990\\u0993-\\u09A8\\u09AA-\\u09B0\\u09B2\\u09B6-\\u09B9\\u09BC-\\u09C4\\u09C7\\u09C8\\u09CB-\\u09CE\\u09D7\\u09DC\\u09DD\\u09DF-\\u09E3\\u09E6-\\u09F1\\u0A01-\\u0A03\\u0A05-\\u0A0A\\u0A0F\\u0A10\\u0A13-\\u0A28\\u0A2A-\\u0A30\\u0A32\\u0A33\\u0A35\\u0A36\\u0A38\\u0A39\\u0A3C\\u0A3E-\\u0A42\\u0A47\\u0A48\\u0A4B-\\u0A4D\\u0A51\\u0A59-\\u0A5C\\u0A5E\\u0A66-\\u0A75\\u0A81-\\u0A83\\u0A85-\\u0A8D\\u0A8F-\\u0A91\\u0A93-\\u0AA8\\u0AAA-\\u0AB0\\u0AB2\\u0AB3\\u0AB5-\\u0AB9\\u0ABC-\\u0AC5\\u0AC7-\\u0AC9\\u0ACB-\\u0ACD\\u0AD0\\u0AE0-\\u0AE3\\u0AE6-\\u0AEF\\u0B01-\\u0B03\\u0B05-\\u0B0C\\u0B0F\\u0B10\\u0B13-\\u0B28\\u0B2A-\\u0B30\\u0B32\\u0B33\\u0B35-\\u0B39\\u0B3C-\\u0B44\\u0B47\\u0B48\\u0B4B-\\u0B4D\\u0B56\\u0B57\\u0B5C\\u0B5D\\u0B5F-\\u0B63\\u0B66-\\u0B6F\\u0B71\\u0B82\\u0B83\\u0B85-\\u0B8A\\u0B8E-\\u0B90\\u0B92-\\u0B95\\u0B99\\u0B9A\\u0B9C\\u0B9E\\u0B9F\\u0BA3\\u0BA4\\u0BA8-\\u0BAA\\u0BAE-\\u0BB9\\u0BBE-\\u0BC2\\u0BC6-\\u0BC8\\u0BCA-\\u0BCD\\u0BD0\\u0BD7\\u0BE6-\\u0BEF\\u0C00-\\u0C03\\u0C05-\\u0C0C\\u0C0E-\\u0C10\\u0C12-\\u0C28\\u0C2A-\\u0C39\\u0C3D-\\u0C44\\u0C46-\\u0C48\\u0C4A-\\u0C4D\\u0C55\\u0C56\\u0C58\\u0C59\\u0C60-\\u0C63\\u0C66-\\u0C6F\\u0C81-\\u0C83\\u0C85-\\u0C8C\\u0C8E-\\u0C90\\u0C92-\\u0CA8\\u0CAA-\\u0CB3\\u0CB5-\\u0CB9\\u0CBC-\\u0CC4\\u0CC6-\\u0CC8\\u0CCA-\\u0CCD\\u0CD5\\u0CD6\\u0CDE\\u0CE0-\\u0CE3\\u0CE6-\\u0CEF\\u0CF1\\u0CF2\\u0D01-\\u0D03\\u0D05-\\u0D0C\\u0D0E-\\u0D10\\u0D12-\\u0D3A\\u0D3D-\\u0D44\\u0D46-\\u0D48\\u0D4A-\\u0D4E\\u0D57\\u0D60-\\u0D63\\u0D66-\\u0D6F\\u0D7A-\\u0D7F\\u0D82\\u0D83\\u0D85-\\u0D96\\u0D9A-\\u0DB1\\u0DB3-\\u0DBB\\u0DBD\\u0DC0-\\u0DC6\\u0DCA\\u0DCF-\\u0DD4\\u0DD6\\u0DD8-\\u0DDF\\u0DE6-\\u0DEF\\u0DF2\\u0DF3\\u0E01-\\u0E3A\\u0E40-\\u0E4E\\u0E50-\\u0E59\\u0E81\\u0E82\\u0E84\\u0E87\\u0E88\\u0E8A\\u0E8D\\u0E94-\\u0E97\\u0E99-\\u0E9F\\u0EA1-\\u0EA3\\u0EA5\\u0EA7\\u0EAA\\u0EAB\\u0EAD-\\u0EB9\\u0EBB-\\u0EBD\\u0EC0-\\u0EC4\\u0EC6\\u0EC8-\\u0ECD\\u0ED0-\\u0ED9\\u0EDC-\\u0EDF\\u0F00\\u0F18\\u0F19\\u0F20-\\u0F29\\u0F35\\u0F37\\u0F39\\u0F3E-\\u0F47\\u0F49-\\u0F6C\\u0F71-\\u0F84\\u0F86-\\u0F97\\u0F99-\\u0FBC\\u0FC6\\u1000-\\u1049\\u1050-\\u109D\\u10A0-\\u10C5\\u10C7\\u10CD\\u10D0-\\u10FA\\u10FC-\\u1248\\u124A-\\u124D\\u1250-\\u1256\\u1258\\u125A-\\u125D\\u1260-\\u1288\\u128A-\\u128D\\u1290-\\u12B0\\u12B2-\\u12B5\\u12B8-\\u12BE\\u12C0\\u12C2-\\u12C5\\u12C8-\\u12D6\\u12D8-\\u1310\\u1312-\\u1315\\u1318-\\u135A\\u135D-\\u135F\\u1380-\\u138F\\u13A0-\\u13F4\\u1401-\\u166C\\u166F-\\u167F\\u1681-\\u169A\\u16A0-\\u16EA\\u16EE-\\u16F8\\u1700-\\u170C\\u170E-\\u1714\\u1720-\\u1734\\u1740-\\u1753\\u1760-\\u176C\\u176E-\\u1770\\u1772\\u1773\\u1780-\\u17D3\\u17D7\\u17DC\\u17DD\\u17E0-\\u17E9\\u180B-\\u180D\\u1810-\\u1819\\u1820-\\u1877\\u1880-\\u18AA\\u18B0-\\u18F5\\u1900-\\u191E\\u1920-\\u192B\\u1930-\\u193B\\u1946-\\u196D\\u1970-\\u1974\\u1980-\\u19AB\\u19B0-\\u19C9\\u19D0-\\u19D9\\u1A00-\\u1A1B\\u1A20-\\u1A5E\\u1A60-\\u1A7C\\u1A7F-\\u1A89\\u1A90-\\u1A99\\u1AA7\\u1AB0-\\u1ABD\\u1B00-\\u1B4B\\u1B50-\\u1B59\\u1B6B-\\u1B73\\u1B80-\\u1BF3\\u1C00-\\u1C37\\u1C40-\\u1C49\\u1C4D-\\u1C7D\\u1CD0-\\u1CD2\\u1CD4-\\u1CF6\\u1CF8\\u1CF9\\u1D00-\\u1DF5\\u1DFC-\\u1F15\\u1F18-\\u1F1D\\u1F20-\\u1F45\\u1F48-\\u1F4D\\u1F50-\\u1F57\\u1F59\\u1F5B\\u1F5D\\u1F5F-\\u1F7D\\u1F80-\\u1FB4\\u1FB6-\\u1FBC\\u1FBE\\u1FC2-\\u1FC4\\u1FC6-\\u1FCC\\u1FD0-\\u1FD3\\u1FD6-\\u1FDB\\u1FE0-\\u1FEC\\u1FF2-\\u1FF4\\u1FF6-\\u1FFC\\u200C\\u200D\\u203F\\u2040\\u2054\\u2071\\u207F\\u2090-\\u209C\\u20D0-\\u20DC\\u20E1\\u20E5-\\u20F0\\u2102\\u2107\\u210A-\\u2113\\u2115\\u2119-\\u211D\\u2124\\u2126\\u2128\\u212A-\\u212D\\u212F-\\u2139\\u213C-\\u213F\\u2145-\\u2149\\u214E\\u2160-\\u2188\\u2C00-\\u2C2E\\u2C30-\\u2C5E\\u2C60-\\u2CE4\\u2CEB-\\u2CF3\\u2D00-\\u2D25\\u2D27\\u2D2D\\u2D30-\\u2D67\\u2D6F\\u2D7F-\\u2D96\\u2DA0-\\u2DA6\\u2DA8-\\u2DAE\\u2DB0-\\u2DB6\\u2DB8-\\u2DBE\\u2DC0-\\u2DC6\\u2DC8-\\u2DCE\\u2DD0-\\u2DD6\\u2DD8-\\u2DDE\\u2DE0-\\u2DFF\\u2E2F\\u3005-\\u3007\\u3021-\\u302F\\u3031-\\u3035\\u3038-\\u303C\\u3041-\\u3096\\u3099\\u309A\\u309D-\\u309F\\u30A1-\\u30FA\\u30FC-\\u30FF\\u3105-\\u312D\\u3131-\\u318E\\u31A0-\\u31BA\\u31F0-\\u31FF\\u3400-\\u4DB5\\u4E00-\\u9FCC\\uA000-\\uA48C\\uA4D0-\\uA4FD\\uA500-\\uA60C\\uA610-\\uA62B\\uA640-\\uA66F\\uA674-\\uA67D\\uA67F-\\uA69D\\uA69F-\\uA6F1\\uA717-\\uA71F\\uA722-\\uA788\\uA78B-\\uA78E\\uA790-\\uA7AD\\uA7B0\\uA7B1\\uA7F7-\\uA827\\uA840-\\uA873\\uA880-\\uA8C4\\uA8D0-\\uA8D9\\uA8E0-\\uA8F7\\uA8FB\\uA900-\\uA92D\\uA930-\\uA953\\uA960-\\uA97C\\uA980-\\uA9C0\\uA9CF-\\uA9D9\\uA9E0-\\uA9FE\\uAA00-\\uAA36\\uAA40-\\uAA4D\\uAA50-\\uAA59\\uAA60-\\uAA76\\uAA7A-\\uAAC2\\uAADB-\\uAADD\\uAAE0-\\uAAEF\\uAAF2-\\uAAF6\\uAB01-\\uAB06\\uAB09-\\uAB0E\\uAB11-\\uAB16\\uAB20-\\uAB26\\uAB28-\\uAB2E\\uAB30-\\uAB5A\\uAB5C-\\uAB5F\\uAB64\\uAB65\\uABC0-\\uABEA\\uABEC\\uABED\\uABF0-\\uABF9\\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\\uF900-\\uFA6D\\uFA70-\\uFAD9\\uFB00-\\uFB06\\uFB13-\\uFB17\\uFB1D-\\uFB28\\uFB2A-\\uFB36\\uFB38-\\uFB3C\\uFB3E\\uFB40\\uFB41\\uFB43\\uFB44\\uFB46-\\uFBB1\\uFBD3-\\uFD3D\\uFD50-\\uFD8F\\uFD92-\\uFDC7\\uFDF0-\\uFDFB\\uFE00-\\uFE0F\\uFE20-\\uFE2D\\uFE33\\uFE34\\uFE4D-\\uFE4F\\uFE70-\\uFE74\\uFE76-\\uFEFC\\uFF10-\\uFF19\\uFF21-\\uFF3A\\uFF3F\\uFF41-\\uFF5A\\uFF66-\\uFFBE\\uFFC2-\\uFFC7\\uFFCA-\\uFFCF\\uFFD2-\\uFFD7\\uFFDA-\\uFFDC]"); // Ensure the condition is true, otherwise throw an error.
-// This is only to have a better contract semantic, i.e. another safety net
-// to catch a logic error. The condition shall be fulfilled in normal case.
-// Do NOT use this to enforce a certain condition on any user input.
-function assert(condition, message) {
-    /* istanbul ignore next */ if (!condition) throw new Error("ASSERT: " + message);
-}
-function isDecimalDigit(ch) {
-    return ch >= 0x30 && ch <= 0x39; // 0..9
-}
-function isHexDigit(ch) {
-    return "0123456789abcdefABCDEF".indexOf(ch) >= 0;
-}
-function isOctalDigit(ch) {
-    return "01234567".indexOf(ch) >= 0;
-} // 7.2 White Space
-function isWhiteSpace(ch) {
-    return ch === 0x20 || ch === 0x09 || ch === 0x0B || ch === 0x0C || ch === 0xA0 || ch >= 0x1680 && [
-        0x1680,
-        0x180E,
-        0x2000,
-        0x2001,
-        0x2002,
-        0x2003,
-        0x2004,
-        0x2005,
-        0x2006,
-        0x2007,
-        0x2008,
-        0x2009,
-        0x200A,
-        0x202F,
-        0x205F,
-        0x3000,
-        0xFEFF
-    ].indexOf(ch) >= 0;
-} // 7.3 Line Terminators
-function isLineTerminator(ch) {
-    return ch === 0x0A || ch === 0x0D || ch === 0x2028 || ch === 0x2029;
-} // 7.6 Identifier Names and Identifiers
-function isIdentifierStart(ch) {
-    return ch === 0x24 || ch === 0x5F || ch >= 0x41 && ch <= 0x5A || ch >= 0x61 && ch <= 0x7A || ch === 0x5C || ch >= 0x80 && RegexNonAsciiIdentifierStart.test(String.fromCharCode(ch));
-}
-function isIdentifierPart(ch) {
-    return ch === 0x24 || ch === 0x5F || ch >= 0x41 && ch <= 0x5A || ch >= 0x61 && ch <= 0x7A || ch >= 0x30 && ch <= 0x39 || ch === 0x5C || ch >= 0x80 && RegexNonAsciiIdentifierPart.test(String.fromCharCode(ch));
-} // 7.6.1.1 Keywords
-const keywords = {
-    "if": 1,
-    "in": 1,
-    "do": 1,
-    "var": 1,
-    "for": 1,
-    "new": 1,
-    "try": 1,
-    "let": 1,
-    "this": 1,
-    "else": 1,
-    "case": 1,
-    "void": 1,
-    "with": 1,
-    "enum": 1,
-    "while": 1,
-    "break": 1,
-    "catch": 1,
-    "throw": 1,
-    "const": 1,
-    "yield": 1,
-    "class": 1,
-    "super": 1,
-    "return": 1,
-    "typeof": 1,
-    "delete": 1,
-    "switch": 1,
-    "export": 1,
-    "import": 1,
-    "public": 1,
-    "static": 1,
-    "default": 1,
-    "finally": 1,
-    "extends": 1,
-    "package": 1,
-    "private": 1,
-    "function": 1,
-    "continue": 1,
-    "debugger": 1,
-    "interface": 1,
-    "protected": 1,
-    "instanceof": 1,
-    "implements": 1
-};
-function skipComment() {
-    while(index < length){
-        const ch = source.charCodeAt(index);
-        if (isWhiteSpace(ch) || isLineTerminator(ch)) ++index;
-        else break;
-    }
-}
-function scanHexEscape(prefix) {
-    var i, len, ch, code = 0;
-    len = prefix === "u" ? 4 : 2;
-    for(i = 0; i < len; ++i)if (index < length && isHexDigit(source[index])) {
-        ch = source[index++];
-        code = code * 16 + "0123456789abcdef".indexOf(ch.toLowerCase());
-    } else throwError({}, MessageUnexpectedToken, ILLEGAL);
-    return String.fromCharCode(code);
-}
-function scanUnicodeCodePointEscape() {
-    var ch, code, cu1, cu2;
-    ch = source[index];
-    code = 0; // At least, one hex digit is required.
-    if (ch === "}") throwError({}, MessageUnexpectedToken, ILLEGAL);
-    while(index < length){
-        ch = source[index++];
-        if (!isHexDigit(ch)) break;
-        code = code * 16 + "0123456789abcdef".indexOf(ch.toLowerCase());
-    }
-    if (code > 0x10FFFF || ch !== "}") throwError({}, MessageUnexpectedToken, ILLEGAL);
-     // UTF-16 Encoding
-    if (code <= 0xFFFF) return String.fromCharCode(code);
-    cu1 = (code - 0x10000 >> 10) + 0xD800;
-    cu2 = (code - 0x10000 & 1023) + 0xDC00;
-    return String.fromCharCode(cu1, cu2);
-}
-function getEscapedIdentifier() {
-    var ch, id;
-    ch = source.charCodeAt(index++);
-    id = String.fromCharCode(ch); // '\u' (U+005C, U+0075) denotes an escaped character.
-    if (ch === 0x5C) {
-        if (source.charCodeAt(index) !== 0x75) throwError({}, MessageUnexpectedToken, ILLEGAL);
-        ++index;
-        ch = scanHexEscape("u");
-        if (!ch || ch === "\\" || !isIdentifierStart(ch.charCodeAt(0))) throwError({}, MessageUnexpectedToken, ILLEGAL);
-        id = ch;
-    }
-    while(index < length){
-        ch = source.charCodeAt(index);
-        if (!isIdentifierPart(ch)) break;
-        ++index;
-        id += String.fromCharCode(ch); // '\u' (U+005C, U+0075) denotes an escaped character.
-        if (ch === 0x5C) {
-            id = id.substr(0, id.length - 1);
-            if (source.charCodeAt(index) !== 0x75) throwError({}, MessageUnexpectedToken, ILLEGAL);
-            ++index;
-            ch = scanHexEscape("u");
-            if (!ch || ch === "\\" || !isIdentifierPart(ch.charCodeAt(0))) throwError({}, MessageUnexpectedToken, ILLEGAL);
-            id += ch;
-        }
-    }
-    return id;
-}
-function getIdentifier() {
-    var start, ch;
-    start = index++;
-    while(index < length){
-        ch = source.charCodeAt(index);
-        if (ch === 0x5C) {
-            // Blackslash (U+005C) marks Unicode escape sequence.
-            index = start;
-            return getEscapedIdentifier();
-        }
-        if (isIdentifierPart(ch)) ++index;
-        else break;
-    }
-    return source.slice(start, index);
-}
-function scanIdentifier() {
-    var start, id, type;
-    start = index; // Backslash (U+005C) starts an escaped character.
-    id = source.charCodeAt(index) === 0x5C ? getEscapedIdentifier() : getIdentifier(); // There is no keyword or literal with only one character.
-    // Thus, it must be an identifier.
-    if (id.length === 1) type = TokenIdentifier;
-    else if (keywords.hasOwnProperty(id)) // eslint-disable-line no-prototype-builtins
-    type = TokenKeyword;
-    else if (id === "null") type = TokenNullLiteral;
-    else if (id === "true" || id === "false") type = TokenBooleanLiteral;
-    else type = TokenIdentifier;
-    return {
-        type: type,
-        value: id,
-        start: start,
-        end: index
-    };
-} // 7.7 Punctuators
-function scanPunctuator() {
-    var start = index, code = source.charCodeAt(index), code2, ch1 = source[index], ch2, ch3, ch4;
-    switch(code){
-        // Check for most common single-character punctuators.
-        case 0x2E:
-        case 0x28:
-        case 0x29:
-        case 0x3B:
-        case 0x2C:
-        case 0x7B:
-        case 0x7D:
-        case 0x5B:
-        case 0x5D:
-        case 0x3A:
-        case 0x3F:
-        case 0x7E:
-            // ~
-            ++index;
-            return {
-                type: TokenPunctuator,
-                value: String.fromCharCode(code),
-                start: start,
-                end: index
-            };
-        default:
-            code2 = source.charCodeAt(index + 1); // '=' (U+003D) marks an assignment or comparison operator.
-            if (code2 === 0x3D) switch(code){
-                case 0x2B:
-                case 0x2D:
-                case 0x2F:
-                case 0x3C:
-                case 0x3E:
-                case 0x5E:
-                case 0x7C:
-                case 0x25:
-                case 0x26:
-                case 0x2A:
-                    // *
-                    index += 2;
-                    return {
-                        type: TokenPunctuator,
-                        value: String.fromCharCode(code) + String.fromCharCode(code2),
-                        start: start,
-                        end: index
-                    };
-                case 0x21:
-                case 0x3D:
-                    // =
-                    index += 2; // !== and ===
-                    if (source.charCodeAt(index) === 0x3D) ++index;
-                    return {
-                        type: TokenPunctuator,
-                        value: source.slice(start, index),
-                        start: start,
-                        end: index
-                    };
-            }
-    } // 4-character punctuator: >>>=
-    ch4 = source.substr(index, 4);
-    if (ch4 === ">>>=") {
-        index += 4;
-        return {
-            type: TokenPunctuator,
-            value: ch4,
-            start: start,
-            end: index
-        };
-    } // 3-character punctuators: === !== >>> <<= >>=
-    ch3 = ch4.substr(0, 3);
-    if (ch3 === ">>>" || ch3 === "<<=" || ch3 === ">>=") {
-        index += 3;
-        return {
-            type: TokenPunctuator,
-            value: ch3,
-            start: start,
-            end: index
-        };
-    } // Other 2-character punctuators: ++ -- << >> && ||
-    ch2 = ch3.substr(0, 2);
-    if (ch1 === ch2[1] && "+-<>&|".indexOf(ch1) >= 0 || ch2 === "=>") {
-        index += 2;
-        return {
-            type: TokenPunctuator,
-            value: ch2,
-            start: start,
-            end: index
-        };
-    }
-    if (ch2 === "//") throwError({}, MessageUnexpectedToken, ILLEGAL);
-     // 1-character punctuators: < > = ! + - * % & | ^ /
-    if ("<>=!+-*%&|^/".indexOf(ch1) >= 0) {
-        ++index;
-        return {
-            type: TokenPunctuator,
-            value: ch1,
-            start: start,
-            end: index
-        };
-    }
-    throwError({}, MessageUnexpectedToken, ILLEGAL);
-} // 7.8.3 Numeric Literals
-function scanHexLiteral(start) {
-    let number = "";
-    while(index < length){
-        if (!isHexDigit(source[index])) break;
-        number += source[index++];
-    }
-    if (number.length === 0) throwError({}, MessageUnexpectedToken, ILLEGAL);
-    if (isIdentifierStart(source.charCodeAt(index))) throwError({}, MessageUnexpectedToken, ILLEGAL);
-    return {
-        type: TokenNumericLiteral,
-        value: parseInt("0x" + number, 16),
-        start: start,
-        end: index
-    };
-}
-function scanOctalLiteral(start) {
-    let number = "0" + source[index++];
-    while(index < length){
-        if (!isOctalDigit(source[index])) break;
-        number += source[index++];
-    }
-    if (isIdentifierStart(source.charCodeAt(index)) || isDecimalDigit(source.charCodeAt(index))) throwError({}, MessageUnexpectedToken, ILLEGAL);
-    return {
-        type: TokenNumericLiteral,
-        value: parseInt(number, 8),
-        octal: true,
-        start: start,
-        end: index
-    };
-}
-function scanNumericLiteral() {
-    var number, start, ch;
-    ch = source[index];
-    assert(isDecimalDigit(ch.charCodeAt(0)) || ch === ".", "Numeric literal must start with a decimal digit or a decimal point");
-    start = index;
-    number = "";
-    if (ch !== ".") {
-        number = source[index++];
-        ch = source[index]; // Hex number starts with '0x'.
-        // Octal number starts with '0'.
-        if (number === "0") {
-            if (ch === "x" || ch === "X") {
-                ++index;
-                return scanHexLiteral(start);
-            }
-            if (isOctalDigit(ch)) return scanOctalLiteral(start);
-             // decimal number starts with '0' such as '09' is illegal.
-            if (ch && isDecimalDigit(ch.charCodeAt(0))) throwError({}, MessageUnexpectedToken, ILLEGAL);
-        }
-        while(isDecimalDigit(source.charCodeAt(index)))number += source[index++];
-        ch = source[index];
-    }
-    if (ch === ".") {
-        number += source[index++];
-        while(isDecimalDigit(source.charCodeAt(index)))number += source[index++];
-        ch = source[index];
-    }
-    if (ch === "e" || ch === "E") {
-        number += source[index++];
-        ch = source[index];
-        if (ch === "+" || ch === "-") number += source[index++];
-        if (isDecimalDigit(source.charCodeAt(index))) while(isDecimalDigit(source.charCodeAt(index)))number += source[index++];
-        else throwError({}, MessageUnexpectedToken, ILLEGAL);
-    }
-    if (isIdentifierStart(source.charCodeAt(index))) throwError({}, MessageUnexpectedToken, ILLEGAL);
-    return {
-        type: TokenNumericLiteral,
-        value: parseFloat(number),
-        start: start,
-        end: index
-    };
-} // 7.8.4 String Literals
-function scanStringLiteral() {
-    var str = "", quote, start, ch, code, octal = false;
-    quote = source[index];
-    assert(quote === "'" || quote === '"', "String literal must starts with a quote");
-    start = index;
-    ++index;
-    while(index < length){
-        ch = source[index++];
-        if (ch === quote) {
-            quote = "";
-            break;
-        } else if (ch === "\\") {
-            ch = source[index++];
-            if (!ch || !isLineTerminator(ch.charCodeAt(0))) switch(ch){
-                case "u":
-                case "x":
-                    if (source[index] === "{") {
-                        ++index;
-                        str += scanUnicodeCodePointEscape();
-                    } else str += scanHexEscape(ch);
-                    break;
-                case "n":
-                    str += "\n";
-                    break;
-                case "r":
-                    str += "\r";
-                    break;
-                case "t":
-                    str += "	";
-                    break;
-                case "b":
-                    str += "\b";
-                    break;
-                case "f":
-                    str += "\f";
-                    break;
-                case "v":
-                    str += "\v";
-                    break;
-                default:
-                    if (isOctalDigit(ch)) {
-                        code = "01234567".indexOf(ch); // \0 is not octal escape sequence
-                        if (code !== 0) octal = true;
-                        if (index < length && isOctalDigit(source[index])) {
-                            octal = true;
-                            code = code * 8 + "01234567".indexOf(source[index++]); // 3 digits are only allowed when string starts
-                            // with 0, 1, 2, 3
-                            if ("0123".indexOf(ch) >= 0 && index < length && isOctalDigit(source[index])) code = code * 8 + "01234567".indexOf(source[index++]);
-                        }
-                        str += String.fromCharCode(code);
-                    } else str += ch;
-                    break;
-            }
-            else if (ch === "\r" && source[index] === "\n") ++index;
-        } else if (isLineTerminator(ch.charCodeAt(0))) break;
-        else str += ch;
-    }
-    if (quote !== "") throwError({}, MessageUnexpectedToken, ILLEGAL);
-    return {
-        type: TokenStringLiteral,
-        value: str,
-        octal: octal,
-        start: start,
-        end: index
-    };
-}
-function testRegExp(pattern, flags) {
-    let tmp = pattern;
-    if (flags.indexOf("u") >= 0) // Replace each astral symbol and every Unicode code point
-    // escape sequence with a single ASCII symbol to avoid throwing on
-    // regular expressions that are only valid in combination with the
-    // `/u` flag.
-    // Note: replacing with the ASCII symbol `x` might cause false
-    // negatives in unlikely scenarios. For example, `[\u{61}-b]` is a
-    // perfectly valid pattern that is equivalent to `[a-b]`, but it
-    // would be replaced by `[x-b]` which throws an error.
-    tmp = tmp.replace(/\\u\{([0-9a-fA-F]+)\}/g, ($0, $1)=>{
-        if (parseInt($1, 16) <= 0x10FFFF) return "x";
-        throwError({}, MessageInvalidRegExp);
-    }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, "x");
-     // First, detect invalid regular expressions.
-    try {
-        new RegExp(tmp);
-    } catch (e) {
-        throwError({}, MessageInvalidRegExp);
-    } // Return a regular expression object for this pattern-flag pair, or
-    // `null` in case the current environment doesn't support the flags it
-    // uses.
-    try {
-        return new RegExp(pattern, flags);
-    } catch (exception) {
-        return null;
-    }
-}
-function scanRegExpBody() {
-    var ch, str, classMarker, terminated, body;
-    ch = source[index];
-    assert(ch === "/", "Regular expression literal must start with a slash");
-    str = source[index++];
-    classMarker = false;
-    terminated = false;
-    while(index < length){
-        ch = source[index++];
-        str += ch;
-        if (ch === "\\") {
-            ch = source[index++]; // ECMA-262 7.8.5
-            if (isLineTerminator(ch.charCodeAt(0))) throwError({}, MessageUnterminatedRegExp);
-            str += ch;
-        } else if (isLineTerminator(ch.charCodeAt(0))) throwError({}, MessageUnterminatedRegExp);
-        else if (classMarker) {
-            if (ch === "]") classMarker = false;
-        } else {
-            if (ch === "/") {
-                terminated = true;
-                break;
-            } else if (ch === "[") classMarker = true;
-        }
-    }
-    if (!terminated) throwError({}, MessageUnterminatedRegExp);
-     // Exclude leading and trailing slash.
-    body = str.substr(1, str.length - 2);
-    return {
-        value: body,
-        literal: str
-    };
-}
-function scanRegExpFlags() {
-    var ch, str, flags;
-    str = "";
-    flags = "";
-    while(index < length){
-        ch = source[index];
-        if (!isIdentifierPart(ch.charCodeAt(0))) break;
-        ++index;
-        if (ch === "\\" && index < length) throwError({}, MessageUnexpectedToken, ILLEGAL);
-        else {
-            flags += ch;
-            str += ch;
-        }
-    }
-    if (flags.search(/[^gimuy]/g) >= 0) throwError({}, MessageInvalidRegExp, flags);
-    return {
-        value: flags,
-        literal: str
-    };
-}
-function scanRegExp() {
-    var start, body, flags, value;
-    lookahead = null;
-    skipComment();
-    start = index;
-    body = scanRegExpBody();
-    flags = scanRegExpFlags();
-    value = testRegExp(body.value, flags.value);
-    return {
-        literal: body.literal + flags.literal,
-        value: value,
-        regex: {
-            pattern: body.value,
-            flags: flags.value
-        },
-        start: start,
-        end: index
-    };
-}
-function isIdentifierName(token) {
-    return token.type === TokenIdentifier || token.type === TokenKeyword || token.type === TokenBooleanLiteral || token.type === TokenNullLiteral;
-}
-function advance() {
-    skipComment();
-    if (index >= length) return {
-        type: TokenEOF,
-        start: index,
-        end: index
-    };
-    const ch = source.charCodeAt(index);
-    if (isIdentifierStart(ch)) return scanIdentifier();
-     // Very common: ( and ) and ;
-    if (ch === 0x28 || ch === 0x29 || ch === 0x3B) return scanPunctuator();
-     // String literal starts with single quote (U+0027) or double quote (U+0022).
-    if (ch === 0x27 || ch === 0x22) return scanStringLiteral();
-     // Dot (.) U+002E can also start a floating-point number, hence the need
-    // to check the next character.
-    if (ch === 0x2E) {
-        if (isDecimalDigit(source.charCodeAt(index + 1))) return scanNumericLiteral();
-        return scanPunctuator();
-    }
-    if (isDecimalDigit(ch)) return scanNumericLiteral();
-    return scanPunctuator();
-}
-function lex() {
-    const token = lookahead;
-    index = token.end;
-    lookahead = advance();
-    index = token.end;
-    return token;
-}
-function peek() {
-    const pos = index;
-    lookahead = advance();
-    index = pos;
-}
-function finishArrayExpression(elements) {
-    const node = new ASTNode(SyntaxArrayExpression);
-    node.elements = elements;
-    return node;
-}
-function finishBinaryExpression(operator, left, right) {
-    const node = new ASTNode(operator === "||" || operator === "&&" ? SyntaxLogicalExpression : SyntaxBinaryExpression);
-    node.operator = operator;
-    node.left = left;
-    node.right = right;
-    return node;
-}
-function finishCallExpression(callee, args) {
-    const node = new ASTNode(SyntaxCallExpression);
-    node.callee = callee;
-    node.arguments = args;
-    return node;
-}
-function finishConditionalExpression(test, consequent, alternate) {
-    const node = new ASTNode(SyntaxConditionalExpression);
-    node.test = test;
-    node.consequent = consequent;
-    node.alternate = alternate;
-    return node;
-}
-function finishIdentifier(name) {
-    const node = new ASTNode(SyntaxIdentifier);
-    node.name = name;
-    return node;
-}
-function finishLiteral(token) {
-    const node = new ASTNode(SyntaxLiteral);
-    node.value = token.value;
-    node.raw = source.slice(token.start, token.end);
-    if (token.regex) {
-        if (node.raw === "//") node.raw = "/(?:)/";
-        node.regex = token.regex;
-    }
-    return node;
-}
-function finishMemberExpression(accessor, object, property) {
-    const node = new ASTNode(SyntaxMemberExpression);
-    node.computed = accessor === "[";
-    node.object = object;
-    node.property = property;
-    if (!node.computed) property.member = true;
-    return node;
-}
-function finishObjectExpression(properties) {
-    const node = new ASTNode(SyntaxObjectExpression);
-    node.properties = properties;
-    return node;
-}
-function finishProperty(kind, key, value) {
-    const node = new ASTNode(SyntaxProperty);
-    node.key = key;
-    node.value = value;
-    node.kind = kind;
-    return node;
-}
-function finishUnaryExpression(operator, argument) {
-    const node = new ASTNode(SyntaxUnaryExpression);
-    node.operator = operator;
-    node.argument = argument;
-    node.prefix = true;
-    return node;
-} // Throw an exception
-function throwError(token, messageFormat) {
-    var error, args = Array.prototype.slice.call(arguments, 2), msg = messageFormat.replace(/%(\d)/g, (whole, index)=>{
-        assert(index < args.length, "Message reference must be in range");
-        return args[index];
-    });
-    error = new Error(msg);
-    error.index = index;
-    error.description = msg;
-    throw error;
-} // Throw an exception because of the token.
-function throwUnexpected(token) {
-    if (token.type === TokenEOF) throwError(token, MessageUnexpectedEOS);
-    if (token.type === TokenNumericLiteral) throwError(token, MessageUnexpectedNumber);
-    if (token.type === TokenStringLiteral) throwError(token, MessageUnexpectedString);
-    if (token.type === TokenIdentifier) throwError(token, MessageUnexpectedIdentifier);
-    if (token.type === TokenKeyword) throwError(token, MessageUnexpectedReserved);
-     // BooleanLiteral, NullLiteral, or Punctuator.
-    throwError(token, MessageUnexpectedToken, token.value);
-} // Expect the next token to match the specified punctuator.
-// If not, an exception will be thrown.
-function expect(value) {
-    const token = lex();
-    if (token.type !== TokenPunctuator || token.value !== value) throwUnexpected(token);
-} // Return true if the next token matches the specified punctuator.
-function match(value) {
-    return lookahead.type === TokenPunctuator && lookahead.value === value;
-} // Return true if the next token matches the specified keyword
-function matchKeyword(keyword) {
-    return lookahead.type === TokenKeyword && lookahead.value === keyword;
-} // 11.1.4 Array Initialiser
-function parseArrayInitialiser() {
-    const elements = [];
-    index = lookahead.start;
-    expect("[");
-    while(!match("]"))if (match(",")) {
-        lex();
-        elements.push(null);
-    } else {
-        elements.push(parseConditionalExpression());
-        if (!match("]")) expect(",");
-    }
-    lex();
-    return finishArrayExpression(elements);
-} // 11.1.5 Object Initialiser
-function parseObjectPropertyKey() {
-    index = lookahead.start;
-    const token = lex(); // Note: This function is called only from parseObjectProperty(), where
-    // EOF and Punctuator tokens are already filtered out.
-    if (token.type === TokenStringLiteral || token.type === TokenNumericLiteral) {
-        if (token.octal) throwError(token, MessageStrictOctalLiteral);
-        return finishLiteral(token);
-    }
-    return finishIdentifier(token.value);
-}
-function parseObjectProperty() {
-    var token, key, id, value;
-    index = lookahead.start;
-    token = lookahead;
-    if (token.type === TokenIdentifier) {
-        id = parseObjectPropertyKey();
-        expect(":");
-        value = parseConditionalExpression();
-        return finishProperty("init", id, value);
-    }
-    if (token.type === TokenEOF || token.type === TokenPunctuator) throwUnexpected(token);
-    else {
-        key = parseObjectPropertyKey();
-        expect(":");
-        value = parseConditionalExpression();
-        return finishProperty("init", key, value);
-    }
-}
-function parseObjectInitialiser() {
-    var properties = [], property, name, key, map = {}, toString = String;
-    index = lookahead.start;
-    expect("{");
-    while(!match("}")){
-        property = parseObjectProperty();
-        if (property.key.type === SyntaxIdentifier) name = property.key.name;
-        else name = toString(property.key.value);
-        key = "$" + name;
-        if (Object.prototype.hasOwnProperty.call(map, key)) throwError({}, MessageStrictDuplicateProperty);
-        else map[key] = true;
-        properties.push(property);
-        if (!match("}")) expect(",");
-    }
-    expect("}");
-    return finishObjectExpression(properties);
-} // 11.1.6 The Grouping Operator
-function parseGroupExpression() {
-    expect("(");
-    const expr = parseExpression();
-    expect(")");
-    return expr;
-} // 11.1 Primary Expressions
-const legalKeywords = {
-    "if": 1
-};
-function parsePrimaryExpression() {
-    var type, token, expr;
-    if (match("(")) return parseGroupExpression();
-    if (match("[")) return parseArrayInitialiser();
-    if (match("{")) return parseObjectInitialiser();
-    type = lookahead.type;
-    index = lookahead.start;
-    if (type === TokenIdentifier || legalKeywords[lookahead.value]) expr = finishIdentifier(lex().value);
-    else if (type === TokenStringLiteral || type === TokenNumericLiteral) {
-        if (lookahead.octal) throwError(lookahead, MessageStrictOctalLiteral);
-        expr = finishLiteral(lex());
-    } else if (type === TokenKeyword) throw new Error(DISABLED);
-    else if (type === TokenBooleanLiteral) {
-        token = lex();
-        token.value = token.value === "true";
-        expr = finishLiteral(token);
-    } else if (type === TokenNullLiteral) {
-        token = lex();
-        token.value = null;
-        expr = finishLiteral(token);
-    } else if (match("/") || match("/=")) {
-        expr = finishLiteral(scanRegExp());
-        peek();
-    } else throwUnexpected(lex());
-    return expr;
-} // 11.2 Left-Hand-Side Expressions
-function parseArguments() {
-    const args = [];
-    expect("(");
-    if (!match(")")) while(index < length){
-        args.push(parseConditionalExpression());
-        if (match(")")) break;
-        expect(",");
-    }
-    expect(")");
-    return args;
-}
-function parseNonComputedProperty() {
-    index = lookahead.start;
-    const token = lex();
-    if (!isIdentifierName(token)) throwUnexpected(token);
-    return finishIdentifier(token.value);
-}
-function parseNonComputedMember() {
-    expect(".");
-    return parseNonComputedProperty();
-}
-function parseComputedMember() {
-    expect("[");
-    const expr = parseExpression();
-    expect("]");
-    return expr;
-}
-function parseLeftHandSideExpressionAllowCall() {
-    var expr, args, property;
-    expr = parsePrimaryExpression();
-    for(;;){
-        if (match(".")) {
-            property = parseNonComputedMember();
-            expr = finishMemberExpression(".", expr, property);
-        } else if (match("(")) {
-            args = parseArguments();
-            expr = finishCallExpression(expr, args);
-        } else if (match("[")) {
-            property = parseComputedMember();
-            expr = finishMemberExpression("[", expr, property);
-        } else break;
-    }
-    return expr;
-} // 11.3 Postfix Expressions
-function parsePostfixExpression() {
-    const expr = parseLeftHandSideExpressionAllowCall();
-    if (lookahead.type === TokenPunctuator) {
-        if (match("++") || match("--")) throw new Error(DISABLED);
-    }
-    return expr;
-} // 11.4 Unary Operators
-function parseUnaryExpression() {
-    var token, expr;
-    if (lookahead.type !== TokenPunctuator && lookahead.type !== TokenKeyword) expr = parsePostfixExpression();
-    else if (match("++") || match("--")) throw new Error(DISABLED);
-    else if (match("+") || match("-") || match("~") || match("!")) {
-        token = lex();
-        expr = parseUnaryExpression();
-        expr = finishUnaryExpression(token.value, expr);
-    } else if (matchKeyword("delete") || matchKeyword("void") || matchKeyword("typeof")) throw new Error(DISABLED);
-    else expr = parsePostfixExpression();
-    return expr;
-}
-function binaryPrecedence(token) {
-    let prec = 0;
-    if (token.type !== TokenPunctuator && token.type !== TokenKeyword) return 0;
-    switch(token.value){
-        case "||":
-            prec = 1;
-            break;
-        case "&&":
-            prec = 2;
-            break;
-        case "|":
-            prec = 3;
-            break;
-        case "^":
-            prec = 4;
-            break;
-        case "&":
-            prec = 5;
-            break;
-        case "==":
-        case "!=":
-        case "===":
-        case "!==":
-            prec = 6;
-            break;
-        case "<":
-        case ">":
-        case "<=":
-        case ">=":
-        case "instanceof":
-        case "in":
-            prec = 7;
-            break;
-        case "<<":
-        case ">>":
-        case ">>>":
-            prec = 8;
-            break;
-        case "+":
-        case "-":
-            prec = 9;
-            break;
-        case "*":
-        case "/":
-        case "%":
-            prec = 11;
-            break;
-    }
-    return prec;
-} // 11.5 Multiplicative Operators
-// 11.6 Additive Operators
-// 11.7 Bitwise Shift Operators
-// 11.8 Relational Operators
-// 11.9 Equality Operators
-// 11.10 Binary Bitwise Operators
-// 11.11 Binary Logical Operators
-function parseBinaryExpression() {
-    var marker, markers, expr, token, prec, stack, right, operator, left, i;
-    marker = lookahead;
-    left = parseUnaryExpression();
-    token = lookahead;
-    prec = binaryPrecedence(token);
-    if (prec === 0) return left;
-    token.prec = prec;
-    lex();
-    markers = [
-        marker,
-        lookahead
-    ];
-    right = parseUnaryExpression();
-    stack = [
-        left,
-        token,
-        right
-    ];
-    while((prec = binaryPrecedence(lookahead)) > 0){
-        // Reduce: make a binary expression from the three topmost entries.
-        while(stack.length > 2 && prec <= stack[stack.length - 2].prec){
-            right = stack.pop();
-            operator = stack.pop().value;
-            left = stack.pop();
-            markers.pop();
-            expr = finishBinaryExpression(operator, left, right);
-            stack.push(expr);
-        } // Shift.
-        token = lex();
-        token.prec = prec;
-        stack.push(token);
-        markers.push(lookahead);
-        expr = parseUnaryExpression();
-        stack.push(expr);
-    } // Final reduce to clean-up the stack.
-    i = stack.length - 1;
-    expr = stack[i];
-    markers.pop();
-    while(i > 1){
-        markers.pop();
-        expr = finishBinaryExpression(stack[i - 1].value, stack[i - 2], expr);
-        i -= 2;
-    }
-    return expr;
-} // 11.12 Conditional Operator
-function parseConditionalExpression() {
-    var expr, consequent, alternate;
-    expr = parseBinaryExpression();
-    if (match("?")) {
-        lex();
-        consequent = parseConditionalExpression();
-        expect(":");
-        alternate = parseConditionalExpression();
-        expr = finishConditionalExpression(expr, consequent, alternate);
-    }
-    return expr;
-} // 11.14 Comma Operator
-function parseExpression() {
-    const expr = parseConditionalExpression();
-    if (match(",")) throw new Error(DISABLED); // no sequence expressions
-    return expr;
-}
-function parser(code) {
-    source = code;
-    index = 0;
-    length = source.length;
-    lookahead = null;
-    peek();
-    const expr = parseExpression();
-    if (lookahead.type !== TokenEOF) throw new Error("Unexpect token after expression.");
-    return expr;
-}
-var Constants = {
-    NaN: "NaN",
-    E: "Math.E",
-    LN2: "Math.LN2",
-    LN10: "Math.LN10",
-    LOG2E: "Math.LOG2E",
-    LOG10E: "Math.LOG10E",
-    PI: "Math.PI",
-    SQRT1_2: "Math.SQRT1_2",
-    SQRT2: "Math.SQRT2",
-    MIN_VALUE: "Number.MIN_VALUE",
-    MAX_VALUE: "Number.MAX_VALUE"
-};
-function Functions(codegen) {
-    function fncall(name, args, cast, type) {
-        let obj = codegen(args[0]);
-        if (cast) {
-            obj = cast + "(" + obj + ")";
-            if (cast.lastIndexOf("new ", 0) === 0) obj = "(" + obj + ")";
-        }
-        return obj + "." + name + (type < 0 ? "" : type === 0 ? "()" : "(" + args.slice(1).map(codegen).join(",") + ")");
-    }
-    function fn(name, cast, type) {
-        return (args)=>fncall(name, args, cast, type);
-    }
-    const DATE = "new Date", STRING = "String", REGEXP = "RegExp";
-    return {
-        // MATH functions
-        isNaN: "Number.isNaN",
-        isFinite: "Number.isFinite",
-        abs: "Math.abs",
-        acos: "Math.acos",
-        asin: "Math.asin",
-        atan: "Math.atan",
-        atan2: "Math.atan2",
-        ceil: "Math.ceil",
-        cos: "Math.cos",
-        exp: "Math.exp",
-        floor: "Math.floor",
-        log: "Math.log",
-        max: "Math.max",
-        min: "Math.min",
-        pow: "Math.pow",
-        random: "Math.random",
-        round: "Math.round",
-        sin: "Math.sin",
-        sqrt: "Math.sqrt",
-        tan: "Math.tan",
-        clamp: function(args) {
-            if (args.length < 3) (0, _vegaUtil.error)("Missing arguments to clamp function.");
-            if (args.length > 3) (0, _vegaUtil.error)("Too many arguments to clamp function.");
-            const a = args.map(codegen);
-            return "Math.max(" + a[1] + ", Math.min(" + a[2] + "," + a[0] + "))";
-        },
-        // DATE functions
-        now: "Date.now",
-        utc: "Date.UTC",
-        datetime: DATE,
-        date: fn("getDate", DATE, 0),
-        day: fn("getDay", DATE, 0),
-        year: fn("getFullYear", DATE, 0),
-        month: fn("getMonth", DATE, 0),
-        hours: fn("getHours", DATE, 0),
-        minutes: fn("getMinutes", DATE, 0),
-        seconds: fn("getSeconds", DATE, 0),
-        milliseconds: fn("getMilliseconds", DATE, 0),
-        time: fn("getTime", DATE, 0),
-        timezoneoffset: fn("getTimezoneOffset", DATE, 0),
-        utcdate: fn("getUTCDate", DATE, 0),
-        utcday: fn("getUTCDay", DATE, 0),
-        utcyear: fn("getUTCFullYear", DATE, 0),
-        utcmonth: fn("getUTCMonth", DATE, 0),
-        utchours: fn("getUTCHours", DATE, 0),
-        utcminutes: fn("getUTCMinutes", DATE, 0),
-        utcseconds: fn("getUTCSeconds", DATE, 0),
-        utcmilliseconds: fn("getUTCMilliseconds", DATE, 0),
-        // sequence functions
-        length: fn("length", null, -1),
-        // STRING functions
-        parseFloat: "parseFloat",
-        parseInt: "parseInt",
-        upper: fn("toUpperCase", STRING, 0),
-        lower: fn("toLowerCase", STRING, 0),
-        substring: fn("substring", STRING),
-        split: fn("split", STRING),
-        trim: fn("trim", STRING, 0),
-        // REGEXP functions
-        regexp: REGEXP,
-        test: fn("test", REGEXP),
-        // Control Flow functions
-        if: function(args) {
-            if (args.length < 3) (0, _vegaUtil.error)("Missing arguments to if function.");
-            if (args.length > 3) (0, _vegaUtil.error)("Too many arguments to if function.");
-            const a = args.map(codegen);
-            return "(" + a[0] + "?" + a[1] + ":" + a[2] + ")";
-        }
-    };
-}
-function stripQuotes(s) {
-    const n = s && s.length - 1;
-    return n && (s[0] === '"' && s[n] === '"' || s[0] === "'" && s[n] === "'") ? s.slice(1, -1) : s;
-}
-function codegen(opt) {
-    opt = opt || {};
-    const allowed = opt.allowed ? (0, _vegaUtil.toSet)(opt.allowed) : {}, forbidden = opt.forbidden ? (0, _vegaUtil.toSet)(opt.forbidden) : {}, constants = opt.constants || Constants, functions = (opt.functions || Functions)(visit), globalvar = opt.globalvar, fieldvar = opt.fieldvar, outputGlobal = (0, _vegaUtil.isFunction)(globalvar) ? globalvar : (id)=>"".concat(globalvar, '["').concat(id, '"]');
-    let globals = {}, fields = {}, memberDepth = 0;
-    function visit(ast) {
-        if ((0, _vegaUtil.isString)(ast)) return ast;
-        const generator = Generators[ast.type];
-        if (generator == null) (0, _vegaUtil.error)("Unsupported type: " + ast.type);
-        return generator(ast);
-    }
-    const Generators = {
-        Literal: (n)=>n.raw,
-        Identifier: (n)=>{
-            const id = n.name;
-            if (memberDepth > 0) return id;
-            else if ((0, _vegaUtil.hasOwnProperty)(forbidden, id)) return (0, _vegaUtil.error)("Illegal identifier: " + id);
-            else if ((0, _vegaUtil.hasOwnProperty)(constants, id)) return constants[id];
-            else if ((0, _vegaUtil.hasOwnProperty)(allowed, id)) return id;
-            else {
-                globals[id] = 1;
-                return outputGlobal(id);
-            }
-        },
-        MemberExpression: (n)=>{
-            const d = !n.computed, o = visit(n.object);
-            if (d) memberDepth += 1;
-            const p = visit(n.property);
-            if (o === fieldvar) // strip quotes to sanitize field name (#1653)
-            fields[stripQuotes(p)] = 1;
-            if (d) memberDepth -= 1;
-            return o + (d ? "." + p : "[" + p + "]");
-        },
-        CallExpression: (n)=>{
-            if (n.callee.type !== "Identifier") (0, _vegaUtil.error)("Illegal callee type: " + n.callee.type);
-            const callee = n.callee.name, args = n.arguments, fn = (0, _vegaUtil.hasOwnProperty)(functions, callee) && functions[callee];
-            if (!fn) (0, _vegaUtil.error)("Unrecognized function: " + callee);
-            return (0, _vegaUtil.isFunction)(fn) ? fn(args) : fn + "(" + args.map(visit).join(",") + ")";
-        },
-        ArrayExpression: (n)=>"[" + n.elements.map(visit).join(",") + "]",
-        BinaryExpression: (n)=>"(" + visit(n.left) + " " + n.operator + " " + visit(n.right) + ")",
-        UnaryExpression: (n)=>"(" + n.operator + visit(n.argument) + ")",
-        ConditionalExpression: (n)=>"(" + visit(n.test) + "?" + visit(n.consequent) + ":" + visit(n.alternate) + ")",
-        LogicalExpression: (n)=>"(" + visit(n.left) + n.operator + visit(n.right) + ")",
-        ObjectExpression: (n)=>"{" + n.properties.map(visit).join(",") + "}",
-        Property: (n)=>{
-            memberDepth += 1;
-            const k = visit(n.key);
-            memberDepth -= 1;
-            return k + ":" + visit(n.value);
-        }
-    };
-    function codegen(ast) {
-        const result = {
-            code: visit(ast),
-            globals: Object.keys(globals),
-            fields: Object.keys(fields)
-        };
-        globals = {};
-        fields = {};
-        return result;
-    }
-    codegen.functions = functions;
-    codegen.constants = constants;
-    return codegen;
-}
-
-},{"vega-util":"bApja","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"gXMNx":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "selector", ()=>eventSelector);
 const VIEW = "view", LBRACK = "[", RBRACK = "]", LBRACE = "{", RBRACE = "}", COLON = ":", COMMA = ",", NAME = "@", GT = ">", ILLEGAL = /[[\]{}]/, DEFAULT_MARKS = {
     "*": 1,
     arc: 1,
