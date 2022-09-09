@@ -5,6 +5,10 @@ import * as powerbiModels from 'powerbi-models';
 import powerbiVisualsApi from 'powerbi-visuals-api';
 import { SandDance } from '@msrvida/sanddance-explorer';
 
+interface ExprSourceEntity extends powerbiVisualsApi.data.ISQExpr {
+    source?: { entity?: string; };
+}
+
 export function convertFilter(searchFilter: SandDance.searchExpression.Search, columns: powerbiVisualsApi.DataViewMetadataColumn[], data: object[]) {
     const selectedIds: powerbiVisualsApi.extensibility.ISelectionId[] = [];
     const filters: powerbiModels.IFilter[] = [];
@@ -64,20 +68,13 @@ function createAdvancedFilter(column: powerbiVisualsApi.DataViewMetadataColumn, 
     if (condition.operator === 'None') {
         return null;
     } else {
+        const expr: ExprSourceEntity = column.expr;
         const target: powerbiModels.IFilterColumnTarget = {
-            table: getTable(column.queryName),
+            table: expr.source?.entity,
             column: column.displayName,
         };
         return new powerbiModels.AdvancedFilter(target, 'And', condition);
     }
-}
-
-function getTable(queryName: string) {
-    const regExp = /\(([^)]+)\)/.exec(queryName);
-    if (regExp) {
-        queryName = regExp[1];
-    }
-    return queryName.substr(0, queryName.indexOf('.'));
 }
 
 function convertExpressionToAdvancedFilter(ex: SandDance.searchExpression.SearchExpression, column: powerbiVisualsApi.DataViewMetadataColumn): powerbiModels.AdvancedFilter {
