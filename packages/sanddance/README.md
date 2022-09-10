@@ -2,7 +2,7 @@
 
 Visually explore, understand, and present your data.
 
-![sanddance-animation](https://user-images.githubusercontent.com/11507384/54236654-52d42800-44d1-11e9-859e-6c5d297a46d2.gif)
+![sanddance-animation](https://user-images.githubusercontent.com/11507384/189461831-9467863e-bff8-47d2-aa03-ab2b74658814.gif)
 
 [Demo](https://microsoft.github.io/SandDance/app) - [API Reference](https://microsoft.github.io/SandDance/docs/sanddance/v4)
 
