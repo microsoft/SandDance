@@ -6,21 +6,29 @@ import { strings } from '../language';
 export interface Props {
     theme: string;
     columns: SandDance.types.Column[];
-    onUpdateColumn: (column: SandDance.types.Column) => void;
+    onConfirmUpdate: (columns: SandDance.types.Column[]) => void;
 }
 
 export interface State {
     dialogHidden: boolean;
+    confirmationHidden: boolean;
+    columns: SandDance.types.Column[];
 }
 
 function _ColumnTypeChanger(_props: Props) {
     class __ColumnTypeChanger extends base.react.Component<Props, State> {
         constructor(props: Props) {
             super(props);
-            this.state = {dialogHidden: true};
+            this.state = {
+                dialogHidden: true,
+                confirmationHidden: true,
+                columns: props.columns.slice(),
+            };
             this.openDialog = this.openDialog.bind(this);
             this.closeDialog = this.closeDialog.bind(this);
-            this.revert = this.revert.bind(this);
+            this.openConfirmation = this.openConfirmation.bind(this);
+            this.closeConfirmation = this.closeConfirmation.bind(this);
+            this.confirm = this.confirm.bind(this);
         }
 
         private openDialog() {
@@ -31,19 +39,21 @@ function _ColumnTypeChanger(_props: Props) {
             this.setState({dialogHidden: true});
         }
 
-        private getChangeableColumns(): SandDance.types.Column[] {
-            return this.props.columns.filter(c => c.type == 'integer' || c.type == 'number');
+        private openConfirmation() {
+            this.setState({confirmationHidden: false});
         }
 
-        private revert() {
-            this.getChangeableColumns()
-                .filter(c => !c.quantitative)
-                .forEach(c => this.props.onUpdateColumn({
-                    name: c.name,
-                    type: c.type,
-                    quantitative: true,
-                }));
-            this.closeDialog();
+        private closeConfirmation() {
+            this.setState({confirmationHidden: true});
+        }
+
+        private confirm() {
+            this.setState({dialogHidden: true, confirmationHidden: true});
+            this.props.onConfirmUpdate(this.state.columns);
+        }
+
+        private getChangeableColumns(): SandDance.types.Column[] {
+            return this.props.columns.filter(c => c.type == 'integer' || c.type == 'number');
         }
 
         render() {
@@ -64,9 +74,9 @@ function _ColumnTypeChanger(_props: Props) {
                         }}
                         buttons={
                             <base.fluentUI.DefaultButton
-                                text={strings.buttonRevert}
-                                onClick={this.revert}
-                                iconProps={{iconName: 'Undo'}}
+                                text="Apply and reload"
+                                onClick={this.openConfirmation}
+                                iconProps={{iconName: 'Undo'}}//TODO change
                             />
                         }
                     >
@@ -79,13 +89,37 @@ function _ColumnTypeChanger(_props: Props) {
                                 ]}
                                 label={c.name}
                                 defaultSelectedKey={c.quantitative ? 'q' : 'c'}
-                                onChange={(e, opt) => this.props.onUpdateColumn({
-                                    name: c.name,
-                                    type: c.type,
-                                    quantitative: opt.key == 'q',
+                                onChange={(e, opt) => this.setState((state) => {
+                                    state.columns
+                                        .filter(column => column.name == c.name)
+                                        .forEach(column => {
+                                            column.quantitative = opt.key == 'q'
+                                        })
                                 })}
                             />
                         ))}
+                    </Dialog>
+                    <Dialog
+                        hidden={this.state.confirmationHidden}
+                        onDismiss={this.closeConfirmation}
+                        dialogContentProps={{
+                            className: `sanddance-dialog ${this.props.theme}`,
+                            type: base.fluentUI.DialogType.normal,
+                            title: "Are you sure?",
+                            subText: "This will erase your current history.",
+                        }}
+                        // modalProps={{
+                        //     isBlocking: true,
+                        // }}
+                        buttons={(
+                            <base.fluentUI.PrimaryButton
+                                text="Apply and reload"
+                                onClick={this.confirm}
+                                // TODO iconprops
+                            />
+                        )}
+                    >
+
                     </Dialog>
                 </div>
             );

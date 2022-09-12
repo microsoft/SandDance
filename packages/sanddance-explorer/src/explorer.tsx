@@ -452,6 +452,7 @@ function _Explorer(_props: Props) {
                 columns: SandDance.types.Column[]
             ) => Partial<SandDance.specs.Insight>,
             optionsOrPrefs?: Prefs | Options,
+            overrideColumns?: SandDance.types.Column[],
         ) {
             this.setState({ historyIndex: -1, historyItems: [] });
             this.changeInsight(
@@ -524,13 +525,22 @@ function _Explorer(_props: Props) {
                             dataFile = {
                                 type: 'json',
                             };
+                            if (typeof overrideColumns !== 'undefined') {
+                                result.columns = overrideColumns;
+                            }
                             loadFinal(result);
                         })
                         .catch(reject);
                 } else {
                     dataFile = data as DataFile;
                     return loadDataFile(dataFile)
-                        .then(loadFinal)
+                        .then(result => {
+                            if (typeof overrideColumns !== 'undefined') {
+                                result.columns = overrideColumns;
+                                // TODO: Then get this new column data into viewer._dataScope
+                            }
+                            loadFinal(result);
+                        })
                         .catch(reject);
                 }
             });
@@ -1274,16 +1284,27 @@ function _Explorer(_props: Props) {
                                                     }
                                                 }}
                                                 bingSearchDisabled={this.props.bingSearchDisabled}
-                                                onUpdateColumn={updatedColumn => {
+                                                // onUpdateColumn={updatedColumn => {
+                                                //     this.setState(state => {
+                                                //         state.dataContent.columns
+                                                //             .filter(c => c.name == updatedColumn.name)
+                                                //             .forEach(c => {
+                                                //                 // keep this updating step the same as viewer.updateColumn
+                                                //                 c.quantitative = updatedColumn.quantitative;
+                                                //             });
+                                                //     });
+                                                //     this.viewer.updateColumn(updatedColumn);
+                                                // }}
+                                                onUpdateColumns={(columns) => {
                                                     this.setState(state => {
-                                                        state.dataContent.columns
-                                                            .filter(c => c.name == updatedColumn.name)
-                                                            .forEach(c => {
-                                                                // keep this updating step the same as viewer.updateColumn
-                                                                c.quantitative = updatedColumn.quantitative;
-                                                            });
-                                                    });
-                                                    this.viewer.updateColumn(updatedColumn);
+                                                        state.dataContent.columns = columns;
+                                                    })
+                                                    this.load(this.state.dataFile, null, this.prefs, columns);
+                                                    // this.viewer.updateColumn({
+                                                    //     name: "XXX", // dummy to get onanimate... to run
+                                                    //     type: "number",
+                                                    // });
+                                                    // TODO: how to handle getPartialInsight?
                                                 }}
                                             />
                                         );

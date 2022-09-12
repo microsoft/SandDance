@@ -974,6 +974,7 @@ export class Viewer {
      * @param column Column to update. The name is used to match existing columns.
      */
     updateColumn(column: Column): Promise<void> {
+        // TODO Remove
         this._dataScope.getColumns()
             .filter(dsColumn => dsColumn.name == column.name)
             .forEach(dsColumn => {
