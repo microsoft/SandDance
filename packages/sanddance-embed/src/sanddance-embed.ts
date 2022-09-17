@@ -132,15 +132,17 @@ namespace SandDanceEmbed {
             };
 
             const create = () => {
-                SandDanceExplorer.use(FluentUIReact, React, ReactDOM, vega);
-                const explorerProps: SandDanceExplorer.Props = {
-                    logoClickUrl: 'https://microsoft.github.io/SandDance/',
-                    mounted: explorer => {
-                        sandDanceExplorer = explorer;
-                        innerLoad();
-                    },
-                };
-                ReactDOM.render(React.createElement(SandDanceExplorer.Explorer, explorerProps), document.getElementById('app'));
+                prepare.then(() => {
+                    SandDanceExplorer.use(FluentUIReact, React, ReactDOM, vega);
+                    const explorerProps: SandDanceExplorer.Props = {
+                        logoClickUrl: 'https://microsoft.github.io/SandDance/',
+                        mounted: explorer => {
+                            sandDanceExplorer = explorer;
+                            innerLoad();
+                        },
+                    };
+                    ReactDOM.render(React.createElement(SandDanceExplorer.Explorer, explorerProps), document.getElementById('app'));
+                });
             };
 
             if (sandDanceExplorer) {
