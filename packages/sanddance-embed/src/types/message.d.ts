@@ -1,5 +1,14 @@
 /// requests
 
+type EmbedDependencyType = 'script' | 'stylesheet';
+
+interface EmbedDependency {
+    url: string;
+    type: EmbedDependencyType;
+    loaded?: boolean;
+    existed?: boolean;
+}
+
 type Actions = 'init' | 'load' | 'getData' | 'getInsight';
 
 interface MessageRequestBase {
@@ -12,7 +21,7 @@ interface MessageRequest_Init extends MessageRequestBase {
     action: 'init';
 }
 
-type  DataToLoad = object[] | SandDanceExplorer.DataFile;
+type DataToLoad = object[] | SandDanceExplorer.DataFile;
 
 interface MessageRequest_Load extends MessageRequestBase {
     action: 'load';

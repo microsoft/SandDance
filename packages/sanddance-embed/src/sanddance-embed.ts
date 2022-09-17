@@ -3,27 +3,127 @@
 * Licensed under the MIT License.
 */
 
-import SandDance = SandDanceExplorer.SandDance;
-import VegaMorphCharts = SandDance.VegaMorphCharts;
-
-declare let vega: VegaMorphCharts.types.VegaBase;
+declare let vega: SandDanceExplorer.SandDance.VegaMorphCharts.types.VegaBase;
 declare let FluentUIReact: _FluentUI.FluentUIComponents;
 
 namespace SandDanceEmbed {
 
+    export function defaultDependencies(): EmbedDependency[] {
+        return [
+            {
+                type: 'stylesheet',
+                url: 'https://unpkg.com/@msrvida/sanddance-embed@4/dist/css/sanddance-embed.css',
+            },
+            {
+                type: 'stylesheet',
+                url: 'https://unpkg.com/@msrvida/sanddance-explorer@4/dist/css/sanddance-explorer.css',
+            },
+            {
+                type: 'script',
+                url: 'https://unpkg.com/react@17/umd/react.production.min.js',
+            },
+            {
+                type: 'script',
+                url: 'https://unpkg.com/react-dom@17/umd/react-dom.production.min.js',
+            },
+            {
+                type: 'script',
+                url: 'https://unpkg.com/vega@5.22/build/vega.min.js',
+            },
+            {
+                type: 'script',
+                url: 'https://unpkg.com/@fluentui/react@8/dist/fluentui-react.js',
+            },
+            {
+                type: 'script',
+                url: 'https://unpkg.com/@msrvida/sanddance-explorer@4/dist/umd/sanddance-explorer.js',
+            }
+        ];
+    }
+
+    export function getDependencies(): EmbedDependency[] {
+        const qs = decodeURIComponent(document.location.search.substring(1));
+        if (qs[0] === '[') {
+            try {
+                return JSON.parse(qs);
+            }
+            catch (e) { }
+        }
+        return defaultDependencies();
+    };
+
+    export let deps: EmbedDependency[];
+
+    function loadDeps(depType: EmbedDependencyType, tagType: string, tagAttr: string, create: (dep: EmbedDependency) => HTMLElement) {
+        const promises: Promise<void>[] = [];
+        const depsToLoad = deps.filter(dep => dep.type === depType);
+        const elements = [
+            ...Array.from(document.head.querySelectorAll(tagType)),
+            ...Array.from(document.body.querySelectorAll(tagType)),
+        ];
+        depsToLoad.forEach(dep => {
+            const element = elements.find(element => {
+                try {
+                    return element.attributes[tagAttr].nodeValue === dep.url;
+                }
+                catch (e) {
+                    return false;
+                }
+            });
+            if (!element) {
+                //load style
+                const el = create(dep);
+                promises.push(new Promise<void>((resolve, reject) => {
+                    el.onload = () => {
+                        dep.loaded = true;
+                        resolve();
+                    };
+                }));
+                document.head.appendChild(el);
+            } else {
+                dep.existed = true;
+                dep.loaded = true;
+            }
+        });
+        return promises;
+    }
+
+    function loadStyleSheets() {
+        return loadDeps('stylesheet', 'link', 'href', (dep) => {
+            const el = document.createElement('link');
+            el.rel = 'stylesheet';
+            el.type = 'text/css';
+            el.href = dep.url;
+            return el;
+        });
+    }
+
+    function loadScripts() {
+        return loadDeps('script', 'script', 'src', (dep) => {
+            const el = document.createElement('script');
+            el.src = dep.url;
+            return el;
+        });
+    }
+
+    const prepare = new Promise<void>((resolve, reject) => {
+        deps = getDependencies();
+        Promise.all([...loadStyleSheets(), ...loadScripts()]).then(() => resolve());
+    });
+
     interface DataWithInsight {
         data: DataToLoad;
-        insight: Partial<SandDance.specs.Insight>;
+        insight: Partial<SandDanceExplorer.SandDance.specs.Insight>;
     }
 
     export let sandDanceExplorer: SandDanceExplorer.Explorer_Class;
     export const requests: MessageRequestWithSource[] = [];
 
-    export function load(data: DataToLoad, insight?: Partial<SandDance.specs.Insight>) {
+    export function load(data: DataToLoad, insight?: Partial<SandDanceExplorer.SandDance.specs.Insight>) {
         return new Promise((resolve) => {
 
             const innerLoad = () => {
-                let getPartialInsight: (columns: SandDance.types.Column[]) => Partial<SandDance.specs.Insight>;
+                let getPartialInsight: (columns: SandDanceExplorer.SandDance.types.Column[]) => Partial<SandDanceExplorer.SandDance.specs.Insight>;
                 if (insight) {
                     //TODO make sure that insight columns exist in dataset
                     getPartialInsight = columns => insight;
@@ -91,9 +191,11 @@ namespace SandDanceEmbed {
                 break;
             }
         }
-        if (response) {
-            requestWithSource.source.postMessage(response, '*');
-        }
+        prepare.then(() => {
+            if (response) {
+                requestWithSource.source.postMessage(response, '*');
+            }
+        });
     }
 
     window.addEventListener('message', e => {
