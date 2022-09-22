@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>sanddance test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <header>
+        <h1>sanddance embed test</h1>
+    </header>
+
+    <iframe id="embed" title="embed" style="width: 90%; height: 600px" src="sanddance-embed.html"></iframe>
+
+    <script>
+        window.onmessage = (e) => {
+            console.log('messaged', e.data);
+        };
+        const embedIframe = document.getElementById('embed');
+        embedIframe.onload = () => {
+            const embedWindow = embedIframe.contentWindow;
+            fetch('../../sample-data/titanicmaster.tsv')
+                .then(response => response.text())
+                .then(rawText => {
+                    const data = { rawText, type: 'tsv' };
+                    embedWindow.postMessage({ action: 'load', data }, '*');
+                });
+        };
+    </script>
+
+</body>
+
+</html>
