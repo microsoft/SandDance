@@ -38851,19 +38851,10 @@ const $8f1b85a9470d3af5$export$c4b7cd609ccf4a5a = (title, embed)=>`<!DOCTYPE htm
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${title}</title>
-    <link rel="stylesheet" type="text/css"
-        href="https://unpkg.com/@msrvida/sanddance-embed@4/dist/css/sanddance-embed.css" />
-    <link rel="stylesheet" type="text/css"
-        href="https://unpkg.com/@msrvida/sanddance-explorer@4/dist/css/sanddance-explorer.css" />
 </head>
 
 <body>
-    <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/vega@5.22/build/vega.min.js"></script>
-    <script src="https://unpkg.com/@fluentui/react@8/dist/fluentui-react.js"></script>
-    <script src="https://unpkg.com/@msrvida/sanddance-explorer@4/dist/umd/sanddance-explorer.js"></script>
-    <script src="https://unpkg.com/@msrvida/sanddance-embed@4/dist/umd/sanddance-embed.js"></script>
+    <script src="https://unpkg.com/@msrvida/sanddance-embed@4.1/dist/umd/sanddance-embed.js"></script>
 
     <div id="app"></div>
 
