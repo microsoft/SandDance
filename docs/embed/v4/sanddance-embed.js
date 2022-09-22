@@ -100,21 +100,57 @@ var SandDanceEmbed;
         });
         return promises;
     }
-    function loadStyleSheets() {
-        return loadDeps('stylesheet', 'link', 'href', function (dep) {
-            var el = document.createElement('link');
-            el.rel = 'stylesheet';
-            el.type = 'text/css';
-            el.href = dep.url;
-            return el;
+    function getUnloadedDeps(depType, tagType, tagAttr) {
+        var depsToLoad = SandDanceEmbed.deps.filter(function (dep) { return dep.type === depType; });
+        var elements = __spreadArray(__spreadArray([], Array.from(document.head.querySelectorAll(tagType)), true), Array.from(document.body.querySelectorAll(tagType)), true);
+        depsToLoad.forEach(function (dep) {
+            var element = elements.find(function (element) { return element.attributes[tagAttr].nodeValue === dep.url; });
+            if (element) {
+                dep.existed = true;
+                dep.loaded = true;
+            }
         });
+        return depsToLoad.filter(function (dep) { return !dep.loaded; });
+    }
+    function loadStyleSheets() {
+        var promises = [];
+        var deps = getUnloadedDeps('stylesheet', 'link', 'href');
+        deps.forEach(function (dep) {
+            promises.push(new Promise(function (resolve, reject) {
+                var el = document.createElement('link');
+                el.rel = 'stylesheet';
+                el.type = 'text/css';
+                el.href = dep.url;
+                el.onload = function () {
+                    dep.loaded = true;
+                    resolve();
+                };
+                document.head.appendChild(el);
+            }));
+        });
+        return promises;
     }
     function loadScripts() {
-        return loadDeps('script', 'script', 'src', function (dep) {
-            var el = document.createElement('script');
-            el.src = dep.url;
-            return el;
+        var deps = getUnloadedDeps('script', 'script', 'src');
+        var promise = new Promise(function (resolve, reject) {
+            var next = function (index) {
+                if (index >= deps.length) {
+                    resolve();
+                }
+                else {
+                    var dep_1 = deps[index];
+                    var el = document.createElement('script');
+                    el.src = dep_1.url;
+                    el.onload = function () {
+                        dep_1.loaded = true;
+                        next(++index);
+                    };
+                    document.head.appendChild(el);
+                }
+            };
+            next(0);
         });
+        return [promise];
     }
     var prepare = new Promise(function (resolve, reject) {
         SandDanceEmbed.deps = getDependencies();

@@ -88,22 +88,61 @@ namespace SandDanceEmbed {
         return promises;
     }
 
-    function loadStyleSheets() {
-        return loadDeps('stylesheet', 'link', 'href', (dep) => {
-            const el = document.createElement('link');
-            el.rel = 'stylesheet';
-            el.type = 'text/css';
-            el.href = dep.url;
-            return el;
+    function getUnloadedDeps(depType: EmbedDependencyType, tagType: string, tagAttr: string) {
+        const depsToLoad = deps.filter(dep => dep.type === depType);
+        const elements = [
+            ...Array.from(document.head.querySelectorAll(tagType)),
+            ...Array.from(document.body.querySelectorAll(tagType)),
+        ];
+        depsToLoad.forEach(dep => {
+            const element = elements.find(element => element.attributes[tagAttr].nodeValue === dep.url);
+            if (element) {
+                dep.existed = true;
+                dep.loaded = true;
+            }
         });
+        return depsToLoad.filter(dep => !dep.loaded);
+    }
+
+    function loadStyleSheets() {
+        const promises: Promise<void>[] = [];
+        const deps = getUnloadedDeps('stylesheet', 'link', 'href');
+        deps.forEach(dep => {
+            promises.push(new Promise<void>((resolve, reject) => {
+                const el = document.createElement('link');
+                el.rel = 'stylesheet';
+                el.type = 'text/css';
+                el.href = dep.url;
+                el.onload = () => {
+                    dep.loaded = true;
+                    resolve();
+                };
+                document.head.appendChild(el);
+            }));
+        });
+        return promises;
     }
 
     function loadScripts() {
-        return loadDeps('script', 'script', 'src', (dep) => {
-            const el = document.createElement('script');
-            el.src = dep.url;
-            return el;
+        const deps = getUnloadedDeps('script', 'script', 'src');
+        const promise = new Promise<void>((resolve, reject) => {
+            const next = (index: number) => {
+                if (index >= deps.length) {
+                    resolve();
+                } else {
+                    const dep = deps[index];
+                    const el = document.createElement('script');
+                    el.src = dep.url;
+                    el.onload = () => {
+                        dep.loaded = true;
+                        next(++index);
+                    };
+                    document.head.appendChild(el);
+                }
+            }
+            next(0);
         });
+        return [promise];
     }
 
     const prepare = new Promise<void>((resolve, reject) => {
