@@ -13,6 +13,7 @@
   ],
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
+    "deploy": "node ./scripts/deploy.js",
     "build-css": "sass ./src/css/sanddance-embed.scss ./dist/css/sanddance-embed.css",
     "build-typescript": "tsc -p .",
     "build:sanddance-core": "npm run build-css && npm run build-typescript"
