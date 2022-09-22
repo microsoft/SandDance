@@ -22,7 +22,7 @@
         const embedIframe = document.getElementById('embed');
         embedIframe.onload = () => {
             const embedWindow = embedIframe.contentWindow;
-            fetch('../sample-data/titanicmaster.tsv')
+            fetch('../../sample-data/titanicmaster.tsv')
                 .then(response => response.text())
                 .then(rawText => {
                     const data = { rawText, type: 'tsv' };
