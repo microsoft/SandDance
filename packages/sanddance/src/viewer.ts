@@ -181,7 +181,6 @@ export class Viewer {
                 innerPromise = new Promise<void>(innerResolve => {
                     this.renderNewLayout({}, {
                         ...(this.setup || {}),
-                        onPresent: ()=> this.options.onPresent(),
                         preStage: (stage, cubeLayer) => {
                             finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                             this.overrideAxisLabels(stage);
@@ -199,7 +198,6 @@ export class Viewer {
             } else {
                 innerPromise = this.renderNewLayout({}, {
                     ...(this.setup || {}),
-                    onPresent: ()=> this.options.onPresent(),
                     preStage: (stage, colorMapper) => {
                         finalizeLegend(this.insight.colorBin, this._specColumns.color, stage.legend, this.options.language);
                         this.overrideAxisLabels(stage);
@@ -251,7 +249,7 @@ export class Viewer {
                         //apply old legend
                         this.applyLegendColorContext(oldColorContext);
                         this.changeColorContexts([oldColorContext, newColorContext]);
-                        this.options.onPresent && this.options.onPresent();
+                        this.onPresent();
                     },
                 });
 
@@ -277,7 +275,7 @@ export class Viewer {
                     onPresent: () => {
                         //color needs to change instantly
                         populateColorContext(colorContext, this.presenter);
-                        this.options.onPresent && this.options.onPresent();
+                        this.onPresent();
                     },
                 });
 
@@ -527,8 +525,15 @@ export class Viewer {
                 this.changeColorContexts([colorContext]);
                 this._dataScope.deselect();
             }
-            this.options.onPresent && this.options.onPresent();
+            this.onPresent();
         };
+    }
+
+    private onPresent() {
+        if (this.setup?.transition) {
+            assignTransitionStagger(this.setup.transition, this._dataScope.currentData(), this.convertSearchToSet(), this.presenter);
+        }
+        this.options.onPresent && this.options.onPresent();
     }
 
     private async _render(insightSetup: InsightSetup, data: object[], renderOptions: RenderOptions, forceNewCharacterSet: boolean) {
@@ -583,7 +588,7 @@ export class Viewer {
                         //apply passed colorContext
                         this.applyLegendColorContext(colorContext);
                     }
-                    this.options.onPresent && this.options.onPresent();
+                    this.onPresent();
                 },
                 shouldViewstateTransition: () => this.shouldViewstateTransition(insight, this.insight),
             },
@@ -738,7 +743,7 @@ export class Viewer {
             onTextHover: this.onTextHover.bind(this),
             preLayer: this.preLayer.bind(this),
             preStage: this.preStage.bind(this),
-            onPresent: this.options.onPresent,
+            onPresent: this.onPresent.bind(this),
             onAxisConfig: (cartesian, dim3d, axis) => {
                 if (!axis) return;
                 const role = this.specCapabilities.roles.filter(r => r.role === axis.axisRole)[0];
@@ -923,8 +928,8 @@ export class Viewer {
         let position: [number, number, number] = [0, 0, 0];
         let rotation: [number, number, number, number] = [0, 0, 0, 0];
         if (transitionFinal) {
-            position = Array.from(this.presenter?.morphchartsref?.cameraTransitioner.vCameraPositionTo as any) as [number, number, number];
-            rotation = Array.from(this.presenter?.morphchartsref?.cameraTransitioner.qCameraRotationTo as any) as [number, number, number, number];
+            position = Array.from(this.presenter?.morphchartsref?.cameraTransitioner.vPosition.to as any) as [number, number, number];
+            rotation = Array.from(this.presenter?.morphchartsref?.cameraTransitioner.qRotation.to as any) as [number, number, number, number];
         } else {
             const camera = this.presenter?.morphchartsref?.core?.camera;
             if (camera) {
@@ -940,7 +945,9 @@ export class Viewer {
      * @param camera Camera to set.
      */
     setCamera(camera: Camera) {
-        this.presenter?.morphChartsRenderResult?.moveCamera(camera.position, camera.rotation);
+        if (camera) {
+            this.presenter?.morphChartsRenderResult?.moveCamera(camera);
+        }
     }
 
     /**

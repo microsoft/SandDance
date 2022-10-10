@@ -15,7 +15,7 @@
     "@types/react": ">=16.8.0 <18.0.0",
     "@types/react-dom": ">=16.8.0 <18.0.0",
     "@msrvida/fluentui-react-cdn-typings": "^2",
-    "vega-typings": "0.21.0"
+    "vega-typings": "0.22.3"
   },
   "targets": {
     "main": false,
@@ -39,6 +39,6 @@
   "dependencies": {
     "@fluentui/react": "^8",
     "@msrvida/sanddance-explorer": "^4",
-    "vega": "5.20"
+    "vega": "5.22.1"
   }
 }

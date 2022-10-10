@@ -1,5 +1,9 @@
 # Change Log
 
+## [4.0.1]
+- New 3d engine
+- Transitions tab
+
 ## [3.3.0]
 - Show the z axis scale in 3d
 

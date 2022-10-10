@@ -43,7 +43,7 @@ export interface Props {
     onSelectionChanged: (search: SandDance.searchExpression.Search, activeIndex: number, selectedData: object[]) => void;
     onSnapshotsChanged: (snapshots: SandDance.types.Snapshot[]) => void;
     onContextMenu: (e: MouseEvent | PointerEvent, selectionId?: powerbiVisualsApi.extensibility.ISelectionId) => void;
-    onCameraSave: (camera: SandDance.types.Camera) => void;
+    onSetupSave: (setup: SandDance.types.Setup) => void;
 }
 
 const RIGHT_MOUSE_BUTTON = 2;
@@ -56,13 +56,12 @@ export interface State {
     darkTheme: boolean;
     rowCount: number;
     fetching: boolean;
-    unsavedCamera: SandDance.types.Camera;
 }
 
 export class App extends React.Component<Props, State> {
     private viewerOptions: Partial<SandDance.types.ViewerOptions>;
     public explorer: Explorer_Class;
-    private cameraTimer: number;
+    private cameraTimer: NodeJS.Timeout;
     public lastCamera: SandDance.types.Camera;
     public lastCameraStable: boolean;
 
@@ -75,7 +74,6 @@ export class App extends React.Component<Props, State> {
             darkTheme: null,
             rowCount: null,
             fetching: false,
-            unsavedCamera: null,
         };
         this.viewerOptions = this.getViewerOptions();
     }
@@ -90,7 +88,7 @@ export class App extends React.Component<Props, State> {
         return {
             colors: getColorSettingsFromThemePalette(themePalettes[darkTheme ? 'dark-theme' : '']),
             onCubeClick: (e, cube) => {
-                const { button } = e as unknown as PointerEvent;
+                const { button } = <PointerEvent>e;
                 if (button === RIGHT_MOUSE_BUTTON) {
                     const row = this.explorer.state.dataContent.data[cube.ordinal];
                     const selectionId = row[SandDance.constants.FieldNames.PowerBISelectionId];
@@ -149,7 +147,7 @@ export class App extends React.Component<Props, State> {
         this.lastCameraStable = stable;
         this.lastCamera = viewer.getCamera(transitionFinal);
         const { transitionDurations } = viewer.setup;
-        this.cameraTimer = setTimeout(() => this.listenToCamera(), transitionDurations.position + transitionDurations.stagger + cameraSettle) as unknown as number;
+        this.cameraTimer = setTimeout(() => this.listenToCamera(), transitionDurations.position + transitionDurations.stagger + cameraSettle);
     }
 
     private endCameraListener() {
@@ -164,12 +162,13 @@ export class App extends React.Component<Props, State> {
             if (!compare) {
                 //camera has moved, listen for stability
                 stable = false;
-                this.setState({ unsavedCamera: null });
             }
         } else {
             if (compare) {
                 //unstable camera has stabilized
-                this.setState({ unsavedCamera: currCamera });
+                const setup = this.explorer.getSetup();
+                setup.camera = currCamera;
+                this.props.onSetupSave(setup);
                 stable = true;
             }
         }
@@ -238,6 +237,7 @@ export class App extends React.Component<Props, State> {
                 this.explorer = explorer;
                 props.mounted(this);
             },
+            onSetupOptionsChanged: this.props.onSetupSave,
             onSignalChanged: () => {
                 props.onViewChange({});
             },
@@ -247,7 +247,6 @@ export class App extends React.Component<Props, State> {
             onSnapshotsChanged: props.onSnapshotsChanged,
             onTooltipExclusionsChanged: tooltipExclusions => props.onViewChange({ tooltipExclusions }),
             onView: () => {
-                this.setState({ unsavedCamera: null });
                 this.beginCameraListener(true, true);
                 this.explorer.viewer.presenter.getElement(SandDance.VegaMorphCharts.PresenterElement.gl).oncontextmenu = (e) => {
                     props.onContextMenu(e);
@@ -256,17 +255,6 @@ export class App extends React.Component<Props, State> {
                 props.onViewChange({});
             },
             onError: props.onError,
-            topBarIconButtonProps: state.editmode ? [{
-                key: 'bookmark',
-                iconProps: {
-                    iconName: state.unsavedCamera ? 'SingleBookmarkSolid' : 'SingleBookmark',
-                    onClick: () => {
-                        this.props.onCameraSave(state.unsavedCamera);
-                        this.setState({ unsavedCamera: null });
-                    },
-                },
-                title: language.bookmarkCamera,
-            }] : null,
             systemInfoChildren: [
                 React.createElement('li', null, `${language.powerBiCustomVisual}: ${version}`),
             ],

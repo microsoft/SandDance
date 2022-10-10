@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/search-expression",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Search expression parser.",
   "main": "dist/es6/index.js",
   "repository": {
@@ -22,6 +22,6 @@
   "license": "MIT",
   "dependencies": {
     "@msrvida/chart-types": "^1",
-    "vega-typings": "0.21.0"
+    "vega-typings": "0.22.3"
   }
 }

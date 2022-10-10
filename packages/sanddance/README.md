@@ -2,7 +2,7 @@
 
 Visually explore, understand, and present your data.
 
-![sanddance-animation](https://user-images.githubusercontent.com/11507384/54236654-52d42800-44d1-11e9-859e-6c5d297a46d2.gif)
+![sanddance-animation](https://user-images.githubusercontent.com/11507384/189461831-9467863e-bff8-47d2-aa03-ab2b74658814.gif)
 
 [Demo](https://microsoft.github.io/SandDance/app) - [API Reference](https://microsoft.github.io/SandDance/docs/sanddance/v4)
 
@@ -14,7 +14,7 @@ You will need to consider how to load the libraries that `sanddance` depends on,
 
 Load dependencies via `<script>` tags in your HTML:
 ```html
-<script src="https://unpkg.com/vega@^5.20/build/vega.js" charset="utf-8"></script>
+<script src="https://unpkg.com/vega@^5.22/build/vega.js" charset="utf-8"></script>
 <script src="https://unpkg.com/@msrvida/sanddance@^4/dist/umd/sanddance.js"></script>
 ```
 
@@ -30,7 +30,7 @@ Add these to the `dependencies` section of your `package.json`, then run `npm in
 
 ```json
 "@msrvida/sanddance": "^4",
-"vega": "^5.20"
+"vega": "^5.22"
 ```
 
 Import these in your JavaScript, then call the `use()` function to pass the dependency libraries to `SandDance.VegaMorphCharts`:

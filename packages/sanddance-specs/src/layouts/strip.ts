@@ -155,7 +155,7 @@ export class Strip extends Layout {
                                 }
                                 :
                                 {
-                                    value: 0
+                                    value: 0,
                                 },
                         ],
                     },

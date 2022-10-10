@@ -111,7 +111,7 @@ export class Square extends Layout {
                                 }
                                 :
                                 {
-                                    value: 0
+                                    value: 0,
                                 },
                         ],
                     },

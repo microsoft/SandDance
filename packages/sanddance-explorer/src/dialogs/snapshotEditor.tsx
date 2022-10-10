@@ -107,7 +107,10 @@ function _SnapshotEditor(_props: Props) {
                             key={0}
                             onClick={e => {
                                 const setup = SandDance.VegaMorphCharts.util.clone(explorer.getSetup());
-                                setup.camera = explorer.viewer.getCamera();
+                                if (setup.camera !== 'hold') {
+                                    //get the latest camera movement, instead of what's in state
+                                    setup.camera = explorer.viewer.getCamera();
+                                }
                                 const snapshot: Snapshot = {
                                     title: this.state.title,
                                     description: this.state.description,

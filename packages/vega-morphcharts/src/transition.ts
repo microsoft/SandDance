@@ -9,6 +9,7 @@ import { easing } from './easing';
 export class Transitioner {
     public isTransitioning: boolean;
     public time: number;
+    public ended: () => void;
 
     constructor() {
         this.isTransitioning = false;
@@ -24,48 +25,55 @@ export class Transitioner {
         if (this.time >= totalTime) {
             this.isTransitioning = false;
             this.time = totalTime;
+            this.ended && this.ended();
         }
         const t = this.time / totalTime;
         return ease ? easing(t) : t;
     }
 }
 
+export interface TransitionSet<T> {
+    from: T;
+    to: T;
+    current: T;
+}
+
 export class CameraTransitioner extends Transitioner {
-    public qCameraRotationFrom: quat;
-    public qCameraRotationTo: quat;
-    public qCameraRotationCurrent: quat;
-    public vCameraPositionFrom: vec3;
-    public vCameraPositionTo: vec3;
-    public vCameraPositionCurrent: vec3;
+    public qRotation: TransitionSet<quat>;
+    public vPosition: TransitionSet<vec3>;
 
     constructor() {
         super();
-        this.qCameraRotationFrom = quat.create();
-        this.qCameraRotationTo = null;
-        this.qCameraRotationCurrent = quat.create();
-        this.vCameraPositionFrom = vec3.create();
-        this.vCameraPositionTo = null;
-        this.vCameraPositionCurrent = vec3.create();
+        this.qRotation = {
+            from: quat.create(),
+            to: null,
+            current: quat.create(),
+        };
+        this.vPosition = {
+            from: vec3.create(),
+            to: null,
+            current: vec3.create(),
+        };
     }
 
     move(position: vec3, rotation: quat) {
         this.begin();
-        this.qCameraRotationTo = rotation;
-        this.vCameraPositionTo = position;
+        this.qRotation.to = rotation;
+        this.vPosition.to = position;
     }
 }
 
 export class ModelTransitioner extends Transitioner {
+    public qRotation: TransitionSet<quat>;
     public shouldTransition: boolean;
-    public qModelFrom: quat;
-    public qModelTo: quat;
-    public qModelCurrent: quat;
 
     constructor() {
         super();
         this.shouldTransition = false;
-        this.qModelFrom = null;
-        this.qModelTo = null;
-        this.qModelCurrent = quat.create();
+        this.qRotation = {
+            from: null,
+            to: null,
+            current: quat.create(),
+        };
     }
 }

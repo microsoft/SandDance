@@ -5,12 +5,12 @@
 
 import { base } from './base';
 import { compareInsight, deepCompare } from './util';
-import { specs, types, VegaMorphCharts, Viewer } from '@msrvida/sanddance';
+import { specs, types, VegaMorphCharts, Viewer as SandDanceViewer } from '@msrvida/sanddance';
 
 export interface Props {
     viewerOptions?: Partial<types.ViewerOptions>;
     insight: specs.Insight;
-    setup: types.Setup;
+    setup?: types.Setup;
     data: object[];
     renderOptions?: types.RenderOptions;
     onView?: (renderResult: types.RenderResult) => void;
@@ -21,10 +21,10 @@ export interface Props {
 export interface State {
 }
 
-function _SandDanceReact(_props: Props) {
+function _Viewer(_props: Props) {
 
-    class __SandDanceReact extends base.react.Component<Props, State> {
-        public viewer: Viewer;
+    class __Viewer extends base.react.Component<Props, State> {
+        public viewer: SandDanceViewer;
         private viewerDiv: React.ReactInstance;
         private lastData: object[];
 
@@ -62,10 +62,18 @@ function _SandDanceReact(_props: Props) {
             if (!didLayout && props.setup) {
                 const { camera } = props.setup;
                 //compare setup, move camera
-                if (camera && camera !== 'hold') {
-                    if (!deepCompare(this.viewer.getCamera(), camera)) {
+                if (camera !== 'hold') {
+                    if (!deepCompare(this.viewer.setup.camera, camera)) {
                         //camera is different
-                        this.viewer.setCamera(camera);
+                        if (!camera) {
+                            this.viewer?.presenter?.homeCamera();
+                        } else {
+                            this.viewer.setCamera(camera);
+                        }
+                        //save this for next comparison
+                        const setup = VegaMorphCharts.util.clone(this.viewer.setup);
+                        setup.camera = camera;
+                        this.viewer.setup = setup;
                     }
                 }
                 if (props.setup.renderer) {
@@ -77,7 +85,7 @@ function _SandDanceReact(_props: Props) {
         componentDidMount() {
             const { props } = this;
             const element = base.reactDOM.findDOMNode(this.viewerDiv) as HTMLElement;
-            this.viewer = new Viewer(element, props.viewerOptions);
+            this.viewer = new SandDanceViewer(element, props.viewerOptions);
             if (props.onMount) {
                 if (props.onMount(this.viewer.presenter.getElement(VegaMorphCharts.PresenterElement.gl))) {
                     this.view();
@@ -104,11 +112,11 @@ function _SandDanceReact(_props: Props) {
         }
     }
 
-    return new __SandDanceReact(_props);
+    return new __Viewer(_props);
 }
 
-export const SandDanceReact: typeof SandDanceReact_Class = _SandDanceReact as any;
+export const Viewer: typeof Viewer_Class = _Viewer as any;
 
-export declare class SandDanceReact_Class extends base.react.Component<Props, State> {
-    public viewer: Viewer;
+export declare class Viewer_Class extends base.react.Component<Props, State> {
+    public viewer: SandDanceViewer;
 }

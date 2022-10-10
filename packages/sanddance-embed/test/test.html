@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8" />
@@ -13,25 +13,56 @@
         <h1>sanddance embed test</h1>
     </header>
 
-    <iframe id="embed" style="width: 90%; height: 600px" src="sanddance-embed.html"></iframe>
+    <iframe id="embed" title="embed" style="width: 90%; height: 600px"></iframe>
 
     <script>
+        const deps = [
+            {
+                type: 'stylesheet',
+                url: '../dist/css/sanddance-embed.css',
+            },
+            {
+                type: 'stylesheet',
+                url: '../node_modules/@msrvida/sanddance-explorer/dist/css/sanddance-explorer.css',
+            },
+            {
+                type: 'script',
+                url: '../node_modules/react/umd/react.production.min.js',
+            },
+            {
+                type: 'script',
+                url: '../node_modules/react-dom/umd/react-dom.production.min.js',
+            },
+            {
+                type: 'script',
+                url: '../node_modules/vega/build/vega.min.js',
+            },
+            {
+                type: 'script',
+                url: '../node_modules/@fluentui/react/dist/fluentui-react.js',
+            },
+            {
+                type: 'script',
+                url: '../node_modules/@msrvida/sanddance-explorer/dist/umd/sanddance-explorer.js',
+            }
+        ];
         window.onmessage = (e) => {
-            console.log('messaged', e);
+            console.log('messaged', e.data);
         };
-        const embed = document.getElementById('embed');
-        embed.onload = () => {
+        const embedIframe = document.getElementById('embed');
+        embedIframe.onload = () => {
+            const embedWindow = embedIframe.contentWindow;
             fetch('https://microsoft.github.io/SandDance/sample-data/titanicmaster.tsv')
                 .then(response => response.text())
                 .then(rawText => {
-                    const w = document.getElementById('embed').contentWindow;
                     const data = { rawText, type: 'tsv' };
-                    w.postMessage({ action: 'load', data }, '*');
-                })
-                ;
+                    embedWindow.postMessage({ action: 'load', data }, '*');
+                });
         };
+        const testLocal = true;
+        const localQs = testLocal ? `?${encodeURIComponent(JSON.stringify(deps))}` : '';
+        embedIframe.src = 'sanddance-embed.html' + localQs;
     </script>
-
 
 </body>
 

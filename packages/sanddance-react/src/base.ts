@@ -3,7 +3,7 @@
 * Licensed under the MIT License.
 */
 
-import { SandDanceReact } from './viewer';
+import { Viewer } from './viewer';
 import * as SandDance from '@msrvida/sanddance';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -39,5 +39,5 @@ export function use(
     base.reactDOM = reactDOM;
 
     //inform React that we are using a dynamic base class
-    SandDanceReact.prototype = react.Component.prototype as any;
+    Viewer.prototype = react.Component.prototype as any;
 }

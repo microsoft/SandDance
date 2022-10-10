@@ -56,7 +56,7 @@ import { themePalettes } from './themes';
 import { compareGroups, createInputSearch } from './searchGroups';
 import { RecommenderSummary } from '@msrvida/chart-recommender';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
-import { SandDance, SandDanceReact, util } from '@msrvida/sanddance-react';
+import { SandDance, Viewer, util } from '@msrvida/sanddance-react';
 import { Renderer } from './controls/renderer';
 
 import Snapshot = SandDance.types.Snapshot;
@@ -90,6 +90,7 @@ export interface Props {
     onError?: (e: any) => void;
     onSignalChanged?: (signalName: string, signalValue: any) => void;
     onTooltipExclusionsChanged?: (tooltipExclusions: string[]) => void;
+    onSetupOptionsChanged?: (setup: SandDance.types.Setup) => void;
     additionalSettings?: SettingsGroup[];
     systemInfoChildren?: React.ReactNode;
     initialRenderer?: SandDance.VegaMorphCharts.types.MorphChartsRendererOptions;
@@ -174,8 +175,8 @@ function _Explorer(_props: Props) {
                                     }
                                 }
                                 return ret;
-                            })
-                        }
+                            }),
+                        },
                     },
                     this.viewerOptions,
                     viewerOptions,
@@ -240,9 +241,6 @@ function _Explorer(_props: Props) {
                 onBeforeCreateLayers: (stage, specCapabilities) => {
                     attachSpecRoleToAxisTitle(stage, specCapabilities);
                 },
-                onPresent: () => {
-                    this.setStagger();
-                },
                 getTextColor: o => {
                     if ((o as TextWithSpecRole).specRole) {
                         return SandDance.VegaMorphCharts.util.colorFromString((this.viewerOptions.colors as ColorSettings).clickableText);
@@ -293,10 +291,6 @@ function _Explorer(_props: Props) {
                 this.viewer.presenter.style = mergePrenterStyle;
                 this.viewer.options = SandDance.VegaMorphCharts.util.deepMerge(this.viewer.options, this.props.viewerOptions, this.viewerOptions) as SandDance.types.ViewerOptions;
             }
-        }
-
-        public setStagger() {
-            this.viewer.assignTransitionStagger(getTransition(this.state));
         }
 
         public signal(signalName: string, signalValue: any, newViewStateTarget?: boolean) {
@@ -350,9 +344,9 @@ function _Explorer(_props: Props) {
         }
 
         private setSetup(setup: SandDance.types.Setup, newState: Partial<State>) {
-            if (!setup) {
-                newState = { camera: undefined };
-            } else {
+            newState.camera = undefined;
+            if (setup) {
+                this.props.onSetupOptionsChanged && this.props.onSetupOptionsChanged(setup);
                 const { camera, renderer, transition, transitionDurations } = setup;
                 newState.renderer = renderer;
                 newState.transitionType = transition.type;
@@ -393,9 +387,7 @@ function _Explorer(_props: Props) {
             };
             const changeInsight = () => {
                 this.getColorContext = null;
-                if (setup) {
-                    this.setSetup(setup, historicInsight);
-                }
+                this.setSetup(setup, historicInsight);
                 this.changeInsight(historicInsight, historyAction, state, setup);
             };
             const currentFilter = this.viewer.getInsight().filter;
@@ -488,6 +480,7 @@ function _Explorer(_props: Props) {
                     const sideTabId = SideTabId.ChartType;
                     resetSelectedItemIndex(selectedItemIndex);
                     const newState: Partial<State> = {
+                        camera: undefined,
                         dataFile,
                         dataContent,
                         snapshots: dataContent.snapshots || this.state.snapshots,
@@ -504,9 +497,7 @@ function _Explorer(_props: Props) {
                     newState.errors = errors;
                     newState.transitionColumn = dataContent.columns[0];
                     const setup = (optionsOrPrefs && (optionsOrPrefs as Options).setup);
-                    if (setup) {
-                        this.setSetup(setup, newState);
-                    }
+                    this.setSetup(setup, newState);
                     //change insight
                     this.changeInsight(
                         partialInsight,
@@ -594,7 +585,7 @@ function _Explorer(_props: Props) {
                 this.changeInsight(
                     insight,
                     { label: strings.labelHistoryChangeChartType(chartLabel(chart)) },
-                    errors ? { errors } : null,
+                    errors ? { errors, camera: undefined } : { camera: undefined },
                 );
             });
 
@@ -672,9 +663,7 @@ function _Explorer(_props: Props) {
         private doReplay(historyIndex: number) {
             const newState = this.replay(historyIndex);
             this.rebaseFilter = true;
-            if (newState.historicSetup) {
-                this.setSetup(newState.historicSetup, newState);
-            }
+            this.setSetup(newState.historicSetup, newState);
             this.setState({ ...newState as State, historyIndex });
         }
 
@@ -695,7 +684,7 @@ function _Explorer(_props: Props) {
                 this.changeInsight(
                     partialInsight,
                     { label },
-                    errors ? { errors } : null,
+                    errors ? { errors, camera: this.viewer.getCamera() } : { camera: this.viewer.getCamera() },
                 );
             };
             const _changeInsight = (newInsight: Partial<HistoricInsight>, columnUpdate: SandDance.specs.InsightColumns, historyAction: HistoryAction) => {
@@ -705,7 +694,7 @@ function _Explorer(_props: Props) {
                     columnUpdate,
                 );
                 savePref(this.prefs, this.state.chart, '*', '*', { columns: columnUpdate });
-                this.changeInsight(newInsight, historyAction);
+                this.changeInsight(newInsight, historyAction, { camera: this.viewer.getCamera() });
             };
             if (column) {
                 let columnUpdate: SandDance.specs.InsightColumns;
@@ -1415,6 +1404,19 @@ function _Explorer(_props: Props) {
                                                 compactUI={this.props.compactUI}
                                                 explorer={this as any as Explorer_Class}
                                                 themePalette={themePalette}
+                                                changeSetup={(newState, affectsStagger) => {
+                                                    const calculating = () => {
+                                                        if (affectsStagger) {
+                                                            this.viewer.assignTransitionStagger(getTransition(this.state));
+                                                        }
+                                                        this.props.onSetupOptionsChanged && this.props.onSetupOptionsChanged(this.getSetup());
+                                                    };
+                                                    if (newState) {
+                                                        this.setState({ ...newState as State, calculating });
+                                                    } else {
+                                                        calculating();
+                                                    }
+                                                }}
                                             />
                                         );
                                     }
@@ -1439,7 +1441,7 @@ function _Explorer(_props: Props) {
                         </Sidebar>
                         {loaded && (
                             <div className="sanddance-view">
-                                <SandDanceReact
+                                <Viewer
                                     renderOptions={renderOptions}
                                     viewerOptions={this.viewerOptions}
                                     ref={reactViewer => {
@@ -1449,7 +1451,6 @@ function _Explorer(_props: Props) {
                                     }}
                                     onView={renderResult => {
                                         this.rebaseFilter = false;
-                                        this.setState({ camera: undefined });
                                         this.changespecCapabilities(renderResult.specResult.errors ? renderResult.specResult.specCapabilities : this.viewer.specCapabilities);
                                         this.getColorContext = (oldInsight: SandDance.specs.Insight, newInsight: SandDance.specs.Insight) => {
                                             if (!oldInsight && !newInsight) {
@@ -1499,7 +1500,10 @@ function _Explorer(_props: Props) {
                                     advancedOptions={this.state.renderer.advancedOptions}
                                     basicOptions={this.state.renderer.basicOptions}
                                     themePalette={themePalette}
-                                    onHomeClick={() => this.viewer.presenter.homeCamera()}
+                                    onHomeClick={() => {
+                                        this.setState({ camera: undefined });
+                                        this.viewer.presenter.homeCamera();
+                                    }}
                                 />
                             </div>
                         )}
@@ -1585,7 +1589,6 @@ export declare class Explorer_Class extends base.react.Component<Props, State> {
     constructor(props: Props);
     finalize(): void;
     updateViewerOptions(viewerOptions: Partial<SandDance.types.ViewerOptions>): void;
-    setStagger(): void;
     signal(signalName: string, signalValue: any, newViewStateTarget?: boolean): void;
     //private manageColorToolbar(): void;
     getInsight(): SandDance.specs.Insight;

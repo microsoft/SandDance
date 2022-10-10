@@ -2704,6 +2704,16 @@
 	        this._inverseVMatrices = [create$4(), create$4()];
 	        this._inversePMatrices = [create$4(), create$4()];
 	    }
+	    getView(view) {
+	        this.getPosition(view.position);
+	    }
+	    setView(view, isSmooth) {
+	        this.setPosition(view.position, isSmooth);
+	    }
+	    lerpView(from, to, time) {
+	        lerp(this._vec3, from.position, to.position, time);
+	        this.setPosition(this._vec3, false);
+	    }
 	    get vMatrices() { return this._vMatrices; }
 	    get inverseVMatrices() { return this._inverseVMatrices; }
 	    get mvMatrices() { return this._mvMatrices; }
@@ -2895,6 +2905,22 @@
 	 * Licensed under the MIT License.
 	 */
 	class AltAzimuthCamera extends CameraBase {
+	    getView(view) {
+	        super.getView(view);
+	        view.altitude = this.altitude;
+	        view.azimuth = this.azimuth;
+	        view.fov = this._core.config.fov;
+	    }
+	    setView(view, isSmooth) {
+	        super.setView(view, isSmooth);
+	        this.setAltAzimuth(view.altitude, view.azimuth, isSmooth);
+	        this._core.config.fov = view.fov;
+	    }
+	    lerpView(from, to, time) {
+	        super.lerpView(from, to, time);
+	        this.setAltAzimuth(MathHelper.lerp(from.altitude, to.altitude, time), MathHelper.lerp(from.azimuth, to.azimuth, time), false);
+	        this._core.config.fov = MathHelper.lerp(from.fov, to.fov, time);
+	    }
 	    update(elapsedTime) {
 	        super.update(elapsedTime);
 	        if (this._core.config.isDebugVisible) {
@@ -3010,13 +3036,14 @@
 	        this.selectionColor = create$3();
 	        this.hoverColor = create$3();
 	        this.activeColor = create$3();
-	        this.hightlightMode = HighlightMode.color;
+	        this.highlightMode = HighlightMode.color;
 	        this.lassoThickness = 4;
 	        this.lassoDashWidth = 2;
 	        this.lassoColor = create$3();
 	        this.minCubifiedTreeMapSlice = 0.01;
 	        this.transitionDuration = 400;
 	        this.transitionStaggering = 100;
+	        this.transitionView = true;
 	        this.backgroundColor = create$3();
 	        this.theme = Theme.light;
 	    }
@@ -3403,6 +3430,9 @@
 	    static setIdHover(bufferView, index, value) {
 	        bufferView.setFloat32(UnitVertex.SIZE_BYTES * index + this.ID_HOVER_OFFSET_BYTES, value, true);
 	    }
+	    static copyIdHover(fromBufferView, fromIndex, toBufferView, toIndex) {
+	        toBufferView.setFloat32(UnitVertex.SIZE_BYTES * toIndex + this.ID_HOVER_OFFSET_BYTES, fromBufferView.getFloat32(UnitVertex.SIZE_BYTES * fromIndex + this.ID_HOVER_OFFSET_BYTES, true), true);
+	    }
 	    static getTranslation(bufferView, index, value) {
 	        const offset = UnitVertex.SIZE_BYTES * index + this.TRANSLATION_OFFSET_BYTES;
 	        set$3(value, bufferView.getFloat32(offset, true), bufferView.getFloat32(offset + 4, true), bufferView.getFloat32(offset + 8, true));
@@ -3413,6 +3443,13 @@
 	        bufferView.setFloat32(offset + 4, value[1], true);
 	        bufferView.setFloat32(offset + 8, value[2], true);
 	    }
+	    static copyTranslation(fromBufferView, fromIndex, toBufferView, toIndex) {
+	        const fromOffset = UnitVertex.SIZE_BYTES * fromIndex + this.TRANSLATION_OFFSET_BYTES;
+	        const toOffset = UnitVertex.SIZE_BYTES * toIndex + this.TRANSLATION_OFFSET_BYTES;
+	        toBufferView.setFloat32(toOffset, fromBufferView.getFloat32(fromOffset, true), true);
+	        toBufferView.setFloat32(toOffset + 4, fromBufferView.getFloat32(fromOffset + 4, true), true);
+	        toBufferView.setFloat32(toOffset + 8, fromBufferView.getFloat32(fromOffset + 8, true), true);
+	    }
 	    static getColor(bufferView, index, value) {
 	        const offset = UnitVertex.SIZE_BYTES * index + this.COLOR_OFFSET_BYTES;
 	        set(value, bufferView.getUint8(offset) / 0xFF, bufferView.getUint8(offset + 1) / 0xFF);
@@ -3422,27 +3459,47 @@
 	        bufferView.setUint8(offset, value[0] * 0xFF);
 	        bufferView.setUint8(offset + 1, value[1] * 0xFF);
 	    }
+	    static copyColor(fromBufferView, fromIndex, toBufferView, toIndex) {
+	        const fromOffset = UnitVertex.SIZE_BYTES * fromIndex + this.COLOR_OFFSET_BYTES;
+	        const toOffset = UnitVertex.SIZE_BYTES * toIndex + this.COLOR_OFFSET_BYTES;
+	        toBufferView.setUint8(toOffset, fromBufferView.getUint8(fromOffset));
+	        toBufferView.setUint8(toOffset + 1, fromBufferView.getUint8(fromOffset + 1));
+	    }
 	    static getScale(bufferView, index, value) {
 	        const offset = UnitVertex.SIZE_BYTES * index + this.SCALE_OFFSET_BYTES;
-	        set$2(value, bufferView.getFloat32(offset, true), bufferView.getFloat32(offset + 4, true), bufferView.getFloat32(offset + 8, true), bufferView.getFloat32(offset + 12, true));
+	        set$3(value, bufferView.getFloat32(offset, true), bufferView.getFloat32(offset + 4, true), bufferView.getFloat32(offset + 8, true));
 	    }
 	    static setScale(bufferView, index, value) {
 	        const offset = UnitVertex.SIZE_BYTES * index + this.SCALE_OFFSET_BYTES;
 	        bufferView.setFloat32(offset, value[0], true);
 	        bufferView.setFloat32(offset + 4, value[1], true);
 	        bufferView.setFloat32(offset + 8, value[2], true);
-	        bufferView.setFloat32(offset + 12, value[3], true);
+	    }
+	    static copyScale(fromBufferView, fromIndex, toBufferView, toIndex) {
+	        const fromOffset = UnitVertex.SIZE_BYTES * fromIndex + this.SCALE_OFFSET_BYTES;
+	        const toOffset = UnitVertex.SIZE_BYTES * toIndex + this.SCALE_OFFSET_BYTES;
+	        toBufferView.setFloat32(toOffset, fromBufferView.getFloat32(fromOffset, true), true);
+	        toBufferView.setFloat32(toOffset + 4, fromBufferView.getFloat32(fromOffset + 4, true), true);
+	        toBufferView.setFloat32(toOffset + 8, fromBufferView.getFloat32(fromOffset + 8, true), true);
 	    }
 	    static getRotation(bufferView, index, value) {
 	        const offset = UnitVertex.SIZE_BYTES * index + this.ROTATION_OFFSET_BYTES;
-	        set$1(value, bufferView.getInt16(offset, true) / 0x7FFF, bufferView.getInt16(offset + 2, true) / 0x7FFF, bufferView.getInt16(offset + 4, true) / 0x7FFF, bufferView.getInt16(offset + 6, true) / 0x7FFF);
+	        set$1(value, bufferView.getFloat32(offset, true), bufferView.getFloat32(offset + 4, true), bufferView.getFloat32(offset + 8, true), bufferView.getFloat32(offset + 12, true));
 	    }
 	    static setRotation(bufferView, index, value) {
 	        const offset = UnitVertex.SIZE_BYTES * index + this.ROTATION_OFFSET_BYTES;
-	        bufferView.setInt16(offset, value[0] * 0x7FFF, true);
-	        bufferView.setInt16(offset + 2, value[1] * 0x7FFF, true);
-	        bufferView.setInt16(offset + 4, value[2] * 0x7FFF, true);
-	        bufferView.setInt16(offset + 6, value[3] * 0x7FFF, true);
+	        bufferView.setFloat32(offset, value[0], true);
+	        bufferView.setFloat32(offset + 4, value[1], true);
+	        bufferView.setFloat32(offset + 8, value[2], true);
+	        bufferView.setFloat32(offset + 12, value[3], true);
+	    }
+	    static copyRotation(fromBufferView, fromIndex, toBufferView, toIndex) {
+	        const fromOffset = UnitVertex.SIZE_BYTES * fromIndex + this.ROTATION_OFFSET_BYTES;
+	        const toOffset = UnitVertex.SIZE_BYTES * toIndex + this.ROTATION_OFFSET_BYTES;
+	        toBufferView.setFloat32(toOffset, fromBufferView.getFloat32(fromOffset, true), true);
+	        toBufferView.setFloat32(toOffset + 4, fromBufferView.getFloat32(fromOffset + 4, true), true);
+	        toBufferView.setFloat32(toOffset + 8, fromBufferView.getFloat32(fromOffset + 8, true), true);
+	        toBufferView.setFloat32(toOffset + 12, fromBufferView.getFloat32(fromOffset + 12, true), true);
 	    }
 	    static getIdColor(bufferView, index, value) {
 	        const offset = UnitVertex.SIZE_BYTES * index + this.ID_COLOR_OFFSET_BYTES;
@@ -3461,11 +3518,17 @@
 	    static setOrder(bufferView, index, value) {
 	        bufferView.setFloat32(UnitVertex.SIZE_BYTES * index + this.ORDER_OFFSET_BYTES, value, true);
 	    }
+	    static copyOrder(fromBufferView, fromIndex, toBufferView, toIndex) {
+	        toBufferView.setFloat32(UnitVertex.SIZE_BYTES * toIndex + this.ORDER_OFFSET_BYTES, fromBufferView.getFloat32(UnitVertex.SIZE_BYTES * fromIndex + this.ORDER_OFFSET_BYTES, true), true);
+	    }
 	    static getStaggerOrder(bufferView, index) {
 	        return bufferView.getUint16(UnitVertex.SIZE_BYTES * index + this.STAGGER_ORDER_OFFSET_BYTES, true) / 0xFFFF;
 	    }
 	    static setStaggerOrder(bufferView, index, value) {
 	        bufferView.setUint16(UnitVertex.SIZE_BYTES * index + this.STAGGER_ORDER_OFFSET_BYTES, value * 0xFFFF, true);
+	    }
+	    static copyStaggerOrder(fromBufferView, fromIndex, toBufferView, toIndex) {
+	        toBufferView.setUint16(UnitVertex.SIZE_BYTES * toIndex + this.STAGGER_ORDER_OFFSET_BYTES, fromBufferView.getUint16(UnitVertex.SIZE_BYTES * fromIndex + this.STAGGER_ORDER_OFFSET_BYTES, true), true);
 	    }
 	    static getSelected(bufferView, index) {
 	        return bufferView.getInt8(UnitVertex.SIZE_BYTES * index + this.SELECTED_OFFSET_BYTES) / 0x7F;
@@ -3473,24 +3536,40 @@
 	    static setSelected(bufferView, index, value) {
 	        bufferView.setInt8(UnitVertex.SIZE_BYTES * index + this.SELECTED_OFFSET_BYTES, value * 0x7F);
 	    }
+	    static copySelected(fromBufferView, fromIndex, toBufferView, toIndex) {
+	        toBufferView.setInt8(UnitVertex.SIZE_BYTES * toIndex + this.SELECTED_OFFSET_BYTES, fromBufferView.getInt8(UnitVertex.SIZE_BYTES * fromIndex + this.SELECTED_OFFSET_BYTES));
+	    }
+	    static getRounding(bufferView, index) {
+	        return bufferView.getFloat32(UnitVertex.SIZE_BYTES * index + this.ROUNDING_OFFSET_BYTES, true);
+	    }
+	    static setRounding(bufferView, index, value) {
+	        bufferView.setFloat32(UnitVertex.SIZE_BYTES * index + this.ROUNDING_OFFSET_BYTES, value, true);
+	    }
+	    static copyRounding(fromBufferView, fromIndex, toBufferView, toIndex) {
+	        toBufferView.setFloat32(UnitVertex.SIZE_BYTES * toIndex + this.ROUNDING_OFFSET_BYTES, fromBufferView.getFloat32(UnitVertex.SIZE_BYTES * fromIndex + this.ROUNDING_OFFSET_BYTES, true), true);
+	    }
 	    static getMaterial(bufferView, index) {
 	        return bufferView.getUint16(UnitVertex.SIZE_BYTES * index + this.MATERIAL_OFFSET_BYTES);
 	    }
 	    static setMaterial(bufferView, index, value) {
 	        bufferView.setUint16(UnitVertex.SIZE_BYTES * index + this.MATERIAL_OFFSET_BYTES, value);
 	    }
+	    static copyMaterial(fromBufferView, fromIndex, toBufferView, toIndex) {
+	        toBufferView.setUint16(UnitVertex.SIZE_BYTES * toIndex + this.MATERIAL_OFFSET_BYTES, fromBufferView.getUint16(UnitVertex.SIZE_BYTES * fromIndex + this.MATERIAL_OFFSET_BYTES, true), true);
+	    }
 	}
-	UnitVertex.SIZE_BYTES = 56;
+	UnitVertex.SIZE_BYTES = 64;
 	UnitVertex.ID_HOVER_OFFSET_BYTES = 0;
 	UnitVertex.ID_COLOR_OFFSET_BYTES = 4;
 	UnitVertex.ORDER_OFFSET_BYTES = 8;
 	UnitVertex.STAGGER_ORDER_OFFSET_BYTES = 12;
+	UnitVertex.SELECTED_OFFSET_BYTES = 14;
 	UnitVertex.TRANSLATION_OFFSET_BYTES = 16;
 	UnitVertex.COLOR_OFFSET_BYTES = 28;
-	UnitVertex.SCALE_OFFSET_BYTES = 32;
-	UnitVertex.SELECTED_OFFSET_BYTES = 14;
-	UnitVertex.ROTATION_OFFSET_BYTES = 48;
 	UnitVertex.MATERIAL_OFFSET_BYTES = 30;
+	UnitVertex.SCALE_OFFSET_BYTES = 32;
+	UnitVertex.ROUNDING_OFFSET_BYTES = 44;
+	UnitVertex.ROTATION_OFFSET_BYTES = 48;
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
@@ -6945,7 +7024,9 @@ f 5/6/6 1/12/6 8/11/6`;
 	            if (this._mouseWheel.delta != 0) {
 	                switch (this.mouseWheelAction(this._keyboard)) {
 	                    case MouseWheelAction.zoom:
-	                        camera.zoom(this._mouseWheel.delta * this.mouseWheelZoomScale, this._pointers.hoverX, this._pointers.hoverY);
+	                        if (this._pointers.hoverX, this._pointers.hoverY) {
+	                            camera.zoom(this._mouseWheel.delta * this.mouseWheelZoomScale, this._pointers.hoverX, this._pointers.hoverY);
+	                        }
 	                        break;
 	                    case MouseWheelAction.rotateY:
 	                        setAxisAngle(this._quat0, Constants.VECTOR3_UNITY, this._mouseWheel.delta * this.mouseWheelRotationScale);
@@ -7251,6 +7332,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    constructor(options) {
 	        setMatrixArrayType(Array);
 	        this._vec3 = create$3();
+	        this._quat = create$1();
 	        this._mat4 = create$4();
 	        this._container = options && options.container ? options.container : document.body;
 	        this._config = new Config$2(this);
@@ -7384,6 +7466,23 @@ f 5/6/6 1/12/6 8/11/6`;
 	    get paletteResources() { return this._paletteResources; }
 	    get config() { return this._config; }
 	    get inputManager() { return this._inputManager; }
+	    getView(view) {
+	        this.getModelPosition(view.position);
+	        this.getModelRotation(view.rotation);
+	        view.scale = this.getModelScale();
+	    }
+	    setView(view, isSmooth) {
+	        this.setModelPosition(view.position, isSmooth);
+	        this.setModelRotation(view.rotation, isSmooth);
+	        this.setModelScale(view.scale, isSmooth);
+	    }
+	    lerpView(from, to, time) {
+	        lerp(this._vec3, from.position, to.position, time);
+	        this.setModelPosition(this._vec3, false);
+	        slerp(this._quat, from.rotation, to.rotation, time);
+	        this.setModelRotation(this._quat, false);
+	        this.setModelScale(MathHelper.lerp(from.scale, to.scale, time), false);
+	    }
 	    resetModel(isSmooth) {
 	        set$3(this._modelPosition, 0, 0, -this._config.modelDistance);
 	        set$3(this._modelScale, this._config.modelSize, this._config.modelSize, this._config.modelSize);
@@ -7407,6 +7506,9 @@ f 5/6/6 1/12/6 8/11/6`;
 	            this._windowAnimationFrame = window.requestAnimationFrame((currentTime) => this._tick(currentTime));
 	            this._started = true;
 	            this._log.write(LogLevel.info, "render loop started");
+	            if (this.startCallback) {
+	                this.startCallback();
+	            }
 	        }
 	    }
 	    stop() {
@@ -7417,6 +7519,9 @@ f 5/6/6 1/12/6 8/11/6`;
 	                this._windowAnimationFrame = null;
 	                this._log.write(LogLevel.info, "render loop stopped");
 	            }
+	            if (this.stopCallback) {
+	                this.stopCallback();
+	            }
 	        }
 	    }
 	    checkWebXRSupport() {
@@ -7424,10 +7529,10 @@ f 5/6/6 1/12/6 8/11/6`;
 	        if (xrSystem) {
 	            xrSystem.isSessionSupported("immersive-vr").then((supported) => {
 	                if (supported) {
+	                    this._log.write(LogLevel.info, "WebXR supported");
 	                    if (this.webXRSupportedCallback) {
 	                        this.webXRSupportedCallback();
 	                    }
-	                    this._log.write(LogLevel.info, "WebXR supported");
 	                }
 	            });
 	        }
@@ -7498,9 +7603,6 @@ f 5/6/6 1/12/6 8/11/6`;
 	        let elapsedTime = currentTime - this._previousTime;
 	        this._previousTime = currentTime;
 	        if (elapsedTime > 0) {
-	            if (elapsedTime > 100) {
-	                elapsedTime = 100;
-	            }
 	            this.update(elapsedTime, xrFrame);
 	            this.render(elapsedTime, xrFrame);
 	        }
@@ -7585,6 +7687,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        transformMat4$2(this._vec3, this._modelManipulationOrigin, this._modelMMatrix);
 	        subtract(this._modelPosition, this._vec3, this._modelManipulationOrigin);
 	        copy$3(this._smoothedModelPosition, this._modelPosition);
+	        this._log.write(LogLevel.info, `manipulation origin ${position[0].toFixed(3)},${position[1].toFixed(3)},${position[2].toFixed(3)}`);
 	        if (this.manipulationOriginChangedCallback) {
 	            const result = {
 	                x: position[0],
@@ -7593,7 +7696,6 @@ f 5/6/6 1/12/6 8/11/6`;
 	            };
 	            this.manipulationOriginChangedCallback(result);
 	        }
-	        this._log.write(LogLevel.info, `manipulation origin ${position[0].toFixed(3)},${position[1].toFixed(3)},${position[2].toFixed(3)}`);
 	    }
 	    pickLasso(x0, y0, x1, y1, pickType) {
 	        const inverseMMatrix = create$4();
@@ -7931,7 +8033,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        this.maxGlyphTop = options.maxGlyphTop;
 	        this.horizontalAlignment = options.horizontalAlignment === undefined ? HorizontalAlignment.center : options.horizontalAlignment;
 	        this.verticalAlignment = options.verticalAlignment === undefined ? VerticalAlignment.center : options.verticalAlignment;
-	        this._material = options.material;
+	        this._material = options.material === undefined ? -1 : options.material;
 	        this.borderWidth = core.config.textBorderWidth;
 	        this.gamma = 0;
 	    }
@@ -8324,7 +8426,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        this._rotation = options.rotation ? clone$2(options.rotation) : create$1();
 	        this._texCoord0 = options.texCoord0 ? clone$1(options.texCoord0) : fromValues(0, 0);
 	        this._texCoord1 = options.texCoord1 ? clone$1(options.texCoord1) : fromValues(1, 1);
-	        this._material = options.material === undefined ? 0 : options.material;
+	        this._material = options.material === undefined ? -1 : options.material;
 	        this._hasChanged = true;
 	    }
 	    get material() { return this._material; }
@@ -8594,8 +8696,8 @@ f 5/6/6 1/12/6 8/11/6`;
 	        this.maxCumulativeLayoutBoundsY = this.maxCumulativeLayoutBoundsY === undefined ? this.maxLayoutBoundsY : Math.max(this.maxCumulativeLayoutBoundsY, this.maxLayoutBoundsY);
 	        this.maxCumulativeLayoutBoundsZ = this.maxCumulativeLayoutBoundsZ === undefined ? this.maxLayoutBoundsZ : Math.max(this.maxCumulativeLayoutBoundsZ, this.maxLayoutBoundsZ);
 	    }
-	    unitToModelSize(unit) {
-	        return unit / this._boundsScaling;
+	    unitToModelSize(unitSize) {
+	        return unitSize / this._boundsScaling;
 	    }
 	    unitToModelPositionX(unitPositionX) {
 	        return this.unitToModelSize(unitPositionX) + this.modelOriginX;
@@ -8631,7 +8733,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    inclusiveUnitBounds(buffer, ids, unitType, offset, count, minBounds, maxBounds) {
 	        set$3(minBounds, Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE);
 	        set$3(maxBounds, -Number.MAX_VALUE, -Number.MAX_VALUE, -Number.MAX_VALUE);
-	        const unitScale = create$2();
+	        const unitScale = create$3();
 	        const unitRotation = create$1();
 	        const unitTranslation = create$3();
 	        const lookup = buffer.lookup;
@@ -8670,7 +8772,6 @@ f 5/6/6 1/12/6 8/11/6`;
 	                    const index = lookup[id];
 	                    UnitVertex.getTranslation(dataView, index, unitTranslation);
 	                    UnitVertex.getRotation(dataView, index, unitRotation);
-	                    normalize(unitRotation, unitRotation);
 	                    UnitVertex.getScale(dataView, index, unitScale);
 	                    minBounds0[0] = unitTranslation[0] - unitScale[0] / 2;
 	                    minBounds0[1] = unitTranslation[1] - unitScale[1] / 2;
@@ -8696,7 +8797,6 @@ f 5/6/6 1/12/6 8/11/6`;
 	                    const index = lookup[id];
 	                    UnitVertex.getTranslation(dataView, index, unitTranslation);
 	                    UnitVertex.getRotation(dataView, index, unitRotation);
-	                    normalize(unitRotation, unitRotation);
 	                    UnitVertex.getScale(dataView, index, unitScale);
 	                    const length = unitScale[1];
 	                    const radius = Math.max(unitScale[0], unitScale[2]);
@@ -8768,7 +8868,6 @@ f 5/6/6 1/12/6 8/11/6`;
 	        const dataView = buffer.dataView;
 	        const _vec2 = create();
 	        const _vec3 = create$3();
-	        const _vec4 = create$2();
 	        const _quat = create$1();
 	        const sizeScalingX = options.sizeScaling === undefined ? options.sizeScalingX === undefined ? 1 : options.sizeScalingX : options.sizeScaling;
 	        const sizeScalingY = options.sizeScaling === undefined ? options.sizeScalingY === undefined ? 1 : options.sizeScalingY : options.sizeScaling;
@@ -8815,10 +8914,10 @@ f 5/6/6 1/12/6 8/11/6`;
 	            _vec3[1] = (positionY - this.modelOriginY) * this._boundsScaling;
 	            _vec3[2] = (positionZ - this.modelOriginZ) * this._boundsScaling;
 	            UnitVertex.setTranslation(dataView, index, _vec3);
-	            _vec4[0] = Math.max((sizesX ? Math.abs(sizesX[id]) : 1) * sizeScalingX, minSize) * this._boundsScaling;
-	            _vec4[1] = Math.max((sizesY ? Math.abs(sizesY[id]) : 1) * sizeScalingY, minSize) * this._boundsScaling;
-	            _vec4[2] = Math.max((sizesZ ? Math.abs(sizesZ[id]) : 1) * sizeScalingZ, minSize) * this._boundsScaling;
-	            UnitVertex.setScale(dataView, index, _vec4);
+	            _vec3[0] = Math.max((sizesX ? Math.abs(sizesX[id]) : 1) * sizeScalingX, minSize) * this._boundsScaling;
+	            _vec3[1] = Math.max((sizesY ? Math.abs(sizesY[id]) : 1) * sizeScalingY, minSize) * this._boundsScaling;
+	            _vec3[2] = Math.max((sizesZ ? Math.abs(sizesZ[id]) : 1) * sizeScalingZ, minSize) * this._boundsScaling;
+	            UnitVertex.setScale(dataView, index, _vec3);
 	            if (options.rotations) {
 	                _quat[0] = options.rotations[id * 4];
 	                _quat[1] = options.rotations[id * 4 + 1];
@@ -8863,6 +8962,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	                UnitVertex.setStaggerOrder(dataView, index, i / (count - 1));
 	            }
 	            UnitVertex.setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+	            UnitVertex.setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
 	        }
 	        buffer.update();
 	        this._core.log.write(LogLevel.info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -9116,7 +9216,6 @@ f 5/6/6 1/12/6 8/11/6`;
 	        const dataView = buffer.dataView;
 	        const _vec2 = create();
 	        const _vec3 = create$3();
-	        const _vec4 = create$2();
 	        const _quat = create$1();
 	        const endMinColor = options.endMinColor === undefined ? 0 : options.endMinColor;
 	        const endMaxColor = options.endMaxColor === undefined ? 1 : options.endMaxColor;
@@ -9151,10 +9250,10 @@ f 5/6/6 1/12/6 8/11/6`;
 	            _vec3[1] = (positionY - this.modelOriginY) * this._boundsScaling;
 	            _vec3[2] = (positionZ - this.modelOriginZ) * this._boundsScaling;
 	            UnitVertex.setTranslation(dataView, index, _vec3);
-	            _vec4[0] = this._sizes[index * 3] * this._boundsScaling;
-	            _vec4[1] = this._sizes[index * 3 + 1] * this._boundsScaling;
-	            _vec4[2] = this._sizes[index * 3 + 2] * this._boundsScaling;
-	            UnitVertex.setScale(dataView, index, _vec4);
+	            _vec3[0] = this._sizes[index * 3] * this._boundsScaling;
+	            _vec3[1] = this._sizes[index * 3 + 1] * this._boundsScaling;
+	            _vec3[2] = this._sizes[index * 3 + 2] * this._boundsScaling;
+	            UnitVertex.setScale(dataView, index, _vec3);
 	            _quat[0] = this._rotations[index * 4];
 	            _quat[1] = this._rotations[index * 4 + 1];
 	            _quat[2] = this._rotations[index * 4 + 2];
@@ -9194,6 +9293,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	                UnitVertex.setStaggerOrder(dataView, index, i / (count - 1));
 	            }
 	            UnitVertex.setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
+	            UnitVertex.setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
 	        }
 	        buffer.update();
 	        this._core.log.write(LogLevel.info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -9235,31 +9335,25 @@ f 5/6/6 1/12/6 8/11/6`;
 	    }
 	    copyFrom(buffer) {
 	        const start = window.performance.now();
-	        const _vec2 = create();
-	        const _vec3 = create$3();
-	        const _vec4 = create$2();
-	        const _quat = create$1();
-	        const dataView = buffer.dataView;
+	        const fromDataView = buffer.dataView;
+	        const toDataView = this._dataView;
 	        const lookup = buffer.lookup;
 	        for (let i = 0; i < this._length; i++) {
 	            const index = lookup[this._ids[i]];
 	            if (index != null) {
-	                UnitVertex.setIdHover(this._dataView, i, UnitVertex.getIdHover(dataView, index));
-	                UnitVertex.getTranslation(dataView, index, _vec3);
-	                UnitVertex.setTranslation(this._dataView, i, _vec3);
-	                UnitVertex.getScale(dataView, index, _vec4);
-	                UnitVertex.setScale(this._dataView, i, _vec4);
-	                UnitVertex.getRotation(dataView, index, _quat);
-	                UnitVertex.setRotation(this._dataView, i, _quat);
-	                UnitVertex.getColor(dataView, index, _vec2);
-	                UnitVertex.setColor(this._dataView, i, _vec2);
-	                UnitVertex.setSelected(this._dataView, i, UnitVertex.getSelected(dataView, index));
-	                UnitVertex.setMaterial(this._dataView, i, UnitVertex.getMaterial(dataView, index));
-	                UnitVertex.setOrder(this._dataView, i, UnitVertex.getOrder(dataView, index));
-	                UnitVertex.setStaggerOrder(this._dataView, i, UnitVertex.getStaggerOrder(dataView, index));
+	                UnitVertex.copyIdHover(fromDataView, index, toDataView, i);
+	                UnitVertex.copyTranslation(fromDataView, index, toDataView, i);
+	                UnitVertex.copyScale(fromDataView, index, toDataView, i);
+	                UnitVertex.copyRotation(fromDataView, index, toDataView, i);
+	                UnitVertex.copyColor(fromDataView, index, toDataView, i);
+	                UnitVertex.copySelected(fromDataView, index, toDataView, i);
+	                UnitVertex.copyMaterial(fromDataView, index, toDataView, i);
+	                UnitVertex.copyRounding(fromDataView, index, toDataView, i);
+	                UnitVertex.copyOrder(fromDataView, index, toDataView, i);
+	                UnitVertex.copyStaggerOrder(fromDataView, index, toDataView, i);
 	            }
 	            else {
-	                UnitVertex.setRotation(this._dataView, i, Constants.QUAT_IDENTITY);
+	                UnitVertex.setRotation(toDataView, i, Constants.QUAT_IDENTITY);
 	            }
 	        }
 	        this.unitType = buffer.unitType;
@@ -9273,10 +9367,11 @@ f 5/6/6 1/12/6 8/11/6`;
 	        const offset = options && options.offset !== undefined ? options.offset : 0;
 	        const count = options && options.count !== undefined ? options.count : ids.length;
 	        const selection = this._selected.size > 0;
+	        const dataView = this._dataView;
 	        for (let i = 0; i < count; i++) {
 	            const id = ids[i + offset];
 	            const index = this._lookup[id];
-	            UnitVertex.setSelected(this._dataView, index, selection ? this._selected.has(id) ? 1 : -1 : 0);
+	            UnitVertex.setSelected(dataView, index, selection ? this._selected.has(id) ? 1 : -1 : 0);
 	        }
 	        this.update();
 	        this._core.log.write(LogLevel.info, `buffer update selection ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -9498,7 +9593,10 @@ f 5/6/6 1/12/6 8/11/6`;
 	    initialize(core) {
 	        this._core = core;
 	        this._canvas = document.createElement("canvas");
-	        this._canvas.addEventListener("contextmenu", (e) => { e.preventDefault(); });
+	        const contextmenu = this._options && this._options.contextmenu;
+	        if (!contextmenu) {
+	            this._canvas.addEventListener("contextmenu", (e) => { e.preventDefault(); });
+	        }
 	        this._canvas.tabIndex = this._core.container.tabIndex;
 	        this._canvas.style.display = "block";
 	        this._canvas.style.touchAction = "none";
@@ -9541,7 +9639,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	            this._previousResizeWidth = this._resizeWidth;
 	            this._previousResizeHeight = this._resizeHeight;
 	            this._isResizing = true;
-	            this._resizeElapsedTime = 0;
+	            this._resizeElapsedTime = elapsedTime;
 	        }
 	        if (this._isResizing) {
 	            if (this._resizeElapsedTime > this._resizeMinimumDelay && this._isInitialized) {
@@ -9613,6 +9711,9 @@ f 5/6/6 1/12/6 8/11/6`;
 	                    imageVisual.mMatrix = this.mMatrix;
 	                    imageVisual.vMatrices = this.vMatrices;
 	                    imageVisual.pMatrices = this.pMatrices;
+	                    imageVisual.isPickingEnabled = this.isPickingEnabled;
+	                    imageVisual.pickPMatrix = this.pickPMatrix;
+	                    imageVisual.pickVMatrix = this.pickVMatrix;
 	                    imageVisual.viewports = this._viewports;
 	                    imageVisual.viewportOffset = this._viewportOffset;
 	                    imageVisual.viewportCount = this._viewportCount;
@@ -9838,7 +9939,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    "sdftext.fragment.fx": "#version 100\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\n#define Derivatives\nuniform sampler2D uSampler;\nuniform bool uPick;\nuniform vec3 uColor;\nuniform vec3 uHoverColor;\nuniform float uGamma;\nuniform vec3 uBorderColor;\nuniform float uBuffer;\nuniform float uBorderWidth;\nvarying mediump vec2 vTexCoord;\nvarying lowp vec4 vIdColor;\nvarying lowp float vHover;\n#ifdef Derivatives\n#extension GL_OES_standard_derivatives : enable\n#endif\nvoid main(void)\n{\nif (uPick) {\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat distance = texture2D(uSampler, vTexCoord).r;\nif (distance < uBuffer - uBorderWidth)\n{\ndiscard;\n}\nfloat gamma;\n#ifdef Derivatives\ngamma = fwidth(distance);\n#else\ngamma = uGamma;\n#endif\nfloat value = smoothstep(uBuffer - gamma, uBuffer + gamma, distance);\ngl_FragColor = vec4(pow(mix(uBorderColor, mix(uColor, uHoverColor, vHover), value), GAMMA), 1.0);\n}\n}\n",
 	    "sdftext.vertex.fx": "#version 100\nattribute lowp vec4 aIdColor;\nattribute vec3 aPosition;\nattribute mediump vec2 aTexCoord;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform vec4 uPickedIdColor;\nvarying mediump vec2 vTexCoord;\nvarying lowp vec4 vIdColor;\nvarying lowp float vHover;\nvoid main(void) {\ngl_Position = uPMatrix * uVMatrix * uMMatrix * vec4(aPosition, 1.0);\nvTexCoord = aTexCoord;\nvIdColor = aIdColor;\nvHover = uPickedIdColor == aIdColor ? 1.0 : 0.0;\n}\n",
 	    "simple.vertex.fx": "#version 100\nattribute vec3 aPosition;\nvoid main(void) {\ngl_Position = vec4(aPosition, 1.0);\n}\n",
-	    "texture.fragment.fx": "#version 100\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\nuniform sampler2D uSampler;\nvarying mediump vec2 vTexCoord;\nvoid main(void)\n{\ngl_FragColor = vec4(texture2D(uSampler, vTexCoord).xyz, 1.0);\n}\n",
+	    "texture.fragment.fx": "#version 100\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\nuniform sampler2D uSampler;\nuniform bool uPick;\nvarying mediump vec2 vTexCoord;\nvoid main(void)\n{\nif (uPick) {\ngl_FragColor = vec4(0.0);\n}\nelse {\ngl_FragColor = vec4(texture2D(uSampler, vTexCoord).xyz, 1.0);\n}\n}\n",
 	    "texture.vertex.fx": "#version 100\nattribute vec3 aPosition;\nattribute mediump vec3 aNormal;\nattribute mediump vec2 aTexCoord;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nvarying mediump vec3 vNormal;\nvarying mediump vec2 vTexCoord;\nvoid main(void) {\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvNormal = normalize((mvMatrix * vec4(aNormal, 0.0)).xyz);\ngl_Position = uPMatrix * mvMatrix * vec4(aPosition, 1.0);\nvTexCoord = aTexCoord;\n}\n",
 	    "unitblock.fragment.fx": "#version 100\n#define Derivatives\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\n#ifdef Derivatives\nvarying vec3 vViewPosition;\n#endif\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\n#ifdef Derivatives\n#extension GL_OES_standard_derivatives : enable\n#endif\nvoid main(void)\n{\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat ambient = 0.01;\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uActiveColor, vActive);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nfloat diffuse, specular;\n#ifdef Derivatives\nvec3 normal = normalize(cross(dFdx(vViewPosition), dFdy(vViewPosition)));\ndiffuse = dot(uDirectionToLight, normal);\nspecular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\n#else\ndiffuse = 1.0;\nspecular = 0.0;\n#endif\ncolor *= (ambient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n",
 	    "unitblock.vertex.fx": "#version 100\n#include \"quat.include.fx\"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute mediump vec4 aRotation;\nattribute mediump vec4 aPreviousRotation;\nattribute lowp vec2 aColor;\nattribute lowp vec2 aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute mediump float aStaggerOrder;\nattribute float aOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\n#define Derivatives\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\n#ifdef Derivatives\nvarying vec3 vViewPosition;\n#endif\nvoid main(void)\n{\nif (aOrder < uOrderFrom || aOrder > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\ngl_Position = vec4(0.0);\n#ifdef Derivatives\nvViewPosition = vec3(0.0);\n#endif\n}\nelse\n{\nvIdColor = aIdColor;\nfloat startTime = aStaggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvec3 position = aPosition * scale;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\n}\nposition += mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\n#ifdef Derivatives\nvec4 viewPosition = mvMatrix * vec4(position, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\n#else\ngl_Position = uPMatrix * mvMatrix * vec4(position, 1.0);\n#endif\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\n}\n}\n",
@@ -9848,7 +9949,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    "unithexprism.vertex.fx": "#version 100\n#include \"common.include.fx\"\n#include \"quat.include.fx\"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute mediump vec4 aRotation;\nattribute mediump vec4 aPreviousRotation;\nattribute lowp vec2 aColor;\nattribute lowp vec2 aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute float aOrder;\nattribute mediump float aStaggerOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nuniform vec3 uIdentityRotation;\n#define Derivatives\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvarying float vRadius;\nvarying float vHeight;\nvarying float vScaling;\nvoid main(void)\n{\nif (aOrder < uOrderFrom || aOrder > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvViewPosition = vec3(0.0);\nvRadius = 0.0;\nvHeight = 0.0;\ngl_Position = vec4(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nfloat startTime = aStaggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 translation = mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvViewCenter = (mvMatrix * vec4(translation, 1.0)).xyz;\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvRadius = scale.x * ROOT_THREE_OVER_TWO;\nvHeight = scale.y;\nvec3 position = aPosition;\nposition.y *= scale.y;\nposition.z *= scale.x;\nposition.x *= scale.x * ROOT_THREE_OVER_TWO;\nvec3 direction = IDENTITY_ROTATION;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\ndirection = rotate(direction, quat);\n}\nvec3 viewDirection = (mvMatrix * vec4(direction, 0.0)).xyz;\nvec4 viewPosition = mvMatrix * vec4(position + translation, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\nvScaling = length(uMMatrix[0].xyz) / 2.0;\n}\n}\n",
 	    "unitsphere.fragment.fx": "#version 100\n#define FragDepth\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvarying mediump float vRadius;\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\n#ifdef FragDepth\n#extension GL_EXT_frag_depth : enable\n#endif\nfloat sphIntersect(in vec3 ro, in vec3 rd, in vec4 sph)\n{\nvec3 oc = ro - sph.xyz;\nfloat b = dot(oc, rd);\nfloat c = dot(oc, oc) - sph.w * sph.w;\nfloat h = b * b - c;\nif (h < 0.0) return -1.0;\nreturn -b - sqrt(h);\n}\nvoid main(void)\n{\nvec3 rd = normalize(vViewPosition);\nvec3 ro = vec3(0.0);\nvec4 s = vec4(vViewCenter, vRadius);\nfloat t = sphIntersect(ro, rd, s);\nif (t < 0.0)\n{\ndiscard;\n}\nelse\n{\nvec3 viewPosition = rd * t;\n#ifdef FragDepth\nfloat ndcDepth = DEPTH_A + DEPTH_B / viewPosition.z;\ngl_FragDepthEXT = ndcDepth * 0.5 + 0.5;\n#endif\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat ambient = 0.01;\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uActiveColor, vActive);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nvec3 normal = (viewPosition - vViewCenter) / s.w;\nfloat diffuse = dot(uDirectionToLight, normal);\nfloat specular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\ncolor *= (ambient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n}\n",
 	    "unitsphere.vertex.fx": "#version 100\n#include \"common.include.fx\"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute lowp float aColor;\nattribute lowp float aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute float aOrder;\nattribute mediump float aStaggerOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying mediump float vRadius;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvoid main(void)\n{\nif (aOrder < uOrderFrom || aOrder > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvViewPosition = vec3(0.0);\nvViewCenter = vec3(0.0);\nvRadius = 0.0;\ngl_Position = vec4(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nfloat startTime = aStaggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nfloat scale = mix(min(aPreviousScale.x, min(aPreviousScale.y, aPreviousScale.z)), min(aScale.x, min(aScale.y, aScale.z)), animation);\nvec4 translation = vec4(mix(aPreviousTranslation, aTranslation, animation), 1.0);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvViewCenter = (mvMatrix * translation).xyz;\ntranslation.xyz += aPosition * scale;\nvViewPosition = (mvMatrix * translation).xyz;\ngl_Position = uPMatrix * vec4(vViewPosition, 1.0);\nvVertexColor = vec2(aColor, aPreviousColor);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\nvRadius = distance(vViewPosition, vViewCenter) / ROOT_THREE;\n}\n}\n",
-	    "common.include.fx": "const float NEAR_PLANE = 0.01;\nconst float FAR_PLANE = 100.0;\nconst float DEPTH_A = 1.0002000200020003;\nconst float DEPTH_B = 0.020002000200020003;\nconst vec3 GAMMA = vec3(0.45454545454545453);\nconst vec3 LUMINANCE = vec3(0.2126, 0.7152, 0.0722);\nconst float PI = 3.1415926538;\nconst float ROOT_TWO = 1.4142135624;\nconst float ROOT_TWO_OVER_TWO = 0.7071067811865476;\nconst float ROOT_THREE = 1.7320508075688772;\nconst float ROOT_THREE_OVER_TWO = 0.8660254037844386;\nconst vec3 IDENTITY_ROTATION = vec3(0.0, 1.0, 0.0);\nmat3 transpose(in mat3 mat) {\nvec3 i0 = mat[0];\nvec3 i1 = mat[1];\nvec3 i2 = mat[2];\nreturn mat3\n(\nvec3(i0.x, i1.x, i2.x),\nvec3(i0.y, i1.y, i2.y),\nvec3(i0.z, i1.z, i2.z)\n);\n}\n",
+	    "common.include.fx": "const float NEAR_PLANE = 0.01;\nconst float FAR_PLANE = 100.0;\nconst float DEPTH_A = 1.0002000200020003;\nconst float DEPTH_B = 0.020002000200020003;\nconst vec3 GAMMA = vec3(0.45454545454545453);\nconst vec3 INV_GAMMA = vec3(2.2);\nconst vec3 LUMINANCE = vec3(0.2126, 0.7152, 0.0722);\nconst float PI = 3.1415926538;\nconst float ROOT_TWO = 1.4142135624;\nconst float ROOT_TWO_OVER_TWO = 0.7071067811865476;\nconst float ROOT_THREE = 1.7320508075688772;\nconst float ROOT_THREE_OVER_TWO = 0.8660254037844386;\nconst vec3 IDENTITY_ROTATION = vec3(0.0, 1.0, 0.0);\nmat3 transpose(in mat3 mat) {\nvec3 i0 = mat[0];\nvec3 i1 = mat[1];\nvec3 i2 = mat[2];\nreturn mat3\n(\nvec3(i0.x, i1.x, i2.x),\nvec3(i0.y, i1.y, i2.y),\nvec3(i0.z, i1.z, i2.z)\n);\n}\n",
 	    "quat.include.fx": "const float EPSILON = 0.000001;\nmat3 fromQuat(in vec4 q) {\nfloat x = q.x;\nfloat y = q.y;\nfloat z = q.z;\nfloat w = q.w;\nfloat x2 = x + x;\nfloat y2 = y + y;\nfloat z2 = z + z;\nfloat xx = x * x2;\nfloat yx = y * x2;\nfloat yy = y * y2;\nfloat zx = z * x2;\nfloat zy = z * y2;\nfloat zz = z * z2;\nfloat wx = w * x2;\nfloat wy = w * y2;\nfloat wz = w * z2;\nmat3 m;\nm[0][0] = 1.0 - yy - zz;\nm[0][1] = yx - wz;\nm[0][2] = zx + wy;\nm[1][0] = yx + wz;\nm[1][1] = 1.0 - xx - zz;\nm[1][2] = zy - wx;\nm[2][0] = zx - wy;\nm[2][1] = zy + wx;\nm[2][2] = 1.0 - xx - yy;\nreturn m;\n}\nvec3 rotate(in vec3 p, in vec4 q) {\nreturn p + 2.0 * cross(q.xyz, cross(q.xyz, p) + q.w * p);\n}\nvec4 slerp(in vec4 a, in vec4 b, in float t) {\nfloat cosom = dot(a, b);\nif (cosom < 0.0) {\ncosom = -cosom;\nb = -b;\n}\nfloat scale0, scale1;\nif (1.0 - cosom > EPSILON) {\nfloat omega = acos(cosom);\nfloat sinom = sin(omega);\nscale0 = sin((1.0 - t) * omega) / sinom;\nscale1 = sin(t * omega) / sinom;\n}\nelse {\nscale0 = 1.0 - t;\nscale1 = t;\n}\nreturn vec4(scale0 * a + scale1 * b);\n}\n",
 	};
 	class ShaderBase$1 {
@@ -10072,6 +10173,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        this._texCoordAttribute = gl.getAttribLocation(this._program, "aTexCoord");
 	        this._normalAttribute = gl.getAttribLocation(this._program, "aNormal");
 	        this._samplerUniform = gl.getUniformLocation(this._program, "uSampler");
+	        this._pickUniform = gl.getUniformLocation(this._program, "uPick");
 	        this._mMatrixUniform = gl.getUniformLocation(this._program, "uMMatrix");
 	        this._vMatrixUniform = gl.getUniformLocation(this._program, "uVMatrix");
 	        this._pMatrixUniform = gl.getUniformLocation(this._program, "uPMatrix");
@@ -10082,6 +10184,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        this._gl.uniform1i(this._samplerUniform, 0);
 	    }
 	    applyView() {
+	        this._gl.uniform1i(this._pickUniform, this.isPickShader ? 1 : 0);
 	        this._gl.uniformMatrix4fv(this._vMatrixUniform, false, this.vMatrix);
 	        this._gl.uniformMatrix4fv(this._pMatrixUniform, false, this.pMatrix);
 	    }
@@ -10612,7 +10715,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    _updateCurrentBuffer() {
 	        super._updateCurrentBuffer();
 	        const ANGLE_instanced_arrays = this._main.shaderResources.ANGLE_instanced_arrays;
-	        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.SHORT, true, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
+	        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
 	        ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._rotationAttribute, 1);
 	        this._gl.enableVertexAttribArray(this._rotationAttribute);
 	        this._gl.vertexAttribPointer(this._colorAttribute, 2, this._gl.UNSIGNED_BYTE, true, UnitVertex.SIZE_BYTES, UnitVertex.COLOR_OFFSET_BYTES);
@@ -10622,7 +10725,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    _updatePreviousBuffer() {
 	        super._updatePreviousBuffer();
 	        const ANGLE_instanced_arrays = this._main.shaderResources.ANGLE_instanced_arrays;
-	        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.SHORT, true, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
+	        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
 	        ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousRotationAttribute, 1);
 	        this._gl.enableVertexAttribArray(this._previousRotationAttribute);
 	        this._gl.vertexAttribPointer(this._previousColorAttribute, 2, this._gl.UNSIGNED_BYTE, true, UnitVertex.SIZE_BYTES, UnitVertex.COLOR_OFFSET_BYTES);
@@ -10710,7 +10813,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    _updateCurrentBuffer() {
 	        super._updateCurrentBuffer();
 	        const ANGLE_instanced_arrays = this._main.shaderResources.ANGLE_instanced_arrays;
-	        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.SHORT, true, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
+	        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
 	        ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._rotationAttribute, 1);
 	        this._gl.enableVertexAttribArray(this._rotationAttribute);
 	        this._gl.vertexAttribPointer(this._colorAttribute, 2, this._gl.UNSIGNED_BYTE, true, UnitVertex.SIZE_BYTES, UnitVertex.COLOR_OFFSET_BYTES);
@@ -10720,7 +10823,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    _updatePreviousBuffer() {
 	        super._updatePreviousBuffer();
 	        const ANGLE_instanced_arrays = this._main.shaderResources.ANGLE_instanced_arrays;
-	        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.SHORT, true, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
+	        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
 	        ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousRotationAttribute, 1);
 	        this._gl.enableVertexAttribArray(this._previousRotationAttribute);
 	        this._gl.vertexAttribPointer(this._previousColorAttribute, 2, this._gl.UNSIGNED_BYTE, true, UnitVertex.SIZE_BYTES, UnitVertex.COLOR_OFFSET_BYTES);
@@ -10766,7 +10869,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    _updateCurrentBuffer() {
 	        super._updateCurrentBuffer();
 	        const ANGLE_instanced_arrays = this._main.shaderResources.ANGLE_instanced_arrays;
-	        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.SHORT, true, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
+	        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
 	        ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._rotationAttribute, 1);
 	        this._gl.enableVertexAttribArray(this._rotationAttribute);
 	        this._gl.vertexAttribPointer(this._colorAttribute, 2, this._gl.UNSIGNED_BYTE, true, UnitVertex.SIZE_BYTES, UnitVertex.COLOR_OFFSET_BYTES);
@@ -10776,7 +10879,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    _updatePreviousBuffer() {
 	        super._updatePreviousBuffer();
 	        const ANGLE_instanced_arrays = this._main.shaderResources.ANGLE_instanced_arrays;
-	        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.SHORT, true, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
+	        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
 	        ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousRotationAttribute, 1);
 	        this._gl.enableVertexAttribArray(this._previousRotationAttribute);
 	        this._gl.vertexAttribPointer(this._previousColorAttribute, 2, this._gl.UNSIGNED_BYTE, true, UnitVertex.SIZE_BYTES, UnitVertex.COLOR_OFFSET_BYTES);
@@ -11648,6 +11751,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	            textureShader.texture2D = this.texture;
 	            textureShader.prepare();
 	            textureShader.mMatrix = this.mMatrix;
+	            textureShader.isPickShader = false;
 	            textureShader.apply();
 	            for (let i = 0; i < this.viewportCount; i++) {
 	                const viewport = i + this.viewportOffset;
@@ -11656,6 +11760,15 @@ f 5/6/6 1/12/6 8/11/6`;
 	                textureShader.vMatrix = this.vMatrices[viewport];
 	                textureShader.pMatrix = this.pMatrices[viewport];
 	                textureShader.applyView();
+	                this._gl.drawElements(this._gl.TRIANGLES, this._image.indexCount, this._gl.UNSIGNED_SHORT, 0);
+	            }
+	            if (this.isPickingEnabled) {
+	                textureShader.isPickShader = true;
+	                textureShader.vMatrix = this.pickVMatrix;
+	                textureShader.pMatrix = this.pickPMatrix;
+	                textureShader.applyView();
+	                shaderResources.bindFramebuffer(this.pickFramebuffer);
+	                this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
 	                this._gl.drawElements(this._gl.TRIANGLES, this._image.indexCount, this._gl.UNSIGNED_SHORT, 0);
 	            }
 	        }
@@ -11962,11 +12075,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    }
 	    _createContext(canvas) {
 	        const antialias = this._options ? this._options.antialias === undefined ? false : this._options.antialias : false;
-	        const gl = canvas.getContext("webgl", { stencil: true, alpha: false, antialias: antialias });
-	        if (gl === null) {
-	            this._core.log.write(LogLevel.error, "WebGL initialization failed");
-	        }
-	        return gl;
+	        return canvas.getContext("webgl", { stencil: true, alpha: false, antialias: antialias });
 	    }
 	    initializeWebXR(session) {
 	        const promise = new Promise((resolve, reject) => {
@@ -12185,6 +12294,8 @@ f 5/6/6 1/12/6 8/11/6`;
 	                const imageVisual = this.images[i];
 	                if (imageVisual.isVisible) {
 	                    imageVisual.framebuffers = this._framebuffers;
+	                    imageVisual.pickFramebuffer = this._pickFrameBuffer;
+	                    imageVisual.isPickingEnabled = this.isPickingEnabled;
 	                    imageVisual.render(elapsedTime, xrFrame);
 	                }
 	            }
@@ -12217,6 +12328,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	                        data[i * 4 + 2] = 0;
 	                        data[i * 4 + 3] = 0;
 	                    }
+	                }
+	                const length = this._core.config.pickWidth * this._core.config.pickHeight * 4;
+	                const row = this._core.config.pickWidth * 4;
+	                const end = (this._core.config.pickHeight - 1) * row;
+	                const flipped = new Uint8ClampedArray(length);
+	                for (let i = 0; i < length; i += row) {
+	                    flipped.set(data.subarray(i, i + row), end - i);
 	                }
 	                this.capturePickImageCallback(data, this._core.config.pickWidth, this._core.config.pickHeight);
 	            }
@@ -12290,7 +12408,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	            this._blockShader.selectedColor = this._core.config.selectionColor;
 	            this._blockShader.hoverColor = this._core.config.hoverColor;
 	            this._blockShader.activeColor = this._core.config.activeColor;
-	            this._blockShader.highlightMode = this._core.config.hightlightMode;
+	            this._blockShader.highlightMode = this._core.config.highlightMode;
 	            this._blockShader.specularPower = this._config.specularPower;
 	            this._blockShader.specularIntensity = this._config.specularIntensity;
 	            this._blockShader.apply();
@@ -12351,7 +12469,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	            this._sphereShader.selectedColor = this._core.config.selectionColor;
 	            this._sphereShader.hoverColor = this._core.config.hoverColor;
 	            this._sphereShader.activeColor = this._core.config.activeColor;
-	            this._sphereShader.highlightMode = this._core.config.hightlightMode;
+	            this._sphereShader.highlightMode = this._core.config.highlightMode;
 	            this._sphereShader.specularPower = this._config.specularPower;
 	            this._sphereShader.specularIntensity = this._config.specularIntensity;
 	            this._sphereShader.apply();
@@ -12412,7 +12530,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	            this._cylinderShader.selectedColor = this._core.config.selectionColor;
 	            this._cylinderShader.hoverColor = this._core.config.hoverColor;
 	            this._cylinderShader.activeColor = this._core.config.activeColor;
-	            this._cylinderShader.highlightMode = this._core.config.hightlightMode;
+	            this._cylinderShader.highlightMode = this._core.config.highlightMode;
 	            this._cylinderShader.specularPower = this._config.specularPower;
 	            this._cylinderShader.specularIntensity = this._config.specularIntensity;
 	            this._cylinderShader.apply();
@@ -12473,7 +12591,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	            this._hexPrismShader.selectedColor = this._core.config.selectionColor;
 	            this._hexPrismShader.hoverColor = this._core.config.hoverColor;
 	            this._hexPrismShader.activeColor = this._core.config.activeColor;
-	            this._hexPrismShader.highlightMode = this._core.config.hightlightMode;
+	            this._hexPrismShader.highlightMode = this._core.config.highlightMode;
 	            this._hexPrismShader.specularPower = this._config.specularPower;
 	            this._hexPrismShader.specularIntensity = this._config.specularIntensity;
 	            this._hexPrismShader.apply();
@@ -13375,7 +13493,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    }
 	    _updateCurrentBuffer() {
 	        super._updateCurrentBuffer();
-	        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.SHORT, true, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
+	        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
 	        this._gl.vertexAttribDivisor(this._rotationAttribute, 1);
 	        this._gl.enableVertexAttribArray(this._rotationAttribute);
 	        this._gl.vertexAttribPointer(this._colorAttribute, 2, this._gl.UNSIGNED_BYTE, true, UnitVertex.SIZE_BYTES, UnitVertex.COLOR_OFFSET_BYTES);
@@ -13384,7 +13502,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    }
 	    _updatePreviousBuffer() {
 	        super._updatePreviousBuffer();
-	        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.SHORT, true, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
+	        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
 	        this._gl.vertexAttribDivisor(this._previousRotationAttribute, 1);
 	        this._gl.enableVertexAttribArray(this._previousRotationAttribute);
 	        this._gl.vertexAttribPointer(this._previousColorAttribute, 2, this._gl.UNSIGNED_BYTE, true, UnitVertex.SIZE_BYTES, UnitVertex.COLOR_OFFSET_BYTES);
@@ -13462,7 +13580,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    }
 	    _updateCurrentBuffer() {
 	        super._updateCurrentBuffer();
-	        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.SHORT, true, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
+	        this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
 	        this._gl.vertexAttribDivisor(this._rotationAttribute, 1);
 	        this._gl.enableVertexAttribArray(this._rotationAttribute);
 	        this._gl.vertexAttribPointer(this._colorAttribute, 2, this._gl.UNSIGNED_BYTE, true, UnitVertex.SIZE_BYTES, UnitVertex.COLOR_OFFSET_BYTES);
@@ -13471,7 +13589,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    }
 	    _updatePreviousBuffer() {
 	        super._updatePreviousBuffer();
-	        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.SHORT, true, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
+	        this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
 	        this._gl.vertexAttribDivisor(this._previousRotationAttribute, 1);
 	        this._gl.enableVertexAttribArray(this._previousRotationAttribute);
 	        this._gl.vertexAttribPointer(this._previousColorAttribute, 2, this._gl.UNSIGNED_BYTE, true, UnitVertex.SIZE_BYTES, UnitVertex.COLOR_OFFSET_BYTES);
@@ -15336,31 +15454,27 @@ f 5/6/6 1/12/6 8/11/6`;
 	        this._core.log.write(LogLevel.info, `buffers resized ${width},${height}`);
 	    }
 	    _createContext(canvas) {
-	        var options = {
+	        let supported = false;
+	        const options = {
 	            stencil: true,
 	            alpha: false,
 	            antialias: false,
 	        };
 	        const gl = canvas.getContext("webgl2", options);
-	        if (gl === null) {
-	            this._core.log.write(LogLevel.error, "WebGL initialization failed");
-	        }
-	        const OES_texture_float_linear = gl.getExtension("OES_texture_float_linear");
-	        const EXT_color_buffer_float = gl.getExtension("EXT_color_buffer_float");
-	        let supported = false;
-	        if (OES_texture_float_linear && EXT_color_buffer_float && gl.MAX_DRAW_BUFFERS > 3) {
-	            const texture = TextureHelper.create(gl, 1, 1, gl.RGBA, gl.FLOAT, gl.LINEAR, null, gl.RGBA32F);
-	            const framebuffer = gl.createFramebuffer();
-	            gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-	            gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
-	            const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
-	            if (status == gl.FRAMEBUFFER_COMPLETE) {
-	                supported = true;
+	        if (gl) {
+	            const OES_texture_float_linear = gl.getExtension("OES_texture_float_linear");
+	            const EXT_color_buffer_float = gl.getExtension("EXT_color_buffer_float");
+	            if (OES_texture_float_linear && EXT_color_buffer_float && gl.MAX_DRAW_BUFFERS > 3) {
+	                const texture = TextureHelper.create(gl, 1, 1, gl.RGBA, gl.FLOAT, gl.LINEAR, null, gl.RGBA32F);
+	                const framebuffer = gl.createFramebuffer();
+	                gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+	                gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+	                const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+	                if (status == gl.FRAMEBUFFER_COMPLETE) {
+	                    supported = true;
+	                }
+	                gl.bindTexture(gl.TEXTURE_2D, null);
 	            }
-	            else {
-	                this._core.log.write(LogLevel.warn, "Advanced renderer not supported");
-	            }
-	            gl.bindTexture(gl.TEXTURE_2D, null);
 	        }
 	        return supported ? gl : null;
 	    }
@@ -15648,7 +15762,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	                this._gl.drawElementsInstanced(this._gl.TRIANGLE_STRIP, this._blockShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
 	            }
 	        }
-	        else if (this._sphereShader.isInitialized && unitType == UnitType.sphere) {
+	        else if (this._sphereShader.isInitialized && (unitType == UnitType.sphere || unitType == UnitType.sphereSdf)) {
 	            this._sphereShader.instanceBuffer = currentBuffer.vertexBuffer;
 	            this._sphereShader.previousInstanceBuffer = previousBuffer.vertexBuffer;
 	            this._sphereShader.paletteTexture = currentPalette.texture || currentPalette.defaultTexture;
@@ -15697,7 +15811,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	                this._gl.drawElementsInstanced(this._gl.TRIANGLE_STRIP, this._sphereShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
 	            }
 	        }
-	        else if (this._cylinderShader.isInitialized && unitType == UnitType.cylinder) {
+	        else if (this._cylinderShader.isInitialized && (unitType == UnitType.cylinder || unitType == UnitType.cylinderSdf)) {
 	            this._cylinderShader.instanceBuffer = currentBuffer.vertexBuffer;
 	            this._cylinderShader.previousInstanceBuffer = previousBuffer.vertexBuffer;
 	            this._cylinderShader.paletteTexture = currentPalette.texture || currentPalette.defaultTexture;
@@ -16020,6 +16134,137 @@ f 5/6/6 1/12/6 8/11/6`;
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
+	class MaterialBufferData extends Float32Array {
+	    constructor(count) {
+	        super(count * MaterialBufferData.SIZE);
+	        this.TYPE_OFFSET = 0 / 4;
+	        this.FUZZ_OFFSET = 4 / 4;
+	        this.REFRACTIVE_INDEX_OFFSET = 8 / 4;
+	        this.TEXTURE_ID_OFFSET = 12 / 4;
+	        this.COLOR_OFFSET = 16 / 4;
+	        this.GLOSSINESS_OFFSET = 28 / 4;
+	    }
+	    getType(index) {
+	        return this[MaterialBufferData.SIZE * index + this.TYPE_OFFSET];
+	    }
+	    setType(index, value) {
+	        this[MaterialBufferData.SIZE * index + this.TYPE_OFFSET] = value;
+	    }
+	    getFuzz(index) {
+	        return this[MaterialBufferData.SIZE * index + this.FUZZ_OFFSET];
+	    }
+	    setFuzz(index, value) {
+	        this[MaterialBufferData.SIZE * index + this.FUZZ_OFFSET] = value;
+	    }
+	    getRefractiveIndex(index) {
+	        return this[MaterialBufferData.SIZE * index + this.REFRACTIVE_INDEX_OFFSET];
+	    }
+	    setRefractiveIndex(index, value) {
+	        this[MaterialBufferData.SIZE * index + this.REFRACTIVE_INDEX_OFFSET] = value;
+	    }
+	    getTextureId(index) {
+	        return this[MaterialBufferData.SIZE * index + this.TEXTURE_ID_OFFSET];
+	    }
+	    setTextureId(index, value) {
+	        this[MaterialBufferData.SIZE * index + this.TEXTURE_ID_OFFSET] = value;
+	    }
+	    getColor(index, value) {
+	        const offset = MaterialBufferData.SIZE * index + this.COLOR_OFFSET;
+	        set$3(value, this[offset], this[offset + 1], this[offset + 2]);
+	    }
+	    setColor(index, value) {
+	        const offset = MaterialBufferData.SIZE * index + this.COLOR_OFFSET;
+	        this[offset] = value[0];
+	        this[offset + 1] = value[1];
+	        this[offset + 2] = value[2];
+	    }
+	    getGlossiness(index) {
+	        return this[MaterialBufferData.SIZE * index + this.GLOSSINESS_OFFSET];
+	    }
+	    setGlossiness(index, value) {
+	        this[MaterialBufferData.SIZE * index + this.GLOSSINESS_OFFSET] = value;
+	    }
+	}
+	MaterialBufferData.SIZE = 32 / 4;
+
+	/*!
+	 * Copyright (c) Microsoft Corporation.
+	 * Licensed under the MIT License.
+	 */
+	class TextureBufferData extends Float32Array {
+	    constructor(count) {
+	        super(count * TextureBufferData.SIZE);
+	        this.COLOR0_OFFSET = 0 / 4;
+	        this.TYPE_OFFSET = 12 / 4;
+	        this.COLOR1_OFFSET = 16 / 4;
+	        this.SIZE0_OFFSET = 32 / 4;
+	        this.SIZE1_OFFSET = 48 / 4;
+	        this.OFFSET_OFFSET = 64 / 4;
+	    }
+	    getType(index) {
+	        return this[TextureBufferData.SIZE * index + this.TYPE_OFFSET];
+	    }
+	    setType(index, value) {
+	        this[TextureBufferData.SIZE * index + this.TYPE_OFFSET] = value;
+	    }
+	    getColor0(index, value) {
+	        const offset = TextureBufferData.SIZE * index + this.COLOR0_OFFSET;
+	        set$3(value, this[offset], this[offset + 1], this[offset + 2]);
+	    }
+	    setColor0(index, value) {
+	        const offset = TextureBufferData.SIZE * index + this.COLOR0_OFFSET;
+	        this[offset] = value[0];
+	        this[offset + 1] = value[1];
+	        this[offset + 2] = value[2];
+	    }
+	    getColor1(index, value) {
+	        const offset = TextureBufferData.SIZE * index + this.COLOR1_OFFSET;
+	        set$3(value, this[offset], this[offset + 1], this[offset + 2]);
+	    }
+	    setColor1(index, value) {
+	        const offset = TextureBufferData.SIZE * index + this.COLOR1_OFFSET;
+	        this[offset] = value[0];
+	        this[offset + 1] = value[1];
+	        this[offset + 2] = value[2];
+	    }
+	    getSize0(index, value) {
+	        const offset = TextureBufferData.SIZE * index + this.SIZE0_OFFSET;
+	        set$2(value, this[offset], this[offset + 1], this[offset + 2], this[offset + 3]);
+	    }
+	    setSize0(index, value) {
+	        const offset = TextureBufferData.SIZE * index + this.SIZE0_OFFSET;
+	        this[offset] = value[0];
+	        this[offset + 1] = value[1];
+	        this[offset + 2] = value[2];
+	        this[offset + 3] = value[3];
+	    }
+	    getSize1(index, value) {
+	        const offset = TextureBufferData.SIZE * index + this.SIZE1_OFFSET;
+	        set$2(value, this[offset], this[offset + 1], this[offset + 2], this[offset + 3]);
+	    }
+	    setSize1(index, value) {
+	        const offset = TextureBufferData.SIZE * index + this.SIZE1_OFFSET;
+	        this[offset] = value[0];
+	        this[offset + 1] = value[1];
+	        this[offset + 2] = value[2];
+	        this[offset + 3] = value[3];
+	    }
+	    getOffset(index, value) {
+	        const offset = TextureBufferData.SIZE * index + this.OFFSET_OFFSET;
+	        set(value, this[offset], this[offset + 1]);
+	    }
+	    setOffset(index, value) {
+	        const offset = TextureBufferData.SIZE * index + this.OFFSET_OFFSET;
+	        this[offset] = value[0];
+	        this[offset + 1] = value[1];
+	    }
+	}
+	TextureBufferData.SIZE = 80 / 4;
+
+	/*!
+	 * Copyright (c) Microsoft Corporation.
+	 * Licensed under the MIT License.
+	 */
 	class HittableBufferData extends Float32Array {
 	    constructor(count) {
 	        super(count * HittableBufferData.SIZE);
@@ -16030,7 +16275,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        this.ROTATION_OFFSET = 32 / 4;
 	        this.TEXCOORD0_OFFSET = 48 / 4;
 	        this.TEXCOORD1_OFFSET = 56 / 4;
-	        this.RADIUS_OFFSET = 64 / 4;
+	        this.ROUNDING_OFFSET = 64 / 4;
 	    }
 	    getType(index) {
 	        return this[HittableBufferData.SIZE * index + this.TYPE_OFFSET];
@@ -16093,71 +16338,14 @@ f 5/6/6 1/12/6 8/11/6`;
 	        this[offset] = value[0];
 	        this[offset + 1] = value[1];
 	    }
-	    getRadius(index) {
-	        return this[HittableBufferData.SIZE * index + this.RADIUS_OFFSET];
+	    getRounding(index) {
+	        return this[HittableBufferData.SIZE * index + this.ROUNDING_OFFSET];
 	    }
-	    setRadius(index, value) {
-	        this[HittableBufferData.SIZE * index + this.RADIUS_OFFSET] = value;
+	    setRounding(index, value) {
+	        this[HittableBufferData.SIZE * index + this.ROUNDING_OFFSET] = value;
 	    }
 	}
 	HittableBufferData.SIZE = 80 / 4;
-
-	/*!
-	 * Copyright (c) Microsoft Corporation.
-	 * Licensed under the MIT License.
-	 */
-	class MaterialBufferData extends Float32Array {
-	    constructor(count) {
-	        super(count * MaterialBufferData.SIZE);
-	        this.TYPE_OFFSET = 0 / 4;
-	        this.FUZZ_OFFSET = 4 / 4;
-	        this.REFRACTIVE_INDEX_OFFSET = 8 / 4;
-	        this.TEXTURE_ID_OFFSET = 12 / 4;
-	        this.COLOR_OFFSET = 16 / 4;
-	        this.GLOSSINESS_OFFSET = 28 / 4;
-	    }
-	    getType(index) {
-	        return this[MaterialBufferData.SIZE * index + this.TYPE_OFFSET];
-	    }
-	    setType(index, value) {
-	        this[MaterialBufferData.SIZE * index + this.TYPE_OFFSET] = value;
-	    }
-	    getFuzz(index) {
-	        return this[MaterialBufferData.SIZE * index + this.FUZZ_OFFSET];
-	    }
-	    setFuzz(index, value) {
-	        this[MaterialBufferData.SIZE * index + this.FUZZ_OFFSET] = value;
-	    }
-	    getRefractiveIndex(index) {
-	        return this[MaterialBufferData.SIZE * index + this.REFRACTIVE_INDEX_OFFSET];
-	    }
-	    setRefractiveIndex(index, value) {
-	        this[MaterialBufferData.SIZE * index + this.REFRACTIVE_INDEX_OFFSET] = value;
-	    }
-	    getTextureId(index) {
-	        return this[MaterialBufferData.SIZE * index + this.TEXTURE_ID_OFFSET];
-	    }
-	    setTextureId(index, value) {
-	        this[MaterialBufferData.SIZE * index + this.TEXTURE_ID_OFFSET] = value;
-	    }
-	    getColor(index, value) {
-	        const offset = MaterialBufferData.SIZE * index + this.COLOR_OFFSET;
-	        set$3(value, this[offset], this[offset + 1], this[offset + 2]);
-	    }
-	    setColor(index, value) {
-	        const offset = MaterialBufferData.SIZE * index + this.COLOR_OFFSET;
-	        this[offset] = value[0];
-	        this[offset + 1] = value[1];
-	        this[offset + 2] = value[2];
-	    }
-	    getGlossiness(index) {
-	        return this[MaterialBufferData.SIZE * index + this.GLOSSINESS_OFFSET];
-	    }
-	    setGlossiness(index, value) {
-	        this[MaterialBufferData.SIZE * index + this.GLOSSINESS_OFFSET] = value;
-	    }
-	}
-	MaterialBufferData.SIZE = 32 / 4;
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
@@ -16260,6 +16448,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        this.WIDTH_OFFSET = 0 / 4;
 	        this.HEIGHT_OFFSET = 4 / 4;
 	        this.SPP_OFFSET = 8 / 4;
+	        this.EXPOSURE_OFFSET = 12 / 4;
 	    }
 	    getWidth() {
 	        return this[this.WIDTH_OFFSET];
@@ -16279,8 +16468,14 @@ f 5/6/6 1/12/6 8/11/6`;
 	    setSamplesPerPixel(value) {
 	        this[this.SPP_OFFSET] = value;
 	    }
+	    getExposure() {
+	        return this[this.EXPOSURE_OFFSET];
+	    }
+	    setExposure(value) {
+	        this[this.EXPOSURE_OFFSET] = value;
+	    }
 	}
-	FullscreenQuadUniformBufferData.SIZE = 12 / 4;
+	FullscreenQuadUniformBufferData.SIZE = 16 / 4;
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
@@ -16342,80 +16537,6 @@ f 5/6/6 1/12/6 8/11/6`;
 	    }
 	}
 	LinearBVHNodeBufferData.SIZE = 48 / 4;
-
-	/*!
-	 * Copyright (c) Microsoft Corporation.
-	 * Licensed under the MIT License.
-	 */
-	class TextureBufferData extends Float32Array {
-	    constructor(count) {
-	        super(count * TextureBufferData.SIZE);
-	        this.COLOR0_OFFSET = 0 / 4;
-	        this.TYPE_OFFSET = 12 / 4;
-	        this.COLOR1_OFFSET = 16 / 4;
-	        this.SIZE0_OFFSET = 32 / 4;
-	        this.SIZE1_OFFSET = 48 / 4;
-	        this.OFFSET_OFFSET = 64 / 4;
-	    }
-	    getType(index) {
-	        return this[TextureBufferData.SIZE * index + this.TYPE_OFFSET];
-	    }
-	    setType(index, value) {
-	        this[TextureBufferData.SIZE * index + this.TYPE_OFFSET] = value;
-	    }
-	    getColor0(index, value) {
-	        const offset = TextureBufferData.SIZE * index + this.COLOR0_OFFSET;
-	        set$3(value, this[offset], this[offset + 1], this[offset + 2]);
-	    }
-	    setColor0(index, value) {
-	        const offset = TextureBufferData.SIZE * index + this.COLOR0_OFFSET;
-	        this[offset] = value[0];
-	        this[offset + 1] = value[1];
-	        this[offset + 2] = value[2];
-	    }
-	    getColor1(index, value) {
-	        const offset = TextureBufferData.SIZE * index + this.COLOR1_OFFSET;
-	        set$3(value, this[offset], this[offset + 1], this[offset + 2]);
-	    }
-	    setColor1(index, value) {
-	        const offset = TextureBufferData.SIZE * index + this.COLOR1_OFFSET;
-	        this[offset] = value[0];
-	        this[offset + 1] = value[1];
-	        this[offset + 2] = value[2];
-	    }
-	    getSize0(index, value) {
-	        const offset = TextureBufferData.SIZE * index + this.SIZE0_OFFSET;
-	        set$2(value, this[offset], this[offset + 1], this[offset + 2], this[offset + 3]);
-	    }
-	    setSize0(index, value) {
-	        const offset = TextureBufferData.SIZE * index + this.SIZE0_OFFSET;
-	        this[offset] = value[0];
-	        this[offset + 1] = value[1];
-	        this[offset + 2] = value[2];
-	        this[offset + 3] = value[3];
-	    }
-	    getSize1(index, value) {
-	        const offset = TextureBufferData.SIZE * index + this.SIZE1_OFFSET;
-	        set$2(value, this[offset], this[offset + 1], this[offset + 2], this[offset + 3]);
-	    }
-	    setSize1(index, value) {
-	        const offset = TextureBufferData.SIZE * index + this.SIZE1_OFFSET;
-	        this[offset] = value[0];
-	        this[offset + 1] = value[1];
-	        this[offset + 2] = value[2];
-	        this[offset + 3] = value[3];
-	    }
-	    getOffset(index, value) {
-	        const offset = TextureBufferData.SIZE * index + this.OFFSET_OFFSET;
-	        set(value, this[offset], this[offset + 1]);
-	    }
-	    setOffset(index, value) {
-	        const offset = TextureBufferData.SIZE * index + this.OFFSET_OFFSET;
-	        this[offset] = value[0];
-	        this[offset + 1] = value[1];
-	    }
-	}
-	TextureBufferData.SIZE = 80 / 4;
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
@@ -18495,23 +18616,23 @@ f 5/6/6 1/12/6 8/11/6`;
 	* Licensed under the MIT License.
 	*/
 	function createCameraDefaults() {
-	    const qModel2d = create$1();
-	    const qModel3d = Constants.QUAT_ROTATEX_MINUS_90;
+	    const qModelRotation2d = create$1();
+	    const qModelRotation3d = Constants.QUAT_ROTATEX_MINUS_90;
 	    const qCameraRotation2d = create$1();
 	    const qCameraRotation3d = create$1();
 	    const qAngle = create$1();
-	    const vPosition = create$3();
+	    const vCameraPosition = create$3();
 	    // Altitude (pitch around local right axis)
 	    setAxisAngle(qCameraRotation3d, Constants.VECTOR3_UNITX, AngleHelper.degreesToRadians(30));
 	    // Azimuth (yaw around global up axis)
 	    setAxisAngle(qAngle, Constants.VECTOR3_UNITY, AngleHelper.degreesToRadians(-25));
 	    multiply(qCameraRotation3d, qCameraRotation3d, qAngle);
 	    return {
-	        qModel2d,
-	        qModel3d,
+	        qModelRotation2d,
+	        qModelRotation3d,
 	        qCameraRotation2d,
 	        qCameraRotation3d,
-	        vPosition,
+	        vCameraPosition,
 	    };
 	}
 	const cameraDefaults = createCameraDefaults();
@@ -18520,9 +18641,89 @@ f 5/6/6 1/12/6 8/11/6`;
 	* Copyright (c) Microsoft Corporation.
 	* Licensed under the MIT License.
 	*/
+	const { qCameraRotation2d, qCameraRotation3d, qModelRotation2d, qModelRotation3d, vCameraPosition } = cameraDefaults;
+	function applyCameraCallbacks(ref, lastPresenterConfig, lastView, transistion2dOnly) {
+	    const { cameraTransitioner, core, modelTransitioner, positionTransitioner } = ref;
+	    ref.reset = () => {
+	        core.reset(true);
+	        if (lastView === '3d') {
+	            modelTransitioner.qRotation.to = qModelRotation3d;
+	            cameraTransitioner.qRotation.to = qCameraRotation3d;
+	            cameraTransitioner.vPosition.to = vCameraPosition;
+	        }
+	        else {
+	            modelTransitioner.qRotation.to = qModelRotation2d;
+	            cameraTransitioner.qRotation.to = qCameraRotation2d;
+	            cameraTransitioner.vPosition.to = vCameraPosition;
+	        }
+	        slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.to, modelTransitioner.qRotation.to, 0);
+	        core.setModelRotation(modelTransitioner.qRotation.current, true);
+	        core.camera.setOrbit(cameraTransitioner.qRotation.to, true);
+	        core.camera.setPosition(cameraTransitioner.vPosition.to, true);
+	    };
+	    const cam = (t) => {
+	        slerp(cameraTransitioner.qRotation.current, cameraTransitioner.qRotation.from, cameraTransitioner.qRotation.to, t);
+	        lerp(cameraTransitioner.vPosition.current, cameraTransitioner.vPosition.from, cameraTransitioner.vPosition.to, t);
+	        core.camera.setOrbit(cameraTransitioner.qRotation.current, false);
+	        core.camera.setPosition(cameraTransitioner.vPosition.current, false);
+	        // disable picking during transitions, as the performance degradation could reduce the framerate
+	        core.inputManager.isPickingEnabled = false;
+	    };
+	    core.updateCallback = (elapsedTime) => {
+	        const { transitionDurations } = lastPresenterConfig;
+	        if (positionTransitioner.isTransitioning) {
+	            const t = positionTransitioner.elapse(elapsedTime, transitionDurations.position + transitionDurations.stagger);
+	            core.renderer.transitionTime = t;
+	            setTransitionTimeAxesVisibility(transistion2dOnly, core);
+	        }
+	        else {
+	            core.inputManager.isPickingEnabled = true;
+	        }
+	        if (modelTransitioner.isTransitioning) {
+	            const tm = modelTransitioner.elapse(elapsedTime, transitionDurations.view, true);
+	            if (modelTransitioner.shouldTransition) {
+	                slerp(modelTransitioner.qRotation.current, modelTransitioner.qRotation.from, modelTransitioner.qRotation.to, tm);
+	                core.setModelRotation(modelTransitioner.qRotation.current, false);
+	            }
+	            cam(tm);
+	        }
+	        if (cameraTransitioner.isTransitioning) {
+	            const t = cameraTransitioner.elapse(elapsedTime, transitionDurations.view, true);
+	            cam(t);
+	        }
+	    };
+	}
+	function setTransitionTimeAxesVisibility(transistion2dOnly, core) {
+	    const t = core.renderer.transitionTime;
+	    if (transistion2dOnly) {
+	        if (t < 0.5) {
+	            core.renderer.axesVisibility = AxesVisibility.previous;
+	        }
+	        else {
+	            core.renderer.axesVisibility = AxesVisibility.current;
+	        }
+	    }
+	    else {
+	        if (t <= 0.01) {
+	            core.renderer.axesVisibility = AxesVisibility.previous;
+	        }
+	        else if (t >= 0.99) {
+	            core.renderer.axesVisibility = AxesVisibility.current;
+	        }
+	        else {
+	            core.renderer.axesVisibility = AxesVisibility.none;
+	        }
+	    }
+	}
+
+	/*!
+	* Copyright (c) Microsoft Corporation.
+	* Licensed under the MIT License.
+	*/
 	function morphChartsRender(ref, prevStage, stage, height, width, preStage, colors, config) {
-	    const { qCameraRotation2d, qCameraRotation3d, qModel2d, qModel3d, vPosition } = cameraDefaults;
+	    const { qCameraRotation2d, qCameraRotation3d, qModelRotation2d, qModelRotation3d, vCameraPosition } = cameraDefaults;
 	    const { core, cameraTransitioner, modelTransitioner, positionTransitioner } = ref;
+	    let transistion2dOnly = false;
 	    let cameraTo;
 	    let holdCamera;
 	    if (config.camera === 'hold') {
@@ -18534,37 +18735,38 @@ f 5/6/6 1/12/6 8/11/6`;
 	    if (prevStage && (prevStage.view !== stage.view)) {
 	        modelTransitioner.shouldTransition = !holdCamera;
 	        if (stage.view === '2d') {
-	            modelTransitioner.qModelFrom = qModel3d;
-	            modelTransitioner.qModelTo = qModel2d;
-	            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
-	            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+	            modelTransitioner.qRotation.from = qModelRotation3d;
+	            modelTransitioner.qRotation.to = qModelRotation2d;
+	            cameraTransitioner.qRotation.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
+	            cameraTransitioner.vPosition.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vCameraPosition;
 	        }
 	        else {
-	            modelTransitioner.qModelFrom = qModel2d;
-	            modelTransitioner.qModelTo = qModel3d;
-	            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
-	            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+	            modelTransitioner.qRotation.from = qModelRotation2d;
+	            modelTransitioner.qRotation.to = qModelRotation3d;
+	            cameraTransitioner.qRotation.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
+	            cameraTransitioner.vPosition.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vCameraPosition;
 	        }
 	    }
 	    else {
 	        modelTransitioner.shouldTransition = false;
 	        if (stage.view === '2d') {
-	            modelTransitioner.qModelTo = qModel2d;
-	            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
-	            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+	            transistion2dOnly = true;
+	            modelTransitioner.qRotation.to = qModelRotation2d;
+	            cameraTransitioner.qRotation.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation2d;
+	            cameraTransitioner.vPosition.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vCameraPosition;
 	        }
 	        else {
-	            modelTransitioner.qModelTo = qModel3d;
-	            cameraTransitioner.qCameraRotationTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
-	            cameraTransitioner.vCameraPositionTo = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vPosition;
+	            modelTransitioner.qRotation.to = qModelRotation3d;
+	            cameraTransitioner.qRotation.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.rotation) || qCameraRotation3d;
+	            cameraTransitioner.vPosition.to = (cameraTo === null || cameraTo === void 0 ? void 0 : cameraTo.position) || vCameraPosition;
 	        }
 	    }
-	    core.camera.getOrbit(cameraTransitioner.qCameraRotationFrom);
-	    core.camera.getPosition(cameraTransitioner.vCameraPositionFrom);
+	    core.camera.getOrbit(cameraTransitioner.qRotation.from);
+	    core.camera.getPosition(cameraTransitioner.vPosition.from);
 	    if (!prevStage) {
-	        core.setModelRotation(modelTransitioner.qModelTo, false);
-	        core.camera.setOrbit(cameraTransitioner.qCameraRotationTo, false);
-	        core.camera.setPosition(cameraTransitioner.vCameraPositionTo, false);
+	        core.setModelRotation(modelTransitioner.qRotation.to, false);
+	        core.camera.setOrbit(cameraTransitioner.qRotation.to, false);
+	        core.camera.setPosition(cameraTransitioner.vPosition.to, false);
 	    }
 	    else if (!holdCamera) {
 	        cameraTransitioner.begin();
@@ -18583,6 +18785,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        contentBounds = outerBounds(contentBounds, convertBounds(backgroundImage.bounds));
 	    });
 	    props.bounds = contentBounds;
+	    core.renderer.previousAxes = core.renderer.currentAxes;
 	    const axesLayer = createAxesLayer(props);
 	    core.config.transitionStaggering = config.transitionDurations.stagger;
 	    core.config.transitionDuration = config.transitionDurations.position;
@@ -18593,6 +18796,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    else {
 	        bounds = contentBounds;
 	    }
+	    ref.setMorphChartsRendererOptions(config.renderer);
 	    if (preStage) {
 	        preStage(stage, cubeLayer);
 	    }
@@ -18624,7 +18828,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    }
 	    //Now call update on each layout
 	    layersWithSelection(cubeLayer, lineLayer, textLayer, config.layerSelection, bounds, ref.layerStagger);
-	    ref.lastPresenterConfig = config;
+	    applyCameraCallbacks(ref, config, stage.view, transistion2dOnly);
 	    core.renderer.transitionTime = 0; // Set renderer transition time for this render pass to prevent rendering target buffer for single frame
 	    colorConfig(ref, colors);
 	    return {
@@ -18632,12 +18836,15 @@ f 5/6/6 1/12/6 8/11/6`;
 	        getCubeLayer: () => cubeLayer,
 	        update: layerSelection => layersWithSelection(cubeLayer, lineLayer, textLayer, layerSelection, bounds, ref.layerStagger),
 	        activate: id => core.renderer.transitionBuffers[0].activeId = id,
-	        moveCamera: (position, rotation) => {
+	        moveCamera: (camera) => {
 	            if (!(positionTransitioner.isTransitioning || modelTransitioner.isTransitioning)) {
-	                core.camera.getOrbit(cameraTransitioner.qCameraRotationFrom);
-	                core.camera.getPosition(cameraTransitioner.vCameraPositionFrom);
-	                cameraTransitioner.move(position, rotation);
+	                core.camera.getOrbit(cameraTransitioner.qRotation.from);
+	                core.camera.getPosition(cameraTransitioner.vPosition.from);
+	                cameraTransitioner.move(camera.position, camera.rotation);
 	            }
+	        },
+	        setTransitionTimeAxesVisibility: () => {
+	            setTransitionTimeAxesVisibility(transistion2dOnly, core);
 	        },
 	    };
 	}
@@ -18818,6 +19025,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        if (this.time >= totalTime) {
 	            this.isTransitioning = false;
 	            this.time = totalTime;
+	            this.ended && this.ended();
 	        }
 	        const t = this.time / totalTime;
 	        return ease ? easing(t) : t;
@@ -18826,26 +19034,32 @@ f 5/6/6 1/12/6 8/11/6`;
 	class CameraTransitioner extends Transitioner {
 	    constructor() {
 	        super();
-	        this.qCameraRotationFrom = create$1();
-	        this.qCameraRotationTo = null;
-	        this.qCameraRotationCurrent = create$1();
-	        this.vCameraPositionFrom = create$3();
-	        this.vCameraPositionTo = null;
-	        this.vCameraPositionCurrent = create$3();
+	        this.qRotation = {
+	            from: create$1(),
+	            to: null,
+	            current: create$1(),
+	        };
+	        this.vPosition = {
+	            from: create$3(),
+	            to: null,
+	            current: create$3(),
+	        };
 	    }
 	    move(position, rotation) {
 	        this.begin();
-	        this.qCameraRotationTo = rotation;
-	        this.vCameraPositionTo = position;
+	        this.qRotation.to = rotation;
+	        this.vPosition.to = position;
 	    }
 	}
 	class ModelTransitioner extends Transitioner {
 	    constructor() {
 	        super();
 	        this.shouldTransition = false;
-	        this.qModelFrom = null;
-	        this.qModelTo = null;
-	        this.qModelCurrent = create$1();
+	        this.qRotation = {
+	            from: null,
+	            to: null,
+	            current: create$1(),
+	        };
 	    }
 	}
 
@@ -18862,19 +19076,15 @@ f 5/6/6 1/12/6 8/11/6`;
 	    const cameraTransitioner = new CameraTransitioner();
 	    const modelTransitioner = new ModelTransitioner();
 	    const positionTransitioner = new Transitioner();
+	    positionTransitioner.ended = () => {
+	        core.renderer.axesVisibility = AxesVisibility.current;
+	    };
 	    const ref = {
 	        supportedRenders: {
 	            advanced: rendererEnabled(true),
 	            basic: rendererEnabled(false),
 	        },
-	        reset: () => {
-	            core.reset(true);
-	            const { cameraTransitioner: cameraState, modelTransitioner: modelState } = ref;
-	            slerp(modelState.qModelCurrent, modelState.qModelTo, modelState.qModelTo, 0);
-	            core.setModelRotation(modelState.qModelCurrent, true);
-	            core.camera.setOrbit(cameraState.qCameraRotationTo, false);
-	            //core.camera.setPosition(cameraState.vCameraPositionTo, false);
-	        },
+	        reset: null,
 	        cameraTransitioner,
 	        modelTransitioner,
 	        positionTransitioner,
@@ -18893,37 +19103,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	            ref.lastMorphChartsRendererOptions = mcRendererOptions;
 	        },
 	        lastMorphChartsRendererOptions: mcRendererOptions,
-	        lastPresenterConfig: null,
 	        layerStagger: {},
-	    };
-	    const cam = (t) => {
-	        slerp(cameraTransitioner.qCameraRotationCurrent, cameraTransitioner.qCameraRotationFrom, cameraTransitioner.qCameraRotationTo, t);
-	        lerp(cameraTransitioner.vCameraPositionCurrent, cameraTransitioner.vCameraPositionFrom, cameraTransitioner.vCameraPositionTo, t);
-	        core.camera.setOrbit(cameraTransitioner.qCameraRotationCurrent, false);
-	        core.camera.setPosition(cameraTransitioner.vCameraPositionCurrent, false);
-	        // disable picking during transitions, as the performance degradation could reduce the framerate
-	        core.inputManager.isPickingEnabled = false;
-	    };
-	    core.updateCallback = (elapsedTime) => {
-	        const { transitionDurations } = ref.lastPresenterConfig;
-	        if (positionTransitioner.isTransitioning) {
-	            core.renderer.transitionTime = positionTransitioner.elapse(elapsedTime, transitionDurations.position + transitionDurations.stagger);
-	        }
-	        if (modelTransitioner.isTransitioning) {
-	            const tm = modelTransitioner.elapse(elapsedTime, transitionDurations.view, true);
-	            if (modelTransitioner.shouldTransition) {
-	                slerp(modelTransitioner.qModelCurrent, modelTransitioner.qModelFrom, modelTransitioner.qModelTo, tm);
-	                core.setModelRotation(modelTransitioner.qModelCurrent, false);
-	            }
-	            cam(tm);
-	        }
-	        if (cameraTransitioner.isTransitioning) {
-	            const t = cameraTransitioner.elapse(elapsedTime, transitionDurations.view, true);
-	            cam(t);
-	        }
-	        else {
-	            core.inputManager.isPickingEnabled = true;
-	        }
 	    };
 	    return ref;
 	}
@@ -19219,7 +19399,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	* Copyright (c) Microsoft Corporation.
 	* Licensed under the MIT License.
 	*/
-	const version = '1.0.2';
+	const version = '1.0.3';
 
 	exports.Presenter = Presenter;
 	exports.ViewGl = ViewGl;
