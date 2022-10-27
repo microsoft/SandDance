@@ -5,6 +5,8 @@ export const language = {
     fetching: 'fetching...',
     fetched: 'loaded',
     powerBiCustomVisual: 'Power BI custom visual version',
+    powerBiCustomVisualLog: 'Power BI Log',
+    clearLog: 'clear log',
     historyActionDataChange: 'Power BI data change',
     historyActionUpdate: 'Power BI update',
     webglDisabled: 'SandDance requires a WebGL enabled browser.',
