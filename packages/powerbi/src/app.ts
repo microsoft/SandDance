@@ -20,7 +20,7 @@ import { Logo } from '@msrvida/sanddance-explorer/dist/es6/controls/logo';
 import { language } from './language';
 import { version } from './version';
 import powerbiVisualsApi from 'powerbi-visuals-api';
-import { Log } from './log';
+import { LogView } from './logView';
 
 // tslint:disable-next-line
 use(fluentUIComponents, React as any, ReactDOM as any, vega);
@@ -122,7 +122,7 @@ export class App extends React.Component<Props, State> {
         if (wasLoaded) {
             const { historyItems, sideTabId } = explorer.state;
             const loaded = () => {
-                // console.log('reloading history')
+                this.log('reloading history')
                 const last = historyItems[historyItems.length - 1];
                 historyItems.push({
                     historicInsight: { ...last?.historicInsight || {} },
@@ -270,7 +270,7 @@ export class App extends React.Component<Props, State> {
             systemInfoChildren: [
                 React.createElement('li', null, `${language.powerBiCustomVisual}: ${version}`),
                 React.createElement('li', null,
-                    React.createElement(Log, {
+                    React.createElement(LogView, {
                         clearLog: () => this.setState({ log: [] }),
                         log: state.log,
                     }),

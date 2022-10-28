@@ -15,7 +15,7 @@ export interface State {
     showDialog: boolean;
 }
 
-export class Log extends React.Component<Props, State> {
+export class LogView extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
