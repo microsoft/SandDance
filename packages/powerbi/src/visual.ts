@@ -67,9 +67,6 @@ export class Visual implements IVisual {
     private columns: powerbiVisualsApi.DataViewMetadataColumn[];
 
     public persistSelectionChange: boolean;
-    public ignoreSelectionUpdate: boolean;
-    public ignorePersistUpdate: boolean;
-    public ignorePersistTimer: number;
     public sanddanceRenderOptions: SandDance.types.RenderOptions;
     public afterView: (() => void)[];
     public search: SandDance.searchExpression.Search;
@@ -77,7 +74,6 @@ export class Visual implements IVisual {
     public _setInsightSetup: SandDance.types.InsightSetup;
 
     public static fetchMoreTimeout = 5000;
-    public static ignorePersistTimeout = 200;
 
     constructor(options: VisualConstructorOptions) {
         this.host = options.host;
@@ -106,7 +102,6 @@ export class Visual implements IVisual {
             },
             onSetupSave: (setup) => {
                 this.app.log('onCameraChange', { insight: null, setup });
-                this.ignorePersistUpdate = true;
                 this.persist({ setup, reason: 'onSetupSave' });
             },
             onContextMenu: (e: MouseEvent | PointerEvent, selectionId?: powerbiVisualsApi.extensibility.ISelectionId) => {
@@ -155,7 +150,6 @@ export class Visual implements IVisual {
             },
             onSelectionChanged: (search, activeIndex, selectedData) => {
                 this.app.log(`onSelectionChanged\n search: ${JSON.stringify(search)}\n persistSelectionChange: ${this.persistSelectionChange}`);
-                this.ignoreSelectionUpdate = true;
 
                 this.search = search;
 
@@ -202,10 +196,6 @@ export class Visual implements IVisual {
             };
             this.app.log(`persist reason: ${options.reason}`, { insight, setup });
             this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties: config, selector: null }] });
-            this.ignorePersistUpdate = true;
-            this.ignorePersistTimer = window.setTimeout(() => {
-                this.ignorePersistUpdate = false;
-            }, Visual.ignorePersistTimeout);
         }
     }
 
@@ -236,7 +226,7 @@ export class Visual implements IVisual {
     }
 
     public update(options: VisualUpdateOptions) {
-        this.app.log('Visual update');
+        this.app.log(`Visual update operationKind: ${options.operationKind}`);
         this.renderingOptions = options;
         this.events.renderingStarted(this.renderingOptions);
 
@@ -246,14 +236,6 @@ export class Visual implements IVisual {
 
         if (!capabilities.webgl) {
             this.app.unload();
-            return;
-        }
-
-        if (this.ignorePersistUpdate) {
-            this.app.log('PersistUpdate ignored ')
-            this.ignorePersistUpdate = false;
-            clearTimeout(this.ignorePersistTimer);
-            this.events.renderingFinished(this.renderingOptions);
             return;
         }
 
@@ -315,25 +297,13 @@ export class Visual implements IVisual {
     }
 
     showSame(sandDanceConfig: SandDanceConfig, setup: SandDance.types.Setup) {
-        this.app.log(`showSame ignoreSelectionUpdate: ${this.ignoreSelectionUpdate}`);
+        this.app.log(`showSame`);
 
         const renderingFinished = () => {
             this.events.renderingFinished(this.renderingOptions);
         };
 
-        if (this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.Edit) {
-            this.syncSelection(sandDanceConfig.selectionQueryJSON, false);
-        }
-
-        if (this.ignoreSelectionUpdate) {
-            this.ignoreSelectionUpdate = false;
-            return renderingFinished();
-        }
-
-        if (this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.View) {
-            this.syncSelection(sandDanceConfig.selectionQueryJSON, false);
-        }
-
+        this.syncSelection(sandDanceConfig.selectionQueryJSON, false);
         const setInsight = this.trySetInsight(sandDanceConfig, setup);
         if (!setInsight) {
             this.app.log('same insight')
@@ -346,8 +316,8 @@ export class Visual implements IVisual {
                 camera = cameraOrHold;
             }
             this.app.explorer.setState({ camera, holdCamera, renderer });
-            return renderingFinished();
         }
+        return renderingFinished();
     }
 
     showDifferent(data: object[], sandDanceConfig: SandDanceConfig, setup: SandDance.types.Setup) {
