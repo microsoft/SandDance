@@ -154,7 +154,7 @@ export class Visual implements IVisual {
                 }
             },
             onSelectionChanged: (search, activeIndex, selectedData) => {
-                this.app.log(`onSelectionChanged\n search: ${JSON.stringify(search)}\n persistSelectionChange: {this.persistSelectionChange}`);
+                this.app.log(`onSelectionChanged\n search: ${JSON.stringify(search)}\n persistSelectionChange: ${this.persistSelectionChange}`);
                 this.ignoreSelectionUpdate = true;
 
                 this.search = search;
@@ -266,13 +266,7 @@ export class Visual implements IVisual {
             if (dataView.metadata.segment) {
                 doneFetching = !this.host.fetchMoreData();
             }
-
-            this.app.log(`doneFetching1 ${doneFetching}`);
-
             this.app.fetchStatus(dataView.table.rows.length, !doneFetching);
-
-            this.app.log(`doneFetching2 ${doneFetching}`);
-
             if (doneFetching) {
                 this.show(dataView);
             } else {
@@ -321,7 +315,7 @@ export class Visual implements IVisual {
     }
 
     showSame(sandDanceConfig: SandDanceConfig, setup: SandDance.types.Setup) {
-        this.app.log('Visual update - not different');
+        this.app.log(`showSame ignoreSelectionUpdate: ${this.ignoreSelectionUpdate}`);
 
         const renderingFinished = () => {
             this.events.renderingFinished(this.renderingOptions);
@@ -357,7 +351,7 @@ export class Visual implements IVisual {
     }
 
     showDifferent(data: object[], sandDanceConfig: SandDanceConfig, setup: SandDance.types.Setup) {
-        this.app.log('Visual update - *is* different');
+        this.app.log('showDifferent');
 
         this.tryUpdateSnapshots(sandDanceConfig);
 
@@ -490,7 +484,7 @@ export class Visual implements IVisual {
 
         const diff = !SandDance.searchExpression.compare(existingSelection, search);
         if (diff) {
-            this.app.log(`sync selection\n' selectionQueryJSON: ${JSON.stringify(selectionQueryJSON)}\n existingSelection: ${JSON.stringify(existingSelection)}`);
+            this.app.log(`sync selection\n selectionQueryJSON: ${JSON.stringify(selectionQueryJSON)}\n existingSelection: ${JSON.stringify(existingSelection)}`);
             this.persistSelectionChange = false;
             if (afterView || !this.app?.explorer?.viewer) {
                 this.afterView.push(() => this.app.explorer.viewer.select(search));
