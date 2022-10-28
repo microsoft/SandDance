@@ -195,7 +195,11 @@ export class Visual implements IVisual {
                 imageHolderJSON: JSON.stringify(explorer.imageHolder),
             };
             this.app.log(`persist reason: ${options.reason}`, { insight, setup });
-            this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties: config, selector: null }] });
+            if (util.deepCompare(this.settings.sandDanceConfig, config)) {
+                this.app.log('persist skipped');
+            } else {
+                this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties: config, selector: null }] });
+            }
         }
     }
 
