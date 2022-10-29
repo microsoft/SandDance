@@ -27,7 +27,7 @@ export class LogView extends React.Component<Props, State> {
     render() {
         const { props, state } = this;
         return (
-            <li>
+            <span>
                 <a
                     href='#'
                     onClick={e => {
@@ -36,20 +36,22 @@ export class LogView extends React.Component<Props, State> {
                     }}
                 >{language.powerBiCustomVisualLog}</a>
                 <controls.Dialog
+                    title={language.powerBiCustomVisualLog}
                     buttons={[
                         <DefaultButton
                             key='clear'
                             iconProps={{ iconName: 'Clear' }}
-                            text={language.clearLog}
+                            text={language.buttonClear}
                             onClick={props.clearLog}
                         />
                     ]}
                     hidden={!state.showDialog}
                     onDismiss={() => this.setState({ showDialog: false })}
+                    minWidth={'40em'}
                 >
-                    <textarea value={props.log.join('\n')} />
+                    <textarea cols={80} rows={10} value={props.log.map((s, i) => `${i}: ${s}`).join('\n\n')} />
                 </controls.Dialog>
-            </li>
+            </span>
         );
     }
 }

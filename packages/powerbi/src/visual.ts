@@ -230,7 +230,7 @@ export class Visual implements IVisual {
     }
 
     public update(options: VisualUpdateOptions) {
-        this.app.log(`Visual update operationKind: ${options.operationKind}`);
+        this.app.log(`visual update operationKind: ${options.operationKind}`);
         this.renderingOptions = options;
         this.events.renderingStarted(this.renderingOptions);
 
