@@ -65,13 +65,13 @@ export class Visual implements IVisual {
     private fetchMoreTimer: number;
     private filters: { sd: SandDance.searchExpression.Search, pbi: powerbiModels.IFilter[] };
     private columns: powerbiVisualsApi.DataViewMetadataColumn[];
+    private setInsightSetup: SandDance.types.InsightSetup;
 
     public persistSelectionChange: boolean;
     public sanddanceRenderOptions: SandDance.types.RenderOptions;
     public afterView: (() => void)[];
     public search: SandDance.searchExpression.Search;
     public snapshots: SandDance.types.Snapshot[];
-    public _setInsightSetup: SandDance.types.InsightSetup;
 
     public static fetchMoreTimeout = 5000;
 
@@ -181,9 +181,9 @@ export class Visual implements IVisual {
         if (this.renderingOptions.viewMode !== powerbiVisualsApi.ViewMode.View) {
             const { explorer } = this.app;
             if (!explorer.viewer) return;
-            const insight = this._setInsightSetup?.insight || explorer.viewer.getInsight();
-            const setup = options.setup || this._setInsightSetup?.setup || explorer.getSetup();
-            this._setInsightSetup = null;
+            const insight = this.setInsightSetup?.insight || explorer.viewer.getInsight();
+            const setup = options.setup || this.setInsightSetup?.setup || explorer.getSetup();
+            this.setInsightSetup = null;
             const tooltipExclusions = options.tooltipExclusions || explorer.state.tooltipExclusions;
             cleanInsight(insight, false);
             const config: SandDanceConfig = {
@@ -353,7 +353,7 @@ export class Visual implements IVisual {
                     insight.filter = this.filters.sd;
                 }
 
-                this._setInsightSetup = { insight, setup };
+                this.setInsightSetup = { insight, setup };
 
                 return insight;
             },
@@ -410,7 +410,7 @@ export class Visual implements IVisual {
                 cleanInsight(compB, false);
                 if (!util.deepCompare(compA, compB)) {
                     this.app.log('set insight', { insight, setup });
-                    this._setInsightSetup = { insight, setup };
+                    this.setInsightSetup = { insight, setup };
                     this.app.explorer.setInsight({ label: language.historyActionUpdate }, null, insight, true, setup);
                     return true;
                 }
