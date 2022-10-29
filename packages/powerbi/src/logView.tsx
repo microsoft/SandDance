@@ -34,9 +34,9 @@ export class LogView extends React.Component<Props, State> {
                         e.preventDefault();
                         this.setState({ showDialog: true });
                     }}
-                >{language.powerBiCustomVisualLog}</a>
+                >{language.diagnosticsLog}</a>
                 <controls.Dialog
-                    title={language.powerBiCustomVisualLog}
+                    title={language.diagnosticsLog}
                     buttons={[
                         <DefaultButton
                             key='clear'
