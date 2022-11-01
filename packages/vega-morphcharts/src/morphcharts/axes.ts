@@ -290,6 +290,14 @@ function createAxes(cartesian: Axes.Cartesian2dAxes | Axes.Cartesian3dAxes, dim2
     const domain = axis?.domain || nullDomain;
     const { tickPositions, tickText, textPos, textSize } = convertAxis(axis, domain, dim2d, height);
 
+    if (axis.axisRole === 'z') {
+        tickPositions.forEach((t, i) => tickPositions[i] = 1 - t);
+        textPos.forEach((t, i) => textPos[i] = 1 - t);
+        tickText.reverse();
+        tickPositions.reverse();
+        textPos.reverse();
+    }
+
     cartesian.setTickPositions(dim3d, tickPositions);
 
     cartesian.zero[dim3d] = 0;  //TODO get any "zero" gridline position from vega
@@ -353,9 +361,11 @@ function getDomainBounds(dim2d: number, axis: Axis) {
 }
 
 function convertAxis(axis: Axis, domain: StyledLine, dim: number, height: number) {
+    const start = domain.sourcePosition[dim];
+    const span = domain.targetPosition[dim] - start;
     const tickPositions = axis
         ?
-        axis.ticks.map(t => (t.sourcePosition[dim] - domain.sourcePosition[dim]) / (domain.targetPosition[dim] - domain.sourcePosition[dim]))
+        axis.ticks.map(t => (t.sourcePosition[dim] - start) / span)
         :
         [];
     const tickText = axis ?
@@ -364,7 +374,7 @@ function convertAxis(axis: Axis, domain: StyledLine, dim: number, height: number
         [];
 
     const textPos = axis ?
-        axis.tickText.map(t => (t.position[dim] - domain.sourcePosition[dim]) / (domain.targetPosition[dim] - domain.sourcePosition[dim]))
+        axis.tickText.map(t => (t.position[dim] - start) / span)
         :
         [];
 
