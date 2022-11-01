@@ -26,7 +26,8 @@ type DataToLoad = object[] | SandDanceExplorer.DataFile;
 interface MessageRequest_Load extends MessageRequestBase {
     action: 'load';
     data: DataToLoad;
-    insight: Partial<SandDance.types.Insight>;
+    insight?: Partial<SandDance.types.Insight>;
+    props?: SandDanceExplorer.Props;
 }
 
 interface MessageRequest_GetData extends MessageRequestBase {

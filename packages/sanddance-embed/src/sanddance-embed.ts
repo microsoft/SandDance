@@ -54,40 +54,6 @@ namespace SandDanceEmbed {
 
     export let deps: EmbedDependency[];
 
-    function loadDeps(depType: EmbedDependencyType, tagType: string, tagAttr: string, create: (dep: EmbedDependency) => HTMLElement) {
-        const promises: Promise<void>[] = [];
-        const depsToLoad = deps.filter(dep => dep.type === depType);
-        const elements = [
-            ...Array.from(document.head.querySelectorAll(tagType)),
-            ...Array.from(document.body.querySelectorAll(tagType)),
-        ];
-        depsToLoad.forEach(dep => {
-            const element = elements.find(element => {
-                try {
-                    return element.attributes[tagAttr].nodeValue === dep.url;
-                }
-                catch (e) {
-                    return false;
-                }
-            });
-            if (!element) {
-                //load style
-                const el = create(dep);
-                promises.push(new Promise<void>((resolve, reject) => {
-                    el.onload = () => {
-                        dep.loaded = true;
-                        resolve();
-                    };
-                }));
-                document.head.appendChild(el);
-            } else {
-                dep.existed = true;
-                dep.loaded = true;
-            }
-        });
-        return promises;
-    }
-
     function getUnloadedDeps(depType: EmbedDependencyType, tagType: string, tagAttr: string) {
         const depsToLoad = deps.filter(dep => dep.type === depType);
         const elements = [
@@ -157,11 +123,13 @@ namespace SandDanceEmbed {
 
     export let sandDanceExplorer: SandDanceExplorer.Explorer_Class;
     export const requests: MessageRequestWithSource[] = [];
+    let creating = false;
+    let innerLoad: () => void;
 
-    export function load(data: DataToLoad, insight?: Partial<SandDanceExplorer.SandDance.specs.Insight>) {
+    export function load(data: DataToLoad, insight?: Partial<SandDanceExplorer.SandDance.specs.Insight>, props?: SandDanceExplorer.Props) {
         return new Promise((resolve) => {
 
-            const innerLoad = () => {
+            innerLoad = () => {
                 let getPartialInsight: (columns: SandDanceExplorer.SandDance.types.Column[]) => Partial<SandDanceExplorer.SandDance.specs.Insight>;
                 if (insight) {
                     //TODO make sure that insight columns exist in dataset
@@ -171,13 +139,17 @@ namespace SandDanceEmbed {
             };
 
             const create = () => {
+                creating = true;
                 prepare.then(() => {
                     SandDanceExplorer.use(FluentUIReact, React, ReactDOM, vega);
                     const explorerProps: SandDanceExplorer.Props = {
                         logoClickUrl: 'https://microsoft.github.io/SandDance/',
+                        ...props,
                         mounted: explorer => {
                             sandDanceExplorer = explorer;
+                            creating = false;
                             innerLoad();
+                            props?.mounted && props.mounted(explorer);
                         },
                     };
                     ReactDOM.render(React.createElement(SandDanceExplorer.Explorer, explorerProps), document.getElementById('app'));
@@ -186,7 +158,7 @@ namespace SandDanceEmbed {
 
             if (sandDanceExplorer) {
                 innerLoad();
-            } else {
+            } else if (!creating) {
                 create();
             }
         });
@@ -207,7 +179,7 @@ namespace SandDanceEmbed {
             }
             case 'load': {
                 const request_load = request as MessageRequest_Load;
-                load(request_load.data, request_load.insight).then(() => {
+                load(request_load.data, request_load.insight, request_load.props).then(() => {
                     response = {
                         request,
                     };
