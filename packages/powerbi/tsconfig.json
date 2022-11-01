@@ -3,6 +3,8 @@
         "allowJs": false,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
+        "jsx": "react",
+        "jsxFactory": "React.createElement",
         "target": "es6",
         "sourceMap": true,
         "outDir": "./.tmp/build/",

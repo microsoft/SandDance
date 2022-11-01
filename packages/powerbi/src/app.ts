@@ -20,6 +20,7 @@ import { Logo } from '@msrvida/sanddance-explorer/dist/es6/controls/logo';
 import { language } from './language';
 import { version } from './version';
 import powerbiVisualsApi from 'powerbi-visuals-api';
+import { LogView } from './logView';
 
 // tslint:disable-next-line
 use(fluentUIComponents, React as any, ReactDOM as any, vega);
@@ -32,6 +33,7 @@ function getThemePalette(darkTheme: boolean) {
 export interface ViewChangeOptions {
     tooltipExclusions?: string[];
     setup?: SandDance.types.Setup;
+    reason: string;
 }
 
 export interface Props {
@@ -56,6 +58,7 @@ export interface State {
     darkTheme: boolean;
     rowCount: number;
     fetching: boolean;
+    log: string[];
 }
 
 export class App extends React.Component<Props, State> {
@@ -74,6 +77,7 @@ export class App extends React.Component<Props, State> {
             darkTheme: null,
             rowCount: null,
             fetching: false,
+            log: [],
         };
         this.viewerOptions = this.getViewerOptions();
     }
@@ -118,7 +122,7 @@ export class App extends React.Component<Props, State> {
         if (wasLoaded) {
             const { historyItems, sideTabId } = explorer.state;
             const loaded = () => {
-                // console.log('reloading history')
+                this.log('reloading history')
                 const last = historyItems[historyItems.length - 1];
                 historyItems.push({
                     historicInsight: { ...last?.historicInsight || {} },
@@ -215,6 +219,14 @@ export class App extends React.Component<Props, State> {
         this.explorer.resize();
     }
 
+    log(message: string, insightSetup?: SandDance.types.InsightSetup) {
+        if (insightSetup) {
+            const { insight, setup } = insightSetup;
+            message = `${message}\n insight: ${JSON.stringify(insight)}\n setup: ${JSON.stringify(setup)}`;
+        }
+        this.setState({ log: [...this.state.log, message] });
+    }
+
     render() {
         const { props, state } = this;
         const className = util.classList(
@@ -239,24 +251,30 @@ export class App extends React.Component<Props, State> {
             },
             onSetupOptionsChanged: this.props.onSetupSave,
             onSignalChanged: () => {
-                props.onViewChange({});
+                props.onViewChange({ reason: 'onSignalChanged' });
             },
             snapshotProps: {
                 hidden: !this.explorer?.state.snapshots || this.explorer?.state.snapshots.length === 0,
             },
             onSnapshotsChanged: props.onSnapshotsChanged,
-            onTooltipExclusionsChanged: tooltipExclusions => props.onViewChange({ tooltipExclusions }),
+            onTooltipExclusionsChanged: tooltipExclusions => props.onViewChange({ tooltipExclusions, reason: 'onTooltipExclusionsChanged' }),
             onView: () => {
                 this.beginCameraListener(true, true);
                 this.explorer.viewer.presenter.getElement(SandDance.VegaMorphCharts.PresenterElement.gl).oncontextmenu = (e) => {
                     props.onContextMenu(e);
                     return false;
                 };
-                props.onViewChange({});
+                props.onViewChange({ reason: 'onView' });
             },
             onError: props.onError,
             systemInfoChildren: [
                 React.createElement('li', null, `${language.powerBiCustomVisual}: ${version}`),
+                React.createElement('li', null,
+                    React.createElement(LogView, {
+                        clearLog: () => this.setState({ log: [] }),
+                        log: state.log,
+                    }),
+                ),
             ],
         };
         return React.createElement('div', { className },

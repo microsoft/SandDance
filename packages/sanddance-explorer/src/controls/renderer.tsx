@@ -54,13 +54,17 @@ function _Renderer(_props: Props) {
 
         setOptions(newOptions: Partial<SandDance.VegaMorphCharts.types.MorphChartsRendererOptions>) {
             const { explorer } = this.props;
-            explorer.setState({
-                renderer:
-                {
-                    ...explorer.state.renderer,
-                    ...newOptions,
-                },
-            });
+            const renderer: SandDance.VegaMorphCharts.types.MorphChartsRendererOptions = {
+                ...explorer.state.renderer,
+                ...newOptions,
+            };
+            const { onSetupOptionsChanged } = explorer.props;
+            if (onSetupOptionsChanged) {
+                const setup = explorer.getSetup();
+                setup.renderer = renderer;
+                onSetupOptionsChanged(setup);
+            }
+            explorer.setState({ renderer });
         }
 
         setBasicOptions(newOptions: Partial<SandDance.VegaMorphCharts.types.BasicRendererOptions>) {

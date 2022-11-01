@@ -65,22 +65,17 @@ export class Visual implements IVisual {
     private fetchMoreTimer: number;
     private filters: { sd: SandDance.searchExpression.Search, pbi: powerbiModels.IFilter[] };
     private columns: powerbiVisualsApi.DataViewMetadataColumn[];
+    private setInsightSetup: SandDance.types.InsightSetup;
 
-    public persistViewChange: boolean;
     public persistSelectionChange: boolean;
-    public ignoreSelectionUpdate: boolean;
-    public ignorePersistUpdate: boolean;
-    public ignorePersistTimer: number;
     public sanddanceRenderOptions: SandDance.types.RenderOptions;
     public afterView: (() => void)[];
     public search: SandDance.searchExpression.Search;
     public snapshots: SandDance.types.Snapshot[];
 
     public static fetchMoreTimeout = 5000;
-    public static ignorePersistTimeout = 200;
 
     constructor(options: VisualConstructorOptions) {
-        // console.log('Visual constructor', options);
         this.host = options.host;
         this.events = this.host.eventService;
         this.selectionManager = this.host.createSelectionManager();
@@ -102,12 +97,12 @@ export class Visual implements IVisual {
         const props: Props = {
             renderOptions: this.sanddanceRenderOptions,
             mounted: (app: App) => {
+                app.log('mounted')
                 this.app = app;
             },
             onSetupSave: (setup) => {
-                // console.log('onCameraChange', setup);
-                this.ignorePersistUpdate = true;
-                this.persist({ setup });
+                this.app.log('onCameraChange', { insight: null, setup });
+                this.persist({ setup, reason: 'onSetupSave' });
             },
             onContextMenu: (e: MouseEvent | PointerEvent, selectionId?: powerbiVisualsApi.extensibility.ISelectionId) => {
                 const position: powerbiVisualsApi.extensibility.IPoint = {
@@ -117,7 +112,7 @@ export class Visual implements IVisual {
                 this.selectionManager.showContextMenu(selectionId || {}, position);
             },
             onViewChange: viewChangeOptions => {
-                // console.log('onViewChange', this.renderingOptions, viewChangeOptions, this.persistViewChange);
+                this.app.log('onViewChange');
                 if (this.afterView.length) {
                     this.afterView.forEach(fn => fn());
                     this.afterView.length = 0;
@@ -127,14 +122,11 @@ export class Visual implements IVisual {
                     this.events.renderingFinished(this.renderingOptions);
                 }
 
-                if (this.persistViewChange) {
-                    this.persist(viewChangeOptions);
-                }
-                this.persistViewChange = true;
+                this.persist(viewChangeOptions);
             },
             onSnapshotsChanged: snapshots => {
                 this.snapshots = snapshots;
-                this.persist({});
+                this.persist({ reason: 'onSnapshotsChanged' });
             },
             onError: (e: any) => {
                 if (this.renderingOptions) {
@@ -143,8 +135,8 @@ export class Visual implements IVisual {
                 }
             },
             onDataFilter: (searchFilter, filteredData) => {
-                // console.log('onDataFilter', filteredData);
-                this.persist({});
+                this.app.log('onDataFilter');
+                this.persist({ reason: 'onDataFilter' });
                 if (filteredData) {
                     const result = convertFilter(searchFilter, this.columns, filteredData);
                     this.applySelection(result.selectedIds);
@@ -157,13 +149,12 @@ export class Visual implements IVisual {
                 }
             },
             onSelectionChanged: (search, activeIndex, selectedData) => {
-                // console.log('onSelectionChanged', search, selectedData, this.persistSelectionChange);
-                this.ignoreSelectionUpdate = true;
+                this.app.log(`onSelectionChanged\n search: ${JSON.stringify(search)}\n persistSelectionChange: ${this.persistSelectionChange}`);
 
                 this.search = search;
 
                 if (this.persistSelectionChange) {
-                    this.persist({});
+                    this.persist({ reason: 'onSelectionChanged' });
                 }
                 this.persistSelectionChange = true;
 
@@ -190,23 +181,25 @@ export class Visual implements IVisual {
         if (this.renderingOptions.viewMode !== powerbiVisualsApi.ViewMode.View) {
             const { explorer } = this.app;
             if (!explorer.viewer) return;
-            const insight = explorer.viewer.getInsight();
+            const insight = this.setInsightSetup?.insight || explorer.viewer.getInsight();
+            const setup = options.setup || this.setInsightSetup?.setup || explorer.getSetup();
+            this.setInsightSetup = null;
             const tooltipExclusions = options.tooltipExclusions || explorer.state.tooltipExclusions;
             cleanInsight(insight, false);
             const config: SandDanceConfig = {
-                setupJSON: JSON.stringify(options.setup || explorer.getSetup()),
+                setupJSON: JSON.stringify(setup),
                 insightJSON: JSON.stringify(insight),
                 selectionQueryJSON: JSON.stringify(this.search),
                 snapshotsJSON: JSON.stringify(this.snapshots || []),
                 tooltipExclusionsJSON: JSON.stringify(tooltipExclusions),
                 imageHolderJSON: JSON.stringify(explorer.imageHolder),
             };
-            // console.log(`persist`, config);
-            this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties: config, selector: null }] });
-            this.ignorePersistUpdate = true;
-            this.ignorePersistTimer = window.setTimeout(() => {
-                this.ignorePersistUpdate = false;
-            }, Visual.ignorePersistTimeout);
+            this.app.log(`persist reason: ${options.reason}`, { insight, setup });
+            if (util.deepCompare(this.settings.sandDanceConfig, config)) {
+                this.app.log('persist skipped');
+            } else {
+                this.host.persistProperties({ replace: [{ objectName: 'sandDanceConfig', properties: config, selector: null }] });
+            }
         }
     }
 
@@ -237,7 +230,7 @@ export class Visual implements IVisual {
     }
 
     public update(options: VisualUpdateOptions) {
-        // console.log('Visual update', options);
+        this.app.log(`visual update operationKind: ${options.operationKind}`);
         this.renderingOptions = options;
         this.events.renderingStarted(this.renderingOptions);
 
@@ -247,14 +240,6 @@ export class Visual implements IVisual {
 
         if (!capabilities.webgl) {
             this.app.unload();
-            return;
-        }
-
-        if (this.ignorePersistUpdate) {
-            // console.log('PersistUpdate ignored ')
-            this.ignorePersistUpdate = false;
-            clearTimeout(this.ignorePersistTimer);
-            this.events.renderingFinished(this.renderingOptions);
             return;
         }
 
@@ -272,8 +257,6 @@ export class Visual implements IVisual {
                 this.show(dataView);
             } else {
                 this.fetchMoreTimer = window.setTimeout(() => {
-                    // console.log('Visual fetchMoreTimeout', options);
-
                     this.app.fetchStatus(dataView.table.rows.length, false);
                     this.show(dataView);
 
@@ -283,6 +266,8 @@ export class Visual implements IVisual {
     }
 
     show(dataView: powerbiVisualsApi.DataView) {
+        this.app.log('show')
+
         this.settings = Visual.parseSettings(dataView);
         const oldData = this.app.getDataContent();
         const result = convertTableToObjectArray(dataView.table, oldData, this.host);
@@ -316,28 +301,16 @@ export class Visual implements IVisual {
     }
 
     showSame(sandDanceConfig: SandDanceConfig, setup: SandDance.types.Setup) {
-        // console.log('Visual update - not different');
+        this.app.log(`showSame`);
 
         const renderingFinished = () => {
             this.events.renderingFinished(this.renderingOptions);
         };
 
-        if (this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.Edit) {
-            this.syncSelection(sandDanceConfig.selectionQueryJSON, false);
-        }
-
-        if (this.ignoreSelectionUpdate) {
-            this.ignoreSelectionUpdate = false;
-            return renderingFinished();
-        }
-
-        if (this.renderingOptions.viewMode === powerbiVisualsApi.ViewMode.View) {
-            this.syncSelection(sandDanceConfig.selectionQueryJSON, false);
-        }
-
+        this.syncSelection(sandDanceConfig.selectionQueryJSON, false);
         const setInsight = this.trySetInsight(sandDanceConfig, setup);
         if (!setInsight) {
-            // console.log('same insight')
+            this.app.log('same insight')
             const { camera: cameraOrHold, renderer } = setup;
             let camera: SandDance.types.Camera;
             let holdCamera = this.app.explorer.state.holdCamera;
@@ -347,18 +320,17 @@ export class Visual implements IVisual {
                 camera = cameraOrHold;
             }
             this.app.explorer.setState({ camera, holdCamera, renderer });
-            return renderingFinished();
         }
+        return renderingFinished();
     }
 
     showDifferent(data: object[], sandDanceConfig: SandDanceConfig, setup: SandDance.types.Setup) {
-        // console.log('Visual update - *is* different');
+        this.app.log('showDifferent');
 
         this.tryUpdateSnapshots(sandDanceConfig);
 
         const tooltipExclusions: string[] = this.tryGetTooltipExclusions(sandDanceConfig);
 
-        this.persistViewChange = false;
         this.app.load(
             data,
             columns => {
@@ -375,11 +347,13 @@ export class Visual implements IVisual {
                 this.syncSelection(sandDanceConfig.selectionQueryJSON, true);
                 this.syncBackgroundImage(sandDanceConfig.imageHolderJSON);
 
-                const insight: Partial<SandDance.specs.Insight> = this.tryGetInsight(sandDanceConfig);
+                const insight: SandDance.specs.Insight = this.tryGetInsight(sandDanceConfig);
 
                 if (this.filters && insight) {
                     insight.filter = this.filters.sd;
                 }
+
+                this.setInsightSetup = { insight, setup };
 
                 return insight;
             },
@@ -390,7 +364,7 @@ export class Visual implements IVisual {
     }
 
     tryGetInsight(sandDanceConfig: SandDanceConfig) {
-        let insight: Partial<SandDance.specs.Insight>;
+        let insight: SandDance.specs.Insight;
         if (sandDanceConfig.insightJSON) {
             try {
                 insight = JSON.parse(sandDanceConfig.insightJSON);
@@ -435,6 +409,8 @@ export class Visual implements IVisual {
                 const compB = util.clone(this.app.explorer.viewer.getInsight());
                 cleanInsight(compB, false);
                 if (!util.deepCompare(compA, compB)) {
+                    this.app.log('set insight', { insight, setup });
+                    this.setInsightSetup = { insight, setup };
                     this.app.explorer.setInsight({ label: language.historyActionUpdate }, null, insight, true, setup);
                     return true;
                 }
@@ -482,7 +458,7 @@ export class Visual implements IVisual {
 
         const diff = !SandDance.searchExpression.compare(existingSelection, search);
         if (diff) {
-            // console.log('sync selection', selectionQueryJSON, existingSelection)
+            this.app.log(`sync selection\n selectionQueryJSON: ${JSON.stringify(selectionQueryJSON)}\n existingSelection: ${JSON.stringify(existingSelection)}`);
             this.persistSelectionChange = false;
             if (afterView || !this.app?.explorer?.viewer) {
                 this.afterView.push(() => this.app.explorer.viewer.select(search));
