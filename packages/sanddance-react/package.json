@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance-react",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "SandDance visualization canvas React component",
   "main": "dist/es6/index.js",
   "repository": {
@@ -13,10 +13,10 @@
     "dist"
   ],
   "scripts": {
-		"uitest": "parcel serve ./test/index.html --open --no-autoinstall --no-cache",
+    "uitest": "parcel serve ./test/index.html --open --no-autoinstall --no-cache",
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "docs": "typedoc src/index.ts -out ../../docs/docs/sanddance-react/v4 --theme ../../typedoc/theme --excludePrivate --gitRevision master",
-		"deploy": "node ./scripts/deploy.js",
+    "deploy": "node ./scripts/deploy.js",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "build-css": "sass ./src/css/sanddance-react.scss ./dist/css/sanddance-react.css",
@@ -37,7 +37,7 @@
     "react": ">=16.8.0 <18.0.0",
     "react-dom": ">=16.8.0 <18.0.0"
   },
-	"devDependencies": {
-		"vega": "5.22.1"
-	}
+  "devDependencies": {
+    "vega": "5.22.1"
+  }
 }
