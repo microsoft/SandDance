@@ -1685,34 +1685,7 @@ function $67aa9bbf7ac601ea$export$8b58be045bf06082(parent, definition) {
 function $fe67bfce8e40eaac$export$892596cec99bc70e() {}
 var $fe67bfce8e40eaac$export$4adafc6ed0600c10 = 0.7;
 var $fe67bfce8e40eaac$export$9eace2cc0d12c98d = 1 / $fe67bfce8e40eaac$export$4adafc6ed0600c10;
-var $fe67bfce8e40eaac$var$reI = "\\s*([+-]?\\d+)\\s*", $fe67bfce8e40eaac$var$reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*", $fe67bfce8e40eaac$var$reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*", $fe67bfce8e40eaac$var$reHex = /^#([0-9a-f]{3,8})$/, $fe67bfce8e40eaac$var$reRgbInteger = new RegExp("^rgb\\(" + [
-    $fe67bfce8e40eaac$var$reI,
-    $fe67bfce8e40eaac$var$reI,
-    $fe67bfce8e40eaac$var$reI
-] + "\\)$"), $fe67bfce8e40eaac$var$reRgbPercent = new RegExp("^rgb\\(" + [
-    $fe67bfce8e40eaac$var$reP,
-    $fe67bfce8e40eaac$var$reP,
-    $fe67bfce8e40eaac$var$reP
-] + "\\)$"), $fe67bfce8e40eaac$var$reRgbaInteger = new RegExp("^rgba\\(" + [
-    $fe67bfce8e40eaac$var$reI,
-    $fe67bfce8e40eaac$var$reI,
-    $fe67bfce8e40eaac$var$reI,
-    $fe67bfce8e40eaac$var$reN
-] + "\\)$"), $fe67bfce8e40eaac$var$reRgbaPercent = new RegExp("^rgba\\(" + [
-    $fe67bfce8e40eaac$var$reP,
-    $fe67bfce8e40eaac$var$reP,
-    $fe67bfce8e40eaac$var$reP,
-    $fe67bfce8e40eaac$var$reN
-] + "\\)$"), $fe67bfce8e40eaac$var$reHslPercent = new RegExp("^hsl\\(" + [
-    $fe67bfce8e40eaac$var$reN,
-    $fe67bfce8e40eaac$var$reP,
-    $fe67bfce8e40eaac$var$reP
-] + "\\)$"), $fe67bfce8e40eaac$var$reHslaPercent = new RegExp("^hsla\\(" + [
-    $fe67bfce8e40eaac$var$reN,
-    $fe67bfce8e40eaac$var$reP,
-    $fe67bfce8e40eaac$var$reP,
-    $fe67bfce8e40eaac$var$reN
-] + "\\)$");
+var $fe67bfce8e40eaac$var$reI = "\\s*([+-]?\\d+)\\s*", $fe67bfce8e40eaac$var$reN = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*", $fe67bfce8e40eaac$var$reP = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*", $fe67bfce8e40eaac$var$reHex = /^#([0-9a-f]{3,8})$/, $fe67bfce8e40eaac$var$reRgbInteger = new RegExp(`^rgb\\(${$fe67bfce8e40eaac$var$reI},${$fe67bfce8e40eaac$var$reI},${$fe67bfce8e40eaac$var$reI}\\)$`), $fe67bfce8e40eaac$var$reRgbPercent = new RegExp(`^rgb\\(${$fe67bfce8e40eaac$var$reP},${$fe67bfce8e40eaac$var$reP},${$fe67bfce8e40eaac$var$reP}\\)$`), $fe67bfce8e40eaac$var$reRgbaInteger = new RegExp(`^rgba\\(${$fe67bfce8e40eaac$var$reI},${$fe67bfce8e40eaac$var$reI},${$fe67bfce8e40eaac$var$reI},${$fe67bfce8e40eaac$var$reN}\\)$`), $fe67bfce8e40eaac$var$reRgbaPercent = new RegExp(`^rgba\\(${$fe67bfce8e40eaac$var$reP},${$fe67bfce8e40eaac$var$reP},${$fe67bfce8e40eaac$var$reP},${$fe67bfce8e40eaac$var$reN}\\)$`), $fe67bfce8e40eaac$var$reHslPercent = new RegExp(`^hsl\\(${$fe67bfce8e40eaac$var$reN},${$fe67bfce8e40eaac$var$reP},${$fe67bfce8e40eaac$var$reP}\\)$`), $fe67bfce8e40eaac$var$reHslaPercent = new RegExp(`^hsla\\(${$fe67bfce8e40eaac$var$reN},${$fe67bfce8e40eaac$var$reP},${$fe67bfce8e40eaac$var$reP},${$fe67bfce8e40eaac$var$reN}\\)$`);
 var $fe67bfce8e40eaac$var$named = {
     aliceblue: 0xf0f8ff,
     antiquewhite: 0xfaebd7,
@@ -1864,20 +1837,24 @@ var $fe67bfce8e40eaac$var$named = {
     yellowgreen: 0x9acd32
 };
 (0, $67aa9bbf7ac601ea$export$2e2bcd8739ae039)($fe67bfce8e40eaac$export$892596cec99bc70e, $fe67bfce8e40eaac$export$2e2bcd8739ae039, {
-    copy: function(channels) {
+    copy (channels) {
         return Object.assign(new this.constructor, this, channels);
     },
-    displayable: function() {
+    displayable () {
         return this.rgb().displayable();
     },
     hex: $fe67bfce8e40eaac$var$color_formatHex,
     formatHex: $fe67bfce8e40eaac$var$color_formatHex,
+    formatHex8: $fe67bfce8e40eaac$var$color_formatHex8,
     formatHsl: $fe67bfce8e40eaac$var$color_formatHsl,
     formatRgb: $fe67bfce8e40eaac$var$color_formatRgb,
     toString: $fe67bfce8e40eaac$var$color_formatRgb
 });
 function $fe67bfce8e40eaac$var$color_formatHex() {
     return this.rgb().formatHex();
+}
+function $fe67bfce8e40eaac$var$color_formatHex8() {
+    return this.rgb().formatHex8();
 }
 function $fe67bfce8e40eaac$var$color_formatHsl() {
     return $fe67bfce8e40eaac$export$8133dc3fa904d6d1(this).formatHsl();
@@ -1925,35 +1902,47 @@ function $fe67bfce8e40eaac$export$5e05a94393ac29e3(r, g, b, opacity) {
     this.opacity = +opacity;
 }
 (0, $67aa9bbf7ac601ea$export$2e2bcd8739ae039)($fe67bfce8e40eaac$export$5e05a94393ac29e3, $fe67bfce8e40eaac$export$8972dc0e6ad9238f, (0, $67aa9bbf7ac601ea$export$8b58be045bf06082)($fe67bfce8e40eaac$export$892596cec99bc70e, {
-    brighter: function(k) {
+    brighter (k) {
         k = k == null ? $fe67bfce8e40eaac$export$9eace2cc0d12c98d : Math.pow($fe67bfce8e40eaac$export$9eace2cc0d12c98d, k);
         return new $fe67bfce8e40eaac$export$5e05a94393ac29e3(this.r * k, this.g * k, this.b * k, this.opacity);
     },
-    darker: function(k) {
+    darker (k) {
         k = k == null ? $fe67bfce8e40eaac$export$4adafc6ed0600c10 : Math.pow($fe67bfce8e40eaac$export$4adafc6ed0600c10, k);
         return new $fe67bfce8e40eaac$export$5e05a94393ac29e3(this.r * k, this.g * k, this.b * k, this.opacity);
     },
-    rgb: function() {
+    rgb () {
         return this;
     },
-    displayable: function() {
+    clamp () {
+        return new $fe67bfce8e40eaac$export$5e05a94393ac29e3($fe67bfce8e40eaac$var$clampi(this.r), $fe67bfce8e40eaac$var$clampi(this.g), $fe67bfce8e40eaac$var$clampi(this.b), $fe67bfce8e40eaac$var$clampa(this.opacity));
+    },
+    displayable () {
         return -0.5 <= this.r && this.r < 255.5 && -0.5 <= this.g && this.g < 255.5 && -0.5 <= this.b && this.b < 255.5 && 0 <= this.opacity && this.opacity <= 1;
     },
     hex: $fe67bfce8e40eaac$var$rgb_formatHex,
     formatHex: $fe67bfce8e40eaac$var$rgb_formatHex,
+    formatHex8: $fe67bfce8e40eaac$var$rgb_formatHex8,
     formatRgb: $fe67bfce8e40eaac$var$rgb_formatRgb,
     toString: $fe67bfce8e40eaac$var$rgb_formatRgb
 }));
 function $fe67bfce8e40eaac$var$rgb_formatHex() {
-    return "#" + $fe67bfce8e40eaac$var$hex(this.r) + $fe67bfce8e40eaac$var$hex(this.g) + $fe67bfce8e40eaac$var$hex(this.b);
+    return `#${$fe67bfce8e40eaac$var$hex(this.r)}${$fe67bfce8e40eaac$var$hex(this.g)}${$fe67bfce8e40eaac$var$hex(this.b)}`;
+}
+function $fe67bfce8e40eaac$var$rgb_formatHex8() {
+    return `#${$fe67bfce8e40eaac$var$hex(this.r)}${$fe67bfce8e40eaac$var$hex(this.g)}${$fe67bfce8e40eaac$var$hex(this.b)}${$fe67bfce8e40eaac$var$hex((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
 }
 function $fe67bfce8e40eaac$var$rgb_formatRgb() {
-    var a = this.opacity;
-    a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-    return (a === 1 ? "rgb(" : "rgba(") + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.b) || 0)) + (a === 1 ? ")" : ", " + a + ")");
+    const a = $fe67bfce8e40eaac$var$clampa(this.opacity);
+    return `${a === 1 ? "rgb(" : "rgba("}${$fe67bfce8e40eaac$var$clampi(this.r)}, ${$fe67bfce8e40eaac$var$clampi(this.g)}, ${$fe67bfce8e40eaac$var$clampi(this.b)}${a === 1 ? ")" : `, ${a})`}`;
+}
+function $fe67bfce8e40eaac$var$clampa(opacity) {
+    return isNaN(opacity) ? 1 : Math.max(0, Math.min(1, opacity));
+}
+function $fe67bfce8e40eaac$var$clampi(value) {
+    return Math.max(0, Math.min(255, Math.round(value) || 0));
 }
 function $fe67bfce8e40eaac$var$hex(value) {
-    value = Math.max(0, Math.min(255, Math.round(value) || 0));
+    value = $fe67bfce8e40eaac$var$clampi(value);
     return (value < 16 ? "0" : "") + value.toString(16);
 }
 function $fe67bfce8e40eaac$var$hsla(h, s, l, a) {
@@ -1988,27 +1977,36 @@ function $fe67bfce8e40eaac$var$Hsl(h, s, l, opacity) {
     this.opacity = +opacity;
 }
 (0, $67aa9bbf7ac601ea$export$2e2bcd8739ae039)($fe67bfce8e40eaac$var$Hsl, $fe67bfce8e40eaac$export$8f4a7c0bb78e6ea8, (0, $67aa9bbf7ac601ea$export$8b58be045bf06082)($fe67bfce8e40eaac$export$892596cec99bc70e, {
-    brighter: function(k) {
+    brighter (k) {
         k = k == null ? $fe67bfce8e40eaac$export$9eace2cc0d12c98d : Math.pow($fe67bfce8e40eaac$export$9eace2cc0d12c98d, k);
         return new $fe67bfce8e40eaac$var$Hsl(this.h, this.s, this.l * k, this.opacity);
     },
-    darker: function(k) {
+    darker (k) {
         k = k == null ? $fe67bfce8e40eaac$export$4adafc6ed0600c10 : Math.pow($fe67bfce8e40eaac$export$4adafc6ed0600c10, k);
         return new $fe67bfce8e40eaac$var$Hsl(this.h, this.s, this.l * k, this.opacity);
     },
-    rgb: function() {
+    rgb () {
         var h = this.h % 360 + (this.h < 0) * 360, s = isNaN(h) || isNaN(this.s) ? 0 : this.s, l = this.l, m2 = l + (l < 0.5 ? l : 1 - l) * s, m1 = 2 * l - m2;
         return new $fe67bfce8e40eaac$export$5e05a94393ac29e3($fe67bfce8e40eaac$var$hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), $fe67bfce8e40eaac$var$hsl2rgb(h, m1, m2), $fe67bfce8e40eaac$var$hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
     },
-    displayable: function() {
+    clamp () {
+        return new $fe67bfce8e40eaac$var$Hsl($fe67bfce8e40eaac$var$clamph(this.h), $fe67bfce8e40eaac$var$clampt(this.s), $fe67bfce8e40eaac$var$clampt(this.l), $fe67bfce8e40eaac$var$clampa(this.opacity));
+    },
+    displayable () {
         return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && 0 <= this.l && this.l <= 1 && 0 <= this.opacity && this.opacity <= 1;
     },
-    formatHsl: function() {
-        var a = this.opacity;
-        a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-        return (a === 1 ? "hsl(" : "hsla(") + (this.h || 0) + ", " + (this.s || 0) * 100 + "%, " + (this.l || 0) * 100 + "%" + (a === 1 ? ")" : ", " + a + ")");
+    formatHsl () {
+        const a = $fe67bfce8e40eaac$var$clampa(this.opacity);
+        return `${a === 1 ? "hsl(" : "hsla("}${$fe67bfce8e40eaac$var$clamph(this.h)}, ${$fe67bfce8e40eaac$var$clampt(this.s) * 100}%, ${$fe67bfce8e40eaac$var$clampt(this.l) * 100}%${a === 1 ? ")" : `, ${a})`}`;
     }
 }));
+function $fe67bfce8e40eaac$var$clamph(value) {
+    value = (value || 0) % 360;
+    return value < 0 ? value + 360 : value;
+}
+function $fe67bfce8e40eaac$var$clampt(value) {
+    return Math.max(0, Math.min(1, value || 0));
+}
 /* From FvD 13.37, CSS Color Module Level 3 */ function $fe67bfce8e40eaac$var$hsl2rgb(h, m1, m2) {
     return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
 }
@@ -33413,6 +33411,13 @@ class $b29bcea612a8cd83$var$AxesCorrelation {
 function $b29bcea612a8cd83$var$createAxes(cartesian, dim2d, dim3d, axis, orientation, height, props, facetLabel) {
     const domain = (axis === null || axis === void 0 ? void 0 : axis.domain) || $b29bcea612a8cd83$var$nullDomain;
     const { tickPositions: tickPositions , tickText: tickText , textPos: textPos , textSize: textSize  } = $b29bcea612a8cd83$var$convertAxis(axis, domain, dim2d, height);
+    if (axis.axisRole === "z") {
+        tickPositions.forEach((t, i)=>tickPositions[i] = 1 - t);
+        textPos.forEach((t, i)=>textPos[i] = 1 - t);
+        tickText.reverse();
+        tickPositions.reverse();
+        textPos.reverse();
+    }
     cartesian.setTickPositions(dim3d, tickPositions);
     cartesian.zero[dim3d] = 0; //TODO get any "zero" gridline position from vega
     cartesian.setLabelPositions(dim3d, textPos);
@@ -33456,9 +33461,11 @@ function $b29bcea612a8cd83$var$getDomainBounds(dim2d, axis) {
     };
 }
 function $b29bcea612a8cd83$var$convertAxis(axis, domain, dim, height) {
-    const tickPositions = axis ? axis.ticks.map((t)=>(t.sourcePosition[dim] - domain.sourcePosition[dim]) / (domain.targetPosition[dim] - domain.sourcePosition[dim])) : [];
+    const start = domain.sourcePosition[dim];
+    const span = domain.targetPosition[dim] - start;
+    const tickPositions = axis ? axis.ticks.map((t)=>(t.sourcePosition[dim] - start) / span) : [];
     const tickText = axis ? axis.tickText.map((t)=>t.text) : [];
-    const textPos = axis ? axis.tickText.map((t)=>(t.position[dim] - domain.sourcePosition[dim]) / (domain.targetPosition[dim] - domain.sourcePosition[dim])) : [];
+    const textPos = axis ? axis.tickText.map((t)=>(t.position[dim] - start) / span) : [];
     const textSize = axis ? axis.tickText.map((t)=>t.size / height) : [];
     if (tickPositions.length) {
         if (tickPositions[0] !== 0) tickPositions[0] = 0;
@@ -34572,7 +34579,7 @@ const $d35dded7832c8625$export$6d8f9057dcd7f9e6 = $d35dded7832c8625$var$_ViewGl;
 
 
 
-const $6cb4b91d47e414da$export$83d89fbfd8236492 = "1.0.3";
+const $6cb4b91d47e414da$export$83d89fbfd8236492 = "1.0.4";
 
 
 $parcel$exportWildcard($77c6d719b6f16e7d$exports, $20fbdb0de5c041fa$exports);
@@ -37743,7 +37750,7 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
  */ $0000a41cc7b5918f$export$2ec4afd9b3c16a85.defaultViewerOptions = (0, $74c2763994d75bb8$export$fb736e4909afb3d7);
 
 
-const $15874c145702a1a4$export$83d89fbfd8236492 = "4.0.1";
+const $15874c145702a1a4$export$83d89fbfd8236492 = "4.0.2";
 
 
 const $3b509b9541e52a8f$export$1f96ae73734a86cc = (0, $94c0add5c61b9a48$export$1f96ae73734a86cc);
@@ -37931,7 +37938,7 @@ const $81745c046077d503$export$2ec4afd9b3c16a85 = $81745c046077d503$var$_Viewer;
 
 
 
-const $b7e03869cd46da1e$export$83d89fbfd8236492 = "4.0.0";
+const $b7e03869cd46da1e$export$83d89fbfd8236492 = "4.0.1";
 
 
 
@@ -40098,7 +40105,7 @@ const $29728562a99c68a2$export$8e76ac9f37578d1b = {
 
 
 
-const $f56a95f33c4cc847$export$83d89fbfd8236492 = "4.0.2";
+const $f56a95f33c4cc847$export$83d89fbfd8236492 = "4.0.3";
 
 
 var $4805700d8b417596$var$SandDance = $3b509b9541e52a8f$exports;
@@ -45322,8 +45329,15 @@ function $dc870545cd7ec4ba$var$_Renderer(_props) {
         }
         setOptions(newOptions) {
             const { explorer: explorer  } = this.props;
+            const renderer = Object.assign(Object.assign({}, explorer.state.renderer), newOptions);
+            const { onSetupOptionsChanged: onSetupOptionsChanged  } = explorer.props;
+            if (onSetupOptionsChanged) {
+                const setup = explorer.getSetup();
+                setup.renderer = renderer;
+                onSetupOptionsChanged(setup);
+            }
             explorer.setState({
-                renderer: Object.assign(Object.assign({}, explorer.state.renderer), newOptions)
+                renderer: renderer
             });
         }
         setBasicOptions(newOptions) {

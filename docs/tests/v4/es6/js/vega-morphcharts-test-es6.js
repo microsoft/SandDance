@@ -77693,6 +77693,13 @@ class AxesCorrelation {
 function createAxes(cartesian, dim2d, dim3d, axis, orientation, height, props, facetLabel) {
     const domain = (axis === null || axis === void 0 ? void 0 : axis.domain) || nullDomain;
     const { tickPositions , tickText , textPos , textSize  } = convertAxis(axis, domain, dim2d, height);
+    if (axis.axisRole === "z") {
+        tickPositions.forEach((t, i)=>tickPositions[i] = 1 - t);
+        textPos.forEach((t, i)=>textPos[i] = 1 - t);
+        tickText.reverse();
+        tickPositions.reverse();
+        textPos.reverse();
+    }
     cartesian.setTickPositions(dim3d, tickPositions);
     cartesian.zero[dim3d] = 0; //TODO get any "zero" gridline position from vega
     cartesian.setLabelPositions(dim3d, textPos);
@@ -77736,9 +77743,11 @@ function getDomainBounds(dim2d, axis) {
     };
 }
 function convertAxis(axis, domain, dim, height) {
-    const tickPositions = axis ? axis.ticks.map((t)=>(t.sourcePosition[dim] - domain.sourcePosition[dim]) / (domain.targetPosition[dim] - domain.sourcePosition[dim])) : [];
+    const start = domain.sourcePosition[dim];
+    const span = domain.targetPosition[dim] - start;
+    const tickPositions = axis ? axis.ticks.map((t)=>(t.sourcePosition[dim] - start) / span) : [];
     const tickText = axis ? axis.tickText.map((t)=>t.text) : [];
-    const textPos = axis ? axis.tickText.map((t)=>(t.position[dim] - domain.sourcePosition[dim]) / (domain.targetPosition[dim] - domain.sourcePosition[dim])) : [];
+    const textPos = axis ? axis.tickText.map((t)=>(t.position[dim] - start) / span) : [];
     const textSize = axis ? axis.tickText.map((t)=>t.size / height) : [];
     if (tickPositions.length) {
         if (tickPositions[0] !== 0) tickPositions[0] = 0;
@@ -78723,7 +78732,7 @@ const RendererGl = _RendererGl;
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "version", ()=>version);
-const version = "1.0.3";
+const version = "1.0.4";
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}]},["dlIYU"], "dlIYU", "parcelRequire1c68")
 
