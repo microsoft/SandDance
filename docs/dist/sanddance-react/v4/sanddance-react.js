@@ -254,7 +254,7 @@
   * Copyright (c) Microsoft Corporation.
   * Licensed under the MIT License.
   */
-  const version = '4.0.0';
+  const version = '4.0.1';
 
   exports.SandDance = SandDance__namespace;
   exports.Viewer = Viewer;

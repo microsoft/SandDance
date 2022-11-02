@@ -47203,34 +47203,7 @@ var _defineJsDefault = parcelHelpers.interopDefault(_defineJs);
 function Color() {}
 var darker = 0.7;
 var brighter = 1 / darker;
-var reI = "\\s*([+-]?\\d+)\\s*", reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*", reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*", reHex = /^#([0-9a-f]{3,8})$/, reRgbInteger = new RegExp("^rgb\\(" + [
-    reI,
-    reI,
-    reI
-] + "\\)$"), reRgbPercent = new RegExp("^rgb\\(" + [
-    reP,
-    reP,
-    reP
-] + "\\)$"), reRgbaInteger = new RegExp("^rgba\\(" + [
-    reI,
-    reI,
-    reI,
-    reN
-] + "\\)$"), reRgbaPercent = new RegExp("^rgba\\(" + [
-    reP,
-    reP,
-    reP,
-    reN
-] + "\\)$"), reHslPercent = new RegExp("^hsl\\(" + [
-    reN,
-    reP,
-    reP
-] + "\\)$"), reHslaPercent = new RegExp("^hsla\\(" + [
-    reN,
-    reP,
-    reP,
-    reN
-] + "\\)$");
+var reI = "\\s*([+-]?\\d+)\\s*", reN = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*", reP = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*", reHex = /^#([0-9a-f]{3,8})$/, reRgbInteger = new RegExp(`^rgb\\(${reI},${reI},${reI}\\)$`), reRgbPercent = new RegExp(`^rgb\\(${reP},${reP},${reP}\\)$`), reRgbaInteger = new RegExp(`^rgba\\(${reI},${reI},${reI},${reN}\\)$`), reRgbaPercent = new RegExp(`^rgba\\(${reP},${reP},${reP},${reN}\\)$`), reHslPercent = new RegExp(`^hsl\\(${reN},${reP},${reP}\\)$`), reHslaPercent = new RegExp(`^hsla\\(${reN},${reP},${reP},${reN}\\)$`);
 var named = {
     aliceblue: 0xf0f8ff,
     antiquewhite: 0xfaebd7,
@@ -47382,20 +47355,24 @@ var named = {
     yellowgreen: 0x9acd32
 };
 (0, _defineJsDefault.default)(Color, color, {
-    copy: function(channels) {
+    copy (channels) {
         return Object.assign(new this.constructor, this, channels);
     },
-    displayable: function() {
+    displayable () {
         return this.rgb().displayable();
     },
     hex: color_formatHex,
     formatHex: color_formatHex,
+    formatHex8: color_formatHex8,
     formatHsl: color_formatHsl,
     formatRgb: color_formatRgb,
     toString: color_formatRgb
 });
 function color_formatHex() {
     return this.rgb().formatHex();
+}
+function color_formatHex8() {
+    return this.rgb().formatHex8();
 }
 function color_formatHsl() {
     return hslConvert(this).formatHsl();
@@ -47444,35 +47421,47 @@ function Rgb(r, g, b, opacity) {
     this.opacity = +opacity;
 }
 (0, _defineJsDefault.default)(Rgb, rgb, (0, _defineJs.extend)(Color, {
-    brighter: function(k) {
+    brighter (k) {
         k = k == null ? brighter : Math.pow(brighter, k);
         return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
     },
-    darker: function(k) {
+    darker (k) {
         k = k == null ? darker : Math.pow(darker, k);
         return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
     },
-    rgb: function() {
+    rgb () {
         return this;
     },
-    displayable: function() {
+    clamp () {
+        return new Rgb(clampi(this.r), clampi(this.g), clampi(this.b), clampa(this.opacity));
+    },
+    displayable () {
         return -0.5 <= this.r && this.r < 255.5 && -0.5 <= this.g && this.g < 255.5 && -0.5 <= this.b && this.b < 255.5 && 0 <= this.opacity && this.opacity <= 1;
     },
     hex: rgb_formatHex,
     formatHex: rgb_formatHex,
+    formatHex8: rgb_formatHex8,
     formatRgb: rgb_formatRgb,
     toString: rgb_formatRgb
 }));
 function rgb_formatHex() {
-    return "#" + hex(this.r) + hex(this.g) + hex(this.b);
+    return `#${hex(this.r)}${hex(this.g)}${hex(this.b)}`;
+}
+function rgb_formatHex8() {
+    return `#${hex(this.r)}${hex(this.g)}${hex(this.b)}${hex((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
 }
 function rgb_formatRgb() {
-    var a = this.opacity;
-    a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-    return (a === 1 ? "rgb(" : "rgba(") + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.b) || 0)) + (a === 1 ? ")" : ", " + a + ")");
+    const a = clampa(this.opacity);
+    return `${a === 1 ? "rgb(" : "rgba("}${clampi(this.r)}, ${clampi(this.g)}, ${clampi(this.b)}${a === 1 ? ")" : `, ${a})`}`;
+}
+function clampa(opacity) {
+    return isNaN(opacity) ? 1 : Math.max(0, Math.min(1, opacity));
+}
+function clampi(value) {
+    return Math.max(0, Math.min(255, Math.round(value) || 0));
 }
 function hex(value) {
-    value = Math.max(0, Math.min(255, Math.round(value) || 0));
+    value = clampi(value);
     return (value < 16 ? "0" : "") + value.toString(16);
 }
 function hsla(h, s, l, a) {
@@ -47507,27 +47496,36 @@ function Hsl(h, s, l, opacity) {
     this.opacity = +opacity;
 }
 (0, _defineJsDefault.default)(Hsl, hsl, (0, _defineJs.extend)(Color, {
-    brighter: function(k) {
+    brighter (k) {
         k = k == null ? brighter : Math.pow(brighter, k);
         return new Hsl(this.h, this.s, this.l * k, this.opacity);
     },
-    darker: function(k) {
+    darker (k) {
         k = k == null ? darker : Math.pow(darker, k);
         return new Hsl(this.h, this.s, this.l * k, this.opacity);
     },
-    rgb: function() {
+    rgb () {
         var h = this.h % 360 + (this.h < 0) * 360, s = isNaN(h) || isNaN(this.s) ? 0 : this.s, l = this.l, m2 = l + (l < 0.5 ? l : 1 - l) * s, m1 = 2 * l - m2;
         return new Rgb(hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), hsl2rgb(h, m1, m2), hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
     },
-    displayable: function() {
+    clamp () {
+        return new Hsl(clamph(this.h), clampt(this.s), clampt(this.l), clampa(this.opacity));
+    },
+    displayable () {
         return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && 0 <= this.l && this.l <= 1 && 0 <= this.opacity && this.opacity <= 1;
     },
-    formatHsl: function() {
-        var a = this.opacity;
-        a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-        return (a === 1 ? "hsl(" : "hsla(") + (this.h || 0) + ", " + (this.s || 0) * 100 + "%, " + (this.l || 0) * 100 + "%" + (a === 1 ? ")" : ", " + a + ")");
+    formatHsl () {
+        const a = clampa(this.opacity);
+        return `${a === 1 ? "hsl(" : "hsla("}${clamph(this.h)}, ${clampt(this.s) * 100}%, ${clampt(this.l) * 100}%${a === 1 ? ")" : `, ${a})`}`;
     }
 }));
+function clamph(value) {
+    value = (value || 0) % 360;
+    return value < 0 ? value + 360 : value;
+}
+function clampt(value) {
+    return Math.max(0, Math.min(1, value || 0));
+}
 /* From FvD 13.37, CSS Color Module Level 3 */ function hsl2rgb(h, m1, m2) {
     return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
 }
@@ -83944,6 +83942,13 @@ class AxesCorrelation {
 function createAxes(cartesian, dim2d, dim3d, axis, orientation, height, props, facetLabel) {
     const domain = (axis === null || axis === void 0 ? void 0 : axis.domain) || nullDomain;
     const { tickPositions , tickText , textPos , textSize  } = convertAxis(axis, domain, dim2d, height);
+    if (axis.axisRole === "z") {
+        tickPositions.forEach((t, i)=>tickPositions[i] = 1 - t);
+        textPos.forEach((t, i)=>textPos[i] = 1 - t);
+        tickText.reverse();
+        tickPositions.reverse();
+        textPos.reverse();
+    }
     cartesian.setTickPositions(dim3d, tickPositions);
     cartesian.zero[dim3d] = 0; //TODO get any "zero" gridline position from vega
     cartesian.setLabelPositions(dim3d, textPos);
@@ -83987,9 +83992,11 @@ function getDomainBounds(dim2d, axis) {
     };
 }
 function convertAxis(axis, domain, dim, height) {
-    const tickPositions = axis ? axis.ticks.map((t)=>(t.sourcePosition[dim] - domain.sourcePosition[dim]) / (domain.targetPosition[dim] - domain.sourcePosition[dim])) : [];
+    const start = domain.sourcePosition[dim];
+    const span = domain.targetPosition[dim] - start;
+    const tickPositions = axis ? axis.ticks.map((t)=>(t.sourcePosition[dim] - start) / span) : [];
     const tickText = axis ? axis.tickText.map((t)=>t.text) : [];
-    const textPos = axis ? axis.tickText.map((t)=>(t.position[dim] - domain.sourcePosition[dim]) / (domain.targetPosition[dim] - domain.sourcePosition[dim])) : [];
+    const textPos = axis ? axis.tickText.map((t)=>(t.position[dim] - start) / span) : [];
     const textSize = axis ? axis.tickText.map((t)=>t.size / height) : [];
     if (tickPositions.length) {
         if (tickPositions[0] !== 0) tickPositions[0] = 0;
@@ -84974,7 +84981,7 @@ const RendererGl = _RendererGl;
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "version", ()=>version);
-const version = "1.0.3";
+const version = "1.0.4";
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"bPdl3":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -88753,7 +88760,7 @@ exports.default = function(step, max) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "version", ()=>version);
-const version = "4.0.1";
+const version = "4.0.2";
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}]},["gK9HS"], "gK9HS", "parcelRequire0e59")
 

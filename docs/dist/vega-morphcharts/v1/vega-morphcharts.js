@@ -18134,6 +18134,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	function createAxes(cartesian, dim2d, dim3d, axis, orientation, height, props, facetLabel) {
 	    const domain = (axis === null || axis === void 0 ? void 0 : axis.domain) || nullDomain;
 	    const { tickPositions, tickText, textPos, textSize } = convertAxis(axis, domain, dim2d, height);
+	    if (axis.axisRole === 'z') {
+	        tickPositions.forEach((t, i) => tickPositions[i] = 1 - t);
+	        textPos.forEach((t, i) => textPos[i] = 1 - t);
+	        tickText.reverse();
+	        tickPositions.reverse();
+	        textPos.reverse();
+	    }
 	    cartesian.setTickPositions(dim3d, tickPositions);
 	    cartesian.zero[dim3d] = 0; //TODO get any "zero" gridline position from vega
 	    cartesian.setLabelPositions(dim3d, textPos);
@@ -18179,9 +18186,11 @@ f 5/6/6 1/12/6 8/11/6`;
 	    };
 	}
 	function convertAxis(axis, domain, dim, height) {
+	    const start = domain.sourcePosition[dim];
+	    const span = domain.targetPosition[dim] - start;
 	    const tickPositions = axis
 	        ?
-	            axis.ticks.map(t => (t.sourcePosition[dim] - domain.sourcePosition[dim]) / (domain.targetPosition[dim] - domain.sourcePosition[dim]))
+	            axis.ticks.map(t => (t.sourcePosition[dim] - start) / span)
 	        :
 	            [];
 	    const tickText = axis ?
@@ -18189,7 +18198,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        :
 	            [];
 	    const textPos = axis ?
-	        axis.tickText.map(t => (t.position[dim] - domain.sourcePosition[dim]) / (domain.targetPosition[dim] - domain.sourcePosition[dim]))
+	        axis.tickText.map(t => (t.position[dim] - start) / span)
 	        :
 	            [];
 	    const textSize = axis ?
@@ -19399,7 +19408,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	* Copyright (c) Microsoft Corporation.
 	* Licensed under the MIT License.
 	*/
-	const version = '1.0.3';
+	const version = '1.0.4';
 
 	exports.Presenter = Presenter;
 	exports.ViewGl = ViewGl;

@@ -1231,15 +1231,15 @@
     var brighter$2 = 1 / darker$2;
 
     var reI$2 = "\\s*([+-]?\\d+)\\s*",
-        reN$2 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
-        reP$2 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+        reN$2 = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+        reP$2 = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
         reHex$2 = /^#([0-9a-f]{3,8})$/,
-        reRgbInteger$2 = new RegExp("^rgb\\(" + [reI$2, reI$2, reI$2] + "\\)$"),
-        reRgbPercent$2 = new RegExp("^rgb\\(" + [reP$2, reP$2, reP$2] + "\\)$"),
-        reRgbaInteger$2 = new RegExp("^rgba\\(" + [reI$2, reI$2, reI$2, reN$2] + "\\)$"),
-        reRgbaPercent$2 = new RegExp("^rgba\\(" + [reP$2, reP$2, reP$2, reN$2] + "\\)$"),
-        reHslPercent$2 = new RegExp("^hsl\\(" + [reN$2, reP$2, reP$2] + "\\)$"),
-        reHslaPercent$2 = new RegExp("^hsla\\(" + [reN$2, reP$2, reP$2, reN$2] + "\\)$");
+        reRgbInteger$2 = new RegExp(`^rgb\\(${reI$2},${reI$2},${reI$2}\\)$`),
+        reRgbPercent$2 = new RegExp(`^rgb\\(${reP$2},${reP$2},${reP$2}\\)$`),
+        reRgbaInteger$2 = new RegExp(`^rgba\\(${reI$2},${reI$2},${reI$2},${reN$2}\\)$`),
+        reRgbaPercent$2 = new RegExp(`^rgba\\(${reP$2},${reP$2},${reP$2},${reN$2}\\)$`),
+        reHslPercent$2 = new RegExp(`^hsl\\(${reN$2},${reP$2},${reP$2}\\)$`),
+        reHslaPercent$2 = new RegExp(`^hsla\\(${reN$2},${reP$2},${reP$2},${reN$2}\\)$`);
 
     var named$2 = {
       aliceblue: 0xf0f8ff,
@@ -1393,14 +1393,15 @@
     };
 
     define$2(Color$3, color$2, {
-      copy: function(channels) {
+      copy(channels) {
         return Object.assign(new this.constructor, this, channels);
       },
-      displayable: function() {
+      displayable() {
         return this.rgb().displayable();
       },
       hex: color_formatHex$2, // Deprecated! Use color.formatHex.
       formatHex: color_formatHex$2,
+      formatHex8: color_formatHex8$2,
       formatHsl: color_formatHsl$2,
       formatRgb: color_formatRgb$2,
       toString: color_formatRgb$2
@@ -1408,6 +1409,10 @@
 
     function color_formatHex$2() {
       return this.rgb().formatHex();
+    }
+
+    function color_formatHex8$2() {
+      return this.rgb().formatHex8();
     }
 
     function color_formatHsl$2() {
@@ -1465,18 +1470,21 @@
     }
 
     define$2(Rgb$2, rgb$3, extend$2(Color$3, {
-      brighter: function(k) {
+      brighter(k) {
         k = k == null ? brighter$2 : Math.pow(brighter$2, k);
         return new Rgb$2(this.r * k, this.g * k, this.b * k, this.opacity);
       },
-      darker: function(k) {
+      darker(k) {
         k = k == null ? darker$2 : Math.pow(darker$2, k);
         return new Rgb$2(this.r * k, this.g * k, this.b * k, this.opacity);
       },
-      rgb: function() {
+      rgb() {
         return this;
       },
-      displayable: function() {
+      clamp() {
+        return new Rgb$2(clampi$2(this.r), clampi$2(this.g), clampi$2(this.b), clampa$2(this.opacity));
+      },
+      displayable() {
         return (-0.5 <= this.r && this.r < 255.5)
             && (-0.5 <= this.g && this.g < 255.5)
             && (-0.5 <= this.b && this.b < 255.5)
@@ -1484,25 +1492,34 @@
       },
       hex: rgb_formatHex$2, // Deprecated! Use color.formatHex.
       formatHex: rgb_formatHex$2,
+      formatHex8: rgb_formatHex8$2,
       formatRgb: rgb_formatRgb$2,
       toString: rgb_formatRgb$2
     }));
 
     function rgb_formatHex$2() {
-      return "#" + hex$2(this.r) + hex$2(this.g) + hex$2(this.b);
+      return `#${hex$2(this.r)}${hex$2(this.g)}${hex$2(this.b)}`;
+    }
+
+    function rgb_formatHex8$2() {
+      return `#${hex$2(this.r)}${hex$2(this.g)}${hex$2(this.b)}${hex$2((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
     }
 
     function rgb_formatRgb$2() {
-      var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-      return (a === 1 ? "rgb(" : "rgba(")
-          + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
-          + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", "
-          + Math.max(0, Math.min(255, Math.round(this.b) || 0))
-          + (a === 1 ? ")" : ", " + a + ")");
+      const a = clampa$2(this.opacity);
+      return `${a === 1 ? "rgb(" : "rgba("}${clampi$2(this.r)}, ${clampi$2(this.g)}, ${clampi$2(this.b)}${a === 1 ? ")" : `, ${a})`}`;
+    }
+
+    function clampa$2(opacity) {
+      return isNaN(opacity) ? 1 : Math.max(0, Math.min(1, opacity));
+    }
+
+    function clampi$2(value) {
+      return Math.max(0, Math.min(255, Math.round(value) || 0));
     }
 
     function hex$2(value) {
-      value = Math.max(0, Math.min(255, Math.round(value) || 0));
+      value = clampi$2(value);
       return (value < 16 ? "0" : "") + value.toString(16);
     }
 
@@ -1551,15 +1568,15 @@
     }
 
     define$2(Hsl$2, hsl$2, extend$2(Color$3, {
-      brighter: function(k) {
+      brighter(k) {
         k = k == null ? brighter$2 : Math.pow(brighter$2, k);
         return new Hsl$2(this.h, this.s, this.l * k, this.opacity);
       },
-      darker: function(k) {
+      darker(k) {
         k = k == null ? darker$2 : Math.pow(darker$2, k);
         return new Hsl$2(this.h, this.s, this.l * k, this.opacity);
       },
-      rgb: function() {
+      rgb() {
         var h = this.h % 360 + (this.h < 0) * 360,
             s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
             l = this.l,
@@ -1572,20 +1589,28 @@
           this.opacity
         );
       },
-      displayable: function() {
+      clamp() {
+        return new Hsl$2(clamph$2(this.h), clampt$2(this.s), clampt$2(this.l), clampa$2(this.opacity));
+      },
+      displayable() {
         return (0 <= this.s && this.s <= 1 || isNaN(this.s))
             && (0 <= this.l && this.l <= 1)
             && (0 <= this.opacity && this.opacity <= 1);
       },
-      formatHsl: function() {
-        var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-        return (a === 1 ? "hsl(" : "hsla(")
-            + (this.h || 0) + ", "
-            + (this.s || 0) * 100 + "%, "
-            + (this.l || 0) * 100 + "%"
-            + (a === 1 ? ")" : ", " + a + ")");
+      formatHsl() {
+        const a = clampa$2(this.opacity);
+        return `${a === 1 ? "hsl(" : "hsla("}${clamph$2(this.h)}, ${clampt$2(this.s) * 100}%, ${clampt$2(this.l) * 100}%${a === 1 ? ")" : `, ${a})`}`;
       }
     }));
+
+    function clamph$2(value) {
+      value = (value || 0) % 360;
+      return value < 0 ? value + 360 : value;
+    }
+
+    function clampt$2(value) {
+      return Math.max(0, Math.min(1, value || 0));
+    }
 
     /* From FvD 13.37, CSS Color Module Level 3 */
     function hsl2rgb$2(h, m1, m2) {
@@ -23647,6 +23672,13 @@ f 5/6/6 1/12/6 8/11/6`;
     function createAxes(cartesian, dim2d, dim3d, axis, orientation, height, props, facetLabel) {
         const domain = (axis === null || axis === void 0 ? void 0 : axis.domain) || nullDomain;
         const { tickPositions, tickText, textPos, textSize } = convertAxis(axis, domain, dim2d, height);
+        if (axis.axisRole === 'z') {
+            tickPositions.forEach((t, i) => tickPositions[i] = 1 - t);
+            textPos.forEach((t, i) => textPos[i] = 1 - t);
+            tickText.reverse();
+            tickPositions.reverse();
+            textPos.reverse();
+        }
         cartesian.setTickPositions(dim3d, tickPositions);
         cartesian.zero[dim3d] = 0; //TODO get any "zero" gridline position from vega
         cartesian.setLabelPositions(dim3d, textPos);
@@ -23692,9 +23724,11 @@ f 5/6/6 1/12/6 8/11/6`;
         };
     }
     function convertAxis(axis, domain, dim, height) {
+        const start = domain.sourcePosition[dim];
+        const span = domain.targetPosition[dim] - start;
         const tickPositions = axis
             ?
-                axis.ticks.map(t => (t.sourcePosition[dim] - domain.sourcePosition[dim]) / (domain.targetPosition[dim] - domain.sourcePosition[dim]))
+                axis.ticks.map(t => (t.sourcePosition[dim] - start) / span)
             :
                 [];
         const tickText = axis ?
@@ -23702,7 +23736,7 @@ f 5/6/6 1/12/6 8/11/6`;
             :
                 [];
         const textPos = axis ?
-            axis.tickText.map(t => (t.position[dim] - domain.sourcePosition[dim]) / (domain.targetPosition[dim] - domain.sourcePosition[dim]))
+            axis.tickText.map(t => (t.position[dim] - start) / span)
             :
                 [];
         const textSize = axis ?
@@ -24912,7 +24946,7 @@ f 5/6/6 1/12/6 8/11/6`;
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
-    const version$1 = '1.0.3';
+    const version$1 = '1.0.4';
 
     /*!
     * Copyright (c) Microsoft Corporation.
@@ -28320,7 +28354,7 @@ f 5/6/6 1/12/6 8/11/6`;
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
-    const version = '4.0.1';
+    const version = '4.0.2';
 
     /*!
     * Copyright (c) Microsoft Corporation.
