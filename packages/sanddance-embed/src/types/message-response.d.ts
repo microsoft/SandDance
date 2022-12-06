@@ -9,6 +9,10 @@ interface MessageResponse_GetData extends MessageResponseBase {
 }
 
 interface MessageResponse_GetInsight extends MessageResponseBase {
+
+    /**
+     * See https://microsoft.github.io/SandDance/docs/sanddance-specs/v1/interfaces/Insight.html
+     */
     insight: SandDanceExplorer.SandDance.types.Insight;
 }
 
