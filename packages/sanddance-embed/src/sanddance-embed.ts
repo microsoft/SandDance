@@ -3,10 +3,10 @@
 * Licensed under the MIT License.
 */
 
-declare let vega: SandDanceExplorer.SandDance.VegaMorphCharts.types.VegaBase;
-declare let FluentUIReact: _FluentUI.FluentUIComponents;
-
 namespace SandDanceEmbed {
+
+    declare let vega: SandDanceExplorer.SandDance.VegaMorphCharts.types.VegaBase;
+    declare let FluentUIReact: _FluentUI.FluentUIComponents;
 
     export function defaultDependencies(): EmbedDependency[] {
         return [
