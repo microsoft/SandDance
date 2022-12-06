@@ -22,7 +22,7 @@ embedIframe.onload = () => {
 }
 ```
 
-*Note the version number in the address to access older by major version. You may style the iframe as you see fit.*
+*Note the version number in the address to specify by major version. You may style the iframe as you see fit.*
 
 *Security: The URL is hosted by the secure [SandDance GitHub Pages website](https://github.com/microsoft/SandDance/tree/master/docs/embed).*
 
@@ -53,7 +53,7 @@ This promise provides you `embedIframe` when it is available:
 ```
 
 ## Send commands to SandDance Embed
-Use `postMessage` to communicate with `embedIframe.contentWindow`. For all commands, see https://github.com/microsoft/SandDance/blob/master/packages/sanddance-embed/src/types/message.d.ts
+Use `postMessage` to communicate with `embedIframe.contentWindow`. For all command requests, see https://github.com/microsoft/SandDance/blob/master/packages/sanddance-embed/src/types/message-request.d.ts
 
 * Load data and display initial chart:
     ```js
@@ -78,7 +78,9 @@ Attach a listener to your own window to observe message passing:
         console.log('messaged', e.data);
     };
 ```
-The message will contain a property `request` which is a clone of the requesting message object which instigated the response. Other properties vary depending on the type of request. Here is an example of the response for `getInsight`:
+The message will contain a property `request` which is a clone of the requesting message object which instigated the response. Other properties vary depending on the type of request. For all command responses, see https://github.com/microsoft/SandDance/blob/master/packages/sanddance-embed/src/types/message-response.d.ts
+
+ Here is an example of the response for `getInsight`:
 ```json
 {
     "request": {
