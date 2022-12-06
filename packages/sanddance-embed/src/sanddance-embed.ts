@@ -152,7 +152,7 @@ namespace SandDanceEmbed {
                             props?.mounted && props.mounted(explorer);
                         },
                     };
-                    ReactDOM.render(React.createElement(SandDanceExplorer.Explorer, explorerProps), document.getElementById('app'));
+                    ReactDOM.render(React.createElement(SandDanceExplorer.Explorer, explorerProps), document.body);
                 });
             };
 
