@@ -31,6 +31,10 @@
       "url": "/docs/sanddance-explorer/v4"
     },
     {
+      "tree": "sanddance-embed",
+      "url": "/docs/sanddance-embed/v4"
+    },
+    {
       "tree": "vega-morphcharts",
       "url": "/docs/vega-morphcharts/v1"
     },
