@@ -1,14 +1,3 @@
-/// requests
-
-type EmbedDependencyType = 'script' | 'stylesheet';
-
-interface EmbedDependency {
-    url: string;
-    type: EmbedDependencyType;
-    loaded?: boolean;
-    existed?: boolean;
-}
-
 type Actions = 'init' | 'load' | 'getData' | 'getInsight';
 
 interface MessageRequestBase {
@@ -41,21 +30,3 @@ interface MessageRequest_GetInsight extends MessageRequestBase {
 type MessageRequest = MessageRequest_Init | MessageRequest_Load | MessageRequest_GetData | MessageRequest_GetInsight;
 
 type MessageRequestWithSource = MessageRequest & { source: WindowProxy };
-
-/// responses
-
-interface MessageResponseBase {
-    request: MessageRequest;
-}
-
-interface MessageResponse_Init extends MessageResponseBase { }
-
-interface MessageResponse_GetData extends MessageResponseBase {
-    data: object[];
-}
-
-interface MessageResponse_GetInsight extends MessageResponseBase {
-    insight: SandDanceExplorer.SandDance.types.Insight;
-}
-
-type MessageResponse = MessageResponse_Init | MessageResponse_GetData | MessageResponse_GetInsight;
