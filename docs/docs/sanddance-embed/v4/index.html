@@ -1,0 +1,156 @@
+---
+layout: typedoc
+title: '@msrvida/sanddance-embed'
+---
+<header>
+<div class="tsd-page-title">
+	<div class="typedoc-container">
+	</div>
+</div>
+</header>
+<div class="container container-main">
+<div class="row">
+	<div class="col-8 col-content">
+		<div class="tsd-panel tsd-typography">
+			<a href="#msrvidasanddance-embed" id="msrvidasanddance-embed" style="color: inherit; text-decoration: none;">
+				<h1>@msrvida/sanddance-embed</h1>
+			</a>
+			<p>SandDance Embed is the easiest way to integrate <a href="https://microsoft.github.io/SandDance/">SandDance</a> into your custom app, via an <code>&lt;iframe&gt;</code> tag. SandDance Embed is a wrapper around SandDance Explorer, plus <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage">postMessage</a> handlers to load data and manage its display from outside the iframe.</p>
+			<p><img src="https://user-images.githubusercontent.com/11507384/72197128-a99cdd80-33d2-11ea-9b49-5d470db0abc1.png" alt="image"></p>
+			<p>There are two ways to create a SandDance Embed iframe instance:</p>
+			<ol>
+				<li>Cross-domain</li>
+				<li>In-domain</li>
+			</ol>
+			<a href="#cross-domain-iframe" id="cross-domain-iframe" style="color: inherit; text-decoration: none;">
+				<h2>Cross-domain iframe</h2>
+			</a>
+			<p>This is the simplest approach. Add an <code>&lt;iframe&gt;</code> tag in your HTML page:</p>
+			<pre><code class="language-html"><span style="color: #800000">&lt;iframe</span><span style="color: #000000"> </span><span style="color: #FF0000">id</span><span style="color: #000000">=</span><span style="color: #0000FF">&quot;embedIframe&quot;</span><span style="color: #000000"> </span><span style="color: #FF0000">src</span><span style="color: #000000">=</span><span style="color: #0000FF">&quot;https://microsoft.github.io/SandDance/embed/v4/sanddance-embed.html&quot;</span><span style="color: #000000"> </span><span style="color: #FF0000">style</span><span style="color: #000000">=</span><span style="color: #0000FF">&quot;height:700px;width:100%&quot;</span><span style="color: #800000">&gt;&lt;/iframe&gt;</span>
+</code></pre>
+			<p>Get a code reference to this iframe:</p>
+			<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">embedIframe</span><span style="color: #000000"> = </span><span style="color: #001080">document</span><span style="color: #000000">.</span><span style="color: #795E26">getElementById</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;embedIframe&#039;</span><span style="color: #000000">);</span>
+<span style="color: #001080">embedIframe</span><span style="color: #000000">.</span><span style="color: #795E26">onload</span><span style="color: #000000"> = () </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #008000">//ready to send commands to SandDance Embed</span>
+<span style="color: #000000">}</span>
+</code></pre>
+			<p><em>Note the version number in the address to specify by major version. You may style the iframe as you see fit.</em></p>
+			<p><em>Security: The URL is hosted by the secure <a href="https://github.com/microsoft/SandDance/tree/master/docs/embed">SandDance GitHub Pages website</a>.</em></p>
+			<p><em>Privacy: The page does not collect any data that you pass to SandDance Embed.</em></p>
+			<a href="#in-domain-iframe" id="in-domain-iframe" style="color: inherit; text-decoration: none;">
+				<h2>In-domain iframe</h2>
+			</a>
+			<p>In JavaScript, create a SandDance Embed iframe and await it to be ready:</p>
+			<pre><code class="language-js"><span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">embedPromise</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Promise</span><span style="color: #000000">((</span><span style="color: #001080">resolve</span><span style="color: #000000">, </span><span style="color: #001080">reject</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">        </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">embedIframe</span><span style="color: #000000"> = </span><span style="color: #001080">document</span><span style="color: #000000">.</span><span style="color: #795E26">createElement</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;iframe&#039;</span><span style="color: #000000">);</span>
+<span style="color: #000000">        </span><span style="color: #001080">embedIframe</span><span style="color: #000000">.</span><span style="color: #001080">style</span><span style="color: #000000">.</span><span style="color: #001080">height</span><span style="color: #000000"> = </span><span style="color: #A31515">&#039;700px&#039;</span><span style="color: #000000">;</span>
+<span style="color: #000000">        </span><span style="color: #001080">embedIframe</span><span style="color: #000000">.</span><span style="color: #001080">style</span><span style="color: #000000">.</span><span style="color: #001080">width</span><span style="color: #000000"> = </span><span style="color: #A31515">&#039;1000px&#039;</span>
+<span style="color: #000000">        </span><span style="color: #001080">embedIframe</span><span style="color: #000000">.</span><span style="color: #795E26">onload</span><span style="color: #000000"> = () </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">            </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">embedScript</span><span style="color: #000000"> = </span><span style="color: #001080">embedIframe</span><span style="color: #000000">.</span><span style="color: #001080">contentDocument</span><span style="color: #000000">.</span><span style="color: #795E26">createElement</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;script&#039;</span><span style="color: #000000">);</span>
+<span style="color: #000000">            </span><span style="color: #001080">embedScript</span><span style="color: #000000">.</span><span style="color: #001080">src</span><span style="color: #000000"> = </span><span style="color: #A31515">&#039;https://unpkg.com/@msrvida/sanddance-embed@4/dist/umd/sanddance-embed.js&#039;</span><span style="color: #000000">;</span>
+<span style="color: #000000">            </span><span style="color: #001080">embedIframe</span><span style="color: #000000">.</span><span style="color: #001080">contentDocument</span><span style="color: #000000">.</span><span style="color: #001080">head</span><span style="color: #000000">.</span><span style="color: #795E26">appendChild</span><span style="color: #000000">(</span><span style="color: #001080">embedScript</span><span style="color: #000000">);</span>
+<span style="color: #000000">            </span><span style="color: #001080">embedScript</span><span style="color: #000000">.</span><span style="color: #795E26">onload</span><span style="color: #000000"> = () </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #795E26">resolve</span><span style="color: #000000">(</span><span style="color: #001080">embedIframe</span><span style="color: #000000">);</span>
+<span style="color: #000000">            </span><span style="color: #001080">embedScript</span><span style="color: #000000">.</span><span style="color: #001080">onerror</span><span style="color: #000000"> = </span><span style="color: #001080">reject</span><span style="color: #000000">;</span>
+<span style="color: #000000">        };</span>
+<span style="color: #000000">        </span><span style="color: #001080">document</span><span style="color: #000000">.</span><span style="color: #001080">body</span><span style="color: #000000">.</span><span style="color: #795E26">appendChild</span><span style="color: #000000">(</span><span style="color: #001080">embedIframe</span><span style="color: #000000">);</span>
+<span style="color: #000000">    });</span>
+</code></pre>
+			<p>This promise provides you <code>embedIframe</code> when it is available:</p>
+			<pre><code class="language-js"><span style="color: #000000">    </span><span style="color: #001080">embedPromise</span><span style="color: #000000">.</span><span style="color: #795E26">then</span><span style="color: #000000">((</span><span style="color: #001080">embedIframe</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">        </span><span style="color: #008000">//ready to send commands to SandDance Embed</span>
+<span style="color: #000000">    });</span>
+</code></pre>
+			<a href="#send-commands-to-sanddance-embed" id="send-commands-to-sanddance-embed" style="color: inherit; text-decoration: none;">
+				<h2>Send commands to SandDance Embed</h2>
+			</a>
+			<p>Use <code>postMessage</code> to communicate with <code>embedIframe.contentWindow</code>. For all command requests, see <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-embed/src/types/message-request.d.ts">https://github.com/microsoft/SandDance/blob/master/packages/sanddance-embed/src/types/message-request.d.ts</a></p>
+			<ul>
+				<li><p>Load data and display initial chart:</p>
+					<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">data</span><span style="color: #000000"> = [</span>
+<span style="color: #000000">    { </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #001080">z:</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000"> },</span>
+<span style="color: #000000">    { </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #001080">z:</span><span style="color: #000000"> </span><span style="color: #098658">1</span><span style="color: #000000"> },</span>
+<span style="color: #000000">    { </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">2</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">2</span><span style="color: #000000">, </span><span style="color: #001080">z:</span><span style="color: #000000"> </span><span style="color: #098658">2</span><span style="color: #000000"> },</span>
+<span style="color: #000000">];</span>
+<span style="color: #001080">embedIframe</span><span style="color: #000000">.</span><span style="color: #001080">contentWindow</span><span style="color: #000000">.</span><span style="color: #795E26">postMessage</span><span style="color: #000000">({ </span><span style="color: #001080">action:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;load&#039;</span><span style="color: #000000">, </span><span style="color: #001080">data</span><span style="color: #000000"> }, </span><span style="color: #A31515">&#039;*&#039;</span><span style="color: #000000">);</span>
+</code></pre>
+					<p>  The <code>data</code> variable can be an array, or a <a href="https://microsoft.github.io/SandDance/docs/sanddance-explorer/v4/interfaces/DataFile.html">DataFile object</a>.</p>
+				</li>
+				<li><p>Get insight:</p>
+					<pre><code class="language-js"><span style="color: #001080">embedIframe</span><span style="color: #000000">.</span><span style="color: #001080">contentWindow</span><span style="color: #000000">.</span><span style="color: #795E26">postMessage</span><span style="color: #000000">({ </span><span style="color: #001080">action:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;getInsight&#039;</span><span style="color: #000000"> }, </span><span style="color: #A31515">&#039;*&#039;</span><span style="color: #000000">);</span>
+</code></pre>
+				</li>
+			</ul>
+			<a href="#receive-commands-from-sanddance-embed" id="receive-commands-from-sanddance-embed" style="color: inherit; text-decoration: none;">
+				<h2>Receive commands from SandDance Embed</h2>
+			</a>
+			<p>Attach a listener to your own window to observe message passing:</p>
+			<pre><code class="language-js"><span style="color: #000000">    </span><span style="color: #001080">window</span><span style="color: #000000">.</span><span style="color: #795E26">onmessage</span><span style="color: #000000"> = (</span><span style="color: #001080">e</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">        </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;messaged&#039;</span><span style="color: #000000">, </span><span style="color: #001080">e</span><span style="color: #000000">.</span><span style="color: #001080">data</span><span style="color: #000000">);</span>
+<span style="color: #000000">    };</span>
+</code></pre>
+			<p>The message will contain a property <code>request</code> which is a clone of the requesting message object which instigated the response. Other properties vary depending on the type of request. For all command responses, see <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-embed/src/types/message-response.d.ts">https://github.com/microsoft/SandDance/blob/master/packages/sanddance-embed/src/types/message-response.d.ts</a></p>
+			<p> Here is an example of the response for <code>getInsight</code>:</p>
+			<pre><code class="language-json"><span style="color: #000000">{</span>
+<span style="color: #000000">    </span><span style="color: #0451A5">&quot;request&quot;</span><span style="color: #000000">: {</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;action&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;getInsight&quot;</span>
+<span style="color: #000000">    },</span>
+<span style="color: #000000">    </span><span style="color: #0451A5">&quot;insight&quot;</span><span style="color: #000000">: {</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;colorBin&quot;</span><span style="color: #000000">: </span><span style="color: #0000FF">null</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;columns&quot;</span><span style="color: #000000">: {</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;x&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;y&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;y&quot;</span>
+<span style="color: #000000">        },</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;facetStyle&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;wrap&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;filter&quot;</span><span style="color: #000000">: </span><span style="color: #0000FF">null</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;hideAxes&quot;</span><span style="color: #000000">: </span><span style="color: #0000FF">false</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;hideLegend&quot;</span><span style="color: #000000">: </span><span style="color: #0000FF">false</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;signalValues&quot;</span><span style="color: #000000">: {</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;RoleZ_ProportionSignal&quot;</span><span style="color: #000000">: </span><span style="color: #098658">0.6</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;Text_ScaleSignal&quot;</span><span style="color: #000000">: </span><span style="color: #098658">1.2</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;RoleColor_BinCountSignal&quot;</span><span style="color: #000000">: </span><span style="color: #098658">7</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;RoleColor_ReverseSignal&quot;</span><span style="color: #000000">: </span><span style="color: #0000FF">false</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;Chart_PointScaleSignal&quot;</span><span style="color: #000000">: </span><span style="color: #098658">5</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;RoleZ_Grounded&quot;</span><span style="color: #000000">: </span><span style="color: #0000FF">false</span>
+<span style="color: #000000">        },</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;size&quot;</span><span style="color: #000000">: {</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;height&quot;</span><span style="color: #000000">: </span><span style="color: #098658">663</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;width&quot;</span><span style="color: #000000">: </span><span style="color: #098658">700</span>
+<span style="color: #000000">        },</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;totalStyle&quot;</span><span style="color: #000000">: </span><span style="color: #0000FF">null</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;transform&quot;</span><span style="color: #000000">: </span><span style="color: #0000FF">null</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;chart&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;scatterplot&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;view&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;2d&quot;</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">}</span>
+</code></pre>
+			<a href="#for-more-information" id="for-more-information" style="color: inherit; text-decoration: none;">
+				<h2>For more information</h2>
+			</a>
+			<p>Please visit the <a href="https://microsoft.github.io/SandDance/">SandDance website</a>.</p>
+		</div>
+	</div>
+	<div class="col-4 col-menu menu-highlight">
+		<nav class="tsd-navigation primary">
+			<ul>
+				<li class=" ">
+					<a href="modules.html">Modules</a>
+				</li>
+				<li class=" tsd-kind-module">
+					<a href="modules/sanddance_embed.html">sanddance-<wbr>embed</a>
+				</li>
+				<li class=" tsd-kind-module">
+					<a href="modules/types_message_request.html">types/message-<wbr>request</a>
+				</li>
+				<li class=" tsd-kind-module">
+					<a href="modules/types_message_response.html">types/message-<wbr>response</a>
+				</li>
+			</ul>
+		</nav>
+		<nav class="tsd-navigation secondary">
+			<ul class="before-current">
+			</ul>
+		</nav>
+	</div>
+</div>
+</div>
+<div class="overlay"></div>
