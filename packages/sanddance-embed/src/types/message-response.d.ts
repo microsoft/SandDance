@@ -16,4 +16,8 @@ interface MessageResponse_GetInsight extends MessageResponseBase {
     insight: SandDanceExplorer.SandDance.types.Insight;
 }
 
-type MessageResponse = MessageResponse_Init | MessageResponse_GetData | MessageResponse_GetInsight;
+interface MessageResponse_Theme extends MessageResponseBase {
+    theme: string;
+}
+
+type MessageResponse = MessageResponse_Init | MessageResponse_GetData | MessageResponse_GetInsight | MessageResponse_Theme;

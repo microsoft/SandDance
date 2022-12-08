@@ -62,13 +62,18 @@ Use `postMessage` to communicate with `embedIframe.contentWindow`. For all comma
         { x: 1, y: 1, z: 1 },
         { x: 2, y: 2, z: 2 },
     ];
-    embedIframe.contentWindow.postMessage({ action: 'load', data }, '*');
+    embedIframe.contentWindow.postMessage({ action: 'load', data, props: { theme: 'dark-theme' } }, '*');
     ```
-    The `data` variable can be an array, or a [DataFile object](https://microsoft.github.io/SandDance/docs/sanddance-explorer/v4/interfaces/DataFile.html).
+    The `data` variable can be an array, or a [DataFile object](https://microsoft.github.io/SandDance/docs/sanddance-explorer/v4/interfaces/DataFile.html). The `props` member is optional [Explorer Props](https://microsoft.github.io/SandDance/docs/sanddance-explorer/v4/interfaces/Props.html), here is shown used to specify the dark color theme.  
 
 * Get insight:
     ```js
     embedIframe.contentWindow.postMessage({ action: 'getInsight' }, '*');
+    ```
+
+* Get or set theme:
+    ```js
+    embedIframe.contentWindow.postMessage({ action: 'theme', dark: true }, '*');
     ```
 
 ## Receive commands from SandDance Embed

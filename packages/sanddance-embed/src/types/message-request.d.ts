@@ -22,7 +22,7 @@ interface MessageRequest_Load extends MessageRequestBase {
     /**
      * See https://microsoft.github.io/SandDance/docs/sanddance-specs/v1/interfaces/Insight.html
      */
-     insight?: Partial<SandDance.types.Insight>;
+    insight?: Partial<SandDance.types.Insight>;
 
     /**
      * See https://microsoft.github.io/SandDance/docs/sanddance-explorer/v4/interfaces/Props.html
@@ -38,6 +38,11 @@ interface MessageRequest_GetInsight extends MessageRequestBase {
     action: 'getInsight';
 }
 
-type MessageRequest = MessageRequest_Init | MessageRequest_Load | MessageRequest_GetData | MessageRequest_GetInsight;
+interface MessageRequest_Theme extends MessageRequestBase {
+    action: 'theme';
+    dark?: boolean;
+}
+
+type MessageRequest = MessageRequest_Init | MessageRequest_Load | MessageRequest_GetData | MessageRequest_GetInsight | MessageRequest_Theme;
 
 type MessageRequestWithSource = MessageRequest & { source: WindowProxy };
