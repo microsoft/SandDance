@@ -7,21 +7,6 @@ function liquid(layout, title) {
     return `---\nlayout: ${layout}\ntitle: '${title}'\n---\n\n`;
 }
 
-function copyReadme(title, packageRoot, packageDir, docRoot, version, fileNameIn, fileNameOut) {
-    const docRootPath = path.resolve(docRoot, packageDir);
-    if (!fs.existsSync(docRootPath)) return;
-    const readMePath = path.resolve(packageRoot, packageDir, fileNameIn);
-    if (!fs.existsSync(readMePath)) {
-        console.log(`no readme for ${packageDir} at ${readMePath}`);
-        return;
-    }
-    let readme = fs.readFileSync(readMePath, 'utf8');
-    readme = rewriteURLs(readme);
-    readme = liquid('docs', title) + readme;
-    fs.writeFileSync(path.resolve(docRootPath, version, fileNameOut), readme, 'utf8');
-    console.log(`readme copied for ${packageDir}`);
-}
-
 function convertHomePage() {
     const readmeMarkdown = fs.readFileSync('./README.md', 'UTF8');
     const html = liquid('page', 'Home') + rewriteURLs(marked(readmeMarkdown));
@@ -35,6 +20,7 @@ const map = {
     "packages/sanddance-specs/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-specs')[0].url}/`,
     "packages/sanddance-react/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-react')[0].url}/`,
     "packages/sanddance-explorer/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-explorer')[0].url}/`,
+    "packages/sanddance-embed/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-embed')[0].url}/`,
     "packages/vega-deck.gl/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='vega-deck.gl')[0].url}/`,
     "packages/vega-morphcharts/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='vega-morphcharts')[0].url}/`,
 };

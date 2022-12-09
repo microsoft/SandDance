@@ -3,10 +3,10 @@
 * Licensed under the MIT License.
 */
 
-declare let vega: SandDanceExplorer.SandDance.VegaMorphCharts.types.VegaBase;
-declare let FluentUIReact: _FluentUI.FluentUIComponents;
-
 namespace SandDanceEmbed {
+
+    declare let vega: SandDanceExplorer.SandDance.VegaMorphCharts.types.VegaBase;
+    declare let FluentUIReact: _FluentUI.FluentUIComponents;
 
     export function defaultDependencies(): EmbedDependency[] {
         return [
@@ -142,6 +142,13 @@ namespace SandDanceEmbed {
                 creating = true;
                 prepare.then(() => {
                     SandDanceExplorer.use(FluentUIReact, React, ReactDOM, vega);
+
+                    const theme = props?.theme || '';
+                    if (theme) {
+                        FluentUIReact.loadTheme({ palette: SandDanceExplorer.themePalettes[theme] });
+                    }
+                    const viewerOptions = getViewerOptions(theme, props?.viewerOptions);
+
                     const explorerProps: SandDanceExplorer.Props = {
                         logoClickUrl: 'https://microsoft.github.io/SandDance/',
                         ...props,
@@ -151,6 +158,7 @@ namespace SandDanceEmbed {
                             innerLoad();
                             props?.mounted && props.mounted(explorer);
                         },
+                        viewerOptions,
                     };
                     ReactDOM.render(React.createElement(SandDanceExplorer.Explorer, explorerProps), document.body);
                 });
@@ -162,6 +170,26 @@ namespace SandDanceEmbed {
                 create();
             }
         });
+    }
+
+    function getViewerOptions(theme: string, viewerOptions: Partial<SandDanceExplorer.SandDance.types.ViewerOptions>): Partial<SandDanceExplorer.ViewerOptions> {
+        return {
+            ...viewerOptions,
+            colors: SandDanceExplorer.getColorSettingsFromThemePalette(SandDanceExplorer.themePalettes[theme]),
+        };
+    }
+
+    export function changeColorScheme(darkTheme: boolean) {
+        const theme = darkTheme ? 'dark-theme' : '';
+        FluentUIReact.loadTheme({ palette: SandDanceExplorer.themePalettes[theme] });
+
+        const viewerOptions = getViewerOptions(theme, sandDanceExplorer.viewerOptions);
+        vega.scheme(SandDanceExplorer.SandDance.constants.ColorScaleNone, () => viewerOptions.colors.defaultCube);
+
+        sandDanceExplorer.updateViewerOptions(viewerOptions);
+        sandDanceExplorer.viewer.renderSameLayout(viewerOptions);
+        const props: SandDanceExplorer.Props = { ...sandDanceExplorer.props, theme, viewerOptions };
+        ReactDOM.render(React.createElement(SandDanceExplorer.Explorer, props), document.body);
     }
 
     export function respondToRequest(requestWithSource: MessageRequestWithSource) {
@@ -202,6 +230,16 @@ namespace SandDanceEmbed {
                     insight: sandDanceExplorer.viewer.getInsight(),
                 };
                 break;
+            }
+            case 'theme': {
+                const request_theme = request as MessageRequest_Theme;
+                if (request_theme.dark !== undefined) {
+                    changeColorScheme(request_theme.dark);
+                }
+                response = <MessageResponse_Theme>{
+                    request,
+                    theme: sandDanceExplorer.props.theme,
+                };
             }
         }
         prepare.then(() => {

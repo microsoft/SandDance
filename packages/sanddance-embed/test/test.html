@@ -15,6 +15,10 @@
 
     <iframe id="embed" title="embed" style="width: 90%; height: 700px"></iframe>
 
+    <div>
+        <button id="button1">toggle dark theme</button>
+    </div>
+
     <script>
         const deps = [
             {
@@ -51,17 +55,24 @@
         };
         const embedIframe = document.getElementById('embed');
         embedIframe.onload = () => {
-            const embedWindow = embedIframe.contentWindow;
             fetch('https://microsoft.github.io/SandDance/sample-data/titanicmaster.tsv')
                 .then(response => response.text())
                 .then(rawText => {
                     const data = { rawText, type: 'tsv' };
-                    embedWindow.postMessage({ action: 'load', data }, '*');
+                    embedIframe.contentWindow.postMessage({ action: 'load', data, props: { theme: 'dark-theme' } }, '*');
                 });
         };
         const testLocal = true;
         const localQs = testLocal ? `?${encodeURIComponent(JSON.stringify(deps))}` : '';
         embedIframe.src = 'sanddance-embed.html' + localQs;
+
+        let dark = false;
+        const button1 = document.getElementById('button1');
+        button1.onclick = () => {
+            dark = !dark;
+            embedIframe.contentWindow.postMessage({ action: 'theme', dark }, '*');
+        };
+
     </script>
 
 </body>
