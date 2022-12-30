@@ -29,7 +29,7 @@ import {
 } from 'vega-typings';
 import { Extents } from '../types';
 import { dataExtent } from '../transforms';
-import { outerExtentSignal } from '../bin';
+import { outerExtentSignal, shouldBeIntegralBinStep } from '../bin';
 
 export interface ScatterProps extends LayoutProps {
     x: Column;
@@ -269,6 +269,9 @@ export class Scatter extends Layout {
                     false,
                     showAxes,
                 );
+                if (shouldBeIntegralBinStep(column)) {
+                    scale.bins = { step: 1 };
+                }
             } else {
                 scale = pointScale(
                     scaleName,
