@@ -427,6 +427,17 @@ function _Explorer(_props: Props) {
                     newState.sideTabId = SideTabId.Snapshots;
                     this.scrollSnapshotIntoView(selectedSnapshotIndex);
                 }
+                if (snapshot.insight) {
+                    const { backgroundImage } = snapshot.insight;
+                    this.imageHolder.showBackgroundImage = !!backgroundImage;
+                    if (backgroundImage) {
+                        this.imageHolder.img = {
+                            src: backgroundImage.url,
+                            height: backgroundImage.size.height,
+                            width: backgroundImage.size.width,
+                        };
+                    }
+                }
                 this.setInsight({ label: strings.labelHistoryReviveSnapshot }, newState, snapshot.insight, true, snapshot.setup);
             } else {
                 const snapshot = snapshotOrIndex as Snapshot;
