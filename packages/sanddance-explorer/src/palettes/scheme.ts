@@ -3,6 +3,7 @@
 * Licensed under the MIT License.
 */
 
+import { base } from '../base';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 
 export interface ISchemeOption extends FluentUITypes.IDropdownOption {
@@ -17,6 +18,14 @@ export function schemeOption(selected: string, scheme: string): ISchemeOption {
         selected: selected === scheme,
         scheme: scheme,
         children: schemesJSX[scheme],
+    };
+}
+
+export function schemeHeader(key: string, text: string): FluentUITypes.IDropdownOption {
+    return {
+        key,
+        text,
+        itemType: base.fluentUI.DropdownMenuItemType.Header,
     };
 }
 
