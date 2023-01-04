@@ -29,6 +29,46 @@ function load() {
             <rect fill="url(#gradient-blues)" x="0" y="0" width="1" height="1"></rect>
         </svg>
     );
+    schemesJSX['tealblues'] = (
+        <svg viewBox="0,0,1,1" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="gradient-tealblues">
+                    <stop offset="0%" stop-color="#bce4d8"></stop>
+                    <stop offset="10%" stop-color="#a3d6d2"></stop>
+                    <stop offset="20%" stop-color="#8cc9cd"></stop>
+                    <stop offset="30%" stop-color="#76bdc7"></stop>
+                    <stop offset="40%" stop-color="#5fb0c0"></stop>
+                    <stop offset="50%" stop-color="#45a2b9"></stop>
+                    <stop offset="60%" stop-color="#3993b0"></stop>
+                    <stop offset="70%" stop-color="#3584a6"></stop>
+                    <stop offset="80%" stop-color="#32759b"></stop>
+                    <stop offset="90%" stop-color="#2f6790"></stop>
+                    <stop offset="100%" stop-color="#2c5985"></stop>
+                </linearGradient>
+            </defs>
+            <rect fill="url(#gradient-tealblues)" x="0" y="0" width="1" height="1"></rect>
+        </svg>
+    );
+    schemesJSX['teals'] = (
+        <svg viewBox="0,0,1,1" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="gradient-teals">
+                    <stop offset="0%" stop-color="#bbdfdf"></stop>
+                    <stop offset="10%" stop-color="#a2d4d5"></stop>
+                    <stop offset="20%" stop-color="#8ac9c9"></stop>
+                    <stop offset="30%" stop-color="#75bcbb"></stop>
+                    <stop offset="40%" stop-color="#61b0af"></stop>
+                    <stop offset="50%" stop-color="#4da5a4"></stop>
+                    <stop offset="60%" stop-color="#379998"></stop>
+                    <stop offset="70%" stop-color="#2b8b8c"></stop>
+                    <stop offset="80%" stop-color="#1e7f7f"></stop>
+                    <stop offset="90%" stop-color="#127273"></stop>
+                    <stop offset="100%" stop-color="#006667"></stop>
+                </linearGradient>
+            </defs>
+            <rect fill="url(#gradient-teals)" x="0" y="0" width="1" height="1"></rect>
+        </svg>
+    );
     schemesJSX['greens'] = (
         <svg viewBox="0,0,1,1" preserveAspectRatio="none">
             <defs>
@@ -89,6 +129,26 @@ function load() {
             <rect fill="url(#gradient-purples)" x="0" y="0" width="1" height="1"></rect>
         </svg>
     );
+    schemesJSX['browns'] = (
+        <svg viewBox="0,0,1,1" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="gradient-browns">
+                    <stop offset="0%" stop-color="#eedbbd"></stop>
+                    <stop offset="10%" stop-color="#ecca96"></stop>
+                    <stop offset="20%" stop-color="#e9b97a"></stop>
+                    <stop offset="30%" stop-color="#e4a865"></stop>
+                    <stop offset="40%" stop-color="#dc9856"></stop>
+                    <stop offset="50%" stop-color="#d18954"></stop>
+                    <stop offset="60%" stop-color="#c7784c"></stop>
+                    <stop offset="70%" stop-color="#c0673f"></stop>
+                    <stop offset="80%" stop-color="#b85536"></stop>
+                    <stop offset="90%" stop-color="#ad4433"></stop>
+                    <stop offset="100%" stop-color="#9f3632"></stop>
+                </linearGradient>
+            </defs>
+            <rect fill="url(#gradient-browns)" x="0" y="0" width="1" height="1"></rect>
+        </svg>
+    );
     schemesJSX['reds'] = (
         <svg viewBox="0,0,1,1" preserveAspectRatio="none">
             <defs>
@@ -129,16 +189,40 @@ function load() {
             <rect fill="url(#gradient-oranges)" x="0" y="0" width="1" height="1"></rect>
         </svg>
     );
+    schemesJSX['warmgreys'] = (
+        <svg viewBox="0,0,1,1" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="gradient-warmgreys">
+                    <stop offset="0%" stop-color="#dcd4d0"></stop>
+                    <stop offset="10%" stop-color="#cec5c1"></stop>
+                    <stop offset="20%" stop-color="#c0b8b4"></stop>
+                    <stop offset="30%" stop-color="#b3aaa7"></stop>
+                    <stop offset="40%" stop-color="#a59c99"></stop>
+                    <stop offset="50%" stop-color="#98908c"></stop>
+                    <stop offset="60%" stop-color="#8b827f"></stop>
+                    <stop offset="70%" stop-color="#7e7673"></stop>
+                    <stop offset="80%" stop-color="#726866"></stop>
+                    <stop offset="90%" stop-color="#665c5a"></stop>
+                    <stop offset="100%" stop-color="#59504e"></stop>
+                </linearGradient>
+            </defs>
+            <rect fill="url(#gradient-warmgreys)" x="0" y="0" width="1" height="1"></rect>
+        </svg>
+    );
     loaded = true;
 }
 export function sequentialSingleHue(selected: string) {
     if (!loaded) load();
     return [
         schemeOption(selected, 'blues'),
+        schemeOption(selected, 'tealblues'),
+        schemeOption(selected, 'teals'),
         schemeOption(selected, 'greens'),
-        schemeOption(selected, 'greys'),
-        schemeOption(selected, 'purples'),
-        schemeOption(selected, 'reds'),
+        schemeOption(selected, 'browns'),
         schemeOption(selected, 'oranges'),
+        schemeOption(selected, 'reds'),
+        schemeOption(selected, 'purples'),
+        schemeOption(selected, 'warmgreys'),
+        schemeOption(selected, 'greys'),
     ];
 }

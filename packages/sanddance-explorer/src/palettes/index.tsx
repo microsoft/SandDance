@@ -5,6 +5,7 @@
 
 import { base } from '../base';
 import { categorical } from './categorical';
+import { cyclical } from './cyclical';
 import { diverging } from './diverging';
 import { Dropdown } from '../controls/dropdown';
 import { dual } from './dual';
@@ -52,7 +53,14 @@ export function Palette(props: Props) {
 
     const options: FluentUITypes.IDropdownOption[] = [];
 
-    function menu(name: string, opts: ISchemeOption[]) {
+    function menu(name: string, opts: (ISchemeOption | FluentUITypes.IDropdownOption)[]) {
+        if (options.length) {
+            options.push({
+                key: 'divider' + options.length,
+                text: null,
+                itemType: base.fluentUI.DropdownMenuItemType.Divider,
+            });    
+        }
         options.push({
             key: name,
             text: name,
@@ -65,6 +73,7 @@ export function Palette(props: Props) {
     isQuantitative && menu(strings.schemeSequentialSingleHue, sequentialSingleHue(selected));
     isQuantitative && menu(strings.schemeSequentialMultiHue, sequentialMultiHue(selected));
     isQuantitative && menu(strings.schemeDiverging, diverging(selected));
+    isQuantitative && menu(strings.schemeCyclical, cyclical(selected));
     isDual && menu(strings.schemeDual, dual(selected));
 
     return (
