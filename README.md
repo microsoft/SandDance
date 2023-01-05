@@ -32,6 +32,7 @@ SandDance is an offering of several JavaScript components:
 * [sanddance-specs](packages/sanddance-specs/README.md) - [Vega specifications](https://vega.github.io/vega/docs/specification/) for unit visualizations.
 * [sanddance-react](packages/sanddance-react/README.md) - the core SandDance visualization canvas for use in React based applications.
 * [sanddance-explorer](packages/sanddance-explorer/README.md) - the core SandDance visualization canvas with UI to enable data exploration, for use in React based applications.
+* [sanddance-embed](packages/sanddance-embed/README.md) - the easiest way to embed SandDance Explorer in your applications, via an `<iframe>` tag.
 
 ## Publications
 
