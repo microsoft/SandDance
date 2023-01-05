@@ -15,6 +15,10 @@
 
     <iframe id="embed" title="embed" style="width: 90%; height: 600px" src="sanddance-embed.html"></iframe>
 
+    <div>
+        <button id="button_theme">toggle dark theme</button>
+    </div>
+
     <script>
         window.onmessage = (e) => {
             console.log('messaged', e.data);
@@ -26,8 +30,15 @@
                 .then(response => response.text())
                 .then(rawText => {
                     const data = { rawText, type: 'tsv' };
-                    embedWindow.postMessage({ action: 'load', data }, '*');
+                    embedWindow.postMessage({ action: 'load', data, props: { theme: 'dark-theme' } }, '*');
                 });
+        };
+
+        let dark = true;
+        const button_theme = document.getElementById('button_theme');
+        button_theme.onclick = () => {
+            dark = !dark;
+            embedIframe.contentWindow.postMessage({ action: 'theme', dark }, '*');
         };
     </script>
 

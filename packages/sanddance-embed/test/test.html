@@ -66,7 +66,7 @@
         const localQs = testLocal ? `?${encodeURIComponent(JSON.stringify(deps))}` : '';
         embedIframe.src = 'sanddance-embed.html' + localQs;
 
-        let dark = false;
+        let dark = true;
         const button1 = document.getElementById('button1');
         button1.onclick = () => {
             dark = !dark;
