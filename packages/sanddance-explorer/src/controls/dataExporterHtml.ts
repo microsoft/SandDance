@@ -13,7 +13,9 @@ export const embedHtml = (title: string, embed: string) => `<!DOCTYPE html>
 </head>
 
 <body>
-    <script src="https://unpkg.com/@msrvida/sanddance-embed@4.3/dist/umd/sanddance-embed.js"></script>
+    <script src="https://unpkg.com/@msrvida/sanddance-embed@4.1/dist/umd/sanddance-embed.js"></script>
+
+    <div id="app"></div>
 
     ${embed}
 
