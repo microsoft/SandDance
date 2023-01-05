@@ -38133,9 +38133,12 @@ const $0db66385c00a3f15$export$21c51bc433c16634 = {
     labelConfirmation: "Are you sure?",
     loading: "Loading...",
     schemeCategorical: "Categorical",
+    schemeCyclical: "Cyclical",
     schemeDiverging: "Diverging",
     schemeDual: "Dual",
     schemeSequentialMultiHue: "Sequential Multi Hue",
+    schemeSequentialMultiHueDark: "For dark backgrounds",
+    schemeSequentialMultiHueLight: "For light backgrounds",
     schemeSequentialSingleHue: "Sequential Single Hue",
     selectDataSpanAll: "All rows",
     selectDataSpanFilter: "Filtered",
@@ -38861,9 +38864,7 @@ const $8f1b85a9470d3af5$export$c4b7cd609ccf4a5a = (title, embed)=>`<!DOCTYPE htm
 </head>
 
 <body>
-    <script src="https://unpkg.com/@msrvida/sanddance-embed@4.1/dist/umd/sanddance-embed.js"></script>
-
-    <div id="app"></div>
+    <script src="https://unpkg.com/@msrvida/sanddance-embed@4.4/dist/umd/sanddance-embed.js"></script>
 
     ${embed}
 
@@ -40105,7 +40106,7 @@ const $29728562a99c68a2$export$8e76ac9f37578d1b = {
 
 
 
-const $f56a95f33c4cc847$export$83d89fbfd8236492 = "4.0.3";
+const $f56a95f33c4cc847$export$83d89fbfd8236492 = "4.0.4";
 
 
 var $4805700d8b417596$var$SandDance = $3b509b9541e52a8f$exports;
@@ -42049,6 +42050,7 @@ function $8bfbb5c28cff0e2c$export$d1b579ecf4cf2d3f(props) {
 
 
 
+
 function $7cf7713fac799e39$export$535452b9416b5e17(selected, scheme) {
     return {
         key: scheme,
@@ -42056,6 +42058,13 @@ function $7cf7713fac799e39$export$535452b9416b5e17(selected, scheme) {
         selected: selected === scheme,
         scheme: scheme,
         children: $7cf7713fac799e39$export$dc7e195cef98649[scheme]
+    };
+}
+function $7cf7713fac799e39$export$3482e66b4441447f(key, text) {
+    return {
+        key: key,
+        text: text,
+        itemType: (0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.DropdownMenuItemType.Header
     };
 }
 const $7cf7713fac799e39$export$dc7e195cef98649 = {};
@@ -43179,6 +43188,111 @@ function $4d291de0a4a37fc7$export$f3a499247c9822d1(selected) {
 
 
 
+let $57753212e15ef295$var$loaded = false;
+function $57753212e15ef295$var$load() {
+    (0, $7cf7713fac799e39$export$dc7e195cef98649)["rainbow"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
+        viewBox: "0,0,1,1",
+        preserveAspectRatio: "none"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("defs", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("linearGradient", {
+        id: "gradient-rainbow"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "0%",
+        "stop-color": "#6e40aa"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "10%",
+        "stop-color": "#bf3caf"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "20%",
+        "stop-color": "#fe4b83"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "30%",
+        "stop-color": "#ff7847"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "40%",
+        "stop-color": "#e2b72f"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "50%",
+        "stop-color": "#aff05b"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "60%",
+        "stop-color": "#52f667"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "70%",
+        "stop-color": "#1ddfa3"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "80%",
+        "stop-color": "#23abd8"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "90%",
+        "stop-color": "#4c6edb"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "100%",
+        "stop-color": "#6e40aa"
+    }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
+        fill: "url(#gradient-rainbow)",
+        x: "0",
+        y: "0",
+        width: "1",
+        height: "1"
+    }));
+    (0, $7cf7713fac799e39$export$dc7e195cef98649)["sinebow"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
+        viewBox: "0,0,1,1",
+        preserveAspectRatio: "none"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("defs", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("linearGradient", {
+        id: "gradient-sinebow"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "0%",
+        "stop-color": "#ff4040"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "10%",
+        "stop-color": "#e78d0b"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "20%",
+        "stop-color": "#a7d503"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "30%",
+        "stop-color": "#58fc2a"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "40%",
+        "stop-color": "#18f472"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "50%",
+        "stop-color": "#00bfbf"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "60%",
+        "stop-color": "#1872f4"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "70%",
+        "stop-color": "#582afc"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "80%",
+        "stop-color": "#a703d5"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "90%",
+        "stop-color": "#e70b8d"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "100%",
+        "stop-color": "#ff4040"
+    }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
+        fill: "url(#gradient-sinebow)",
+        x: "0",
+        y: "0",
+        width: "1",
+        height: "1"
+    }));
+    $57753212e15ef295$var$loaded = true;
+}
+function $57753212e15ef295$export$6b2b632c28721cf0(selected) {
+    if (!$57753212e15ef295$var$loaded) $57753212e15ef295$var$load();
+    return [
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "rainbow"),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "sinebow"), 
+    ];
+}
+
+
+
+
 let $fb44b4ac1e5f02bf$var$loaded = false;
 function $fb44b4ac1e5f02bf$var$load() {
     (0, $7cf7713fac799e39$export$dc7e195cef98649)["blueorange"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
@@ -43680,6 +43794,7 @@ function $2f535d00511be096$export$d1699a1bbdf17835(selected) {
 
 
 
+
 let $0876d32c36a80de2$var$loaded = false;
 function $0876d32c36a80de2$var$load() {
     (0, $7cf7713fac799e39$export$dc7e195cef98649)["viridis"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
@@ -43862,6 +43977,96 @@ function $0876d32c36a80de2$var$load() {
         width: "1",
         height: "1"
     }));
+    (0, $7cf7713fac799e39$export$dc7e195cef98649)["cividis"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
+        viewBox: "0,0,1,1",
+        preserveAspectRatio: "none"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("defs", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("linearGradient", {
+        id: "gradient-cividis"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "0%",
+        "stop-color": "#002051"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "10%",
+        "stop-color": "#0a326a"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "20%",
+        "stop-color": "#2b446e"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "30%",
+        "stop-color": "#4d566d"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "40%",
+        "stop-color": "#696970"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "50%",
+        "stop-color": "#7f7c75"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "60%",
+        "stop-color": "#948f78"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "70%",
+        "stop-color": "#ada476"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "80%",
+        "stop-color": "#caba6a"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "90%",
+        "stop-color": "#ead156"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "100%",
+        "stop-color": "#fdea45"
+    }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
+        fill: "url(#gradient-cividis)",
+        x: "0",
+        y: "0",
+        width: "1",
+        height: "1"
+    }));
+    (0, $7cf7713fac799e39$export$dc7e195cef98649)["turbo"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
+        viewBox: "0,0,1,1",
+        preserveAspectRatio: "none"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("defs", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("linearGradient", {
+        id: "gradient-turbo"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "0%",
+        "stop-color": "#23171b"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "10%",
+        "stop-color": "#4a58dd"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "20%",
+        "stop-color": "#2f9df5"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "30%",
+        "stop-color": "#27d7c4"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "40%",
+        "stop-color": "#4df884"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "50%",
+        "stop-color": "#95fb51"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "60%",
+        "stop-color": "#dedd32"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "70%",
+        "stop-color": "#ffa423"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "80%",
+        "stop-color": "#f65f18"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "90%",
+        "stop-color": "#ba2208"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "100%",
+        "stop-color": "#900c00"
+    }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
+        fill: "url(#gradient-turbo)",
+        x: "0",
+        y: "0",
+        width: "1",
+        height: "1"
+    }));
     (0, $7cf7713fac799e39$export$dc7e195cef98649)["bluegreen"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
@@ -43947,6 +44152,141 @@ function $0876d32c36a80de2$var$load() {
         stopColor: "rgb(77, 0, 75)"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-bluepurple)",
+        x: "0",
+        y: "0",
+        width: "1",
+        height: "1"
+    }));
+    (0, $7cf7713fac799e39$export$dc7e195cef98649)["goldgreen"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
+        viewBox: "0,0,1,1",
+        preserveAspectRatio: "none"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("defs", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("linearGradient", {
+        id: "gradient-goldgreen"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "0%",
+        "stop-color": "#f4d166"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "10%",
+        "stop-color": "#d5ca60"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "20%",
+        "stop-color": "#b6c35c"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "30%",
+        "stop-color": "#98bb59"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "40%",
+        "stop-color": "#7cb257"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "50%",
+        "stop-color": "#60a656"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "60%",
+        "stop-color": "#4b9c53"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "70%",
+        "stop-color": "#3f8f4f"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "80%",
+        "stop-color": "#33834a"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "90%",
+        "stop-color": "#257740"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "100%",
+        "stop-color": "#146c36"
+    }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
+        fill: "url(#gradient-goldgreen)",
+        x: "0",
+        y: "0",
+        width: "1",
+        height: "1"
+    }));
+    (0, $7cf7713fac799e39$export$dc7e195cef98649)["goldorange"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
+        viewBox: "0,0,1,1",
+        preserveAspectRatio: "none"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("defs", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("linearGradient", {
+        id: "gradient-goldorange"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "0%",
+        "stop-color": "#f4d166"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "10%",
+        "stop-color": "#f8be5c"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "20%",
+        "stop-color": "#f8aa4c"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "30%",
+        "stop-color": "#f5983b"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "40%",
+        "stop-color": "#f3852a"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "50%",
+        "stop-color": "#ef701b"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "60%",
+        "stop-color": "#e2621f"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "70%",
+        "stop-color": "#d65322"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "80%",
+        "stop-color": "#c54923"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "90%",
+        "stop-color": "#b14223"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "100%",
+        "stop-color": "#9e3a26"
+    }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
+        fill: "url(#gradient-goldorange)",
+        x: "0",
+        y: "0",
+        width: "1",
+        height: "1"
+    }));
+    (0, $7cf7713fac799e39$export$dc7e195cef98649)["goldred"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
+        viewBox: "0,0,1,1",
+        preserveAspectRatio: "none"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("defs", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("linearGradient", {
+        id: "gradient-goldred"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "0%",
+        "stop-color": "#f4d166"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "10%",
+        "stop-color": "#f6be59"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "20%",
+        "stop-color": "#f9aa51"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "30%",
+        "stop-color": "#fc964e"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "40%",
+        "stop-color": "#f6834b"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "50%",
+        "stop-color": "#ee734a"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "60%",
+        "stop-color": "#e56249"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "70%",
+        "stop-color": "#db5247"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "80%",
+        "stop-color": "#cf4244"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "90%",
+        "stop-color": "#c43141"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "100%",
+        "stop-color": "#b71d3e"
+    }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
+        fill: "url(#gradient-goldred)",
         x: "0",
         y: "0",
         width: "1",
@@ -44402,17 +44742,472 @@ function $0876d32c36a80de2$var$load() {
         width: "1",
         height: "1"
     }));
+    (0, $7cf7713fac799e39$export$dc7e195cef98649)["darkblue"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
+        viewBox: "0,0,1,1",
+        preserveAspectRatio: "none"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("defs", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("linearGradient", {
+        id: "gradient-darkblue"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "0%",
+        "stop-color": "#323232"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "10%",
+        "stop-color": "#2e4463"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "20%",
+        "stop-color": "#1e588a"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "30%",
+        "stop-color": "#086da7"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "40%",
+        "stop-color": "#0082b9"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "50%",
+        "stop-color": "#039ac7"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "60%",
+        "stop-color": "#12b1d4"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "70%",
+        "stop-color": "#2bc8e2"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "80%",
+        "stop-color": "#3ddff0"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "90%",
+        "stop-color": "#61f4fb"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "100%",
+        "stop-color": "#ffffff"
+    }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
+        fill: "url(#gradient-darkblue)",
+        x: "0",
+        y: "0",
+        width: "1",
+        height: "1"
+    }));
+    (0, $7cf7713fac799e39$export$dc7e195cef98649)["darkgold"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
+        viewBox: "0,0,1,1",
+        preserveAspectRatio: "none"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("defs", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("linearGradient", {
+        id: "gradient-darkgold"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "0%",
+        "stop-color": "#3c3c3c"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "10%",
+        "stop-color": "#554a38"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "20%",
+        "stop-color": "#6d5a35"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "30%",
+        "stop-color": "#846f32"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "40%",
+        "stop-color": "#a0832d"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "50%",
+        "stop-color": "#bf9828"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "60%",
+        "stop-color": "#dbb022"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "70%",
+        "stop-color": "#f0cb23"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "80%",
+        "stop-color": "#fae241"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "90%",
+        "stop-color": "#fff290"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "100%",
+        "stop-color": "#ffffff"
+    }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
+        fill: "url(#gradient-darkgold)",
+        x: "0",
+        y: "0",
+        width: "1",
+        height: "1"
+    }));
+    (0, $7cf7713fac799e39$export$dc7e195cef98649)["darkgreen"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
+        viewBox: "0,0,1,1",
+        preserveAspectRatio: "none"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("defs", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("linearGradient", {
+        id: "gradient-darkgreen"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "0%",
+        "stop-color": "#3a3a3a"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "10%",
+        "stop-color": "#245447"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "20%",
+        "stop-color": "#076a4c"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "30%",
+        "stop-color": "#038145"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "40%",
+        "stop-color": "#2d9642"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "50%",
+        "stop-color": "#5fa941"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "60%",
+        "stop-color": "#89bb3f"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "70%",
+        "stop-color": "#b3cb3b"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "80%",
+        "stop-color": "#dbdc34"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "90%",
+        "stop-color": "#ffed39"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "100%",
+        "stop-color": "#ffffaa"
+    }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
+        fill: "url(#gradient-darkgreen)",
+        x: "0",
+        y: "0",
+        width: "1",
+        height: "1"
+    }));
+    (0, $7cf7713fac799e39$export$dc7e195cef98649)["darkmulti"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
+        viewBox: "0,0,1,1",
+        preserveAspectRatio: "none"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("defs", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("linearGradient", {
+        id: "gradient-darkmulti"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "0%",
+        "stop-color": "#373737"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "10%",
+        "stop-color": "#294767"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "20%",
+        "stop-color": "#1e5b88"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "30%",
+        "stop-color": "#1a748b"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "40%",
+        "stop-color": "#1f8e7e"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "50%",
+        "stop-color": "#29a869"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "60%",
+        "stop-color": "#6abf50"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "70%",
+        "stop-color": "#aad332"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "80%",
+        "stop-color": "#eae30d"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "90%",
+        "stop-color": "#fff166"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "100%",
+        "stop-color": "#ffffff"
+    }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
+        fill: "url(#gradient-darkmulti)",
+        x: "0",
+        y: "0",
+        width: "1",
+        height: "1"
+    }));
+    (0, $7cf7713fac799e39$export$dc7e195cef98649)["darkred"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
+        viewBox: "0,0,1,1",
+        preserveAspectRatio: "none"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("defs", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("linearGradient", {
+        id: "gradient-darkred"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "0%",
+        "stop-color": "#343434"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "10%",
+        "stop-color": "#643633"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "20%",
+        "stop-color": "#8c3a36"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "30%",
+        "stop-color": "#b03e38"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "40%",
+        "stop-color": "#d14632"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "50%",
+        "stop-color": "#e75d1e"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "60%",
+        "stop-color": "#eb7e20"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "70%",
+        "stop-color": "#ed9c25"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "80%",
+        "stop-color": "#efb92d"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "90%",
+        "stop-color": "#f3d431"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "100%",
+        "stop-color": "#ffeb2c"
+    }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
+        fill: "url(#gradient-darkred)",
+        x: "0",
+        y: "0",
+        width: "1",
+        height: "1"
+    }));
+    (0, $7cf7713fac799e39$export$dc7e195cef98649)["lightgreyred"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
+        viewBox: "0,0,1,1",
+        preserveAspectRatio: "none"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("defs", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("linearGradient", {
+        id: "gradient-lightgreyred"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "0%",
+        "stop-color": "#efe9e6"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "10%",
+        "stop-color": "#e2dcd9"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "20%",
+        "stop-color": "#d7cecb"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "30%",
+        "stop-color": "#ccc1be"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "40%",
+        "stop-color": "#c0b4af"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "50%",
+        "stop-color": "#c4a293"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "60%",
+        "stop-color": "#d38b66"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "70%",
+        "stop-color": "#de7336"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "80%",
+        "stop-color": "#e15917"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "90%",
+        "stop-color": "#df3a10"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "100%",
+        "stop-color": "#dc000b"
+    }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
+        fill: "url(#gradient-lightgreyred)",
+        x: "0",
+        y: "0",
+        width: "1",
+        height: "1"
+    }));
+    (0, $7cf7713fac799e39$export$dc7e195cef98649)["lightgreyteal"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
+        viewBox: "0,0,1,1",
+        preserveAspectRatio: "none"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("defs", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("linearGradient", {
+        id: "gradient-lightgreyteal"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "0%",
+        "stop-color": "#e4eaea"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "10%",
+        "stop-color": "#d7ddde"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "20%",
+        "stop-color": "#cbd1d4"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "30%",
+        "stop-color": "#bcc6ca"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "40%",
+        "stop-color": "#adbac0"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "50%",
+        "stop-color": "#85b2be"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "60%",
+        "stop-color": "#4aacc1"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "70%",
+        "stop-color": "#22a1c2"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "80%",
+        "stop-color": "#2192c0"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "90%",
+        "stop-color": "#1e84be"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "100%",
+        "stop-color": "#1876bc"
+    }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
+        fill: "url(#gradient-lightgreyteal)",
+        x: "0",
+        y: "0",
+        width: "1",
+        height: "1"
+    }));
+    (0, $7cf7713fac799e39$export$dc7e195cef98649)["lightmulti"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
+        viewBox: "0,0,1,1",
+        preserveAspectRatio: "none"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("defs", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("linearGradient", {
+        id: "gradient-lightmulti"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "0%",
+        "stop-color": "#e0f1f2"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "10%",
+        "stop-color": "#caebd7"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "20%",
+        "stop-color": "#b8e2b3"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "30%",
+        "stop-color": "#bddf93"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "40%",
+        "stop-color": "#d8e17e"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "50%",
+        "stop-color": "#f6e072"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "60%",
+        "stop-color": "#f6c659"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "70%",
+        "stop-color": "#f4a946"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "80%",
+        "stop-color": "#f58a3f"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "90%",
+        "stop-color": "#f56c3f"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "100%",
+        "stop-color": "#ef4a3c"
+    }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
+        fill: "url(#gradient-lightmulti)",
+        x: "0",
+        y: "0",
+        width: "1",
+        height: "1"
+    }));
+    (0, $7cf7713fac799e39$export$dc7e195cef98649)["lightorange"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
+        viewBox: "0,0,1,1",
+        preserveAspectRatio: "none"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("defs", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("linearGradient", {
+        id: "gradient-lightorange"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "0%",
+        "stop-color": "#f2e7da"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "10%",
+        "stop-color": "#f7d7bd"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "20%",
+        "stop-color": "#f9c7a0"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "30%",
+        "stop-color": "#fab78a"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "40%",
+        "stop-color": "#faa47a"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "50%",
+        "stop-color": "#f8936d"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "60%",
+        "stop-color": "#f38264"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "70%",
+        "stop-color": "#ed725f"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "80%",
+        "stop-color": "#e6605b"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "90%",
+        "stop-color": "#dd4f5b"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "100%",
+        "stop-color": "#d43d5b"
+    }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
+        fill: "url(#gradient-lightorange)",
+        x: "0",
+        y: "0",
+        width: "1",
+        height: "1"
+    }));
+    (0, $7cf7713fac799e39$export$dc7e195cef98649)["lighttealblue"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
+        viewBox: "0,0,1,1",
+        preserveAspectRatio: "none"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("defs", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("linearGradient", {
+        id: "gradient-lighttealblue"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "0%",
+        "stop-color": "#e3e9e0"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "10%",
+        "stop-color": "#c4ddd1"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "20%",
+        "stop-color": "#a2d1cb"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "30%",
+        "stop-color": "#84c4c9"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "40%",
+        "stop-color": "#66b5c3"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "50%",
+        "stop-color": "#49a7bd"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "60%",
+        "stop-color": "#3698b4"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "70%",
+        "stop-color": "#3188a9"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "80%",
+        "stop-color": "#2d799e"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "90%",
+        "stop-color": "#276994"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "100%",
+        "stop-color": "#255988"
+    }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
+        fill: "url(#gradient-lighttealblue)",
+        x: "0",
+        y: "0",
+        width: "1",
+        height: "1"
+    }));
     $0876d32c36a80de2$var$loaded = true;
 }
 function $0876d32c36a80de2$export$a4fd36c4882aa76e(selected) {
     if (!$0876d32c36a80de2$var$loaded) $0876d32c36a80de2$var$load();
     return [
         (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "viridis"),
-        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "inferno"),
         (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "magma"),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "inferno"),
         (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "plasma"),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "cividis"),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "turbo"),
         (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "bluegreen"),
         (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "bluepurple"),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "goldgreen"),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "goldorange"),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "goldred"),
         (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "greenblue"),
         (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "orangered"),
         (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "purplebluegreen"),
@@ -44422,7 +45217,19 @@ function $0876d32c36a80de2$export$a4fd36c4882aa76e(selected) {
         (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "yellowgreenblue"),
         (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "yellowgreen"),
         (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "yelloworangebrown"),
-        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "yelloworangered"), 
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "yelloworangered"),
+        (0, $7cf7713fac799e39$export$3482e66b4441447f)("schemeSequentialMultiHueDark", (0, $0db66385c00a3f15$export$21c51bc433c16634).schemeSequentialMultiHueDark),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "darkblue"),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "darkgold"),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "darkgreen"),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "darkmulti"),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "darkred"),
+        (0, $7cf7713fac799e39$export$3482e66b4441447f)("schemeSequentialMultiHueLight", (0, $0db66385c00a3f15$export$21c51bc433c16634).schemeSequentialMultiHueLight),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "lightgreyred"),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "lightgreyteal"),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "lightmulti"),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "lightorange"),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "lighttealblue"), 
     ];
 }
 
@@ -44471,6 +45278,96 @@ function $39078f876ce15481$var$load() {
         stopColor: "rgb(8, 48, 107)"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-blues)",
+        x: "0",
+        y: "0",
+        width: "1",
+        height: "1"
+    }));
+    (0, $7cf7713fac799e39$export$dc7e195cef98649)["tealblues"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
+        viewBox: "0,0,1,1",
+        preserveAspectRatio: "none"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("defs", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("linearGradient", {
+        id: "gradient-tealblues"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "0%",
+        "stop-color": "#bce4d8"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "10%",
+        "stop-color": "#a3d6d2"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "20%",
+        "stop-color": "#8cc9cd"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "30%",
+        "stop-color": "#76bdc7"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "40%",
+        "stop-color": "#5fb0c0"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "50%",
+        "stop-color": "#45a2b9"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "60%",
+        "stop-color": "#3993b0"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "70%",
+        "stop-color": "#3584a6"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "80%",
+        "stop-color": "#32759b"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "90%",
+        "stop-color": "#2f6790"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "100%",
+        "stop-color": "#2c5985"
+    }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
+        fill: "url(#gradient-tealblues)",
+        x: "0",
+        y: "0",
+        width: "1",
+        height: "1"
+    }));
+    (0, $7cf7713fac799e39$export$dc7e195cef98649)["teals"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
+        viewBox: "0,0,1,1",
+        preserveAspectRatio: "none"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("defs", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("linearGradient", {
+        id: "gradient-teals"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "0%",
+        "stop-color": "#bbdfdf"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "10%",
+        "stop-color": "#a2d4d5"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "20%",
+        "stop-color": "#8ac9c9"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "30%",
+        "stop-color": "#75bcbb"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "40%",
+        "stop-color": "#61b0af"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "50%",
+        "stop-color": "#4da5a4"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "60%",
+        "stop-color": "#379998"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "70%",
+        "stop-color": "#2b8b8c"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "80%",
+        "stop-color": "#1e7f7f"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "90%",
+        "stop-color": "#127273"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "100%",
+        "stop-color": "#006667"
+    }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
+        fill: "url(#gradient-teals)",
         x: "0",
         y: "0",
         width: "1",
@@ -44611,6 +45508,51 @@ function $39078f876ce15481$var$load() {
         width: "1",
         height: "1"
     }));
+    (0, $7cf7713fac799e39$export$dc7e195cef98649)["browns"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
+        viewBox: "0,0,1,1",
+        preserveAspectRatio: "none"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("defs", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("linearGradient", {
+        id: "gradient-browns"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "0%",
+        "stop-color": "#eedbbd"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "10%",
+        "stop-color": "#ecca96"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "20%",
+        "stop-color": "#e9b97a"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "30%",
+        "stop-color": "#e4a865"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "40%",
+        "stop-color": "#dc9856"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "50%",
+        "stop-color": "#d18954"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "60%",
+        "stop-color": "#c7784c"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "70%",
+        "stop-color": "#c0673f"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "80%",
+        "stop-color": "#b85536"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "90%",
+        "stop-color": "#ad4433"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "100%",
+        "stop-color": "#9f3632"
+    }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
+        fill: "url(#gradient-browns)",
+        x: "0",
+        y: "0",
+        width: "1",
+        height: "1"
+    }));
     (0, $7cf7713fac799e39$export$dc7e195cef98649)["reds"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
         viewBox: "0,0,1,1",
         preserveAspectRatio: "none"
@@ -44701,17 +45643,66 @@ function $39078f876ce15481$var$load() {
         width: "1",
         height: "1"
     }));
+    (0, $7cf7713fac799e39$export$dc7e195cef98649)["warmgreys"] = (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("svg", {
+        viewBox: "0,0,1,1",
+        preserveAspectRatio: "none"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("defs", null, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("linearGradient", {
+        id: "gradient-warmgreys"
+    }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "0%",
+        "stop-color": "#dcd4d0"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "10%",
+        "stop-color": "#cec5c1"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "20%",
+        "stop-color": "#c0b8b4"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "30%",
+        "stop-color": "#b3aaa7"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "40%",
+        "stop-color": "#a59c99"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "50%",
+        "stop-color": "#98908c"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "60%",
+        "stop-color": "#8b827f"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "70%",
+        "stop-color": "#7e7673"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "80%",
+        "stop-color": "#726866"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "90%",
+        "stop-color": "#665c5a"
+    }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
+        offset: "100%",
+        "stop-color": "#59504e"
+    }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
+        fill: "url(#gradient-warmgreys)",
+        x: "0",
+        y: "0",
+        width: "1",
+        height: "1"
+    }));
     $39078f876ce15481$var$loaded = true;
 }
 function $39078f876ce15481$export$9b3c8b6a286fd957(selected) {
     if (!$39078f876ce15481$var$loaded) $39078f876ce15481$var$load();
     return [
         (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "blues"),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "tealblues"),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "teals"),
         (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "greens"),
-        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "greys"),
-        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "purples"),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "browns"),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "oranges"),
         (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "reds"),
-        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "oranges"), 
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "purples"),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "warmgreys"),
+        (0, $7cf7713fac799e39$export$535452b9416b5e17)(selected, "greys"), 
     ];
 }
 
@@ -44740,6 +45731,11 @@ function $37d271b3645ead65$export$e2fbaa661ec19dbf(props) {
     const selected = props.scheme;
     const options = [];
     function menu(name, opts) {
+        if (options.length) options.push({
+            key: "divider" + options.length,
+            text: null,
+            itemType: (0, $8535c575077b9670$export$e2253033e6e1df16).fluentUI.DropdownMenuItemType.Divider
+        });
         options.push({
             key: name,
             text: name,
@@ -44751,6 +45747,7 @@ function $37d271b3645ead65$export$e2fbaa661ec19dbf(props) {
     isQuantitative && menu((0, $0db66385c00a3f15$export$21c51bc433c16634).schemeSequentialSingleHue, (0, $39078f876ce15481$export$9b3c8b6a286fd957)(selected));
     isQuantitative && menu((0, $0db66385c00a3f15$export$21c51bc433c16634).schemeSequentialMultiHue, (0, $0876d32c36a80de2$export$a4fd36c4882aa76e)(selected));
     isQuantitative && menu((0, $0db66385c00a3f15$export$21c51bc433c16634).schemeDiverging, (0, $fb44b4ac1e5f02bf$export$ab7b13a7cc99f3af)(selected));
+    isQuantitative && menu((0, $0db66385c00a3f15$export$21c51bc433c16634).schemeCyclical, (0, $57753212e15ef295$export$6b2b632c28721cf0)(selected));
     isDual && menu((0, $0db66385c00a3f15$export$21c51bc433c16634).schemeDual, (0, $2f535d00511be096$export$d1699a1bbdf17835)(selected));
     return (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("div", {
         className: "sanddance-palette"
@@ -45778,6 +46775,15 @@ function $b935bf5e2863e486$var$_Explorer(_props) {
                 if (!this.state.sidebarClosed) {
                     newState.sideTabId = (0, $a4811b1c86ed19fa$export$f3b7566ffe363e3b).Snapshots;
                     this.scrollSnapshotIntoView(selectedSnapshotIndex);
+                }
+                if (snapshot.insight) {
+                    const { backgroundImage: backgroundImage  } = snapshot.insight;
+                    this.imageHolder.showBackgroundImage = !!backgroundImage;
+                    if (backgroundImage) this.imageHolder.img = {
+                        src: backgroundImage.url,
+                        height: backgroundImage.size.height,
+                        width: backgroundImage.size.width
+                    };
                 }
                 this.setInsight({
                     label: (0, $0db66385c00a3f15$export$21c51bc433c16634).labelHistoryReviveSnapshot
