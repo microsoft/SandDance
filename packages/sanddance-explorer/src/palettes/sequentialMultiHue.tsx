@@ -94,17 +94,17 @@ function load() {
         <svg viewBox="0,0,1,1" preserveAspectRatio="none">
             <defs>
                 <linearGradient id="gradient-cividis">
-                    <stop offset="0%" stop-color="#002051"></stop>
-                    <stop offset="10%" stop-color="#0a326a"></stop>
-                    <stop offset="20%" stop-color="#2b446e"></stop>
-                    <stop offset="30%" stop-color="#4d566d"></stop>
-                    <stop offset="40%" stop-color="#696970"></stop>
-                    <stop offset="50%" stop-color="#7f7c75"></stop>
-                    <stop offset="60%" stop-color="#948f78"></stop>
-                    <stop offset="70%" stop-color="#ada476"></stop>
-                    <stop offset="80%" stop-color="#caba6a"></stop>
-                    <stop offset="90%" stop-color="#ead156"></stop>
-                    <stop offset="100%" stop-color="#fdea45"></stop>
+                    <stop offset="0%" stopColor="#002051"></stop>
+                    <stop offset="10%" stopColor="#0a326a"></stop>
+                    <stop offset="20%" stopColor="#2b446e"></stop>
+                    <stop offset="30%" stopColor="#4d566d"></stop>
+                    <stop offset="40%" stopColor="#696970"></stop>
+                    <stop offset="50%" stopColor="#7f7c75"></stop>
+                    <stop offset="60%" stopColor="#948f78"></stop>
+                    <stop offset="70%" stopColor="#ada476"></stop>
+                    <stop offset="80%" stopColor="#caba6a"></stop>
+                    <stop offset="90%" stopColor="#ead156"></stop>
+                    <stop offset="100%" stopColor="#fdea45"></stop>
                 </linearGradient>
             </defs>
             <rect fill="url(#gradient-cividis)" x="0" y="0" width="1" height="1"></rect>
@@ -114,17 +114,17 @@ function load() {
         <svg viewBox="0,0,1,1" preserveAspectRatio="none">
             <defs>
                 <linearGradient id="gradient-turbo">
-                    <stop offset="0%" stop-color="#23171b"></stop>
-                    <stop offset="10%" stop-color="#4a58dd"></stop>
-                    <stop offset="20%" stop-color="#2f9df5"></stop>
-                    <stop offset="30%" stop-color="#27d7c4"></stop>
-                    <stop offset="40%" stop-color="#4df884"></stop>
-                    <stop offset="50%" stop-color="#95fb51"></stop>
-                    <stop offset="60%" stop-color="#dedd32"></stop>
-                    <stop offset="70%" stop-color="#ffa423"></stop>
-                    <stop offset="80%" stop-color="#f65f18"></stop>
-                    <stop offset="90%" stop-color="#ba2208"></stop>
-                    <stop offset="100%" stop-color="#900c00"></stop>
+                    <stop offset="0%" stopColor="#23171b"></stop>
+                    <stop offset="10%" stopColor="#4a58dd"></stop>
+                    <stop offset="20%" stopColor="#2f9df5"></stop>
+                    <stop offset="30%" stopColor="#27d7c4"></stop>
+                    <stop offset="40%" stopColor="#4df884"></stop>
+                    <stop offset="50%" stopColor="#95fb51"></stop>
+                    <stop offset="60%" stopColor="#dedd32"></stop>
+                    <stop offset="70%" stopColor="#ffa423"></stop>
+                    <stop offset="80%" stopColor="#f65f18"></stop>
+                    <stop offset="90%" stopColor="#ba2208"></stop>
+                    <stop offset="100%" stopColor="#900c00"></stop>
                 </linearGradient>
             </defs>
             <rect fill="url(#gradient-turbo)" x="0" y="0" width="1" height="1"></rect>
@@ -174,17 +174,17 @@ function load() {
         <svg viewBox="0,0,1,1" preserveAspectRatio="none">
             <defs>
                 <linearGradient id="gradient-goldgreen">
-                    <stop offset="0%" stop-color="#f4d166"></stop>
-                    <stop offset="10%" stop-color="#d5ca60"></stop>
-                    <stop offset="20%" stop-color="#b6c35c"></stop>
-                    <stop offset="30%" stop-color="#98bb59"></stop>
-                    <stop offset="40%" stop-color="#7cb257"></stop>
-                    <stop offset="50%" stop-color="#60a656"></stop>
-                    <stop offset="60%" stop-color="#4b9c53"></stop>
-                    <stop offset="70%" stop-color="#3f8f4f"></stop>
-                    <stop offset="80%" stop-color="#33834a"></stop>
-                    <stop offset="90%" stop-color="#257740"></stop>
-                    <stop offset="100%" stop-color="#146c36"></stop>
+                    <stop offset="0%" stopColor="#f4d166"></stop>
+                    <stop offset="10%" stopColor="#d5ca60"></stop>
+                    <stop offset="20%" stopColor="#b6c35c"></stop>
+                    <stop offset="30%" stopColor="#98bb59"></stop>
+                    <stop offset="40%" stopColor="#7cb257"></stop>
+                    <stop offset="50%" stopColor="#60a656"></stop>
+                    <stop offset="60%" stopColor="#4b9c53"></stop>
+                    <stop offset="70%" stopColor="#3f8f4f"></stop>
+                    <stop offset="80%" stopColor="#33834a"></stop>
+                    <stop offset="90%" stopColor="#257740"></stop>
+                    <stop offset="100%" stopColor="#146c36"></stop>
                 </linearGradient>
             </defs>
             <rect fill="url(#gradient-goldgreen)" x="0" y="0" width="1" height="1"></rect>
@@ -194,17 +194,17 @@ function load() {
         <svg viewBox="0,0,1,1" preserveAspectRatio="none">
             <defs>
                 <linearGradient id="gradient-goldorange">
-                    <stop offset="0%" stop-color="#f4d166"></stop>
-                    <stop offset="10%" stop-color="#f8be5c"></stop>
-                    <stop offset="20%" stop-color="#f8aa4c"></stop>
-                    <stop offset="30%" stop-color="#f5983b"></stop>
-                    <stop offset="40%" stop-color="#f3852a"></stop>
-                    <stop offset="50%" stop-color="#ef701b"></stop>
-                    <stop offset="60%" stop-color="#e2621f"></stop>
-                    <stop offset="70%" stop-color="#d65322"></stop>
-                    <stop offset="80%" stop-color="#c54923"></stop>
-                    <stop offset="90%" stop-color="#b14223"></stop>
-                    <stop offset="100%" stop-color="#9e3a26"></stop>
+                    <stop offset="0%" stopColor="#f4d166"></stop>
+                    <stop offset="10%" stopColor="#f8be5c"></stop>
+                    <stop offset="20%" stopColor="#f8aa4c"></stop>
+                    <stop offset="30%" stopColor="#f5983b"></stop>
+                    <stop offset="40%" stopColor="#f3852a"></stop>
+                    <stop offset="50%" stopColor="#ef701b"></stop>
+                    <stop offset="60%" stopColor="#e2621f"></stop>
+                    <stop offset="70%" stopColor="#d65322"></stop>
+                    <stop offset="80%" stopColor="#c54923"></stop>
+                    <stop offset="90%" stopColor="#b14223"></stop>
+                    <stop offset="100%" stopColor="#9e3a26"></stop>
                 </linearGradient>
             </defs>
             <rect fill="url(#gradient-goldorange)" x="0" y="0" width="1" height="1"></rect>
@@ -214,17 +214,17 @@ function load() {
         <svg viewBox="0,0,1,1" preserveAspectRatio="none">
             <defs>
                 <linearGradient id="gradient-goldred">
-                    <stop offset="0%" stop-color="#f4d166"></stop>
-                    <stop offset="10%" stop-color="#f6be59"></stop>
-                    <stop offset="20%" stop-color="#f9aa51"></stop>
-                    <stop offset="30%" stop-color="#fc964e"></stop>
-                    <stop offset="40%" stop-color="#f6834b"></stop>
-                    <stop offset="50%" stop-color="#ee734a"></stop>
-                    <stop offset="60%" stop-color="#e56249"></stop>
-                    <stop offset="70%" stop-color="#db5247"></stop>
-                    <stop offset="80%" stop-color="#cf4244"></stop>
-                    <stop offset="90%" stop-color="#c43141"></stop>
-                    <stop offset="100%" stop-color="#b71d3e"></stop>
+                    <stop offset="0%" stopColor="#f4d166"></stop>
+                    <stop offset="10%" stopColor="#f6be59"></stop>
+                    <stop offset="20%" stopColor="#f9aa51"></stop>
+                    <stop offset="30%" stopColor="#fc964e"></stop>
+                    <stop offset="40%" stopColor="#f6834b"></stop>
+                    <stop offset="50%" stopColor="#ee734a"></stop>
+                    <stop offset="60%" stopColor="#e56249"></stop>
+                    <stop offset="70%" stopColor="#db5247"></stop>
+                    <stop offset="80%" stopColor="#cf4244"></stop>
+                    <stop offset="90%" stopColor="#c43141"></stop>
+                    <stop offset="100%" stopColor="#b71d3e"></stop>
                 </linearGradient>
             </defs>
             <rect fill="url(#gradient-goldred)" x="0" y="0" width="1" height="1"></rect>
@@ -434,17 +434,17 @@ function load() {
         <svg viewBox="0,0,1,1" preserveAspectRatio="none">
             <defs>
                 <linearGradient id="gradient-darkblue">
-                    <stop offset="0%" stop-color="#323232"></stop>
-                    <stop offset="10%" stop-color="#2e4463"></stop>
-                    <stop offset="20%" stop-color="#1e588a"></stop>
-                    <stop offset="30%" stop-color="#086da7"></stop>
-                    <stop offset="40%" stop-color="#0082b9"></stop>
-                    <stop offset="50%" stop-color="#039ac7"></stop>
-                    <stop offset="60%" stop-color="#12b1d4"></stop>
-                    <stop offset="70%" stop-color="#2bc8e2"></stop>
-                    <stop offset="80%" stop-color="#3ddff0"></stop>
-                    <stop offset="90%" stop-color="#61f4fb"></stop>
-                    <stop offset="100%" stop-color="#ffffff"></stop>
+                    <stop offset="0%" stopColor="#323232"></stop>
+                    <stop offset="10%" stopColor="#2e4463"></stop>
+                    <stop offset="20%" stopColor="#1e588a"></stop>
+                    <stop offset="30%" stopColor="#086da7"></stop>
+                    <stop offset="40%" stopColor="#0082b9"></stop>
+                    <stop offset="50%" stopColor="#039ac7"></stop>
+                    <stop offset="60%" stopColor="#12b1d4"></stop>
+                    <stop offset="70%" stopColor="#2bc8e2"></stop>
+                    <stop offset="80%" stopColor="#3ddff0"></stop>
+                    <stop offset="90%" stopColor="#61f4fb"></stop>
+                    <stop offset="100%" stopColor="#ffffff"></stop>
                 </linearGradient>
             </defs>
             <rect fill="url(#gradient-darkblue)" x="0" y="0" width="1" height="1"></rect>
@@ -454,17 +454,17 @@ function load() {
         <svg viewBox="0,0,1,1" preserveAspectRatio="none">
             <defs>
                 <linearGradient id="gradient-darkgold">
-                    <stop offset="0%" stop-color="#3c3c3c"></stop>
-                    <stop offset="10%" stop-color="#554a38"></stop>
-                    <stop offset="20%" stop-color="#6d5a35"></stop>
-                    <stop offset="30%" stop-color="#846f32"></stop>
-                    <stop offset="40%" stop-color="#a0832d"></stop>
-                    <stop offset="50%" stop-color="#bf9828"></stop>
-                    <stop offset="60%" stop-color="#dbb022"></stop>
-                    <stop offset="70%" stop-color="#f0cb23"></stop>
-                    <stop offset="80%" stop-color="#fae241"></stop>
-                    <stop offset="90%" stop-color="#fff290"></stop>
-                    <stop offset="100%" stop-color="#ffffff"></stop>
+                    <stop offset="0%" stopColor="#3c3c3c"></stop>
+                    <stop offset="10%" stopColor="#554a38"></stop>
+                    <stop offset="20%" stopColor="#6d5a35"></stop>
+                    <stop offset="30%" stopColor="#846f32"></stop>
+                    <stop offset="40%" stopColor="#a0832d"></stop>
+                    <stop offset="50%" stopColor="#bf9828"></stop>
+                    <stop offset="60%" stopColor="#dbb022"></stop>
+                    <stop offset="70%" stopColor="#f0cb23"></stop>
+                    <stop offset="80%" stopColor="#fae241"></stop>
+                    <stop offset="90%" stopColor="#fff290"></stop>
+                    <stop offset="100%" stopColor="#ffffff"></stop>
                 </linearGradient>
             </defs>
             <rect fill="url(#gradient-darkgold)" x="0" y="0" width="1" height="1"></rect>
@@ -474,17 +474,17 @@ function load() {
         <svg viewBox="0,0,1,1" preserveAspectRatio="none">
             <defs>
                 <linearGradient id="gradient-darkgreen">
-                    <stop offset="0%" stop-color="#3a3a3a"></stop>
-                    <stop offset="10%" stop-color="#245447"></stop>
-                    <stop offset="20%" stop-color="#076a4c"></stop>
-                    <stop offset="30%" stop-color="#038145"></stop>
-                    <stop offset="40%" stop-color="#2d9642"></stop>
-                    <stop offset="50%" stop-color="#5fa941"></stop>
-                    <stop offset="60%" stop-color="#89bb3f"></stop>
-                    <stop offset="70%" stop-color="#b3cb3b"></stop>
-                    <stop offset="80%" stop-color="#dbdc34"></stop>
-                    <stop offset="90%" stop-color="#ffed39"></stop>
-                    <stop offset="100%" stop-color="#ffffaa"></stop>
+                    <stop offset="0%" stopColor="#3a3a3a"></stop>
+                    <stop offset="10%" stopColor="#245447"></stop>
+                    <stop offset="20%" stopColor="#076a4c"></stop>
+                    <stop offset="30%" stopColor="#038145"></stop>
+                    <stop offset="40%" stopColor="#2d9642"></stop>
+                    <stop offset="50%" stopColor="#5fa941"></stop>
+                    <stop offset="60%" stopColor="#89bb3f"></stop>
+                    <stop offset="70%" stopColor="#b3cb3b"></stop>
+                    <stop offset="80%" stopColor="#dbdc34"></stop>
+                    <stop offset="90%" stopColor="#ffed39"></stop>
+                    <stop offset="100%" stopColor="#ffffaa"></stop>
                 </linearGradient>
             </defs>
             <rect fill="url(#gradient-darkgreen)" x="0" y="0" width="1" height="1"></rect>
@@ -494,17 +494,17 @@ function load() {
         <svg viewBox="0,0,1,1" preserveAspectRatio="none">
             <defs>
                 <linearGradient id="gradient-darkmulti">
-                    <stop offset="0%" stop-color="#373737"></stop>
-                    <stop offset="10%" stop-color="#294767"></stop>
-                    <stop offset="20%" stop-color="#1e5b88"></stop>
-                    <stop offset="30%" stop-color="#1a748b"></stop>
-                    <stop offset="40%" stop-color="#1f8e7e"></stop>
-                    <stop offset="50%" stop-color="#29a869"></stop>
-                    <stop offset="60%" stop-color="#6abf50"></stop>
-                    <stop offset="70%" stop-color="#aad332"></stop>
-                    <stop offset="80%" stop-color="#eae30d"></stop>
-                    <stop offset="90%" stop-color="#fff166"></stop>
-                    <stop offset="100%" stop-color="#ffffff"></stop>
+                    <stop offset="0%" stopColor="#373737"></stop>
+                    <stop offset="10%" stopColor="#294767"></stop>
+                    <stop offset="20%" stopColor="#1e5b88"></stop>
+                    <stop offset="30%" stopColor="#1a748b"></stop>
+                    <stop offset="40%" stopColor="#1f8e7e"></stop>
+                    <stop offset="50%" stopColor="#29a869"></stop>
+                    <stop offset="60%" stopColor="#6abf50"></stop>
+                    <stop offset="70%" stopColor="#aad332"></stop>
+                    <stop offset="80%" stopColor="#eae30d"></stop>
+                    <stop offset="90%" stopColor="#fff166"></stop>
+                    <stop offset="100%" stopColor="#ffffff"></stop>
                 </linearGradient>
             </defs>
             <rect fill="url(#gradient-darkmulti)" x="0" y="0" width="1" height="1"></rect>
@@ -514,17 +514,17 @@ function load() {
         <svg viewBox="0,0,1,1" preserveAspectRatio="none">
             <defs>
                 <linearGradient id="gradient-darkred">
-                    <stop offset="0%" stop-color="#343434"></stop>
-                    <stop offset="10%" stop-color="#643633"></stop>
-                    <stop offset="20%" stop-color="#8c3a36"></stop>
-                    <stop offset="30%" stop-color="#b03e38"></stop>
-                    <stop offset="40%" stop-color="#d14632"></stop>
-                    <stop offset="50%" stop-color="#e75d1e"></stop>
-                    <stop offset="60%" stop-color="#eb7e20"></stop>
-                    <stop offset="70%" stop-color="#ed9c25"></stop>
-                    <stop offset="80%" stop-color="#efb92d"></stop>
-                    <stop offset="90%" stop-color="#f3d431"></stop>
-                    <stop offset="100%" stop-color="#ffeb2c"></stop>
+                    <stop offset="0%" stopColor="#343434"></stop>
+                    <stop offset="10%" stopColor="#643633"></stop>
+                    <stop offset="20%" stopColor="#8c3a36"></stop>
+                    <stop offset="30%" stopColor="#b03e38"></stop>
+                    <stop offset="40%" stopColor="#d14632"></stop>
+                    <stop offset="50%" stopColor="#e75d1e"></stop>
+                    <stop offset="60%" stopColor="#eb7e20"></stop>
+                    <stop offset="70%" stopColor="#ed9c25"></stop>
+                    <stop offset="80%" stopColor="#efb92d"></stop>
+                    <stop offset="90%" stopColor="#f3d431"></stop>
+                    <stop offset="100%" stopColor="#ffeb2c"></stop>
                 </linearGradient>
             </defs>
             <rect fill="url(#gradient-darkred)" x="0" y="0" width="1" height="1"></rect>
@@ -534,17 +534,17 @@ function load() {
         <svg viewBox="0,0,1,1" preserveAspectRatio="none">
             <defs>
                 <linearGradient id="gradient-lightgreyred">
-                    <stop offset="0%" stop-color="#efe9e6"></stop>
-                    <stop offset="10%" stop-color="#e2dcd9"></stop>
-                    <stop offset="20%" stop-color="#d7cecb"></stop>
-                    <stop offset="30%" stop-color="#ccc1be"></stop>
-                    <stop offset="40%" stop-color="#c0b4af"></stop>
-                    <stop offset="50%" stop-color="#c4a293"></stop>
-                    <stop offset="60%" stop-color="#d38b66"></stop>
-                    <stop offset="70%" stop-color="#de7336"></stop>
-                    <stop offset="80%" stop-color="#e15917"></stop>
-                    <stop offset="90%" stop-color="#df3a10"></stop>
-                    <stop offset="100%" stop-color="#dc000b"></stop>
+                    <stop offset="0%" stopColor="#efe9e6"></stop>
+                    <stop offset="10%" stopColor="#e2dcd9"></stop>
+                    <stop offset="20%" stopColor="#d7cecb"></stop>
+                    <stop offset="30%" stopColor="#ccc1be"></stop>
+                    <stop offset="40%" stopColor="#c0b4af"></stop>
+                    <stop offset="50%" stopColor="#c4a293"></stop>
+                    <stop offset="60%" stopColor="#d38b66"></stop>
+                    <stop offset="70%" stopColor="#de7336"></stop>
+                    <stop offset="80%" stopColor="#e15917"></stop>
+                    <stop offset="90%" stopColor="#df3a10"></stop>
+                    <stop offset="100%" stopColor="#dc000b"></stop>
                 </linearGradient>
             </defs>
             <rect fill="url(#gradient-lightgreyred)" x="0" y="0" width="1" height="1"></rect>
@@ -554,17 +554,17 @@ function load() {
         <svg viewBox="0,0,1,1" preserveAspectRatio="none">
             <defs>
                 <linearGradient id="gradient-lightgreyteal">
-                    <stop offset="0%" stop-color="#e4eaea"></stop>
-                    <stop offset="10%" stop-color="#d7ddde"></stop>
-                    <stop offset="20%" stop-color="#cbd1d4"></stop>
-                    <stop offset="30%" stop-color="#bcc6ca"></stop>
-                    <stop offset="40%" stop-color="#adbac0"></stop>
-                    <stop offset="50%" stop-color="#85b2be"></stop>
-                    <stop offset="60%" stop-color="#4aacc1"></stop>
-                    <stop offset="70%" stop-color="#22a1c2"></stop>
-                    <stop offset="80%" stop-color="#2192c0"></stop>
-                    <stop offset="90%" stop-color="#1e84be"></stop>
-                    <stop offset="100%" stop-color="#1876bc"></stop>
+                    <stop offset="0%" stopColor="#e4eaea"></stop>
+                    <stop offset="10%" stopColor="#d7ddde"></stop>
+                    <stop offset="20%" stopColor="#cbd1d4"></stop>
+                    <stop offset="30%" stopColor="#bcc6ca"></stop>
+                    <stop offset="40%" stopColor="#adbac0"></stop>
+                    <stop offset="50%" stopColor="#85b2be"></stop>
+                    <stop offset="60%" stopColor="#4aacc1"></stop>
+                    <stop offset="70%" stopColor="#22a1c2"></stop>
+                    <stop offset="80%" stopColor="#2192c0"></stop>
+                    <stop offset="90%" stopColor="#1e84be"></stop>
+                    <stop offset="100%" stopColor="#1876bc"></stop>
                 </linearGradient>
             </defs>
             <rect fill="url(#gradient-lightgreyteal)" x="0" y="0" width="1" height="1"></rect>
@@ -574,17 +574,17 @@ function load() {
         <svg viewBox="0,0,1,1" preserveAspectRatio="none">
             <defs>
                 <linearGradient id="gradient-lightmulti">
-                    <stop offset="0%" stop-color="#e0f1f2"></stop>
-                    <stop offset="10%" stop-color="#caebd7"></stop>
-                    <stop offset="20%" stop-color="#b8e2b3"></stop>
-                    <stop offset="30%" stop-color="#bddf93"></stop>
-                    <stop offset="40%" stop-color="#d8e17e"></stop>
-                    <stop offset="50%" stop-color="#f6e072"></stop>
-                    <stop offset="60%" stop-color="#f6c659"></stop>
-                    <stop offset="70%" stop-color="#f4a946"></stop>
-                    <stop offset="80%" stop-color="#f58a3f"></stop>
-                    <stop offset="90%" stop-color="#f56c3f"></stop>
-                    <stop offset="100%" stop-color="#ef4a3c"></stop>
+                    <stop offset="0%" stopColor="#e0f1f2"></stop>
+                    <stop offset="10%" stopColor="#caebd7"></stop>
+                    <stop offset="20%" stopColor="#b8e2b3"></stop>
+                    <stop offset="30%" stopColor="#bddf93"></stop>
+                    <stop offset="40%" stopColor="#d8e17e"></stop>
+                    <stop offset="50%" stopColor="#f6e072"></stop>
+                    <stop offset="60%" stopColor="#f6c659"></stop>
+                    <stop offset="70%" stopColor="#f4a946"></stop>
+                    <stop offset="80%" stopColor="#f58a3f"></stop>
+                    <stop offset="90%" stopColor="#f56c3f"></stop>
+                    <stop offset="100%" stopColor="#ef4a3c"></stop>
                 </linearGradient>
             </defs>
             <rect fill="url(#gradient-lightmulti)" x="0" y="0" width="1" height="1"></rect>
@@ -594,17 +594,17 @@ function load() {
         <svg viewBox="0,0,1,1" preserveAspectRatio="none">
             <defs>
                 <linearGradient id="gradient-lightorange">
-                    <stop offset="0%" stop-color="#f2e7da"></stop>
-                    <stop offset="10%" stop-color="#f7d7bd"></stop>
-                    <stop offset="20%" stop-color="#f9c7a0"></stop>
-                    <stop offset="30%" stop-color="#fab78a"></stop>
-                    <stop offset="40%" stop-color="#faa47a"></stop>
-                    <stop offset="50%" stop-color="#f8936d"></stop>
-                    <stop offset="60%" stop-color="#f38264"></stop>
-                    <stop offset="70%" stop-color="#ed725f"></stop>
-                    <stop offset="80%" stop-color="#e6605b"></stop>
-                    <stop offset="90%" stop-color="#dd4f5b"></stop>
-                    <stop offset="100%" stop-color="#d43d5b"></stop>
+                    <stop offset="0%" stopColor="#f2e7da"></stop>
+                    <stop offset="10%" stopColor="#f7d7bd"></stop>
+                    <stop offset="20%" stopColor="#f9c7a0"></stop>
+                    <stop offset="30%" stopColor="#fab78a"></stop>
+                    <stop offset="40%" stopColor="#faa47a"></stop>
+                    <stop offset="50%" stopColor="#f8936d"></stop>
+                    <stop offset="60%" stopColor="#f38264"></stop>
+                    <stop offset="70%" stopColor="#ed725f"></stop>
+                    <stop offset="80%" stopColor="#e6605b"></stop>
+                    <stop offset="90%" stopColor="#dd4f5b"></stop>
+                    <stop offset="100%" stopColor="#d43d5b"></stop>
                 </linearGradient>
             </defs>
             <rect fill="url(#gradient-lightorange)" x="0" y="0" width="1" height="1"></rect>
@@ -614,17 +614,17 @@ function load() {
         <svg viewBox="0,0,1,1" preserveAspectRatio="none">
             <defs>
                 <linearGradient id="gradient-lighttealblue">
-                    <stop offset="0%" stop-color="#e3e9e0"></stop>
-                    <stop offset="10%" stop-color="#c4ddd1"></stop>
-                    <stop offset="20%" stop-color="#a2d1cb"></stop>
-                    <stop offset="30%" stop-color="#84c4c9"></stop>
-                    <stop offset="40%" stop-color="#66b5c3"></stop>
-                    <stop offset="50%" stop-color="#49a7bd"></stop>
-                    <stop offset="60%" stop-color="#3698b4"></stop>
-                    <stop offset="70%" stop-color="#3188a9"></stop>
-                    <stop offset="80%" stop-color="#2d799e"></stop>
-                    <stop offset="90%" stop-color="#276994"></stop>
-                    <stop offset="100%" stop-color="#255988"></stop>
+                    <stop offset="0%" stopColor="#e3e9e0"></stop>
+                    <stop offset="10%" stopColor="#c4ddd1"></stop>
+                    <stop offset="20%" stopColor="#a2d1cb"></stop>
+                    <stop offset="30%" stopColor="#84c4c9"></stop>
+                    <stop offset="40%" stopColor="#66b5c3"></stop>
+                    <stop offset="50%" stopColor="#49a7bd"></stop>
+                    <stop offset="60%" stopColor="#3698b4"></stop>
+                    <stop offset="70%" stopColor="#3188a9"></stop>
+                    <stop offset="80%" stopColor="#2d799e"></stop>
+                    <stop offset="90%" stopColor="#276994"></stop>
+                    <stop offset="100%" stopColor="#255988"></stop>
                 </linearGradient>
             </defs>
             <rect fill="url(#gradient-lighttealblue)" x="0" y="0" width="1" height="1"></rect>
