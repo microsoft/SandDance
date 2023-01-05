@@ -30,6 +30,7 @@ title: Examples
 * [Power BI custom visual](../dist/powerbi/v4/SandDance201929976D117A654D0BAB8E96507442D80B.4.1.0.pbiviz) 4.1.0
 * [Azure Data Studio extension](../dist/azdata/v4/azdata-sanddance-4.0.1.vsix) 4.0.1
 * [VSCode extension](../dist/vscode/v4/vscode-sanddance-4.0.2.vsix) 4.0.2
+* [sanddance-embed example](../embed/v4/test.html)
 
 ## Previous versions
 
