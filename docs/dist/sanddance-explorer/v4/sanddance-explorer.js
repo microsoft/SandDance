@@ -40106,7 +40106,7 @@ const $29728562a99c68a2$export$8e76ac9f37578d1b = {
 
 
 
-const $f56a95f33c4cc847$export$83d89fbfd8236492 = "4.0.4";
+const $f56a95f33c4cc847$export$83d89fbfd8236492 = "4.0.5";
 
 
 var $4805700d8b417596$var$SandDance = $3b509b9541e52a8f$exports;
@@ -43197,37 +43197,37 @@ function $57753212e15ef295$var$load() {
         id: "gradient-rainbow"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "0%",
-        "stop-color": "#6e40aa"
+        stopColor: "#6e40aa"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "10%",
-        "stop-color": "#bf3caf"
+        stopColor: "#bf3caf"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "20%",
-        "stop-color": "#fe4b83"
+        stopColor: "#fe4b83"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "30%",
-        "stop-color": "#ff7847"
+        stopColor: "#ff7847"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "40%",
-        "stop-color": "#e2b72f"
+        stopColor: "#e2b72f"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "50%",
-        "stop-color": "#aff05b"
+        stopColor: "#aff05b"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "60%",
-        "stop-color": "#52f667"
+        stopColor: "#52f667"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "70%",
-        "stop-color": "#1ddfa3"
+        stopColor: "#1ddfa3"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "80%",
-        "stop-color": "#23abd8"
+        stopColor: "#23abd8"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "90%",
-        "stop-color": "#4c6edb"
+        stopColor: "#4c6edb"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "100%",
-        "stop-color": "#6e40aa"
+        stopColor: "#6e40aa"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-rainbow)",
         x: "0",
@@ -43242,37 +43242,37 @@ function $57753212e15ef295$var$load() {
         id: "gradient-sinebow"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "0%",
-        "stop-color": "#ff4040"
+        stopColor: "#ff4040"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "10%",
-        "stop-color": "#e78d0b"
+        stopColor: "#e78d0b"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "20%",
-        "stop-color": "#a7d503"
+        stopColor: "#a7d503"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "30%",
-        "stop-color": "#58fc2a"
+        stopColor: "#58fc2a"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "40%",
-        "stop-color": "#18f472"
+        stopColor: "#18f472"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "50%",
-        "stop-color": "#00bfbf"
+        stopColor: "#00bfbf"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "60%",
-        "stop-color": "#1872f4"
+        stopColor: "#1872f4"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "70%",
-        "stop-color": "#582afc"
+        stopColor: "#582afc"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "80%",
-        "stop-color": "#a703d5"
+        stopColor: "#a703d5"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "90%",
-        "stop-color": "#e70b8d"
+        stopColor: "#e70b8d"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "100%",
-        "stop-color": "#ff4040"
+        stopColor: "#ff4040"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-sinebow)",
         x: "0",
@@ -43984,37 +43984,37 @@ function $0876d32c36a80de2$var$load() {
         id: "gradient-cividis"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "0%",
-        "stop-color": "#002051"
+        stopColor: "#002051"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "10%",
-        "stop-color": "#0a326a"
+        stopColor: "#0a326a"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "20%",
-        "stop-color": "#2b446e"
+        stopColor: "#2b446e"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "30%",
-        "stop-color": "#4d566d"
+        stopColor: "#4d566d"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "40%",
-        "stop-color": "#696970"
+        stopColor: "#696970"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "50%",
-        "stop-color": "#7f7c75"
+        stopColor: "#7f7c75"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "60%",
-        "stop-color": "#948f78"
+        stopColor: "#948f78"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "70%",
-        "stop-color": "#ada476"
+        stopColor: "#ada476"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "80%",
-        "stop-color": "#caba6a"
+        stopColor: "#caba6a"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "90%",
-        "stop-color": "#ead156"
+        stopColor: "#ead156"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "100%",
-        "stop-color": "#fdea45"
+        stopColor: "#fdea45"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-cividis)",
         x: "0",
@@ -44029,37 +44029,37 @@ function $0876d32c36a80de2$var$load() {
         id: "gradient-turbo"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "0%",
-        "stop-color": "#23171b"
+        stopColor: "#23171b"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "10%",
-        "stop-color": "#4a58dd"
+        stopColor: "#4a58dd"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "20%",
-        "stop-color": "#2f9df5"
+        stopColor: "#2f9df5"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "30%",
-        "stop-color": "#27d7c4"
+        stopColor: "#27d7c4"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "40%",
-        "stop-color": "#4df884"
+        stopColor: "#4df884"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "50%",
-        "stop-color": "#95fb51"
+        stopColor: "#95fb51"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "60%",
-        "stop-color": "#dedd32"
+        stopColor: "#dedd32"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "70%",
-        "stop-color": "#ffa423"
+        stopColor: "#ffa423"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "80%",
-        "stop-color": "#f65f18"
+        stopColor: "#f65f18"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "90%",
-        "stop-color": "#ba2208"
+        stopColor: "#ba2208"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "100%",
-        "stop-color": "#900c00"
+        stopColor: "#900c00"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-turbo)",
         x: "0",
@@ -44164,37 +44164,37 @@ function $0876d32c36a80de2$var$load() {
         id: "gradient-goldgreen"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "0%",
-        "stop-color": "#f4d166"
+        stopColor: "#f4d166"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "10%",
-        "stop-color": "#d5ca60"
+        stopColor: "#d5ca60"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "20%",
-        "stop-color": "#b6c35c"
+        stopColor: "#b6c35c"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "30%",
-        "stop-color": "#98bb59"
+        stopColor: "#98bb59"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "40%",
-        "stop-color": "#7cb257"
+        stopColor: "#7cb257"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "50%",
-        "stop-color": "#60a656"
+        stopColor: "#60a656"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "60%",
-        "stop-color": "#4b9c53"
+        stopColor: "#4b9c53"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "70%",
-        "stop-color": "#3f8f4f"
+        stopColor: "#3f8f4f"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "80%",
-        "stop-color": "#33834a"
+        stopColor: "#33834a"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "90%",
-        "stop-color": "#257740"
+        stopColor: "#257740"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "100%",
-        "stop-color": "#146c36"
+        stopColor: "#146c36"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-goldgreen)",
         x: "0",
@@ -44209,37 +44209,37 @@ function $0876d32c36a80de2$var$load() {
         id: "gradient-goldorange"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "0%",
-        "stop-color": "#f4d166"
+        stopColor: "#f4d166"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "10%",
-        "stop-color": "#f8be5c"
+        stopColor: "#f8be5c"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "20%",
-        "stop-color": "#f8aa4c"
+        stopColor: "#f8aa4c"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "30%",
-        "stop-color": "#f5983b"
+        stopColor: "#f5983b"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "40%",
-        "stop-color": "#f3852a"
+        stopColor: "#f3852a"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "50%",
-        "stop-color": "#ef701b"
+        stopColor: "#ef701b"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "60%",
-        "stop-color": "#e2621f"
+        stopColor: "#e2621f"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "70%",
-        "stop-color": "#d65322"
+        stopColor: "#d65322"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "80%",
-        "stop-color": "#c54923"
+        stopColor: "#c54923"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "90%",
-        "stop-color": "#b14223"
+        stopColor: "#b14223"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "100%",
-        "stop-color": "#9e3a26"
+        stopColor: "#9e3a26"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-goldorange)",
         x: "0",
@@ -44254,37 +44254,37 @@ function $0876d32c36a80de2$var$load() {
         id: "gradient-goldred"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "0%",
-        "stop-color": "#f4d166"
+        stopColor: "#f4d166"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "10%",
-        "stop-color": "#f6be59"
+        stopColor: "#f6be59"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "20%",
-        "stop-color": "#f9aa51"
+        stopColor: "#f9aa51"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "30%",
-        "stop-color": "#fc964e"
+        stopColor: "#fc964e"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "40%",
-        "stop-color": "#f6834b"
+        stopColor: "#f6834b"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "50%",
-        "stop-color": "#ee734a"
+        stopColor: "#ee734a"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "60%",
-        "stop-color": "#e56249"
+        stopColor: "#e56249"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "70%",
-        "stop-color": "#db5247"
+        stopColor: "#db5247"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "80%",
-        "stop-color": "#cf4244"
+        stopColor: "#cf4244"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "90%",
-        "stop-color": "#c43141"
+        stopColor: "#c43141"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "100%",
-        "stop-color": "#b71d3e"
+        stopColor: "#b71d3e"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-goldred)",
         x: "0",
@@ -44749,37 +44749,37 @@ function $0876d32c36a80de2$var$load() {
         id: "gradient-darkblue"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "0%",
-        "stop-color": "#323232"
+        stopColor: "#323232"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "10%",
-        "stop-color": "#2e4463"
+        stopColor: "#2e4463"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "20%",
-        "stop-color": "#1e588a"
+        stopColor: "#1e588a"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "30%",
-        "stop-color": "#086da7"
+        stopColor: "#086da7"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "40%",
-        "stop-color": "#0082b9"
+        stopColor: "#0082b9"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "50%",
-        "stop-color": "#039ac7"
+        stopColor: "#039ac7"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "60%",
-        "stop-color": "#12b1d4"
+        stopColor: "#12b1d4"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "70%",
-        "stop-color": "#2bc8e2"
+        stopColor: "#2bc8e2"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "80%",
-        "stop-color": "#3ddff0"
+        stopColor: "#3ddff0"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "90%",
-        "stop-color": "#61f4fb"
+        stopColor: "#61f4fb"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "100%",
-        "stop-color": "#ffffff"
+        stopColor: "#ffffff"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-darkblue)",
         x: "0",
@@ -44794,37 +44794,37 @@ function $0876d32c36a80de2$var$load() {
         id: "gradient-darkgold"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "0%",
-        "stop-color": "#3c3c3c"
+        stopColor: "#3c3c3c"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "10%",
-        "stop-color": "#554a38"
+        stopColor: "#554a38"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "20%",
-        "stop-color": "#6d5a35"
+        stopColor: "#6d5a35"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "30%",
-        "stop-color": "#846f32"
+        stopColor: "#846f32"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "40%",
-        "stop-color": "#a0832d"
+        stopColor: "#a0832d"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "50%",
-        "stop-color": "#bf9828"
+        stopColor: "#bf9828"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "60%",
-        "stop-color": "#dbb022"
+        stopColor: "#dbb022"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "70%",
-        "stop-color": "#f0cb23"
+        stopColor: "#f0cb23"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "80%",
-        "stop-color": "#fae241"
+        stopColor: "#fae241"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "90%",
-        "stop-color": "#fff290"
+        stopColor: "#fff290"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "100%",
-        "stop-color": "#ffffff"
+        stopColor: "#ffffff"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-darkgold)",
         x: "0",
@@ -44839,37 +44839,37 @@ function $0876d32c36a80de2$var$load() {
         id: "gradient-darkgreen"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "0%",
-        "stop-color": "#3a3a3a"
+        stopColor: "#3a3a3a"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "10%",
-        "stop-color": "#245447"
+        stopColor: "#245447"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "20%",
-        "stop-color": "#076a4c"
+        stopColor: "#076a4c"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "30%",
-        "stop-color": "#038145"
+        stopColor: "#038145"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "40%",
-        "stop-color": "#2d9642"
+        stopColor: "#2d9642"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "50%",
-        "stop-color": "#5fa941"
+        stopColor: "#5fa941"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "60%",
-        "stop-color": "#89bb3f"
+        stopColor: "#89bb3f"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "70%",
-        "stop-color": "#b3cb3b"
+        stopColor: "#b3cb3b"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "80%",
-        "stop-color": "#dbdc34"
+        stopColor: "#dbdc34"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "90%",
-        "stop-color": "#ffed39"
+        stopColor: "#ffed39"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "100%",
-        "stop-color": "#ffffaa"
+        stopColor: "#ffffaa"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-darkgreen)",
         x: "0",
@@ -44884,37 +44884,37 @@ function $0876d32c36a80de2$var$load() {
         id: "gradient-darkmulti"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "0%",
-        "stop-color": "#373737"
+        stopColor: "#373737"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "10%",
-        "stop-color": "#294767"
+        stopColor: "#294767"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "20%",
-        "stop-color": "#1e5b88"
+        stopColor: "#1e5b88"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "30%",
-        "stop-color": "#1a748b"
+        stopColor: "#1a748b"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "40%",
-        "stop-color": "#1f8e7e"
+        stopColor: "#1f8e7e"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "50%",
-        "stop-color": "#29a869"
+        stopColor: "#29a869"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "60%",
-        "stop-color": "#6abf50"
+        stopColor: "#6abf50"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "70%",
-        "stop-color": "#aad332"
+        stopColor: "#aad332"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "80%",
-        "stop-color": "#eae30d"
+        stopColor: "#eae30d"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "90%",
-        "stop-color": "#fff166"
+        stopColor: "#fff166"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "100%",
-        "stop-color": "#ffffff"
+        stopColor: "#ffffff"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-darkmulti)",
         x: "0",
@@ -44929,37 +44929,37 @@ function $0876d32c36a80de2$var$load() {
         id: "gradient-darkred"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "0%",
-        "stop-color": "#343434"
+        stopColor: "#343434"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "10%",
-        "stop-color": "#643633"
+        stopColor: "#643633"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "20%",
-        "stop-color": "#8c3a36"
+        stopColor: "#8c3a36"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "30%",
-        "stop-color": "#b03e38"
+        stopColor: "#b03e38"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "40%",
-        "stop-color": "#d14632"
+        stopColor: "#d14632"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "50%",
-        "stop-color": "#e75d1e"
+        stopColor: "#e75d1e"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "60%",
-        "stop-color": "#eb7e20"
+        stopColor: "#eb7e20"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "70%",
-        "stop-color": "#ed9c25"
+        stopColor: "#ed9c25"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "80%",
-        "stop-color": "#efb92d"
+        stopColor: "#efb92d"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "90%",
-        "stop-color": "#f3d431"
+        stopColor: "#f3d431"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "100%",
-        "stop-color": "#ffeb2c"
+        stopColor: "#ffeb2c"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-darkred)",
         x: "0",
@@ -44974,37 +44974,37 @@ function $0876d32c36a80de2$var$load() {
         id: "gradient-lightgreyred"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "0%",
-        "stop-color": "#efe9e6"
+        stopColor: "#efe9e6"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "10%",
-        "stop-color": "#e2dcd9"
+        stopColor: "#e2dcd9"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "20%",
-        "stop-color": "#d7cecb"
+        stopColor: "#d7cecb"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "30%",
-        "stop-color": "#ccc1be"
+        stopColor: "#ccc1be"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "40%",
-        "stop-color": "#c0b4af"
+        stopColor: "#c0b4af"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "50%",
-        "stop-color": "#c4a293"
+        stopColor: "#c4a293"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "60%",
-        "stop-color": "#d38b66"
+        stopColor: "#d38b66"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "70%",
-        "stop-color": "#de7336"
+        stopColor: "#de7336"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "80%",
-        "stop-color": "#e15917"
+        stopColor: "#e15917"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "90%",
-        "stop-color": "#df3a10"
+        stopColor: "#df3a10"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "100%",
-        "stop-color": "#dc000b"
+        stopColor: "#dc000b"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-lightgreyred)",
         x: "0",
@@ -45019,37 +45019,37 @@ function $0876d32c36a80de2$var$load() {
         id: "gradient-lightgreyteal"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "0%",
-        "stop-color": "#e4eaea"
+        stopColor: "#e4eaea"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "10%",
-        "stop-color": "#d7ddde"
+        stopColor: "#d7ddde"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "20%",
-        "stop-color": "#cbd1d4"
+        stopColor: "#cbd1d4"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "30%",
-        "stop-color": "#bcc6ca"
+        stopColor: "#bcc6ca"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "40%",
-        "stop-color": "#adbac0"
+        stopColor: "#adbac0"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "50%",
-        "stop-color": "#85b2be"
+        stopColor: "#85b2be"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "60%",
-        "stop-color": "#4aacc1"
+        stopColor: "#4aacc1"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "70%",
-        "stop-color": "#22a1c2"
+        stopColor: "#22a1c2"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "80%",
-        "stop-color": "#2192c0"
+        stopColor: "#2192c0"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "90%",
-        "stop-color": "#1e84be"
+        stopColor: "#1e84be"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "100%",
-        "stop-color": "#1876bc"
+        stopColor: "#1876bc"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-lightgreyteal)",
         x: "0",
@@ -45064,37 +45064,37 @@ function $0876d32c36a80de2$var$load() {
         id: "gradient-lightmulti"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "0%",
-        "stop-color": "#e0f1f2"
+        stopColor: "#e0f1f2"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "10%",
-        "stop-color": "#caebd7"
+        stopColor: "#caebd7"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "20%",
-        "stop-color": "#b8e2b3"
+        stopColor: "#b8e2b3"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "30%",
-        "stop-color": "#bddf93"
+        stopColor: "#bddf93"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "40%",
-        "stop-color": "#d8e17e"
+        stopColor: "#d8e17e"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "50%",
-        "stop-color": "#f6e072"
+        stopColor: "#f6e072"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "60%",
-        "stop-color": "#f6c659"
+        stopColor: "#f6c659"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "70%",
-        "stop-color": "#f4a946"
+        stopColor: "#f4a946"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "80%",
-        "stop-color": "#f58a3f"
+        stopColor: "#f58a3f"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "90%",
-        "stop-color": "#f56c3f"
+        stopColor: "#f56c3f"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "100%",
-        "stop-color": "#ef4a3c"
+        stopColor: "#ef4a3c"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-lightmulti)",
         x: "0",
@@ -45109,37 +45109,37 @@ function $0876d32c36a80de2$var$load() {
         id: "gradient-lightorange"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "0%",
-        "stop-color": "#f2e7da"
+        stopColor: "#f2e7da"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "10%",
-        "stop-color": "#f7d7bd"
+        stopColor: "#f7d7bd"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "20%",
-        "stop-color": "#f9c7a0"
+        stopColor: "#f9c7a0"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "30%",
-        "stop-color": "#fab78a"
+        stopColor: "#fab78a"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "40%",
-        "stop-color": "#faa47a"
+        stopColor: "#faa47a"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "50%",
-        "stop-color": "#f8936d"
+        stopColor: "#f8936d"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "60%",
-        "stop-color": "#f38264"
+        stopColor: "#f38264"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "70%",
-        "stop-color": "#ed725f"
+        stopColor: "#ed725f"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "80%",
-        "stop-color": "#e6605b"
+        stopColor: "#e6605b"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "90%",
-        "stop-color": "#dd4f5b"
+        stopColor: "#dd4f5b"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "100%",
-        "stop-color": "#d43d5b"
+        stopColor: "#d43d5b"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-lightorange)",
         x: "0",
@@ -45154,37 +45154,37 @@ function $0876d32c36a80de2$var$load() {
         id: "gradient-lighttealblue"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "0%",
-        "stop-color": "#e3e9e0"
+        stopColor: "#e3e9e0"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "10%",
-        "stop-color": "#c4ddd1"
+        stopColor: "#c4ddd1"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "20%",
-        "stop-color": "#a2d1cb"
+        stopColor: "#a2d1cb"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "30%",
-        "stop-color": "#84c4c9"
+        stopColor: "#84c4c9"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "40%",
-        "stop-color": "#66b5c3"
+        stopColor: "#66b5c3"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "50%",
-        "stop-color": "#49a7bd"
+        stopColor: "#49a7bd"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "60%",
-        "stop-color": "#3698b4"
+        stopColor: "#3698b4"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "70%",
-        "stop-color": "#3188a9"
+        stopColor: "#3188a9"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "80%",
-        "stop-color": "#2d799e"
+        stopColor: "#2d799e"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "90%",
-        "stop-color": "#276994"
+        stopColor: "#276994"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "100%",
-        "stop-color": "#255988"
+        stopColor: "#255988"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-lighttealblue)",
         x: "0",
@@ -45290,37 +45290,37 @@ function $39078f876ce15481$var$load() {
         id: "gradient-tealblues"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "0%",
-        "stop-color": "#bce4d8"
+        stopColor: "#bce4d8"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "10%",
-        "stop-color": "#a3d6d2"
+        stopColor: "#a3d6d2"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "20%",
-        "stop-color": "#8cc9cd"
+        stopColor: "#8cc9cd"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "30%",
-        "stop-color": "#76bdc7"
+        stopColor: "#76bdc7"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "40%",
-        "stop-color": "#5fb0c0"
+        stopColor: "#5fb0c0"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "50%",
-        "stop-color": "#45a2b9"
+        stopColor: "#45a2b9"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "60%",
-        "stop-color": "#3993b0"
+        stopColor: "#3993b0"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "70%",
-        "stop-color": "#3584a6"
+        stopColor: "#3584a6"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "80%",
-        "stop-color": "#32759b"
+        stopColor: "#32759b"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "90%",
-        "stop-color": "#2f6790"
+        stopColor: "#2f6790"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "100%",
-        "stop-color": "#2c5985"
+        stopColor: "#2c5985"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-tealblues)",
         x: "0",
@@ -45335,37 +45335,37 @@ function $39078f876ce15481$var$load() {
         id: "gradient-teals"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "0%",
-        "stop-color": "#bbdfdf"
+        stopColor: "#bbdfdf"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "10%",
-        "stop-color": "#a2d4d5"
+        stopColor: "#a2d4d5"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "20%",
-        "stop-color": "#8ac9c9"
+        stopColor: "#8ac9c9"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "30%",
-        "stop-color": "#75bcbb"
+        stopColor: "#75bcbb"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "40%",
-        "stop-color": "#61b0af"
+        stopColor: "#61b0af"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "50%",
-        "stop-color": "#4da5a4"
+        stopColor: "#4da5a4"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "60%",
-        "stop-color": "#379998"
+        stopColor: "#379998"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "70%",
-        "stop-color": "#2b8b8c"
+        stopColor: "#2b8b8c"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "80%",
-        "stop-color": "#1e7f7f"
+        stopColor: "#1e7f7f"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "90%",
-        "stop-color": "#127273"
+        stopColor: "#127273"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "100%",
-        "stop-color": "#006667"
+        stopColor: "#006667"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-teals)",
         x: "0",
@@ -45515,37 +45515,37 @@ function $39078f876ce15481$var$load() {
         id: "gradient-browns"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "0%",
-        "stop-color": "#eedbbd"
+        stopColor: "#eedbbd"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "10%",
-        "stop-color": "#ecca96"
+        stopColor: "#ecca96"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "20%",
-        "stop-color": "#e9b97a"
+        stopColor: "#e9b97a"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "30%",
-        "stop-color": "#e4a865"
+        stopColor: "#e4a865"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "40%",
-        "stop-color": "#dc9856"
+        stopColor: "#dc9856"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "50%",
-        "stop-color": "#d18954"
+        stopColor: "#d18954"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "60%",
-        "stop-color": "#c7784c"
+        stopColor: "#c7784c"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "70%",
-        "stop-color": "#c0673f"
+        stopColor: "#c0673f"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "80%",
-        "stop-color": "#b85536"
+        stopColor: "#b85536"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "90%",
-        "stop-color": "#ad4433"
+        stopColor: "#ad4433"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "100%",
-        "stop-color": "#9f3632"
+        stopColor: "#9f3632"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-browns)",
         x: "0",
@@ -45650,37 +45650,37 @@ function $39078f876ce15481$var$load() {
         id: "gradient-warmgreys"
     }, (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "0%",
-        "stop-color": "#dcd4d0"
+        stopColor: "#dcd4d0"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "10%",
-        "stop-color": "#cec5c1"
+        stopColor: "#cec5c1"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "20%",
-        "stop-color": "#c0b8b4"
+        stopColor: "#c0b8b4"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "30%",
-        "stop-color": "#b3aaa7"
+        stopColor: "#b3aaa7"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "40%",
-        "stop-color": "#a59c99"
+        stopColor: "#a59c99"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "50%",
-        "stop-color": "#98908c"
+        stopColor: "#98908c"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "60%",
-        "stop-color": "#8b827f"
+        stopColor: "#8b827f"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "70%",
-        "stop-color": "#7e7673"
+        stopColor: "#7e7673"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "80%",
-        "stop-color": "#726866"
+        stopColor: "#726866"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "90%",
-        "stop-color": "#665c5a"
+        stopColor: "#665c5a"
     }), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("stop", {
         offset: "100%",
-        "stop-color": "#59504e"
+        stopColor: "#59504e"
     }))), (0, $8535c575077b9670$export$e2253033e6e1df16).react.createElement("rect", {
         fill: "url(#gradient-warmgreys)",
         x: "0",
