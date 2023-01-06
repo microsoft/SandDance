@@ -127,7 +127,8 @@ export class Scatter extends Layout {
             addScales(globalScope.scope,
                 {
                     name: names.sizeScale,
-                    type: 'linear',
+                    type: 'pow',
+                    exponent: 0.5,
                     domain: [0, { signal: `${names.sizeExtent}[1]` }],
                     range: [0, { signal: names.sizeRange }],
                 },
