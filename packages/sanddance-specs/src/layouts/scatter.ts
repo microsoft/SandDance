@@ -128,7 +128,7 @@ export class Scatter extends Layout {
                 {
                     name: names.sizeScale,
                     type: 'pow',
-                    exponent: 1 / (view === '3d' ? 3 : 2),
+                    exponent: 0.5,
                     domain: [0, { signal: `${names.sizeExtent}[1]` }],
                     range: [0, { signal: names.sizeRange }],
                 },
