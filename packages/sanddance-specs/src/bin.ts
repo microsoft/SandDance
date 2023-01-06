@@ -14,6 +14,7 @@ import {
 } from 'vega-typings';
 import { debounce } from './defaults';
 import { dataExtent } from './transforms';
+import { Column } from '@msrvida/chart-types';
 
 export interface BaseBinnable {
     fields: string[];
@@ -76,6 +77,7 @@ export function binnable(prefix: string, domainDataName: string, discreteColumn:
             extent: {
                 signal: `[${extentSignal}[0], ${extentSignal}[1] + 1e-11]`, //add a tiny bit to the upper extent to force the extra bin - https://github.com/vega/vega/issues/2899
             },
+            minstep: shouldBeIntegralBinStep(column) ? 1 : 0,
             maxbins: {
                 signal: maxbinsSignalName,
             },
@@ -167,4 +169,9 @@ export function outerExtentSignal(name: string, min: number, max: number, dataEx
         name,
         update: `[min(${min}, ${dataExtent}[0]), max(${max}, ${dataExtent}[1])]`,
     };
+}
+
+export function shouldBeIntegralBinStep(column: Column) {
+    //prevent Vega from showing ".5" steps between integer scale values
+    return column.quantitative && (column.type === 'integer' && (column.stats.max - column.stats.min) <= 7);
 }
