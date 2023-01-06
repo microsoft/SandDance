@@ -49353,6 +49353,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "binnable", ()=>binnable);
 parcelHelpers.export(exports, "outerExtentSignal", ()=>outerExtentSignal);
+parcelHelpers.export(exports, "shouldBeIntegralBinStep", ()=>shouldBeIntegralBinStep);
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -49397,6 +49398,7 @@ function binnable(prefix, domainDataName, discreteColumn, outerSignalExtents) {
             extent: {
                 signal: `[${extentSignal}[0], ${extentSignal}[1] + 1e-11]`
             },
+            minstep: shouldBeIntegralBinStep(column) ? 1 : 0,
             maxbins: {
                 signal: maxbinsSignalName
             }
@@ -49497,6 +49499,10 @@ function outerExtentSignal(name, min, max, dataExtent) {
         name,
         update: `[min(${min}, ${dataExtent}[0]), max(${max}, ${dataExtent}[1])]`
     };
+}
+function shouldBeIntegralBinStep(column) {
+    //prevent Vega from showing ".5" steps between integer scale values
+    return column.quantitative && column.type === "integer" && column.stats.max - column.stats.min <= 7;
 }
 
 },{"./constants":"3I5IU","./expr":"7TBI4","./defaults":"5kAFI","./transforms":"bWcDn","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"bWcDn":[function(require,module,exports) {
@@ -49909,7 +49915,8 @@ class Scatter extends (0, _layout.Layout) {
             });
             (0, _scope.addScales)(globalScope.scope, {
                 name: names.sizeScale,
-                type: "linear",
+                type: "pow",
+                exponent: 0.5,
                 domain: [
                     0,
                     {
@@ -50032,13 +50039,17 @@ class Scatter extends (0, _layout.Layout) {
             const { column , domain , reverse , scaleName , signal , xyz  } = cs;
             if (!column) return;
             let scale;
-            if (column.quantitative) scale = (0, _scales.linearScale)(scaleName, domain, [
-                0,
-                {
-                    signal
-                }
-            ], reverse, false, showAxes);
-            else scale = (0, _scales.pointScale)(scaleName, globalScope.data.name, [
+            if (column.quantitative) {
+                scale = (0, _scales.linearScale)(scaleName, domain, [
+                    0,
+                    {
+                        signal
+                    }
+                ], reverse, false, showAxes);
+                if ((0, _bin.shouldBeIntegralBinStep)(column)) scale.bins = {
+                    step: 1
+                };
+            } else scale = (0, _scales.pointScale)(scaleName, globalScope.data.name, [
                 0,
                 {
                     signal

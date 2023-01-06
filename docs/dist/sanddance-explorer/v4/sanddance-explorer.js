@@ -3251,6 +3251,7 @@ function $02bd8e9b090c20c5$export$6868fd1605c79d3d(prefix, domainDataName, discr
             extent: {
                 signal: `[${extentSignal}[0], ${extentSignal}[1] + 1e-11]`
             },
+            minstep: $02bd8e9b090c20c5$export$a1300c781a434acb(column) ? 1 : 0,
             maxbins: {
                 signal: maxbinsSignalName
             }
@@ -3351,6 +3352,10 @@ function $02bd8e9b090c20c5$export$3794e0ea8ab2e895(name, min, max, dataExtent) {
         name: name,
         update: `[min(${min}, ${dataExtent}[0]), max(${max}, ${dataExtent}[1])]`
     };
+}
+function $02bd8e9b090c20c5$export$a1300c781a434acb(column) {
+    //prevent Vega from showing ".5" steps between integer scale values
+    return column.quantitative && column.type === "integer" && column.stats.max - column.stats.min <= 7;
 }
 
 
@@ -3880,7 +3885,8 @@ class $154b2c962cf38cfb$export$1c460fb4285edadc extends (0, $9d478b599f3cbcb3$ex
             });
             (0, $b15ad8fb3905384f$export$290268902279a991)(globalScope.scope, {
                 name: names.sizeScale,
-                type: "linear",
+                type: "pow",
+                exponent: 0.5,
                 domain: [
                     0,
                     {
@@ -4003,13 +4009,17 @@ class $154b2c962cf38cfb$export$1c460fb4285edadc extends (0, $9d478b599f3cbcb3$ex
             const { column: column , domain: domain , reverse: reverse , scaleName: scaleName , signal: signal , xyz: xyz  } = cs;
             if (!column) return;
             let scale;
-            if (column.quantitative) scale = (0, $c0bec0cf2b65a746$export$fefe9507ec0904ed)(scaleName, domain, [
-                0,
-                {
-                    signal: signal
-                }
-            ], reverse, false, showAxes);
-            else scale = (0, $c0bec0cf2b65a746$export$b67158f831e00d0d)(scaleName, globalScope.data.name, [
+            if (column.quantitative) {
+                scale = (0, $c0bec0cf2b65a746$export$fefe9507ec0904ed)(scaleName, domain, [
+                    0,
+                    {
+                        signal: signal
+                    }
+                ], reverse, false, showAxes);
+                if ((0, $02bd8e9b090c20c5$export$a1300c781a434acb)(column)) scale.bins = {
+                    step: 1
+                };
+            } else scale = (0, $c0bec0cf2b65a746$export$b67158f831e00d0d)(scaleName, globalScope.data.name, [
                 0,
                 {
                     signal: signal

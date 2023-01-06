@@ -2883,6 +2883,7 @@
                 extent: {
                     signal: `[${extentSignal}[0], ${extentSignal}[1] + 1e-11]`, //add a tiny bit to the upper extent to force the extra bin - https://github.com/vega/vega/issues/2899
                 },
+                minstep: shouldBeIntegralBinStep(column) ? 1 : 0,
                 maxbins: {
                     signal: maxbinsSignalName,
                 },
@@ -2974,6 +2975,10 @@
             name,
             update: `[min(${min}, ${dataExtent}[0]), max(${max}, ${dataExtent}[1])]`,
         };
+    }
+    function shouldBeIntegralBinStep(column) {
+        //prevent Vega from showing ".5" steps between integer scale values
+        return column.quantitative && (column.type === 'integer' && (column.stats.max - column.stats.min) <= 7);
     }
 
     /*!
@@ -3501,7 +3506,8 @@
                 });
                 addScales(globalScope.scope, {
                     name: names.sizeScale,
-                    type: 'linear',
+                    type: 'pow',
+                    exponent: 0.5,
                     domain: [0, { signal: `${names.sizeExtent}[1]` }],
                     range: [0, { signal: names.sizeRange }],
                 });
@@ -3620,6 +3626,9 @@
                 let scale;
                 if (column.quantitative) {
                     scale = linearScale(scaleName, domain, [0, { signal }], reverse, false, showAxes);
+                    if (shouldBeIntegralBinStep(column)) {
+                        scale.bins = { step: 1 };
+                    }
                 }
                 else {
                     scale = pointScale(scaleName, globalScope.data.name, [0, { signal }], column.name, reverse);
