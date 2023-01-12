@@ -5,7 +5,7 @@
 
 namespace SandDanceEmbed {
 
-    export function defaultDependencies(localDev = false) {
+    export function defaultDependencies(localDev = false, static = false) {
         const deps: EmbedDependency[] = [
             {
                 type: 'stylesheet',
@@ -56,14 +56,18 @@ namespace SandDanceEmbed {
                     : 'https://unpkg.com/@msrvida/sanddance-explorer@4'
                     }/dist/umd/sanddance-explorer.js`,
             },
-            {
-                type: 'script',
-                url: `${localDev
-                    ? '../..'
-                    : 'https://unpkg.com/@msrvida/sanddance-embed@4.4'
-                    }/dist/umd/sanddance-embed.js`,
-            },
         ];
+        if (static) {
+            deps.push(
+                {
+                    type: 'script',
+                    url: `${localDev
+                        ? '../..'
+                        : 'https://unpkg.com/@msrvida/sanddance-embed@4.4'
+                        }/dist/umd/sanddance-embed.js`,
+                },
+            );
+        }
         return deps;
     }
 }
