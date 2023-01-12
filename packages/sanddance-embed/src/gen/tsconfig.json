@@ -5,12 +5,11 @@
             "es2015"
         ],
         "skipLibCheck": true,
-        "outFile": "dist/umd/sanddance-embed.js"
+        "outFile": "../../scripts/gen.js"
     },
-    "exclude": [
-        "src/gen"
-    ],
     "include": [
-        "src"
+        "../types",
+        "../deps.ts",
+        "gen.ts"
     ]
 }

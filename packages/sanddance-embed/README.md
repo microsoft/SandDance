@@ -29,7 +29,11 @@ embedIframe.onload = () => {
 *Privacy: The page does not collect any data that you pass to SandDance Embed.*
 
 ## In-domain iframe
-In JavaScript, create a SandDance Embed iframe and await it to be ready:
+In your own website you can either [download a copy of the sanddance-embed.html file](https://microsoft.github.io/SandDance/embed/v4/sanddance-embed.html) and use it as above, or create an iframe dynamically.
+
+*Note the static html file approach will provide better performance, by utilizing the browser's built-in caching mechanisms to load scripts.*
+
+To dynamically create a SandDance Embed iframe in JavaScript:
 ```js
     const embedPromise = new Promise((resolve, reject) => {
         const embedIframe = document.createElement('iframe');

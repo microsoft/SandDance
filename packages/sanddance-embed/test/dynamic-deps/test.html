@@ -13,10 +13,12 @@
         <h1>sanddance embed test</h1>
     </header>
 
-    <iframe id="embed" title="embed" style="width: 90%; height: 700px" src="sanddance-embed.html"></iframe>
+    <iframe id="embed" title="embed" style="width: 90%; height: 700px"></iframe>
 
     <div>
         <button id="button_theme">toggle dark theme</button>
+        <a href="?">localDev</a>
+        <a href="?prod">prod</a>
     </div>
 
     <script>
@@ -25,13 +27,14 @@
         };
         const embedIframe = document.getElementById('embed');
         embedIframe.onload = () => {
-            fetch('../../sample-data/titanicmaster.tsv')
+            fetch('https://microsoft.github.io/SandDance/sample-data/titanicmaster.tsv')
                 .then(response => response.text())
                 .then(rawText => {
                     const data = { rawText, type: 'tsv' };
                     embedIframe.contentWindow.postMessage({ action: 'load', data, props: { theme: 'dark-theme' } }, '*');
                 });
         };
+        embedIframe.src = `target.html${location.search}`;
 
         let dark = true;
         const button_theme = document.getElementById('button_theme');
