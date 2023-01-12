@@ -13,7 +13,7 @@ function getHTML(localDev: boolean, extra: string = '') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SandDance</title>
-${defaultDependencies(localDev)
+${defaultDependencies(localDev, true)
             .filter(d => d.type === 'stylesheet')
             .map(d => {
                 return `    <link rel="stylesheet" type="text/css" href="${d.url}" />`;
@@ -22,7 +22,7 @@ ${defaultDependencies(localDev)
         }
 </head>
 <body>
-${defaultDependencies(localDev)
+${defaultDependencies(localDev, true)
             .filter(d => d.type === 'script')
             .map(d => {
                 return `    <script src="${d.url}"></script>`;
