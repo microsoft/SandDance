@@ -42,6 +42,36 @@ import * as SandDance from '@msrvida/sanddance';
 SandDance.use(vega);
 ```
 
+## Usage
+```js
+// Begin with an array of data objects which have the same named properties: 
+const data = [
+    { myX: 0, myY: 0, myZ: 0 },
+    { myX: 1, myY: 1, myZ: 1 },
+    { myX: 2, myY: 2, myZ: 2 },
+];
+
+// Create an instance of the [SandDance Viewer Class](https://microsoft.github.io/SandDance/docs/sanddance/v4/classes/Viewer.html) with an HTML DOM node to use for display:
+const viewer = new SandDance.Viewer(document.querySelector('#vis'));
+
+// Specify the chart by using an [Insight object](https://microsoft.github.io/SandDance/docs/sanddance/v4/interfaces/specs.Insight.html)
+const insight = {
+    columns: {
+        x: 'myX',
+        y: 'myY',
+        z: 'myZ'
+    },
+    size: {
+        height: 700,
+        width: 700
+    },
+    chart: 'scatterplot'
+};
+
+// Render a chart, by calling the viewer's [render method](https://microsoft.github.io/SandDance/docs/sanddance/v4/classes/Viewer.html#render), passing the insight and the data:
+viewer.render({ insight }, data);
+```
+
 ## Versions
 
 ### 4.0.0 Changes
