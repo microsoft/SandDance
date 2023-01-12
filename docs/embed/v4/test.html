@@ -13,7 +13,7 @@
         <h1>sanddance embed test</h1>
     </header>
 
-    <iframe id="embed" title="embed" style="width: 90%; height: 600px" src="sanddance-embed.html"></iframe>
+    <iframe id="embed" title="embed" style="width: 90%; height: 700px" src="sanddance-embed.html"></iframe>
 
     <div>
         <button id="button_theme">toggle dark theme</button>
@@ -25,12 +25,11 @@
         };
         const embedIframe = document.getElementById('embed');
         embedIframe.onload = () => {
-            const embedWindow = embedIframe.contentWindow;
             fetch('../../sample-data/titanicmaster.tsv')
                 .then(response => response.text())
                 .then(rawText => {
                     const data = { rawText, type: 'tsv' };
-                    embedWindow.postMessage({ action: 'load', data, props: { theme: 'dark-theme' } }, '*');
+                    embedIframe.contentWindow.postMessage({ action: 'load', data, props: { theme: 'dark-theme' } }, '*');
                 });
         };
 
@@ -40,6 +39,7 @@
             dark = !dark;
             embedIframe.contentWindow.postMessage({ action: 'theme', dark }, '*');
         };
+
     </script>
 
 </body>
