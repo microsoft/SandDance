@@ -14,8 +14,25 @@
     <script src="../../node_modules/@fluentui/react/dist/fluentui-react.js"></script>
     <script src="../../../sanddance-explorer/dist/umd/sanddance-explorer.js"></script>
     <script src="../../dist/umd/sanddance-embed.js"></script>
-    <script>
-    SandDanceEmbed.load([{"x":0,"y":0,"z":0},{"x":1,"y":1,"z":1},{"x":2,"y":2,"z":2}]);
-    </script>
+<script>
+const data = [
+    {
+        "x": 0,
+        "y": 0,
+        "z": 0
+    },
+    {
+        "x": 1,
+        "y": 1,
+        "z": 1
+    },
+    {
+        "x": 2,
+        "y": 2,
+        "z": 2
+    }
+];
+SandDanceEmbed.load(data);
+</script>
 </body>
 </html>

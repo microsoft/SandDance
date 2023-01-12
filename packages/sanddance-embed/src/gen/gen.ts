@@ -46,7 +46,7 @@ const data = [
     { x: 1, y: 1, z: 1 },
     { x: 2, y: 2, z: 2 },
 ];
-writeHTML('../test/standalone/test.html', true, `    <script>\n    SandDanceEmbed.load(${JSON.stringify(data)});\n    </script>\n`);
+writeHTML('../test/standalone/test.html', true, `<script>\nconst data = ${JSON.stringify(data, null, 4)};\nSandDanceEmbed.load(data);\n</script>\n`);
 
 //local static
 writeHTML('../test/static-deps/target.html', true);
