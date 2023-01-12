@@ -17,39 +17,11 @@
 
     <div>
         <button id="button_theme">toggle dark theme</button>
+        <a href="?">localDev</a>
+        <a href="?prod">prod</a>
     </div>
 
     <script>
-        const deps = [
-            {
-                type: 'stylesheet',
-                url: '../../../sanddance-explorer/dist/css/sanddance-explorer.css',
-            },
-            {
-                type: 'stylesheet',
-                url: '../../dist/css/sanddance-embed.css',
-            },
-            {
-                type: 'script',
-                url: '../../node_modules/react/umd/react.production.min.js',
-            },
-            {
-                type: 'script',
-                url: '../../node_modules/react-dom/umd/react-dom.production.min.js',
-            },
-            {
-                type: 'script',
-                url: '../../node_modules/vega/build/vega.min.js',
-            },
-            {
-                type: 'script',
-                url: '../../node_modules/@fluentui/react/dist/fluentui-react.js',
-            },
-            {
-                type: 'script',
-                url: '../../../sanddance-explorer/dist/umd/sanddance-explorer.js',
-            }
-        ];
         window.onmessage = (e) => {
             console.log('messaged', e.data);
         };
@@ -62,9 +34,7 @@
                     embedIframe.contentWindow.postMessage({ action: 'load', data, props: { theme: 'dark-theme' } }, '*');
                 });
         };
-        const testLocal = true;
-        const localQs = testLocal ? `?${encodeURIComponent(JSON.stringify(deps))}` : '';
-        embedIframe.src = 'target.html' + localQs;
+        embedIframe.src = `target.html${location.search}`;
 
         let dark = true;
         const button_theme = document.getElementById('button_theme');
