@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>sanddance test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <header>
+        <h1>sanddance embed test</h1>
+    </header>
+
+    <iframe id="embed" title="embed" style="width: 90%; height: 700px"></iframe>
+
+    <div>
+        <button id="button_theme">toggle dark theme</button>
+    </div>
+
+    <script>
+        const deps = [
+            {
+                type: 'stylesheet',
+                url: '../../../sanddance-explorer/dist/css/sanddance-explorer.css',
+            },
+            {
+                type: 'stylesheet',
+                url: '../../dist/css/sanddance-embed.css',
+            },
+            {
+                type: 'script',
+                url: '../../node_modules/react/umd/react.production.min.js',
+            },
+            {
+                type: 'script',
+                url: '../../node_modules/react-dom/umd/react-dom.production.min.js',
+            },
+            {
+                type: 'script',
+                url: '../../node_modules/vega/build/vega.min.js',
+            },
+            {
+                type: 'script',
+                url: '../../node_modules/@fluentui/react/dist/fluentui-react.js',
+            },
+            {
+                type: 'script',
+                url: '../../../sanddance-explorer/dist/umd/sanddance-explorer.js',
+            }
+        ];
+        window.onmessage = (e) => {
+            console.log('messaged', e.data);
+        };
+        const embedIframe = document.getElementById('embed');
+        embedIframe.onload = () => {
+            fetch('https://microsoft.github.io/SandDance/sample-data/titanicmaster.tsv')
+                .then(response => response.text())
+                .then(rawText => {
+                    const data = { rawText, type: 'tsv' };
+                    embedIframe.contentWindow.postMessage({ action: 'load', data, props: { theme: 'dark-theme' } }, '*');
+                });
+        };
+        const testLocal = true;
+        const localQs = testLocal ? `?${encodeURIComponent(JSON.stringify(deps))}` : '';
+        embedIframe.src = 'target.html' + localQs;
+
+        let dark = true;
+        const button_theme = document.getElementById('button_theme');
+        button_theme.onclick = () => {
+            dark = !dark;
+            embedIframe.contentWindow.postMessage({ action: 'theme', dark }, '*');
+        };
+
+    </script>
+
+</body>
+
+</html>
