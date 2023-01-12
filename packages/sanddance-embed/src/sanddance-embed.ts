@@ -8,39 +8,6 @@ namespace SandDanceEmbed {
     declare let vega: SandDanceExplorer.SandDance.VegaMorphCharts.types.VegaBase;
     declare let FluentUIReact: _FluentUI.FluentUIComponents;
 
-    export function defaultDependencies(): EmbedDependency[] {
-        return [
-            {
-                type: 'stylesheet',
-                url: 'https://unpkg.com/@msrvida/sanddance-embed@4/dist/css/sanddance-embed.css',
-            },
-            {
-                type: 'stylesheet',
-                url: 'https://unpkg.com/@msrvida/sanddance-explorer@4/dist/css/sanddance-explorer.css',
-            },
-            {
-                type: 'script',
-                url: 'https://unpkg.com/react@17/umd/react.production.min.js',
-            },
-            {
-                type: 'script',
-                url: 'https://unpkg.com/react-dom@17/umd/react-dom.production.min.js',
-            },
-            {
-                type: 'script',
-                url: 'https://unpkg.com/vega@5.22/build/vega.min.js',
-            },
-            {
-                type: 'script',
-                url: 'https://unpkg.com/@fluentui/react@8/dist/fluentui-react.js',
-            },
-            {
-                type: 'script',
-                url: 'https://unpkg.com/@msrvida/sanddance-explorer@4/dist/umd/sanddance-explorer.js',
-            }
-        ];
-    }
-
     export function getDependencies(): EmbedDependency[] {
         const qs = decodeURIComponent(document.location.search.substring(1));
         if (qs[0] === '[') {
