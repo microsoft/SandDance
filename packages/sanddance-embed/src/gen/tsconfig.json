@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "dom",
+            "es2015"
+        ],
+        "skipLibCheck": true,
+        "outFile": "../../scripts/gen.js"
+    },
+    "include": [
+        "../types",
+        "../deps.ts",
+        "gen.ts"
+    ]
+}
