@@ -38866,20 +38866,22 @@ const $1f0c6e0f0abb4f2d$export$3e341bd56774d659 = $1f0c6e0f0abb4f2d$var$_Positio
 
 const $8f1b85a9470d3af5$export$c4b7cd609ccf4a5a = (title, embed)=>`<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${title}</title>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@msrvida/sanddance-explorer@4/dist/css/sanddance-explorer.css" />
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@msrvida/sanddance-embed@4/dist/css/sanddance-embed.css" />
 </head>
-
 <body>
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/vega@5.22/build/vega.min.js"></script>
+    <script src="https://unpkg.com/@fluentui/react@8/dist/fluentui-react.js"></script>
+    <script src="https://unpkg.com/@msrvida/sanddance-explorer@4/dist/umd/sanddance-explorer.js"></script>
     <script src="https://unpkg.com/@msrvida/sanddance-embed@4.4/dist/umd/sanddance-embed.js"></script>
-
     ${embed}
-
 </body>
-
 </html>`;
 
 
@@ -40116,7 +40118,7 @@ const $29728562a99c68a2$export$8e76ac9f37578d1b = {
 
 
 
-const $f56a95f33c4cc847$export$83d89fbfd8236492 = "4.0.5";
+const $f56a95f33c4cc847$export$83d89fbfd8236492 = "4.0.6";
 
 
 var $4805700d8b417596$var$SandDance = $3b509b9541e52a8f$exports;
