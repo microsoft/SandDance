@@ -8,16 +8,7 @@ namespace SandDanceEmbed {
     declare let vega: SandDanceExplorer.SandDance.VegaMorphCharts.types.VegaBase;
     declare let FluentUIReact: _FluentUI.FluentUIComponents;
 
-    export function getDependencies(): EmbedDependency[] {
-        const qs = decodeURIComponent(document.location.search.substring(1));
-        if (qs[0] === '[') {
-            try {
-                return JSON.parse(qs);
-            }
-            catch (e) { }
-        }
-        return defaultDependencies();
-    };
+    export let localDev: boolean;
 
     export let deps: EmbedDependency[];
 
@@ -28,7 +19,7 @@ namespace SandDanceEmbed {
             ...Array.from(document.body.querySelectorAll(tagType)),
         ];
         depsToLoad.forEach(dep => {
-            const element = elements.find(element => element.attributes[tagAttr].nodeValue === dep.url);
+            const element = elements.find(element => element.attributes[tagAttr]?.nodeValue === dep.url);
             if (element) {
                 dep.existed = true;
                 dep.loaded = true;
@@ -79,7 +70,7 @@ namespace SandDanceEmbed {
     }
 
     const prepare = new Promise<void>((resolve, reject) => {
-        deps = getDependencies();
+        deps = defaultDependencies(localDev);
         Promise.all([...loadStyleSheets(), ...loadScripts()]).then(() => resolve());
     });
 
