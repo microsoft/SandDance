@@ -27,9 +27,9 @@ title: Examples
 
 ## <a name="apps"></a>SandDance apps v4
 * [Web app](../tests/v4/es6/app)
-* [Power BI custom visual](../dist/powerbi/v4/SandDance201929976D117A654D0BAB8E96507442D80B.4.1.1.pbiviz) 4.1.1
-* [Azure Data Studio extension](../dist/azdata/v4/azdata-sanddance-4.0.2.vsix) 4.0.2
-* [VSCode extension](../dist/vscode/v4/vscode-sanddance-4.0.3.vsix) 4.0.3
+* [Power BI custom visual](../dist/powerbi/v4/SandDance201929976D117A654D0BAB8E96507442D80B.4.1.2.pbiviz) 4.1.2
+* [Azure Data Studio extension](../dist/azdata/v4/azdata-sanddance-4.0.3.vsix) 4.0.3
+* [VSCode extension](../dist/vscode/v4/vscode-sanddance-4.0.4.vsix) 4.0.4
 * [sanddance-embed example](../embed/v4/test.html)
 
 ## Previous versions
