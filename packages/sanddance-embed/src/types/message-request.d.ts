@@ -43,6 +43,22 @@ interface MessageRequest_Theme extends MessageRequestBase {
     dark?: boolean;
 }
 
-type MessageRequest = MessageRequest_Init | MessageRequest_Load | MessageRequest_GetData | MessageRequest_GetInsight | MessageRequest_Theme;
+interface MessageRequest_EventCanvasClick extends MessageRequestBase {
+    action: 'eventCanvasClick';
+}
+
+interface MessageRequest_EventCubeClick extends MessageRequestBase {
+    action: 'eventCubeClick';
+}
+
+type MessageRequest =
+    | MessageRequest_Init
+    | MessageRequest_Load
+    | MessageRequest_GetData
+    | MessageRequest_GetInsight
+    | MessageRequest_Theme
+    | MessageRequest_EventCanvasClick
+    | MessageRequest_EventCubeClick
+    ;
 
 type MessageRequestWithSource = MessageRequest & { source: WindowProxy };

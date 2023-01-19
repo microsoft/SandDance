@@ -68,7 +68,50 @@ namespace SandDanceEmbed {
         return {
             ...viewerOptions,
             colors: SandDanceExplorer.getColorSettingsFromThemePalette(SandDanceExplorer.themePalettes[theme]),
+            onError: (errors) => {
+                const response: MessageResponse_EventError = {
+                    request: null,
+                    errors,
+                };
+                lastRequestWithSource.source.postMessage(response, '*');
+            },
+            onCanvasClick: (e) => {
+                const request: MessageRequest_EventCanvasClick = {
+                    action: 'eventCanvasClick',
+                };
+                const response: MessageResponse_EventCanvasClick = {
+                    request,
+                    event: safeSerialize(e),
+                };
+                lastRequestWithSource.source.postMessage(response, '*');
+            },
+            onCubeClick: (e, cube) => {
+                const request: MessageRequest_EventCubeClick = {
+                    action: 'eventCubeClick',
+                };
+                const response: MessageResponse_EventCubeClick = {
+                    request,
+                    event: safeSerialize(e),
+                    ordinal: cube.ordinal,
+                };
+                lastRequestWithSource.source.postMessage(response, '*');
+            },
         };
+    }
+
+    function safeSerialize<T>(input: T) {
+        const output = {} as T;
+        for (const key in input) {
+            const value = input[key];
+            switch (typeof value) {
+                case 'undefined':
+                case 'number':
+                case 'boolean':
+                case 'string':
+                    output[key] = value;
+            }
+        }
+        return output;
     }
 
     export function changeColorScheme(darkTheme: boolean) {
@@ -84,7 +127,10 @@ namespace SandDanceEmbed {
         ReactDOM.render(React.createElement(SandDanceExplorer.Explorer, props), document.body);
     }
 
+    export let lastRequestWithSource: MessageRequestWithSource;
+
     export function respondToRequest(requestWithSource: MessageRequestWithSource) {
+        lastRequestWithSource = requestWithSource;
         requests.push(requestWithSource);
         const copy: MessageRequestWithSource = { ...requestWithSource };
         delete copy.source;
