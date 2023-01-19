@@ -4,6 +4,14 @@ SandDance Embed is the easiest way to integrate [SandDance](https://microsoft.gi
 
 ![image](https://user-images.githubusercontent.com/11507384/72197128-a99cdd80-33d2-11ea-9b49-5d470db0abc1.png)
 
+## Development considerations
+SandDance-Embed is an alternative to creating your own app wrapper around SandDance Explorer. Here are reasons you might choose one over the other:
+
+* *SandDance Explorer* will require an `npm install` and your own build / deployment system. You will be bound to use only compatible React versions. You will have greater control over events and injectable React sub-componentry.
+
+* *SandDance Embed* does not require an install or build system. Launch time might be slower as loads its own copy of React and other libraries at runtime. It runs in a sandbox mode which allows little customization.
+
+## Deployment scenarios
 There are two ways to create a SandDance Embed iframe instance:
 1. Cross-domain
 2. In-domain
