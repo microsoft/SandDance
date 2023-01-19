@@ -85696,6 +85696,7 @@ class Viewer {
                 else this.select(search);
             },
             onLayerClick: (e)=>{
+                this.options.onCanvasClick && this.options.onCanvasClick(e);
                 this.deselect();
             },
             onLegendClick: (e, legend, clickedIndex)=>{
@@ -88771,7 +88772,7 @@ exports.default = function(step, max) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "version", ()=>version);
-const version = "4.0.3";
+const version = "4.0.4";
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}]},["gK9HS"], "gK9HS", "parcelRequire0e59")
 

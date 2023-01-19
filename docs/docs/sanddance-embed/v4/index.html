@@ -17,6 +17,19 @@ title: '@msrvida/sanddance-embed'
 			</a>
 			<p>SandDance Embed is the easiest way to integrate <a href="https://microsoft.github.io/SandDance/">SandDance</a> into your custom app, via an <code>&lt;iframe&gt;</code> tag. SandDance Embed is a wrapper around SandDance Explorer, plus <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage">postMessage</a> handlers to load data and manage its display from outside the iframe.</p>
 			<p><img src="https://user-images.githubusercontent.com/11507384/72197128-a99cdd80-33d2-11ea-9b49-5d470db0abc1.png" alt="image"></p>
+			<a href="#development-considerations" id="development-considerations" style="color: inherit; text-decoration: none;">
+				<h2>Development considerations</h2>
+			</a>
+			<p>SandDance-Embed is an alternative to creating your own app wrapper around SandDance Explorer. Here are reasons you might choose one over the other:</p>
+			<ul>
+				<li><p><em>SandDance Explorer</em> will require an <code>npm install</code> and your own build / deployment system. You will be bound to use only compatible React versions. You will have greater control over events and injectable React sub-componentry.</p>
+				</li>
+				<li><p><em>SandDance Embed</em> does not require an install or build system. Launch time might be slower as loads its own copy of React and other libraries at runtime. It runs in a sandbox mode which allows little customization.</p>
+				</li>
+			</ul>
+			<a href="#deployment-scenarios" id="deployment-scenarios" style="color: inherit; text-decoration: none;">
+				<h2>Deployment scenarios</h2>
+			</a>
 			<p>There are two ways to create a SandDance Embed iframe instance:</p>
 			<ol>
 				<li>Cross-domain</li>
