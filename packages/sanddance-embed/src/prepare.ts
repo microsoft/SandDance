@@ -60,7 +60,7 @@ namespace SandDanceEmbed {
                     };
                     document.head.appendChild(el);
                 }
-            }
+            };
             next(0);
         });
         return [promise];

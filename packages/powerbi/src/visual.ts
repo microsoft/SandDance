@@ -97,7 +97,7 @@ export class Visual implements IVisual {
         const props: Props = {
             renderOptions: this.sanddanceRenderOptions,
             mounted: (app: App) => {
-                app.log('mounted')
+                app.log('mounted');
                 this.app = app;
             },
             onSetupSave: (setup) => {
@@ -266,7 +266,7 @@ export class Visual implements IVisual {
     }
 
     show(dataView: powerbiVisualsApi.DataView) {
-        this.app.log('show')
+        this.app.log('show');
 
         this.settings = Visual.parseSettings(dataView);
         const oldData = this.app.getDataContent();
@@ -301,7 +301,7 @@ export class Visual implements IVisual {
     }
 
     showSame(sandDanceConfig: SandDanceConfig, setup: SandDance.types.Setup) {
-        this.app.log(`showSame`);
+        this.app.log('showSame');
 
         const renderingFinished = () => {
             this.events.renderingFinished(this.renderingOptions);
@@ -310,7 +310,7 @@ export class Visual implements IVisual {
         this.syncSelection(sandDanceConfig.selectionQueryJSON, false);
         const setInsight = this.trySetInsight(sandDanceConfig, setup);
         if (!setInsight) {
-            this.app.log('same insight')
+            this.app.log('same insight');
             const { camera: cameraOrHold, renderer } = setup;
             let camera: SandDance.types.Camera;
             let holdCamera = this.app.explorer.state.holdCamera;

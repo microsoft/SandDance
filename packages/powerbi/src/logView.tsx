@@ -43,7 +43,7 @@ export class LogView extends React.Component<Props, State> {
                             iconProps={{ iconName: 'Clear' }}
                             text={language.buttonClear}
                             onClick={props.clearLog}
-                        />
+                        />,
                     ]}
                     hidden={!state.showDialog}
                     onDismiss={() => this.setState({ showDialog: false })}
