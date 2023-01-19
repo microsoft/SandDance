@@ -28125,6 +28125,7 @@ f 5/6/6 1/12/6 8/11/6`;
                     }
                 },
                 onLayerClick: (e) => {
+                    this.options.onCanvasClick && this.options.onCanvasClick(e);
                     this.deselect();
                 },
                 onLegendClick: (e, legend, clickedIndex) => {
@@ -28363,7 +28364,7 @@ f 5/6/6 1/12/6 8/11/6`;
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
-    const version = '4.0.3';
+    const version = '4.0.4';
 
     /*!
     * Copyright (c) Microsoft Corporation.
