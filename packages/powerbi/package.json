@@ -3,8 +3,7 @@
   "private": true,
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "tslint": "tslint -p .",
-    "lint": "tslint -c tslint.json -p tsconfig.json",
+    "lint": "npm run eslint",
     "pbiviz": "pbiviz",
     "start": "pbiviz start",
     "package": "pbiviz package",
@@ -31,9 +30,7 @@
     "@msrvida/fluentui-react-cdn-typings": "^2",
     "@types/react": ">=16.8.0 <18.0.0",
     "@types/react-dom": ">=16.8.0 <18.0.0",
-    "powerbi-visuals-tools": "^4",
-    "tslint": "^5.20.1",
-    "tslint-microsoft-contrib": "^6.2.0"
+    "powerbi-visuals-tools": "^4"
   },
   "overrides": {
     "typescript": "4.4"
