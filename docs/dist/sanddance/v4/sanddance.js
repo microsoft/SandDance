@@ -14861,6 +14861,7 @@ f 5/6/6 1/12/6 8/11/6`;
             this._selected = new Set();
             this.from = 0;
             this.to = 1;
+            this.unitType = UnitType.block;
             this._lookup = {};
             for (let i = 0; i < this._length; i++) {
                 const id = ids[i];
@@ -17621,7 +17622,7 @@ f 5/6/6 1/12/6 8/11/6`;
             this._core.log.write(LogLevel.info, `buffers resized ${width},${height}`);
         }
         _createContext(canvas) {
-            const antialias = this._options ? this._options.antialias === undefined ? false : this._options.antialias : false;
+            const antialias = this._options ? this._options.antialias === undefined ? true : this._options.antialias : true;
             return canvas.getContext("webgl", { stencil: true, alpha: false, antialias: antialias });
         }
         initializeWebXR(session) {
@@ -26215,59 +26216,60 @@ f 5/6/6 1/12/6 8/11/6`;
     bisector(number$1).center;
     var bisect = bisectRight;
 
-    var e10 = Math.sqrt(50),
+    const e10 = Math.sqrt(50),
         e5 = Math.sqrt(10),
         e2 = Math.sqrt(2);
 
-    function ticks(start, stop, count) {
-      var reverse,
-          i = -1,
-          n,
-          ticks,
-          step;
-
-      stop = +stop, start = +start, count = +count;
-      if (start === stop && count > 0) return [start];
-      if (reverse = stop < start) n = start, start = stop, stop = n;
-      if ((step = tickIncrement(start, stop, count)) === 0 || !isFinite(step)) return [];
-
-      if (step > 0) {
-        let r0 = Math.round(start / step), r1 = Math.round(stop / step);
-        if (r0 * step < start) ++r0;
-        if (r1 * step > stop) --r1;
-        ticks = new Array(n = r1 - r0 + 1);
-        while (++i < n) ticks[i] = (r0 + i) * step;
+    function tickSpec(start, stop, count) {
+      const step = (stop - start) / Math.max(0, count),
+          power = Math.floor(Math.log10(step)),
+          error = step / Math.pow(10, power),
+          factor = error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1;
+      let i1, i2, inc;
+      if (power < 0) {
+        inc = Math.pow(10, -power) / factor;
+        i1 = Math.round(start * inc);
+        i2 = Math.round(stop * inc);
+        if (i1 / inc < start) ++i1;
+        if (i2 / inc > stop) --i2;
+        inc = -inc;
       } else {
-        step = -step;
-        let r0 = Math.round(start * step), r1 = Math.round(stop * step);
-        if (r0 / step < start) ++r0;
-        if (r1 / step > stop) --r1;
-        ticks = new Array(n = r1 - r0 + 1);
-        while (++i < n) ticks[i] = (r0 + i) / step;
+        inc = Math.pow(10, power) * factor;
+        i1 = Math.round(start / inc);
+        i2 = Math.round(stop / inc);
+        if (i1 * inc < start) ++i1;
+        if (i2 * inc > stop) --i2;
       }
+      if (i2 < i1 && 0.5 <= count && count < 2) return tickSpec(start, stop, count * 2);
+      return [i1, i2, inc];
+    }
 
-      if (reverse) ticks.reverse();
-
+    function ticks(start, stop, count) {
+      stop = +stop, start = +start, count = +count;
+      if (!(count > 0)) return [];
+      if (start === stop) return [start];
+      const reverse = stop < start, [i1, i2, inc] = reverse ? tickSpec(stop, start, count) : tickSpec(start, stop, count);
+      if (!(i2 >= i1)) return [];
+      const n = i2 - i1 + 1, ticks = new Array(n);
+      if (reverse) {
+        if (inc < 0) for (let i = 0; i < n; ++i) ticks[i] = (i2 - i) / -inc;
+        else for (let i = 0; i < n; ++i) ticks[i] = (i2 - i) * inc;
+      } else {
+        if (inc < 0) for (let i = 0; i < n; ++i) ticks[i] = (i1 + i) / -inc;
+        else for (let i = 0; i < n; ++i) ticks[i] = (i1 + i) * inc;
+      }
       return ticks;
     }
 
     function tickIncrement(start, stop, count) {
-      var step = (stop - start) / Math.max(0, count),
-          power = Math.floor(Math.log(step) / Math.LN10),
-          error = step / Math.pow(10, power);
-      return power >= 0
-          ? (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1) * Math.pow(10, power)
-          : -Math.pow(10, -power) / (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1);
+      stop = +stop, start = +start, count = +count;
+      return tickSpec(start, stop, count)[2];
     }
 
     function tickStep(start, stop, count) {
-      var step0 = Math.abs(stop - start) / Math.max(0, count),
-          step1 = Math.pow(10, Math.floor(Math.log(step0) / Math.LN10)),
-          error = step0 / step1;
-      if (error >= e10) step1 *= 10;
-      else if (error >= e5) step1 *= 5;
-      else if (error >= e2) step1 *= 2;
-      return stop < start ? -step1 : step1;
+      stop = +stop, start = +start, count = +count;
+      const reverse = stop < start, inc = reverse ? tickIncrement(stop, start, count) : tickIncrement(start, stop, count);
+      return (reverse ? -1 : 1) * (inc < 0 ? 1 / -inc : inc);
     }
 
     function initRange(domain, range) {
