@@ -61,6 +61,7 @@ title: 'ViewerOptions | @msrvida/sanddance-explorer'
 							<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="ViewerOptions.html#getTextHighlightColor" class="tsd-kind-icon">get<wbr>Text<wbr>Highlight<wbr>Color</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="ViewerOptions.html#onAxisClick" class="tsd-kind-icon">on<wbr>Axis<wbr>Click</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="ViewerOptions.html#onBeforeCreateLayers" class="tsd-kind-icon">on<wbr>Before<wbr>Create<wbr>Layers</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="ViewerOptions.html#onCanvasClick" class="tsd-kind-icon">on<wbr>Canvas<wbr>Click</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="ViewerOptions.html#onColorContextChange" class="tsd-kind-icon">on<wbr>Color<wbr>Context<wbr>Change</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="ViewerOptions.html#onCubeClick" class="tsd-kind-icon">on<wbr>Cube<wbr>Click</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="ViewerOptions.html#onDataFilter" class="tsd-kind-icon">on<wbr>Data<wbr>Filter</a></li>
@@ -114,7 +115,7 @@ title: 'ViewerOptions | @msrvida/sanddance-explorer'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="SandDance.types.ViewerOptions.html">ViewerOptions</a>.<a href="SandDance.types.ViewerOptions.html#disableLasso">disableLasso</a></p>
 					<ul>
-						<li>Defined in sanddance/dist/es6/types.d.ts:125</li>
+						<li>Defined in sanddance/dist/es6/types.d.ts:129</li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -130,7 +131,7 @@ title: 'ViewerOptions | @msrvida/sanddance-explorer'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="SandDance.types.ViewerOptions.html">ViewerOptions</a>.<a href="SandDance.types.ViewerOptions.html#filterRenderingTimerPadding">filterRenderingTimerPadding</a></p>
 					<ul>
-						<li>Defined in sanddance/dist/es6/types.d.ts:126</li>
+						<li>Defined in sanddance/dist/es6/types.d.ts:130</li>
 					</ul>
 				</aside>
 			</section>
@@ -189,7 +190,7 @@ title: 'ViewerOptions | @msrvida/sanddance-explorer'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="SandDance.types.ViewerOptions.html">ViewerOptions</a>.<a href="SandDance.types.ViewerOptions.html#preserveDrawingBuffer">preserveDrawingBuffer</a></p>
 					<ul>
-						<li>Defined in sanddance/dist/es6/types.d.ts:117</li>
+						<li>Defined in sanddance/dist/es6/types.d.ts:121</li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -205,7 +206,7 @@ title: 'ViewerOptions | @msrvida/sanddance-explorer'
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="SandDance.types.ViewerOptions.html">ViewerOptions</a>.<a href="SandDance.types.ViewerOptions.html#selectionPolygonZ">selectionPolygonZ</a></p>
 					<ul>
-						<li>Defined in sanddance/dist/es6/types.d.ts:121</li>
+						<li>Defined in sanddance/dist/es6/types.d.ts:125</li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -378,6 +379,35 @@ title: 'ViewerOptions | @msrvida/sanddance-explorer'
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+				<a name="onCanvasClick" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> on<wbr>Canvas<wbr>Click</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+					<li class="tsd-signature tsd-kind-icon">on<wbr>Canvas<wbr>Click<span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MouseEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">PointerEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TouchEvent</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<p>Inherited from <a href="SandDance.types.ViewerOptions.html">ViewerOptions</a>.<a href="SandDance.types.ViewerOptions.html#onCanvasClick">onCanvasClick</a></p>
+							<ul>
+								<li>Defined in sanddance/dist/es6/types.d.ts:97</li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Optional handler when empty canvas is clicked.</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>e: <span class="tsd-signature-type">MouseEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">PointerEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TouchEvent</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 				<a name="onColorContextChange" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> on<wbr>Color<wbr>Context<wbr>Change</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
@@ -411,7 +441,7 @@ title: 'ViewerOptions | @msrvida/sanddance-explorer'
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="SandDance.types.ViewerOptions.html">ViewerOptions</a>.<a href="SandDance.types.ViewerOptions.html#onCubeClick">onCubeClick</a></p>
 							<ul>
-								<li>Defined in sanddance/dist/es6/types.d.ts:97</li>
+								<li>Defined in sanddance/dist/es6/types.d.ts:101</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -504,7 +534,7 @@ title: 'ViewerOptions | @msrvida/sanddance-explorer'
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="SandDance.types.ViewerOptions.html">ViewerOptions</a>.<a href="SandDance.types.ViewerOptions.html#onLegendHeaderClick">onLegendHeaderClick</a></p>
 							<ul>
-								<li>Defined in sanddance/dist/es6/types.d.ts:101</li>
+								<li>Defined in sanddance/dist/es6/types.d.ts:105</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -533,7 +563,7 @@ title: 'ViewerOptions | @msrvida/sanddance-explorer'
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="SandDance.types.ViewerOptions.html">ViewerOptions</a>.<a href="SandDance.types.ViewerOptions.html#onLegendRowClick">onLegendRowClick</a></p>
 							<ul>
-								<li>Defined in sanddance/dist/es6/types.d.ts:105</li>
+								<li>Defined in sanddance/dist/es6/types.d.ts:109</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -565,7 +595,7 @@ title: 'ViewerOptions | @msrvida/sanddance-explorer'
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="SandDance.types.ViewerOptions.html">ViewerOptions</a>.<a href="SandDance.types.ViewerOptions.html#onNewViewStateTarget">onNewViewStateTarget</a></p>
 							<ul>
-								<li>Defined in sanddance/dist/es6/types.d.ts:113</li>
+								<li>Defined in sanddance/dist/es6/types.d.ts:117</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -707,7 +737,7 @@ title: 'ViewerOptions | @msrvida/sanddance-explorer'
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="SandDance.types.ViewerOptions.html">ViewerOptions</a>.<a href="SandDance.types.ViewerOptions.html#onVegaSpec">onVegaSpec</a></p>
 							<ul>
-								<li>Defined in sanddance/dist/es6/types.d.ts:109</li>
+								<li>Defined in sanddance/dist/es6/types.d.ts:113</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -822,6 +852,9 @@ title: 'ViewerOptions | @msrvida/sanddance-explorer'
 						</li>
 						<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 							<a href="ViewerOptions.html#onBeforeCreateLayers" class="tsd-kind-icon">on<wbr>Before<wbr>Create<wbr>Layers</a>
+						</li>
+						<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+							<a href="ViewerOptions.html#onCanvasClick" class="tsd-kind-icon">on<wbr>Canvas<wbr>Click</a>
 						</li>
 						<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 							<a href="ViewerOptions.html#onColorContextChange" class="tsd-kind-icon">on<wbr>Color<wbr>Context<wbr>Change</a>
