@@ -132,6 +132,11 @@ export interface ViewerOptions extends SpecViewOptions {
     onAxisClick?: (e: TouchEvent | MouseEvent | PointerEvent, search: SearchExpressionGroup) => void;
 
     /**
+     * Optional handler when empty canvas is clicked.
+     */
+    onCanvasClick?: (e: TouchEvent | MouseEvent | PointerEvent) => void;
+
+    /**
      * Optional handler when cube is clicked.
      */
     onCubeClick?: (e: TouchEvent | MouseEvent | PointerEvent, cube: VegaMorphCharts.types.Cube) => void;
