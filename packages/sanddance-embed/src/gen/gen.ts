@@ -14,21 +14,21 @@ function getHTML(localDev: boolean, extra: string = '') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SandDance</title>
 ${defaultDependencies(localDev, true)
-            .filter(d => d.type === 'stylesheet')
-            .map(d => {
-                return `    <link rel="stylesheet" type="text/css" href="${d.url}" />`;
-            })
-            .join('\n')
-        }
+        .filter(d => d.type === 'stylesheet')
+        .map(d => {
+            return `    <link rel="stylesheet" type="text/css" href="${d.url}" />`;
+        })
+        .join('\n')
+}
 </head>
 <body>
 ${defaultDependencies(localDev, true)
-            .filter(d => d.type === 'script')
-            .map(d => {
-                return `    <script src="${d.url}"></script>`;
-            })
-            .join('\n')
-        }
+        .filter(d => d.type === 'script')
+        .map(d => {
+            return `    <script src="${d.url}"></script>`;
+        })
+        .join('\n')
+}
 ${extra}</body>
 </html>`;
 }
@@ -52,4 +52,4 @@ writeHTML('../test/standalone/test.html', true, `<script>\nconst data = ${JSON.s
 writeHTML('../test/static-deps/target.html', true);
 
 //prod static
-writeHTML('../../../docs/embed/v4/sanddance-embed.html', false, `    <!--EMBED-->\n`);
+writeHTML('../../../docs/embed/v4/sanddance-embed.html', false, '    <!--EMBED-->\n');

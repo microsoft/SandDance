@@ -12333,48 +12333,76 @@ $0993b3badbc4a867$export$a15f0a83a652dd40.EDGE_FORWARDS = [
 
 
 class $580fd00ef4a0bc11$export$46c1eaab6b8d1e23 {
-    static continuous(minValue, maxValue, divisions, label, labels, positions, fromValues, toValues) {
-        for(let i = 0; i <= divisions; i++){
-            positions.push(divisions == 0 ? 0.5 : i / divisions);
-            const value = divisions == 0 ? (minValue + maxValue) / 2 : minValue + i * (maxValue - minValue) / divisions;
-            if (label) labels.push(label(value));
-            if (i == 0) fromValues.push(minValue);
-            else if (i < divisions) {
+    static continuous(options) {
+        const labels = [];
+        const positions = [];
+        const fromValues = [];
+        const toValues = [];
+        const label = options.label || ((value)=>{
+            return value.toString();
+        });
+        for(let i = 0; i <= options.divisions; i++){
+            positions.push(options.divisions == 0 ? 0.5 : i / options.divisions);
+            const value = options.divisions == 0 ? (options.min + options.max) / 2 : options.min + i * (options.max - options.min) / options.divisions;
+            labels.push(label(value));
+            if (i == 0) fromValues.push(options.min);
+            else if (i < options.divisions) {
                 toValues.push(value);
                 fromValues.push(value);
             }
         }
-        toValues.push(maxValue);
+        toValues.push(options.max);
+        return {
+            labels: labels,
+            positions: positions,
+            fromValues: fromValues,
+            toValues: toValues
+        };
     }
-    static discrete(minValue, maxValue, totalDivisions, maxDivisions, label, labels, labelPositions, divisionPositions, fromValues, toValues) {
-        const divisions = Math.min(totalDivisions, maxDivisions);
-        const totalDivisionStep = 1 / totalDivisions;
+    static discrete(options) {
+        const divisions = options.maxDivisions !== undefined ? Math.min(options.divisions, options.maxDivisions) : options.divisions;
+        const divisionStep = 1 / options.divisions;
         const labelStep = 1 / divisions;
-        const valueStep = (maxValue - minValue + 1) / totalDivisions;
+        const valueStep = (options.max - options.min + 1) / options.divisions;
         let nextDivision, toValue, nextPosition;
+        const labels = [];
+        const labelPositions = [];
+        const tickPositions = [];
+        const fromValues = [];
+        const toValues = [];
+        const label = options.label || ((value)=>{
+            return value.toString();
+        });
+        const fromToLabel = options.fromToLabel || ((fromValue, toValue)=>{
+            return `${label(fromValue)}-${label(toValue)}`;
+        });
         for(let i = 0; i < divisions; i++){
-            const division = Math.round(i * labelStep / totalDivisionStep);
-            const position = division / totalDivisions;
-            const fromValue = minValue + Math.ceil(division * valueStep);
+            const division = Math.round(i * labelStep / divisionStep);
+            const tickPosition = division / options.divisions;
+            const fromValue = options.min + Math.ceil(division * valueStep);
             if (i == divisions - 1) {
                 nextDivision = divisions;
                 nextPosition = 1;
-                toValue = maxValue;
+                toValue = options.max;
             } else {
-                nextDivision = Math.round((i + 1) * labelStep / totalDivisionStep);
-                nextPosition = nextDivision / totalDivisions;
-                toValue = minValue + Math.ceil(nextDivision * valueStep) - 1;
+                nextDivision = Math.round((i + 1) * labelStep / divisionStep);
+                nextPosition = nextDivision / options.divisions;
+                toValue = options.min + Math.ceil(nextDivision * valueStep) - 1;
             }
-            labelPositions.push((position + nextPosition) / 2);
-            if (label) {
-                if (fromValue == toValue) labels.push(label(fromValue));
-                else labels.push(`${label(fromValue)}-${label(toValue)}`);
-            }
+            labelPositions.push((tickPosition + nextPosition) / 2);
+            labels.push(fromValue == toValue ? label(fromValue) : fromToLabel(fromValue, toValue));
             fromValues.push(fromValue);
             toValues.push(toValue);
-            divisionPositions.push(position);
+            tickPositions.push(tickPosition);
         }
-        divisionPositions.push(1);
+        tickPositions.push(1);
+        return {
+            labels: labels,
+            labelPositions: labelPositions,
+            tickPositions: tickPositions,
+            fromValues: fromValues,
+            toValues: toValues
+        };
     }
 }
 
@@ -12554,12 +12582,6 @@ class $52e490408927d13a$export$a623f6a4669f174c {
         const maxValueY = options.maxValueY === undefined ? 1 : options.maxValueY;
         const maxValueZ = options.maxValueZ === undefined ? 1 : options.maxValueZ;
         const scaling = options.scaling === undefined ? 1 : options.scaling;
-        const tickPositions = [];
-        const labelPositions = [];
-        const labelScales = [];
-        const labels = [];
-        const fromValues = [];
-        const toValues = [];
         cartesian3dAxes.minBoundsX = minBoundsX;
         cartesian3dAxes.minBoundsY = minBoundsY;
         cartesian3dAxes.minBoundsZ = minBoundsZ;
@@ -12660,37 +12682,47 @@ class $52e490408927d13a$export$a623f6a4669f174c {
             options.headingSizeZ
         ];
         for(let axisId = 0; axisId < 3; axisId++){
-            tickPositions.push([]);
-            labels.push([]);
-            labelPositions.push([]);
-            labelScales.push([]);
-            fromValues.push([]);
-            toValues.push([]);
             const label = labelsArray[axisId];
             const minValue = minValueArray[axisId];
             const maxValue = maxValueArray[axisId];
             const discrete = isDiscreteArray[axisId];
             if (discrete) {
-                const totalDivisions = maxValue - minValue + 1;
-                const maxDivisions = Math.min(requestedDivisions[axisId], totalDivisions);
-                (0, $580fd00ef4a0bc11$export$46c1eaab6b8d1e23).discrete(minValue, maxValue, totalDivisions, maxDivisions, label, labels[axisId], labelPositions[axisId], tickPositions[axisId], fromValues[axisId], toValues[axisId]);
-                for(let i = 0; i < labels[axisId].length; i++)labelScales[axisId].push(labelMajorSizes[axisId]);
+                const divisions = maxValue - minValue + 1;
+                const maxDivisions = Math.min(requestedDivisions[axisId], divisions);
+                const discreteAxisOptions = {
+                    min: minValue,
+                    max: maxValue,
+                    divisions: divisions,
+                    maxDivisions: maxDivisions,
+                    label: label
+                };
+                const discreteAxis = (0, $580fd00ef4a0bc11$export$46c1eaab6b8d1e23).discrete(discreteAxisOptions);
+                cartesian3dAxes.setTickPositions(axisId, discreteAxis.tickPositions);
+                cartesian3dAxes.setLabelPositions(axisId, discreteAxis.labelPositions);
+                cartesian3dAxes.setLabels(axisId, discreteAxis.labels);
+                cartesian3dAxes.setFromValues(axisId, discreteAxis.fromValues);
+                cartesian3dAxes.setToValues(axisId, discreteAxis.toValues);
+                cartesian3dAxes.setLabelSizes(axisId, Array(discreteAxis.labels.length).fill(labelMajorSizes[axisId]));
                 cartesian3dAxes.minorGridlines[axisId] = 1;
             } else {
-                const divisions = requestedDivisions[axisId];
-                (0, $580fd00ef4a0bc11$export$46c1eaab6b8d1e23).continuous(minValue, maxValue, divisions, label, labels[axisId], tickPositions[axisId], fromValues[axisId], toValues[axisId]);
+                const divisions1 = requestedDivisions[axisId];
+                const continuousAxisOptions = {
+                    min: minValue,
+                    max: maxValue,
+                    divisions: divisions1,
+                    label: label
+                };
+                const continuousAxis = (0, $580fd00ef4a0bc11$export$46c1eaab6b8d1e23).continuous(continuousAxisOptions);
+                cartesian3dAxes.setTickPositions(axisId, continuousAxis.positions);
+                cartesian3dAxes.setLabelPositions(axisId, continuousAxis.positions);
+                cartesian3dAxes.setLabels(axisId, continuousAxis.labels);
+                cartesian3dAxes.setFromValues(axisId, continuousAxis.fromValues);
+                cartesian3dAxes.setToValues(axisId, continuousAxis.toValues);
+                const labelSizes = [];
+                for(let i = 0; i < continuousAxis.labels.length; i++)labelSizes.push(i == 0 || i == divisions1 ? labelMajorSizes[axisId] : labelMinorSizes[axisId]);
+                cartesian3dAxes.setLabelSizes(axisId, labelSizes);
                 cartesian3dAxes.minorGridlines[axisId] = minorGridlines[axisId];
-                for(let i1 = 0; i1 < labels[axisId].length; i1++){
-                    labelPositions[axisId].push(tickPositions[axisId][i1]);
-                    labelScales[axisId].push(i1 == 0 || i1 == divisions ? labelMajorSizes[axisId] : labelMinorSizes[axisId]);
-                }
             }
-            cartesian3dAxes.setTickPositions(axisId, tickPositions[axisId]);
-            cartesian3dAxes.setLabelPositions(axisId, labelPositions[axisId]);
-            cartesian3dAxes.setLabels(axisId, labels[axisId]);
-            cartesian3dAxes.setLabelSizes(axisId, labelScales[axisId]);
-            cartesian3dAxes.setFromValues(axisId, fromValues[axisId]);
-            cartesian3dAxes.setToValues(axisId, toValues[axisId]);
             cartesian3dAxes.setLabelOrientation(axisId, labelOrientationsArray[axisId] === undefined ? labelOrientationDefaultArray[axisId] : labelOrientationsArray[axisId]);
             cartesian3dAxes.setTitle(axisId, titleArray[axisId]);
             cartesian3dAxes.setTitleSize(axisId, titleSizeArray[axisId] === undefined ? core.config.axesTextTitleSize : titleSizeArray[axisId]);
@@ -13754,12 +13786,6 @@ class $fbd53862e80b5057$export$133913079d003c31 {
         const maxValueX = options.maxValueX === undefined ? 1 : options.maxValueX;
         const maxValueY = options.maxValueY === undefined ? 1 : options.maxValueY;
         const scaling = options.scaling === undefined ? 1 : options.scaling;
-        const tickPositions = [];
-        const labelPositions = [];
-        const labelScales = [];
-        const labels = [];
-        const fromValues = [];
-        const toValues = [];
         cartesian2dAxes.minBoundsX = minBoundsX;
         cartesian2dAxes.minBoundsY = minBoundsY;
         cartesian2dAxes.maxBoundsX = maxBoundsX;
@@ -13840,37 +13866,47 @@ class $fbd53862e80b5057$export$133913079d003c31 {
             options.headingSizeY
         ];
         for(let axisId = 0; axisId < 2; axisId++){
-            tickPositions.push([]);
-            labels.push([]);
-            labelPositions.push([]);
-            labelScales.push([]);
-            fromValues.push([]);
-            toValues.push([]);
             const label = labelsArray[axisId];
             const minValue = minValueArray[axisId];
             const maxValue = maxValueArray[axisId];
             const discrete = isDiscreteArray[axisId];
             if (discrete) {
-                const totalDivisions = maxValue - minValue + 1;
-                const maxDivisions = Math.min(requestedDivisions[axisId], totalDivisions);
-                (0, $580fd00ef4a0bc11$export$46c1eaab6b8d1e23).discrete(minValue, maxValue, totalDivisions, maxDivisions, label, labels[axisId], labelPositions[axisId], tickPositions[axisId], fromValues[axisId], toValues[axisId]);
-                for(let i = 0; i < labels[axisId].length; i++)labelScales[axisId].push(labelMajorSizes[axisId]);
+                const divisions = maxValue - minValue + 1;
+                const maxDivisions = Math.min(requestedDivisions[axisId], divisions);
+                const discreteAxisOptions = {
+                    min: minValue,
+                    max: maxValue,
+                    divisions: divisions,
+                    maxDivisions: maxDivisions,
+                    label: label
+                };
+                const discreteAxis = (0, $580fd00ef4a0bc11$export$46c1eaab6b8d1e23).discrete(discreteAxisOptions);
+                cartesian2dAxes.setTickPositions(axisId, discreteAxis.tickPositions);
+                cartesian2dAxes.setLabelPositions(axisId, discreteAxis.labelPositions);
+                cartesian2dAxes.setLabels(axisId, discreteAxis.labels);
+                cartesian2dAxes.setFromValues(axisId, discreteAxis.fromValues);
+                cartesian2dAxes.setToValues(axisId, discreteAxis.toValues);
+                cartesian2dAxes.setLabelSizes(axisId, Array(discreteAxis.labels.length).fill(labelMajorSizes[axisId]));
                 cartesian2dAxes.minorGridlines[axisId] = 1;
             } else {
-                const divisions = requestedDivisions[axisId];
-                (0, $580fd00ef4a0bc11$export$46c1eaab6b8d1e23).continuous(minValue, maxValue, divisions, label, labels[axisId], tickPositions[axisId], fromValues[axisId], toValues[axisId]);
+                const divisions1 = requestedDivisions[axisId];
+                const continuousAxisOptions = {
+                    min: minValue,
+                    max: maxValue,
+                    divisions: divisions1,
+                    label: label
+                };
+                const continuousAxis = (0, $580fd00ef4a0bc11$export$46c1eaab6b8d1e23).continuous(continuousAxisOptions);
+                cartesian2dAxes.setTickPositions(axisId, continuousAxis.positions);
+                cartesian2dAxes.setLabelPositions(axisId, continuousAxis.positions);
+                cartesian2dAxes.setLabels(axisId, continuousAxis.labels);
+                cartesian2dAxes.setFromValues(axisId, continuousAxis.fromValues);
+                cartesian2dAxes.setToValues(axisId, continuousAxis.toValues);
+                const labelSizes = [];
+                for(let i = 0; i < continuousAxis.labels.length; i++)labelSizes.push(i == 0 || i == divisions1 ? labelMajorSizes[axisId] : labelMinorSizes[axisId]);
+                cartesian2dAxes.setLabelSizes(axisId, labelSizes);
                 cartesian2dAxes.minorGridlines[axisId] = minorGridlines[axisId];
-                for(let i1 = 0; i1 < labels[axisId].length; i1++){
-                    labelPositions[axisId].push(tickPositions[axisId][i1]);
-                    labelScales[axisId].push(i1 == 0 || i1 == divisions ? labelMajorSizes[axisId] : labelMinorSizes[axisId]);
-                }
             }
-            cartesian2dAxes.setTickPositions(axisId, tickPositions[axisId]);
-            cartesian2dAxes.setLabelPositions(axisId, labelPositions[axisId]);
-            cartesian2dAxes.setLabels(axisId, labels[axisId]);
-            cartesian2dAxes.setLabelSizes(axisId, labelScales[axisId]);
-            cartesian2dAxes.setFromValues(axisId, fromValues[axisId]);
-            cartesian2dAxes.setToValues(axisId, toValues[axisId]);
             cartesian2dAxes.setLabelOrientation(axisId, labelOrientationsArray[axisId] === undefined ? labelOrientationDefaultArray[axisId] : labelOrientationsArray[axisId]);
             cartesian2dAxes.setTitle(axisId, titleArray[axisId]);
             cartesian2dAxes.setTitleSize(axisId, titleSizeArray[axisId] === undefined ? core.config.axesTextTitleSize : titleSizeArray[axisId]);
@@ -20824,6 +20860,7 @@ class $8e8b902bb9bb0800$export$694e0d28c7ffc90c extends $8e8b902bb9bb0800$export
         const spacingZ = options.spacingZ == undefined ? 0 : options.spacingZ;
         const binsX = options.binsX == undefined ? 1 : options.binsX;
         const binsZ = options.binsZ == undefined ? 1 : options.binsZ;
+        this._height = options.height == undefined ? 1 : options.height;
         if (!this._positionsX || this._positionsX.length < buffer.length) {
             this._positionsX = new Float32Array(buffer.length);
             this._positionsY = new Float32Array(buffer.length);
@@ -20849,7 +20886,7 @@ class $8e8b902bb9bb0800$export$694e0d28c7ffc90c extends $8e8b902bb9bb0800$export
             const itemZ = Math.floor(levelCount / sizeX);
             const itemX = levelCount - itemZ * sizeX;
             positionX = spacingX / 2 + binIdX * (sizeX + spacingX) + itemX + 0.5;
-            positionY = level + 0.5;
+            positionY = this._height * (level + 0.5);
             positionZ = spacingZ / 2 + binIdZ * (sizeZ + spacingZ) + itemZ + 0.5;
             this._positionsX[index] = positionX;
             this._positionsY[index] = positionY;
@@ -20864,7 +20901,7 @@ class $8e8b902bb9bb0800$export$694e0d28c7ffc90c extends $8e8b902bb9bb0800$export
         this.minLayoutBoundsY = 0;
         this.minLayoutBoundsZ = 0;
         this.maxLayoutBoundsX = binsX * (sizeX + spacingX);
-        this.maxLayoutBoundsY = this._maxLevel;
+        this.maxLayoutBoundsY = this._maxLevel * this._height;
         this.maxLayoutBoundsZ = binsZ * (sizeZ + spacingZ);
         this._updateCumulativeLayoutBounds();
         this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `${this.constructor.name.toLowerCase()} layout ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -20889,7 +20926,7 @@ class $8e8b902bb9bb0800$export$694e0d28c7ffc90c extends $8e8b902bb9bb0800$export
         const thickness = options.thickness === undefined ? 1 - padding : options.thickness;
         this._updateModelBounds(options);
         (0, $a75e1c0eea6f029a$exports).rotationTo(_quat, this._core.config.identityRotation, (0, $87037c674fbf0952$export$a002182e51710d39).VECTOR3_UNITY);
-        const scale = (0, $3060130e3101af24$exports).fromValues((1 - padding) * this._boundsScaling, (1 - padding) * this._boundsScaling, thickness * this._boundsScaling);
+        const scale = (0, $3060130e3101af24$exports).fromValues((1 - padding) * this._boundsScaling, (this._height - padding) * this._boundsScaling, thickness * this._boundsScaling);
         const lookup = buffer.lookup;
         const selection = options.selected && options.selected.size > 0;
         for(let i = 0; i < count; i++){
@@ -21312,6 +21349,7 @@ class $4dac639045fe5cb9$export$c1cecec923d96e5c {
         this._selected = new Set();
         this.from = 0;
         this.to = 1;
+        this.unitType = (0, $b0e0bae684e98192$export$80d48287646c9e3b).block;
         this._lookup = {};
         for(let i = 0; i < this._length; i++){
             const id = ids[i];
@@ -24076,7 +24114,7 @@ class $04b4694d50e05a30$export$861edd1ccea2f746 extends (0, $a33c9818b09ebc0d$ex
         this._core.log.write((0, $b0e0bae684e98192$export$243e62d78d3b544d).info, `buffers resized ${width},${height}`);
     }
     _createContext(canvas) {
-        const antialias = this._options ? this._options.antialias === undefined ? false : this._options.antialias : false;
+        const antialias = this._options ? this._options.antialias === undefined ? true : this._options.antialias : true;
         return canvas.getContext("webgl", {
             stencil: true,
             alpha: false,
@@ -35752,42 +35790,57 @@ const $30a8de2d3e679e73$export$df7d25c84ebd12a5 = $30a8de2d3e679e73$var$ascendin
 const $30a8de2d3e679e73$export$c1cb828b1117c77b = (0, $d31e3aafe5da5ba2$export$2e2bcd8739ae039)((0, $2e7c5dbdfe290956$export$2e2bcd8739ae039)).center;
 var $30a8de2d3e679e73$export$2e2bcd8739ae039 = $30a8de2d3e679e73$export$4d945ad3ad5751b0;
 
-var $eea1c81c19f28e56$var$e10 = Math.sqrt(50), $eea1c81c19f28e56$var$e5 = Math.sqrt(10), $eea1c81c19f28e56$var$e2 = Math.sqrt(2);
+const $eea1c81c19f28e56$var$e10 = Math.sqrt(50), $eea1c81c19f28e56$var$e5 = Math.sqrt(10), $eea1c81c19f28e56$var$e2 = Math.sqrt(2);
+function $eea1c81c19f28e56$var$tickSpec(start, stop, count) {
+    const step = (stop - start) / Math.max(0, count), power = Math.floor(Math.log10(step)), error = step / Math.pow(10, power), factor = error >= $eea1c81c19f28e56$var$e10 ? 10 : error >= $eea1c81c19f28e56$var$e5 ? 5 : error >= $eea1c81c19f28e56$var$e2 ? 2 : 1;
+    let i1, i2, inc;
+    if (power < 0) {
+        inc = Math.pow(10, -power) / factor;
+        i1 = Math.round(start * inc);
+        i2 = Math.round(stop * inc);
+        if (i1 / inc < start) ++i1;
+        if (i2 / inc > stop) --i2;
+        inc = -inc;
+    } else {
+        inc = Math.pow(10, power) * factor;
+        i1 = Math.round(start / inc);
+        i2 = Math.round(stop / inc);
+        if (i1 * inc < start) ++i1;
+        if (i2 * inc > stop) --i2;
+    }
+    if (i2 < i1 && 0.5 <= count && count < 2) return $eea1c81c19f28e56$var$tickSpec(start, stop, count * 2);
+    return [
+        i1,
+        i2,
+        inc
+    ];
+}
 function $eea1c81c19f28e56$export$2e2bcd8739ae039(start, stop, count) {
-    var reverse, i = -1, n, ticks, step;
     stop = +stop, start = +start, count = +count;
-    if (start === stop && count > 0) return [
+    if (!(count > 0)) return [];
+    if (start === stop) return [
         start
     ];
-    if (reverse = stop < start) n = start, start = stop, stop = n;
-    if ((step = $eea1c81c19f28e56$export$bc64d00cc98e7e95(start, stop, count)) === 0 || !isFinite(step)) return [];
-    if (step > 0) {
-        let r0 = Math.round(start / step), r1 = Math.round(stop / step);
-        if (r0 * step < start) ++r0;
-        if (r1 * step > stop) --r1;
-        ticks = new Array(n = r1 - r0 + 1);
-        while(++i < n)ticks[i] = (r0 + i) * step;
+    const reverse = stop < start, [i1, i2, inc] = reverse ? $eea1c81c19f28e56$var$tickSpec(stop, start, count) : $eea1c81c19f28e56$var$tickSpec(start, stop, count);
+    if (!(i2 >= i1)) return [];
+    const n = i2 - i1 + 1, ticks = new Array(n);
+    if (reverse) {
+        if (inc < 0) for(let i = 0; i < n; ++i)ticks[i] = (i2 - i) / -inc;
+        else for(let i3 = 0; i3 < n; ++i3)ticks[i3] = (i2 - i3) * inc;
     } else {
-        step = -step;
-        let r01 = Math.round(start * step), r11 = Math.round(stop * step);
-        if (r01 / step < start) ++r01;
-        if (r11 / step > stop) --r11;
-        ticks = new Array(n = r11 - r01 + 1);
-        while(++i < n)ticks[i] = (r01 + i) / step;
+        if (inc < 0) for(let i4 = 0; i4 < n; ++i4)ticks[i4] = (i1 + i4) / -inc;
+        else for(let i5 = 0; i5 < n; ++i5)ticks[i5] = (i1 + i5) * inc;
     }
-    if (reverse) ticks.reverse();
     return ticks;
 }
 function $eea1c81c19f28e56$export$bc64d00cc98e7e95(start, stop, count) {
-    var step = (stop - start) / Math.max(0, count), power = Math.floor(Math.log(step) / Math.LN10), error = step / Math.pow(10, power);
-    return power >= 0 ? (error >= $eea1c81c19f28e56$var$e10 ? 10 : error >= $eea1c81c19f28e56$var$e5 ? 5 : error >= $eea1c81c19f28e56$var$e2 ? 2 : 1) * Math.pow(10, power) : -Math.pow(10, -power) / (error >= $eea1c81c19f28e56$var$e10 ? 10 : error >= $eea1c81c19f28e56$var$e5 ? 5 : error >= $eea1c81c19f28e56$var$e2 ? 2 : 1);
+    stop = +stop, start = +start, count = +count;
+    return $eea1c81c19f28e56$var$tickSpec(start, stop, count)[2];
 }
 function $eea1c81c19f28e56$export$81087d9b915d4ede(start, stop, count) {
-    var step0 = Math.abs(stop - start) / Math.max(0, count), step1 = Math.pow(10, Math.floor(Math.log(step0) / Math.LN10)), error = step0 / step1;
-    if (error >= $eea1c81c19f28e56$var$e10) step1 *= 10;
-    else if (error >= $eea1c81c19f28e56$var$e5) step1 *= 5;
-    else if (error >= $eea1c81c19f28e56$var$e2) step1 *= 2;
-    return stop < start ? -step1 : step1;
+    stop = +stop, start = +start, count = +count;
+    const reverse = stop < start, inc = reverse ? $eea1c81c19f28e56$export$bc64d00cc98e7e95(stop, start, count) : $eea1c81c19f28e56$export$bc64d00cc98e7e95(start, stop, count);
+    return (reverse ? -1 : 1) * (inc < 0 ? 1 / -inc : inc);
 }
 
 
@@ -40119,7 +40172,7 @@ const $29728562a99c68a2$export$8e76ac9f37578d1b = {
 
 
 
-const $f56a95f33c4cc847$export$83d89fbfd8236492 = "4.0.6";
+const $f56a95f33c4cc847$export$83d89fbfd8236492 = "4.0.7";
 
 
 var $4805700d8b417596$var$SandDance = $3b509b9541e52a8f$exports;

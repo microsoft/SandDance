@@ -122,7 +122,7 @@ export class App extends React.Component<Props, State> {
         if (wasLoaded) {
             const { historyItems, sideTabId } = explorer.state;
             const loaded = () => {
-                this.log('reloading history')
+                this.log('reloading history');
                 const last = historyItems[historyItems.length - 1];
                 historyItems.push({
                     historicInsight: { ...last?.historicInsight || {} },

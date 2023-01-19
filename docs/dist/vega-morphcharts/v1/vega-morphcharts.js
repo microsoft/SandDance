@@ -9314,6 +9314,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        this._selected = new Set();
 	        this.from = 0;
 	        this.to = 1;
+	        this.unitType = UnitType.block;
 	        this._lookup = {};
 	        for (let i = 0; i < this._length; i++) {
 	            const id = ids[i];
@@ -12074,7 +12075,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        this._core.log.write(LogLevel.info, `buffers resized ${width},${height}`);
 	    }
 	    _createContext(canvas) {
-	        const antialias = this._options ? this._options.antialias === undefined ? false : this._options.antialias : false;
+	        const antialias = this._options ? this._options.antialias === undefined ? true : this._options.antialias : true;
 	        return canvas.getContext("webgl", { stencil: true, alpha: false, antialias: antialias });
 	    }
 	    initializeWebXR(session) {
