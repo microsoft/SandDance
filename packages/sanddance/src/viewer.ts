@@ -767,6 +767,7 @@ export class Viewer {
                 }
             },
             onLayerClick: (e: MouseEvent) => {
+                this.options.onCanvasClick && this.options.onCanvasClick(e);
                 this.deselect();
             },
             onLegendClick: (e: MouseEvent, legend: VegaMorphCharts.types.Legend, clickedIndex: number) => {
