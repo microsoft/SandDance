@@ -1,5 +1,12 @@
 # Change Log
 
+## [4.0.2]
+- Fix z-axis order
+- Added new Vega color schemes
+- Use area squared formula for scatterplot size scaling
+- Use integers for small bin steps
+- Snapshots revive background image
+
 ## [4.0.1]
 - New 3d engine
 - Transitions tab
