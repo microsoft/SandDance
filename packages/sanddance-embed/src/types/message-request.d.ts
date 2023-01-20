@@ -43,6 +43,10 @@ interface MessageRequest_GetInsight extends MessageRequestBase {
     action: 'getInsight';
 }
 
+interface MessageRequest_GetSetup extends MessageRequestBase {
+    action: 'getSetup';
+}
+
 interface MessageRequest_Theme extends MessageRequestBase {
     action: 'theme';
     dark?: boolean;
@@ -61,6 +65,7 @@ type MessageRequest =
     | MessageRequest_Load
     | MessageRequest_GetData
     | MessageRequest_GetInsight
+    | MessageRequest_GetSetup
     | MessageRequest_Theme
     | MessageRequest_EventCanvasClick
     | MessageRequest_EventCubeClick
