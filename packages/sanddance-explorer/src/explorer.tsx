@@ -94,6 +94,8 @@ export interface Props {
     additionalSettings?: SettingsGroup[];
     systemInfoChildren?: React.ReactNode;
     initialRenderer?: Partial<SandDance.VegaMorphCharts.types.MorphChartsRendererOptions>;
+    initialSidebarClosed?: boolean;
+    initialSidebarPinned?: boolean;
     renderOptions?: SandDance.types.RenderOptions;
 }
 
