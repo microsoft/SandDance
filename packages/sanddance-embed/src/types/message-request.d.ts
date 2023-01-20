@@ -28,6 +28,11 @@ interface MessageRequest_Load extends MessageRequestBase {
      * See https://microsoft.github.io/SandDance/docs/sanddance-explorer/v4/interfaces/Props.html
      */
     props?: SandDanceExplorer.Props;
+
+    /**
+     * See https://microsoft.github.io/SandDance/docs/sanddance-explorer/v4/interfaces/Options.html
+     */
+    options?: SandDanceExplorer.Options;
 }
 
 interface MessageRequest_GetData extends MessageRequestBase {
@@ -36,6 +41,10 @@ interface MessageRequest_GetData extends MessageRequestBase {
 
 interface MessageRequest_GetInsight extends MessageRequestBase {
     action: 'getInsight';
+}
+
+interface MessageRequest_GetSetup extends MessageRequestBase {
+    action: 'getSetup';
 }
 
 interface MessageRequest_Theme extends MessageRequestBase {
@@ -56,6 +65,7 @@ type MessageRequest =
     | MessageRequest_Load
     | MessageRequest_GetData
     | MessageRequest_GetInsight
+    | MessageRequest_GetSetup
     | MessageRequest_Theme
     | MessageRequest_EventCanvasClick
     | MessageRequest_EventCubeClick

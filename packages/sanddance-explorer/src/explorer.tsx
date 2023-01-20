@@ -93,7 +93,9 @@ export interface Props {
     onSetupOptionsChanged?: (setup: SandDance.types.Setup) => void;
     additionalSettings?: SettingsGroup[];
     systemInfoChildren?: React.ReactNode;
-    initialRenderer?: SandDance.VegaMorphCharts.types.MorphChartsRendererOptions;
+    initialRenderer?: Partial<SandDance.VegaMorphCharts.types.MorphChartsRendererOptions>;
+    initialSidebarClosed?: boolean;
+    initialSidebarPinned?: boolean;
     renderOptions?: SandDance.types.RenderOptions;
 }
 

@@ -17,6 +17,8 @@
 
     <div>
         <button id="button_theme">toggle dark theme</button>
+        <button id="button_insight">get insight</button>
+        <button id="button_setup">get setup</button>
         <a href="?">localDev</a>
         <a href="?prod">prod</a>
     </div>
@@ -31,7 +33,28 @@
                 .then(response => response.text())
                 .then(rawText => {
                     const data = { rawText, type: 'tsv' };
-                    embedIframe.contentWindow.postMessage({ action: 'load', data, props: { theme: 'dark-theme' } }, '*');
+                    embedIframe.contentWindow.postMessage({
+                        action: 'load',
+                        data,
+                        insight: {
+                            chart: 'barchartH',
+                            columns: {
+                                y: 'Age',
+                                z: 'TicketCost',
+                                color: 'Class'
+                            },
+                            scheme: 'category10',
+                            view: '3d',
+                        },
+                        props: {
+                            theme: 'dark-theme',
+                            initialSidebarClosed: true,
+                            initialSidebarPinned: false,
+                            initialRenderer: {
+                                advanced: true,
+                            },
+                        }
+                    }, '*');
                 });
         };
         embedIframe.src = `target.html${location.search}`;
@@ -43,6 +66,15 @@
             embedIframe.contentWindow.postMessage({ action: 'theme', dark }, '*');
         };
 
+        const button_insight = document.getElementById('button_insight');
+        button_insight.onclick = () => {
+            embedIframe.contentWindow.postMessage({ action: 'getInsight' }, '*');
+        };
+
+        const button_setup = document.getElementById('button_setup');
+        button_setup.onclick = () => {
+            embedIframe.contentWindow.postMessage({ action: 'getSetup' }, '*');
+        };
     </script>
 
 </body>

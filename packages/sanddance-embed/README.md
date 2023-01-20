@@ -67,23 +67,50 @@ This promise provides you `embedIframe` when it is available:
 ## Send commands to SandDance Embed
 Use `postMessage` to communicate with `embedIframe.contentWindow`. For all command requests, see https://github.com/microsoft/SandDance/blob/master/packages/sanddance-embed/src/types/message-request.d.ts
 
-* Load data and display initial chart:
+* Use the [load command](https://microsoft.github.io/SandDance/docs/sanddance-embed/v4/interfaces/types_message_request.MessageRequest_Load.html) to load data and display initial chart:
     ```js
     const data = [
         { x: 0, y: 0, z: 0 },
         { x: 1, y: 1, z: 1 },
         { x: 2, y: 2, z: 2 },
     ];
-    embedIframe.contentWindow.postMessage({ action: 'load', data, props: { theme: 'dark-theme' } }, '*');
+    embedIframe.contentWindow.postMessage({ action: 'load', data }, '*');
     ```
-    The `data` variable can be an array, or a [DataFile object](https://microsoft.github.io/SandDance/docs/sanddance-explorer/v4/interfaces/DataFile.html). The `props` member is optional [Explorer Props](https://microsoft.github.io/SandDance/docs/sanddance-explorer/v4/interfaces/Props.html), here is shown used to specify the dark color theme.  
+    
+    The `data` variable can be an array, or a [DataFile object](https://microsoft.github.io/SandDance/docs/sanddance-explorer/v4/interfaces/DataFile.html). 
+    
+    Notable optional parameters:
 
-* Get insight:
+    * The `props` member, of type [Explorer Props](https://microsoft.github.io/SandDance/docs/sanddance-explorer/v4/interfaces/Props.html), here is shown used to specify the dark color theme, initially close the sidebar, and use the advanced renderer: 
+    ```js
+    const props = { theme: 'dark-theme', initialSidebarClosed: true, initialRenderer: { advanced: true } };
+    embedIframe.contentWindow.postMessage({ action: 'load', data, props }, '*');
+    ```
+
+    *Note that the `props` member is for initializing the instance of SandDance Explorer. A new dataset can be loaded with a subsequent load command, but `props` will be not be used.*
+
+
+    * The `insight` member, of type [Insight](https://microsoft.github.io/SandDance/docs/sanddance-specs/v1/interfaces/Insight.html), to specify a chart view: 
+    ```js
+    const insight = {
+        chart: 'barchartH',
+        columns: {
+            y: 'Age',
+            z: 'TicketCost',
+            color: 'Class'
+        },
+        scheme: 'category10',
+        view: '3d',
+    };
+    embedIframe.contentWindow.postMessage({ action: 'load', data, insight }, '*');
+    ```
+
+* The [getInsight command](https://microsoft.github.io/SandDance/docs/sanddance-embed/v4/interfaces/types_message_request.MessageRequest_GetInsight.html) will request the current insight:
     ```js
     embedIframe.contentWindow.postMessage({ action: 'getInsight' }, '*');
     ```
 
-* Get or set theme:
+* The [theme command](https://microsoft.github.io/SandDance/docs/sanddance-embed/v4/interfaces/types_message_request.MessageRequest_Theme.html) will get or set the theme:
     ```js
     embedIframe.contentWindow.postMessage({ action: 'theme', dark: true }, '*');
     ```

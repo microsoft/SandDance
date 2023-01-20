@@ -16,6 +16,14 @@ interface MessageResponse_GetInsight extends MessageResponseBase {
     insight: SandDanceExplorer.SandDance.types.Insight;
 }
 
+interface MessageResponse_GetSetup extends MessageResponseBase {
+
+    /**
+     * See https://microsoft.github.io/SandDance/docs/sanddance-explorer/v4/interfaces/SandDance.types.Setup.html
+     */
+    setup: SandDanceExplorer.SandDance.types.Setup;
+}
+
 interface MessageResponse_EventError extends MessageResponseBase {
     errors: string[];
 }
@@ -36,6 +44,7 @@ type MessageResponse =
     | MessageResponse_Init
     | MessageResponse_GetData
     | MessageResponse_GetInsight
+    | MessageResponse_GetSetup
     | MessageResponse_Theme
     | MessageResponse_EventCanvasClick
     | MessageResponse_EventCubeClick
