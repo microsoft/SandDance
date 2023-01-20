@@ -181,9 +181,7 @@ namespace SandDanceEmbed {
             }
             case 'getSetup': {
                 const setup: SandDanceExplorer.SandDance.types.Setup = sandDanceExplorer.getSetup();
-                if (!setup.camera) {
-                    setup.camera = sandDanceExplorer.viewer.getCamera();
-                }
+                setup.camera = sandDanceExplorer.viewer.getCamera();
                 response = <MessageResponse_GetSetup>{
                     request,
                     setup,
