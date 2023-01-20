@@ -81,9 +81,9 @@ Use `postMessage` to communicate with `embedIframe.contentWindow`. For all comma
     
     Notable optional parameters:
 
-    * The `props` member, of type [Explorer Props](https://microsoft.github.io/SandDance/docs/sanddance-explorer/v4/interfaces/Props.html), here is shown used to specify the dark color theme, and initially close the sidebar: 
+    * The `props` member, of type [Explorer Props](https://microsoft.github.io/SandDance/docs/sanddance-explorer/v4/interfaces/Props.html), here is shown used to specify the dark color theme, initially close the sidebar, and use the advanced renderer: 
     ```js
-    const props = { theme: 'dark-theme', initialSidebarClosed: true };
+    const props = { theme: 'dark-theme', initialSidebarClosed: true, initialRenderer: { advanced: true } };
     embedIframe.contentWindow.postMessage({ action: 'load', data, props }, '*');
     ```
 
