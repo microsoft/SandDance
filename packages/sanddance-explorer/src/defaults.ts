@@ -35,6 +35,13 @@ export const defaultRenderer: SandDance.VegaMorphCharts.types.MorphChartsRendere
 };
 
 export function initialExplorerState(props: Props) {
+    const renderer = (props.initialRenderer as SandDance.VegaMorphCharts.types.MorphChartsRendererOptions) || defaultRenderer;
+    if (!renderer.advancedOptions) {
+        renderer.advancedOptions = defaultRenderer.advancedOptions;
+    }
+    if (!renderer.basicOptions) {
+        renderer.basicOptions = defaultRenderer.basicOptions;
+    }
     const state: State = {
         calculating: null,
         errors: null,
@@ -72,7 +79,7 @@ export function initialExplorerState(props: Props) {
         note: null,
         historyIndex: -1,
         historyItems: [],
-        renderer: props.initialRenderer || defaultRenderer,
+        renderer,
         transitionType: 'ordinal',
         transitionDimension: 'x',
         transitionDurations: SandDance.VegaMorphCharts.util.clone(SandDance.VegaMorphCharts.defaults.defaultPresenterConfig.transitionDurations),
