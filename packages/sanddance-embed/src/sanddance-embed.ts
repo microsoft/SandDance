@@ -18,7 +18,12 @@ namespace SandDanceEmbed {
     let creating = false;
     let innerLoad: () => void;
 
-    export function load(data: DataToLoad, insight?: Partial<SandDanceExplorer.SandDance.specs.Insight>, props?: SandDanceExplorer.Props) {
+    export function load(
+        data: DataToLoad,
+        insight?: Partial<SandDanceExplorer.SandDance.specs.Insight>,
+        props?: SandDanceExplorer.Props,
+        options?: SandDanceExplorer.Options,
+    ) {
         return new Promise((resolve) => {
 
             innerLoad = () => {
@@ -27,7 +32,7 @@ namespace SandDanceEmbed {
                     //TODO make sure that insight columns exist in dataset
                     getPartialInsight = columns => insight;
                 }
-                sandDanceExplorer.load(data, getPartialInsight).then(resolve);
+                sandDanceExplorer.load(data, getPartialInsight, options).then(resolve);
             };
 
             const create = () => {
@@ -145,7 +150,12 @@ namespace SandDanceEmbed {
             }
             case 'load': {
                 const request_load = request as MessageRequest_Load;
-                load(request_load.data, request_load.insight, request_load.props).then(() => {
+                load(
+                    request_load.data,
+                    request_load.insight,
+                    request_load.props,
+                    request_load.options,
+                ).then(() => {
                     response = {
                         request,
                     };
