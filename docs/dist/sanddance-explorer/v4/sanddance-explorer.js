@@ -40172,7 +40172,7 @@ const $29728562a99c68a2$export$8e76ac9f37578d1b = {
 
 
 
-const $f56a95f33c4cc847$export$83d89fbfd8236492 = "4.0.7";
+const $f56a95f33c4cc847$export$83d89fbfd8236492 = "4.0.8";
 
 
 var $4805700d8b417596$var$SandDance = $3b509b9541e52a8f$exports;
@@ -42064,6 +42064,9 @@ const $8bfbb5c28cff0e2c$export$6093ee13d2f7fa25 = {
     }
 };
 function $8bfbb5c28cff0e2c$export$d1b579ecf4cf2d3f(props) {
+    const renderer = props.initialRenderer || $8bfbb5c28cff0e2c$export$6093ee13d2f7fa25;
+    if (!renderer.advancedOptions) renderer.advancedOptions = $8bfbb5c28cff0e2c$export$6093ee13d2f7fa25.advancedOptions;
+    if (!renderer.basicOptions) renderer.basicOptions = $8bfbb5c28cff0e2c$export$6093ee13d2f7fa25.basicOptions;
     const state = {
         calculating: null,
         errors: null,
@@ -42091,8 +42094,8 @@ function $8bfbb5c28cff0e2c$export$d1b579ecf4cf2d3f(props) {
         sideTabId: (0, $a4811b1c86ed19fa$export$f3b7566ffe363e3b).ChartType,
         dataScopeId: (0, $99df88aa84de796a$export$f0297ce57faf7d71).AllData,
         selectedItemIndex: {},
-        sidebarClosed: false,
-        sidebarPinned: true,
+        sidebarClosed: props.initialSidebarClosed === undefined ? false : props.initialSidebarClosed,
+        sidebarPinned: props.initialSidebarPinned === undefined ? true : props.initialSidebarPinned,
         view: props.initialView || "2d",
         snapshots: [],
         selectedSnapshotIndex: -1,
@@ -42101,7 +42104,7 @@ function $8bfbb5c28cff0e2c$export$d1b579ecf4cf2d3f(props) {
         note: null,
         historyIndex: -1,
         historyItems: [],
-        renderer: props.initialRenderer || $8bfbb5c28cff0e2c$export$6093ee13d2f7fa25,
+        renderer: renderer,
         transitionType: "ordinal",
         transitionDimension: "x",
         transitionDurations: (0, $3b509b9541e52a8f$exports).VegaMorphCharts.util.clone((0, $3b509b9541e52a8f$exports).VegaMorphCharts.defaults.defaultPresenterConfig.transitionDurations)
