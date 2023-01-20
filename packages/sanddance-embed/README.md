@@ -87,6 +87,9 @@ Use `postMessage` to communicate with `embedIframe.contentWindow`. For all comma
     embedIframe.contentWindow.postMessage({ action: 'load', data, props }, '*');
     ```
 
+    *Note that the `props` member is for initializing the instance of SandDance Explorer. A new dataset can be loaded with a subsequent load command, but `props` will be not be used.*
+
+
     * The `insight` member, of type [Insight](https://microsoft.github.io/SandDance/docs/sanddance-specs/v1/interfaces/Insight.html), to specify a chart view: 
     ```js
     const insight = {
