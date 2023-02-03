@@ -975,22 +975,6 @@ export class Viewer {
         return extractSignalValuesFromView(this.vegaViewGl, this.vegaSpec);
     }
 
-    /**
-     * Update column type information.
-     * Currently only the quantitative flag is supported.
-     * The promise is resolved when the animation completes.
-     * @param column Column to update. The name is used to match existing columns.
-     */
-    updateColumn(column: Column): Promise<void> {
-        // TODO Remove
-        this._dataScope.getColumns()
-            .filter(dsColumn => dsColumn.name == column.name)
-            .forEach(dsColumn => {
-                dsColumn.quantitative = column.quantitative;
-            });
-        return this.onAnimateDataChange(DataLayoutChange.same, "before updateColumn", "updateColumn");
-    }
-
     assignTransitionStagger(transition: Transition) {
         assignTransitionStagger(transition, this._dataScope.currentData(), this.convertSearchToSet(), this.presenter);
     }
