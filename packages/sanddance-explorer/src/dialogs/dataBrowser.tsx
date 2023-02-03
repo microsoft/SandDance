@@ -16,6 +16,7 @@ import { InputSearchExpressionGroup } from './search';
 import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
 import { Explorer_Class } from '../explorer';
+import { ColumnTypeChanger } from '../controls/columnTypeChanger';
 
 export const dataBrowserZeroMessages: { [key: number]: string } = {};
 dataBrowserZeroMessages[DataScopeId.AllData] = strings.labelZeroAll;
@@ -45,6 +46,7 @@ export interface Props {
     onDataScopeClick: (dataScopeId: DataScopeId) => void;
     displayName: string;
     explorer: Explorer_Class;
+    onUpdateColumns: (columns: SandDance.types.Column[]) => void;
 }
 
 export function DataBrowser(props: Props) {
@@ -53,6 +55,9 @@ export function DataBrowser(props: Props) {
     }
     const { index } = props;
     const length = props.data && props.data.length || 0;
+    const showColumnTypeChanger = props.columns
+        .filter(c => c.type == 'number' || c.type == 'integer')
+        .length > 0;
 
     const dropdownRef = base.react.createRef<FluentUITypes.IDropdown>();
     props.explorer.dialogFocusHandler.focus = ()=> dropdownRef.current?.focus();
@@ -113,6 +118,13 @@ export function DataBrowser(props: Props) {
                     bingSearchDisabled={props.bingSearchDisabled}
                 />
             </div>}
+            {showColumnTypeChanger && (
+                <ColumnTypeChanger
+                    theme={props.theme}
+                    columns={props.columns}
+                    onConfirmUpdate={props.onUpdateColumns}
+                />
+            )}
             {props.dataExportHandler && props.data && (
                 <DataExportPicker
                     theme={props.theme}

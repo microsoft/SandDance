@@ -5,6 +5,7 @@
 
 import { BackgroundImageEditor } from './dialogs/backgroundImageEditor';
 import { PositionedColumnMap } from './clickableTextLayer';
+import { ColumnTypeChanger } from './controls/columnTypeChanger';
 import { DataExportPicker } from './controls/dataExporter';
 import { Chart } from './dialogs/chart';
 import { Search } from './dialogs/search';
@@ -57,6 +58,7 @@ export function use(
     //inform React that we are using a dynamic base class
     BackgroundImageEditor.prototype = react.Component.prototype as any;
     Chart.prototype = react.Component.prototype as any;
+    ColumnTypeChanger.prototype = react.Component.prototype as any;
     DataExportPicker.prototype = react.Component.prototype as any;
     Explorer.prototype = react.Component.prototype as any;
     PositionedColumnMap.prototype = react.Component.prototype as any;
