@@ -24,7 +24,7 @@ export const loadDataFile = (dataFile: DataFile) => new Promise<DataContent>((re
             reject(e);
         }
         if (data) {
-            loadDataArray(data, dataFile.type).then(dc => {
+            loadDataArray(data, dataFile.type, dataFile.columnTypes).then(dc => {
                 if (dataFile.snapshotsUrl) {
                     fetch(dataFile.snapshotsUrl)
                         .then(response => response.json())
@@ -52,7 +52,7 @@ export const loadDataFile = (dataFile: DataFile) => new Promise<DataContent>((re
     }
 });
 
-export const loadDataArray = (data: object[], type: DataFileType) => new Promise<DataContent>((resolve, reject) => {
+export const loadDataArray = (data: object[], type: DataFileType, columnTypes?: SandDance.types.ColumnTypeMap) => new Promise<DataContent>((resolve, reject) => {
     const parse = type === 'csv' || type === 'tsv';
     if (parse) {
         //convert empty strings to null so that vega.inferType will get dates
@@ -65,7 +65,7 @@ export const loadDataArray = (data: object[], type: DataFileType) => new Promise
         });
     }
     const columns = SandDance.util.
-        getColumnsFromData(SandDance.VegaMorphCharts.base.vega.inferTypes, data)
+        getColumnsFromData(SandDance.VegaMorphCharts.base.vega.inferTypes, data, columnTypes)
         .filter(c => c.name && c.name.trim())
         .sort((a, b) => a.name.localeCompare(b.name));
     if (parse) {

@@ -538,13 +538,7 @@ function _Explorer(_props: Props) {
                 } else {
                     dataFile = data as DataFile;
                     return loadDataFile(dataFile)
-                        .then(result => {
-                            if (typeof overrideColumns !== 'undefined') {
-                                result.columns = overrideColumns;
-                                // TODO: Then get this new column data into viewer._dataScope
-                            }
-                            loadFinal(result);
-                        })
+                        .then(loadFinal)
                         .catch(reject);
                 }
             });
