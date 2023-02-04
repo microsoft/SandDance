@@ -52,7 +52,7 @@ export const loadDataFile = (dataFile: DataFile, columnTypes?: SandDance.types.C
     }
 });
 
-export const loadDataArray = (data: object[], type: DataFileType, columnTypes: SandDance.types.ColumnTypeMap) => new Promise<DataContent>((resolve, reject) => {
+export const loadDataArray = (data: object[], type: DataFileType, columnTypes?: SandDance.types.ColumnTypeMap) => new Promise<DataContent>((resolve, reject) => {
     const parse = type === 'csv' || type === 'tsv';
     if (parse) {
         //convert empty strings to null so that vega.inferType will get dates
