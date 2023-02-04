@@ -1277,23 +1277,8 @@ function _Explorer(_props: Props) {
                                                     }
                                                 }}
                                                 bingSearchDisabled={this.props.bingSearchDisabled}
-                                                // onUpdateColumn={updatedColumn => {
-                                                //     this.setState(state => {
-                                                //         state.dataContent.columns
-                                                //             .filter(c => c.name == updatedColumn.name)
-                                                //             .forEach(c => {
-                                                //                 // keep this updating step the same as viewer.updateColumn
-                                                //                 c.quantitative = updatedColumn.quantitative;
-                                                //             });
-                                                //     });
-                                                //     this.viewer.updateColumn(updatedColumn);
-                                                // }}
-                                                onUpdateColumns={(columns) => {
-                                                    this.setState(state => {
-                                                        state.dataContent.columns = columns;
-                                                    })
-                                                    this.load(this.state.dataFile, null, { prefs: this.prefs, columnTypes: null });
-                                                    // TODO: how to handle getPartialInsight?
+                                                onUpdateColumnTypes={columnTypes => {
+                                                    this.load(this.state.dataFile, null, { prefs: this.prefs, columnTypes });
                                                 }}
                                             />
                                         );

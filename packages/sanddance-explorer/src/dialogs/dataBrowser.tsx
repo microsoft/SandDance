@@ -46,7 +46,7 @@ export interface Props {
     onDataScopeClick: (dataScopeId: DataScopeId) => void;
     displayName: string;
     explorer: Explorer_Class;
-    onUpdateColumns: (columns: SandDance.types.Column[]) => void;
+    onUpdateColumnTypes: (columnTypes: SandDance.types.ColumnTypeMap) => void;
 }
 
 export function DataBrowser(props: Props) {
@@ -122,7 +122,7 @@ export function DataBrowser(props: Props) {
                 <ColumnTypeChanger
                     theme={props.theme}
                     columns={props.columns}
-                    onConfirmUpdate={props.onUpdateColumns}
+                    onConfirmUpdate={props.onUpdateColumnTypes}
                 />
             )}
             {props.dataExportHandler && props.data && (

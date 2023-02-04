@@ -6,7 +6,7 @@ import { strings } from '../language';
 export interface Props {
     theme: string;
     columns: SandDance.types.Column[];
-    onConfirmUpdate: (columns: SandDance.types.Column[]) => void;
+    onConfirmUpdate: (columnTypes: SandDance.types.ColumnTypeMap) => void;
 }
 
 export interface State {
@@ -49,7 +49,11 @@ function _ColumnTypeChanger(_props: Props) {
 
         private confirm() {
             this.setState({dialogHidden: true, confirmationHidden: true});
-            this.props.onConfirmUpdate(this.state.columns);
+            const columnTypes: SandDance.types.ColumnTypeMap = {};
+            this.state.columns.forEach(c => {
+                columnTypes[c.name] = c.type;
+            });
+            this.props.onConfirmUpdate(columnTypes);
         }
 
         private getChangeableColumns(): SandDance.types.Column[] {
