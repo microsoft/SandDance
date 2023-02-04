@@ -66,6 +66,7 @@ export interface Options {
     chartPrefs?: Prefs;
     tooltipExclusions?: string[];
     setup?: SandDance.types.Setup;
+    columnTypes?: SandDance.types.ColumnTypeMap;
 }
 
 export interface Props {
@@ -457,7 +458,6 @@ function _Explorer(_props: Props) {
                 columns: SandDance.types.Column[]
             ) => Partial<SandDance.specs.Insight>,
             optionsOrPrefs?: Prefs | Options,
-            overrideColumns?: SandDance.types.Column[],
         ) {
             this.setState({ historyIndex: -1, historyItems: [] });
             this.changeInsight(
@@ -524,20 +524,17 @@ function _Explorer(_props: Props) {
                 };
                 let dataFile: DataFile;
                 if (Array.isArray(data)) {
-                    return loadDataArray(data, 'json')
+                    return loadDataArray(data, 'json', (optionsOrPrefs && (optionsOrPrefs as Options).columnTypes))
                         .then(result => {
                             dataFile = {
                                 type: 'json',
                             };
-                            if (typeof overrideColumns !== 'undefined') {
-                                result.columns = overrideColumns;
-                            }
                             loadFinal(result);
                         })
                         .catch(reject);
                 } else {
                     dataFile = data as DataFile;
-                    return loadDataFile(dataFile)
+                    return loadDataFile(dataFile, (optionsOrPrefs && (optionsOrPrefs as Options).columnTypes))
                         .then(loadFinal)
                         .catch(reject);
                 }
@@ -1295,11 +1292,7 @@ function _Explorer(_props: Props) {
                                                     this.setState(state => {
                                                         state.dataContent.columns = columns;
                                                     })
-                                                    this.load(this.state.dataFile, null, this.prefs, columns);
-                                                    // this.viewer.updateColumn({
-                                                    //     name: "XXX", // dummy to get onanimate... to run
-                                                    //     type: "number",
-                                                    // });
+                                                    this.load(this.state.dataFile, null, { prefs: this.prefs, columnTypes: null });
                                                     // TODO: how to handle getPartialInsight?
                                                 }}
                                             />

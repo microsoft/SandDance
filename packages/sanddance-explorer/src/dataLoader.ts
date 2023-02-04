@@ -11,7 +11,7 @@ import {
 } from './interfaces';
 import { SandDance } from '@msrvida/sanddance-react';
 
-export const loadDataFile = (dataFile: DataFile) => new Promise<DataContent>((resolve, reject) => {
+export const loadDataFile = (dataFile: DataFile, columnTypes: SandDance.types.ColumnTypeMap) => new Promise<DataContent>((resolve, reject) => {
     const vega = SandDance.VegaMorphCharts.base.vega;
     const loader = vega.loader();
 
@@ -24,7 +24,7 @@ export const loadDataFile = (dataFile: DataFile) => new Promise<DataContent>((re
             reject(e);
         }
         if (data) {
-            loadDataArray(data, dataFile.type, dataFile.columnTypes).then(dc => {
+            loadDataArray(data, dataFile.type, columnTypes).then(dc => {
                 if (dataFile.snapshotsUrl) {
                     fetch(dataFile.snapshotsUrl)
                         .then(response => response.json())
@@ -52,7 +52,7 @@ export const loadDataFile = (dataFile: DataFile) => new Promise<DataContent>((re
     }
 });
 
-export const loadDataArray = (data: object[], type: DataFileType, columnTypes?: SandDance.types.ColumnTypeMap) => new Promise<DataContent>((resolve, reject) => {
+export const loadDataArray = (data: object[], type: DataFileType, columnTypes: SandDance.types.ColumnTypeMap) => new Promise<DataContent>((resolve, reject) => {
     const parse = type === 'csv' || type === 'tsv';
     if (parse) {
         //convert empty strings to null so that vega.inferType will get dates

@@ -19,7 +19,6 @@ export interface DataFile {
   rawText?: string;
   snapshots?: Snapshot[];
   type: DataFileType;
-  columnTypes?: SandDance.types.ColumnTypeMap
 }
 
 export interface DataContent {
