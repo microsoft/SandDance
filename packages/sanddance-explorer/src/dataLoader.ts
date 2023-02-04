@@ -11,7 +11,7 @@ import {
 } from './interfaces';
 import { SandDance } from '@msrvida/sanddance-react';
 
-export const loadDataFile = (dataFile: DataFile, columnTypes: SandDance.types.ColumnTypeMap) => new Promise<DataContent>((resolve, reject) => {
+export const loadDataFile = (dataFile: DataFile, columnTypes?: SandDance.types.ColumnTypeMap) => new Promise<DataContent>((resolve, reject) => {
     const vega = SandDance.VegaMorphCharts.base.vega;
     const loader = vega.loader();
 
