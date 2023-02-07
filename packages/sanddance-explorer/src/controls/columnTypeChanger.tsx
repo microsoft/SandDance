@@ -133,12 +133,12 @@ function _ColumnTypeChanger(_props: Props) {
                                         <thead>
                                             <tr>
                                                 {/* TODO: localise */}
+                                                <th>Edit</th>
                                                 <th>Column name</th>
                                                 <th>Min</th>
                                                 <th>Max</th>
                                                 <th>Mean</th>
                                                 <th>Distinct values</th>
-                                                <th>Change type</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -147,11 +147,6 @@ function _ColumnTypeChanger(_props: Props) {
                                                     key={i}
                                                     className={c.quantitative ? '' : 'changed'}
                                                 >
-                                                    <td>{c.name}</td>
-                                                    <td>{c.stats.min}</td>
-                                                    <td>{c.stats.max}</td>
-                                                    <td>{c.stats.mean}</td>
-                                                    <td>{c.stats.distinctValueCount}</td>
                                                     <td>
                                                         <IconButton
                                                             iconName='Edit'
@@ -172,6 +167,11 @@ function _ColumnTypeChanger(_props: Props) {
                                                             title='Change type' //TODO localize
                                                         />
                                                     </td>
+                                                    <td>{c.name}</td>
+                                                    <td>{c.stats.min}</td>
+                                                    <td>{c.stats.max}</td>
+                                                    <td>{c.stats.mean}</td>
+                                                    <td>{c.stats.distinctValueCount}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
