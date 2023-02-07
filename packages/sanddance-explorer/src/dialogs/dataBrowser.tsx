@@ -119,6 +119,7 @@ export function DataBrowser(props: Props) {
             <ColumnTypeChanger
                 theme={props.theme}
                 themePalette={props.themePalette}
+                columns={props.columns}
                 categoricalColumns={props.categoricalColumns}
                 quantitativeColumns={props.quantitativeColumns}
                 onConfirmUpdate={props.onUpdateColumnTypes}

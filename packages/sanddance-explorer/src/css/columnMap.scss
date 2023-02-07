@@ -37,5 +37,8 @@
         td, button {
             height: 18px;
         }
+        tr.changed {
+            text-decoration: line-through;
+        }
     }
 }

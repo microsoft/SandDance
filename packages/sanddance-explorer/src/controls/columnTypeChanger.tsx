@@ -9,6 +9,7 @@ import { TypeInference } from 'vega-typings';
 export interface Props {
     theme: string;
     themePalette: Partial<FluentUITypes.IPalette>;
+    columns: SandDance.types.Column[];
     quantitativeColumns: SandDance.types.Column[];
     categoricalColumns: SandDance.types.Column[];
     onConfirmUpdate: (columnTypes?: SandDance.types.ColumnTypeMap) => void;
@@ -19,23 +20,15 @@ export interface State {
     confirmationHidden: boolean;
     quantitativeColumns: SandDance.types.Column[];
     categoricalColumns: SandDance.types.Column[];
+    columnTypes: SandDance.types.ColumnTypeMap;
 }
-
-const changeQuantitativeTypes: TypeInference[] = ['boolean', 'number', 'string'];
 
 function _ColumnTypeChanger(_props: Props) {
     class __ColumnTypeChanger extends base.react.Component<Props, State> {
 
-        private columnTypes: SandDance.types.ColumnTypeMap;
-
         constructor(props: Props) {
             super(props);
-            this.state = {
-                dialogHidden: true,
-                confirmationHidden: true,
-                quantitativeColumns: props.quantitativeColumns.map(c => SandDance.VegaMorphCharts.util.clone(c)),
-                categoricalColumns: props.categoricalColumns.map(c => SandDance.VegaMorphCharts.util.clone(c)),
-            };
+            this.state = this.reset();
             this.openDialog = this.openDialog.bind(this);
             this.closeDialog = this.closeDialog.bind(this);
             this.openConfirmation = this.openConfirmation.bind(this);
@@ -43,16 +36,27 @@ function _ColumnTypeChanger(_props: Props) {
             this.confirm = this.confirm.bind(this);
         }
 
+        private reset(): State {
+            const { props } = this;
+            return {
+                dialogHidden: true,
+                confirmationHidden: true,
+                quantitativeColumns: props.quantitativeColumns.map(c => SandDance.VegaMorphCharts.util.clone(c)),
+                categoricalColumns: props.categoricalColumns.map(c => SandDance.VegaMorphCharts.util.clone(c)),
+                columnTypes: null
+            };
+        }
+
         private openDialog() {
             this.setState({ dialogHidden: false });
         }
 
         private closeDialog() {
-            this.setState({ dialogHidden: true });
+            this.setState(this.reset());
         }
 
-        private openConfirmation() {
-            this.setState({ confirmationHidden: false });
+        private openConfirmation(columnTypes: SandDance.types.ColumnTypeMap) {
+            this.setState({ columnTypes, confirmationHidden: false });
         }
 
         private closeConfirmation() {
@@ -60,12 +64,24 @@ function _ColumnTypeChanger(_props: Props) {
         }
 
         private confirm() {
-            this.setState({ dialogHidden: true, confirmationHidden: true });
-            this.props.onConfirmUpdate(this.columnTypes);
+            this.setState({ confirmationHidden: true });
+            this.closeDialog();
+            this.props.onConfirmUpdate(this.state.columnTypes);
+        }
+
+        private hasChanges() {
+            const { props, state } = this;
+            return props.columns.some(c => {
+                const newColumn =
+                    state.quantitativeColumns.find(c2 => c2.name === c.name) ||
+                    state.categoricalColumns.find(c2 => c2.name === c.name);
+                return c.quantitative !== newColumn.quantitative;
+            });
         }
 
         render() {
             const { props, state } = this;
+            const hasChanges = this.hasChanges();
             return (
                 <div>
                     <base.fluentUI.DefaultButton
@@ -87,10 +103,9 @@ function _ColumnTypeChanger(_props: Props) {
                                     key="revert"
                                     text="Revert to automatic" //TODO localize
                                     onClick={() => {
-                                        this.columnTypes = null;
-                                        this.openConfirmation();
+                                        this.openConfirmation(null);
                                     }}
-                                    iconProps={{ iconName: 'Undo' }}//TODO change
+                                    iconProps={{ iconName: 'Undo' }}
                                 />
                             ),
                             (
@@ -100,12 +115,16 @@ function _ColumnTypeChanger(_props: Props) {
                                     onClick={() => {
                                         const columnTypes: SandDance.types.ColumnTypeMap = {};
                                         state.quantitativeColumns.forEach(c => {
-                                            columnTypes[c.name] = c.type;   //TODO: fix
+                                            columnTypes[c.name] = c.quantitative ? c.type : 'string';
                                         });
-                                        this.columnTypes = columnTypes;
-                                        this.openConfirmation();
+                                        state.categoricalColumns.forEach(c => {
+                                            columnTypes[c.name] = 'string';
+                                        });
+                                        console.log('apply', columnTypes);
+                                        this.openConfirmation(columnTypes);
                                     }}
-                                    iconProps={{ iconName: 'Undo' }}//TODO change
+                                    iconProps={{ iconName: 'Accept' }}
+                                    disabled={!hasChanges}
                                 />
                             )
                         ]}
@@ -119,30 +138,35 @@ function _ColumnTypeChanger(_props: Props) {
                                             <tr>
                                                 {/* TODO: localise */}
                                                 <th>Column name</th>
-                                                <th>Type</th>
-                                                <th></th>
                                                 <th>Min</th>
                                                 <th>Max</th>
                                                 <th>Mean</th>
                                                 <th>Distinct values</th>
+                                                <th>Change type</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {props.quantitativeColumns.filter(c => c.quantitative).map((c, i) => (
-                                                <tr key={i}>
+                                            {state.quantitativeColumns.map((c, i) => (
+                                                <tr
+                                                    key={i}
+                                                    className={c.quantitative ? '' : 'changed'}
+                                                >
                                                     <td>{c.name}</td>
-                                                    <td>{c.type}</td>
+                                                    <td>{c.stats.min}</td>
+                                                    <td>{c.stats.max}</td>
+                                                    <td>{c.stats.mean}</td>
+                                                    <td>{c.stats.distinctValueCount}</td>
                                                     <td>
                                                         <IconButton
                                                             iconName='Edit'
                                                             onClick={undefined}
                                                             menuProps={{
-                                                                items: changeQuantitativeTypes.map(t => {
+                                                                items: [strings.labelQuantitative, strings.labelCategorical].map(t => {
                                                                     return {
                                                                         key: t,
                                                                         text: t,
                                                                         onClick: () => {
-                                                                            c.type = t;
+                                                                            c.quantitative = t === strings.labelQuantitative;
                                                                             this.setState({ quantitativeColumns: [...state.quantitativeColumns] });
                                                                         }
                                                                     };
@@ -152,17 +176,13 @@ function _ColumnTypeChanger(_props: Props) {
                                                             title='Change type' //TODO localize
                                                         />
                                                     </td>
-                                                    <td>{c.stats.min}</td>
-                                                    <td>{c.stats.max}</td>
-                                                    <td>{c.stats.mean}</td>
-                                                    <td>{c.stats.distinctValueCount}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
                                     </table>
                                 </div>
                             )}
-                            {props.categoricalColumns.length && (
+                            {state.categoricalColumns.length && (
                                 <div>
                                     <h3>{strings.labelCategorical}</h3>
                                     <table>
@@ -170,17 +190,15 @@ function _ColumnTypeChanger(_props: Props) {
                                             <tr>
                                                 {/* TODO: localise */}
                                                 <th>Column name</th>
-                                                <th>Type</th>
                                                 <th>Distinct values</th>
                                                 <th>Is color data</th>
                                                 <th>Has color data</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {props.categoricalColumns.filter(c => !c.quantitative).map((c, i) => (
+                                            {state.categoricalColumns.map((c, i) => (
                                                 <tr key={i}>
                                                     <td>{c.name}</td>
-                                                    <td>{c.type}</td>
                                                     <td>{c.stats.distinctValueCount}</td>
                                                     <td>{(!!c.isColorData).toString()}</td>
                                                     <td>{(!!c.stats.hasColorData).toString()}</td>
