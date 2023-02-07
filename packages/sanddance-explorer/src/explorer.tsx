@@ -1254,6 +1254,8 @@ function _Explorer(_props: Props) {
                                                 themePalette={themePalette}
                                                 disabled={!loaded || this.state.sidebarClosed}
                                                 columns={this.state.dataContent && this.state.dataContent.columns}
+                                                categoricalColumns={columnMapProps.categoricalColumns}
+                                                quantitativeColumns={columnMapProps.quantitativeColumns}
                                                 data={data}
                                                 displayName={(this.state.dataFile && this.state.dataFile.displayName) || strings.defaultFileName}
                                                 nullMessage={dataBrowserNullMessages[this.state.dataScopeId]}

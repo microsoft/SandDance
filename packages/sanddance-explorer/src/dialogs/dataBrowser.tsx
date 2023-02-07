@@ -35,6 +35,8 @@ export interface Props {
     onSearch?: { (event: React.MouseEvent<{}>, search: InputSearchExpressionGroup[]): void };
     bingSearchDisabled: boolean;
     columns: SandDance.types.Column[];
+    quantitativeColumns: SandDance.types.Column[];
+    categoricalColumns: SandDance.types.Column[];
     disabled?: boolean;
     nullMessage: string;
     zeroMessage: string;
@@ -116,7 +118,9 @@ export function DataBrowser(props: Props) {
             </div>}
             <ColumnTypeChanger
                 theme={props.theme}
-                columns={props.columns}
+                themePalette={props.themePalette}
+                categoricalColumns={props.categoricalColumns}
+                quantitativeColumns={props.quantitativeColumns}
                 onConfirmUpdate={props.onUpdateColumnTypes}
             />
             {props.dataExportHandler && props.data && (
