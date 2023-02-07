@@ -31,68 +31,43 @@ function _ColumnTypeChanger(_props: Props) {
 
         constructor(props: Props) {
             super(props);
-            this.state = this.reset();
-            this.openDialog = this.openDialog.bind(this);
-            this.closeDialog = this.closeDialog.bind(this);
-            this.openConfirmation = this.openConfirmation.bind(this);
-            this.closeConfirmation = this.closeConfirmation.bind(this);
-            this.confirm = this.confirm.bind(this);
+            this.state = this.getInitialState();
         }
 
-        private reset(): State {
+        private getInitialState(): State {
             const { props } = this;
             return {
                 dialogHidden: true,
                 confirmationHidden: true,
                 quantitativeColumns: props.initialQuantitativeColumns.map(c => SandDance.VegaMorphCharts.util.clone(c)),
                 categoricalColumns: props.initialCategoricalColumns.map(c => SandDance.VegaMorphCharts.util.clone(c)),
-                columnTypes: null
+                columnTypes: null,
             };
         }
 
-        private openDialog() {
-            this.setState({ dialogHidden: false });
-        }
-
         private closeDialog() {
-            this.setState(this.reset());
+            this.setState(this.getInitialState());
         }
 
         private openConfirmation(columnTypes: SandDance.types.ColumnTypeMap) {
             this.setState({ columnTypes, confirmationHidden: false });
         }
 
-        private closeConfirmation() {
-            this.setState({ confirmationHidden: true });
-        }
-
-        private confirm() {
-            this.setState({ confirmationHidden: true });
-            this.closeDialog();
-            this.props.onConfirmUpdate(this.state.columnTypes);
-        }
-
-        private hasChanges() {
-            const { props, state } = this;
-            //only check quantitative columns for changes
-            return props.initialQuantitativeColumns.some((c, i) => {
-                return c.quantitative !== state.quantitativeColumns[i].quantitative;
-            });
-        }
-
         render() {
             const { props, state } = this;
-            const hasChanges = this.hasChanges();
+            const hasChanges = props.initialQuantitativeColumns.some((c, i) => {
+                return c.quantitative !== state.quantitativeColumns[i].quantitative;
+            });
             return (
                 <div>
                     <base.fluentUI.DefaultButton
-                        text={strings.buttonChangeColumnType}
-                        onClick={this.openDialog}
+                        text={strings.buttonColumnTypes}
+                        onClick={() => this.setState({ dialogHidden: false })}
                     />
                     <Dialog
                         minWidth="80%"
                         hidden={state.dialogHidden}
-                        onDismiss={this.closeDialog}
+                        onDismiss={() => this.closeDialog()}
                         dialogContentProps={{
                             className: `sanddance-dialog ${props.theme}`,
                             type: base.fluentUI.DialogType.normal,
@@ -102,17 +77,15 @@ function _ColumnTypeChanger(_props: Props) {
                             (
                                 <base.fluentUI.DefaultButton
                                     key="revert"
-                                    text="Revert to automatic" //TODO localize
-                                    onClick={() => {
-                                        this.openConfirmation(null);
-                                    }}
+                                    text={strings.buttonResetToDefault}
+                                    onClick={() => this.openConfirmation(null)}
                                     iconProps={{ iconName: 'Undo' }}
                                 />
                             ),
                             (
                                 <base.fluentUI.DefaultButton
                                     key="apply"
-                                    text="Apply and reload" //TODO localize
+                                    text={strings.buttonApply}
                                     onClick={() => {
                                         const columnTypes: SandDance.types.ColumnTypeMap = {};
                                         state.quantitativeColumns.forEach(c => {
@@ -121,13 +94,12 @@ function _ColumnTypeChanger(_props: Props) {
                                         state.categoricalColumns.forEach(c => {
                                             columnTypes[c.name] = 'string';
                                         });
-                                        console.log('apply', columnTypes);
                                         this.openConfirmation(columnTypes);
                                     }}
                                     iconProps={{ iconName: 'Accept' }}
                                     disabled={!hasChanges}
                                 />
-                            )
+                            ),
                         ]}
                     >
                         <div className='sanddance-columnTypes'>
@@ -137,13 +109,12 @@ function _ColumnTypeChanger(_props: Props) {
                                     <table>
                                         <thead>
                                             <tr>
-                                                {/* TODO: localise */}
-                                                <th>Edit</th>
-                                                <th>Column name</th>
-                                                <th>Min</th>
-                                                <th>Max</th>
-                                                <th>Mean</th>
-                                                <th>Distinct values</th>
+                                                <th>{strings.labelEditColumn}</th>
+                                                <th>{strings.labelColumnName}</th>
+                                                <th>{strings.labelColumnQuantitativeMin}</th>
+                                                <th>{strings.labelColumnQuantitativeMax}</th>
+                                                <th>{strings.labelColumnQuantitativeMean}</th>
+                                                <th>{strings.labelColumnDistinct}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -164,12 +135,12 @@ function _ColumnTypeChanger(_props: Props) {
                                                                         onClick: () => {
                                                                             c.quantitative = t === strings.selectNumeric;
                                                                             this.setState({ quantitativeColumns: [...state.quantitativeColumns] });
-                                                                        }
+                                                                        },
                                                                     };
-                                                                })
+                                                                }),
                                                             }}
                                                             themePalette={props.themePalette}
-                                                            title='Change type' //TODO localize
+                                                            title={strings.labelChangeColumnType}
                                                         />
                                                     </td>
                                                     <td>{c.name}</td>
@@ -189,11 +160,9 @@ function _ColumnTypeChanger(_props: Props) {
                                     <table>
                                         <thead>
                                             <tr>
-                                                {/* TODO: localise */}
-                                                <th>Column name</th>
-                                                <th>Distinct values</th>
-                                                <th>Is color data</th>
-                                                <th>Has color data</th>
+                                                <th>{strings.labelColumnName}</th>
+                                                <th>{strings.labelColumnDistinct}</th>
+                                                <th>{strings.labelColumnIsColorData}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -202,7 +171,6 @@ function _ColumnTypeChanger(_props: Props) {
                                                     <td>{c.name}</td>
                                                     <td>{c.stats.distinctValueCount}</td>
                                                     <td>{(!!c.isColorData).toString()}</td>
-                                                    <td>{(!!c.stats.hasColorData).toString()}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
@@ -213,25 +181,24 @@ function _ColumnTypeChanger(_props: Props) {
                     </Dialog>
                     <Dialog
                         hidden={state.confirmationHidden}
-                        onDismiss={this.closeConfirmation}
+                        onDismiss={() => this.setState({ confirmationHidden: true })}
                         dialogContentProps={{
                             className: `sanddance-dialog ${props.theme}`,
                             type: base.fluentUI.DialogType.normal,
-                            title: "Are you sure?", //TODO localize
-                            subText: "This will erase your current history.",   //TODO localize
+                            title: strings.labelConfirmation,
+                            subText: strings.labelHistoryWarning,
                         }}
-                        // modalProps={{
-                        //     isBlocking: true,
-                        // }}
                         buttons={(
                             <base.fluentUI.PrimaryButton
-                                text="Apply and reload" //TODO localize
-                                onClick={this.confirm}
-                            // TODO iconprops
+                                text={strings.buttonApply}
+                                onClick={() => {
+                                    this.closeDialog();
+                                    this.props.onConfirmUpdate(this.state.columnTypes);
+                                }}
+                                iconProps={{ iconName: 'Accept' }}
                             />
                         )}
                     >
-
                     </Dialog>
                 </div>
             );
