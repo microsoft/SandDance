@@ -196,8 +196,6 @@ export const strings = {
     labelNo: 'No',
     labelConfirmation: 'Are you sure?',
     labelColumnTypes: 'Column types',
-    labelCategorical: 'Categorical',
-    labelQuantitative: 'Quantitative',
     loading: 'Loading...',
     schemeCategorical: 'Categorical',
     schemeCyclical: 'Cyclical',

@@ -132,7 +132,7 @@ function _ColumnTypeChanger(_props: Props) {
                         <div className='sanddance-columnTypes'>
                             {props.quantitativeColumns.length && (
                                 <div>
-                                    <h3>{strings.labelQuantitative}</h3>
+                                    <h3>{strings.selectNumeric}</h3>
                                     <table>
                                         <thead>
                                             <tr>
@@ -161,12 +161,12 @@ function _ColumnTypeChanger(_props: Props) {
                                                             iconName='Edit'
                                                             onClick={undefined}
                                                             menuProps={{
-                                                                items: [strings.labelQuantitative, strings.labelCategorical].map(t => {
+                                                                items: [strings.selectNumeric, strings.selectNonNumeric].map(t => {
                                                                     return {
                                                                         key: t,
                                                                         text: t,
                                                                         onClick: () => {
-                                                                            c.quantitative = t === strings.labelQuantitative;
+                                                                            c.quantitative = t === strings.selectNumeric;
                                                                             this.setState({ quantitativeColumns: [...state.quantitativeColumns] });
                                                                         }
                                                                     };
@@ -184,7 +184,7 @@ function _ColumnTypeChanger(_props: Props) {
                             )}
                             {state.categoricalColumns.length && (
                                 <div>
-                                    <h3>{strings.labelCategorical}</h3>
+                                    <h3>{strings.selectNonNumeric}</h3>
                                     <table>
                                         <thead>
                                             <tr>
