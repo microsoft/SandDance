@@ -66,6 +66,7 @@ export interface Options {
     chartPrefs?: Prefs;
     tooltipExclusions?: string[];
     setup?: SandDance.types.Setup;
+    columnTypes?: SandDance.types.ColumnTypeMap;
 }
 
 export interface Props {
@@ -523,7 +524,7 @@ function _Explorer(_props: Props) {
                 };
                 let dataFile: DataFile;
                 if (Array.isArray(data)) {
-                    return loadDataArray(data, 'json')
+                    return loadDataArray(data, 'json', (optionsOrPrefs && (optionsOrPrefs as Options).columnTypes))
                         .then(result => {
                             dataFile = {
                                 type: 'json',
@@ -533,7 +534,7 @@ function _Explorer(_props: Props) {
                         .catch(reject);
                 } else {
                     dataFile = data as DataFile;
-                    return loadDataFile(dataFile)
+                    return loadDataFile(dataFile, (optionsOrPrefs && (optionsOrPrefs as Options).columnTypes))
                         .then(loadFinal)
                         .catch(reject);
                 }
@@ -1010,6 +1011,7 @@ function _Explorer(_props: Props) {
                     rebaseFilter: () => this.rebaseFilter,
                     initialColorContext: this.getColorContext && this.getColorContext(this.viewer.insight, insight),
                     discardColorContextUpdates: () => this.discardColorContextUpdates,
+                    columns: this.state.dataContent?.columns,
                 };
             }
 
@@ -1253,6 +1255,8 @@ function _Explorer(_props: Props) {
                                                 themePalette={themePalette}
                                                 disabled={!loaded || this.state.sidebarClosed}
                                                 columns={this.state.dataContent && this.state.dataContent.columns}
+                                                categoricalColumns={columnMapProps.categoricalColumns}
+                                                quantitativeColumns={columnMapProps.quantitativeColumns}
                                                 data={data}
                                                 displayName={(this.state.dataFile && this.state.dataFile.displayName) || strings.defaultFileName}
                                                 nullMessage={dataBrowserNullMessages[this.state.dataScopeId]}
@@ -1276,6 +1280,9 @@ function _Explorer(_props: Props) {
                                                     }
                                                 }}
                                                 bingSearchDisabled={this.props.bingSearchDisabled}
+                                                onUpdateColumnTypes={columnTypes => {
+                                                    this.load(this.state.dataFile, null, { prefs: this.prefs, columnTypes });
+                                                }}
                                             />
                                         );
                                     }

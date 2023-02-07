@@ -28,4 +28,17 @@
         display: block;
         margin-top: 10px;
     }
+    .sanddance-columnTypes {
+        max-height: 20em;
+        overflow: scroll;
+        th, td {
+            padding: 0 5px;
+        }
+        td, button {
+            height: 18px;
+        }
+        tr.changed {
+            text-decoration: line-through;
+        }
+    }
 }

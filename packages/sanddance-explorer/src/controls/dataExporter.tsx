@@ -121,7 +121,7 @@ function _DataExportPicker(_props: Props) {
             const disabled = this.state.working || this.state.dialogHidden;
 
             return (
-                <div className="sanddance-dataExporter">
+                <div>
                     <base.fluentUI.DefaultButton
                         className="search-action search-bottom-action"
                         text={strings.buttonExportCount(this.props.data.length)}

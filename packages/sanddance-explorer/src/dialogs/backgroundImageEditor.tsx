@@ -74,7 +74,7 @@ function _BackgroundImageEditor(_props: Props) {
                         <base.fluentUI.PrimaryButton
                             key='apply'
                             iconProps={{ iconName: 'Photo2Add' }}
-                            text={strings.labelBackgroundApply}
+                            text={strings.buttonApply}
                             onClick={() => this.applyImage(true)}
                             disabled={!state.readyToApply}
                         />,
@@ -86,7 +86,7 @@ function _BackgroundImageEditor(_props: Props) {
                             <base.fluentUI.DefaultButton
                                 key='remove'
                                 iconProps={{ iconName: 'Photo2Remove' }}
-                                text={strings.labelBackgroundRemove}
+                                text={strings.buttonRemove}
                                 onClick={() => {
                                     explorer.imageHolder.img = null;
                                     this.applyImage(false);

@@ -16,6 +16,7 @@ import { InputSearchExpressionGroup } from './search';
 import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
 import { Explorer_Class } from '../explorer';
+import { ColumnTypeChanger } from '../controls/columnTypeChanger';
 
 export const dataBrowserZeroMessages: { [key: number]: string } = {};
 dataBrowserZeroMessages[DataScopeId.AllData] = strings.labelZeroAll;
@@ -34,6 +35,8 @@ export interface Props {
     onSearch?: { (event: React.MouseEvent<{}>, search: InputSearchExpressionGroup[]): void };
     bingSearchDisabled: boolean;
     columns: SandDance.types.Column[];
+    quantitativeColumns: SandDance.types.Column[];
+    categoricalColumns: SandDance.types.Column[];
     disabled?: boolean;
     nullMessage: string;
     zeroMessage: string;
@@ -45,6 +48,7 @@ export interface Props {
     onDataScopeClick: (dataScopeId: DataScopeId) => void;
     displayName: string;
     explorer: Explorer_Class;
+    onUpdateColumnTypes: (columnTypes: SandDance.types.ColumnTypeMap) => void;
 }
 
 export function DataBrowser(props: Props) {
@@ -53,9 +57,8 @@ export function DataBrowser(props: Props) {
     }
     const { index } = props;
     const length = props.data && props.data.length || 0;
-
     const dropdownRef = base.react.createRef<FluentUITypes.IDropdown>();
-    props.explorer.dialogFocusHandler.focus = ()=> dropdownRef.current?.focus();
+    props.explorer.dialogFocusHandler.focus = () => dropdownRef.current?.focus();
 
     return (
         <Group label={strings.labelDataBrowser} className="sanddance-dataIndex">
@@ -113,6 +116,13 @@ export function DataBrowser(props: Props) {
                     bingSearchDisabled={props.bingSearchDisabled}
                 />
             </div>}
+            <ColumnTypeChanger
+                theme={props.theme}
+                themePalette={props.themePalette}
+                initialCategoricalColumns={props.categoricalColumns}
+                initialQuantitativeColumns={props.quantitativeColumns}
+                onConfirmUpdate={props.onUpdateColumnTypes}
+            />
             {props.dataExportHandler && props.data && (
                 <DataExportPicker
                     theme={props.theme}
