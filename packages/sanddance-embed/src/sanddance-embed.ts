@@ -187,7 +187,7 @@ namespace SandDanceEmbed {
                     setup,
                 };
                 break;
-            };
+            }
             case 'theme': {
                 const request_theme = request as MessageRequest_Theme;
                 if (request_theme.dark !== undefined) {

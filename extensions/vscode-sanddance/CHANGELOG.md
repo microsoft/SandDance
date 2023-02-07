@@ -1,5 +1,8 @@
 # Change Log
 
+## [4.1.0]
+- Column type editor in Data Browser
+
 ## [4.0.3]
 - Added new Vega color schemes
 - Use area squared formula for scatterplot size scaling

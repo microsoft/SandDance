@@ -103,7 +103,7 @@ function _ColumnTypeChanger(_props: Props) {
                         ]}
                     >
                         <div className='sanddance-columnTypes'>
-                            {state.quantitativeColumns.length && (
+                            {state.quantitativeColumns.length > 0 && (
                                 <div>
                                     <h3>{strings.selectNumeric}</h3>
                                     <table>
@@ -154,7 +154,7 @@ function _ColumnTypeChanger(_props: Props) {
                                     </table>
                                 </div>
                             )}
-                            {state.categoricalColumns.length && (
+                            {state.categoricalColumns.length > 0 && (
                                 <div>
                                     <h3>{strings.selectNonNumeric}</h3>
                                     <table>
