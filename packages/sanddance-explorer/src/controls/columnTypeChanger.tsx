@@ -4,14 +4,12 @@ import { SandDance } from '@msrvida/sanddance-react';
 import { strings } from '../language';
 import { IconButton } from './iconButton';
 import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
-import { TypeInference } from 'vega-typings';
 
 export interface Props {
     theme: string;
     themePalette: Partial<FluentUITypes.IPalette>;
-    columns: SandDance.types.Column[];
-    quantitativeColumns: SandDance.types.Column[];
-    categoricalColumns: SandDance.types.Column[];
+    initialQuantitativeColumns: SandDance.types.Column[];
+    initialCategoricalColumns: SandDance.types.Column[];
     onConfirmUpdate: (columnTypes?: SandDance.types.ColumnTypeMap) => void;
 }
 
@@ -41,8 +39,8 @@ function _ColumnTypeChanger(_props: Props) {
             return {
                 dialogHidden: true,
                 confirmationHidden: true,
-                quantitativeColumns: props.quantitativeColumns.map(c => SandDance.VegaMorphCharts.util.clone(c)),
-                categoricalColumns: props.categoricalColumns.map(c => SandDance.VegaMorphCharts.util.clone(c)),
+                quantitativeColumns: props.initialQuantitativeColumns.map(c => SandDance.VegaMorphCharts.util.clone(c)),
+                categoricalColumns: props.initialCategoricalColumns.map(c => SandDance.VegaMorphCharts.util.clone(c)),
                 columnTypes: null
             };
         }
@@ -71,11 +69,9 @@ function _ColumnTypeChanger(_props: Props) {
 
         private hasChanges() {
             const { props, state } = this;
-            return props.columns.some(c => {
-                const newColumn =
-                    state.quantitativeColumns.find(c2 => c2.name === c.name) ||
-                    state.categoricalColumns.find(c2 => c2.name === c.name);
-                return c.quantitative !== newColumn.quantitative;
+            //only check quantitative columns for changes
+            return props.initialQuantitativeColumns.some((c, i) => {
+                return c.quantitative !== state.quantitativeColumns[i].quantitative;
             });
         }
 
@@ -130,7 +126,7 @@ function _ColumnTypeChanger(_props: Props) {
                         ]}
                     >
                         <div className='sanddance-columnTypes'>
-                            {props.quantitativeColumns.length && (
+                            {state.quantitativeColumns.length && (
                                 <div>
                                     <h3>{strings.selectNumeric}</h3>
                                     <table>
