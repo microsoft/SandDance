@@ -1,3 +1,8 @@
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { base } from '../base';
 import { Dialog } from './dialog';
 import { SandDance } from '@msrvida/sanddance-react';
