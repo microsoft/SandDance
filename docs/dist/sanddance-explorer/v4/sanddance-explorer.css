@@ -425,6 +425,9 @@
 .sanddance-dataIndex .ms-Dropdown-container {
   margin-bottom: 0.5em;
 }
+.sanddance-dataIndex button {
+  margin-top: 1em;
+}
 
 .scrollable-container {
   display: grid;
@@ -633,6 +636,20 @@
   margin-top: 10px;
 }
 
+.sanddance-columnTypes {
+  max-height: 20em;
+  overflow: scroll;
+}
+.sanddance-columnTypes th, .sanddance-columnTypes td {
+  padding: 0 5px;
+}
+.sanddance-columnTypes td, .sanddance-columnTypes button {
+  height: 18px;
+}
+.sanddance-columnTypes tr.changed {
+  text-decoration: line-through;
+}
+
 .sanddance-dialog ul {
   margin: 0;
 }
@@ -830,10 +847,6 @@
 .sanddance-legend .legend-row:hover {
   background-color: rgb(0, 120, 212);
   color: #fff;
-}
-
-.sanddance-dataExporter {
-  margin-top: 1em;
 }
 
 .sanddance-form-separate {
