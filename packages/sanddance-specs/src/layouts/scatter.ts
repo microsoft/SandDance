@@ -93,7 +93,7 @@ export class Scatter extends Layout {
                     input: 'range',
                     min: 1,
                     max: 10,
-                    step: 1,
+                    step: 0.1,
                 },
             },
             {
