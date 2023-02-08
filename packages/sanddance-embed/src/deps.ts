@@ -5,7 +5,7 @@
 
 namespace SandDanceEmbed {
 
-    export function defaultDependencies(localDev = false, static = false) {
+    export function defaultDependencies(localDev = false, static = false, minified = true) {
         const deps: EmbedDependency[] = [
             {
                 type: 'stylesheet',
@@ -26,21 +26,21 @@ namespace SandDanceEmbed {
                 url: `${localDev
                     ? '../../node_modules/react'
                     : 'https://unpkg.com/react@17'
-                }/umd/react.production.min.js`,
+                }/umd/react.${minified ? 'production.min' : 'development'}.js`,
             },
             {
                 type: 'script',
                 url: `${localDev
                     ? '../../node_modules/react-dom'
                     : 'https://unpkg.com/react-dom@17'
-                }/umd/react-dom.production.min.js`,
+                }/umd/react-dom.${minified ? 'production.min' : 'development'}.js`,
             },
             {
                 type: 'script',
                 url: `${localDev
                     ? '../../node_modules/vega'
                     : 'https://unpkg.com/vega@5.22'
-                }/build/vega.min.js`,
+                }/build/vega${minified ? '.min' : ''}.js`,
             },
             {
                 type: 'script',
