@@ -33,9 +33,11 @@ title: 'SandDanceEmbed | @msrvida/sanddance-embed'
 							<li class="tsd-kind-variable tsd-parent-kind-namespace"><a href="sanddance_embed.SandDanceEmbed.html#deps" class="tsd-kind-icon">deps</a></li>
 							<li class="tsd-kind-variable tsd-parent-kind-namespace"><a href="sanddance_embed.SandDanceEmbed.html#lastRequestWithSource" class="tsd-kind-icon">last<wbr>Request<wbr>With<wbr>Source</a></li>
 							<li class="tsd-kind-variable tsd-parent-kind-namespace"><a href="sanddance_embed.SandDanceEmbed.html#localDev" class="tsd-kind-icon">local<wbr>Dev</a></li>
+							<li class="tsd-kind-variable tsd-parent-kind-namespace"><a href="sanddance_embed.SandDanceEmbed.html#minified" class="tsd-kind-icon">minified</a></li>
 							<li class="tsd-kind-variable tsd-parent-kind-namespace"><a href="sanddance_embed.SandDanceEmbed.html#prepare" class="tsd-kind-icon">prepare</a></li>
 							<li class="tsd-kind-variable tsd-parent-kind-namespace"><a href="sanddance_embed.SandDanceEmbed.html#requests" class="tsd-kind-icon">requests</a></li>
 							<li class="tsd-kind-variable tsd-parent-kind-namespace"><a href="sanddance_embed.SandDanceEmbed.html#sandDanceExplorer" class="tsd-kind-icon">sand<wbr>Dance<wbr>Explorer</a></li>
+							<li class="tsd-kind-variable tsd-parent-kind-namespace"><a href="sanddance_embed.SandDanceEmbed.html#static" class="tsd-kind-icon">static</a></li>
 						</ul>
 					</section>
 					<section class="tsd-index-section ">
@@ -83,12 +85,22 @@ title: 'SandDanceEmbed | @msrvida/sanddance-embed'
 				</aside>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-namespace">
+				<a name="minified" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagLet">Let</span> minified</h3>
+				<div class="tsd-signature tsd-kind-icon">minified<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-embed/src/prepare.ts#L12">prepare.ts:12</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-namespace">
 				<a name="prepare" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagConst">Const</span> prepare</h3>
 				<div class="tsd-signature tsd-kind-icon">prepare<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-embed/src/prepare.ts#L69">prepare.ts:69</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-embed/src/prepare.ts#L71">prepare.ts:71</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -109,6 +121,16 @@ title: 'SandDanceEmbed | @msrvida/sanddance-embed'
 				<aside class="tsd-sources">
 					<ul>
 						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-embed/src/sanddance-embed.ts#L16">sanddance-embed.ts:16</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-namespace">
+				<a name="static" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagLet">Let</span> static</h3>
+				<div class="tsd-signature tsd-kind-icon">static<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/sanddance-embed/src/prepare.ts#L11">prepare.ts:11</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -142,7 +164,7 @@ title: 'SandDanceEmbed | @msrvida/sanddance-embed'
 				<a name="defaultDependencies" class="tsd-anchor"></a>
 				<h3>default<wbr>Dependencies</h3>
 				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
-					<li class="tsd-signature tsd-kind-icon">default<wbr>Dependencies<span class="tsd-signature-symbol">(</span>localDev<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span>, static<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EmbedDependency</span><span class="tsd-signature-symbol">[]</span></li>
+					<li class="tsd-signature tsd-kind-icon">default<wbr>Dependencies<span class="tsd-signature-symbol">(</span>localDev<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span>, static<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span>, minified<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EmbedDependency</span><span class="tsd-signature-symbol">[]</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
@@ -158,6 +180,9 @@ title: 'SandDanceEmbed | @msrvida/sanddance-embed'
 							</li>
 							<li>
 								<h5>static: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+							</li>
+							<li>
+								<h5>minified: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = true</span></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">EmbedDependency</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -241,6 +266,9 @@ title: 'SandDanceEmbed | @msrvida/sanddance-embed'
 					<a href="sanddance_embed.SandDanceEmbed.html#localDev" class="tsd-kind-icon">local<wbr>Dev</a>
 				</li>
 				<li class=" tsd-kind-variable tsd-parent-kind-namespace">
+					<a href="sanddance_embed.SandDanceEmbed.html#minified" class="tsd-kind-icon">minified</a>
+				</li>
+				<li class=" tsd-kind-variable tsd-parent-kind-namespace">
 					<a href="sanddance_embed.SandDanceEmbed.html#prepare" class="tsd-kind-icon">prepare</a>
 				</li>
 				<li class=" tsd-kind-variable tsd-parent-kind-namespace">
@@ -248,6 +276,9 @@ title: 'SandDanceEmbed | @msrvida/sanddance-embed'
 				</li>
 				<li class=" tsd-kind-variable tsd-parent-kind-namespace">
 					<a href="sanddance_embed.SandDanceEmbed.html#sandDanceExplorer" class="tsd-kind-icon">sand<wbr>Dance<wbr>Explorer</a>
+				</li>
+				<li class=" tsd-kind-variable tsd-parent-kind-namespace">
+					<a href="sanddance_embed.SandDanceEmbed.html#static" class="tsd-kind-icon">static</a>
 				</li>
 				<li class=" tsd-kind-function tsd-parent-kind-namespace">
 					<a href="sanddance_embed.SandDanceEmbed.html#changeColorScheme" class="tsd-kind-icon">change<wbr>Color<wbr>Scheme</a>
