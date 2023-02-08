@@ -9,7 +9,10 @@
 
 <body>
     <script>
-        var SandDanceEmbed = { localDev: document.location.search.indexOf('prod') < 0 };
+        var SandDanceEmbed = { 
+            localDev: document.location.search.indexOf('prod') < 0,
+            minified: document.location.search.indexOf('min') >= 0,
+         };
     </script>
     <script src="../../dist/umd/sanddance-embed.js"></script>
 </body>
