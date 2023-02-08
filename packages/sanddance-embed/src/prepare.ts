@@ -8,6 +8,8 @@ namespace SandDanceEmbed {
     export let deps: EmbedDependency[];
 
     export let localDev: boolean;
+    export let static: boolean;
+    export let minified: boolean;
 
     function getUnloadedDeps(depType: EmbedDependencyType, tagType: string, tagAttr: string) {
         const depsToLoad = deps.filter(dep => dep.type === depType);
@@ -67,7 +69,7 @@ namespace SandDanceEmbed {
     }
 
     export const prepare = new Promise<void>((resolve, reject) => {
-        deps = defaultDependencies(localDev);
+        deps = defaultDependencies(localDev, static, minified);
         Promise.all([...loadStyleSheets(), ...loadScripts()]).then(() => resolve());
     });
 
