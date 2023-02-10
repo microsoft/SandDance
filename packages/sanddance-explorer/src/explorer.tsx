@@ -105,6 +105,7 @@ export interface UIState {
     errors: string[];
     autoCompleteDistinctValues: AutoCompleteDistinctValues;
     search: InputSearchExpressionGroup[];
+    filteredColumns: SandDance.types.Column[];
     filteredData: object[];
     sidebarClosed: boolean;
     sidebarPinned: boolean;
@@ -193,7 +194,15 @@ function _Explorer(_props: Props) {
                         { label: this.historicFilterChange, omit: !this.historicFilterChange },
                     );
                     this.historicFilterChange = null;
-                    this.setState({ filteredData, selectedItemIndex });
+                    const filteredColumns = filter ? this.state.dataContent.columns
+                        .map(c => {
+                            const column = SandDance.VegaMorphCharts.util.clone(c);
+                            delete column.stats; 
+                            column.stats = SandDance.util.getStats(filteredData, column);
+                            return column;
+                        })
+                        : null;
+                    this.setState({ filteredColumns, filteredData, selectedItemIndex });
                     if (this.state.sideTabId === SideTabId.Data && this.state.dataScopeId === DataScopeId.FilteredData) {
                         //make sure item is active
                         requestAnimationFrame(() => filteredData && this.silentActivation(filteredData[0]));
@@ -383,6 +392,7 @@ function _Explorer(_props: Props) {
                 ...partialInsight,
             };
             const state: Partial<UIState> = {
+                filteredColumns: null,
                 filteredData: null,
                 selectedItemIndex,
                 search: createInputSearch(historicInsight.filter),
@@ -498,6 +508,7 @@ function _Explorer(_props: Props) {
                         dataContent,
                         snapshots: dataContent.snapshots || this.state.snapshots,
                         autoCompleteDistinctValues: {},
+                        filteredColumns: null,
                         filteredData: null,
                         tooltipExclusions: (optionsOrPrefs && (optionsOrPrefs as Options).tooltipExclusions) || [],
                         selectedItemIndex,
@@ -1525,9 +1536,10 @@ function _Explorer(_props: Props) {
         }
 
         private getColumnMapBaseProps() {
-            const allColumns = this.state.dataContent && this.state.dataContent.columns.filter(c => !SandDance.util.isInternalFieldName(c.name, true));
-            const quantitativeColumns = allColumns && allColumns.filter(c => c.quantitative);
-            const categoricalColumns = allColumns && allColumns.filter(c => !c.quantitative);
+            const allColumns = (this.state.filteredColumns || this.state.dataContent?.columns || [])
+                .filter(c => !SandDance.util.isInternalFieldName(c.name, true));
+            const quantitativeColumns = allColumns.filter(c => c.quantitative);
+            const categoricalColumns = allColumns.filter(c => !c.quantitative);
             const props: ColumnMapBaseProps = {
                 changeColumnMapping: (role, columnOrRole, defaultColumn, options) => {
                     let column: SandDance.types.Column;

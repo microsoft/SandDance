@@ -53,6 +53,7 @@ export function initialExplorerState(props: Props) {
         totalStyle: null,
         facetStyle: 'wrap',
         filter: null,
+        filteredColumns: null,
         filteredData: null,
         specCapabilities: null,
         size: {
