@@ -134,7 +134,8 @@ export function getStats(data: object[] | Float64Array, ...args: any[]) {
             }
             sum += num;
         }
-        if (columnType === 'string' && !stats.hasColorData && isColor(value)) {
+        //hex codes, ex. #003300, are parsed as dates
+        if ((columnType === 'date' || columnType === 'string') && !stats.hasColorData && isColor(value)) {
             stats.hasColorData = true;
         }
     }
