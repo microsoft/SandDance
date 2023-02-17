@@ -72,7 +72,7 @@ export function inferAll(columns: Column[], data: object[]) {
             if (!column.stats) {
                 column.stats = getStats(data, column);
             }
-            if (column.type === 'string' && typeof column.isColorData !== 'boolean') {
+            if ((column.type === 'date' || column.type === 'string') && typeof column.isColorData !== 'boolean') {
                 checkIsColorData(data, column);
             }
         }
