@@ -32,9 +32,9 @@
     "@msrvida/chart-types": "^1",
     "@msrvida/search-expression": "^1",
     "d3-color": "^3.1.0",
-    "vega-typings": "0.22.3"
+    "vega-typings": "~0.24.0"
   },
   "devDependencies": {
-    "vega": "5.22.1"
+    "vega": "5.24"
   }
 }
