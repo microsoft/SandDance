@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@msrvida/sanddance": "^4",
-    "vega": "5.22.1"
+    "vega": "5.24"
   },
   "devDependencies": {
     "vega-typings": "0.22.3"

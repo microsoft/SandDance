@@ -35,6 +35,6 @@
     "vega-typings": "0.22.3"
   },
   "devDependencies": {
-    "vega": "5.22.1"
+    "vega": "5.24"
   }
 }
