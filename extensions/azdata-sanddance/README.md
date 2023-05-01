@@ -28,3 +28,7 @@ Major upgrade to layout engine
 ### 1.0.0
 
 Initial release of azdata-sanddance
+
+## License
+
+This extension is licensed under the [MIT License](https://github.com/microsoft/SandDance/blob/main/LICENSE).
