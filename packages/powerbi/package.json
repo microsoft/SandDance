@@ -10,7 +10,8 @@
     "version": "node ./scripts/version.js",
     "prepackage": "npm run version",
     "deploy": "node ./scripts/deploy.js",
-    "build:sanddance-integration": "tsc -p ."
+    "build:sanddance-integration": "tsc -p .",
+    "remove-vega": "npm un vega"
   },
   "dependencies": {
     "@babel/runtime": "^7.5.5",
