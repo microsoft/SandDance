@@ -21,7 +21,8 @@
     "bundle": "rollup -c",
     "build:sanddance-core": "npm run build-typescript && node ../../scripts/version.js && npm run build-css && npm run bundle",
     "watch-css": "sass ./src/css/sanddance.scss ./dist/css/sanddance.css --watch",
-    "build-css": "sass ./src/css/sanddance.scss ./dist/css/sanddance.css"
+    "build-css": "sass ./src/css/sanddance.scss ./dist/css/sanddance.css",
+    "remove-vega": "npm un vega-typings"
   },
   "author": "",
   "license": "MIT",
