@@ -31,6 +31,7 @@
         "clean-build": "npm run clean-parcel-cache && rimraf ./packages/**/dist/ && rimraf ./**/package-lock.json && rimraf ./lerna-debug.log",
         "clean": "lerna clean --yes && npm run clean-build && npm run restore-dist",
         "remove-pem": "rimraf **/*.pem && rimraf **/*.key",
+        "vega-upgrade": "lerna exec npm un vega",
         "deploy": "npm run clean-parcel-cache && lerna run deploy",
         "test": "npm run eslint && lerna run test && lerna run package",
         "package": "lerna run package --parallel",
