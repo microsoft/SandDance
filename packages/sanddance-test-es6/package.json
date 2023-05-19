@@ -7,7 +7,7 @@
     "build:sanddance-core": "tsc -p .",
     "start": "parcel serve ./test/index.html --open",
     "deploy": "parcel build ./src/sanddance-test-es6.ts --no-autoinstall --no-cache",
-    "remove-vega": "npm un vega"
+    "remove-vega": "npm un vega vega-typings"
   },
   "umd": "../../docs/tests/v4/es6/js/sanddance-test-es6.js",
   "targets": {
