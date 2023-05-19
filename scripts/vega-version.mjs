@@ -2,74 +2,104 @@ import { globSync } from 'glob';
 import { readFileSync, writeFileSync } from 'fs';
 
 const oldVersion = {
-    major: 5,
-    minor: 22,
-    patch: 1,
+    vega: {
+        major: 5,
+        minor: 22,
+        patch: 1,
+    },
+    typings: {
+        major: 0,
+        minor: 22,
+        patch: 3,
+    },
 };
 
 const newVersion = {
-    major: 5,
-    minor: 25,
-    patch: 0,
+    vega: {
+        major: 5,
+        minor: 25,
+        patch: 0,
+    },
+    typings: {
+        major: 0,
+        minor: 24,
+        patch: 1,
+    },
 };
 
-const patterns = [
-    {
-        glob: 'docs/{embed,tests}/v4/**/*.html',
-        pattern: ({ major, minor }) => [
-            `vega@${major}.${minor}`,
-            `vega@^${major}.${minor}`,
-        ],
-    },
-    {
-        glob: '{extensions,packages}/*/package.json',
-        pattern: ({ major, minor, patch }) => [
-            `"vega": "${major}.${minor}.${patch}"`,
-        ],
-    },
-    {
-        glob: 'packages/*/src/**/*.ts',
-        pattern: ({ major, minor }) => [
-            `vega@${major}.${minor}`,
-        ],
-    },
-    {
-        glob: 'packages/*/README.md',
-        pattern: ({ major, minor }) => [
-            `vega@^${major}.${minor}`,
-            `"vega": "^${major}.${minor}"`,
-        ],
-    },
-];
+const packages = {
+    vega: [
+        {
+            glob: 'docs/{embed,tests}/v4/**/*.html',
+            pattern: ({ major, minor }) => [
+                `vega@${major}.${minor}`,
+                `vega@^${major}.${minor}`,
+            ],
+        },
+        {
+            glob: '{extensions,packages}/*/package.json',
+            pattern: ({ major, minor, patch }) => [
+                `"vega": "${major}.${minor}.${patch}"`,
+                `"vega-typings": "^${major}.${minor}.${patch}"`,
+            ],
+        },
+        {
+            glob: 'packages/*/src/**/*.ts',
+            pattern: ({ major, minor }) => [
+                `vega@${major}.${minor}`,
+            ],
+        },
+        {
+            glob: 'packages/*/README.md',
+            pattern: ({ major, minor }) => [
+                `vega@^${major}.${minor}`,
+                `"vega": "^${major}.${minor}"`,
+            ],
+        },
+    ],
+    typings: [
+        {
+            glob: 'packages/*/package.json',
+            pattern: ({ major, minor, patch }) => [
+                `"vega-typings": "${major}.${minor}.${patch}"`,
+            ],
+        },
+    ],
+};
 
-//loop through keys & values in patterns
-patterns.forEach(value => {
-    const searches = value.pattern(oldVersion);
-    const replacements = value.pattern(newVersion);
+//loop through keys & values in packages object
+Object.entries(packages).forEach(([key, patterns]) => {
 
-    console.log(`Updating ${value.glob}`);
+    console.log(`key: ${key}`);
 
-    const files = globSync(`${value.glob}`);
+    patterns.forEach(value => {
+        const searches = value.pattern(oldVersion[key]);
+        const replacements = value.pattern(newVersion[key]);
 
-    files.forEach(file => {
-        let content = readFileSync(file, 'utf8');
-        let updatedContent = content;
-        searches.forEach((searchStr, i) => {
-            if (updatedContent.includes(searchStr)) {
+        console.log(`Updating ${value.glob}`);
 
-                //just log it for now
-                //console.log(`Found ${searchStr} in ${file}, to be replaced with ${replacements[i]}`);
+        const files = globSync(`${value.glob}`);
 
-                updatedContent = updatedContent.replace(searchStr, replacements[i]);
+        files.forEach(file => {
+            let content = readFileSync(file, 'utf8');
+            let updatedContent = content;
+            searches.forEach((searchStr, i) => {
+                if (updatedContent.includes(searchStr)) {
+
+                    //just log it for now
+                    //console.log(`Found ${searchStr} in ${file}, to be replaced with ${replacements[i]}`);
+
+                    updatedContent = updatedContent.replace(searchStr, replacements[i]);
+                }
+            });
+            if (updatedContent !== content) {
+                try {
+                    writeFileSync(file, updatedContent);
+                    console.log(`Updated file: ${file}`);
+                } catch (err) {
+                    console.error(`Error writing file: ${err}`);
+                }
             }
         });
-        if (updatedContent !== content) {
-            try {
-                writeFileSync(file, updatedContent);
-                console.log(`Updated file: ${file}`);
-            } catch (err) {
-                console.error(`Error writing file: ${err}`);
-            }
-        }
     });
 });
