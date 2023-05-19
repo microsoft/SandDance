@@ -16,7 +16,8 @@
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
-    "build:sanddance-core": "npm run build-typescript"
+    "build:sanddance-core": "npm run build-typescript",
+    "remove-vega": "npm un vega-typings"
   },
   "author": "",
   "license": "MIT",
