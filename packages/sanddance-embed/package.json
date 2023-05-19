@@ -18,8 +18,7 @@
     "build-css": "sass ./src/css/sanddance-embed.scss ./dist/css/sanddance-embed.css",
     "build-typescript": "tsc -p .",
     "build-gen": "tsc -p ./src/gen",
-    "build:sanddance-core": "npm run build-css && npm run build-typescript",
-    "remove-vega": "npm un vega"
+    "build:sanddance-core": "npm run build-css && npm run build-typescript"
   },
   "dependencies": {
     "@msrvida/sanddance-explorer": "^4"

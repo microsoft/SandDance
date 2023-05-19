@@ -22,8 +22,7 @@
     "build-css": "sass ./src/css/sanddance-react.scss ./dist/css/sanddance-react.css",
     "bundle": "rollup -c",
     "build:sanddance-core": "npm run build-typescript && node ../../scripts/version.js && npm run build-css && npm run bundle",
-    "watch-css": "sass ./src/css/sanddance-react.scss ./dist/css/sanddance-react.css --watch",
-    "remove-vega": "npm un vega"
+    "watch-css": "sass ./src/css/sanddance-react.scss ./dist/css/sanddance-react.css --watch"
   },
   "keywords": [],
   "author": "",

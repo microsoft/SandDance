@@ -23,8 +23,7 @@
     "test": "mocha",
     "build-typescript": "tsc -p .",
     "watch-typescript": "tsc -p . -w",
-    "build:sanddance-core": "npm run build-typescript",
-    "remove-vega": "npm un vega"
+    "build:sanddance-core": "npm run build-typescript"
   },
   "author": "",
   "license": "MIT"
