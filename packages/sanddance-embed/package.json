@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance-embed",
-  "version": "4.4.4",
+  "version": "4.4.5",
   "description": "Embeddable SandDance Explorer.",
   "browser": "dist/umd/sanddance-embed.js",
   "repository": {
@@ -20,7 +20,7 @@
     "build-gen": "tsc -p ./src/gen",
     "build:sanddance-core": "npm run build-css && npm run build-typescript",
     "remove-vega": "npm un vega",
-    "patch": "npm version patch"
+    "patch-after-vega-upgrade": "npm version patch"
   },
   "dependencies": {
     "@msrvida/sanddance-explorer": "^4"

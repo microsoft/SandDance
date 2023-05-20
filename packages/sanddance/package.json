@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "description": "SandDance visualization canvas component.",
   "main": "dist/es6/index.js",
   "repository": {
@@ -23,7 +23,7 @@
     "watch-css": "sass ./src/css/sanddance.scss ./dist/css/sanddance.css --watch",
     "build-css": "sass ./src/css/sanddance.scss ./dist/css/sanddance.css",
     "remove-vega": "npm un vega-typings",
-    "patch": "npm version patch"
+    "patch-after-vega-upgrade": "npm version patch"
   },
   "author": "",
   "license": "MIT",

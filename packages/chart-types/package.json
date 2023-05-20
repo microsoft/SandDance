@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/chart-types",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Types for chart applications.",
   "main": "dist/es6/index.js",
   "repository": {
@@ -18,7 +18,7 @@
     "build-typescript": "tsc -p .",
     "build:sanddance-core": "npm run build-typescript",
     "remove-vega": "npm un vega-typings",
-    "patch": "npm version patch"
+    "patch-after-vega-upgrade": "npm version patch"
   },
   "author": "",
   "license": "MIT",

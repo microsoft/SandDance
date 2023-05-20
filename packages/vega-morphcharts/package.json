@@ -1,6 +1,6 @@
 {
 	"name": "@msrvida/vega-morphcharts",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "MorphCharts renderer for Vega",
 	"main": "dist/es6/index.js",
 	"files": [
@@ -16,7 +16,7 @@
 		"bundle": "rollup -c",
 		"build:sanddance-core": "npm run build-typescript && node ../../scripts/version.js && npm run bundle",
 		"remove-vega": "npm un vega vega-typings",
-		"patch": "npm version patch"
+		"patch-after-vega-upgrade": "npm version patch"
 	},
 	"keywords": [
 		"vega",

@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/chart-recommender",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "Recommendation engine for SandDance charts",
   "main": "dist/es5/index.js",
   "repository": {
@@ -25,7 +25,7 @@
     "watch-typescript": "tsc -p . -w",
     "build:sanddance-core": "npm run build-typescript",
     "remove-vega": "npm un vega",
-    "patch": "npm version patch"
+    "patch-after-vega-upgrade": "npm version patch"
   },
   "author": "",
   "license": "MIT"

@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance-explorer",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "description": "SandDance data exploration React component.",
   "main": "dist/es6/index.js",
   "repository": {
@@ -24,7 +24,7 @@
     "prebuild:sanddance-core": "node ./scripts/prebuild.js",
     "build:sanddance-core": "npm run build-typescript && node ../../scripts/version.js && npm run bundle && npm run build-css",
     "remove-vega": "npm un vega-typings",
-    "patch": "npm version patch"
+    "patch-after-vega-upgrade": "npm version patch"
   },
   "targets": {
     "main": false,
