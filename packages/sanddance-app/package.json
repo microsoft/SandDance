@@ -40,6 +40,6 @@
   "dependencies": {
     "@fluentui/react": "^8",
     "@msrvida/sanddance-explorer": "^4",
-    "vega": "5.24"
+    "vega": "5.25.0"
   }
 }
