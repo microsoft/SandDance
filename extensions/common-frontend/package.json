@@ -8,7 +8,8 @@
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "build-css": "sass ./src/css/app.scss ./dist/app.css",
     "build-ui": "tsc -p .",
-    "build:sanddance-integration": "npm run build-css && npm run build-ui"
+    "build:sanddance-integration": "npm run build-css && npm run build-ui",
+    "remove-vega": "npm un vega"
   },
   "repository": {
     "type": "git",
