@@ -23,7 +23,8 @@
     "deploy": "node ./scripts/deploy.js",
     "prebuild:sanddance-core": "node ./scripts/prebuild.js",
     "build:sanddance-core": "npm run build-typescript && node ../../scripts/version.js && npm run bundle && npm run build-css",
-    "remove-vega": "npm un vega-typings"
+    "remove-vega": "npm un vega-typings",
+    "patch": "npm version patch"
   },
   "targets": {
     "main": false,

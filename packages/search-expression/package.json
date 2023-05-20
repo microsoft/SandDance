@@ -17,7 +17,8 @@
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "build:sanddance-core": "npm run build-typescript",
-    "remove-vega": "npm un vega-typings"
+    "remove-vega": "npm un vega-typings",
+    "patch": "npm version patch"
   },
   "author": "",
   "license": "MIT",

@@ -21,7 +21,8 @@
     "build-typescript": "tsc -p .",
     "bundle": "rollup -c",
     "build:sanddance-core": "npm run build-typescript && npm run bundle",
-    "remove-vega": "npm un vega vega-typings"
+    "remove-vega": "npm un vega vega-typings",
+    "patch": "npm version patch"
   },
   "keywords": [
     "vega",

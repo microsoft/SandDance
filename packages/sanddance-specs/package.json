@@ -25,7 +25,8 @@
     "uitest-watch": "tsc -p ./uitest/ -w",
     "deploy-watch": "npm-run-all --parallel bundle-watch uitest-watch",
     "test2": "node -r esm ./test/perf.js",
-    "remove-vega": "npm un vega vega-typings"
+    "remove-vega": "npm un vega vega-typings",
+    "patch": "npm version patch"
   },
   "author": "",
   "license": "MIT",
