@@ -3,27 +3,27 @@ import { readFileSync, writeFileSync } from 'fs';
 
 const oldVersion = {
     vega: {
-        major: 5,
-        minor: 22,
-        patch: 1,
+        major: '5',
+        minor: '24',
+        patch: '',
     },
     typings: {
-        major: 0,
-        minor: 22,
-        patch: 3,
+        major: '0',
+        minor: '24',
+        patch: '0',
     },
 };
 
 const newVersion = {
     vega: {
-        major: 5,
-        minor: 25,
-        patch: 0,
+        major: '5',
+        minor: '25',
+        patch: '0',
     },
     typings: {
-        major: 0,
-        minor: 24,
-        patch: 1,
+        major: '0',
+        minor: '24',
+        patch: '1',
     },
 };
 
@@ -39,8 +39,7 @@ const packages = {
         {
             glob: '{extensions,packages}/*/package.json',
             pattern: ({ major, minor, patch }) => [
-                `"vega": "${major}.${minor}.${patch}"`,
-                `"vega-typings": "^${major}.${minor}.${patch}"`,
+                `"vega": "${major}.${minor}${patch.length ? '.' : ''}${patch}"`,
             ],
         },
         {
@@ -61,7 +60,7 @@ const packages = {
         {
             glob: 'packages/*/package.json',
             pattern: ({ major, minor, patch }) => [
-                `"vega-typings": "${major}.${minor}.${patch}"`,
+                `"vega-typings": "${major}.${minor}${patch.length ? '.' : ''}${patch}"`,
             ],
         },
     ],
@@ -87,9 +86,9 @@ Object.entries(packages).forEach(([key, patterns]) => {
                 if (updatedContent.includes(searchStr)) {
 
                     //just log it for now
-                    //console.log(`Found ${searchStr} in ${file}, to be replaced with ${replacements[i]}`);
+                    console.log(`Found ${searchStr} in ${file}, to be replaced with ${replacements[i]}`);
 
-                    updatedContent = updatedContent.replace(searchStr, replacements[i]);
+                    //updatedContent = updatedContent.replace(searchStr, replacements[i]);
                 }
             });
             if (updatedContent !== content) {
