@@ -86,9 +86,9 @@ Object.entries(packages).forEach(([key, patterns]) => {
                 if (updatedContent.includes(searchStr)) {
 
                     //just log it for now
-                    console.log(`Found ${searchStr} in ${file}, to be replaced with ${replacements[i]}`);
+                    //console.log(`Found ${searchStr} in ${file}, to be replaced with ${replacements[i]}`);
 
-                    //updatedContent = updatedContent.replace(searchStr, replacements[i]);
+                    updatedContent = updatedContent.replace(searchStr, replacements[i]);
                 }
             });
             if (updatedContent !== content) {
