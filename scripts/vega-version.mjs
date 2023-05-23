@@ -37,6 +37,12 @@ const packages = {
             ],
         },
         {
+            glob: 'docs/tests/sanddance-specs/v1/index.html',
+            pattern: ({ major, minor }) => [
+                `vega@^${major}.${minor}`,
+            ],
+        },
+        {
             glob: '{extensions,packages}/*/package.json',
             pattern: ({ major, minor, patch }) => [
                 `"vega": "${major}.${minor}${patch.length ? '.' : ''}${patch}"`,
