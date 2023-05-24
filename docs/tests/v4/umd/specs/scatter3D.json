@@ -240,7 +240,7 @@
         {
             "scale": "x",
             "grid": true,
-            "domain": false,
+            "domain": true,
             "orient": "bottom",
             "tickCount": 5,
             "title": {
@@ -250,7 +250,7 @@
         {
             "scale": "y",
             "grid": true,
-            "domain": false,
+            "domain": true,
             "orient": "left",
             "titlePadding": 5,
             "title": {
