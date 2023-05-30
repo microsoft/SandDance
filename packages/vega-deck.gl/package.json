@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/vega-deck.gl",
-  "version": "3.3.4",
+  "version": "3.3.5",
   "description": "Deck.gl renderer for Vega",
   "main": "dist/es6/index.js",
   "repository": {
@@ -21,7 +21,8 @@
     "build-typescript": "tsc -p .",
     "bundle": "rollup -c",
     "build:sanddance-core": "npm run build-typescript && npm run bundle",
-    "remove-vega": "npm un vega vega-typings"
+    "remove-vega": "npm un vega vega-typings",
+    "patch-after-vega-upgrade": "npm version patch"
   },
   "keywords": [
     "vega",
@@ -44,6 +45,6 @@
     "@deck.gl/layers": "8.3.7",
     "@luma.gl/core": "8.3.1",
     "@types/react": ">=16.8.0 <18.0.0",
-    "vega": "5.24"
+    "vega": "5.25.0"
   }
 }

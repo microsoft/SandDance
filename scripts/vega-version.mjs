@@ -3,27 +3,27 @@ import { readFileSync, writeFileSync } from 'fs';
 
 const oldVersion = {
     vega: {
-        major: 5,
-        minor: 22,
-        patch: 1,
+        major: '5',
+        minor: '24',
+        patch: '',
     },
     typings: {
-        major: 0,
-        minor: 22,
-        patch: 3,
+        major: '0',
+        minor: '24',
+        patch: '0',
     },
 };
 
 const newVersion = {
     vega: {
-        major: 5,
-        minor: 25,
-        patch: 0,
+        major: '5',
+        minor: '25',
+        patch: '0',
     },
     typings: {
-        major: 0,
-        minor: 24,
-        patch: 1,
+        major: '0',
+        minor: '24',
+        patch: '1',
     },
 };
 
@@ -37,10 +37,15 @@ const packages = {
             ],
         },
         {
+            glob: 'docs/tests/sanddance-specs/v1/index.html',
+            pattern: ({ major, minor }) => [
+                `vega@^${major}.${minor}`,
+            ],
+        },
+        {
             glob: '{extensions,packages}/*/package.json',
             pattern: ({ major, minor, patch }) => [
-                `"vega": "${major}.${minor}.${patch}"`,
-                `"vega-typings": "^${major}.${minor}.${patch}"`,
+                `"vega": "${major}.${minor}${patch.length ? '.' : ''}${patch}"`,
             ],
         },
         {
@@ -61,7 +66,7 @@ const packages = {
         {
             glob: 'packages/*/package.json',
             pattern: ({ major, minor, patch }) => [
-                `"vega-typings": "${major}.${minor}.${patch}"`,
+                `"vega-typings": "${major}.${minor}${patch.length ? '.' : ''}${patch}"`,
             ],
         },
     ],

@@ -8122,7 +8122,7 @@
             return value1 + (value2 - value1) * amount;
         }
         static normalize(value, min, max, from = 0, to = 1) {
-            return max - min == 0 ? 0 : (to - from) * (value - min) / (max - min) + from;
+            return max - min == 0 ? 0 : Math.max(Math.min((to - from) * (value - min) / (max - min) + from, to), from);
         }
         static splitExponent(value, result) {
             let exponent = Math.round(Math.log10(Math.abs(value)));
@@ -8174,7 +8174,7 @@
         static wrapAngle(angle) {
             if (angle > Constants.PI)
                 angle = angle - Constants.TWO_PI;
-            else if (angle < -Constants.prototype)
+            else if (angle < -Constants.PI)
                 angle += Constants.TWO_PI;
             return angle;
         }
@@ -8221,36 +8221,6 @@
      * Licensed under the MIT License.
      */
     class CameraBase {
-        constructor(core) {
-            this._core = core;
-            this._vec3 = create$3();
-            this._quat = create$1();
-            this._mat3 = create$5();
-            this._right = create$3();
-            this._up = create$3();
-            this._forward = create$3();
-            this._modelManipulationOrigin = create$3();
-            this.modelPosition = create$3();
-            this.modelScale = create$3();
-            this.modelRotation = create$1();
-            this._orbitRotation = create$1();
-            this._orbitDirection = create$1();
-            this._smoothedOrbitRotation = create$1();
-            this._smoothedCameraPosition = create$3();
-            this._smoothedCameraRotation = create$1();
-            this._cameraPosition = create$3();
-            this._cameraRotation = create$1();
-            this._combinedPosition = create$3();
-            this._combinedRotation = create$1();
-            this._leftToRightEye = create$3();
-            this._pickVMatrix = create$4();
-            this._eyePositions = [create$3(), create$3()];
-            this._vMatrices = [create$4(), create$4()];
-            this._mvMatrices = [create$4(), create$4()];
-            this._pMatrices = [create$4(), create$4()];
-            this._inverseVMatrices = [create$4(), create$4()];
-            this._inversePMatrices = [create$4(), create$4()];
-        }
         getView(view) {
             this.getPosition(view.position);
         }
@@ -8284,6 +8254,36 @@
             }
         }
         ;
+        constructor(core) {
+            this._core = core;
+            this._vec3 = create$3();
+            this._quat = create$1();
+            this._mat3 = create$5();
+            this._right = create$3();
+            this._up = create$3();
+            this._forward = create$3();
+            this._modelManipulationOrigin = create$3();
+            this.modelPosition = create$3();
+            this.modelScale = create$3();
+            this.modelRotation = create$1();
+            this._orbitRotation = create$1();
+            this._orbitDirection = create$1();
+            this._smoothedOrbitRotation = create$1();
+            this._smoothedCameraPosition = create$3();
+            this._smoothedCameraRotation = create$1();
+            this._cameraPosition = create$3();
+            this._cameraRotation = create$1();
+            this._combinedPosition = create$3();
+            this._combinedRotation = create$1();
+            this._leftToRightEye = create$3();
+            this._pickVMatrix = create$4();
+            this._eyePositions = [create$3(), create$3()];
+            this._vMatrices = [create$4(), create$4()];
+            this._mvMatrices = [create$4(), create$4()];
+            this._pMatrices = [create$4(), create$4()];
+            this._inverseVMatrices = [create$4(), create$4()];
+            this._inversePMatrices = [create$4(), create$4()];
+        }
         reset(isSmooth) {
             copy$4(this._cameraPosition, Constants.VECTOR3_ZERO);
             copy$2(this._cameraRotation, Constants.QUAT_IDENTITY);
@@ -8588,9 +8588,11 @@
             this.lassoDashWidth = 2;
             this.lassoColor = create$3();
             this.minCubifiedTreeMapSlice = 0.01;
+            this.sdfBuffer = 0xc0;
             this.transitionDuration = 400;
             this.transitionStaggering = 100;
             this.transitionView = true;
+            this.isTransitionPickingEnabled = false;
             this.backgroundColor = create$3();
             this.theme = Theme.light;
         }
@@ -8648,10 +8650,10 @@
      * Licensed under the MIT License.
      */
     class DebugText {
+        get text() { return this._text; }
         constructor() {
             this.clear();
         }
-        get text() { return this._text; }
         clear() {
             this._text = "";
         }
@@ -8665,13 +8667,13 @@
      * Licensed under the MIT License.
      */
     class Fps {
+        get frameCounter() { return this._frameCounter; }
+        get totalFrames() { return this._totalFrames; }
         constructor(core) {
             this._core = core;
             this._totalFrames = 0;
             this.reset();
         }
-        get frameCounter() { return this._frameCounter; }
-        get totalFrames() { return this._totalFrames; }
         update(elapsedTime) {
             this._elapsedTime += elapsedTime;
             if (this._elapsedTime > 1000) {
@@ -8750,15 +8752,15 @@
         }
     }
     class PaletteBase {
-        constructor() {
-            this._colors = null;
-        }
         get colors() { return this._colors; }
         set colors(value) {
             if (this._colors != value) {
                 this._colors = value;
                 this._changed = true;
             }
+        }
+        constructor() {
+            this._colors = null;
         }
         copyFrom(palette) {
             if (palette.colors) {
@@ -9012,6 +9014,21 @@
             toBufferView.setUint8(toOffset, fromBufferView.getUint8(fromOffset));
             toBufferView.setUint8(toOffset + 1, fromBufferView.getUint8(fromOffset + 1));
         }
+        static getOrder(bufferView, index, value) {
+            const offset = UnitVertex.SIZE_BYTES * index + this.ORDER_OFFSET_BYTES;
+            set(value, bufferView.getFloat32(offset, true), bufferView.getFloat32(offset + 4, true));
+        }
+        static setOrder(bufferView, index, value) {
+            const offset = UnitVertex.SIZE_BYTES * index + this.ORDER_OFFSET_BYTES;
+            bufferView.setFloat32(offset, value[0], true);
+            bufferView.setFloat32(offset + 4, value[1], true);
+        }
+        static copyOrder(fromBufferView, fromIndex, toBufferView, toIndex) {
+            const fromOffset = UnitVertex.SIZE_BYTES * fromIndex + this.ORDER_OFFSET_BYTES;
+            const toOffset = UnitVertex.SIZE_BYTES * toIndex + this.ORDER_OFFSET_BYTES;
+            toBufferView.setFloat32(toOffset, fromBufferView.getFloat32(fromOffset, true), true);
+            toBufferView.setFloat32(toOffset + 4, fromBufferView.getFloat32(fromOffset + 4, true), true);
+        }
         static getScale(bufferView, index, value) {
             const offset = UnitVertex.SIZE_BYTES * index + this.SCALE_OFFSET_BYTES;
             set$3(value, bufferView.getFloat32(offset, true), bufferView.getFloat32(offset + 4, true), bufferView.getFloat32(offset + 8, true));
@@ -9048,6 +9065,25 @@
             toBufferView.setFloat32(toOffset + 8, fromBufferView.getFloat32(fromOffset + 8, true), true);
             toBufferView.setFloat32(toOffset + 12, fromBufferView.getFloat32(fromOffset + 12, true), true);
         }
+        static getTexCoord(bufferView, index, value) {
+            const offset = UnitVertex.SIZE_BYTES * index + this.TEXCOORD_OFFSET_BYTES;
+            set$1(value, bufferView.getFloat32(offset, true), bufferView.getFloat32(offset + 4, true), bufferView.getFloat32(offset + 8, true), bufferView.getFloat32(offset + 12, true));
+        }
+        static setTexCoord(bufferView, index, value) {
+            const offset = UnitVertex.SIZE_BYTES * index + this.TEXCOORD_OFFSET_BYTES;
+            bufferView.setFloat32(offset, value[0], true);
+            bufferView.setFloat32(offset + 4, value[1], true);
+            bufferView.setFloat32(offset + 8, value[2], true);
+            bufferView.setFloat32(offset + 12, value[3], true);
+        }
+        static copyTexCoord(fromBufferView, fromIndex, toBufferView, toIndex) {
+            const fromOffset = UnitVertex.SIZE_BYTES * fromIndex + this.TEXCOORD_OFFSET_BYTES;
+            const toOffset = UnitVertex.SIZE_BYTES * toIndex + this.TEXCOORD_OFFSET_BYTES;
+            toBufferView.setFloat32(toOffset, fromBufferView.getFloat32(fromOffset, true), true);
+            toBufferView.setFloat32(toOffset + 4, fromBufferView.getFloat32(fromOffset + 4, true), true);
+            toBufferView.setFloat32(toOffset + 8, fromBufferView.getFloat32(fromOffset + 8, true), true);
+            toBufferView.setFloat32(toOffset + 12, fromBufferView.getFloat32(fromOffset + 12, true), true);
+        }
         static getIdColor(bufferView, index, value) {
             const offset = UnitVertex.SIZE_BYTES * index + this.ID_COLOR_OFFSET_BYTES;
             set$2(value, bufferView.getUint8(offset) / 0xFF, bufferView.getUint8(offset + 1) / 0xFF, bufferView.getUint8(offset + 2) / 0xFF, bufferView.getUint8(offset + 3) / 0xFF);
@@ -9058,24 +9094,6 @@
             bufferView.setUint8(offset + 1, value[1] * 0xFF);
             bufferView.setUint8(offset + 2, value[2] * 0xFF);
             bufferView.setUint8(offset + 3, value[3] * 0xFF);
-        }
-        static getOrder(bufferView, index) {
-            return bufferView.getFloat32(UnitVertex.SIZE_BYTES * index + this.ORDER_OFFSET_BYTES, true);
-        }
-        static setOrder(bufferView, index, value) {
-            bufferView.setFloat32(UnitVertex.SIZE_BYTES * index + this.ORDER_OFFSET_BYTES, value, true);
-        }
-        static copyOrder(fromBufferView, fromIndex, toBufferView, toIndex) {
-            toBufferView.setFloat32(UnitVertex.SIZE_BYTES * toIndex + this.ORDER_OFFSET_BYTES, fromBufferView.getFloat32(UnitVertex.SIZE_BYTES * fromIndex + this.ORDER_OFFSET_BYTES, true), true);
-        }
-        static getStaggerOrder(bufferView, index) {
-            return bufferView.getUint16(UnitVertex.SIZE_BYTES * index + this.STAGGER_ORDER_OFFSET_BYTES, true) / 0xFFFF;
-        }
-        static setStaggerOrder(bufferView, index, value) {
-            bufferView.setUint16(UnitVertex.SIZE_BYTES * index + this.STAGGER_ORDER_OFFSET_BYTES, value * 0xFFFF, true);
-        }
-        static copyStaggerOrder(fromBufferView, fromIndex, toBufferView, toIndex) {
-            toBufferView.setUint16(UnitVertex.SIZE_BYTES * toIndex + this.STAGGER_ORDER_OFFSET_BYTES, fromBufferView.getUint16(UnitVertex.SIZE_BYTES * fromIndex + this.STAGGER_ORDER_OFFSET_BYTES, true), true);
         }
         static getSelected(bufferView, index) {
             return bufferView.getInt8(UnitVertex.SIZE_BYTES * index + this.SELECTED_OFFSET_BYTES) / 0x7F;
@@ -9105,18 +9123,19 @@
             toBufferView.setUint16(UnitVertex.SIZE_BYTES * toIndex + this.MATERIAL_OFFSET_BYTES, fromBufferView.getUint16(UnitVertex.SIZE_BYTES * fromIndex + this.MATERIAL_OFFSET_BYTES, true), true);
         }
     }
-    UnitVertex.SIZE_BYTES = 64;
+    UnitVertex.SIZE_BYTES = 84;
     UnitVertex.ID_HOVER_OFFSET_BYTES = 0;
     UnitVertex.ID_COLOR_OFFSET_BYTES = 4;
     UnitVertex.ORDER_OFFSET_BYTES = 8;
     UnitVertex.STAGGER_ORDER_OFFSET_BYTES = 12;
-    UnitVertex.SELECTED_OFFSET_BYTES = 14;
+    UnitVertex.SELECTED_OFFSET_BYTES = 80;
     UnitVertex.TRANSLATION_OFFSET_BYTES = 16;
     UnitVertex.COLOR_OFFSET_BYTES = 28;
     UnitVertex.MATERIAL_OFFSET_BYTES = 30;
     UnitVertex.SCALE_OFFSET_BYTES = 32;
     UnitVertex.ROUNDING_OFFSET_BYTES = 44;
     UnitVertex.ROTATION_OFFSET_BYTES = 48;
+    UnitVertex.TEXCOORD_OFFSET_BYTES = 64;
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -9408,13 +9427,23 @@
      * Licensed under the MIT License.
      */
     class ControllerVisual$1 {
+        render(elapsedTime, xrFrame) { }
+        update(elapsedTime) { }
         constructor(controller) {
             this.controller = controller;
         }
-        render(elapsedTime, xrFrame) { }
-        update(elapsedTime) { }
     }
     class Controller {
+        get isInitialized() { return this._isInitialized; }
+        get mMatrix() { return this._mMatrix; }
+        get indexCount() { return this._indexCount; }
+        get vertices() { return this._vertices; }
+        get indices() { return this._indices; }
+        get texture() { return this._texture; }
+        get rayMMatrix() { return this._rayMMatrix; }
+        get rayIndexCount() { return this._rayIndexCount; }
+        get rayVertices() { return this._rayVertices; }
+        get rayIndices() { return this._rayIndices; }
         constructor(core, options) {
             this._cubeObj = `o Cube
 v 1.000000 -1.000000 -1.000000
@@ -9462,16 +9491,6 @@ f 5/6/6 1/12/6 8/11/6`;
             this._obj = options.obj;
             this._texture = options.texture || new ImageData(new Uint8ClampedArray([0, 0, 0, 255]), 1, 1);
         }
-        get isInitialized() { return this._isInitialized; }
-        get mMatrix() { return this._mMatrix; }
-        get indexCount() { return this._indexCount; }
-        get vertices() { return this._vertices; }
-        get indices() { return this._indices; }
-        get texture() { return this._texture; }
-        get rayMMatrix() { return this._rayMMatrix; }
-        get rayIndexCount() { return this._rayIndexCount; }
-        get rayVertices() { return this._rayVertices; }
-        get rayIndices() { return this._rayIndices; }
         initialize() {
             const _vec3 = create$3();
             this._mMatrix = create$4();
@@ -9528,28 +9547,13 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class AxesVisual {
+        render(elapsedTime, xrFrame) { }
+        update(elapsedTime) { }
         constructor(axes) {
             this.axes = axes;
         }
-        render(elapsedTime, xrFrame) { }
-        update(elapsedTime) { }
     }
     class AxesBase {
-        constructor(core) {
-            this._core = core;
-            this._mMatrix = create$4();
-            this._mvMatrix = create$4();
-            this._textMetric = { maxTop: 0, width: 0, maxHeight: 0 };
-            this._gridPickDivisionHeight = core.config.axesGridPickDivisionHeight;
-            this.textBorderWidth = core.config.textBorderWidth;
-            this.gamma = 0;
-            this.gridMajorThickness = core.config.axesGridMajorThickness;
-            this.gridMinorThickness = core.config.axesGridMinorThickness;
-            this.gridZeroThickness = core.config.axesGridZeroThickness;
-            this._font = core.font;
-            this._lineHeight = 1.5;
-            this.isGridPickingEnabled = false;
-        }
         get isInitialized() { return this._isInitialized; }
         set vMatrix(value) { this._vMatrix = value; }
         pickGrid(id) {
@@ -9600,6 +9604,21 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._gridPickDivisionHeight = value;
                 this._hasChanged = true;
             }
+        }
+        constructor(core) {
+            this._core = core;
+            this._mMatrix = create$4();
+            this._mvMatrix = create$4();
+            this._textMetric = { maxTop: 0, width: 0, maxHeight: 0 };
+            this._gridPickDivisionHeight = core.config.axesGridPickDivisionHeight;
+            this.textBorderWidth = core.config.textBorderWidth;
+            this.gamma = 0;
+            this.gridMajorThickness = core.config.axesGridMajorThickness;
+            this.gridMinorThickness = core.config.axesGridMinorThickness;
+            this.gridZeroThickness = core.config.axesGridZeroThickness;
+            this._font = core.font;
+            this._lineHeight = 1.5;
+            this.isGridPickingEnabled = false;
         }
         update(elapsedTime) { }
     }
@@ -9876,183 +9895,6 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class Cartesian3dAxes extends AxesBase {
-        constructor(core) {
-            super(core);
-            this._size = create$3();
-            this._translation = create$3();
-            this._normal = create$3();
-            this._forward = create$3();
-            this._right = create$3();
-            this._up = create$3();
-            this._texCoord = create();
-            this._bounds = create$2();
-            this._vec3 = create$3();
-            this._vec4 = create$2();
-            this._mat3 = create$5();
-            this._isDiscrete = [false, false, false];
-            this._minBoundsX = 0;
-            this._minBoundsY = 0;
-            this._minBoundsZ = 0;
-            this._maxBoundsX = 0;
-            this._maxBoundsY = 0;
-            this._maxBoundsZ = 0;
-            this._isForwardFace = [];
-            this._isForwardEdge = [];
-            this._isOutsideEdge = [];
-            for (let i = 0; i < 6; i++) {
-                this._isForwardFace.push(false);
-            }
-            for (let i = 0; i < 12; i++) {
-                this._isForwardEdge.push(false);
-                this._isOutsideEdge.push(false);
-            }
-            this._textOffset = create$3();
-            this._textPosition = create$3();
-            this._distances = [];
-            for (let i = 0; i < 12; i++) {
-                this._distances.push(0);
-            }
-            this._labelPositions = [];
-            this._labels = [];
-            this._labelSizes = [];
-            this._maxLabelSize = [];
-            this._axesLeftToRightIndexCounts = [];
-            this._axesRightToLeftIndexCounts = [];
-            this._axesLeftToRightIndexOffsets = [];
-            this._axesRightToLeftIndexOffsets = [];
-            this._labelMMatrices = [];
-            this._orientations = [];
-            for (let i = 0; i < 3; i++) {
-                this._maxLabelSize.push(create());
-                this._orientations.push(AxesTextOrientation.parallel);
-                this._axesLeftToRightIndexCounts.push(0);
-                this._axesRightToLeftIndexCounts.push(0);
-                this._axesLeftToRightIndexOffsets.push(0);
-                this._axesRightToLeftIndexOffsets.push(0);
-            }
-            for (let i = 0; i < 12; i++) {
-                this._labelMMatrices.push(create$4());
-            }
-            this._titles = [];
-            this._titleSizes = [];
-            this._titleIndexCounts = [];
-            this._titleIndexOffsets = [];
-            this._titleMMatrices = [];
-            for (let i = 0; i < 3; i++) {
-                this._titles.push(null);
-                this._titleSizes.push(core.config.axesTextTitleSize);
-                this._titleIndexCounts.push(0);
-                this._titleIndexOffsets.push(0);
-            }
-            for (let i = 0; i < 12; i++) {
-                this._titleMMatrices.push(create$4());
-            }
-            this._headings = [];
-            this._headingSizes = [];
-            this._headingIndexCounts = [];
-            this._headingIndexOffsets = [];
-            this._headingMMatrices = [];
-            this.isHeadingVisible = [];
-            for (let i = 0; i < 3; i++) {
-                this._headings.push(null);
-                this._headingSizes.push(core.config.axesTextHeadingSize);
-                this._headingIndexCounts.push(0);
-                this._headingIndexOffsets.push(0);
-            }
-            for (let i = 0; i < 12; i++) {
-                this._headingMMatrices.push(create$4());
-                this.isHeadingVisible.push(true);
-            }
-            this.isEdgeVisible = [];
-            this._edgePosition = create$3();
-            this._edgePositive = create$3();
-            this._edgeNormal = create$3();
-            this._edgeNormalTemp = create$3();
-            this._edgePositiveTemp = create$3();
-            this._isLeftToRightHorizontal = [];
-            this._isLeftToRightVertical = [];
-            this._edgeHorizontalRight = [];
-            this._edgeHorizontalUp = [];
-            this._edgeHorizontalForward = [];
-            this._edgeVerticalRight = [];
-            this._edgeVerticalUp = [];
-            this._edgeVerticalForward = [];
-            for (let i = 0; i < 12; i++) {
-                this.isEdgeVisible.push(true);
-                this._isLeftToRightHorizontal.push(false);
-                this._isLeftToRightVertical.push(false);
-                this._edgeHorizontalRight.push(create$3());
-                this._edgeHorizontalUp.push(create$3());
-                this._edgeHorizontalForward.push(create$3());
-                this._edgeVerticalRight.push(create$3());
-                this._edgeVerticalUp.push(create$3());
-                this._edgeVerticalForward.push(create$3());
-            }
-            this.isFaceVisible = [];
-            for (let i = 0; i < 6; i++) {
-                this.isFaceVisible.push(true);
-            }
-            this.arePickDivisionsVisible = [];
-            this.areFacesVisible = [];
-            this._indexTemplate = Quad$2.INDICES;
-            this.zero = create$3();
-            this._gridTicksZeros = [];
-            this._gridFaceZeros = [];
-            this.minorGridlines = fromValues$3(1, 1, 1);
-            this._gridTicksMinorGridlines = [];
-            this._gridFaceMinorGridlines = [];
-            this._gridTicksPositions = [];
-            this._gridTicksScales = [];
-            this._gridTicksIndexCounts = [];
-            this._gridTicksIndexOffsets = [];
-            this._gridFaceScale = create$3();
-            this._gridFaceIndexCounts = [];
-            this._gridFaceIndexOffsets = [];
-            this._gridFaceMMatrices = [];
-            this._gridTicksMMatrices = [];
-            this._gridTicksRotations = [];
-            for (let i = 0; i < 3; i++) {
-                this.arePickDivisionsVisible.push(true);
-                this.areFacesVisible.push(true);
-                this._gridTicksZeros.push(create());
-                this._gridFaceZeros.push(create());
-                this._gridTicksMinorGridlines.push(create());
-                this._gridFaceMinorGridlines.push(create());
-                this._gridTicksScales.push(create$3());
-                this._gridTicksIndexCounts.push(0);
-                this._gridTicksIndexOffsets.push(0);
-            }
-            for (let i = 0; i < 6; i++) {
-                this._gridFaceIndexCounts.push(0);
-                this._gridFaceIndexOffsets.push(0);
-                this._gridFaceMMatrices.push(create$4());
-            }
-            for (let i = 0; i < 12; i++) {
-                this._gridTicksMMatrices.push(create$4());
-                this._gridTicksRotations.push(create$4());
-                const _mat4 = this._gridTicksRotations[i];
-                _mat4[0] = Cube.EDGE_POSITIVES[i][0];
-                _mat4[1] = Cube.EDGE_POSITIVES[i][1];
-                _mat4[2] = Cube.EDGE_POSITIVES[i][2];
-                _mat4[4] = Cube.EDGE_NORMALS[i][0];
-                _mat4[5] = Cube.EDGE_NORMALS[i][1];
-                _mat4[6] = Cube.EDGE_NORMALS[i][2];
-                cross(this._vec3, Cube.EDGE_POSITIVES[i], Cube.EDGE_NORMALS[i]);
-                _mat4[8] = this._vec3[0];
-                _mat4[9] = this._vec3[1];
-                _mat4[10] = this._vec3[2];
-            }
-            this._fromValues = [null, null, null];
-            this._toValues = [null, null, null];
-            this.isDivisionPickingEnabled = [false, false, false];
-            this.isLabelPickingEnabled = [false, false, false];
-            this.isTitlePickingEnabled = [false, false, false];
-            this.isHeadingPickingEnabled = [false, false, false];
-            this._scalingX = 1;
-            this._scalingY = 1;
-            this._scalingZ = 1;
-            this._offset = create$4();
-        }
         get size() { return this._size; }
         get isDiscreteX() { return this._isDiscrete[0]; }
         set isDiscreteX(value) {
@@ -10240,6 +10082,184 @@ f 5/6/6 1/12/6 8/11/6`;
             if (value != this._offset[14]) {
                 this._offset[14] = value;
             }
+        }
+        constructor(core) {
+            super(core);
+            this._size = create$3();
+            this._translation = create$3();
+            this._normal = create$3();
+            this._forward = create$3();
+            this._right = create$3();
+            this._up = create$3();
+            this._texCoord = create();
+            this._bounds = create$2();
+            this._vec3 = create$3();
+            this._vec4 = create$2();
+            this._mat3 = create$5();
+            this._isDiscrete = [false, false, false];
+            this._minBoundsX = 0;
+            this._minBoundsY = 0;
+            this._minBoundsZ = 0;
+            this._maxBoundsX = 0;
+            this._maxBoundsY = 0;
+            this._maxBoundsZ = 0;
+            this._isForwardFace = [];
+            this._isForwardEdge = [];
+            this._isOutsideEdge = [];
+            for (let i = 0; i < 6; i++) {
+                this._isForwardFace.push(false);
+            }
+            for (let i = 0; i < 12; i++) {
+                this._isForwardEdge.push(false);
+                this._isOutsideEdge.push(false);
+            }
+            this._textOffset = create$3();
+            this._textPosition = create$3();
+            this._distances = [];
+            for (let i = 0; i < 12; i++) {
+                this._distances.push(0);
+            }
+            this._labelPositions = [];
+            this._labels = [];
+            this._labelSizes = [];
+            this._maxLabelSize = [];
+            this._axesLeftToRightIndexCounts = [];
+            this._axesRightToLeftIndexCounts = [];
+            this._axesLeftToRightIndexOffsets = [];
+            this._axesRightToLeftIndexOffsets = [];
+            this._labelMMatrices = [];
+            this._orientations = [];
+            for (let i = 0; i < 3; i++) {
+                this._maxLabelSize.push(create());
+                this._orientations.push(AxesTextOrientation.parallel);
+                this._axesLeftToRightIndexCounts.push(0);
+                this._axesRightToLeftIndexCounts.push(0);
+                this._axesLeftToRightIndexOffsets.push(0);
+                this._axesRightToLeftIndexOffsets.push(0);
+            }
+            for (let i = 0; i < 12; i++) {
+                this._labelMMatrices.push(create$4());
+            }
+            this._titles = [];
+            this._titleSizes = [];
+            this._titleIndexCounts = [];
+            this._titleIndexOffsets = [];
+            this._titleMMatrices = [];
+            for (let i = 0; i < 3; i++) {
+                this._titles.push(null);
+                this._titleSizes.push(core.config.axesTextTitleSize);
+                this._titleIndexCounts.push(0);
+                this._titleIndexOffsets.push(0);
+            }
+            for (let i = 0; i < 12; i++) {
+                this._titleMMatrices.push(create$4());
+            }
+            this._headings = [];
+            this._headingSizes = [];
+            this._headingIndexCounts = [];
+            this._headingIndexOffsets = [];
+            this._headingMMatrices = [];
+            this.isHeadingVisible = [];
+            for (let i = 0; i < 3; i++) {
+                this._headings.push(null);
+                this._headingSizes.push(core.config.axesTextHeadingSize);
+                this._headingIndexCounts.push(0);
+                this._headingIndexOffsets.push(0);
+            }
+            for (let i = 0; i < 12; i++) {
+                this._headingMMatrices.push(create$4());
+                this.isHeadingVisible.push(true);
+            }
+            this.isEdgeVisible = [];
+            this._edgePosition = create$3();
+            this._edgePositive = create$3();
+            this._edgeNormal = create$3();
+            this._edgeNormalTemp = create$3();
+            this._edgePositiveTemp = create$3();
+            this._isLeftToRightHorizontal = [];
+            this._isLeftToRightVertical = [];
+            this._edgeHorizontalRight = [];
+            this._edgeHorizontalUp = [];
+            this._edgeHorizontalForward = [];
+            this._edgeVerticalRight = [];
+            this._edgeVerticalUp = [];
+            this._edgeVerticalForward = [];
+            for (let i = 0; i < 12; i++) {
+                this.isEdgeVisible.push(true);
+                this._isLeftToRightHorizontal.push(false);
+                this._isLeftToRightVertical.push(false);
+                this._edgeHorizontalRight.push(create$3());
+                this._edgeHorizontalUp.push(create$3());
+                this._edgeHorizontalForward.push(create$3());
+                this._edgeVerticalRight.push(create$3());
+                this._edgeVerticalUp.push(create$3());
+                this._edgeVerticalForward.push(create$3());
+            }
+            this.isFaceVisible = [];
+            for (let i = 0; i < 6; i++) {
+                this.isFaceVisible.push(true);
+            }
+            this.arePickDivisionsVisible = [];
+            this.areFacesVisible = [];
+            this._indexTemplate = Quad$2.INDICES;
+            this.zero = create$3();
+            this._gridTicksZeros = [];
+            this._gridFaceZeros = [];
+            this.minorGridlines = fromValues$3(1, 1, 1);
+            this._gridTicksMinorGridlines = [];
+            this._gridFaceMinorGridlines = [];
+            this._gridTicksPositions = [];
+            this._gridTicksScales = [];
+            this._gridTicksIndexCounts = [];
+            this._gridTicksIndexOffsets = [];
+            this._gridFaceScale = create$3();
+            this._gridFaceIndexCounts = [];
+            this._gridFaceIndexOffsets = [];
+            this._gridFaceMMatrices = [];
+            this._gridTicksMMatrices = [];
+            this._gridTicksRotations = [];
+            for (let i = 0; i < 3; i++) {
+                this.arePickDivisionsVisible.push(true);
+                this.areFacesVisible.push(true);
+                this._gridTicksZeros.push(create());
+                this._gridFaceZeros.push(create());
+                this._gridTicksMinorGridlines.push(create());
+                this._gridFaceMinorGridlines.push(create());
+                this._gridTicksScales.push(create$3());
+                this._gridTicksIndexCounts.push(0);
+                this._gridTicksIndexOffsets.push(0);
+            }
+            for (let i = 0; i < 6; i++) {
+                this._gridFaceIndexCounts.push(0);
+                this._gridFaceIndexOffsets.push(0);
+                this._gridFaceMMatrices.push(create$4());
+            }
+            for (let i = 0; i < 12; i++) {
+                this._gridTicksMMatrices.push(create$4());
+                this._gridTicksRotations.push(create$4());
+                const _mat4 = this._gridTicksRotations[i];
+                _mat4[0] = Cube.EDGE_POSITIVES[i][0];
+                _mat4[1] = Cube.EDGE_POSITIVES[i][1];
+                _mat4[2] = Cube.EDGE_POSITIVES[i][2];
+                _mat4[4] = Cube.EDGE_NORMALS[i][0];
+                _mat4[5] = Cube.EDGE_NORMALS[i][1];
+                _mat4[6] = Cube.EDGE_NORMALS[i][2];
+                cross(this._vec3, Cube.EDGE_POSITIVES[i], Cube.EDGE_NORMALS[i]);
+                _mat4[8] = this._vec3[0];
+                _mat4[9] = this._vec3[1];
+                _mat4[10] = this._vec3[2];
+            }
+            this._fromValues = [null, null, null];
+            this._toValues = [null, null, null];
+            this.isDivisionPickingEnabled = [false, false, false];
+            this.isLabelPickingEnabled = [false, false, false];
+            this.isTitlePickingEnabled = [false, false, false];
+            this.isHeadingPickingEnabled = [false, false, false];
+            this.isAxisReversed = [false, false, false];
+            this._scalingX = 1;
+            this._scalingY = 1;
+            this._scalingZ = 1;
+            this._offset = create$4();
         }
         initialize() {
             this._isInitialized = true;
@@ -10486,7 +10506,7 @@ f 5/6/6 1/12/6 8/11/6`;
         _updateHeading(axisId, edgeId) {
             let distance = this._distances[edgeId];
             const headingTextSize = this._headingSizes[axisId] * this._lineHeight;
-            distance += headingTextSize;
+            distance += headingTextSize * 0.5;
             multiply$1(this._vec3, Cube.EDGE_POSITIONS[edgeId], this._size);
             scaleAndAdd(this._vec3, this._vec3, Cube.EDGE_NORMALS[edgeId], distance);
             const headingMMatrix = this._headingMMatrices[edgeId];
@@ -10646,34 +10666,36 @@ f 5/6/6 1/12/6 8/11/6`;
             }
         }
         _updateLeftToRightAxisLabels(axisId, size, maxSize, glyphOffset, orientation, labels, positions, scales) {
+            const isAxisReversed = this.isAxisReversed[axisId];
             for (let label = 0; label < labels.length; label++) {
                 const text = TextHelper.truncate(labels[label], this._core.config.axesTextLabelMaxGlyphs);
-                const scale = scales[label] / this._font.size;
+                const lineHeight = scales[label];
+                const scale = lineHeight / this._font.size;
                 TextHelper.measure(this._font, text, this._textMetric);
                 const width = this._textMetric.width * scale;
                 const maxGlyphTop = this._textMetric.maxTop * scale;
-                const lineHeight = this._font.size * scale;
+                const position = isAxisReversed ? 1 - positions[label] : positions[label];
                 switch (orientation) {
                     case AxesTextOrientation.parallel:
-                        set$3(this._textPosition, (positions[label] - 0.5) * size, 0, 0);
+                        set$3(this._textPosition, (position - 0.5) * size, 0, 0);
                         if (this._isDiscrete[axisId]) {
                             this._textOffset[0] = -width / 2;
                         }
                         else {
-                            this._textOffset[0] = positions[label] == 0 ? 0 : positions[label] == 1 ? -width : -width / 2;
+                            this._textOffset[0] = position == 0 ? 0 : position == 1 ? -width : -width / 2;
                         }
                         this._textOffset[1] = (maxGlyphTop - lineHeight) / 2;
                         maxSize[0] = Math.max(width, maxSize[0]);
                         maxSize[1] = Math.max(lineHeight, maxSize[1]);
                         break;
                     case AxesTextOrientation.perpendicular:
-                        set$3(this._textPosition, 0, (positions[label] - 0.5) * size, 0);
+                        set$3(this._textPosition, 0, (position - 0.5) * size, 0);
                         this._textOffset[0] = -width / 2;
                         if (this._isDiscrete[axisId]) {
                             this._textOffset[1] = -maxGlyphTop / 2;
                         }
                         else {
-                            this._textOffset[1] = positions[label] == 0 ? 0 : positions[label] == 1 ? -maxGlyphTop : -maxGlyphTop / 2;
+                            this._textOffset[1] = position == 0 ? 0 : position == 1 ? -maxGlyphTop : -maxGlyphTop / 2;
                         }
                         maxSize[0] = Math.max(lineHeight, maxSize[0]);
                         maxSize[1] = Math.max(width, maxSize[1]);
@@ -10690,16 +10712,18 @@ f 5/6/6 1/12/6 8/11/6`;
             return glyphOffset;
         }
         _updateRightToLeftAxisLabels(axisId, size, maxSize, glyphOffset, orientation, labels, positions, scales) {
+            const isAxisReversed = this.isAxisReversed[axisId];
             for (let label = 0; label < labels.length; label++) {
                 const text = TextHelper.truncate(labels[label], this._core.config.axesTextLabelMaxGlyphs);
-                const scale = scales[label] / this._font.size;
+                const lineHeight = scales[label];
+                const scale = lineHeight / this._font.size;
                 TextHelper.measure(this._font, text, this._textMetric);
                 const width = this._textMetric.width * scale;
                 const maxGlyphTop = this._textMetric.maxTop * scale;
-                const lineHeight = this._font.size * scale;
+                const position = isAxisReversed ? 1 - positions[label] : positions[label];
                 switch (orientation) {
                     case AxesTextOrientation.parallel:
-                        set$3(this._textPosition, (0.5 - positions[label]) * size, 0, 0);
+                        set$3(this._textPosition, (0.5 - position) * size, 0, 0);
                         if (this._isDiscrete[axisId]) {
                             this._textOffset[0] = -width / 2;
                         }
@@ -10709,7 +10733,7 @@ f 5/6/6 1/12/6 8/11/6`;
                         this._textOffset[1] = (maxGlyphTop - lineHeight) / 2;
                         break;
                     case AxesTextOrientation.perpendicular:
-                        set$3(this._textPosition, 0, (0.5 - positions[label]) * size, 0);
+                        set$3(this._textPosition, 0, (0.5 - position) * size, 0);
                         this._textOffset[0] = -width / 2;
                         if (this._isDiscrete[axisId]) {
                             this._textOffset[1] = -maxGlyphTop / 2;
@@ -10734,10 +10758,11 @@ f 5/6/6 1/12/6 8/11/6`;
             if (this._gridTicksPositions[axisId]) {
                 const axes = create$3();
                 const positions = this._gridTicksPositions[axisId];
+                const isAxisReversed = this.isAxisReversed[axisId];
                 let vertexOffset = offset * 4;
                 for (let position = 0; position < positions.length - 1; position++) {
-                    const left = positions[position] - 0.5;
-                    const right = positions[position + 1] - 0.5;
+                    const left = isAxisReversed ? 1 - positions[position + 1] - 0.5 : positions[position] - 0.5;
+                    const right = isAxisReversed ? 1 - positions[position] - 0.5 : positions[position + 1] - 0.5;
                     axes[axisId] = position + 1;
                     const pickId = PickHelper.nextPickId();
                     PickHelper.encodeNumber(pickId, PickType.axesDivision, this._vec4);
@@ -10803,14 +10828,16 @@ f 5/6/6 1/12/6 8/11/6`;
                 negate(this._normal, Cube.FACE_NORMALS[faceId]);
                 const positions2 = this._gridTicksPositions[axisId2];
                 const positions3 = this._gridTicksPositions[axisId3];
+                const isAxisReversed2 = this.isAxisReversed[axisId2];
+                const isAxisReversed3 = this.isAxisReversed[axisId3];
                 for (let position2 = 0; position2 < positions2.length - 1; position2++) {
-                    const min2 = positions2[position2] - 0.5;
-                    const max2 = positions2[position2 + 1] - 0.5;
+                    const min2 = isAxisReversed2 ? 1 - positions2[position2 + 1] - 0.5 : positions2[position2] - 0.5;
+                    const max2 = isAxisReversed2 ? 1 - positions2[position2] - 0.5 : positions2[position2 + 1] - 0.5;
                     axes[axisId2] = position2 + 1;
                     let vertexOffset = offset * 4;
                     for (let position3 = 0; position3 < positions3.length - 1; position3++) {
-                        const min3 = positions3[position3] - 0.5;
-                        const max3 = positions3[position3 + 1] - 0.5;
+                        const min3 = isAxisReversed3 ? 1 - positions3[position3 + 1] - 0.5 : positions3[position3] - 0.5;
+                        const max3 = isAxisReversed3 ? 1 - positions3[position3] - 0.5 : positions3[position3 + 1] - 0.5;
                         axes[axisId3] = position3 + 1;
                         const pickId = PickHelper.nextPickId();
                         PickHelper.encodeNumber(pickId, PickType.axesDivision, this._vec4);
@@ -10873,6 +10900,167 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class Cartesian2dAxes extends AxesBase {
+        get size() { return this._size; }
+        get isDiscreteX() { return this._isDiscrete[0]; }
+        set isDiscreteX(value) {
+            if (value != this._isDiscrete[0]) {
+                this._isDiscrete[0] = value;
+                this._hasChanged = true;
+            }
+        }
+        get isDiscreteY() { return this._isDiscrete[1]; }
+        set isDiscreteY(value) {
+            if (value != this._isDiscrete[1]) {
+                this._isDiscrete[1] = value;
+                this._hasChanged = true;
+            }
+        }
+        get minBoundsX() { return this._minBoundsX; }
+        set minBoundsX(value) {
+            if (value != this._minBoundsX) {
+                this._minBoundsX = value;
+                this._hasChanged = true;
+            }
+        }
+        get maxBoundsX() { return this._maxBoundsX; }
+        set maxBoundsX(value) {
+            if (value != this._minBoundsX) {
+                this._maxBoundsX = value;
+                this._hasChanged = true;
+            }
+        }
+        get minBoundsY() { return this._minBoundsY; }
+        set minBoundsY(value) {
+            if (value != this._minBoundsY) {
+                this._minBoundsY = value;
+                this._hasChanged = true;
+            }
+        }
+        get maxBoundsY() { return this._maxBoundsY; }
+        set maxBoundsY(value) {
+            if (value != this._minBoundsY) {
+                this._maxBoundsY = value;
+                this._hasChanged = true;
+            }
+        }
+        getIsOutsideEdge(index) { return this._isOutsideEdge[index]; }
+        getIsForwardFace(index) { return this._isForwardFace[index]; }
+        get textVertices() { return this._textVertices; }
+        get textIndices() { return this._textIndices; }
+        getLabelMMatrix(index) { return this._labelMMatrices[index]; }
+        setLabelPositions(index, value) {
+            if (this._labelPositions[index] != value) {
+                this._labelPositions[index] = value;
+                this._hasChanged = true;
+            }
+        }
+        setLabels(index, value) {
+            if (this._labels[index] != value) {
+                this._labels[index] = value;
+                this._hasChanged = true;
+            }
+        }
+        setLabelSizes(index, value) {
+            if (this._labelSizes[index] != value) {
+                this._labelSizes[index] = value;
+                this._hasChanged = true;
+            }
+        }
+        getLabelOrientation(index) { return this._orientations[index]; }
+        setLabelOrientation(index, orientation) {
+            if (this._orientations[index] != orientation) {
+                this._orientations[index] = orientation;
+                this._hasChanged = true;
+            }
+        }
+        getTitleIndexCount(index) { return this._titleIndexCounts[index]; }
+        getTitleIndexOffset(index) { return this._titleIndexOffsets[index]; }
+        getTitleMMatrix(index) { return this._titleMMatrices[index]; }
+        setTitle(index, value) {
+            if (this._titles[index] != value) {
+                this._titles[index] = value;
+                this._hasChanged = true;
+            }
+        }
+        setTitleSize(index, value) {
+            if (this._titleSizes[index] != value) {
+                this._titleSizes[index] = value;
+                this._hasChanged = true;
+            }
+        }
+        getHeadingIndexCount(index) { return this._headingIndexCounts[index]; }
+        getHeadingIndexOffset(index) { return this._headingIndexOffsets[index]; }
+        getHeadingMMatrix(index) { return this._headingMMatrices[index]; }
+        setHeading(index, value) {
+            if (this._headings[index] != value) {
+                this._headings[index] = value;
+                this._hasChanged = true;
+            }
+        }
+        setHeadingSize(index, value) {
+            if (this._headingSizes[index] != value) {
+                this._headingSizes[index] = value;
+                this._hasChanged = true;
+            }
+        }
+        getIsLeftToRightHorizontal(index) { return this._isLeftToRightHorizontal[index]; }
+        getIsLeftToRightVertical(index) { return this._isLeftToRightVertical[index]; }
+        getAxesLeftToRightIndexCount(index) { return this._axesLeftToRightIndexCounts[index]; }
+        getAxesRightToLeftIndexCount(index) { return this._axesRightToLeftIndexCounts[index]; }
+        getAxesLeftToRightIndexOffset(index) { return this._axesLeftToRightIndexOffsets[index]; }
+        getAxesRightToLeftIndexOffset(index) { return this._axesRightToLeftIndexOffsets[index]; }
+        get gridVertices() { return this._gridVertices; }
+        get gridIndices() { return this._gridIndices; }
+        getGridTicksIndexCount(index) { return this._gridTicksIndexCounts[index]; }
+        getGridTicksIndexOffset(index) { return this._gridTicksIndexOffsets[index]; }
+        getGridFaceIndexCount(index) { return this._gridFaceIndexCounts[index]; }
+        getGridFaceIndexOffset(index) { return this._gridFaceIndexOffsets[index]; }
+        getGridTicksMMatrix(index) { return this._gridTicksMMatrices[index]; }
+        getGridFaceMMatrix(index) { return this._gridFaceMMatrices[index]; }
+        getGridTicksScale(index) { return this._gridTicksScales[index]; }
+        getGridTicksZero(index) { return this._gridTicksZeros[index]; }
+        get gridFaceZero() { return this._gridFaceZeros; }
+        get gridFaceMinorGridlines() { return this._gridFaceMinorGridlines; }
+        getGridTicksMinorGridlines(index) { return this._gridTicksMinorGridlines[index]; }
+        setTickPositions(index, value) {
+            if (this._gridTicksPositions[index] != value) {
+                this._gridTicksPositions[index] = value;
+                this._hasChanged = true;
+            }
+        }
+        get scalingX() { return this._scalingX; }
+        set scalingX(value) {
+            if (value != this._scalingX) {
+                this._scalingX = value;
+                this._hasChanged = true;
+            }
+        }
+        get scalingY() { return this._scalingY; }
+        set scalingY(value) {
+            if (value != this._scalingY) {
+                this._scalingY = value;
+                this._hasChanged = true;
+            }
+        }
+        get offsetX() { return this._offset[12]; }
+        set offsetX(value) {
+            if (value != this._offset[12]) {
+                this._offset[12] = value;
+            }
+        }
+        get offsetY() { return this._offset[13]; }
+        set offsetY(value) {
+            if (value != this._offset[13]) {
+                this._offset[13] = value;
+            }
+        }
+        set rotation(value) {
+            if (this._rotation != value) {
+                this._rotation = value;
+                this._rMatrix = create$4();
+                fromQuat(this._rMatrix, value);
+            }
+        }
         constructor(core) {
             super(core);
             this._size = create$3();
@@ -11039,170 +11227,10 @@ f 5/6/6 1/12/6 8/11/6`;
             this.isLabelPickingEnabled = [false, false];
             this.isTitlePickingEnabled = [false, false];
             this.isHeadingPickingEnabled = [false, false];
+            this.isAxisReversed = [false, false];
             this._scalingX = 1;
             this._scalingY = 1;
             this._offset = create$4();
-        }
-        get size() { return this._size; }
-        get isDiscreteX() { return this._isDiscrete[0]; }
-        set isDiscreteX(value) {
-            if (value != this._isDiscrete[0]) {
-                this._isDiscrete[0] = value;
-                this._hasChanged = true;
-            }
-        }
-        get isDiscreteY() { return this._isDiscrete[1]; }
-        set isDiscreteY(value) {
-            if (value != this._isDiscrete[1]) {
-                this._isDiscrete[1] = value;
-                this._hasChanged = true;
-            }
-        }
-        get minBoundsX() { return this._minBoundsX; }
-        set minBoundsX(value) {
-            if (value != this._minBoundsX) {
-                this._minBoundsX = value;
-                this._hasChanged = true;
-            }
-        }
-        get maxBoundsX() { return this._maxBoundsX; }
-        set maxBoundsX(value) {
-            if (value != this._minBoundsX) {
-                this._maxBoundsX = value;
-                this._hasChanged = true;
-            }
-        }
-        get minBoundsY() { return this._minBoundsY; }
-        set minBoundsY(value) {
-            if (value != this._minBoundsY) {
-                this._minBoundsY = value;
-                this._hasChanged = true;
-            }
-        }
-        get maxBoundsY() { return this._maxBoundsY; }
-        set maxBoundsY(value) {
-            if (value != this._minBoundsY) {
-                this._maxBoundsY = value;
-                this._hasChanged = true;
-            }
-        }
-        getIsOutsideEdge(index) { return this._isOutsideEdge[index]; }
-        getIsForwardFace(index) { return this._isForwardFace[index]; }
-        get textVertices() { return this._textVertices; }
-        get textIndices() { return this._textIndices; }
-        getLabelMMatrix(index) { return this._labelMMatrices[index]; }
-        setLabelPositions(index, value) {
-            if (this._labelPositions[index] != value) {
-                this._labelPositions[index] = value;
-                this._hasChanged = true;
-            }
-        }
-        setLabels(index, value) {
-            if (this._labels[index] != value) {
-                this._labels[index] = value;
-                this._hasChanged = true;
-            }
-        }
-        setLabelSizes(index, value) {
-            if (this._labelSizes[index] != value) {
-                this._labelSizes[index] = value;
-                this._hasChanged = true;
-            }
-        }
-        getLabelOrientation(index) { return this._orientations[index]; }
-        setLabelOrientation(index, orientation) {
-            if (this._orientations[index] != orientation) {
-                this._orientations[index] = orientation;
-                this._hasChanged = true;
-            }
-        }
-        getTitleIndexCount(index) { return this._titleIndexCounts[index]; }
-        getTitleIndexOffset(index) { return this._titleIndexOffsets[index]; }
-        getTitleMMatrix(index) { return this._titleMMatrices[index]; }
-        setTitle(index, value) {
-            if (this._titles[index] != value) {
-                this._titles[index] = value;
-                this._hasChanged = true;
-            }
-        }
-        setTitleSize(index, value) {
-            if (this._titleSizes[index] != value) {
-                this._titleSizes[index] = value;
-                this._hasChanged = true;
-            }
-        }
-        getHeadingIndexCount(index) { return this._headingIndexCounts[index]; }
-        getHeadingIndexOffset(index) { return this._headingIndexOffsets[index]; }
-        getHeadingMMatrix(index) { return this._headingMMatrices[index]; }
-        setHeading(index, value) {
-            if (this._headings[index] != value) {
-                this._headings[index] = value;
-                this._hasChanged = true;
-            }
-        }
-        setHeadingSize(index, value) {
-            if (this._headingSizes[index] != value) {
-                this._headingSizes[index] = value;
-                this._hasChanged = true;
-            }
-        }
-        getIsLeftToRightHorizontal(index) { return this._isLeftToRightHorizontal[index]; }
-        getIsLeftToRightVertical(index) { return this._isLeftToRightVertical[index]; }
-        getAxesLeftToRightIndexCount(index) { return this._axesLeftToRightIndexCounts[index]; }
-        getAxesRightToLeftIndexCount(index) { return this._axesRightToLeftIndexCounts[index]; }
-        getAxesLeftToRightIndexOffset(index) { return this._axesLeftToRightIndexOffsets[index]; }
-        getAxesRightToLeftIndexOffset(index) { return this._axesRightToLeftIndexOffsets[index]; }
-        get gridVertices() { return this._gridVertices; }
-        get gridIndices() { return this._gridIndices; }
-        getGridTicksIndexCount(index) { return this._gridTicksIndexCounts[index]; }
-        getGridTicksIndexOffset(index) { return this._gridTicksIndexOffsets[index]; }
-        getGridFaceIndexCount(index) { return this._gridFaceIndexCounts[index]; }
-        getGridFaceIndexOffset(index) { return this._gridFaceIndexOffsets[index]; }
-        getGridTicksMMatrix(index) { return this._gridTicksMMatrices[index]; }
-        getGridFaceMMatrix(index) { return this._gridFaceMMatrices[index]; }
-        getGridTicksScale(index) { return this._gridTicksScales[index]; }
-        getGridTicksZero(index) { return this._gridTicksZeros[index]; }
-        get gridFaceZero() { return this._gridFaceZeros; }
-        get gridFaceMinorGridlines() { return this._gridFaceMinorGridlines; }
-        getGridTicksMinorGridlines(index) { return this._gridTicksMinorGridlines[index]; }
-        setTickPositions(index, value) {
-            if (this._gridTicksPositions[index] != value) {
-                this._gridTicksPositions[index] = value;
-                this._hasChanged = true;
-            }
-        }
-        get scalingX() { return this._scalingX; }
-        set scalingX(value) {
-            if (value != this._scalingX) {
-                this._scalingX = value;
-                this._hasChanged = true;
-            }
-        }
-        get scalingY() { return this._scalingY; }
-        set scalingY(value) {
-            if (value != this._scalingY) {
-                this._scalingY = value;
-                this._hasChanged = true;
-            }
-        }
-        get offsetX() { return this._offset[12]; }
-        set offsetX(value) {
-            if (value != this._offset[12]) {
-                this._offset[12] = value;
-            }
-        }
-        get offsetY() { return this._offset[13]; }
-        set offsetY(value) {
-            if (value != this._offset[13]) {
-                this._offset[13] = value;
-            }
-        }
-        set rotation(value) {
-            if (this._rotation != value) {
-                this._rotation = value;
-                this._rMatrix = create$4();
-                fromQuat(this._rMatrix, value);
-            }
         }
         initialize() {
             this._isInitialized = true;
@@ -11434,7 +11462,7 @@ f 5/6/6 1/12/6 8/11/6`;
         _updateHeading(axisId, edgeId) {
             let distance = this._distances[edgeId];
             const headingTextSize = this._headingSizes[axisId] * this._lineHeight;
-            distance += headingTextSize;
+            distance += headingTextSize * 0.5;
             multiply$1(this._vec3, Quad$2.EDGE_POSITIONS[edgeId], this._size);
             scaleAndAdd(this._vec3, this._vec3, Quad$2.EDGE_NORMALS[edgeId], distance);
             const headingMMatrix = this._headingMMatrices[edgeId];
@@ -11591,34 +11619,36 @@ f 5/6/6 1/12/6 8/11/6`;
             }
         }
         _updateLeftToRightAxisLabels(axisId, size, maxSize, glyphOffset, orientation, labels, positions, scales) {
+            const isAxisReversed = this.isAxisReversed[axisId];
             for (let label = 0; label < labels.length; label++) {
                 const text = TextHelper.truncate(labels[label], this._core.config.axesTextLabelMaxGlyphs);
-                const scale = scales[label] / this._font.size;
+                const lineHeight = scales[label];
+                const scale = lineHeight / this._font.size;
                 TextHelper.measure(this._font, text, this._textMetric);
                 const width = this._textMetric.width * scale;
                 const maxGlyphTop = this._textMetric.maxTop * scale;
-                const lineHeight = this._font.size * scale;
+                const position = isAxisReversed ? 1 - positions[label] : positions[label];
                 switch (orientation) {
                     case AxesTextOrientation.parallel:
-                        set$3(this._textPosition, (positions[label] - 0.5) * size, 0, 0);
+                        set$3(this._textPosition, (position - 0.5) * size, 0, 0);
                         if (this._isDiscrete[axisId]) {
                             this._textOffset[0] = -width / 2;
                         }
                         else {
-                            this._textOffset[0] = positions[label] == 0 ? 0 : positions[label] == 1 ? -width : -width / 2;
+                            this._textOffset[0] = position == 0 ? 0 : position == 1 ? -width : -width / 2;
                         }
                         this._textOffset[1] = (maxGlyphTop - lineHeight) / 2;
                         maxSize[0] = Math.max(width, maxSize[0]);
                         maxSize[1] = Math.max(lineHeight, maxSize[1]);
                         break;
                     case AxesTextOrientation.perpendicular:
-                        set$3(this._textPosition, 0, (positions[label] - 0.5) * size, 0);
+                        set$3(this._textPosition, 0, (position - 0.5) * size, 0);
                         this._textOffset[0] = -width / 2;
                         if (this._isDiscrete[axisId]) {
                             this._textOffset[1] = -maxGlyphTop / 2;
                         }
                         else {
-                            this._textOffset[1] = positions[label] == 0 ? 0 : positions[label] == 1 ? -maxGlyphTop : -maxGlyphTop / 2;
+                            this._textOffset[1] = position == 0 ? 0 : position == 1 ? -maxGlyphTop : -maxGlyphTop / 2;
                         }
                         maxSize[0] = Math.max(lineHeight, maxSize[0]);
                         maxSize[1] = Math.max(width, maxSize[1]);
@@ -11635,16 +11665,18 @@ f 5/6/6 1/12/6 8/11/6`;
             return glyphOffset;
         }
         _updateRightToLeftAxisLabels(axisId, size, maxSize, glyphOffset, orientation, labels, positions, scales) {
+            const isAxisReversed = this.isAxisReversed[axisId];
             for (let label = 0; label < labels.length; label++) {
                 const text = TextHelper.truncate(labels[label], this._core.config.axesTextLabelMaxGlyphs);
-                const scale = scales[label] / this._font.size;
+                const lineHeight = scales[label];
+                const scale = lineHeight / this._font.size;
                 TextHelper.measure(this._font, text, this._textMetric);
                 const width = this._textMetric.width * scale;
                 const maxGlyphTop = this._textMetric.maxTop * scale;
-                const lineHeight = this._font.size * scale;
+                const position = isAxisReversed ? 1 - positions[label] : positions[label];
                 switch (orientation) {
                     case AxesTextOrientation.parallel:
-                        set$3(this._textPosition, (0.5 - positions[label]) * size, 0, 0);
+                        set$3(this._textPosition, (0.5 - position) * size, 0, 0);
                         if (this._isDiscrete[axisId]) {
                             this._textOffset[0] = -width / 2;
                         }
@@ -11654,7 +11686,7 @@ f 5/6/6 1/12/6 8/11/6`;
                         this._textOffset[1] = (maxGlyphTop - lineHeight) / 2;
                         break;
                     case AxesTextOrientation.perpendicular:
-                        set$3(this._textPosition, 0, (0.5 - positions[label]) * size, 0);
+                        set$3(this._textPosition, 0, (0.5 - position) * size, 0);
                         this._textOffset[0] = -width / 2;
                         if (this._isDiscrete[axisId]) {
                             this._textOffset[1] = -maxGlyphTop / 2;
@@ -11679,10 +11711,11 @@ f 5/6/6 1/12/6 8/11/6`;
             if (this._gridTicksPositions[axisId]) {
                 const axes = create$3();
                 const positions = this._gridTicksPositions[axisId];
+                const isAxisReversed = this.isAxisReversed[axisId];
                 let vertexOffset = offset * 4;
                 for (let position = 0; position < positions.length - 1; position++) {
-                    const left = positions[position] - 0.5;
-                    const right = positions[position + 1] - 0.5;
+                    const left = isAxisReversed ? 1 - positions[position + 1] - 0.5 : positions[position] - 0.5;
+                    const right = isAxisReversed ? 1 - positions[position] - 0.5 : positions[position + 1] - 0.5;
                     axes[axisId] = position + 1;
                     const pickId = PickHelper.nextPickId();
                     PickHelper.encodeNumber(pickId, PickType.axesDivision, this._vec4);
@@ -11748,14 +11781,16 @@ f 5/6/6 1/12/6 8/11/6`;
                 negate(this._normal, Quad$2.FACE_NORMALS[faceId]);
                 const positions2 = this._gridTicksPositions[axisId2];
                 const positions3 = this._gridTicksPositions[axisId3];
+                const isAxisReversed2 = this.isAxisReversed[axisId2];
+                const isAxisReversed3 = this.isAxisReversed[axisId3];
                 for (let position2 = 0; position2 < positions2.length - 1; position2++) {
-                    const min2 = positions2[position2] - 0.5;
-                    const max2 = positions2[position2 + 1] - 0.5;
+                    const min2 = isAxisReversed2 ? 1 - positions2[position2 + 1] - 0.5 : positions2[position2] - 0.5;
+                    const max2 = isAxisReversed2 ? 1 - positions2[position2] - 0.5 : positions2[position2 + 1] - 0.5;
                     axes[axisId2] = position2 + 1;
                     let vertexOffset = offset * 4;
                     for (let position3 = 0; position3 < positions3.length - 1; position3++) {
-                        const min3 = positions3[position3] - 0.5;
-                        const max3 = positions3[position3 + 1] - 0.5;
+                        const min3 = isAxisReversed3 ? 1 - positions3[position3 + 1] - 0.5 : positions3[position3] - 0.5;
+                        const max3 = isAxisReversed3 ? 1 - positions3[position3] - 0.5 : positions3[position3 + 1] - 0.5;
                         axes[axisId3] = position3 + 1;
                         const pickId = PickHelper.nextPickId();
                         PickHelper.encodeNumber(pickId, PickType.axesDivision, this._vec4);
@@ -11835,12 +11870,14 @@ f 5/6/6 1/12/6 8/11/6`;
         }
     }
     class FontVisual$2 {
+        update() { }
         constructor(font) {
             this.font = font;
         }
-        update() { }
     }
     class Font {
+        get atlas() { return this._rasterizer.fontAtlas; }
+        get count() { return this._chars.size; }
         constructor(core, rasterizer) {
             this._core = core;
             this._rasterizer = rasterizer;
@@ -11848,8 +11885,6 @@ f 5/6/6 1/12/6 8/11/6`;
             this._previousSize = 0;
             this.glyphs = {};
         }
-        get atlas() { return this._rasterizer.fontAtlas; }
-        get count() { return this._chars.size; }
         addGlyph(char) {
             if (!this._chars.has(char)) {
                 this._chars.add(char);
@@ -11895,6 +11930,8 @@ f 5/6/6 1/12/6 8/11/6`;
         }
     }
     class FontRasterizer {
+        get font() { return this._font; }
+        get fontAtlas() { return this._fontAtlas; }
         constructor(core, options) {
             let start = performance.now();
             this._core = core;
@@ -11925,8 +11962,6 @@ f 5/6/6 1/12/6 8/11/6`;
             this._glyphRasterizer = new GlyphRasterizer(core, glyphRasterizerOptions);
             this._core.log.write(LogLevel.info, `font rasterizer ${Math.round(window.performance.now() - start)}ms`);
         }
-        get font() { return this._font; }
-        get fontAtlas() { return this._fontAtlas; }
         draw(char) {
             const glyph = this._glyphRasterizer.draw(char);
             const texWidth = glyph.width + 2 * this._border;
@@ -11951,14 +11986,14 @@ f 5/6/6 1/12/6 8/11/6`;
             glyph.u1 = (this._fontAtlas.x + texWidth) / width;
             glyph.v1 = (y + texHeight) / height;
             this._font.glyphs[char] = glyph;
-            for (let i = 0; i < glyph.data.length; i++) {
-                const alpha = glyph.data[i];
+            for (let i = 0; i < glyph.distances.length; i++) {
+                const distance = glyph.distances[i];
                 const dataX = i % texWidth;
                 const dataY = Math.floor(i / texWidth);
                 const offset = (this._fontAtlas.x + dataX + (y + dataY) * width) * 4;
-                this._fontAtlas.imageData.data[offset] = alpha;
-                this._fontAtlas.imageData.data[offset + 1] = alpha;
-                this._fontAtlas.imageData.data[offset + 2] = alpha;
+                this._fontAtlas.imageData.data[offset + 0] = distance;
+                this._fontAtlas.imageData.data[offset + 1] = distance;
+                this._fontAtlas.imageData.data[offset + 2] = distance;
                 this._fontAtlas.imageData.data[offset + 3] = 0xff;
             }
             this._fontAtlas.x += texWidth;
@@ -11985,7 +12020,7 @@ f 5/6/6 1/12/6 8/11/6`;
             this._v = new Uint16Array(this._size);
             const canvas = document.createElement("canvas");
             canvas.width = canvas.height = this._size;
-            this._context = canvas.getContext("2d");
+            this._context = canvas.getContext("2d", { willReadFrequently: true });
             this._context.font = `${this._fontStyle} ${this._fontWeight} ${this._fontSize}px ${this._fontFamily} `;
             this._context.textBaseline = this._baseline;
             this._context.textAlign = "left";
@@ -12003,11 +12038,17 @@ f 5/6/6 1/12/6 8/11/6`;
             const width = glyphWidth + 2 * this._border;
             const height = glyphHeight + 2 * this._border;
             const length = width * height;
-            const data = new Uint8ClampedArray(length);
+            const distances = new Uint8ClampedArray(length);
+            const gradientsX = new Uint8ClampedArray(length);
+            const gradientsY = new Uint8ClampedArray(length);
+            const pixels = new Uint8ClampedArray(length);
             const glyph = new Glyph();
             glyph.char = char;
             glyph.key = char.codePointAt(0);
-            glyph.data = data;
+            glyph.distances = distances;
+            glyph.gradientsX = gradientsX;
+            glyph.gradientsY = gradientsY;
+            glyph.pixels = pixels;
             glyph.width = glyphWidth;
             glyph.height = glyphHeight;
             glyph.top = glyphTop;
@@ -12036,15 +12077,32 @@ f 5/6/6 1/12/6 8/11/6`;
                             const d = 0.5 - a;
                             this._gridOuter[j] = d > 0 ? d * d : 0;
                             this._gridInner[j] = d < 0 ? d * d : 0;
+                            pixels[j] = 0xff;
                         }
                     }
                 }
             }
             this._edt(this._gridOuter, 0, 0, width, height, width, this._f, this._v, this._z);
             this._edt(this._gridInner, this._border, this._border, glyphWidth, glyphHeight, width, this._f, this._v, this._z);
+            const distances2 = new Float32Array(length);
             for (let i = 0; i < length; i++) {
                 const distance = Math.sqrt(this._gridOuter[i]) - Math.sqrt(this._gridInner[i]);
-                data[i] = Math.round(this._edgeValue - 0xff * distance / this._maxDistance);
+                distances[i] = Math.round(this._edgeValue - distance * 0xff / this._maxDistance);
+                distances2[i] = distance;
+            }
+            for (let i = 0; i < length; i++) {
+                const x = i % width;
+                const y = Math.floor(i / width);
+                const d = distances2[i];
+                const sign = d < 0 ? -1 : 1;
+                const x0 = x > 0 ? distances2[i - 1] : Number.MAX_VALUE;
+                const x1 = x < width - 1 ? distances2[i + 1] : Number.MAX_VALUE;
+                const y0 = y > 0 ? distances2[i - width] : Number.MAX_VALUE;
+                const y1 = y < height - 1 ? distances2[i + width] : Number.MAX_VALUE;
+                let gradientX = sign * x0 < sign * x1 ? d - x0 : x1 - d;
+                let gradientY = sign * y0 < sign * y1 ? y0 - d : d - y1;
+                gradientsX[i] = Math.round((gradientX * 0.5 + 0.5) * 0xff);
+                gradientsY[i] = Math.round((gradientY * 0.5 + 0.5) * 0xff);
             }
             return glyph;
         }
@@ -12087,6 +12145,9 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class ManipulationProcessor {
+        get manipulators() { return this._manipulators; }
+        get count() { return this._count; }
+        get isDragging() { return this._isDragging; }
         constructor(core) {
             this._core = core;
             this._count = 0;
@@ -12104,9 +12165,6 @@ f 5/6/6 1/12/6 8/11/6`;
             this.twistAxis = fromValues$3(0, 0, 1);
             this.initialize();
         }
-        get manipulators() { return this._manipulators; }
-        get count() { return this._count; }
-        get isDragging() { return this._isDragging; }
         update(elapsedTime, manipulators) {
             for (const key in this._manipulators) {
                 const manipulator = this._manipulators[key];
@@ -12297,16 +12355,16 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class Pointers {
-        constructor(core, manipulators) {
-            this._core = core;
-            this._manipulators = manipulators;
-        }
         get hoverX() { return this._hoverX; }
         ;
         get hoverY() { return this._hoverY; }
         ;
         get hoverId() { return this._hoverId; }
         ;
+        constructor(core, manipulators) {
+            this._core = core;
+            this._manipulators = manipulators;
+        }
         initialize(element) {
             this._element = element;
             element.addEventListener("pointerdown", (e) => this._handlePointerDown(e), { passive: true });
@@ -12876,43 +12934,6 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class Core {
-        constructor(options) {
-            setMatrixArrayType(Array);
-            this._vec3 = create$3();
-            this._quat = create$1();
-            this._mat4 = create$4();
-            this._container = options && options.container ? options.container : document.body;
-            this._config = new Config$2(this);
-            this._log = new Log(this);
-            this._debugText = new DebugText();
-            this._inputManager = (options && options.useInputManager === false) ? null : new Manager(this);
-            const fontRasterizerOptions = options && options.fontRasterizerOptions ? options.fontRasterizerOptions : {
-                fontAtlas: new FontAtlas(256, 512),
-                fontSize: 24,
-                border: 3,
-                fontFamily: "\"segoe ui semibold\", sans-serif",
-                fontWeight: "normal",
-                fontStyle: "normal",
-                baseline: "alphabetic",
-                maxDistance: 8,
-                edgeValue: 0xc0,
-            };
-            const fontRasterizer = new FontRasterizer(this, fontRasterizerOptions);
-            this._font = fontRasterizer.font;
-            this._paletteResources = new PaletteResources();
-            this._previousTime = 0;
-            this._fps = new Fps(this);
-            this._modelMMatrix = create$4();
-            this._modelPosition = create$3();
-            this._modelRotation = create$1();
-            this._modelScale = create$3();
-            this._smoothedModelPosition = create$3();
-            this._smoothedModelRotation = create$1();
-            this._smoothedModelScale = create$3();
-            this._modelManipulationOrigin = create$3();
-            this._camera = new AltAzimuthCamera(this);
-            this.resetModel(false);
-        }
         get container() { return this._container; }
         get started() { return this._started; }
         get debugText() { return this._debugText; }
@@ -12995,9 +13016,6 @@ f 5/6/6 1/12/6 8/11/6`;
                         renderer.fonts[font.name] = renderer.createFontVisual(font);
                     }
                 }
-                if (this._renderer) {
-                    this._renderer.finalize();
-                }
             }
             else {
                 renderer.fonts[this._font.name] = renderer.createFontVisual(this._font);
@@ -13013,6 +13031,43 @@ f 5/6/6 1/12/6 8/11/6`;
         get paletteResources() { return this._paletteResources; }
         get config() { return this._config; }
         get inputManager() { return this._inputManager; }
+        constructor(options) {
+            setMatrixArrayType(Array);
+            this._vec3 = create$3();
+            this._quat = create$1();
+            this._mat4 = create$4();
+            this._container = options && options.container ? options.container : document.body;
+            this._config = new Config$2(this);
+            this._log = new Log(this);
+            this._debugText = new DebugText();
+            this._inputManager = (options && options.useInputManager === false) ? null : new Manager(this);
+            const fontRasterizerOptions = options && options.fontRasterizerOptions ? options.fontRasterizerOptions : {
+                fontAtlas: new FontAtlas(256, 512),
+                fontSize: 24,
+                border: 3,
+                fontFamily: "\"segoe ui semibold\", sans-serif",
+                fontWeight: "normal",
+                fontStyle: "normal",
+                baseline: "alphabetic",
+                maxDistance: 8,
+                edgeValue: 0xc0,
+            };
+            const fontRasterizer = new FontRasterizer(this, fontRasterizerOptions);
+            this._font = fontRasterizer.font;
+            this._paletteResources = new PaletteResources();
+            this._previousTime = 0;
+            this._fps = new Fps(this);
+            this._modelMMatrix = create$4();
+            this._modelPosition = create$3();
+            this._modelRotation = create$1();
+            this._modelScale = create$3();
+            this._smoothedModelPosition = create$3();
+            this._smoothedModelRotation = create$1();
+            this._smoothedModelScale = create$3();
+            this._modelManipulationOrigin = create$3();
+            this._camera = new AltAzimuthCamera(this);
+            this.resetModel(false);
+        }
         getView(view) {
             this.getModelPosition(view.position);
             this.getModelRotation(view.rotation);
@@ -13170,7 +13225,7 @@ f 5/6/6 1/12/6 8/11/6`;
             }
             this._fps.update(elapsedTime);
             if (this._inputManager) {
-                this._inputManager.isPickingEnabled = this._renderer.transitionTime == 1;
+                this._inputManager.isPickingEnabled = this._config.isTransitionPickingEnabled || this._renderer.transitionTime == 1;
                 this._inputManager.update(elapsedTime, xrFrame);
             }
             let amount = Math.min(elapsedTime * this._config.positionSmoothing, 1);
@@ -13214,13 +13269,17 @@ f 5/6/6 1/12/6 8/11/6`;
                 perspective(this._mat4, fov, this._renderer.width / this._renderer.height, this._config.nearPlane, this._config.farPlane);
                 this._renderer.pickPMatrix = this._mat4;
             }
-            this._renderer.update(elapsedTime);
+            if (this._renderer.isInitialized) {
+                this._renderer.update(elapsedTime);
+            }
         }
         render(elapsedTime, xrFrame) {
             this._fps.render();
-            this._renderer.render(elapsedTime, xrFrame);
-            if (this.afterRenderCallback) {
-                this.afterRenderCallback();
+            if (this._renderer.isInitialized) {
+                this._renderer.render(elapsedTime, xrFrame);
+                if (this.afterRenderCallback) {
+                    this.afterRenderCallback();
+                }
             }
         }
         _syncSmooth() {
@@ -13363,6 +13422,7 @@ f 5/6/6 1/12/6 8/11/6`;
         cylinderSdf: "cylinderSdf",
         hexPrism: "hexPrism",
         hexPrismSdf: "hexPrismSdf",
+        sdf: "sdf",
     };
     const SingleTouchAction = {
         none: "none",
@@ -13556,34 +13616,13 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class LabelSetVisual$2 {
+        render(elapsedTime, xrFrame) { }
+        update(elapsedTime) { }
         constructor(labelSet) {
             this.label = labelSet;
         }
-        render(elapsedTime, xrFrame) { }
-        update(elapsedTime) { }
     }
     class LabelBase {
-        constructor(core, options) {
-            this._core = core;
-            this._offset = create$3();
-            this._vec3 = create$3();
-            this._vec4 = create$2();
-            this._mMatrix = create$4();
-            this._indexCount = 0;
-            this._maxGlyphs = options.maxGlyphs;
-            this._textMetric = { width: 0, maxHeight: 0, maxTop: 0 };
-            this.scale = options.scale ? options.scale : 1;
-            this.offsetX = options.offsetX ? options.offsetX : 0;
-            this.offsetY = options.offsetY ? options.offsetY : 0;
-            this.offsetZ = options.offsetZ ? options.offsetZ : 0;
-            this.rotation = options.rotation;
-            this.maxGlyphTop = options.maxGlyphTop;
-            this.horizontalAlignment = options.horizontalAlignment === undefined ? HorizontalAlignment.center : options.horizontalAlignment;
-            this.verticalAlignment = options.verticalAlignment === undefined ? VerticalAlignment.center : options.verticalAlignment;
-            this._material = options.material === undefined ? -1 : options.material;
-            this.borderWidth = core.config.textBorderWidth;
-            this.gamma = 0;
-        }
         get material() { return this._material; }
         get vertices() { return this._vertices; }
         get verticesView() { return this._verticesView; }
@@ -13609,6 +13648,24 @@ f 5/6/6 1/12/6 8/11/6`;
         set rotation(value) {
             if (this._rotation != value) {
                 this._rotation = value;
+                this._hasChanged = true;
+            }
+        }
+        set reverseX(value) {
+            if (this._reverseX != value) {
+                this._reverseX = value;
+                this._hasChanged = true;
+            }
+        }
+        set reverseY(value) {
+            if (this._reverseY != value) {
+                this._reverseY = value;
+                this._hasChanged = true;
+            }
+        }
+        set reverseZ(value) {
+            if (this._reverseZ != value) {
+                this._reverseZ = value;
                 this._hasChanged = true;
             }
         }
@@ -13661,6 +13718,30 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._hasChanged = true;
             }
         }
+        constructor(core, options) {
+            this._core = core;
+            this._offset = create$3();
+            this._vec3 = create$3();
+            this._vec4 = create$2();
+            this._mMatrix = create$4();
+            this._indexCount = 0;
+            this._maxGlyphs = options.maxGlyphs;
+            this._textMetric = { width: 0, maxHeight: 0, maxTop: 0 };
+            this.scale = options.scale ? options.scale : 1;
+            this.offsetX = options.offsetX ? options.offsetX : 0;
+            this.offsetY = options.offsetY ? options.offsetY : 0;
+            this.offsetZ = options.offsetZ ? options.offsetZ : 0;
+            this.reverseX = options.reverseX;
+            this.reverseY = options.reverseY;
+            this.reverseZ = options.reverseZ;
+            this.rotation = options.rotation;
+            this.maxGlyphTop = options.maxGlyphTop;
+            this.horizontalAlignment = options.horizontalAlignment === undefined ? HorizontalAlignment.center : options.horizontalAlignment;
+            this.verticalAlignment = options.verticalAlignment === undefined ? VerticalAlignment.center : options.verticalAlignment;
+            this._material = options.material;
+            this.borderWidth = core.config.textBorderWidth;
+            this.gamma = 0;
+        }
         initialize() {
             this._vertices = new ArrayBuffer(PositionTexturePickVertex.SIZE_BYTES * this._maxGlyphs * 4);
             this._verticesView = new DataView(this._vertices);
@@ -13670,37 +13751,7 @@ f 5/6/6 1/12/6 8/11/6`;
         update(elapsedTime) { }
     }
     class LabelSet extends LabelBase {
-        constructor(core, options) {
-            super(core, options);
-            this._quat = create$1();
-            this.minBoundsX = options.minBoundsX ? options.minBoundsX : 0;
-            this.minBoundsY = options.minBoundsY ? options.minBoundsY : 0;
-            this.minBoundsZ = options.minBoundsZ ? options.minBoundsZ : 0;
-            this.maxBoundsX = options.maxBoundsX ? options.maxBoundsX : 1;
-            this.maxBoundsY = options.maxBoundsY ? options.maxBoundsY : 1;
-            this.maxBoundsZ = options.maxBoundsZ ? options.maxBoundsZ : 1;
-            this._font = options.font || core.font;
-            this.text = options.text;
-            this.positionsX = options.positionsX;
-            this.positionsY = options.positionsY;
-            this.positionsZ = options.positionsZ;
-            this.positionScalingX = options.positionScalingX ? options.positionScalingX : 1;
-            this.positionScalingY = options.positionScalingY ? options.positionScalingY : 1;
-            this.positionScalingZ = options.positionScalingZ ? options.positionScalingZ : 1;
-            this.rotations = options.rotations;
-            this.offsetsX = options.offsetsX;
-            this.offsetsY = options.offsetsY;
-            this.offsetsZ = options.offsetsZ;
-            this.offsetScalingX = options.offsetScalingX ? options.offsetScalingX : 1;
-            this.offsetScalingY = options.offsetScalingY ? options.offsetScalingY : 1;
-            this.offsetScalingZ = options.offsetScalingZ ? options.offsetScalingZ : 1;
-            if (options.horizontalAlignments)
-                this.horizontalAlignments = options.horizontalAlignments;
-            if (options.verticalAlignments)
-                this.verticalAlignments = options.verticalAlignments;
-            if (options.scales)
-                this.scales = options.scales;
-        }
+        get materials() { return this._materials; }
         get minBoundsX() { return this._minBoundsX; }
         set minBoundsX(value) {
             if (this._minBoundsX != value) {
@@ -13862,6 +13913,38 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._hasChanged = true;
             }
         }
+        constructor(core, options) {
+            super(core, options);
+            this._quat = create$1();
+            this._materials = options.materials;
+            this.minBoundsX = options.minBoundsX ? options.minBoundsX : 0;
+            this.minBoundsY = options.minBoundsY ? options.minBoundsY : 0;
+            this.minBoundsZ = options.minBoundsZ ? options.minBoundsZ : 0;
+            this.maxBoundsX = options.maxBoundsX ? options.maxBoundsX : 1;
+            this.maxBoundsY = options.maxBoundsY ? options.maxBoundsY : 1;
+            this.maxBoundsZ = options.maxBoundsZ ? options.maxBoundsZ : 1;
+            this._font = options.font || core.font;
+            this.text = options.text;
+            this.positionsX = options.positionsX;
+            this.positionsY = options.positionsY;
+            this.positionsZ = options.positionsZ;
+            this.positionScalingX = options.positionScalingX ? options.positionScalingX : 1;
+            this.positionScalingY = options.positionScalingY ? options.positionScalingY : 1;
+            this.positionScalingZ = options.positionScalingZ ? options.positionScalingZ : 1;
+            this.rotations = options.rotations;
+            this.offsetsX = options.offsetsX;
+            this.offsetsY = options.offsetsY;
+            this.offsetsZ = options.offsetsZ;
+            this.offsetScalingX = options.offsetScalingX ? options.offsetScalingX : 1;
+            this.offsetScalingY = options.offsetScalingY ? options.offsetScalingY : 1;
+            this.offsetScalingZ = options.offsetScalingZ ? options.offsetScalingZ : 1;
+            if (options.horizontalAlignments)
+                this.horizontalAlignments = options.horizontalAlignments;
+            if (options.verticalAlignments)
+                this.verticalAlignments = options.verticalAlignments;
+            if (options.scales)
+                this.scales = options.scales;
+        }
         update(elapsedTime) {
             if (this._hasChanged && this._isInitialized) {
                 this._hasChanged = false;
@@ -13919,7 +14002,19 @@ f 5/6/6 1/12/6 8/11/6`;
                         }
                         this._offset[1] -= maxGlyphTop / 2;
                         this._offset[2] = offsetZ;
-                        set$3(this._vec3, ((this.positionsX ? this.positionsX[i] * this.positionScalingX : 0) - modelOriginX) * boundsScaling, ((this.positionsY ? this.positionsY[i] * this.positionScalingY : 0) - modelOriginY) * boundsScaling, ((this.positionsZ ? this.positionsZ[i] * this.positionScalingZ : 0) - modelOriginZ) * boundsScaling);
+                        let positionX = this.positionsX ? this.positionsX[i] * this.positionScalingX : 0;
+                        let positionY = this.positionsY ? this.positionsY[i] * this.positionScalingY : 0;
+                        let positionZ = this.positionsZ ? this.positionsZ[i] * this.positionScalingZ : 0;
+                        if (this._reverseX) {
+                            positionX = this.minBoundsX + this.maxBoundsX - positionX;
+                        }
+                        if (this._reverseY) {
+                            positionY = this.minBoundsY + this.maxBoundsY - positionY;
+                        }
+                        if (this._reverseZ) {
+                            positionZ = this.minBoundsZ + this.maxBoundsZ - positionZ;
+                        }
+                        set$3(this._vec3, (positionX - modelOriginX) * boundsScaling, (positionY - modelOriginY) * boundsScaling, (positionZ - modelOriginZ) * boundsScaling);
                         if (this._rotations) {
                             set$1(this._quat, this._rotations[i * 4], this._rotations[i * 4 + 1], this._rotations[i * 4 + 2], this._rotations[i * 4 + 3]);
                         }
@@ -13948,34 +14043,13 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class ImageVisual$2 {
+        render(elapsedTime, xrFrame) { }
+        update(elapsedTime) { }
         constructor(image) {
             this.image = image;
         }
-        render(elapsedTime, xrFrame) { }
-        update(elapsedTime) { }
     }
     class ImageBase {
-        constructor(core, options) {
-            this._core = core;
-            this._mMatrix = create$4();
-            this._origin = create$3();
-            this._translation = create$3();
-            this._scale = create$3();
-            this._transform = create$4();
-            this._imageData = options.imageData;
-            this._minBoundsX = options.minBoundsX === undefined ? 0 : options.minBoundsX;
-            this._minBoundsY = options.minBoundsY === undefined ? 0 : options.minBoundsY;
-            this._minBoundsZ = options.minBoundsZ === undefined ? 0 : options.minBoundsZ;
-            this._maxBoundsX = options.maxBoundsX === undefined ? 1 : options.maxBoundsX;
-            this._maxBoundsY = options.maxBoundsY === undefined ? 1 : options.maxBoundsY;
-            this._maxBoundsZ = options.maxBoundsZ === undefined ? 1 : options.maxBoundsZ;
-            this._position = options.position ? clone$4(options.position) : create$3();
-            this._rotation = options.rotation ? clone$2(options.rotation) : create$1();
-            this._texCoord0 = options.texCoord0 ? clone$1(options.texCoord0) : fromValues(0, 0);
-            this._texCoord1 = options.texCoord1 ? clone$1(options.texCoord1) : fromValues(1, 1);
-            this._material = options.material === undefined ? -1 : options.material;
-            this._hasChanged = true;
-        }
         get material() { return this._material; }
         get vertices() { return this._vertices; }
         get indices() { return this._indices; }
@@ -14059,16 +14133,29 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._hasChanged = true;
             }
         }
+        constructor(core, options) {
+            this._core = core;
+            this._mMatrix = create$4();
+            this._origin = create$3();
+            this._translation = create$3();
+            this._scale = create$3();
+            this._transform = create$4();
+            this._imageData = options.imageData;
+            this._minBoundsX = options.minBoundsX === undefined ? 0 : options.minBoundsX;
+            this._minBoundsY = options.minBoundsY === undefined ? 0 : options.minBoundsY;
+            this._minBoundsZ = options.minBoundsZ === undefined ? 0 : options.minBoundsZ;
+            this._maxBoundsX = options.maxBoundsX === undefined ? 1 : options.maxBoundsX;
+            this._maxBoundsY = options.maxBoundsY === undefined ? 1 : options.maxBoundsY;
+            this._maxBoundsZ = options.maxBoundsZ === undefined ? 1 : options.maxBoundsZ;
+            this._position = options.position ? clone$4(options.position) : create$3();
+            this._rotation = options.rotation ? clone$2(options.rotation) : create$1();
+            this._texCoord0 = options.texCoord0 ? clone$1(options.texCoord0) : fromValues(0, 0);
+            this._texCoord1 = options.texCoord1 ? clone$1(options.texCoord1) : fromValues(1, 1);
+            this._material = options.material === undefined ? -1 : options.material;
+            this._hasChanged = true;
+        }
     }
     class ImageQuad extends ImageBase {
-        constructor(core, options) {
-            super(core, options);
-            this._width = options.width === undefined ? 1 : options.width;
-            this._height = options.height === undefined ? 1 : options.height;
-            this._texTransform = create$4();
-            translate(this._texTransform, this._texTransform, fromValues$3(0, 1, 0));
-            scale$1(this._texTransform, this._texTransform, fromValues$3(1, -1, 1));
-        }
         get width() { return this._width; }
         set width(value) {
             if (this._width != value) {
@@ -14082,6 +14169,14 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._height = value;
                 this._hasChanged = true;
             }
+        }
+        constructor(core, options) {
+            super(core, options);
+            this._width = options.width === undefined ? 1 : options.width;
+            this._height = options.height === undefined ? 1 : options.height;
+            this._texTransform = create$4();
+            translate(this._texTransform, this._texTransform, fromValues$3(0, 1, 0));
+            scale$1(this._texTransform, this._texTransform, fromValues$3(1, -1, 1));
         }
         initialize() {
             this._vertices = new ArrayBuffer(PositionNormalTextureVertex.SIZE_BYTES * 4);
@@ -14159,6 +14254,10 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class LayoutBase {
+        get facetScaling() { return this._facetScaling; }
+        offsetX(facetCoordX) { return (((facetCoordX + 0.5) / this._facetsX) - 0.5) * (this.maxModelBoundsX - this.minModelBoundsX) / this._maxBounds; }
+        offsetY(facetCoordY) { return (((facetCoordY + 0.5) / this._facetsY) - 0.5) * (this.maxModelBoundsY - this.minModelBoundsY) / this._maxBounds; }
+        offsetZ(facetCoordZ) { return (((facetCoordZ + 0.5) / this._facetsZ) - 0.5) * (this.maxModelBoundsZ - this.minModelBoundsZ) / this._maxBounds; }
         constructor(core) {
             this._core = core;
             this.modelOriginX = 0;
@@ -14186,10 +14285,6 @@ f 5/6/6 1/12/6 8/11/6`;
             this._facetsY = 1;
             this._facetsZ = 1;
         }
-        get facetScaling() { return this._facetScaling; }
-        offsetX(facetCoordX) { return (((facetCoordX + 0.5) / this._facetsX) - 0.5) * (this.maxModelBoundsX - this.minModelBoundsX) / this._maxBounds; }
-        offsetY(facetCoordY) { return (((facetCoordY + 0.5) / this._facetsY) - 0.5) * (this.maxModelBoundsY - this.minModelBoundsY) / this._maxBounds; }
-        offsetZ(facetCoordZ) { return (((facetCoordZ + 0.5) / this._facetsZ) - 0.5) * (this.maxModelBoundsZ - this.minModelBoundsZ) / this._maxBounds; }
         _updateModelBounds(options) {
             this.minModelBoundsX = options.minBoundsX === undefined ? this.minLayoutBoundsX : options.minBoundsX;
             this.minModelBoundsY = options.minBoundsY === undefined ? this.minLayoutBoundsY : options.minBoundsY;
@@ -14214,6 +14309,9 @@ f 5/6/6 1/12/6 8/11/6`;
             this._facetsX = options.facetCoordsX ? options.facetsX : 1;
             this._facetsY = options.facetCoordsY ? options.facetsY : 1;
             this._facetsZ = options.facetCoordsZ ? options.facetsZ : 1;
+            this.minModelBoundsX -= this._facetSizeX * this._facetSpacingX / 2;
+            this.minModelBoundsY -= this._facetSizeY * this._facetSpacingY / 2;
+            this.minModelBoundsZ -= this._facetSizeZ * this._facetSpacingZ / 2;
             this.maxModelBoundsX = this.minModelBoundsX + this._facetsX * this._facetSizeX * (1 + this._facetSpacingX);
             this.maxModelBoundsY = this.minModelBoundsY + this._facetsY * this._facetSizeY * (1 + this._facetSpacingY);
             this.maxModelBoundsZ = this.minModelBoundsZ + this._facetsZ * this._facetSizeZ * (1 + this._facetSpacingZ);
@@ -14415,6 +14513,7 @@ f 5/6/6 1/12/6 8/11/6`;
             const dataView = buffer.dataView;
             const _vec2 = create();
             const _vec3 = create$3();
+            const _vec4 = create$2();
             const _quat = create$1();
             const sizeScalingX = options.sizeScaling === undefined ? options.sizeScalingX === undefined ? 1 : options.sizeScalingX : options.sizeScaling;
             const sizeScalingY = options.sizeScaling === undefined ? options.sizeScalingY === undefined ? 1 : options.sizeScalingY : options.sizeScaling;
@@ -14431,6 +14530,9 @@ f 5/6/6 1/12/6 8/11/6`;
             const minStaggerOrder = options.minStaggerOrder === undefined ? 0 : options.minStaggerOrder;
             const maxStaggerOrder = options.maxStaggerOrder === undefined ? 1 : options.maxStaggerOrder;
             const staggerOrderReverse = options.staggerOrderReverse === undefined ? false : options.staggerOrderReverse;
+            const reverseX = options.reverseX === undefined ? false : options.reverseX;
+            const reverseY = options.reverseY === undefined ? false : options.reverseY;
+            const reverseZ = options.reverseZ === undefined ? false : options.reverseZ;
             this._updateModelBounds(options);
             if (options.rotation) {
                 _quat[0] = options.rotation[0];
@@ -14441,6 +14543,12 @@ f 5/6/6 1/12/6 8/11/6`;
             else {
                 rotationTo(_quat, this._core.config.identityRotation, Constants.VECTOR3_UNITY);
             }
+            if (options.texCoord) {
+                _vec4[0] = options.texCoord[0];
+                _vec4[1] = options.texCoord[1];
+                _vec4[2] = options.texCoord[2];
+                _vec4[3] = options.texCoord[3];
+            }
             const lookup = buffer.lookup;
             const selection = options.selected && options.selected.size > 0;
             for (let i = 0; i < count; i++) {
@@ -14450,12 +14558,32 @@ f 5/6/6 1/12/6 8/11/6`;
                 let positionY = this._positions[index * 3 + 1];
                 let positionZ = this._positions[index * 3 + 2];
                 if (this._isFacetted) {
+                    if (reverseX) {
+                        positionX = this.minModelBoundsX + this.minModelBoundsX + this._facetSizeX * (1 + this._facetSpacingX) - positionX;
+                    }
+                    if (reverseY) {
+                        positionY = this.minModelBoundsY + this.minModelBoundsY + this._facetSizeY * (1 + this._facetSpacingY) - positionY;
+                    }
+                    if (reverseZ) {
+                        positionZ = this.minModelBoundsZ + this.minModelBoundsZ + this._facetSizeZ * (1 + this._facetSpacingZ) - positionZ;
+                    }
                     const facetX = options.facetCoordsX ? options.facetCoordsX[id] : 0;
                     const facetY = options.facetCoordsY ? options.facetCoordsY[id] : 0;
                     const facetZ = options.facetCoordsZ ? options.facetCoordsZ[id] : 0;
-                    positionX += this._facetSizeX * this._facetSpacingX / 2 + facetX * this._facetSizeX * (1 + this._facetSpacingX);
-                    positionY += this._facetSizeY * this._facetSpacingY / 2 + facetY * this._facetSizeY * (1 + this._facetSpacingY);
-                    positionZ += this._facetSizeZ * this._facetSpacingZ / 2 + facetZ * this._facetSizeZ * (1 + this._facetSpacingZ);
+                    positionX += facetX * this._facetSizeX * (1 + this._facetSpacingX);
+                    positionY += facetY * this._facetSizeY * (1 + this._facetSpacingY);
+                    positionZ += facetZ * this._facetSizeZ * (1 + this._facetSpacingZ);
+                }
+                else {
+                    if (reverseX) {
+                        positionX = this.minModelBoundsX + this.maxModelBoundsX - positionX;
+                    }
+                    if (reverseY) {
+                        positionY = this.minModelBoundsY + this.maxModelBoundsY - positionY;
+                    }
+                    if (reverseZ) {
+                        positionZ = this.minModelBoundsZ + this.maxModelBoundsZ - positionZ;
+                    }
                 }
                 _vec3[0] = (positionX - this.modelOriginX) * this._boundsScaling;
                 _vec3[1] = (positionY - this.modelOriginY) * this._boundsScaling;
@@ -14476,9 +14604,10 @@ f 5/6/6 1/12/6 8/11/6`;
                     UnitVertex.setRotation(dataView, index, _quat);
                 }
                 if (options.colors) {
-                    const color = MathHelper.normalize(options.colors[id], minColor, maxColor, 0, 1);
+                    const size = 1 / (maxColor - minColor + 1);
+                    const color = MathHelper.normalize(options.colors[id], minColor, maxColor, size / 2, 1 - size / 2);
                     if (options.colors1) {
-                        const color1 = MathHelper.normalize(options.colors1[id], minColor, maxColor, 0, 1);
+                        const color1 = MathHelper.normalize(options.colors1[id], minColor, maxColor, size / 2, 1 - size / 2);
                         set(_vec2, color, color1);
                     }
                     else {
@@ -14491,25 +14620,36 @@ f 5/6/6 1/12/6 8/11/6`;
                 }
                 UnitVertex.setIdHover(dataView, index, options.hover ? options.hover[id] : id);
                 UnitVertex.setSelected(dataView, index, selection ? options.selected.has(id) ? 1 : -1 : 0);
-                if (options.order) {
+                if (options.order !== undefined) {
                     const order = MathHelper.normalize(options.order[id], minOrder, maxOrder, 0, 1);
-                    UnitVertex.setOrder(dataView, index, orderReverse ? 1 - order : order);
+                    _vec2[0] = orderReverse ? 1 - order : order;
                 }
                 else {
-                    UnitVertex.setOrder(dataView, index, i / (count - 1));
+                    _vec2[0] = count == 1 ? 0 : i / (count - 1);
                 }
                 if (options.staggerOrder !== undefined) {
-                    UnitVertex.setStaggerOrder(dataView, index, options.staggerOrder);
+                    _vec2[1] = options.staggerOrder;
                 }
                 else if (options.staggerOrders) {
                     const stagger = MathHelper.normalize(options.staggerOrders[id], minStaggerOrder, maxStaggerOrder, 0, 1);
-                    UnitVertex.setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
+                    _vec2[1] = staggerOrderReverse ? 1 - stagger : stagger;
                 }
                 else {
-                    UnitVertex.setStaggerOrder(dataView, index, i / (count - 1));
+                    _vec2[1] = count == 1 ? 0 : i / (count - 1);
                 }
+                UnitVertex.setOrder(dataView, index, _vec2);
                 UnitVertex.setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
                 UnitVertex.setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
+                if (options.texCoords) {
+                    _vec4[0] = options.texCoords[id * 4];
+                    _vec4[1] = options.texCoords[id * 4 + 1];
+                    _vec4[2] = options.texCoords[id * 4 + 2];
+                    _vec4[3] = options.texCoords[id * 4 + 3];
+                    UnitVertex.setTexCoord(dataView, index, _vec4);
+                }
+                else {
+                    UnitVertex.setTexCoord(dataView, index, _vec4);
+                }
             }
             buffer.update();
             this._core.log.write(LogLevel.info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -14660,7 +14800,9 @@ f 5/6/6 1/12/6 8/11/6`;
             const positionScalingX = options.positionScalingX === undefined ? 1 : options.positionScalingX;
             const positionScalingY = options.positionScalingY === undefined ? 1 : options.positionScalingY;
             const positionScalingZ = options.positionScalingZ === undefined ? 1 : options.positionScalingZ;
-            const sizeScaling = options.sizeScaling === undefined ? 1 : options.sizeScaling;
+            const sizeScalingX = options.sizeScaling === undefined ? options.sizeScalingX === undefined ? 1 : options.sizeScalingX : options.sizeScaling;
+            const sizeScalingY = options.sizeScaling === undefined ? options.sizeScalingY === undefined ? 1 : options.sizeScalingY : options.sizeScaling;
+            const sizeScalingZ = options.sizeScaling === undefined ? options.sizeScalingZ === undefined ? 1 : options.sizeScalingZ : options.sizeScaling;
             const minSize = options.minSize === undefined ? 0 : options.minSize;
             const offsetScaling = options.offsetScaling === undefined ? 1 : options.offsetScaling;
             if (!this._positions || this._positions.length < buffer.length * 3) {
@@ -14720,18 +14862,18 @@ f 5/6/6 1/12/6 8/11/6`;
                         fromPositionZ += direction[2] * fromOffset;
                         length$1 = Math.max(length$1 - toOffset - fromOffset, minSize);
                     }
-                    this._sizes[index * 3 + 1] = length$1;
+                    this._sizes[index * 3 + 1] = Math.max(length$1 * sizeScalingY, minSize);
                     if (options.lineSizes) {
-                        this._sizes[index * 3] = Math.max(options.lineSizes[id] * sizeScaling, minSize);
-                        this._sizes[index * 3 + 2] = Math.max(options.lineSizes[id] * sizeScaling, minSize);
+                        this._sizes[index * 3] = Math.max(options.lineSizes[id] * sizeScalingX, minSize);
+                        this._sizes[index * 3 + 2] = Math.max(options.lineSizes[id] * sizeScalingZ, minSize);
                     }
                     else if (options.endSizes) {
-                        this._sizes[index * 3] = Math.max(options.endSizes[fromId] * sizeScaling, minSize);
-                        this._sizes[index * 3 + 2] = Math.max(options.endSizes[toId] * sizeScaling, minSize);
+                        this._sizes[index * 3] = Math.max(options.endSizes[fromId] * sizeScalingX, minSize);
+                        this._sizes[index * 3 + 2] = Math.max(options.endSizes[toId] * sizeScalingZ, minSize);
                     }
                     else {
-                        this._sizes[index * 3] = sizeScaling;
-                        this._sizes[index * 3 + 2] = sizeScaling;
+                        this._sizes[index * 3] = sizeScalingX;
+                        this._sizes[index * 3 + 2] = sizeScalingZ;
                     }
                 }
                 _vec3[0] = (fromPositionX + toPositionX) / 2;
@@ -14774,6 +14916,9 @@ f 5/6/6 1/12/6 8/11/6`;
             const minStaggerOrder = options.minStaggerOrder === undefined ? 0 : options.minStaggerOrder;
             const maxStaggerOrder = options.maxStaggerOrder === undefined ? 1 : options.maxStaggerOrder;
             const staggerOrderReverse = options.staggerOrderReverse === undefined ? false : options.staggerOrderReverse;
+            const reverseX = options.reverseX === undefined ? false : options.reverseX;
+            const reverseY = options.reverseY === undefined ? false : options.reverseY;
+            const reverseZ = options.reverseZ === undefined ? false : options.reverseZ;
             this._updateModelBounds(options);
             const lookup = buffer.lookup;
             const selection = options.selected && options.selected.size > 0;
@@ -14786,12 +14931,32 @@ f 5/6/6 1/12/6 8/11/6`;
                 let positionY = this._positions[index * 3 + 1];
                 let positionZ = this._positions[index * 3 + 2];
                 if (this._isFacetted) {
+                    if (reverseX) {
+                        positionX = this.minModelBoundsX + this.minModelBoundsX + this._facetSizeX * (1 + this._facetSpacingX) - positionX;
+                    }
+                    if (reverseY) {
+                        positionY = this.minModelBoundsY + this.minModelBoundsY + this._facetSizeY * (1 + this._facetSpacingY) - positionY;
+                    }
+                    if (reverseZ) {
+                        positionZ = this.minModelBoundsZ + this.minModelBoundsZ + this._facetSizeZ * (1 + this._facetSpacingZ) - positionZ;
+                    }
                     const facetX = options.facetCoordsX ? options.facetCoordsX[id] : 0;
                     const facetY = options.facetCoordsY ? options.facetCoordsY[id] : 0;
                     const facetZ = options.facetCoordsZ ? options.facetCoordsZ[id] : 0;
-                    positionX += this._facetSizeX * this._facetSpacingX / 2 + facetX * this._facetSizeX * (1 + this._facetSpacingX);
-                    positionY += this._facetSizeY * this._facetSpacingY / 2 + facetY * this._facetSizeY * (1 + this._facetSpacingY);
-                    positionZ += this._facetSizeZ * this._facetSpacingZ / 2 + facetZ * this._facetSizeZ * (1 + this._facetSpacingZ);
+                    positionX += facetX * this._facetSizeX * (1 + this._facetSpacingX);
+                    positionY += facetY * this._facetSizeY * (1 + this._facetSpacingY);
+                    positionZ += facetZ * this._facetSizeZ * (1 + this._facetSpacingZ);
+                }
+                else {
+                    if (reverseX) {
+                        positionX = this.minModelBoundsX + this.maxModelBoundsX - positionX;
+                    }
+                    if (reverseY) {
+                        positionY = this.minModelBoundsY + this.maxModelBoundsY - positionY;
+                    }
+                    if (reverseZ) {
+                        positionZ = this.minModelBoundsZ + this.maxModelBoundsZ - positionZ;
+                    }
                 }
                 _vec3[0] = (positionX - this.modelOriginX) * this._boundsScaling;
                 _vec3[1] = (positionY - this.modelOriginY) * this._boundsScaling;
@@ -14805,15 +14970,30 @@ f 5/6/6 1/12/6 8/11/6`;
                 _quat[1] = this._rotations[index * 4 + 1];
                 _quat[2] = this._rotations[index * 4 + 2];
                 _quat[3] = this._rotations[index * 4 + 3];
+                if (reverseX) {
+                    _quat[1] = -_quat[1];
+                    _quat[2] = -_quat[2];
+                }
+                if (reverseY) {
+                    _quat[0] = -_quat[0];
+                    _quat[2] = -_quat[2];
+                }
+                if (reverseZ) {
+                    _quat[0] = -_quat[0];
+                    _quat[1] = -_quat[1];
+                }
                 UnitVertex.setRotation(dataView, index, _quat);
+                let size;
                 if (options.endColors) {
-                    const fromColor = MathHelper.normalize(options.endColors[fromId], endMinColor, endMaxColor, 0, 1);
-                    const toColor = MathHelper.normalize(options.endColors[toId], endMinColor, endMaxColor, 0, 1);
+                    size = 1 / (endMaxColor - endMinColor + 1);
+                    const fromColor = MathHelper.normalize(options.endColors[fromId], endMinColor, endMaxColor, size / 2, 1 - size / 2);
+                    const toColor = MathHelper.normalize(options.endColors[toId], endMinColor, endMaxColor, size / 2, 1 - size / 2);
                     set(_vec2, fromColor, toColor);
                     UnitVertex.setColor(dataView, index, _vec2);
                 }
                 else if (options.lineColors) {
-                    const color = MathHelper.normalize(options.lineColors[id], lineMinColor, lineMaxColor, 0, 1);
+                    size = 1 / (lineMaxColor - lineMinColor + 1);
+                    const color = MathHelper.normalize(options.lineColors[id], lineMinColor, lineMaxColor, size / 2, 1 - size / 2);
                     set(_vec2, color, color);
                     UnitVertex.setColor(dataView, index, _vec2);
                 }
@@ -14822,23 +15002,24 @@ f 5/6/6 1/12/6 8/11/6`;
                 }
                 UnitVertex.setIdHover(dataView, index, options.hover ? options.hover[id] : id);
                 UnitVertex.setSelected(dataView, index, selection ? options.selected.has(id) ? 1 : -1 : 0);
-                if (options.order) {
+                if (options.order !== undefined) {
                     const order = MathHelper.normalize(options.order[id], minOrder, maxOrder, 0, 1);
-                    UnitVertex.setOrder(dataView, index, orderReverse ? 1 - order : order);
+                    _vec2[0] = orderReverse ? 1 - order : order;
                 }
                 else {
-                    UnitVertex.setOrder(dataView, index, i / (count - 1));
+                    _vec2[0] = count == 1 ? 0 : i / (count - 1);
                 }
                 if (options.staggerOrder !== undefined) {
-                    UnitVertex.setStaggerOrder(dataView, index, options.staggerOrder);
+                    _vec2[1] = options.staggerOrder;
                 }
                 else if (options.staggerOrders) {
                     const stagger = MathHelper.normalize(options.staggerOrders[id], minStaggerOrder, maxStaggerOrder, 0, 1);
-                    UnitVertex.setStaggerOrder(dataView, index, staggerOrderReverse ? 1 - stagger : stagger);
+                    _vec2[1] = staggerOrderReverse ? 1 - stagger : stagger;
                 }
                 else {
-                    UnitVertex.setStaggerOrder(dataView, index, i / (count - 1));
+                    _vec2[1] = count == 1 ? 0 : i / (count - 1);
                 }
+                UnitVertex.setOrder(dataView, index, _vec2);
                 UnitVertex.setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
                 UnitVertex.setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
             }
@@ -14851,7 +15032,43 @@ f 5/6/6 1/12/6 8/11/6`;
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
+    class AtlasBase {
+        get imageData() { return this._imageData; }
+        set imageData(value) {
+            if (this._imageData != value) {
+                this._imageData = value;
+                this._changed = true;
+            }
+        }
+        constructor() {
+            this._imageData = null;
+        }
+        copyFrom(atlas) {
+            if (atlas.imageData) {
+                this._imageData = atlas.imageData;
+                this._changed = true;
+            }
+            else {
+                this.imageData = null;
+            }
+        }
+        update() { }
+    }
+    class Atlas$2 extends AtlasBase {
+    }
+
+    /*!
+     * Copyright (c) Microsoft Corporation.
+     * Licensed under the MIT License.
+     */
     class BufferBase {
+        get isInitialized() { return this._isInitialized; }
+        get ids() { return this._ids; }
+        get dataView() { return this._dataView; }
+        get vertices() { return this._vertices; }
+        get lookup() { return this._lookup; }
+        get length() { return this._length; }
+        get selected() { return this._selected; }
         constructor(core, ids) {
             this._core = core;
             this._ids = ids;
@@ -14868,13 +15085,6 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._lookup[id] = i;
             }
         }
-        get isInitialized() { return this._isInitialized; }
-        get ids() { return this._ids; }
-        get dataView() { return this._dataView; }
-        get vertices() { return this._vertices; }
-        get lookup() { return this._lookup; }
-        get length() { return this._length; }
-        get selected() { return this._selected; }
         createShared() {
             const buffer = Object.create(this);
             buffer._vertices = new ArrayBuffer(buffer._vertices.byteLength);
@@ -14898,7 +15108,7 @@ f 5/6/6 1/12/6 8/11/6`;
                     UnitVertex.copyMaterial(fromDataView, index, toDataView, i);
                     UnitVertex.copyRounding(fromDataView, index, toDataView, i);
                     UnitVertex.copyOrder(fromDataView, index, toDataView, i);
-                    UnitVertex.copyStaggerOrder(fromDataView, index, toDataView, i);
+                    UnitVertex.copyTexCoord(fromDataView, index, toDataView, i);
                 }
                 else {
                     UnitVertex.setRotation(toDataView, i, Constants.QUAT_IDENTITY);
@@ -14926,9 +15136,19 @@ f 5/6/6 1/12/6 8/11/6`;
         }
     }
     class TransitionBufferBase {
-        constructor(core, ids, bufferType, paletteType) {
+        get pickIdLookup() { return this._pickIdLookup; }
+        get currentBuffer() { return this._isBuffer1Current ? this._buffer1 : this._buffer2; }
+        get previousBuffer() { return this._isBuffer1Current ? this._buffer2 : this._buffer1; }
+        get currentPalette() { return this._isBuffer1Current ? this._palette1 : this._palette2; }
+        get previousPalette() { return this._isBuffer1Current ? this._palette2 : this._palette1; }
+        get currentAtlas() { return this._isBuffer1Current ? this._atlas1 : this._atlas2; }
+        get previousAtlas() { return this._isBuffer1Current ? this._atlas2 : this._atlas1; }
+        get isInitialized() { return this._isInitialized; }
+        get length() { return this._length; }
+        constructor(core, ids, bufferType, paletteType, atlasType) {
             this.bufferType = bufferType;
             this.paletteType = paletteType;
+            this.atlasType = atlasType;
             this._core = core;
             this._length = ids.length;
             this.id = TransitionBufferBase._id++;
@@ -14940,6 +15160,8 @@ f 5/6/6 1/12/6 8/11/6`;
             this._buffer2 = this._buffer1.createShared();
             this._palette1 = new paletteType();
             this._palette2 = new paletteType();
+            this._atlas1 = new atlasType();
+            this._atlas2 = new atlasType();
             this.isPickingEnabled = true;
             this._pickIdLookup = {};
             const dataView1 = this._buffer1.dataView;
@@ -14955,13 +15177,6 @@ f 5/6/6 1/12/6 8/11/6`;
             }
             this._core.log.write(LogLevel.info, `transition buffer created ${this._length} ${Math.round(window.performance.now() - start)}ms`);
         }
-        get pickIdLookup() { return this._pickIdLookup; }
-        get currentBuffer() { return this._isBuffer1Current ? this._buffer1 : this._buffer2; }
-        get previousBuffer() { return this._isBuffer1Current ? this._buffer2 : this._buffer1; }
-        get currentPalette() { return this._isBuffer1Current ? this._palette1 : this._palette2; }
-        get previousPalette() { return this._isBuffer1Current ? this._palette2 : this._palette1; }
-        get isInitialized() { return this._isInitialized; }
-        get length() { return this._length; }
         swap() {
             this._isBuffer1Current = !this._isBuffer1Current;
         }
@@ -14979,6 +15194,8 @@ f 5/6/6 1/12/6 8/11/6`;
             this.previousBuffer.update();
             this.currentPalette.copyFrom(transitionBuffer.currentPalette);
             this.previousPalette.copyFrom(transitionBuffer.previousPalette);
+            this.currentAtlas.copyFrom(transitionBuffer.currentAtlas);
+            this.previousAtlas.copyFrom(transitionBuffer.previousAtlas);
             this._core.log.write(LogLevel.info, `transition buffer copied ${this._length} ${Math.round(window.performance.now() - start)}ms`);
         }
     }
@@ -14990,7 +15207,7 @@ f 5/6/6 1/12/6 8/11/6`;
     }
     class TransitionBuffer$2 extends TransitionBufferBase {
         constructor(core, ids) {
-            super(core, ids, Buffer$2, Palette$2);
+            super(core, ids, Buffer$2, Palette$2, Atlas$2);
         }
     }
 
@@ -15073,11 +15290,6 @@ f 5/6/6 1/12/6 8/11/6`;
         reset() { }
     }
     class RendererBase {
-        constructor(options) {
-            this._options = options;
-            this._resizeMinimumDelay = -1;
-            this.fonts = {};
-        }
         get isInitialized() { return this._isInitialized; }
         get config() { return this._config; }
         get devicePixelRatio() { return this._devicePixelRatio; }
@@ -15137,6 +15349,10 @@ f 5/6/6 1/12/6 8/11/6`;
         createFontVisual(font) {
             return new FontVisual$2(font);
         }
+        constructor(options) {
+            this._options = options;
+            this.fonts = {};
+        }
         get isWebXRSupported() { return false; }
         initialize(core) {
             this._core = core;
@@ -15167,11 +15383,16 @@ f 5/6/6 1/12/6 8/11/6`;
             this._pickedId = 0;
             this._lassoMMatrix = create$4();
             this._lassoThickness = create();
+            this._resizeMinimumDelay = -1;
+            this._previousResizeWidth = -1;
+            this._previousResizeHeight = -1;
         }
         remove() {
             this._core.container.removeChild(this._canvas);
         }
-        finalize() { }
+        finalize() {
+            this._isInitialized = false;
+        }
         setSize(elapsedTime) {
             if (this._options && this._options.width && this._options.height) {
                 this._devicePixelRatio = 1;
@@ -15214,6 +15435,19 @@ f 5/6/6 1/12/6 8/11/6`;
                 if (transitionBuffer.isVisible) {
                     const previous = transitionBuffer.previousPalette;
                     const current = transitionBuffer.currentPalette;
+                    if (previous) {
+                        previous.update();
+                    }
+                    if (current) {
+                        current.update();
+                    }
+                }
+            }
+            for (let i = 0; i < this.transitionBuffers.length; i++) {
+                const transitionBuffer = this.transitionBuffers[i];
+                if (transitionBuffer.isVisible) {
+                    const previous = transitionBuffer.previousAtlas;
+                    const current = transitionBuffer.currentAtlas;
                     if (previous) {
                         previous.update();
                     }
@@ -15360,6 +15594,35 @@ f 5/6/6 1/12/6 8/11/6`;
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
+    class Atlas$1 extends AtlasBase {
+        get texture() { return this._texture; }
+        get defaultTexture() { return this._defaultTexture; }
+        initializeContext(core, gl) {
+            this._gl = gl;
+            this._defaultTexture = TextureHelper.create(gl, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, gl.NEAREST, new Uint8Array([0xff, 0xff, 0xff, 0xff]));
+            this._updateTexture();
+        }
+        update() {
+            super.update();
+            if (this._changed) {
+                this._changed = false;
+                this._updateTexture();
+            }
+        }
+        _updateTexture() {
+            if (this._imageData) {
+                this._texture = TextureHelper.fromImage(this._gl, this._imageData, false, this._gl.LINEAR);
+            }
+            else {
+                this._texture = null;
+            }
+        }
+    }
+
+    /*!
+     * Copyright (c) Microsoft Corporation.
+     * Licensed under the MIT License.
+     */
     class Palette$1 extends PaletteBase {
         get texture() { return this._texture; }
         get defaultTexture() { return this._defaultTexture; }
@@ -15413,13 +15676,15 @@ f 5/6/6 1/12/6 8/11/6`;
     }
     class TransitionBuffer$1 extends TransitionBufferBase {
         constructor(core, ids) {
-            super(core, ids, Buffer$1, Palette$1);
+            super(core, ids, Buffer$1, Palette$1, Atlas$1);
         }
         initializeContext(gl) {
             this._buffer1.initializeContext(gl);
             this._buffer2.initializeContext(gl);
             this._palette1.initializeContext(this._core, gl);
             this._palette2.initializeContext(this._core, gl);
+            this._atlas1.initializeContext(this._core, gl);
+            this._atlas2.initializeContext(this._core, gl);
             this._isInitialized = true;
         }
     }
@@ -15484,27 +15749,25 @@ f 5/6/6 1/12/6 8/11/6`;
         "model.vertex.fx": "#version 100\nattribute vec3 aPosition;\nattribute mediump vec3 aNormal;\nattribute mediump vec2 aTexCoord;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nvarying mediump vec3 vNormal;\nvarying mediump vec2 vTexCoord;\nvoid main(void) {\nvTexCoord = aTexCoord;\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvNormal = vec3(mvMatrix * vec4(aNormal, 0.0));\ngl_Position = uPMatrix * mvMatrix * vec4(aPosition, 1.0);\n}\n",
         "pickgrid.fragment.fx": "#version 100\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\n#define Derivatives\nuniform bool uPick;\nuniform vec2 uFaceSize;\nuniform vec3 uMajorColor;\nuniform vec3 uMinorColor;\nuniform vec3 uZeroColor;\nuniform float uMajorThickness;\nuniform float uMinorThickness;\nuniform float uZeroThickness;\nuniform vec2 uZero;\nuniform vec2 uMinorGridlines;\nuniform vec3 uDirectionToLight;\nvarying lowp vec4 vColor;\nvarying mediump vec2 vTexCoord;\nvarying mediump vec4 vBounds;\nvarying mediump vec3 vNormal;\n#ifdef Derivatives\n#extension GL_OES_standard_derivatives : enable\n#endif\nvoid main(void) {\nif (uPick)\n{\ngl_FragColor = vColor;\n}\nelse\n{\nvec2 buffer;\n#ifdef Derivatives\nbuffer = fwidth(vTexCoord);\n#else\nbuffer = vec2(0.002);\n#endif\nvec2 distance, thickness, step;\nvec4 color = vColor;\nvec2 width = vBounds.zw - vBounds.xy;\ndistance = (vTexCoord - vBounds.xy) / width;\ndistance = min(abs(distance - floor(uMinorGridlines * distance) / uMinorGridlines), abs(distance - ceil(uMinorGridlines * distance) / uMinorGridlines));\ndistance *= width;\nthickness = vec2(uMinorThickness) / uFaceSize;\nstep = smoothstep(thickness, thickness + buffer, distance);\ncolor.xyz = mix(uMinorColor, color.xyz, min(step.x, step.y));\nthickness = vec2(uMajorThickness) / uFaceSize;\ndistance = min(vTexCoord - vBounds.xy, vBounds.zw - vTexCoord);\nstep = smoothstep(thickness, thickness + buffer, distance);\ncolor.xyz = mix(uMajorColor, color.xyz, min(step.x, step.y));\ndistance = abs(vTexCoord - uZero);\nthickness = vec2(uZeroThickness) / uFaceSize;\nstep = smoothstep(thickness, thickness + buffer, distance);\ncolor.xyz = mix(uZeroColor, color.xyz, min(step.x, step.y));\nfloat diffuse = 0.2 * max(dot(uDirectionToLight, vNormal), 0.0);\nfloat ambient = 0.8;\ncolor.xyz *= (ambient + diffuse);\ncolor.xyz = pow(color.xyz, GAMMA);\ngl_FragColor = color;\n}\n}\n",
         "pickgrid.vertex.fx": "#version 100\nattribute vec3 aPosition;\nattribute lowp vec4 aIdColor;\nattribute mediump vec2 aTexCoord;\nattribute mediump vec3 aNormal;\nattribute mediump vec4 aBounds;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform bool uPick;\nuniform vec4 uPickedIdColor;\nuniform vec3 uBackground;\nuniform vec3 uHighlight;\nvarying lowp vec4 vColor;\nvarying mediump vec2 vTexCoord;\nvarying mediump vec4 vBounds;\nvarying mediump vec3 vNormal;\nvoid main(void) {\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvNormal = normalize(vec3(mvMatrix * vec4(aNormal, 0.0)));\nvTexCoord = aTexCoord;\nvBounds = aBounds;\ngl_Position = uPMatrix * mvMatrix * vec4(aPosition, 1.0);\nif (uPick)\n{\nvColor = aIdColor;\n}\nelse\n{\nvColor = uPickedIdColor == aIdColor ? vec4(uHighlight, 1.0) : vColor = vec4(uBackground, 1.0);\n}\n}\n",
-        "sdftext.fragment.fx": "#version 100\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\n#define Derivatives\nuniform sampler2D uSampler;\nuniform bool uPick;\nuniform vec3 uColor;\nuniform vec3 uHoverColor;\nuniform float uGamma;\nuniform vec3 uBorderColor;\nuniform float uBuffer;\nuniform float uBorderWidth;\nvarying mediump vec2 vTexCoord;\nvarying lowp vec4 vIdColor;\nvarying lowp float vHover;\n#ifdef Derivatives\n#extension GL_OES_standard_derivatives : enable\n#endif\nvoid main(void)\n{\nif (uPick) {\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat distance = texture2D(uSampler, vTexCoord).r;\nif (distance < uBuffer - uBorderWidth)\n{\ndiscard;\n}\nfloat gamma;\n#ifdef Derivatives\ngamma = fwidth(distance);\n#else\ngamma = uGamma;\n#endif\nfloat value = smoothstep(uBuffer - gamma, uBuffer + gamma, distance);\ngl_FragColor = vec4(pow(mix(uBorderColor, mix(uColor, uHoverColor, vHover), value), GAMMA), 1.0);\n}\n}\n",
+        "sdftext.fragment.fx": "#version 100\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\n#define Derivatives\nuniform sampler2D uSampler;\nuniform bool uPick;\nuniform vec3 uColor;\nuniform vec3 uHoverColor;\nuniform float uGamma;\nuniform vec3 uBorderColor;\nuniform float uBuffer;\nuniform float uBorderWidth;\nvarying mediump vec2 vTexCoord;\nvarying lowp vec4 vIdColor;\nvarying lowp float vHover;\n#ifdef Derivatives\n#extension GL_OES_standard_derivatives : enable\n#endif\nvoid main(void) {\nif (uPick) {\ngl_FragColor = vIdColor;\n}\nelse {\nfloat distance = texture2D(uSampler, vTexCoord).r;\nif (distance < uBuffer - uBorderWidth) {\ndiscard;\n}\nfloat gamma;\n#ifdef Derivatives\ngamma = fwidth(distance);\n#else\ngamma = uGamma;\n#endif\nfloat value = smoothstep(uBuffer - gamma, uBuffer + gamma, distance);\ngl_FragColor = vec4(pow(mix(uBorderColor, mix(uColor, uHoverColor, vHover), value), GAMMA), 1.0);\n}\n}\n",
         "sdftext.vertex.fx": "#version 100\nattribute lowp vec4 aIdColor;\nattribute vec3 aPosition;\nattribute mediump vec2 aTexCoord;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform vec4 uPickedIdColor;\nvarying mediump vec2 vTexCoord;\nvarying lowp vec4 vIdColor;\nvarying lowp float vHover;\nvoid main(void) {\ngl_Position = uPMatrix * uVMatrix * uMMatrix * vec4(aPosition, 1.0);\nvTexCoord = aTexCoord;\nvIdColor = aIdColor;\nvHover = uPickedIdColor == aIdColor ? 1.0 : 0.0;\n}\n",
         "simple.vertex.fx": "#version 100\nattribute vec3 aPosition;\nvoid main(void) {\ngl_Position = vec4(aPosition, 1.0);\n}\n",
         "texture.fragment.fx": "#version 100\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\nuniform sampler2D uSampler;\nuniform bool uPick;\nvarying mediump vec2 vTexCoord;\nvoid main(void)\n{\nif (uPick) {\ngl_FragColor = vec4(0.0);\n}\nelse {\ngl_FragColor = vec4(texture2D(uSampler, vTexCoord).xyz, 1.0);\n}\n}\n",
         "texture.vertex.fx": "#version 100\nattribute vec3 aPosition;\nattribute mediump vec3 aNormal;\nattribute mediump vec2 aTexCoord;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nvarying mediump vec3 vNormal;\nvarying mediump vec2 vTexCoord;\nvoid main(void) {\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvNormal = normalize((mvMatrix * vec4(aNormal, 0.0)).xyz);\ngl_Position = uPMatrix * mvMatrix * vec4(aPosition, 1.0);\nvTexCoord = aTexCoord;\n}\n",
-        "unitblock.fragment.fx": "#version 100\n#define Derivatives\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\n#ifdef Derivatives\nvarying vec3 vViewPosition;\n#endif\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\n#ifdef Derivatives\n#extension GL_OES_standard_derivatives : enable\n#endif\nvoid main(void)\n{\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat ambient = 0.01;\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uActiveColor, vActive);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nfloat diffuse, specular;\n#ifdef Derivatives\nvec3 normal = normalize(cross(dFdx(vViewPosition), dFdy(vViewPosition)));\ndiffuse = dot(uDirectionToLight, normal);\nspecular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\n#else\ndiffuse = 1.0;\nspecular = 0.0;\n#endif\ncolor *= (ambient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n",
-        "unitblock.vertex.fx": "#version 100\n#include \"quat.include.fx\"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute mediump vec4 aRotation;\nattribute mediump vec4 aPreviousRotation;\nattribute lowp vec2 aColor;\nattribute lowp vec2 aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute mediump float aStaggerOrder;\nattribute float aOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\n#define Derivatives\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\n#ifdef Derivatives\nvarying vec3 vViewPosition;\n#endif\nvoid main(void)\n{\nif (aOrder < uOrderFrom || aOrder > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\ngl_Position = vec4(0.0);\n#ifdef Derivatives\nvViewPosition = vec3(0.0);\n#endif\n}\nelse\n{\nvIdColor = aIdColor;\nfloat startTime = aStaggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvec3 position = aPosition * scale;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\n}\nposition += mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\n#ifdef Derivatives\nvec4 viewPosition = mvMatrix * vec4(position, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\n#else\ngl_Position = uPMatrix * mvMatrix * vec4(position, 1.0);\n#endif\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\n}\n}\n",
-        "unitcylinder.fragment.fx": "#version 100\n#define FragDepth\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec4 vCircle1;\nvarying vec4 vCircle2;\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\n#ifdef FragDepth\n#extension GL_EXT_frag_depth : enable\n#endif\nfloat dot2(in vec2 v) { return dot(v, v); }\nfloat dot2(in vec3 v) { return dot(v, v); }\nvec4 iCappedCone(in vec3 ro, in vec3 rd,\nin vec3 pa, in vec3 pb,\nin float ra, in float rb)\n{\nvec3 ba = pb - pa;\nvec3 oa = ro - pa;\nvec3 ob = ro - pb;\nfloat m0 = dot(ba, ba);\nfloat m1 = dot(oa, ba);\nfloat m2 = dot(ob, ba);\nfloat m3 = dot(rd, ba);\nif (m1 < 0.0) { if (dot2(oa * m3 - rd * m1) < (ra * ra * m3 * m3)) return vec4(-m1 / m3, -ba * inversesqrt(m0)); }\nelse if (m2 > 0.0) { if (dot2(ob * m3 - rd * m2) < (rb * rb * m3 * m3)) return vec4(-m2 / m3, ba * inversesqrt(m0)); }\nfloat m4 = dot(rd, oa);\nfloat m5 = dot(oa, oa);\nfloat rr = ra - rb;\nfloat hy = m0 + rr * rr;\nfloat k2 = m0 * m0 - m3 * m3 * hy;\nfloat k1 = m0 * m0 * m4 - m1 * m3 * hy + m0 * ra * (rr * m3 * 1.0);\nfloat k0 = m0 * m0 * m5 - m1 * m1 * hy + m0 * ra * (rr * m1 * 2.0 - m0 * ra);\nfloat h = k1 * k1 - k2 * k0;\nif (h < 0.0) return vec4(-1.0);\nfloat t = (-k1 - sqrt(h)) / k2;\nfloat y = m1 + t * m3;\nif (y > 0.0 && y < m0)\n{\nreturn vec4(t, normalize(m0 * (m0 * (oa + t * rd) + rr * ba * ra) - ba * hy * y));\n}\nreturn vec4(-1.0);\n}\nvec4 iRoundedCone(in vec3 ro, in vec3 rd,\nin vec3 pa, in vec3 pb,\nin float ra, in float rb)\n{\nvec3 ba = pb - pa;\nvec3 oa = ro - pa;\nvec3 ob = ro - pb;\nfloat rr = ra - rb;\nfloat m0 = dot(ba, ba);\nfloat m1 = dot(ba, oa);\nfloat m2 = dot(ba, rd);\nfloat m3 = dot(rd, oa);\nfloat m5 = dot(oa, oa);\nfloat m6 = dot(ob, rd);\nfloat m7 = dot(ob, ob);\nfloat d2 = m0 - rr * rr;\nfloat k2 = d2 - m2 * m2;\nfloat k1 = d2 * m3 - m1 * m2 + m2 * rr * ra;\nfloat k0 = d2 * m5 - m1 * m1 + m1 * rr * ra * 2.0 - m0 * ra * ra;\nfloat h = k1 * k1 - k0 * k2;\nif (h < 0.0) return vec4(-1.0);\nfloat t = (-sqrt(h) - k1) / k2;\nfloat y = m1 - ra * rr + t * m2;\nif (y > 0.0 && y < d2)\n{\nreturn vec4(t, normalize(d2 * (oa + t * rd) - ba * y));\n}\nfloat h1 = m3 * m3 - m5 + ra * ra;\nfloat h2 = m6 * m6 - m7 + rb * rb;\nif (max(h1, h2) < 0.0) return vec4(-1.0);\nvec4 r = vec4(1e20);\nif (h1 > 0.0)\n{\nt = -m3 - sqrt(h1);\nr = vec4(t, (oa + t * rd) / ra);\n}\nif (h2 > 0.0)\n{\nt = -m6 - sqrt(h2);\nif (t < r.x)\nr = vec4(t, (ob + t * rd) / rb);\n}\nreturn r;\n}\nvoid main(void)\n{\nvec3 rd = normalize(vViewPosition);\nvec3 ro = vec3(0.0);\nvec4 tnor = iCappedCone(ro, rd, vCircle1.xyz, vCircle2.xyz, vCircle1.w, vCircle2.w);\nfloat t = tnor.x;\nif (t < 0.0)\n{\ndiscard;\n}\nelse\n{\nvec3 viewPosition = rd * t;\n#ifdef FragDepth\nfloat ndcDepth = DEPTH_A + DEPTH_B / viewPosition.z;\ngl_FragDepthEXT = ndcDepth * 0.5 + 0.5;\n#endif\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat ambient = 0.01;\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uActiveColor, vActive);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nvec3 normal = tnor.yzw;\nfloat diffuse = dot(uDirectionToLight, normal);\nfloat specular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\ncolor *= (ambient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n}\n",
-        "unitcylinder.vertex.fx": "#version 100\n#include \"common.include.fx\"\n#include \"quat.include.fx\"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute mediump vec4 aRotation;\nattribute mediump vec4 aPreviousRotation;\nattribute lowp vec2 aColor;\nattribute lowp vec2 aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute float aOrder;\nattribute mediump float aStaggerOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nuniform vec3 uIdentityRotation;\n#define Derivatives\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec4 vCircle1;\nvarying vec4 vCircle2;\nvoid main(void)\n{\nif (aOrder < uOrderFrom || aOrder > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvViewPosition = vec3(0.0);\nvCircle1 = vec4(0.0);\nvCircle2 = vec4(0.0);\ngl_Position = vec4(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nfloat startTime = aStaggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 translation = mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvec3 viewCenter = (mvMatrix * vec4(translation, 1.0)).xyz;\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvec3 position = aPosition;\nposition.xz *= max(scale.x, scale.z);\nposition.y *= scale.y;\nvec3 direction = IDENTITY_ROTATION;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\ndirection = rotate(direction, quat);\n}\nvec3 viewDirection = (mvMatrix * vec4(direction, 0.0)).xyz;\nvec3 h = viewDirection * scale.y * 0.5;\nfloat r1 = length(viewDirection) * 0.5;\nfloat r2 = r1 * scale.z;\nr1 *= scale.x;\nvCircle1 = vec4(viewCenter - h, r1);\nvCircle2 = vec4(viewCenter + h, r2);\nvec4 viewPosition = mvMatrix * vec4(position + translation, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\n}\n}\n",
-        "unithexprism.fragment.fx": "#version 100\n#define FragDepth\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvarying float vRadius;\nvarying float vHeight;\nvarying float vScaling;\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\nuniform mat4 uVMatrix;\n#ifdef FragDepth\n#extension GL_EXT_frag_depth : enable\n#endif\nvec4 iHexPrism( in vec3 ro, in vec3 rd, in float ra, in float he )\n{\nconst vec3 n1 = vec3( 1.0,0.0,0.0);\nconst vec3 n2 = vec3( 0.5,0.0,ROOT_THREE_OVER_TWO);\nconst vec3 n3 = vec3(-0.5,0.0,ROOT_THREE_OVER_TWO);\nconst vec3 n4 = vec3( 0.0,1.0,0.0);\nvec3 t1 = vec3((vec2(ra,-ra)-dot(ro,n1))/dot(rd,n1), 1.0);\nvec3 t2 = vec3((vec2(ra,-ra)-dot(ro,n2))/dot(rd,n2), 1.0);\nvec3 t3 = vec3((vec2(ra,-ra)-dot(ro,n3))/dot(rd,n3), 1.0);\nvec3 t4 = vec3((vec2(he,-he)-dot(ro,n4))/dot(rd,n4), 1.0);\nif( t1.y<t1.x ) t1=vec3(t1.yx,-1.0);\nif( t2.y<t2.x ) t2=vec3(t2.yx,-1.0);\nif( t3.y<t3.x ) t3=vec3(t3.yx,-1.0);\nif( t4.y<t4.x ) t4=vec3(t4.yx,-1.0);\nvec4 tN=vec4(t1.x,t1.z*n1);\nif( t2.x>tN.x ) tN=vec4(t2.x,t2.z*n2);\nif( t3.x>tN.x ) tN=vec4(t3.x,t3.z*n3);\nif( t4.x>tN.x ) tN=vec4(t4.x,t4.z*n4);\nfloat tF = min(min(t1.y,t2.y),min(t3.y,t4.y));\nif( tN.x>tF || tF<0.0) return vec4(-1.0);\nreturn tN;\n}\nvoid main(void)\n{\nvec3 rd = normalize(vViewPosition);\nvec3 ro = -vViewCenter;\nmat3 rot = mat3(uVMatrix);\nvec3 rdd = rd * rot;\nvec3 roo = ro * rot;\nvec4 tnor = iHexPrism(roo, rdd, vRadius * vScaling, vHeight * vScaling);\nfloat t = tnor.x;\nif (t < 0.0)\n{\ndiscard;\n}\nelse\n{\nvec3 viewPosition = rd * t;\n#ifdef FragDepth\nfloat ndcDepth = DEPTH_A + DEPTH_B / viewPosition.z;\ngl_FragDepthEXT = ndcDepth * 0.5 + 0.5;\n#endif\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat ambient = 0.01;\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uActiveColor, vActive);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nvec3 normal = rot * tnor.yzw;\nfloat diffuse = dot(uDirectionToLight, normal);\nfloat specular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\ncolor *= (ambient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n}\n",
-        "unithexprism.vertex.fx": "#version 100\n#include \"common.include.fx\"\n#include \"quat.include.fx\"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute mediump vec4 aRotation;\nattribute mediump vec4 aPreviousRotation;\nattribute lowp vec2 aColor;\nattribute lowp vec2 aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute float aOrder;\nattribute mediump float aStaggerOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nuniform vec3 uIdentityRotation;\n#define Derivatives\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvarying float vRadius;\nvarying float vHeight;\nvarying float vScaling;\nvoid main(void)\n{\nif (aOrder < uOrderFrom || aOrder > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvViewPosition = vec3(0.0);\nvRadius = 0.0;\nvHeight = 0.0;\ngl_Position = vec4(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nfloat startTime = aStaggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 translation = mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvViewCenter = (mvMatrix * vec4(translation, 1.0)).xyz;\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvRadius = scale.x * ROOT_THREE_OVER_TWO;\nvHeight = scale.y;\nvec3 position = aPosition;\nposition.y *= scale.y;\nposition.z *= scale.x;\nposition.x *= scale.x * ROOT_THREE_OVER_TWO;\nvec3 direction = IDENTITY_ROTATION;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\ndirection = rotate(direction, quat);\n}\nvec3 viewDirection = (mvMatrix * vec4(direction, 0.0)).xyz;\nvec4 viewPosition = mvMatrix * vec4(position + translation, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\nvScaling = length(uMMatrix[0].xyz) / 2.0;\n}\n}\n",
-        "unitsphere.fragment.fx": "#version 100\n#define FragDepth\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvarying mediump float vRadius;\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\n#ifdef FragDepth\n#extension GL_EXT_frag_depth : enable\n#endif\nfloat sphIntersect(in vec3 ro, in vec3 rd, in vec4 sph)\n{\nvec3 oc = ro - sph.xyz;\nfloat b = dot(oc, rd);\nfloat c = dot(oc, oc) - sph.w * sph.w;\nfloat h = b * b - c;\nif (h < 0.0) return -1.0;\nreturn -b - sqrt(h);\n}\nvoid main(void)\n{\nvec3 rd = normalize(vViewPosition);\nvec3 ro = vec3(0.0);\nvec4 s = vec4(vViewCenter, vRadius);\nfloat t = sphIntersect(ro, rd, s);\nif (t < 0.0)\n{\ndiscard;\n}\nelse\n{\nvec3 viewPosition = rd * t;\n#ifdef FragDepth\nfloat ndcDepth = DEPTH_A + DEPTH_B / viewPosition.z;\ngl_FragDepthEXT = ndcDepth * 0.5 + 0.5;\n#endif\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat ambient = 0.01;\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uActiveColor, vActive);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nvec3 normal = (viewPosition - vViewCenter) / s.w;\nfloat diffuse = dot(uDirectionToLight, normal);\nfloat specular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\ncolor *= (ambient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n}\n",
-        "unitsphere.vertex.fx": "#version 100\n#include \"common.include.fx\"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute lowp float aColor;\nattribute lowp float aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute float aOrder;\nattribute mediump float aStaggerOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying mediump float vRadius;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvoid main(void)\n{\nif (aOrder < uOrderFrom || aOrder > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvViewPosition = vec3(0.0);\nvViewCenter = vec3(0.0);\nvRadius = 0.0;\ngl_Position = vec4(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nfloat startTime = aStaggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nfloat scale = mix(min(aPreviousScale.x, min(aPreviousScale.y, aPreviousScale.z)), min(aScale.x, min(aScale.y, aScale.z)), animation);\nvec4 translation = vec4(mix(aPreviousTranslation, aTranslation, animation), 1.0);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvViewCenter = (mvMatrix * translation).xyz;\ntranslation.xyz += aPosition * scale;\nvViewPosition = (mvMatrix * translation).xyz;\ngl_Position = uPMatrix * vec4(vViewPosition, 1.0);\nvVertexColor = vec2(aColor, aPreviousColor);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\nvRadius = distance(vViewPosition, vViewCenter) / ROOT_THREE;\n}\n}\n",
+        "unitblock.fragment.fx": "#version 100\n#define Derivatives\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\n#ifdef Derivatives\nvarying vec3 vViewPosition;\n#endif\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\n#ifdef Derivatives\n#extension GL_OES_standard_derivatives : enable\n#endif\nvoid main(void)\n{\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat ambient = 0.01;\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uActiveColor, vActive);\ncolor = mix(color, uActiveColor, vActive);\npreviousColor = mix(previousColor, uHoverColor, vHover);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nfloat diffuse, specular;\n#ifdef Derivatives\nvec3 normal = normalize(cross(dFdx(vViewPosition), dFdy(vViewPosition)));\ndiffuse = dot(uDirectionToLight, normal);\nspecular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\n#else\ndiffuse = 1.0;\nspecular = 0.0;\n#endif\ncolor *= (ambient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n",
+        "unitblock.vertex.fx": "#version 100\n#include \"quat.include.fx\"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute mediump vec4 aRotation;\nattribute mediump vec4 aPreviousRotation;\nattribute lowp vec2 aColor;\nattribute lowp vec2 aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute vec2 aOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\n#define Derivatives\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\n#ifdef Derivatives\nvarying vec3 vViewPosition;\n#endif\nvoid main(void)\n{\nif (aOrder.x < uOrderFrom || aOrder.x > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\ngl_Position = vec4(0.0);\n#ifdef Derivatives\nvViewPosition = vec3(0.0);\n#endif\n}\nelse\n{\nvIdColor = aIdColor;\nfloat staggerOrder = aOrder.y;\nfloat startTime = staggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvec3 position = aPosition * scale;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\n}\nposition += mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\n#ifdef Derivatives\nvec4 viewPosition = mvMatrix * vec4(position, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\n#else\ngl_Position = uPMatrix * mvMatrix * vec4(position, 1.0);\n#endif\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\n}\n}\n",
+        "unitcylinder.fragment.fx": "#version 100\n#define FragDepth\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec4 vCircle1;\nvarying vec4 vCircle2;\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\n#ifdef FragDepth\n#extension GL_EXT_frag_depth : enable\n#endif\nfloat dot2(in vec2 v) { return dot(v, v); }\nfloat dot2(in vec3 v) { return dot(v, v); }\nvec4 iCappedCone(in vec3 ro, in vec3 rd,\nin vec3 pa, in vec3 pb,\nin float ra, in float rb)\n{\nvec3 ba = pb - pa;\nvec3 oa = ro - pa;\nvec3 ob = ro - pb;\nfloat m0 = dot(ba, ba);\nfloat m1 = dot(oa, ba);\nfloat m2 = dot(ob, ba);\nfloat m3 = dot(rd, ba);\nif (m1 < 0.0) { if (dot2(oa * m3 - rd * m1) < (ra * ra * m3 * m3)) return vec4(-m1 / m3, -ba * inversesqrt(m0)); }\nelse if (m2 > 0.0) { if (dot2(ob * m3 - rd * m2) < (rb * rb * m3 * m3)) return vec4(-m2 / m3, ba * inversesqrt(m0)); }\nfloat m4 = dot(rd, oa);\nfloat m5 = dot(oa, oa);\nfloat rr = ra - rb;\nfloat hy = m0 + rr * rr;\nfloat k2 = m0 * m0 - m3 * m3 * hy;\nfloat k1 = m0 * m0 * m4 - m1 * m3 * hy + m0 * ra * (rr * m3 * 1.0);\nfloat k0 = m0 * m0 * m5 - m1 * m1 * hy + m0 * ra * (rr * m1 * 2.0 - m0 * ra);\nfloat h = k1 * k1 - k2 * k0;\nif (h < 0.0) return vec4(-1.0);\nfloat t = (-k1 - sqrt(h)) / k2;\nfloat y = m1 + t * m3;\nif (y > 0.0 && y < m0)\n{\nreturn vec4(t, normalize(m0 * (m0 * (oa + t * rd) + rr * ba * ra) - ba * hy * y));\n}\nreturn vec4(-1.0);\n}\nvec4 iRoundedCone(in vec3 ro, in vec3 rd,\nin vec3 pa, in vec3 pb,\nin float ra, in float rb)\n{\nvec3 ba = pb - pa;\nvec3 oa = ro - pa;\nvec3 ob = ro - pb;\nfloat rr = ra - rb;\nfloat m0 = dot(ba, ba);\nfloat m1 = dot(ba, oa);\nfloat m2 = dot(ba, rd);\nfloat m3 = dot(rd, oa);\nfloat m5 = dot(oa, oa);\nfloat m6 = dot(ob, rd);\nfloat m7 = dot(ob, ob);\nfloat d2 = m0 - rr * rr;\nfloat k2 = d2 - m2 * m2;\nfloat k1 = d2 * m3 - m1 * m2 + m2 * rr * ra;\nfloat k0 = d2 * m5 - m1 * m1 + m1 * rr * ra * 2.0 - m0 * ra * ra;\nfloat h = k1 * k1 - k0 * k2;\nif (h < 0.0) return vec4(-1.0);\nfloat t = (-sqrt(h) - k1) / k2;\nfloat y = m1 - ra * rr + t * m2;\nif (y > 0.0 && y < d2)\n{\nreturn vec4(t, normalize(d2 * (oa + t * rd) - ba * y));\n}\nfloat h1 = m3 * m3 - m5 + ra * ra;\nfloat h2 = m6 * m6 - m7 + rb * rb;\nif (max(h1, h2) < 0.0) return vec4(-1.0);\nvec4 r = vec4(1e20);\nif (h1 > 0.0)\n{\nt = -m3 - sqrt(h1);\nr = vec4(t, (oa + t * rd) / ra);\n}\nif (h2 > 0.0)\n{\nt = -m6 - sqrt(h2);\nif (t < r.x)\nr = vec4(t, (ob + t * rd) / rb);\n}\nreturn r;\n}\nvoid main(void)\n{\nvec3 rd = normalize(vViewPosition);\nvec3 ro = vec3(0.0);\nvec4 tnor = iCappedCone(ro, rd, vCircle1.xyz, vCircle2.xyz, vCircle1.w, vCircle2.w);\nfloat t = tnor.x;\nif (t < 0.0)\n{\ndiscard;\n}\nelse\n{\nvec3 viewPosition = rd * t;\n#ifdef FragDepth\nfloat ndcDepth = DEPTH_A + DEPTH_B / viewPosition.z;\ngl_FragDepthEXT = ndcDepth * 0.5 + 0.5;\n#endif\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat ambient = 0.01;\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uActiveColor, vActive);\ncolor = mix(color, uActiveColor, vActive);\npreviousColor = mix(previousColor, uHoverColor, vHover);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nvec3 normal = tnor.yzw;\nfloat diffuse = dot(uDirectionToLight, normal);\nfloat specular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\ncolor *= (ambient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n}\n",
+        "unitcylinder.vertex.fx": "#version 100\n#include \"common.include.fx\"\n#include \"quat.include.fx\"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute mediump vec4 aRotation;\nattribute mediump vec4 aPreviousRotation;\nattribute lowp vec2 aColor;\nattribute lowp vec2 aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute vec2 aOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nuniform vec3 uIdentityRotation;\n#define Derivatives\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec4 vCircle1;\nvarying vec4 vCircle2;\nvoid main(void)\n{\nif (aOrder.x < uOrderFrom || aOrder.x > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvViewPosition = vec3(0.0);\nvCircle1 = vec4(0.0);\nvCircle2 = vec4(0.0);\ngl_Position = vec4(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nfloat staggerOrder = aOrder.y;\nfloat startTime = staggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 translation = mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvec3 viewCenter = (mvMatrix * vec4(translation, 1.0)).xyz;\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvec3 position = aPosition;\nposition.xz *= max(scale.x, scale.z);\nposition.y *= scale.y;\nvec3 direction = IDENTITY_ROTATION;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\ndirection = rotate(direction, quat);\n}\nvec3 viewDirection = (mvMatrix * vec4(direction, 0.0)).xyz;\nvec3 h = viewDirection * scale.y * 0.5;\nfloat r1 = length(viewDirection) * 0.5;\nfloat r2 = r1 * scale.z;\nr1 *= scale.x;\nvCircle1 = vec4(viewCenter - h, r1);\nvCircle2 = vec4(viewCenter + h, r2);\nvec4 viewPosition = mvMatrix * vec4(position + translation, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\n}\n}\n",
+        "unithexprism.fragment.fx": "#version 100\n#define FragDepth\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvarying float vRadius;\nvarying float vHeight;\nvarying float vScaling;\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\nuniform mat4 uVMatrix;\n#ifdef FragDepth\n#extension GL_EXT_frag_depth : enable\n#endif\nvec4 iHexPrism( in vec3 ro, in vec3 rd, in float ra, in float he )\n{\nconst vec3 n1 = vec3( 1.0,0.0,0.0);\nconst vec3 n2 = vec3( 0.5,0.0,ROOT_THREE_OVER_TWO);\nconst vec3 n3 = vec3(-0.5,0.0,ROOT_THREE_OVER_TWO);\nconst vec3 n4 = vec3( 0.0,1.0,0.0);\nvec3 t1 = vec3((vec2(ra,-ra)-dot(ro,n1))/dot(rd,n1), 1.0);\nvec3 t2 = vec3((vec2(ra,-ra)-dot(ro,n2))/dot(rd,n2), 1.0);\nvec3 t3 = vec3((vec2(ra,-ra)-dot(ro,n3))/dot(rd,n3), 1.0);\nvec3 t4 = vec3((vec2(he,-he)-dot(ro,n4))/dot(rd,n4), 1.0);\nif( t1.y<t1.x ) t1=vec3(t1.yx,-1.0);\nif( t2.y<t2.x ) t2=vec3(t2.yx,-1.0);\nif( t3.y<t3.x ) t3=vec3(t3.yx,-1.0);\nif( t4.y<t4.x ) t4=vec3(t4.yx,-1.0);\nvec4 tN=vec4(t1.x,t1.z*n1);\nif( t2.x>tN.x ) tN=vec4(t2.x,t2.z*n2);\nif( t3.x>tN.x ) tN=vec4(t3.x,t3.z*n3);\nif( t4.x>tN.x ) tN=vec4(t4.x,t4.z*n4);\nfloat tF = min(min(t1.y,t2.y),min(t3.y,t4.y));\nif( tN.x>tF || tF<0.0) return vec4(-1.0);\nreturn tN;\n}\nvoid main(void)\n{\nvec3 rd = normalize(vViewPosition);\nvec3 ro = -vViewCenter;\nmat3 rot = mat3(uVMatrix);\nvec3 rdd = rd * rot;\nvec3 roo = ro * rot;\nvec4 tnor = iHexPrism(roo, rdd, vRadius * vScaling, vHeight * vScaling);\nfloat t = tnor.x;\nif (t < 0.0)\n{\ndiscard;\n}\nelse\n{\nvec3 viewPosition = rd * t;\n#ifdef FragDepth\nfloat ndcDepth = DEPTH_A + DEPTH_B / viewPosition.z;\ngl_FragDepthEXT = ndcDepth * 0.5 + 0.5;\n#endif\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat ambient = 0.01;\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uActiveColor, vActive);\ncolor = mix(color, uActiveColor, vActive);\npreviousColor = mix(previousColor, uHoverColor, vHover);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nvec3 normal = rot * tnor.yzw;\nfloat diffuse = dot(uDirectionToLight, normal);\nfloat specular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\ncolor *= (ambient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n}\n",
+        "unithexprism.vertex.fx": "#version 100\n#include \"common.include.fx\"\n#include \"quat.include.fx\"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute mediump vec4 aRotation;\nattribute mediump vec4 aPreviousRotation;\nattribute lowp vec2 aColor;\nattribute lowp vec2 aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute vec2 aOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nuniform vec3 uIdentityRotation;\n#define Derivatives\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvarying float vRadius;\nvarying float vHeight;\nvarying float vScaling;\nvoid main(void)\n{\nif (aOrder.x < uOrderFrom || aOrder.x > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvViewPosition = vec3(0.0);\nvRadius = 0.0;\nvHeight = 0.0;\ngl_Position = vec4(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nfloat staggerOrder = aOrder.y;\nfloat startTime = staggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 translation = mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvViewCenter = (mvMatrix * vec4(translation, 1.0)).xyz;\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvRadius = scale.x * ROOT_THREE_OVER_TWO;\nvHeight = scale.y;\nvec3 position = aPosition;\nposition.y *= scale.y;\nposition.z *= scale.x;\nposition.x *= scale.x * ROOT_THREE_OVER_TWO;\nvec3 direction = IDENTITY_ROTATION;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\ndirection = rotate(direction, quat);\n}\nvec3 viewDirection = (mvMatrix * vec4(direction, 0.0)).xyz;\nvec4 viewPosition = mvMatrix * vec4(position + translation, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\nvScaling = length(uMMatrix[0].xyz) / 2.0;\n}\n}\n",
+        "unitsdf.fragment.fx": "#version 100\n#define Derivatives\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying mediump vec2 vTexCoord;\nvarying mediump vec2 vPreviousTexCoord;\n#ifdef Derivatives\nvarying vec3 vViewPosition;\n#endif\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform sampler2D uSampler1;\nuniform sampler2D uPreviousSampler1;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\nuniform vec3	 uBackgroundColor;\nuniform float 	 uBuffer;\n#ifdef Derivatives\n#extension GL_OES_standard_derivatives : enable\n#endif\nvoid main(void) {\nfloat distance = mix(texture2D(uPreviousSampler1, vPreviousTexCoord).r, texture2D(uSampler1, vTexCoord).r, vAnimation);\nif (distance < uBuffer) {\ndiscard;\n}\nif (uPick) {\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat ambient = 0.01;\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uActiveColor, vActive);\ncolor = mix(color, uActiveColor, vActive);\npreviousColor = mix(previousColor, uHoverColor, vHover);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nfloat diffuse, specular;\n#ifdef Derivatives\nvec3 normal = normalize(cross(dFdx(vViewPosition), dFdy(vViewPosition)));\ndiffuse = dot(uDirectionToLight, normal);\nspecular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\n#else\ndiffuse = 1.0;\nspecular = 0.0;\n#endif\ncolor *= (ambient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\nfloat uGamma = 0.0;\nfloat gamma;\n#ifdef Derivatives\ngamma = fwidth(distance);\n#else\ngamma = uGamma;\n#endif\nfloat value = smoothstep(uBuffer + gamma, uBuffer, distance);\ngl_FragColor = vec4(mix(color, uBackgroundColor, value), 1.0);\n}\n}\n",
+        "unitsdf.vertex.fx": "#version 100\n#include \"quat.include.fx\"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute mediump vec4 aRotation;\nattribute mediump vec4 aPreviousRotation;\nattribute mediump vec4 aTexCoord;\nattribute mediump vec4 aPreviousTexCoord;\nattribute lowp vec2 aColor;\nattribute lowp vec2 aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute vec2 aOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\n#define Derivatives\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying mediump vec2 vTexCoord;\nvarying mediump vec2 vPreviousTexCoord;\n#ifdef Derivatives\nvarying vec3 vViewPosition;\n#endif\nvoid main(void)\n{\nif (aOrder.x < uOrderFrom || aOrder.x > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\ngl_Position = vec4(0.0);\n#ifdef Derivatives\nvViewPosition = vec3(0.0);\n#endif\n}\nelse\n{\nvIdColor = aIdColor;\nfloat staggerOrder = aOrder.y;\nfloat startTime = staggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvec3 position = aPosition * scale;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\n}\nposition += mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\n#ifdef Derivatives\nvec4 viewPosition = mvMatrix * vec4(position, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\n#else\ngl_Position = uPMatrix * mvMatrix * vec4(position, 1.0);\n#endif\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\nvPreviousTexCoord.x = aPosition.x < 0.0 ? aPreviousTexCoord.x : aPreviousTexCoord.z;\nvPreviousTexCoord.y = aPosition.y > 0.0 ? aPreviousTexCoord.y : aPreviousTexCoord.w;\nvTexCoord.x = aPosition.x < 0.0 ? aTexCoord.x : aTexCoord.z;\nvTexCoord.y = aPosition.y > 0.0 ? aTexCoord.y : aTexCoord.w;\n}\n}\n",
+        "unitsphere.fragment.fx": "#version 100\n#define FragDepth\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvarying mediump float vRadius;\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\n#ifdef FragDepth\n#extension GL_EXT_frag_depth : enable\n#endif\nfloat sphIntersect(in vec3 ro, in vec3 rd, in vec4 sph)\n{\nvec3 oc = ro - sph.xyz;\nfloat b = dot(oc, rd);\nfloat c = dot(oc, oc) - sph.w * sph.w;\nfloat h = b * b - c;\nif (h < 0.0) return -1.0;\nreturn -b - sqrt(h);\n}\nvoid main(void)\n{\nvec3 rd = normalize(vViewPosition);\nvec3 ro = vec3(0.0);\nvec4 s = vec4(vViewCenter, vRadius);\nfloat t = sphIntersect(ro, rd, s);\nif (t < 0.0)\n{\ndiscard;\n}\nelse\n{\nvec3 viewPosition = rd * t;\n#ifdef FragDepth\nfloat ndcDepth = DEPTH_A + DEPTH_B / viewPosition.z;\ngl_FragDepthEXT = ndcDepth * 0.5 + 0.5;\n#endif\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat ambient = 0.01;\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uActiveColor, vActive);\ncolor = mix(color, uActiveColor, vActive);\npreviousColor = mix(previousColor, uHoverColor, vHover);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nvec3 normal = (viewPosition - vViewCenter) / s.w;\nfloat diffuse = dot(uDirectionToLight, normal);\nfloat specular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\ncolor *= (ambient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n}\n",
+        "unitsphere.vertex.fx": "#version 100\n#include \"common.include.fx\"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute lowp float aColor;\nattribute lowp float aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute vec2 aOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying mediump float vRadius;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvoid main(void)\n{\nif (aOrder.x < uOrderFrom || aOrder.x > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvViewPosition = vec3(0.0);\nvViewCenter = vec3(0.0);\nvRadius = 0.0;\ngl_Position = vec4(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nfloat staggerOrder = aOrder.y;\nfloat startTime = staggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nfloat scale = mix(min(aPreviousScale.x, min(aPreviousScale.y, aPreviousScale.z)), min(aScale.x, min(aScale.y, aScale.z)), animation);\nvec4 translation = vec4(mix(aPreviousTranslation, aTranslation, animation), 1.0);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvViewCenter = (mvMatrix * translation).xyz;\ntranslation.xyz += aPosition * scale;\nvViewPosition = (mvMatrix * translation).xyz;\ngl_Position = uPMatrix * vec4(vViewPosition, 1.0);\nvVertexColor = vec2(aColor, aPreviousColor);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\nvRadius = distance(vViewPosition, vViewCenter) / ROOT_THREE;\n}\n}\n",
         "common.include.fx": "const float NEAR_PLANE = 0.01;\nconst float FAR_PLANE = 100.0;\nconst float DEPTH_A = 1.0002000200020003;\nconst float DEPTH_B = 0.020002000200020003;\nconst vec3 GAMMA = vec3(0.45454545454545453);\nconst vec3 INV_GAMMA = vec3(2.2);\nconst vec3 LUMINANCE = vec3(0.2126, 0.7152, 0.0722);\nconst float PI = 3.1415926538;\nconst float ROOT_TWO = 1.4142135624;\nconst float ROOT_TWO_OVER_TWO = 0.7071067811865476;\nconst float ROOT_THREE = 1.7320508075688772;\nconst float ROOT_THREE_OVER_TWO = 0.8660254037844386;\nconst vec3 IDENTITY_ROTATION = vec3(0.0, 1.0, 0.0);\nmat3 transpose(in mat3 mat) {\nvec3 i0 = mat[0];\nvec3 i1 = mat[1];\nvec3 i2 = mat[2];\nreturn mat3\n(\nvec3(i0.x, i1.x, i2.x),\nvec3(i0.y, i1.y, i2.y),\nvec3(i0.z, i1.z, i2.z)\n);\n}\n",
         "quat.include.fx": "const float EPSILON = 0.000001;\nmat3 fromQuat(in vec4 q) {\nfloat x = q.x;\nfloat y = q.y;\nfloat z = q.z;\nfloat w = q.w;\nfloat x2 = x + x;\nfloat y2 = y + y;\nfloat z2 = z + z;\nfloat xx = x * x2;\nfloat yx = y * x2;\nfloat yy = y * y2;\nfloat zx = z * x2;\nfloat zy = z * y2;\nfloat zz = z * z2;\nfloat wx = w * x2;\nfloat wy = w * y2;\nfloat wz = w * z2;\nmat3 m;\nm[0][0] = 1.0 - yy - zz;\nm[0][1] = yx - wz;\nm[0][2] = zx + wy;\nm[1][0] = yx + wz;\nm[1][1] = 1.0 - xx - zz;\nm[1][2] = zy - wx;\nm[2][0] = zx - wy;\nm[2][1] = zy + wx;\nm[2][2] = 1.0 - xx - yy;\nreturn m;\n}\nvec3 rotate(in vec3 p, in vec4 q) {\nreturn p + 2.0 * cross(q.xyz, cross(q.xyz, p) + q.w * p);\n}\nvec4 slerp(in vec4 a, in vec4 b, in float t) {\nfloat cosom = dot(a, b);\nif (cosom < 0.0) {\ncosom = -cosom;\nb = -b;\n}\nfloat scale0, scale1;\nif (1.0 - cosom > EPSILON) {\nfloat omega = acos(cosom);\nfloat sinom = sin(omega);\nscale0 = sin((1.0 - t) * omega) / sinom;\nscale1 = sin(t * omega) / sinom;\n}\nelse {\nscale0 = 1.0 - t;\nscale1 = t;\n}\nreturn vec4(scale0 * a + scale1 * b);\n}\n",
     };
     class ShaderBase$1 {
-        constructor(core, main) {
-            this._core = core;
-            this._main = main;
-        }
         get isInitialized() { return this._isInitialized; }
         get vertexBuffer() { return this._vertexBuffer; }
         set vertexBuffer(value) {
@@ -15519,6 +15782,10 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._indexBuffer = value;
                 this._haveBuffersChanged = true;
             }
+        }
+        constructor(core, main) {
+            this._core = core;
+            this._main = main;
         }
         initializeContext(gl) {
             this._gl = gl;
@@ -16072,6 +16339,20 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._haveTexturesChanged = true;
             }
         }
+        get sdfTexture() { return this._sdfTexture; }
+        set sdfTexture(value) {
+            if (this._sdfTexture != value) {
+                this._sdfTexture = value;
+                this._haveTexturesChanged = true;
+            }
+        }
+        get previousSdfTexture() { return this._previousSdfTexture; }
+        set previousSdfTexture(value) {
+            if (this._previousSdfTexture != value) {
+                this._previousSdfTexture = value;
+                this._haveTexturesChanged = true;
+            }
+        }
         set instanceBuffer(value) {
             if (this._instanceBuffer != value) {
                 this._instanceBuffer = value;
@@ -16100,12 +16381,11 @@ f 5/6/6 1/12/6 8/11/6`;
             this._previousColorAttribute = gl.getAttribLocation(this._program, "aPreviousColor");
             this._selectedAttribute = gl.getAttribLocation(this._program, "aSelected");
             this._previousSelectedAttribute = gl.getAttribLocation(this._program, "aPreviousSelected");
-            this._staggerOrderAttribute = gl.getAttribLocation(this._program, "aStaggerOrder");
             this._orderAttribute = gl.getAttribLocation(this._program, "aOrder");
             this._idAttribute = gl.getAttribLocation(this._program, "aId");
             this._idColorAttribute = gl.getAttribLocation(this._program, "aIdColor");
-            this._samplerUniform = gl.getUniformLocation(this._program, "uSampler");
-            this._previousSamplerUniform = gl.getUniformLocation(this._program, "uPreviousSampler");
+            this._sampler0Uniform = gl.getUniformLocation(this._program, "uSampler");
+            this._previousSampler0Uniform = gl.getUniformLocation(this._program, "uPreviousSampler");
             this._mMatrixUniform = gl.getUniformLocation(this._program, "uMMatrix");
             this._vMatrixUniform = gl.getUniformLocation(this._program, "uVMatrix");
             this._pMatrixUniform = gl.getUniformLocation(this._program, "uPMatrix");
@@ -16158,13 +16438,10 @@ f 5/6/6 1/12/6 8/11/6`;
             this._gl.vertexAttribPointer(this._scaleAttribute, 3, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.SCALE_OFFSET_BYTES);
             ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._scaleAttribute, 1);
             this._gl.enableVertexAttribArray(this._scaleAttribute);
-            this._gl.vertexAttribPointer(this._staggerOrderAttribute, 1, this._gl.UNSIGNED_SHORT, true, UnitVertex.SIZE_BYTES, UnitVertex.STAGGER_ORDER_OFFSET_BYTES);
-            ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._staggerOrderAttribute, 1);
-            this._gl.enableVertexAttribArray(this._staggerOrderAttribute);
             this._gl.vertexAttribPointer(this._selectedAttribute, 1, this._gl.BYTE, true, UnitVertex.SIZE_BYTES, UnitVertex.SELECTED_OFFSET_BYTES);
             ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._selectedAttribute, 1);
             this._gl.enableVertexAttribArray(this._selectedAttribute);
-            this._gl.vertexAttribPointer(this._orderAttribute, 1, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.ORDER_OFFSET_BYTES);
+            this._gl.vertexAttribPointer(this._orderAttribute, 2, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.ORDER_OFFSET_BYTES);
             ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._orderAttribute, 1);
             this._gl.enableVertexAttribArray(this._orderAttribute);
         }
@@ -16189,8 +16466,8 @@ f 5/6/6 1/12/6 8/11/6`;
             this._gl.uniform1f(this._durationUniform, this.duration);
             this._gl.uniform1f(this._fromOrderUniform, this.rangeMin);
             this._gl.uniform1f(this._toOrderUniform, this.rangeMax);
-            this._gl.uniform1i(this._previousSamplerUniform, 0);
-            this._gl.uniform1i(this._samplerUniform, 1);
+            this._gl.uniform1i(this._previousSampler0Uniform, 0);
+            this._gl.uniform1i(this._sampler0Uniform, 1);
             this._gl.uniform1f(this._specularPowerUniform, this.specularPower);
             this._gl.uniform1f(this._specularIntensityUniform, this.specularIntensity);
             this._gl.uniform3fv(this._hoverColorUniform, this.hoverColor);
@@ -16224,7 +16501,6 @@ f 5/6/6 1/12/6 8/11/6`;
             ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousColorAttribute, 0);
             ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._selectedAttribute, 0);
             ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousSelectedAttribute, 0);
-            ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._staggerOrderAttribute, 0);
             ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._orderAttribute, 0);
             ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._idAttribute, 0);
             ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._idColorAttribute, 0);
@@ -16446,6 +16722,91 @@ f 5/6/6 1/12/6 8/11/6`;
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
+    class UnitSdf$1 extends UnitShader$1 {
+        initializeContext(gl) {
+            super.initializeContext(gl);
+            if (this._isLoaded) {
+                this._initializeShader(gl, this._vsSource, this._fsSource);
+            }
+            else {
+                this._shaderFromFile("unitsdf.vertex.fx", "unitsdf.fragment.fx", (vsSource, fsSource) => {
+                    if (this._main.shaderResources.OES_standard_derivatives == null) {
+                        vsSource = this._removeDirective(vsSource, "Derivatives");
+                        fsSource = this._removeDirective(fsSource, "Derivatives");
+                    }
+                    this._vsSource = vsSource;
+                    this._fsSource = fsSource;
+                    this._isLoaded = true;
+                    this._initializeShader(gl, vsSource, fsSource);
+                });
+            }
+        }
+        _initializeShader(gl, vsSource, fsSource) {
+            super._initializeShader(gl, vsSource, fsSource);
+            this._rotationAttribute = gl.getAttribLocation(this._program, "aRotation");
+            this._previousRotationAttribute = gl.getAttribLocation(this._program, "aPreviousRotation");
+            this._texCoordAttribute = gl.getAttribLocation(this._program, "aTexCoord");
+            this._previousTexCoordAttribute = gl.getAttribLocation(this._program, "aPreviousTexCoord");
+            this._sampler1Uniform = gl.getUniformLocation(this._program, "uSampler1");
+            this._previousSampler1Uniform = gl.getUniformLocation(this._program, "uPreviousSampler1");
+            this._sdfBufferUniform = gl.getUniformLocation(this._program, "uBuffer");
+            this._sdfBackgroundColorUniform = gl.getUniformLocation(this._program, "uBackgroundColor");
+            this._isInitialized = true;
+        }
+        _updateCurrentBuffer() {
+            super._updateCurrentBuffer();
+            const ANGLE_instanced_arrays = this._main.shaderResources.ANGLE_instanced_arrays;
+            this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
+            ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._rotationAttribute, 1);
+            this._gl.enableVertexAttribArray(this._rotationAttribute);
+            this._gl.vertexAttribPointer(this._texCoordAttribute, 4, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.TEXCOORD_OFFSET_BYTES);
+            ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._texCoordAttribute, 1);
+            this._gl.enableVertexAttribArray(this._texCoordAttribute);
+            this._gl.vertexAttribPointer(this._colorAttribute, 2, this._gl.UNSIGNED_BYTE, true, UnitVertex.SIZE_BYTES, UnitVertex.COLOR_OFFSET_BYTES);
+            ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._colorAttribute, 1);
+            this._gl.enableVertexAttribArray(this._colorAttribute);
+        }
+        _updatePreviousBuffer() {
+            super._updatePreviousBuffer();
+            const ANGLE_instanced_arrays = this._main.shaderResources.ANGLE_instanced_arrays;
+            this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
+            ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousRotationAttribute, 1);
+            this._gl.enableVertexAttribArray(this._previousRotationAttribute);
+            this._gl.vertexAttribPointer(this._previousTexCoordAttribute, 4, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.TEXCOORD_OFFSET_BYTES);
+            ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousTexCoordAttribute, 1);
+            this._gl.enableVertexAttribArray(this._previousTexCoordAttribute);
+            this._gl.vertexAttribPointer(this._previousColorAttribute, 2, this._gl.UNSIGNED_BYTE, true, UnitVertex.SIZE_BYTES, UnitVertex.COLOR_OFFSET_BYTES);
+            ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousColorAttribute, 1);
+            this._gl.enableVertexAttribArray(this._previousColorAttribute);
+        }
+        apply() {
+            super.apply();
+            this._gl.uniform1i(this._previousSampler1Uniform, 2);
+            this._gl.uniform1i(this._sampler1Uniform, 3);
+            this._gl.uniform1f(this._sdfBufferUniform, this.sdfBuffer);
+            this._gl.uniform3fv(this._sdfBackgroundColorUniform, this.sdfBackgroundColor);
+        }
+        updateTextures() {
+            super.updateTextures();
+            this._gl.activeTexture(this._gl.TEXTURE2);
+            this._gl.bindTexture(this._gl.TEXTURE_2D, this._previousSdfTexture);
+            this._gl.activeTexture(this._gl.TEXTURE3);
+            this._gl.bindTexture(this._gl.TEXTURE_2D, this._sdfTexture);
+        }
+        disableProgram() {
+            super.disableProgram();
+            const ANGLE_instanced_arrays = this._main.shaderResources.ANGLE_instanced_arrays;
+            ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._rotationAttribute, 0);
+            ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousRotationAttribute, 0);
+            ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._texCoordAttribute, 0);
+            ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousTexCoordAttribute, 0);
+        }
+    }
+
+    /*!
+     * Copyright (c) Microsoft Corporation.
+     * Licensed under the MIT License.
+     */
     class Anaglyph extends ShaderBase$1 {
         get texture2D1() { return this._texture2D1; }
         set texture2D1(value) {
@@ -16512,12 +16873,12 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class DebugAxesVisual {
+        get isInitialized() { return this._isInitialized && this._main.colorShader.isInitialized; }
         constructor(core, main, debugAxes) {
             this._main = main;
             this._debugAxes = debugAxes;
             this.isVisible = true;
         }
-        get isInitialized() { return this._isInitialized && this._main.colorShader.isInitialized; }
         initializeContext(gl) {
             if (!this._debugAxes.isInitialized) {
                 this._debugAxes.initialize();
@@ -16559,12 +16920,12 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class AxesVisualBase$1 {
+        get isInitialized() { return this._isInitialized; }
+        get axes() { return this._axes; }
         constructor(core) {
             this._core = core;
             this.isVisible = true;
         }
-        get isInitialized() { return this._isInitialized; }
-        get axes() { return this._axes; }
         initializeContext(gl) {
             this._gl = gl;
         }
@@ -16584,13 +16945,13 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class Cartesian2dVisual$1 extends AxesVisualBase$1 {
+        get isInitialized() { return this._isInitialized && this._main.gridShader.isInitialized && this._main.sdfTextShader.isInitialized && this._main.fonts[this._axes.font.name].isInitialized; }
         constructor(core, main, cartesian2dAxes) {
             super(core);
             this._main = main;
             this._axes = cartesian2dAxes;
             this._axes.hasChangedCallback = () => { this._hasChanged = true; };
         }
-        get isInitialized() { return this._isInitialized && this._main.gridShader.isInitialized && this._main.sdfShader.isInitialized && this._main.fonts[this._axes.font.name].isInitialized; }
         initializeContext(gl) {
             super.initializeContext(gl);
             const axes = this._axes;
@@ -16656,21 +17017,21 @@ f 5/6/6 1/12/6 8/11/6`;
         }
         _renderText() {
             const axes = this._axes;
-            const sdfShader = this._main.sdfShader;
+            const shader = this._main.sdfTextShader;
             const shaderResources = this._main.shaderResources;
             const fontVisual = this._main.fonts[axes.font.name];
-            sdfShader.vertexBuffer = this._textVertexBuffer;
-            sdfShader.indexBuffer = this._textIndexBuffer;
-            sdfShader.texture2D = fontVisual.texture;
-            sdfShader.prepare();
-            sdfShader.buffer = fontVisual.font.edgeValue / 0xff;
-            sdfShader.gamma = axes.gamma;
-            sdfShader.borderWidth = axes.textBorderWidth;
-            sdfShader.color = axes.textColor || this._core.config.axesTextColor;
-            sdfShader.hoverColor = axes.textHoverColor || this._core.config.axesTextHoverColor;
-            sdfShader.borderColor = axes.textBorderColor || this._core.config.textBorderColor;
-            sdfShader.pickedIdColor = this.pickedIdColor;
-            sdfShader.apply();
+            shader.vertexBuffer = this._textVertexBuffer;
+            shader.indexBuffer = this._textIndexBuffer;
+            shader.texture2D = fontVisual.texture;
+            shader.prepare();
+            shader.buffer = fontVisual.font.edgeValue / 0xff;
+            shader.gamma = axes.gamma;
+            shader.borderWidth = axes.textBorderWidth;
+            shader.color = axes.textColor || this._core.config.axesTextColor;
+            shader.hoverColor = axes.textHoverColor || this._core.config.axesTextHoverColor;
+            shader.borderColor = axes.textBorderColor || this._core.config.textBorderColor;
+            shader.pickedIdColor = this.pickedIdColor;
+            shader.apply();
             let indexCount, indexOffset;
             for (let axisId = 0; axisId < 2; axisId++) {
                 const orientation = axes.getLabelOrientation(axisId);
@@ -16686,23 +17047,23 @@ f 5/6/6 1/12/6 8/11/6`;
                             indexOffset = axes.getAxesRightToLeftIndexOffset(axisId);
                         }
                         if (indexCount > 0) {
-                            sdfShader.mMatrix = axes.getLabelMMatrix(edgeId);
-                            sdfShader.applyModel();
-                            sdfShader.isPickShader = false;
+                            shader.mMatrix = axes.getLabelMMatrix(edgeId);
+                            shader.applyModel();
+                            shader.isPickShader = false;
                             for (let i = 0; i < this.viewportCount; i++) {
                                 const viewport = i + this.viewportOffset;
                                 shaderResources.bindFramebuffer(this.framebuffers[viewport]);
                                 this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                                sdfShader.vMatrix = this.vMatrices[viewport];
-                                sdfShader.pMatrix = this.pMatrices[viewport];
-                                sdfShader.applyView();
+                                shader.vMatrix = this.vMatrices[viewport];
+                                shader.pMatrix = this.pMatrices[viewport];
+                                shader.applyView();
                                 this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                             }
                             if (this.isPickingEnabled && axes.isLabelPickingEnabled[axisId]) {
-                                sdfShader.isPickShader = true;
-                                sdfShader.pMatrix = this.pickPMatrix;
-                                sdfShader.vMatrix = this.pickVMatrix;
-                                sdfShader.applyView();
+                                shader.isPickShader = true;
+                                shader.pMatrix = this.pickPMatrix;
+                                shader.vMatrix = this.pickVMatrix;
+                                shader.applyView();
                                 shaderResources.bindFramebuffer(this.pickFramebuffer);
                                 this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
                                 this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
@@ -16711,23 +17072,23 @@ f 5/6/6 1/12/6 8/11/6`;
                         indexCount = axes.getTitleIndexCount(axisId);
                         if (indexCount > 0) {
                             indexOffset = axes.getTitleIndexOffset(axisId);
-                            sdfShader.mMatrix = axes.getTitleMMatrix(edgeId);
-                            sdfShader.applyModel();
-                            sdfShader.isPickShader = false;
+                            shader.mMatrix = axes.getTitleMMatrix(edgeId);
+                            shader.applyModel();
+                            shader.isPickShader = false;
                             for (let i = 0; i < this.viewportCount; i++) {
                                 const viewport = i + this.viewportOffset;
                                 shaderResources.bindFramebuffer(this.framebuffers[viewport]);
                                 this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                                sdfShader.vMatrix = this.vMatrices[viewport];
-                                sdfShader.pMatrix = this.pMatrices[viewport];
-                                sdfShader.applyView();
+                                shader.vMatrix = this.vMatrices[viewport];
+                                shader.pMatrix = this.pMatrices[viewport];
+                                shader.applyView();
                                 this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                             }
                             if (this.isPickingEnabled && axes.isTitlePickingEnabled[axisId]) {
-                                sdfShader.isPickShader = true;
-                                sdfShader.pMatrix = this.pickPMatrix;
-                                sdfShader.vMatrix = this.pickVMatrix;
-                                sdfShader.applyView();
+                                shader.isPickShader = true;
+                                shader.pMatrix = this.pickPMatrix;
+                                shader.vMatrix = this.pickVMatrix;
+                                shader.applyView();
                                 shaderResources.bindFramebuffer(this.pickFramebuffer);
                                 this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
                                 this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
@@ -16737,23 +17098,23 @@ f 5/6/6 1/12/6 8/11/6`;
                     indexCount = axes.getHeadingIndexCount(axisId);
                     if (indexCount > 0 && axes.isHeadingVisible[edgeId]) {
                         indexOffset = axes.getHeadingIndexOffset(axisId);
-                        sdfShader.mMatrix = axes.getHeadingMMatrix(edgeId);
-                        sdfShader.applyModel();
-                        sdfShader.isPickShader = false;
+                        shader.mMatrix = axes.getHeadingMMatrix(edgeId);
+                        shader.applyModel();
+                        shader.isPickShader = false;
                         for (let i = 0; i < this.viewportCount; i++) {
                             const viewport = i + this.viewportOffset;
                             shaderResources.bindFramebuffer(this.framebuffers[viewport]);
                             this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                            sdfShader.vMatrix = this.vMatrices[viewport];
-                            sdfShader.pMatrix = this.pMatrices[viewport];
-                            sdfShader.applyView();
+                            shader.vMatrix = this.vMatrices[viewport];
+                            shader.pMatrix = this.pMatrices[viewport];
+                            shader.applyView();
                             this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                         }
                         if (this.isPickingEnabled && axes.isHeadingPickingEnabled[axisId]) {
-                            sdfShader.isPickShader = true;
-                            sdfShader.pMatrix = this.pickPMatrix;
-                            sdfShader.vMatrix = this.pickVMatrix;
-                            sdfShader.applyView();
+                            shader.isPickShader = true;
+                            shader.pMatrix = this.pickPMatrix;
+                            shader.vMatrix = this.pickVMatrix;
+                            shader.applyView();
                             shaderResources.bindFramebuffer(this.pickFramebuffer);
                             this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
                             this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
@@ -16873,13 +17234,13 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class Cartesian3dVisual$1 extends AxesVisualBase$1 {
+        get isInitialized() { return this._isInitialized && this._main.gridShader.isInitialized && this._main.sdfTextShader.isInitialized && this._main.fonts[this._axes.font.name].isInitialized; }
         constructor(core, main, cartesian3dAxes) {
             super(core);
             this._main = main;
             this._axes = cartesian3dAxes;
             this._axes.hasChangedCallback = () => { this._hasChanged = true; };
         }
-        get isInitialized() { return this._isInitialized && this._main.gridShader.isInitialized && this._main.sdfShader.isInitialized && this._main.fonts[this._axes.font.name].isInitialized; }
         initializeContext(gl) {
             super.initializeContext(gl);
             const axes = this._axes;
@@ -16945,21 +17306,21 @@ f 5/6/6 1/12/6 8/11/6`;
         }
         _renderText() {
             const axes = this._axes;
-            const sdfShader = this._main.sdfShader;
+            const shader = this._main.sdfTextShader;
             const shaderResources = this._main.shaderResources;
             const fontVisual = this._main.fonts[axes.font.name];
-            sdfShader.vertexBuffer = this._textVertexBuffer;
-            sdfShader.indexBuffer = this._textIndexBuffer;
-            sdfShader.texture2D = fontVisual.texture;
-            sdfShader.prepare();
-            sdfShader.buffer = fontVisual.font.edgeValue / 0xff;
-            sdfShader.gamma = axes.gamma;
-            sdfShader.borderWidth = axes.textBorderWidth;
-            sdfShader.color = axes.textColor || this._core.config.axesTextColor;
-            sdfShader.hoverColor = axes.textHoverColor || this._core.config.axesTextHoverColor;
-            sdfShader.borderColor = axes.textBorderColor || this._core.config.textBorderColor;
-            sdfShader.pickedIdColor = this.pickedIdColor;
-            sdfShader.apply();
+            shader.vertexBuffer = this._textVertexBuffer;
+            shader.indexBuffer = this._textIndexBuffer;
+            shader.texture2D = fontVisual.texture;
+            shader.prepare();
+            shader.buffer = fontVisual.font.edgeValue / 0xff;
+            shader.gamma = axes.gamma;
+            shader.borderWidth = axes.textBorderWidth;
+            shader.color = axes.textColor || this._core.config.axesTextColor;
+            shader.hoverColor = axes.textHoverColor || this._core.config.axesTextHoverColor;
+            shader.borderColor = axes.textBorderColor || this._core.config.textBorderColor;
+            shader.pickedIdColor = this.pickedIdColor;
+            shader.apply();
             let indexCount, indexOffset;
             for (let axisId = 0; axisId < 3; axisId++) {
                 const orientation = axes.getLabelOrientation(axisId);
@@ -16976,23 +17337,23 @@ f 5/6/6 1/12/6 8/11/6`;
                                 indexOffset = axes.getAxesRightToLeftIndexOffset(axisId);
                             }
                             if (indexCount > 0) {
-                                sdfShader.mMatrix = axes.getLabelMMatrix(edgeId);
-                                sdfShader.applyModel();
-                                sdfShader.isPickShader = false;
+                                shader.mMatrix = axes.getLabelMMatrix(edgeId);
+                                shader.applyModel();
+                                shader.isPickShader = false;
                                 for (let i = 0; i < this.viewportCount; i++) {
                                     const viewport = i + this.viewportOffset;
                                     shaderResources.bindFramebuffer(this.framebuffers[viewport]);
                                     this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                                    sdfShader.vMatrix = this.vMatrices[viewport];
-                                    sdfShader.pMatrix = this.pMatrices[viewport];
-                                    sdfShader.applyView();
+                                    shader.vMatrix = this.vMatrices[viewport];
+                                    shader.pMatrix = this.pMatrices[viewport];
+                                    shader.applyView();
                                     this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                                 }
                                 if (this.isPickingEnabled && axes.isLabelPickingEnabled[axisId]) {
-                                    sdfShader.isPickShader = true;
-                                    sdfShader.pMatrix = this.pickPMatrix;
-                                    sdfShader.vMatrix = this.pickVMatrix;
-                                    sdfShader.applyView();
+                                    shader.isPickShader = true;
+                                    shader.pMatrix = this.pickPMatrix;
+                                    shader.vMatrix = this.pickVMatrix;
+                                    shader.applyView();
                                     shaderResources.bindFramebuffer(this.pickFramebuffer);
                                     this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
                                     this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
@@ -17001,23 +17362,23 @@ f 5/6/6 1/12/6 8/11/6`;
                             indexCount = axes.getTitleIndexCount(axisId);
                             if (indexCount > 0) {
                                 indexOffset = axes.getTitleIndexOffset(axisId);
-                                sdfShader.mMatrix = axes.getTitleMMatrix(edgeId);
-                                sdfShader.applyModel();
-                                sdfShader.isPickShader = false;
+                                shader.mMatrix = axes.getTitleMMatrix(edgeId);
+                                shader.applyModel();
+                                shader.isPickShader = false;
                                 for (let i = 0; i < this.viewportCount; i++) {
                                     const viewport = i + this.viewportOffset;
                                     shaderResources.bindFramebuffer(this.framebuffers[viewport]);
                                     this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                                    sdfShader.vMatrix = this.vMatrices[viewport];
-                                    sdfShader.pMatrix = this.pMatrices[viewport];
-                                    sdfShader.applyView();
+                                    shader.vMatrix = this.vMatrices[viewport];
+                                    shader.pMatrix = this.pMatrices[viewport];
+                                    shader.applyView();
                                     this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                                 }
                                 if (this.isPickingEnabled && axes.isTitlePickingEnabled[axisId]) {
-                                    sdfShader.isPickShader = true;
-                                    sdfShader.pMatrix = this.pickPMatrix;
-                                    sdfShader.vMatrix = this.pickVMatrix;
-                                    sdfShader.applyView();
+                                    shader.isPickShader = true;
+                                    shader.pMatrix = this.pickPMatrix;
+                                    shader.vMatrix = this.pickVMatrix;
+                                    shader.applyView();
                                     shaderResources.bindFramebuffer(this.pickFramebuffer);
                                     this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
                                     this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
@@ -17027,23 +17388,23 @@ f 5/6/6 1/12/6 8/11/6`;
                         indexCount = axes.getHeadingIndexCount(axisId);
                         if (indexCount > 0 && axes.isHeadingVisible[edgeId]) {
                             indexOffset = axes.getHeadingIndexOffset(axisId);
-                            sdfShader.mMatrix = axes.getHeadingMMatrix(edgeId);
-                            sdfShader.applyModel();
-                            sdfShader.isPickShader = false;
+                            shader.mMatrix = axes.getHeadingMMatrix(edgeId);
+                            shader.applyModel();
+                            shader.isPickShader = false;
                             for (let i = 0; i < this.viewportCount; i++) {
                                 const viewport = i + this.viewportOffset;
                                 shaderResources.bindFramebuffer(this.framebuffers[viewport]);
                                 this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                                sdfShader.vMatrix = this.vMatrices[viewport];
-                                sdfShader.pMatrix = this.pMatrices[viewport];
-                                sdfShader.applyView();
+                                shader.vMatrix = this.vMatrices[viewport];
+                                shader.pMatrix = this.pMatrices[viewport];
+                                shader.applyView();
                                 this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                             }
                             if (this.isPickingEnabled && axes.isHeadingPickingEnabled[axisId]) {
-                                sdfShader.isPickShader = true;
-                                sdfShader.pMatrix = this.pickPMatrix;
-                                sdfShader.vMatrix = this.pickVMatrix;
-                                sdfShader.applyView();
+                                shader.isPickShader = true;
+                                shader.pMatrix = this.pickPMatrix;
+                                shader.vMatrix = this.pickVMatrix;
+                                shader.applyView();
                                 shaderResources.bindFramebuffer(this.pickFramebuffer);
                                 this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
                                 this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
@@ -17168,6 +17529,8 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class ControllerVisual {
+        get isInitialized() { return this._isInitialized && this._modelShader.isInitialized && this._colorShader.isInitialized; }
+        get controller() { return this._controller; }
         constructor(core, main, controller) {
             this._core = core;
             this._main = main;
@@ -17180,8 +17543,6 @@ f 5/6/6 1/12/6 8/11/6`;
             this.rayMMatrix = create$4();
             this.isVisible = true;
         }
-        get isInitialized() { return this._isInitialized && this._modelShader.isInitialized && this._colorShader.isInitialized; }
-        get controller() { return this._controller; }
         initializeContext(gl) {
             if (!this._controller.isInitialized) {
                 this._controller.initialize();
@@ -17256,6 +17617,8 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class ImageVisual$1 {
+        get isInitialized() { return this._isInitialized && this._main.textureShader.isInitialized; }
+        get image() { return this._image; }
         constructor(core, main, image) {
             this._core = core;
             this._main = main;
@@ -17264,8 +17627,6 @@ f 5/6/6 1/12/6 8/11/6`;
             this.mMatrix = create$4();
             this.isVisible = true;
         }
-        get isInitialized() { return this._isInitialized && this._main.textureShader.isInitialized; }
-        get image() { return this._image; }
         initializeContext(gl) {
             if (!this._image.isInitialized) {
                 this._image.initialize();
@@ -17328,6 +17689,7 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class LabelVisualBase$1 {
+        get isInitialized() { return this._isInitialized && this._main.sdfTextShader.isInitialized && this._main.fonts[this._label.font.name].isInitialized; }
         constructor(core, main, label) {
             this._core = core;
             this._main = main;
@@ -17337,7 +17699,6 @@ f 5/6/6 1/12/6 8/11/6`;
             this.mMatrix = create$4();
             this.isVisible = true;
         }
-        get isInitialized() { return this._isInitialized && this._main.sdfShader.isInitialized && this._main.fonts[this._label.font.name].isInitialized; }
         initializeContext(gl) {
             if (!this._label.isInitialized) {
                 this._label.initialize();
@@ -17365,7 +17726,7 @@ f 5/6/6 1/12/6 8/11/6`;
             if (this.isInitialized) {
                 const indexCount = this._label.indexCount;
                 if (indexCount > 0) {
-                    const shader = this._main.sdfShader;
+                    const shader = this._main.sdfTextShader;
                     const fontVisual = this._main.fonts[this._label.font.name];
                     shader.vertexBuffer = this._vertexBuffer;
                     shader.indexBuffer = this._indexBuffer;
@@ -17406,18 +17767,18 @@ f 5/6/6 1/12/6 8/11/6`;
         }
     }
     class LabelVisual$1 extends LabelVisualBase$1 {
-        constructor(core, main, label) {
-            super(core, main, label);
-        }
         get label() { return this._label; }
         set text(value) { this._label.text = value; }
         get text() { return this._label.text; }
-    }
-    class LabelSetVisual$1 extends LabelVisualBase$1 {
         constructor(core, main, label) {
             super(core, main, label);
         }
+    }
+    class LabelSetVisual$1 extends LabelVisualBase$1 {
         get label() { return this._label; }
+        constructor(core, main, label) {
+            super(core, main, label);
+        }
     }
 
     /*!
@@ -17425,13 +17786,13 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class FontVisual$1 {
+        get isInitialized() { return this._isInitialized; }
+        get font() { return this._font; }
         constructor(core, font) {
             this._core = core;
             this._font = font;
             font.hasChangedCallback = () => { this._hasChanged = true; };
         }
-        get isInitialized() { return this._isInitialized; }
-        get font() { return this._font; }
         initializeContext(gl) {
             this._gl = gl;
             this._isInitialized = true;
@@ -17476,30 +17837,18 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class Main$1 extends RendererBase {
-        constructor(options) {
-            super(options);
-            this._config = new Config$1();
-            this._quad = new Quad$1();
-            this._lasso = new Lasso$2();
-            this._pickedPixels = new Uint8Array(4);
-            this._pickedIdColor = create$2();
-            this._mat3 = create$5();
-            this._directionToCamera = create$3();
-            this._directionToLight = create$3();
-            this._halfAngle = create$3();
-            this._cameraPosition = create$3();
-            this._modelPosition = create$3();
-        }
         get shaderResources() { return this._shaderResources; }
         get colorShader() { return this._colorShader; }
         get textureShader() { return this._textureShader; }
         get lassoShader() { return this._lassoShader; }
         get modelShader() { return this._modelShader; }
-        get sdfShader() { return this._sdfShader; }
+        get sdfTextShader() { return this._sdfTextShader; }
         get gridShader() { return this._gridShader; }
         get blockShader() { return this._blockShader; }
         get sphereShader() { return this._sphereShader; }
         get cyclinderShader() { return this._cylinderShader; }
+        get hexPrismShader() { return this._hexPrismShader; }
+        get sdfShader() { return this._sdfShader; }
         get anaglyphShader() { return this._anaglyphShader; }
         get currentAxes() { return this._isAxes1Current ? this._axes1 : this._axes2; }
         set currentAxes(value) { if (this._isAxes1Current) {
@@ -17516,6 +17865,21 @@ f 5/6/6 1/12/6 8/11/6`;
             this._axes1 = value;
         } }
         get config() { return this._config; }
+        constructor(options) {
+            super(options);
+            this._config = new Config$1();
+            this._quad = new Quad$1();
+            this._lasso = new Lasso$2();
+            this._pickedPixels = new Uint8Array(4);
+            this._pickedIdColor = create$2();
+            this._mat3 = create$5();
+            this._directionToCamera = create$3();
+            this._directionToLight = create$3();
+            this._halfAngle = create$3();
+            this._cameraPosition = create$3();
+            this._modelPosition = create$3();
+            this.depthEnabled = true;
+        }
         get isSupported() {
             return this._createContext(document.createElement("canvas")) !== null;
         }
@@ -17529,13 +17893,14 @@ f 5/6/6 1/12/6 8/11/6`;
             this._textureShader = new Texture$1(this._core, this);
             this._lassoShader = new Lasso$3(this._core, this);
             this._modelShader = new Model(this._core, this);
-            this._sdfShader = new SdfText$1(this._core, this);
+            this._sdfTextShader = new SdfText$1(this._core, this);
             this._gridShader = new PickGrid$1(this._core, this);
             this._anaglyphShader = new Anaglyph(this._core, this);
             this._blockShader = new UnitBlock$1(this._core, this);
             this._sphereShader = new UnitSphere$1(this._core, this);
             this._cylinderShader = new UnitCylinder$1(this._core, this);
             this._hexPrismShader = new UnitHexPrism(this._core, this);
+            this._sdfShader = new UnitSdf$1(this._core, this);
             this._initializeContext(this._createContext(this._canvas));
             this._canvas.addEventListener("webglcontextlost", (event) => {
                 this._core.log.write(LogLevel.warn, "WebGL context lost");
@@ -17560,13 +17925,14 @@ f 5/6/6 1/12/6 8/11/6`;
             this._textureShader.initializeContext(this._gl);
             this._lassoShader.initializeContext(this._gl);
             this._modelShader.initializeContext(this._gl);
-            this._sdfShader.initializeContext(this._gl);
+            this._sdfTextShader.initializeContext(this._gl);
             this._gridShader.initializeContext(this._gl);
             this._anaglyphShader.initializeContext(this._gl);
             this._blockShader.initializeContext(this._gl);
             this._sphereShader.initializeContext(this._gl);
             this._cylinderShader.initializeContext(this._gl);
             this._hexPrismShader.initializeContext(this._gl);
+            this._sdfShader.initializeContext(this._gl);
             this._quad.initializeContext(this._gl);
             this._lasso.initializeContext(this._gl);
             this._debugAxesVisual.initializeContext(this._gl);
@@ -17777,7 +18143,12 @@ f 5/6/6 1/12/6 8/11/6`;
             return this._canvas.toDataURL(mimeType);
         }
         render(elapsedTime, xrFrame) {
-            this._gl.enable(this._gl.DEPTH_TEST);
+            if (this.depthEnabled) {
+                this._gl.enable(this._gl.DEPTH_TEST);
+            }
+            else {
+                this._gl.disable(this._gl.DEPTH_TEST);
+            }
             this._gl.enable(this._gl.CULL_FACE);
             this._gl.disable(this._gl.BLEND);
             if (this.isPickingEnabled) {
@@ -17808,12 +18179,6 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._debugAxesVisual.framebuffers = this._framebuffers;
                 this._debugAxesVisual.render(elapsedTime, xrFrame);
             }
-            for (let i = 0; i < this.transitionBuffers.length; i++) {
-                const transitionBuffer = this.transitionBuffers[i];
-                if (transitionBuffer.isVisible) {
-                    this._renderTransitionBuffer(xrFrame, transitionBuffer);
-                }
-            }
             const axesVisuals = this.axesVisibility == AxesVisibility.current ? this.currentAxes : this.axesVisibility == AxesVisibility.previous ? this.previousAxes : null;
             if (axesVisuals) {
                 for (let i = 0; i < axesVisuals.length; i++) {
@@ -17824,6 +18189,12 @@ f 5/6/6 1/12/6 8/11/6`;
                         axesVisual.framebuffers = this._framebuffers;
                         axesVisual.render(elapsedTime, xrFrame);
                     }
+                }
+            }
+            for (let i = 0; i < this.transitionBuffers.length; i++) {
+                const transitionBuffer = this.transitionBuffers[i];
+                if (transitionBuffer.isVisible) {
+                    this._renderTransitionBuffer(xrFrame, transitionBuffer);
                 }
             }
             if (this.areLabelsVisible) {
@@ -17884,7 +18255,7 @@ f 5/6/6 1/12/6 8/11/6`;
                     for (let i = 0; i < length; i += row) {
                         flipped.set(data.subarray(i, i + row), end - i);
                     }
-                    this.capturePickImageCallback(data, this._core.config.pickWidth, this._core.config.pickHeight);
+                    this.capturePickImageCallback(flipped, this._core.config.pickWidth, this._core.config.pickHeight);
                 }
             }
             else {
@@ -17936,6 +18307,8 @@ f 5/6/6 1/12/6 8/11/6`;
             const previousBuffer = transitionBuffer.previousBuffer;
             const currentPalette = transitionBuffer.currentPalette;
             const previousPalette = transitionBuffer.previousPalette;
+            const currentAtlas = transitionBuffer.currentAtlas;
+            const previousAtlas = transitionBuffer.previousAtlas;
             const unitType = transitionBuffer.unitType === undefined ? currentBuffer.unitType : transitionBuffer.unitType;
             const id = currentBuffer.lookup[transitionBuffer.pickIdLookup[this._pickedId]];
             const hoverId = id > -1 ? UnitVertex.getIdHover(currentBuffer.dataView, id) : -1;
@@ -18184,6 +18557,71 @@ f 5/6/6 1/12/6 8/11/6`;
                     this._shaderResources.ANGLE_instanced_arrays.drawElementsInstancedANGLE(this._gl.TRIANGLE_STRIP, this._hexPrismShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
                 }
             }
+            else if (this._sdfShader.isInitialized && unitType == UnitType.sdf) {
+                this._sdfShader.instanceBuffer = currentBuffer.vertexBuffer;
+                this._sdfShader.previousInstanceBuffer = previousBuffer.vertexBuffer;
+                this._sdfShader.paletteTexture = currentPalette.texture || currentPalette.defaultTexture;
+                this._sdfShader.previousPaletteTexture = previousPalette.texture || previousPalette.defaultTexture;
+                this._sdfShader.sdfTexture = currentAtlas.texture || currentAtlas.defaultTexture;
+                this._sdfShader.previousSdfTexture = previousAtlas.texture || previousAtlas.defaultTexture;
+                this._sdfShader.prepare();
+                this._sdfShader.mMatrix = this.mMatrix;
+                this._sdfShader.time = this.transitionTime;
+                this._sdfShader.duration = this._core.config.transitionDuration / (this._core.config.transitionDuration + this._core.config.transitionStaggering);
+                this._sdfShader.rangeMin = 0;
+                this._sdfShader.rangeMax = transitionBuffer.length - 1;
+                this._sdfShader.hover = hoverId;
+                this._sdfShader.active = activeId;
+                this._sdfShader.selectedColor = this._core.config.selectionColor;
+                this._sdfShader.hoverColor = this._core.config.hoverColor;
+                this._sdfShader.activeColor = this._core.config.activeColor;
+                this._sdfShader.highlightMode = this._core.config.highlightMode;
+                this._sdfShader.sdfBuffer = (this.sdfBuffer || this._core.config.sdfBuffer) / 0xff;
+                this._sdfShader.sdfBackgroundColor = this.sdfBackgroundColor || this._core.config.backgroundColor;
+                this._sdfShader.specularPower = this._config.specularPower;
+                this._sdfShader.specularIntensity = this._config.specularIntensity;
+                this._sdfShader.apply();
+                this._sdfShader.isPickShader = false;
+                for (let i = 0; i < this._viewportCount; i++) {
+                    const viewport = i + this._viewportOffset;
+                    this._shaderResources.bindFramebuffer(this._framebuffers[viewport]);
+                    this._gl.viewport(this._viewports[viewport].x, this._viewports[viewport].y, this._viewports[viewport].width, this._viewports[viewport].height);
+                    const vMatrix = this.vMatrices[viewport];
+                    if (xrFrame) {
+                        set$3(this._modelPosition, this.mMatrix[12], this.mMatrix[13], this.mMatrix[14]);
+                        subtract(this._directionToLight, this._config.lightPosition, this._modelPosition);
+                        normalize$3(this._directionToLight, this._directionToLight);
+                        const inverseVMatrix = this.inverseVMatrices[viewport];
+                        set$3(this._cameraPosition, inverseVMatrix[12], inverseVMatrix[13], inverseVMatrix[14]);
+                        subtract(this._directionToCamera, this._cameraPosition, this._modelPosition);
+                        normalize$3(this._directionToCamera, this._directionToCamera);
+                        add(this._halfAngle, this._directionToLight, this._directionToCamera);
+                        normalize$3(this._halfAngle, this._halfAngle);
+                        fromMat4(this._mat3, vMatrix);
+                        transformMat3(this._directionToLight, this._directionToLight, this._mat3);
+                        transformMat3(this._halfAngle, this._halfAngle, this._mat3);
+                        this._sdfShader.directionToLight = this._directionToLight;
+                        this._sdfShader.halfAngle = this._halfAngle;
+                    }
+                    else {
+                        this._sdfShader.directionToLight = this._config.directionToLight;
+                        this._sdfShader.halfAngle = this._config.halfAngle;
+                    }
+                    this._sdfShader.vMatrix = vMatrix;
+                    this._sdfShader.pMatrix = this.pMatrices[viewport];
+                    this._sdfShader.applyView();
+                    this._shaderResources.ANGLE_instanced_arrays.drawElementsInstancedANGLE(this._gl.TRIANGLE_STRIP, this._sdfShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
+                }
+                if (this.isPickingEnabled && transitionBuffer.isPickingEnabled) {
+                    this._sdfShader.isPickShader = true;
+                    this._sdfShader.pMatrix = this.pickPMatrix;
+                    this._sdfShader.vMatrix = this.pickVMatrix;
+                    this._sdfShader.applyView();
+                    this._shaderResources.bindFramebuffer(this._pickFrameBuffer);
+                    this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
+                    this._shaderResources.ANGLE_instanced_arrays.drawElementsInstancedANGLE(this._gl.TRIANGLE_STRIP, this._sdfShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
+                }
+            }
         }
     }
 
@@ -18210,6 +18648,35 @@ f 5/6/6 1/12/6 8/11/6`;
             gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
             this._indexCount = indices.length;
             this._isInitialized = true;
+        }
+    }
+
+    /*!
+     * Copyright (c) Microsoft Corporation.
+     * Licensed under the MIT License.
+     */
+    class Atlas extends AtlasBase {
+        get texture() { return this._texture; }
+        get defaultTexture() { return this._defaultTexture; }
+        initializeContext(core, gl) {
+            this._gl = gl;
+            this._defaultTexture = TextureHelper.create(gl, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, gl.NEAREST, new Uint8Array([0xff, 0xff, 0xff, 0xff]));
+            this._updateTexture();
+        }
+        update() {
+            super.update();
+            if (this._changed) {
+                this._changed = false;
+                this._updateTexture();
+            }
+        }
+        _updateTexture() {
+            if (this._imageData) {
+                this._texture = TextureHelper.fromImage(this._gl, this._imageData, false, this._gl.LINEAR);
+            }
+            else {
+                this._texture = null;
+            }
         }
     }
 
@@ -18251,10 +18718,10 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class Buffer extends BufferBase {
+        get vertexBuffer() { return this._vertexBuffer; }
         constructor(core, ids) {
             super(core, ids);
         }
-        get vertexBuffer() { return this._vertexBuffer; }
         initializeContext(gl) {
             this._gl = gl;
             this._vertexBuffer = gl.createBuffer();
@@ -18273,13 +18740,15 @@ f 5/6/6 1/12/6 8/11/6`;
     }
     class TransitionBuffer extends TransitionBufferBase {
         constructor(core, ids) {
-            super(core, ids, Buffer, Palette);
+            super(core, ids, Buffer, Palette, Atlas);
         }
         initializeContext(gl) {
             this._buffer1.initializeContext(gl);
             this._buffer2.initializeContext(gl);
             this._palette1.initializeContext(this._core, gl);
             this._palette2.initializeContext(this._core, gl);
+            this._atlas1.initializeContext(this._core, gl);
+            this._atlas2.initializeContext(this._core, gl);
             this._isInitialized = true;
         }
     }
@@ -18289,14 +18758,6 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class Config extends RendererConfig {
-        constructor() {
-            super();
-            this._rotation = create$1();
-            this.keyLightPosition = create$3();
-            this.fillLight1Position = create$3();
-            this.fillLight2Position = create$3();
-            this.reset();
-        }
         get keyLightAltitude() { return this._keyLightAltitude; }
         set keyLightAltitude(value) {
             this._keyLightAltitude = value;
@@ -18331,6 +18792,14 @@ f 5/6/6 1/12/6 8/11/6`;
         set fillLight2Azimuth(value) {
             this._fillLight2Azimuth = value;
             this._updateLights();
+        }
+        constructor() {
+            super();
+            this._rotation = create$1();
+            this.keyLightPosition = create$3();
+            this.fillLight1Position = create$3();
+            this.fillLight2Position = create$3();
+            this.reset();
         }
         _updateLights() {
             this._updateLight(this._keyLightAltitude, this._keyLightAzimuth, this._keyLightDistance, this.keyLightPosition);
@@ -18422,20 +18891,18 @@ f 5/6/6 1/12/6 8/11/6`;
         "texture.fragment.fx": "#version 300 es\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nuniform sampler2D uSampler;\nin mediump vec2 vTexCoord;\nin vec3 vViewPosition;\nin vec3 vNormal;\nlayout(location = 0) out vec4 myPosition;\nlayout(location = 1) out vec4 myColor;\nlayout(location = 2) out vec4 myNormal;\nvoid main(void)\n{\nmyPosition.xyz = vViewPosition;\nmyColor.xyz = pow(texture(uSampler, vTexCoord).xyz, INV_GAMMA);\nmyColor.w = 0.0;\nmyNormal.xyz = vNormal;\nmyNormal.w = 0.0;\n}\n",
         "texture.vertex.fx": "#version 300 es\nin vec3 aPosition;\nin mediump vec3 aNormal;\nin mediump vec2 aTexCoord;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nout vec3 vViewPosition;\nout mediump vec3 vNormal;\nout mediump vec2 vTexCoord;\nvoid main(void)\n{\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvNormal = normalize((mvMatrix * vec4(aNormal, 0.0)).xyz);\nvec4 viewPosition = mvMatrix * vec4(aPosition, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\nvTexCoord = aTexCoord;\n}\n",
         "unitblock.fragment.fx": "#version 300 es\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\n#include \"intersect.include.fx\"\nin lowp vec4 vIdColor;\nin lowp vec2 vVertexColor;\nin lowp float vVertexSelected;\nin float vAnimation;\nin lowp float vHover;\nin lowp float vActive;\nin mediump vec3 vModelPosition;\nin vec3 vViewPosition;\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nlayout(location = 0) out vec4 myPosition;\nlayout(location = 1) out vec4 myColor;\nlayout(location = 2) out vec4 myNormal;\nvoid main(void)\n{\nif (uPick)\n{\nmyPosition = vIdColor;\n}\nelse\n{\nmyPosition.xyz = vViewPosition;\nvec3 previousColor = texture(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\ncolor = mix(previousColor, color, vAnimation);\nfloat distanceSquared = (0.75 - dot2(vModelPosition)) * 2.0;\nfloat emissive = max(vVertexSelected, 0.0);\nemissive += max(vHover, vActive);\nemissive *= distanceSquared;\nmyColor.w = emissive;\nmyPosition.w = emissive;\nvec3 normal = normalize(cross(dFdx(vViewPosition), dFdy(vViewPosition)));\nmyNormal.xyz = normal;\nfloat specular = 1.0;\nmyNormal.w = specular;\nmyColor.xyz = color;\n}\n}\n",
-        "unitblock.vertex.fx": "#version 300 es\n#include \"quat.include.fx\"\nin mediump vec3 aPosition;\nin vec3 aTranslation;\nin vec3 aPreviousTranslation;\nin mediump vec4 aRotation;\nin mediump vec4 aPreviousRotation;\nin lowp vec2 aColor;\nin lowp vec2 aPreviousColor;\nin vec3 aScale;\nin vec3 aPreviousScale;\nin mediump float aStaggerOrder;\nin float aId;\nin float aOrder;\nin lowp float aSelected;\nin lowp float aPreviousSelected;\nin lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nout lowp vec4 vIdColor;\nout lowp vec2 vVertexColor;\nout lowp float vVertexSelected;\nout highp float vAnimation;\nout lowp float vHover;\nout lowp float vActive;\nout mediump vec3 vModelPosition;\nout vec3 vViewPosition;\nvoid main(void)\n{\nif (aOrder < uOrderFrom || aOrder > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvModelPosition = vec3(0.0);\ngl_Position = vec4(0.0);\nvViewPosition = vec3(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nvModelPosition = aPosition;\nfloat startTime = aStaggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvec3 position = aPosition * scale;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\n}\nposition += mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvec4 viewPosition = mvMatrix * vec4(position, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\n}\n}\n",
+        "unitblock.vertex.fx": "#version 300 es\n#include \"quat.include.fx\"\nin mediump vec3 aPosition;\nin vec3 aTranslation;\nin vec3 aPreviousTranslation;\nin mediump vec4 aRotation;\nin mediump vec4 aPreviousRotation;\nin lowp vec2 aColor;\nin lowp vec2 aPreviousColor;\nin vec3 aScale;\nin vec3 aPreviousScale;\nin vec2 aOrder;\nin float aId;\nin lowp float aSelected;\nin lowp float aPreviousSelected;\nin lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nout lowp vec4 vIdColor;\nout lowp vec2 vVertexColor;\nout lowp float vVertexSelected;\nout highp float vAnimation;\nout lowp float vHover;\nout lowp float vActive;\nout mediump vec3 vModelPosition;\nout vec3 vViewPosition;\nvoid main(void)\n{\nif (aOrder.x < uOrderFrom || aOrder.x > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvModelPosition = vec3(0.0);\ngl_Position = vec4(0.0);\nvViewPosition = vec3(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nvModelPosition = aPosition;\nfloat staggerOrder = aOrder.y;\nfloat startTime = staggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvec3 position = aPosition * scale;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\n}\nposition += mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvec4 viewPosition = mvMatrix * vec4(position, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\n}\n}\n",
         "unitcylinder.fragment.fx": "#version 300 es\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\n#include \"intersect.include.fx\"\nin lowp vec4 vIdColor;\nin lowp vec2 vVertexColor;\nin lowp float vVertexSelected;\nin float vAnimation;\nin lowp float vHover;\nin lowp float vActive;\nin vec3 vViewPosition;\nin vec4 vCircle1;\nin vec4 vCircle2;\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform bool uShadow;\nlayout(location = 0) out vec4 myPosition;\nlayout(location = 1) out vec4 myColor;\nlayout(location = 2) out vec4 myNormal;\nvoid main(void)\n{\nvec3 rd = normalize(vViewPosition);\nvec3 ro = vec3(0.0);\nvec4 tnor = iCappedCone(ro, rd, vCircle1.xyz, vCircle2.xyz, vCircle1.w, vCircle2.w, uShadow ? -1.0 : 1.0);\nfloat t = tnor.x;\nif (t < 0.0)\n{\ndiscard;\n}\nvec3 viewPosition = rd * t;\nfloat ndcDepth = DEPTH_A + DEPTH_B / viewPosition.z;\ngl_FragDepth = ndcDepth * 0.5 + 0.5;\nif (uPick)\n{\nmyPosition = vIdColor;\n}\nelse\n{\nmyPosition.xyz = viewPosition;\nvec3 previousColor = texture(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\ncolor = mix(previousColor, color, vAnimation);\nvec3 normal = tnor.yzw;\nmyNormal.xyz = normal;\nfloat distanceSquared = dot(normal, rd);\ndistanceSquared *= distanceSquared;\nfloat emissive = max(vVertexSelected, 0.0);\nemissive += max(vHover, vActive);\nemissive *= distanceSquared;\nmyColor.w = emissive;\nmyPosition.w = emissive;\nfloat specular = 1.0;\nmyNormal.w = specular;\nmyColor.xyz = color;\n}\n}\n",
-        "unitcylinder.vertex.fx": "#version 300 es\n#include \"common.include.fx\"\n#include \"quat.include.fx\"\nin mediump vec3 aPosition;\nin vec3 aTranslation;\nin vec3 aPreviousTranslation;\nin mediump vec4 aRotation;\nin mediump vec4 aPreviousRotation;\nin lowp vec2 aColor;\nin lowp vec2 aPreviousColor;\nin vec3 aScale;\nin vec3 aPreviousScale;\nin float aId;\nin float aOrder;\nin mediump float aStaggerOrder;\nin lowp float aSelected;\nin lowp float aPreviousSelected;\nin lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nuniform vec3 uIdentityRotation;\nout lowp vec4 vIdColor;\nout lowp vec2 vVertexColor;\nout lowp float vVertexSelected;\nout highp float vAnimation;\nout lowp float vHover;\nout lowp float vActive;\nout vec3 vViewPosition;\nout vec4 vCircle1;\nout vec4 vCircle2;\nvoid main(void)\n{\nif (aOrder < uOrderFrom || aOrder > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvViewPosition = vec3(0.0);\nvCircle1 = vec4(0.0);\nvCircle2 = vec4(0.0);\ngl_Position = vec4(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nfloat startTime = aStaggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 translation = mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvec3 viewCenter = (mvMatrix * vec4(translation, 1.0)).xyz;\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvec3 position = aPosition;\nposition.xz *= max(scale.x, scale.z);\nposition.y *= scale.y;\nvec3 direction = IDENTITY_ROTATION;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\ndirection = rotate(direction, quat);\n}\nvec3 viewDirection = (mvMatrix * vec4(direction, 0.0)).xyz;\nvec3 h = viewDirection * scale.y * 0.5;\nfloat r1 = length(viewDirection) * 0.5;\nfloat r2 = r1 * scale.z;\nr1 *= scale.x;\nvCircle1 = vec4(viewCenter - h, r1);\nvCircle2 = vec4(viewCenter + h, r2);\nvec4 viewPosition = mvMatrix * vec4(position + translation, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\n}\n}\n",
+        "unitcylinder.vertex.fx": "#version 300 es\n#include \"common.include.fx\"\n#include \"quat.include.fx\"\nin mediump vec3 aPosition;\nin vec3 aTranslation;\nin vec3 aPreviousTranslation;\nin mediump vec4 aRotation;\nin mediump vec4 aPreviousRotation;\nin lowp vec2 aColor;\nin lowp vec2 aPreviousColor;\nin vec3 aScale;\nin vec3 aPreviousScale;\nin float aId;\nin vec2 aOrder;\nin lowp float aSelected;\nin lowp float aPreviousSelected;\nin lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nuniform vec3 uIdentityRotation;\nout lowp vec4 vIdColor;\nout lowp vec2 vVertexColor;\nout lowp float vVertexSelected;\nout highp float vAnimation;\nout lowp float vHover;\nout lowp float vActive;\nout vec3 vViewPosition;\nout vec4 vCircle1;\nout vec4 vCircle2;\nvoid main(void)\n{\nif (aOrder.x < uOrderFrom || aOrder.x > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvViewPosition = vec3(0.0);\nvCircle1 = vec4(0.0);\nvCircle2 = vec4(0.0);\ngl_Position = vec4(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nfloat staggerOrder = aOrder.y;\nfloat startTime = staggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 translation = mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvec3 viewCenter = (mvMatrix * vec4(translation, 1.0)).xyz;\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvec3 position = aPosition;\nposition.xz *= max(scale.x, scale.z);\nposition.y *= scale.y;\nvec3 direction = IDENTITY_ROTATION;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\ndirection = rotate(direction, quat);\n}\nvec3 viewDirection = (mvMatrix * vec4(direction, 0.0)).xyz;\nvec3 h = viewDirection * scale.y * 0.5;\nfloat r1 = length(viewDirection) * 0.5;\nfloat r2 = r1 * scale.z;\nr1 *= scale.x;\nvCircle1 = vec4(viewCenter - h, r1);\nvCircle2 = vec4(viewCenter + h, r2);\nvec4 viewPosition = mvMatrix * vec4(position + translation, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\n}\n}\n",
+        "unitsdf.fragment.fx": "#version 300 es\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\n#include \"intersect.include.fx\"\nin lowp vec4 vIdColor;\nin lowp vec2 vVertexColor;\nin lowp float vVertexSelected;\nin float vAnimation;\nin lowp float vHover;\nin lowp float vActive;\nin mediump vec2 vTexCoord;\nin mediump vec2 vPreviousTexCoord;\nin mediump vec3 vModelPosition;\nin vec3 vViewPosition;\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform sampler2D uSampler1;\nuniform sampler2D uPreviousSampler1;\nuniform bool uPick;\nlayout(location = 0) out vec4 myPosition;\nlayout(location = 1) out vec4 myColor;\nlayout(location = 2) out vec4 myNormal;\nvoid main(void)\n{\nfloat uBorderWidth = 0.0 / 255.0;\nfloat uBuffer = 192.0 / 255.0;\nvec3 uBorderColor = vec3(1.0, 1.0, 1.0);\nfloat distance = mix(texture(uPreviousSampler1, vPreviousTexCoord).r, texture(uSampler1, vTexCoord).r, vAnimation);\nif (distance < uBuffer - uBorderWidth) {\ndiscard;\n}\nif (uPick)\n{\nmyPosition = vIdColor;\n}\nelse\n{\nmyPosition.xyz = vViewPosition;\nvec3 previousColor = texture(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\ncolor = mix(previousColor, color, vAnimation);\nfloat distanceSquared = (0.75 - dot2(vModelPosition)) * 2.0;\nfloat emissive = max(vVertexSelected, 0.0);\nemissive += max(vHover, vActive);\nemissive *= distanceSquared;\nmyColor.w = emissive;\nmyPosition.w = emissive;\nvec3 normal = normalize(cross(dFdx(vViewPosition), dFdy(vViewPosition)));\nmyNormal.xyz = normal;\nfloat specular = 1.0;\nmyNormal.w = specular;\nvec3 uBorderColor = vec3(1.0, 1.0, 1.0);\nfloat uGamma = 0.0;\nfloat gamma = fwidth(distance);\nfloat value = smoothstep(uBuffer - gamma, uBuffer + gamma, distance);\nmyColor.xyz = mix(uBorderColor, color, value);\n}\n}\n",
+        "unitsdf.vertex.fx": "#version 300 es\n#include \"quat.include.fx\"\nin mediump vec3 aPosition;\nin vec3 aTranslation;\nin vec3 aPreviousTranslation;\nin mediump vec4 aRotation;\nin mediump vec4 aPreviousRotation;\nin mediump vec4 aTexCoord;\nin mediump vec4 aPreviousTexCoord;\nin lowp vec2 aColor;\nin lowp vec2 aPreviousColor;\nin vec3 aScale;\nin vec3 aPreviousScale;\nin vec2 aOrder;\nin float aId;\nin lowp float aSelected;\nin lowp float aPreviousSelected;\nin lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nout lowp vec4 vIdColor;\nout lowp vec2 vVertexColor;\nout lowp float vVertexSelected;\nout highp float vAnimation;\nout lowp float vHover;\nout lowp float vActive;\nout mediump vec3 vModelPosition;\nout mediump vec2 vTexCoord;\nout mediump vec2 vPreviousTexCoord;\nout vec3 vViewPosition;\nvoid main(void)\n{\nif (aOrder.x < uOrderFrom || aOrder.x > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvModelPosition = vec3(0.0);\ngl_Position = vec4(0.0);\nvViewPosition = vec3(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nvModelPosition = aPosition;\nfloat staggerOrder = aOrder.y;\nfloat startTime = staggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvec3 position = aPosition * scale;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\n}\nposition += mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvec4 viewPosition = mvMatrix * vec4(position, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\nvPreviousTexCoord.x = aPosition.x < 0.0 ? aPreviousTexCoord.x : aPreviousTexCoord.z;\nvPreviousTexCoord.y = aPosition.y > 0.0 ? aPreviousTexCoord.y : aPreviousTexCoord.w;\nvTexCoord.x = aPosition.x < 0.0 ? aTexCoord.x : aTexCoord.z;\nvTexCoord.y = aPosition.y > 0.0 ? aTexCoord.y : aTexCoord.w;\n}\n}\n",
         "unitsphere.fragment.fx": "#version 300 es\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\n#include \"intersect.include.fx\"\nin lowp vec4 vIdColor;\nin lowp vec2 vVertexColor;\nin lowp float vVertexSelected;\nin float vAnimation;\nin lowp float vHover;\nin lowp float vActive;\nin vec3 vViewPosition;\nin vec3 vViewCenter;\nin mediump float vRadius;\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform bool uShadow;\nlayout(location = 0) out vec4 myPosition;\nlayout(location = 1) out vec4 myColor;\nlayout(location = 2) out vec4 myNormal;\nvoid main(void)\n{\nvec3 rd = normalize(vViewPosition);\nvec3 ro = vec3(0.0);\nvec4 s = vec4(vViewCenter, vRadius);\nfloat t = sphIntersect(ro, rd, s, uShadow ? -1.0 : 1.0);\nif (t < 0.0)\n{\ndiscard;\n}\nvec3 viewPosition = rd * t;\nfloat ndcDepth = DEPTH_A + DEPTH_B / viewPosition.z;\ngl_FragDepth = ndcDepth * 0.5 + 0.5;\nif (uPick)\n{\nmyPosition = vIdColor;\n}\nelse\n{\nmyPosition.xyz = viewPosition;\nvec3 previousColor = texture(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\ncolor = mix(previousColor, color, vAnimation);\nvec3 normal = (viewPosition - vViewCenter) / s.w;\nmyNormal.xyz = normal;\nfloat distanceSquared = dot(normal, rd);\ndistanceSquared *= distanceSquared;\nfloat emissive = max(vVertexSelected, 0.0);\nemissive += max(vHover, vActive);\nemissive *= distanceSquared;\nmyColor.w = emissive;\nmyPosition.w = emissive;\nfloat specular = 1.0;\nmyNormal.w = specular;\nmyColor.xyz = color;\n}\n}\n",
-        "unitsphere.vertex.fx": "#version 300 es\n#include \"common.include.fx\"\nin mediump vec3 aPosition;\nin vec3 aTranslation;\nin vec3 aPreviousTranslation;\nin lowp float aColor;\nin lowp float aPreviousColor;\nin vec3 aScale;\nin vec3 aPreviousScale;\nin float aId;\nin float aOrder;\nin mediump float aStaggerOrder;\nin lowp float aSelected;\nin lowp float aPreviousSelected;\nin lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nout lowp vec4 vIdColor;\nout lowp vec2 vVertexColor;\nout lowp float vVertexSelected;\nout highp float vAnimation;\nout lowp float vHover;\nout lowp float vActive;\nout mediump float vRadius;\nout vec3 vViewPosition;\nout vec3 vViewCenter;\nvoid main(void)\n{\nif (aOrder < uOrderFrom || aOrder > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvViewPosition = vec3(0.0);\nvViewCenter = vec3(0.0);\nvRadius = 0.0;\ngl_Position = vec4(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nfloat startTime = aStaggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nfloat scale = mix(min(aPreviousScale.x, min(aPreviousScale.y, aPreviousScale.z)), min(aScale.x, min(aScale.y, aScale.z)), animation);\nvec3 translation = mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvViewCenter = (mvMatrix * vec4(translation, 1.0)).xyz;\ntranslation.xyz += aPosition * scale;\nvec4 viewPosition = mvMatrix * vec4(translation, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\nvVertexColor = vec2(aColor, aPreviousColor);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\nvRadius = distance(vViewPosition, vViewCenter) / ROOT_THREE;\n}\n}\n",
+        "unitsphere.vertex.fx": "#version 300 es\n#include \"common.include.fx\"\nin mediump vec3 aPosition;\nin vec3 aTranslation;\nin vec3 aPreviousTranslation;\nin lowp float aColor;\nin lowp float aPreviousColor;\nin vec3 aScale;\nin vec3 aPreviousScale;\nin float aId;\nin vec2 aOrder;\nin lowp float aSelected;\nin lowp float aPreviousSelected;\nin lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nout lowp vec4 vIdColor;\nout lowp vec2 vVertexColor;\nout lowp float vVertexSelected;\nout highp float vAnimation;\nout lowp float vHover;\nout lowp float vActive;\nout mediump float vRadius;\nout vec3 vViewPosition;\nout vec3 vViewCenter;\nvoid main(void)\n{\nif (aOrder.x < uOrderFrom || aOrder.x > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvViewPosition = vec3(0.0);\nvViewCenter = vec3(0.0);\nvRadius = 0.0;\ngl_Position = vec4(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nfloat staggerOrder = aOrder.y;\nfloat startTime = staggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nfloat scale = mix(min(aPreviousScale.x, min(aPreviousScale.y, aPreviousScale.z)), min(aScale.x, min(aScale.y, aScale.z)), animation);\nvec3 translation = mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvViewCenter = (mvMatrix * vec4(translation, 1.0)).xyz;\ntranslation.xyz += aPosition * scale;\nvec4 viewPosition = mvMatrix * vec4(translation, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\nvVertexColor = vec2(aColor, aPreviousColor);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\nvRadius = distance(vViewPosition, vViewCenter) / ROOT_THREE;\n}\n}\n",
         "common.include.fx": "const float NEAR_PLANE = 0.01;\nconst float FAR_PLANE = 100.0;\nconst float DEPTH_A = 1.0002000200020003;\nconst float DEPTH_B = 0.020002000200020003;\nconst vec3 GAMMA = vec3(0.45454545454545453);\nconst vec3 INV_GAMMA = vec3(2.2);\nconst vec3 LUMINANCE = vec3(0.2126, 0.7152, 0.0722);\nconst float PI = 3.1415926538;\nconst float ROOT_TWO = 1.4142135624;\nconst float ROOT_TWO_OVER_TWO = 0.7071067811865476;\nconst float ROOT_THREE = 1.7320508075688772;\nconst float ROOT_THREE_OVER_TWO = 0.8660254037844386;\nconst vec3 IDENTITY_ROTATION = vec3(0.0, 1.0, 0.0);\nfloat dot2(in vec2 v) { return dot(v, v); }\nfloat dot2(in vec3 v) { return dot(v, v); }\n",
         "intersect.include.fx": "float sphIntersect( in vec3 ro, in vec3 rd, in vec4 sph, in float shadow)\n{\nvec3 oc = ro - sph.xyz;\nfloat b = dot( oc, rd );\nfloat c = dot( oc, oc ) - sph.w*sph.w;\nfloat h = b*b - c;\nif( h<0.0 ) return -1.0;\nreturn -b - shadow * sqrt( h );\n}\nfloat roundedboxIntersect( in vec3 ro, in vec3 rd, in vec3 size, in float rad )\n{\nvec3 m = 1.0/rd;\nvec3 n = m*ro;\nvec3 k = abs(m)*(size+rad);\nvec3 t1 = -n - k;\nvec3 t2 = -n + k;\nfloat tN = max( max( t1.x, t1.y ), t1.z );\nfloat tF = min( min( t2.x, t2.y ), t2.z );\nif( tN > tF || tF < 0.0) return -1.0;\nfloat t = tN;\nvec3 pos = ro+t*rd;\nvec3 s = sign(pos);\nro *= s;\nrd *= s;\npos *= s;\npos -= size;\npos = max( pos.xyz, pos.yzx );\nif( min(min(pos.x,pos.y),pos.z)<0.0 ) return t;\nvec3 oc = ro - size;\nvec3 dd = rd*rd;\nvec3 oo = oc*oc;\nvec3 od = oc*rd;\nfloat ra2 = rad*rad;\nt = 1e20;\n{\nfloat b = od.x + od.y + od.z;\nfloat c = oo.x + oo.y + oo.z - ra2;\nfloat h = b*b - c;\nif( h>0.0 ) t = -b-sqrt(h);\n}\n{\nfloat a = dd.y + dd.z;\nfloat b = od.y + od.z;\nfloat c = oo.y + oo.z - ra2;\nfloat h = b*b - a*c;\nif( h>0.0 )\n{\nh = (-b-sqrt(h))/a;\nif( h>0.0 && h<t && abs(ro.x+rd.x*h)<size.x ) t = h;\n}\n}\n{\nfloat a = dd.z + dd.x;\nfloat b = od.z + od.x;\nfloat c = oo.z + oo.x - ra2;\nfloat h = b*b - a*c;\nif( h>0.0 )\n{\nh = (-b-sqrt(h))/a;\nif( h>0.0 && h<t && abs(ro.y+rd.y*h)<size.y ) t = h;\n}\n}\n{\nfloat a = dd.x + dd.y;\nfloat b = od.x + od.y;\nfloat c = oo.x + oo.y - ra2;\nfloat h = b*b - a*c;\nif( h>0.0 )\n{\nh = (-b-sqrt(h))/a;\nif( h>0.0 && h<t && abs(ro.z+rd.z*h)<size.z ) t = h;\n}\n}\nif( t>1e19 ) t=-1.0;\nreturn t;\n}\nvec3 roundedboxNormal( in vec3 pos, in vec3 siz, in float rad )\n{\nreturn sign(pos)*normalize(max(abs(pos)-siz,0.0));\n}\nvec4 iCappedCone(in vec3 ro, in vec3 rd,\nin vec3 pa, in vec3 pb,\nin float ra, in float rb, in float shadow)\n{\nvec3 ba = pb - pa;\nvec3 oa = ro - pa;\nvec3 ob = ro - pb;\nfloat m0 = dot(ba, ba);\nfloat m1 = dot(oa, ba);\nfloat m2 = dot(ob, ba);\nfloat m3 = dot(rd, ba);\nif (m1 < 0.0) { if (dot2(oa * m3 - rd * m1) < (ra * ra * m3 * m3)) return vec4(-m1 / m3, -ba * inversesqrt(m0)); }\nelse if (m2 > 0.0) { if (dot2(ob * m3 - rd * m2) < (rb * rb * m3 * m3)) return vec4(-m2 / m3, ba * inversesqrt(m0)); }\nfloat m4 = dot(rd, oa);\nfloat m5 = dot(oa, oa);\nfloat rr = ra - rb;\nfloat hy = m0 + rr * rr;\nfloat k2 = m0 * m0 - m3 * m3 * hy;\nfloat k1 = m0 * m0 * m4 - m1 * m3 * hy + m0 * ra * (rr * m3 * 1.0);\nfloat k0 = m0 * m0 * m5 - m1 * m1 * hy + m0 * ra * (rr * m1 * 2.0 - m0 * ra);\nfloat h = k1 * k1 - k2 * k0;\nif (h < 0.0) return vec4(-1.0);\nfloat t = (-k1 - shadow * sqrt(h)) / k2;\nfloat y = m1 + t * m3;\nif (y > 0.0 && y < m0)\n{\nreturn vec4(t, normalize(m0 * (m0 * (oa + t * rd) + rr * ba * ra) - ba * hy * y));\n}\nreturn vec4(-1.0);\n}\nvec4 iRoundedCone(in vec3 ro, in vec3 rd,\nin vec3 pa, in vec3 pb,\nin float ra, in float rb, in float shadow)\n{\nvec3 ba = pb - pa;\nvec3 oa = ro - pa;\nvec3 ob = ro - pb;\nfloat rr = ra - rb;\nfloat m0 = dot(ba, ba);\nfloat m1 = dot(ba, oa);\nfloat m2 = dot(ba, rd);\nfloat m3 = dot(rd, oa);\nfloat m5 = dot(oa, oa);\nfloat m6 = dot(ob, rd);\nfloat m7 = dot(ob, ob);\nfloat d2 = m0 - rr * rr;\nfloat k2 = d2 - m2 * m2;\nfloat k1 = d2 * m3 - m1 * m2 + m2 * rr * ra;\nfloat k0 = d2 * m5 - m1 * m1 + m1 * rr * ra * 2.0 - m0 * ra * ra;\nfloat h = k1 * k1 - k0 * k2;\nif (h < 0.0) return vec4(-1.0);\nfloat t = (-shadow * sqrt(h) - k1) / k2;\nfloat y = m1 - ra * rr + t * m2;\nif (y > 0.0 && y < d2)\n{\nreturn vec4(t, normalize(d2 * (oa + t * rd) - ba * y));\n}\nfloat h1 = m3 * m3 - m5 + ra * ra;\nfloat h2 = m6 * m6 - m7 + rb * rb;\nif (max(h1, h2) < 0.0) return vec4(-1.0);\nvec4 r = vec4(1e20);\nif (h1 > 0.0)\n{\nt = -m3 - shadow * sqrt( h1 );\nr = vec4(t, (oa + t * rd) / ra);\n}\nif (h2 > 0.0)\n{\nt = -m6 - shadow * sqrt( h2 );\nif (t < r.x)\nr = vec4(t, (ob + t * rd) / rb);\n}\nreturn r;\n}\n",
         "quat.include.fx": "const float EPSILON = 0.000001;\nmat3 fromQuat(in vec4 q) {\nfloat x = q.x;\nfloat y = q.y;\nfloat z = q.z;\nfloat w = q.w;\nfloat x2 = x + x;\nfloat y2 = y + y;\nfloat z2 = z + z;\nfloat xx = x * x2;\nfloat yx = y * x2;\nfloat yy = y * y2;\nfloat zx = z * x2;\nfloat zy = z * y2;\nfloat zz = z * z2;\nfloat wx = w * x2;\nfloat wy = w * y2;\nfloat wz = w * z2;\nmat3 m;\nm[0][0] = 1.0 - yy - zz;\nm[0][1] = yx - wz;\nm[0][2] = zx + wy;\nm[1][0] = yx + wz;\nm[1][1] = 1.0 - xx - zz;\nm[1][2] = zy - wx;\nm[2][0] = zx - wy;\nm[2][1] = zy + wx;\nm[2][2] = 1.0 - xx - yy;\nreturn m;\n}\nvec3 rotate(in vec3 p, in vec4 q) {\nreturn p + 2.0 * cross(q.xyz, cross(q.xyz, p) + q.w * p);\n}\nvec4 slerp(in vec4 a, in vec4 b, in float t) {\nfloat cosom = dot(a, b);\nif (cosom < 0.0) {\ncosom = -cosom;\nb = -b;\n}\nfloat scale0, scale1;\nif (1.0 - cosom > EPSILON) {\nfloat omega = acos(cosom);\nfloat sinom = sin(omega);\nscale0 = sin((1.0 - t) * omega) / sinom;\nscale1 = sin(t * omega) / sinom;\n}\nelse {\nscale0 = 1.0 - t;\nscale1 = t;\n}\nreturn vec4(scale0 * a + scale1 * b);\n}\n",
     };
     class ShaderBase {
-        constructor(core, main) {
-            this._core = core;
-            this._main = main;
-        }
         get isInitialized() { return this._isInitialized; }
         get vertexBuffer() { return this._vertexBuffer; }
         set vertexBuffer(value) {
@@ -18450,6 +18917,10 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._indexBuffer = value;
                 this._haveBuffersChanged = true;
             }
+        }
+        constructor(core, main) {
+            this._core = core;
+            this._main = main;
         }
         initializeContext(gl) {
             this._gl = gl;
@@ -18872,6 +19343,20 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._haveTexturesChanged = true;
             }
         }
+        get sdfTexture() { return this._sdfTexture; }
+        set sdfTexture(value) {
+            if (this._sdfTexture != value) {
+                this._sdfTexture = value;
+                this._haveTexturesChanged = true;
+            }
+        }
+        get previousSdfTexture() { return this._previousSdfTexture; }
+        set previousSdfTexture(value) {
+            if (this._previousSdfTexture != value) {
+                this._previousSdfTexture = value;
+                this._haveTexturesChanged = true;
+            }
+        }
         set instanceBuffer(value) {
             if (this._instanceBuffer != value) {
                 this._instanceBuffer = value;
@@ -18900,12 +19385,11 @@ f 5/6/6 1/12/6 8/11/6`;
             this._previousColorAttribute = gl.getAttribLocation(this._program, "aPreviousColor");
             this._selectedAttribute = gl.getAttribLocation(this._program, "aSelected");
             this._previousSelectedAttribute = gl.getAttribLocation(this._program, "aPreviousSelected");
-            this._staggerOrderAttribute = gl.getAttribLocation(this._program, "aStaggerOrder");
             this._orderAttribute = gl.getAttribLocation(this._program, "aOrder");
             this._idAttribute = gl.getAttribLocation(this._program, "aId");
             this._idColorAttribute = gl.getAttribLocation(this._program, "aIdColor");
-            this._samplerUniform = gl.getUniformLocation(this._program, "uSampler");
-            this._previousSamplerUniform = gl.getUniformLocation(this._program, "uPreviousSampler");
+            this._sampler0Uniform = gl.getUniformLocation(this._program, "uSampler");
+            this._previousSampler0Uniform = gl.getUniformLocation(this._program, "uPreviousSampler");
             this._mMatrixUniform = gl.getUniformLocation(this._program, "uMMatrix");
             this._vMatrixUniform = gl.getUniformLocation(this._program, "uVMatrix");
             this._pMatrixUniform = gl.getUniformLocation(this._program, "uPMatrix");
@@ -18950,13 +19434,10 @@ f 5/6/6 1/12/6 8/11/6`;
             this._gl.vertexAttribPointer(this._scaleAttribute, 3, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.SCALE_OFFSET_BYTES);
             this._gl.vertexAttribDivisor(this._scaleAttribute, 1);
             this._gl.enableVertexAttribArray(this._scaleAttribute);
-            this._gl.vertexAttribPointer(this._staggerOrderAttribute, 1, this._gl.UNSIGNED_SHORT, true, UnitVertex.SIZE_BYTES, UnitVertex.STAGGER_ORDER_OFFSET_BYTES);
-            this._gl.vertexAttribDivisor(this._staggerOrderAttribute, 1);
-            this._gl.enableVertexAttribArray(this._staggerOrderAttribute);
             this._gl.vertexAttribPointer(this._selectedAttribute, 1, this._gl.BYTE, true, UnitVertex.SIZE_BYTES, UnitVertex.SELECTED_OFFSET_BYTES);
             this._gl.vertexAttribDivisor(this._selectedAttribute, 1);
             this._gl.enableVertexAttribArray(this._selectedAttribute);
-            this._gl.vertexAttribPointer(this._orderAttribute, 1, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.ORDER_OFFSET_BYTES);
+            this._gl.vertexAttribPointer(this._orderAttribute, 2, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.ORDER_OFFSET_BYTES);
             this._gl.vertexAttribDivisor(this._orderAttribute, 1);
             this._gl.enableVertexAttribArray(this._orderAttribute);
         }
@@ -18980,8 +19461,8 @@ f 5/6/6 1/12/6 8/11/6`;
             this._gl.uniform1f(this._durationUniform, this.duration);
             this._gl.uniform1f(this._fromOrderUniform, this.rangeMin);
             this._gl.uniform1f(this._toOrderUniform, this.rangeMax);
-            this._gl.uniform1i(this._previousSamplerUniform, 0);
-            this._gl.uniform1i(this._samplerUniform, 1);
+            this._gl.uniform1i(this._previousSampler0Uniform, 0);
+            this._gl.uniform1i(this._sampler0Uniform, 1);
             this._gl.uniform1f(this._hoverUniform, this.hover);
             this._gl.uniform1f(this._activeUniform, this.active);
         }
@@ -19007,7 +19488,6 @@ f 5/6/6 1/12/6 8/11/6`;
             this._gl.vertexAttribDivisor(this._previousColorAttribute, 0);
             this._gl.vertexAttribDivisor(this._selectedAttribute, 0);
             this._gl.vertexAttribDivisor(this._previousSelectedAttribute, 0);
-            this._gl.vertexAttribDivisor(this._staggerOrderAttribute, 0);
             this._gl.vertexAttribDivisor(this._orderAttribute, 0);
             this._gl.vertexAttribDivisor(this._idAttribute, 0);
             this._gl.vertexAttribDivisor(this._idColorAttribute, 0);
@@ -19148,6 +19628,80 @@ f 5/6/6 1/12/6 8/11/6`;
             super.disableProgram();
             this._gl.vertexAttribDivisor(this._rotationAttribute, 0);
             this._gl.vertexAttribDivisor(this._previousRotationAttribute, 0);
+        }
+    }
+
+    /*!
+     * Copyright (c) Microsoft Corporation.
+     * Licensed under the MIT License.
+     */
+    class UnitSdf extends UnitShader {
+        initializeContext(gl) {
+            super.initializeContext(gl);
+            if (this._isLoaded) {
+                this._initializeShader(gl, this._vsSource, this._fsSource);
+            }
+            else {
+                this._shaderFromFile("unitsdf.vertex.fx", "unitsdf.fragment.fx", (vsSource, fsSource) => {
+                    this._vsSource = vsSource;
+                    this._fsSource = fsSource;
+                    this._isLoaded = true;
+                    this._initializeShader(gl, vsSource, fsSource);
+                });
+            }
+        }
+        _initializeShader(gl, vsSource, fsSource) {
+            super._initializeShader(gl, vsSource, fsSource);
+            this._rotationAttribute = gl.getAttribLocation(this._program, "aRotation");
+            this._previousRotationAttribute = gl.getAttribLocation(this._program, "aPreviousRotation");
+            this._texCoordAttribute = gl.getAttribLocation(this._program, "aTexCoord");
+            this._previousTexCoordAttribute = gl.getAttribLocation(this._program, "aPreviousTexCoord");
+            this._sampler1Uniform = gl.getUniformLocation(this._program, "uSampler1");
+            this._previousSampler1Uniform = gl.getUniformLocation(this._program, "uPreviousSampler1");
+            this._isInitialized = true;
+        }
+        _updateCurrentBuffer() {
+            super._updateCurrentBuffer();
+            this._gl.vertexAttribPointer(this._rotationAttribute, 4, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
+            this._gl.vertexAttribDivisor(this._rotationAttribute, 1);
+            this._gl.enableVertexAttribArray(this._rotationAttribute);
+            this._gl.vertexAttribPointer(this._texCoordAttribute, 4, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.TEXCOORD_OFFSET_BYTES);
+            this._gl.vertexAttribDivisor(this._texCoordAttribute, 1);
+            this._gl.enableVertexAttribArray(this._texCoordAttribute);
+            this._gl.vertexAttribPointer(this._colorAttribute, 2, this._gl.UNSIGNED_BYTE, true, UnitVertex.SIZE_BYTES, UnitVertex.COLOR_OFFSET_BYTES);
+            this._gl.vertexAttribDivisor(this._colorAttribute, 1);
+            this._gl.enableVertexAttribArray(this._colorAttribute);
+        }
+        _updatePreviousBuffer() {
+            super._updatePreviousBuffer();
+            this._gl.vertexAttribPointer(this._previousRotationAttribute, 4, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.ROTATION_OFFSET_BYTES);
+            this._gl.vertexAttribDivisor(this._previousRotationAttribute, 1);
+            this._gl.enableVertexAttribArray(this._previousRotationAttribute);
+            this._gl.vertexAttribPointer(this._previousTexCoordAttribute, 4, this._gl.FLOAT, false, UnitVertex.SIZE_BYTES, UnitVertex.TEXCOORD_OFFSET_BYTES);
+            this._gl.vertexAttribDivisor(this._previousTexCoordAttribute, 1);
+            this._gl.enableVertexAttribArray(this._previousTexCoordAttribute);
+            this._gl.vertexAttribPointer(this._previousColorAttribute, 2, this._gl.UNSIGNED_BYTE, true, UnitVertex.SIZE_BYTES, UnitVertex.COLOR_OFFSET_BYTES);
+            this._gl.vertexAttribDivisor(this._previousColorAttribute, 1);
+            this._gl.enableVertexAttribArray(this._previousColorAttribute);
+        }
+        apply() {
+            super.apply();
+            this._gl.uniform1i(this._previousSampler1Uniform, 2);
+            this._gl.uniform1i(this._sampler1Uniform, 3);
+        }
+        updateTextures() {
+            super.updateTextures();
+            this._gl.activeTexture(this._gl.TEXTURE2);
+            this._gl.bindTexture(this._gl.TEXTURE_2D, this._previousSdfTexture);
+            this._gl.activeTexture(this._gl.TEXTURE3);
+            this._gl.bindTexture(this._gl.TEXTURE_2D, this._sdfTexture);
+        }
+        disableProgram() {
+            super.disableProgram();
+            this._gl.vertexAttribDivisor(this._rotationAttribute, 0);
+            this._gl.vertexAttribDivisor(this._previousRotationAttribute, 0);
+            this._gl.vertexAttribDivisor(this._texCoordAttribute, 0);
+            this._gl.vertexAttribDivisor(this._previousTexCoordAttribute, 0);
         }
     }
 
@@ -19344,13 +19898,6 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class Deferred extends ShaderBase {
-        constructor(core, main) {
-            super(core, main);
-            this.directionToKeyLight = create$3();
-            this.directionToFillLight1 = create$3();
-            this.directionToFillLight2 = create$3();
-            this.keyLightHalfAngle = create$3();
-        }
         get texture2D1() { return this._texture2D1; }
         set texture2D1(value) {
             if (this._texture2D1 != value) {
@@ -19385,6 +19932,13 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._texture2D5 = value;
                 this._haveTexturesChanged = true;
             }
+        }
+        constructor(core, main) {
+            super(core, main);
+            this.directionToKeyLight = create$3();
+            this.directionToFillLight1 = create$3();
+            this.directionToFillLight2 = create$3();
+            this.keyLightHalfAngle = create$3();
         }
         initializeContext(gl) {
             super.initializeContext(gl);
@@ -19952,12 +20506,12 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class AxesVisualBase {
+        get isInitialized() { return this._isInitialized; }
+        get axes() { return this._axes; }
         constructor(core) {
             this._core = core;
             this.isVisible = true;
         }
-        get isInitialized() { return this._isInitialized; }
-        get axes() { return this._axes; }
         initializeContext(gl) {
             this._gl = gl;
         }
@@ -19977,13 +20531,13 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class Cartesian2dVisual extends AxesVisualBase {
+        get isInitialized() { return this._isInitialized && this._main.gridShader.isInitialized && this._main.sdfTextShader.isInitialized && this._main.fonts[this._axes.font.name].isInitialized; }
         constructor(core, main, cartesian2dAxes) {
             super(core);
             this._main = main;
             this._axes = cartesian2dAxes;
             this._axes.hasChangedCallback = () => { this._hasChanged = true; };
         }
-        get isInitialized() { return this._isInitialized && this._main.gridShader.isInitialized && this._main.sdfShader.isInitialized && this._main.fonts[this._axes.font.name].isInitialized; }
         initializeContext(gl) {
             super.initializeContext(gl);
             const axes = this._axes;
@@ -20048,22 +20602,22 @@ f 5/6/6 1/12/6 8/11/6`;
             }
         }
         _renderText() {
-            const sdfShader = this._main.sdfShader;
+            const shader = this._main.sdfTextShader;
             const shaderResources = this._main.shaderResources;
             const axes = this._axes;
             const fontVisual = this._main.fonts[axes.font.name];
-            sdfShader.vertexBuffer = this._textVertexBuffer;
-            sdfShader.indexBuffer = this._textIndexBuffer;
-            sdfShader.texture2D = fontVisual.texture;
-            sdfShader.prepare();
-            sdfShader.buffer = fontVisual.font.edgeValue / 0xff;
-            sdfShader.gamma = axes.gamma;
-            sdfShader.borderWidth = axes.textBorderWidth;
-            sdfShader.color = axes.textColor || this._core.config.axesTextColor;
-            sdfShader.hoverColor = axes.textHoverColor || this._core.config.axesTextHoverColor;
-            sdfShader.borderColor = axes.textBorderColor || this._core.config.textBorderColor;
-            sdfShader.pickedIdColor = this.pickedIdColor;
-            sdfShader.apply();
+            shader.vertexBuffer = this._textVertexBuffer;
+            shader.indexBuffer = this._textIndexBuffer;
+            shader.texture2D = fontVisual.texture;
+            shader.prepare();
+            shader.buffer = fontVisual.font.edgeValue / 0xff;
+            shader.gamma = axes.gamma;
+            shader.borderWidth = axes.textBorderWidth;
+            shader.color = axes.textColor || this._core.config.axesTextColor;
+            shader.hoverColor = axes.textHoverColor || this._core.config.axesTextHoverColor;
+            shader.borderColor = axes.textBorderColor || this._core.config.textBorderColor;
+            shader.pickedIdColor = this.pickedIdColor;
+            shader.apply();
             let indexCount, indexOffset;
             for (let axisId = 0; axisId < 2; axisId++) {
                 const orientation = axes.getLabelOrientation(axisId);
@@ -20079,23 +20633,23 @@ f 5/6/6 1/12/6 8/11/6`;
                             indexOffset = axes.getAxesRightToLeftIndexOffset(axisId);
                         }
                         if (indexCount > 0) {
-                            sdfShader.mMatrix = axes.getLabelMMatrix(edgeId);
-                            sdfShader.applyModel();
-                            sdfShader.isPickShader = false;
+                            shader.mMatrix = axes.getLabelMMatrix(edgeId);
+                            shader.applyModel();
+                            shader.isPickShader = false;
                             shaderResources.bindFramebuffer(this.geometryFramebuffer);
                             for (let i = 0; i < this.viewportCount; i++) {
                                 const viewport = i + this.viewportOffset;
                                 this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                                sdfShader.vMatrix = this.vMatrices[viewport];
-                                sdfShader.pMatrix = this.pMatrices[viewport];
-                                sdfShader.applyView();
+                                shader.vMatrix = this.vMatrices[viewport];
+                                shader.pMatrix = this.pMatrices[viewport];
+                                shader.applyView();
                                 this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                             }
                             if (this.isPickingEnabled && axes.isLabelPickingEnabled[axisId]) {
-                                sdfShader.isPickShader = true;
-                                sdfShader.pMatrix = this.pickPMatrix;
-                                sdfShader.vMatrix = this.pickVMatrix;
-                                sdfShader.applyView();
+                                shader.isPickShader = true;
+                                shader.pMatrix = this.pickPMatrix;
+                                shader.vMatrix = this.pickVMatrix;
+                                shader.applyView();
                                 shaderResources.bindFramebuffer(this.pickFramebuffer);
                                 this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
                                 this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
@@ -20104,23 +20658,23 @@ f 5/6/6 1/12/6 8/11/6`;
                         indexCount = axes.getTitleIndexCount(axisId);
                         if (indexCount > 0) {
                             indexOffset = axes.getTitleIndexOffset(axisId);
-                            sdfShader.mMatrix = axes.getTitleMMatrix(edgeId);
-                            sdfShader.applyModel();
-                            sdfShader.isPickShader = false;
+                            shader.mMatrix = axes.getTitleMMatrix(edgeId);
+                            shader.applyModel();
+                            shader.isPickShader = false;
                             shaderResources.bindFramebuffer(this.geometryFramebuffer);
                             for (let i = 0; i < this.viewportCount; i++) {
                                 const viewport = i + this.viewportOffset;
                                 this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                                sdfShader.vMatrix = this.vMatrices[viewport];
-                                sdfShader.pMatrix = this.pMatrices[viewport];
-                                sdfShader.applyView();
+                                shader.vMatrix = this.vMatrices[viewport];
+                                shader.pMatrix = this.pMatrices[viewport];
+                                shader.applyView();
                                 this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                             }
                             if (this.isPickingEnabled && axes.isTitlePickingEnabled[axisId]) {
-                                sdfShader.isPickShader = true;
-                                sdfShader.pMatrix = this.pickPMatrix;
-                                sdfShader.vMatrix = this.pickVMatrix;
-                                sdfShader.applyView();
+                                shader.isPickShader = true;
+                                shader.pMatrix = this.pickPMatrix;
+                                shader.vMatrix = this.pickVMatrix;
+                                shader.applyView();
                                 shaderResources.bindFramebuffer(this.pickFramebuffer);
                                 this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
                                 this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
@@ -20130,23 +20684,23 @@ f 5/6/6 1/12/6 8/11/6`;
                     indexCount = axes.getHeadingIndexCount(axisId);
                     if (indexCount > 0 && axes.isHeadingVisible[edgeId]) {
                         indexOffset = axes.getHeadingIndexOffset(axisId);
-                        sdfShader.mMatrix = axes.getHeadingMMatrix(edgeId);
-                        sdfShader.applyModel();
-                        sdfShader.isPickShader = false;
+                        shader.mMatrix = axes.getHeadingMMatrix(edgeId);
+                        shader.applyModel();
+                        shader.isPickShader = false;
                         shaderResources.bindFramebuffer(this.geometryFramebuffer);
                         for (let i = 0; i < this.viewportCount; i++) {
                             const viewport = i + this.viewportOffset;
                             this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                            sdfShader.vMatrix = this.vMatrices[viewport];
-                            sdfShader.pMatrix = this.pMatrices[viewport];
-                            sdfShader.applyView();
+                            shader.vMatrix = this.vMatrices[viewport];
+                            shader.pMatrix = this.pMatrices[viewport];
+                            shader.applyView();
                             this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                         }
                         if (this.isPickingEnabled && axes.isHeadingPickingEnabled[axisId]) {
-                            sdfShader.isPickShader = true;
-                            sdfShader.pMatrix = this.pickPMatrix;
-                            sdfShader.vMatrix = this.pickVMatrix;
-                            sdfShader.applyView();
+                            shader.isPickShader = true;
+                            shader.pMatrix = this.pickPMatrix;
+                            shader.vMatrix = this.pickVMatrix;
+                            shader.applyView();
                             shaderResources.bindFramebuffer(this.pickFramebuffer);
                             this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
                             this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
@@ -20265,13 +20819,13 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class Cartesian3dVisual extends AxesVisualBase {
+        get isInitialized() { return this._isInitialized && this._main.gridShader.isInitialized && this._main.sdfTextShader.isInitialized && this._main.fonts[this._axes.font.name].isInitialized; }
         constructor(core, main, cartesian3dAxes) {
             super(core);
             this._main = main;
             this._axes = cartesian3dAxes;
             this._axes.hasChangedCallback = () => { this._hasChanged = true; };
         }
-        get isInitialized() { return this._isInitialized && this._main.gridShader.isInitialized && this._main.sdfShader.isInitialized && this._main.fonts[this._axes.font.name].isInitialized; }
         initializeContext(gl) {
             super.initializeContext(gl);
             const axes = this._axes;
@@ -20337,21 +20891,21 @@ f 5/6/6 1/12/6 8/11/6`;
         }
         _renderText() {
             const axes = this._axes;
-            const sdfShader = this._main.sdfShader;
+            const shader = this._main.sdfTextShader;
             const shaderResources = this._main.shaderResources;
             const fontVisual = this._main.fonts[axes.font.name];
-            sdfShader.vertexBuffer = this._textVertexBuffer;
-            sdfShader.indexBuffer = this._textIndexBuffer;
-            sdfShader.texture2D = fontVisual.texture;
-            sdfShader.prepare();
-            sdfShader.buffer = fontVisual.font.edgeValue / 0xff;
-            sdfShader.gamma = axes.gamma;
-            sdfShader.borderWidth = axes.textBorderWidth;
-            sdfShader.color = axes.textColor || this._core.config.axesTextColor;
-            sdfShader.hoverColor = axes.textHoverColor || this._core.config.axesTextHoverColor;
-            sdfShader.borderColor = axes.textBorderColor || this._core.config.textBorderColor;
-            sdfShader.pickedIdColor = this.pickedIdColor;
-            sdfShader.apply();
+            shader.vertexBuffer = this._textVertexBuffer;
+            shader.indexBuffer = this._textIndexBuffer;
+            shader.texture2D = fontVisual.texture;
+            shader.prepare();
+            shader.buffer = fontVisual.font.edgeValue / 0xff;
+            shader.gamma = axes.gamma;
+            shader.borderWidth = axes.textBorderWidth;
+            shader.color = axes.textColor || this._core.config.axesTextColor;
+            shader.hoverColor = axes.textHoverColor || this._core.config.axesTextHoverColor;
+            shader.borderColor = axes.textBorderColor || this._core.config.textBorderColor;
+            shader.pickedIdColor = this.pickedIdColor;
+            shader.apply();
             let indexCount, indexOffset;
             for (let axisId = 0; axisId < 3; axisId++) {
                 const orientation = axes.getLabelOrientation(axisId);
@@ -20368,23 +20922,23 @@ f 5/6/6 1/12/6 8/11/6`;
                                 indexOffset = axes.getAxesRightToLeftIndexOffset(axisId);
                             }
                             if (indexCount > 0) {
-                                sdfShader.mMatrix = axes.getLabelMMatrix(edgeId);
-                                sdfShader.applyModel();
-                                sdfShader.isPickShader = false;
+                                shader.mMatrix = axes.getLabelMMatrix(edgeId);
+                                shader.applyModel();
+                                shader.isPickShader = false;
                                 shaderResources.bindFramebuffer(this.geometryFramebuffer);
                                 for (let i = 0; i < this.viewportCount; i++) {
                                     const viewport = i + this.viewportOffset;
                                     this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                                    sdfShader.vMatrix = this.vMatrices[viewport];
-                                    sdfShader.pMatrix = this.pMatrices[viewport];
-                                    sdfShader.applyView();
+                                    shader.vMatrix = this.vMatrices[viewport];
+                                    shader.pMatrix = this.pMatrices[viewport];
+                                    shader.applyView();
                                     this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                                 }
                                 if (this.isPickingEnabled && axes.isLabelPickingEnabled[axisId]) {
-                                    sdfShader.isPickShader = true;
-                                    sdfShader.pMatrix = this.pickPMatrix;
-                                    sdfShader.vMatrix = this.pickVMatrix;
-                                    sdfShader.applyView();
+                                    shader.isPickShader = true;
+                                    shader.pMatrix = this.pickPMatrix;
+                                    shader.vMatrix = this.pickVMatrix;
+                                    shader.applyView();
                                     shaderResources.bindFramebuffer(this.pickFramebuffer);
                                     this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
                                     this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
@@ -20393,23 +20947,23 @@ f 5/6/6 1/12/6 8/11/6`;
                             indexCount = axes.getTitleIndexCount(axisId);
                             if (indexCount > 0) {
                                 indexOffset = axes.getTitleIndexOffset(axisId);
-                                sdfShader.mMatrix = axes.getTitleMMatrix(edgeId);
-                                sdfShader.applyModel();
-                                sdfShader.isPickShader = false;
+                                shader.mMatrix = axes.getTitleMMatrix(edgeId);
+                                shader.applyModel();
+                                shader.isPickShader = false;
                                 shaderResources.bindFramebuffer(this.geometryFramebuffer);
                                 for (let i = 0; i < this.viewportCount; i++) {
                                     const viewport = i + this.viewportOffset;
                                     this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                                    sdfShader.vMatrix = this.vMatrices[viewport];
-                                    sdfShader.pMatrix = this.pMatrices[viewport];
-                                    sdfShader.applyView();
+                                    shader.vMatrix = this.vMatrices[viewport];
+                                    shader.pMatrix = this.pMatrices[viewport];
+                                    shader.applyView();
                                     this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                                 }
                                 if (this.isPickingEnabled && axes.isTitlePickingEnabled[axisId]) {
-                                    sdfShader.isPickShader = true;
-                                    sdfShader.pMatrix = this.pickPMatrix;
-                                    sdfShader.vMatrix = this.pickVMatrix;
-                                    sdfShader.applyView();
+                                    shader.isPickShader = true;
+                                    shader.pMatrix = this.pickPMatrix;
+                                    shader.vMatrix = this.pickVMatrix;
+                                    shader.applyView();
                                     shaderResources.bindFramebuffer(this.pickFramebuffer);
                                     this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
                                     this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
@@ -20419,23 +20973,23 @@ f 5/6/6 1/12/6 8/11/6`;
                         indexCount = axes.getHeadingIndexCount(axisId);
                         if (indexCount > 0 && axes.isHeadingVisible[edgeId]) {
                             indexOffset = axes.getHeadingIndexOffset(axisId);
-                            sdfShader.mMatrix = axes.getHeadingMMatrix(edgeId);
-                            sdfShader.applyModel();
-                            sdfShader.isPickShader = false;
+                            shader.mMatrix = axes.getHeadingMMatrix(edgeId);
+                            shader.applyModel();
+                            shader.isPickShader = false;
                             shaderResources.bindFramebuffer(this.geometryFramebuffer);
                             for (let i = 0; i < this.viewportCount; i++) {
                                 const viewport = i + this.viewportOffset;
                                 this._gl.viewport(this.viewports[viewport].x, this.viewports[viewport].y, this.viewports[viewport].width, this.viewports[viewport].height);
-                                sdfShader.vMatrix = this.vMatrices[viewport];
-                                sdfShader.pMatrix = this.pMatrices[viewport];
-                                sdfShader.applyView();
+                                shader.vMatrix = this.vMatrices[viewport];
+                                shader.pMatrix = this.pMatrices[viewport];
+                                shader.applyView();
                                 this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
                             }
                             if (this.isPickingEnabled && axes.isHeadingPickingEnabled[axisId]) {
-                                sdfShader.isPickShader = true;
-                                sdfShader.pMatrix = this.pickPMatrix;
-                                sdfShader.vMatrix = this.pickVMatrix;
-                                sdfShader.applyView();
+                                shader.isPickShader = true;
+                                shader.pMatrix = this.pickPMatrix;
+                                shader.vMatrix = this.pickVMatrix;
+                                shader.applyView();
                                 shaderResources.bindFramebuffer(this.pickFramebuffer);
                                 this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
                                 this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, indexOffset * 2);
@@ -20559,13 +21113,13 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class FontVisual {
+        get isInitialized() { return this._isInitialized; }
+        get font() { return this._font; }
         constructor(core, font) {
             this._core = core;
             this._font = font;
             font.hasChangedCallback = () => { this._hasChanged = true; };
         }
-        get isInitialized() { return this._isInitialized; }
-        get font() { return this._font; }
         initializeContext(gl) {
             this._gl = gl;
             this._isInitialized = true;
@@ -20587,6 +21141,7 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class LabelVisualBase {
+        get isInitialized() { return this._isInitialized && this._main.sdfTextShader.isInitialized && this._main.fonts[this._label.font.name].isInitialized; }
         constructor(core, main, label) {
             this._core = core;
             this._main = main;
@@ -20596,7 +21151,6 @@ f 5/6/6 1/12/6 8/11/6`;
             this.mMatrix = create$4();
             this.isVisible = true;
         }
-        get isInitialized() { return this._isInitialized && this._main.sdfShader.isInitialized && this._main.fonts[this._label.font.name].isInitialized; }
         initializeContext(gl) {
             if (!this._label.isInitialized) {
                 this._label.initialize();
@@ -20623,7 +21177,7 @@ f 5/6/6 1/12/6 8/11/6`;
             if (this.isInitialized) {
                 const indexCount = this._label.indexCount;
                 if (indexCount > 0) {
-                    const shader = this._main.sdfShader;
+                    const shader = this._main.sdfTextShader;
                     const fontVisual = this._main.fonts[this._label.font.name];
                     shader.vertexBuffer = this._vertexBuffer;
                     shader.indexBuffer = this._indexBuffer;
@@ -20664,18 +21218,18 @@ f 5/6/6 1/12/6 8/11/6`;
         }
     }
     class LabelVisual extends LabelVisualBase {
-        constructor(core, main, label) {
-            super(core, main, label);
-        }
         get label() { return this._label; }
         set text(value) { this._label.text = value; }
         get text() { return this._label.text; }
-    }
-    class LabelSetVisual extends LabelVisualBase {
         constructor(core, main, label) {
             super(core, main, label);
         }
+    }
+    class LabelSetVisual extends LabelVisualBase {
         get label() { return this._label; }
+        constructor(core, main, label) {
+            super(core, main, label);
+        }
     }
 
     /*!
@@ -20683,6 +21237,8 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class ImageVisual {
+        get isInitialized() { return this._isInitialized && this._main.textureShader.isInitialized; }
+        get image() { return this._image; }
         constructor(core, main, image) {
             this._core = core;
             this._main = main;
@@ -20691,8 +21247,6 @@ f 5/6/6 1/12/6 8/11/6`;
             this.mMatrix = create$4();
             this.isVisible = true;
         }
-        get isInitialized() { return this._isInitialized && this._main.textureShader.isInitialized; }
-        get image() { return this._image; }
         initializeContext(gl) {
             if (!this._image.isInitialized) {
                 this._image.initialize();
@@ -20767,6 +21321,30 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class Main extends RendererBase {
+        get shaderResources() { return this._shaderResources; }
+        get textureShader() { return this._textureShader; }
+        get lassoShader() { return this._lassoShader; }
+        get sdfTextShader() { return this._sdfTextShader; }
+        get gridShader() { return this._gridShader; }
+        get blockShader() { return this._blockShader; }
+        get sphereShader() { return this._sphereShader; }
+        get cyclinderShader() { return this._cylinderShader; }
+        get sdfShader() { return this._sdfShader; }
+        get currentAxes() { return this._isAxes1Current ? this._axes1 : this._axes2; }
+        set currentAxes(value) { if (this._isAxes1Current) {
+            this._axes1 = value;
+        }
+        else {
+            this._axes2 = value;
+        } }
+        get previousAxes() { return this._isAxes1Current ? this._axes2 : this._axes1; }
+        set previousAxes(value) { if (this._isAxes1Current) {
+            this._axes2 = value;
+        }
+        else {
+            this._axes1 = value;
+        } }
+        get config() { return this._config; }
         constructor(options) {
             super(options);
             this._config = new Config();
@@ -20783,29 +21361,6 @@ f 5/6/6 1/12/6 8/11/6`;
             this._shadowVMatrix = create$4();
             this._shadowPMatrix = create$4();
         }
-        get shaderResources() { return this._shaderResources; }
-        get textureShader() { return this._textureShader; }
-        get lassoShader() { return this._lassoShader; }
-        get sdfShader() { return this._sdfShader; }
-        get gridShader() { return this._gridShader; }
-        get blockShader() { return this._blockShader; }
-        get sphereShader() { return this._sphereShader; }
-        get cyclinderShader() { return this._cylinderShader; }
-        get currentAxes() { return this._isAxes1Current ? this._axes1 : this._axes2; }
-        set currentAxes(value) { if (this._isAxes1Current) {
-            this._axes1 = value;
-        }
-        else {
-            this._axes2 = value;
-        } }
-        get previousAxes() { return this._isAxes1Current ? this._axes2 : this._axes1; }
-        set previousAxes(value) { if (this._isAxes1Current) {
-            this._axes2 = value;
-        }
-        else {
-            this._axes1 = value;
-        } }
-        get config() { return this._config; }
         get isSupported() {
             return this._createContext(document.createElement("canvas")) !== null;
         }
@@ -20814,11 +21369,12 @@ f 5/6/6 1/12/6 8/11/6`;
             this._shaderResources = new Resources();
             this._textureShader = new Texture(core, this);
             this._lassoShader = new Lasso$1(core, this);
-            this._sdfShader = new SdfText(core, this);
+            this._sdfTextShader = new SdfText(core, this);
             this._gridShader = new PickGrid(core, this);
             this._blockShader = new UnitBlock(core, this);
             this._sphereShader = new UnitSphere(core, this);
             this._cylinderShader = new UnitCylinder(core, this);
+            this._sdfShader = new UnitSdf(core, this);
             this._backgroundShader = new Background(core, this);
             this._ssaoShader = new Ssao(core, this);
             this._boxShader = new Box(core, this);
@@ -20879,14 +21435,19 @@ f 5/6/6 1/12/6 8/11/6`;
             this._gl.texParameteri(this._gl.TEXTURE_2D, this._gl.TEXTURE_MIN_FILTER, this._gl.NEAREST);
             this._gl.texParameteri(this._gl.TEXTURE_2D, this._gl.TEXTURE_MAG_FILTER, this._gl.NEAREST);
             this._gl.texImage2D(this._gl.TEXTURE_2D, 0, this._gl.RGBA32F, this._config.ssaoNoiseSize, this._config.ssaoNoiseSize, 0, this._gl.RGBA, this._gl.FLOAT, noise);
+            this._ssaoWidth = -1;
+            this._ssaoHeight = -1;
+            this._shadowWidth = -1;
+            this._shadowHeight = -1;
             this._shaderResources.initializeContext(this._gl);
             this._textureShader.initializeContext(this._gl);
             this._lassoShader.initializeContext(this._gl);
-            this._sdfShader.initializeContext(this._gl);
+            this._sdfTextShader.initializeContext(this._gl);
             this._gridShader.initializeContext(this._gl);
             this._blockShader.initializeContext(this._gl);
             this._sphereShader.initializeContext(this._gl);
             this._cylinderShader.initializeContext(this._gl);
+            this._sdfShader.initializeContext(this._gl);
             this._backgroundShader.initializeContext(this._gl);
             this._ssaoShader.initializeContext(this._gl);
             this._boxShader.initializeContext(this._gl);
@@ -21095,42 +21656,40 @@ f 5/6/6 1/12/6 8/11/6`;
             return this._canvas.toDataURL(mimeType);
         }
         update(elapsedTime) {
-            if (this._isInitialized) {
-                super.update(elapsedTime);
-                if (this._shadowWidth != this._config.shadowWidth || this._shadowHeight != this._config.shadowHeight) {
-                    this._shadowWidth = this._config.shadowWidth;
-                    this._shadowHeight = this._config.shadowHeight;
-                    this._shadowColorTexture = TextureHelper.create(this._gl, this._config.shadowWidth, this._config.shadowHeight, this._gl.RGBA, this._gl.UNSIGNED_BYTE, this._gl.LINEAR, null);
-                    this._shadowDepthTexture = TextureHelper.create(this._gl, this._config.shadowWidth, this._config.shadowHeight, this._gl.DEPTH_COMPONENT, this._gl.UNSIGNED_INT, this._gl.NEAREST, null, this._gl.DEPTH_COMPONENT24);
-                    this._shadowFrameBuffer = this._gl.createFramebuffer();
-                    this._gl.bindFramebuffer(this._gl.FRAMEBUFFER, this._shadowFrameBuffer);
-                    this._gl.framebufferTexture2D(this._gl.FRAMEBUFFER, this._gl.COLOR_ATTACHMENT0, this._gl.TEXTURE_2D, this._shadowColorTexture, 0);
-                    this._gl.framebufferTexture2D(this._gl.FRAMEBUFFER, this._gl.DEPTH_ATTACHMENT, this._gl.TEXTURE_2D, this._shadowDepthTexture, 0);
-                    this._core.log.write(LogLevel.info, `shadow map resized ${this._shadowWidth},${this._shadowHeight}`);
-                }
-                if (this._ssaoWidth != this._config.ssaoWidth || this._ssaoHeight != this._config.ssaoHeight) {
-                    this._ssaoWidth = this._config.ssaoWidth;
-                    this._ssaoHeight = this._config.ssaoHeight;
-                    this._ssaoTexture1 = TextureHelper.create(this._gl, this._config.ssaoWidth, this._config.ssaoHeight, this._gl.RED, this._gl.UNSIGNED_BYTE, this._gl.LINEAR, null, this._gl.R8);
-                    this._ssaoFrameBuffer1 = this._gl.createFramebuffer();
-                    this._gl.bindFramebuffer(this._gl.FRAMEBUFFER, this._ssaoFrameBuffer1);
-                    this._gl.framebufferTexture2D(this._gl.FRAMEBUFFER, this._gl.COLOR_ATTACHMENT0, this._gl.TEXTURE_2D, this._ssaoTexture1, 0);
-                    this._ssaoTexture2 = TextureHelper.create(this._gl, this._config.ssaoWidth, this._config.ssaoHeight, this._gl.RED, this._gl.UNSIGNED_BYTE, this._gl.LINEAR, null, this._gl.R8);
-                    this._ssaoFrameBuffer2 = this._gl.createFramebuffer();
-                    this._gl.bindFramebuffer(this._gl.FRAMEBUFFER, this._ssaoFrameBuffer2);
-                    this._gl.framebufferTexture2D(this._gl.FRAMEBUFFER, this._gl.COLOR_ATTACHMENT0, this._gl.TEXTURE_2D, this._ssaoTexture2, 0);
-                    this._core.log.write(LogLevel.info, `ssao map resized ${this._ssaoWidth},${this._ssaoHeight}`);
-                }
-                if (this._config.isDofEnabled && this._config.dofAutoFocus) {
-                    this._core.getModelManipulationOrigin(this._modelManipulationOrigin);
-                    this._core.getModelPosition(this._modelPosition);
-                    add(this._position, this._modelManipulationOrigin, this._modelPosition);
-                    this._core.camera.getPosition(this._cameraPosition);
-                    subtract(this._position, this._position, this._cameraPosition);
-                    const distance = -this._position[2];
-                    const amount = Math.min(elapsedTime * this._core.config.focusSmoothing, 1);
-                    this._config.dofFocusDistance = MathHelper.lerp(this._config.dofFocusDistance, distance, amount);
-                }
+            super.update(elapsedTime);
+            if (this._shadowWidth != this._config.shadowWidth || this._shadowHeight != this._config.shadowHeight) {
+                this._shadowWidth = this._config.shadowWidth;
+                this._shadowHeight = this._config.shadowHeight;
+                this._shadowColorTexture = TextureHelper.create(this._gl, this._config.shadowWidth, this._config.shadowHeight, this._gl.RGBA, this._gl.UNSIGNED_BYTE, this._gl.LINEAR, null);
+                this._shadowDepthTexture = TextureHelper.create(this._gl, this._config.shadowWidth, this._config.shadowHeight, this._gl.DEPTH_COMPONENT, this._gl.UNSIGNED_INT, this._gl.NEAREST, null, this._gl.DEPTH_COMPONENT24);
+                this._shadowFrameBuffer = this._gl.createFramebuffer();
+                this._gl.bindFramebuffer(this._gl.FRAMEBUFFER, this._shadowFrameBuffer);
+                this._gl.framebufferTexture2D(this._gl.FRAMEBUFFER, this._gl.COLOR_ATTACHMENT0, this._gl.TEXTURE_2D, this._shadowColorTexture, 0);
+                this._gl.framebufferTexture2D(this._gl.FRAMEBUFFER, this._gl.DEPTH_ATTACHMENT, this._gl.TEXTURE_2D, this._shadowDepthTexture, 0);
+                this._core.log.write(LogLevel.info, `shadow map resized ${this._shadowWidth},${this._shadowHeight}`);
+            }
+            if (this._ssaoWidth != this._config.ssaoWidth || this._ssaoHeight != this._config.ssaoHeight) {
+                this._ssaoWidth = this._config.ssaoWidth;
+                this._ssaoHeight = this._config.ssaoHeight;
+                this._ssaoTexture1 = TextureHelper.create(this._gl, this._config.ssaoWidth, this._config.ssaoHeight, this._gl.RED, this._gl.UNSIGNED_BYTE, this._gl.LINEAR, null, this._gl.R8);
+                this._ssaoFrameBuffer1 = this._gl.createFramebuffer();
+                this._gl.bindFramebuffer(this._gl.FRAMEBUFFER, this._ssaoFrameBuffer1);
+                this._gl.framebufferTexture2D(this._gl.FRAMEBUFFER, this._gl.COLOR_ATTACHMENT0, this._gl.TEXTURE_2D, this._ssaoTexture1, 0);
+                this._ssaoTexture2 = TextureHelper.create(this._gl, this._config.ssaoWidth, this._config.ssaoHeight, this._gl.RED, this._gl.UNSIGNED_BYTE, this._gl.LINEAR, null, this._gl.R8);
+                this._ssaoFrameBuffer2 = this._gl.createFramebuffer();
+                this._gl.bindFramebuffer(this._gl.FRAMEBUFFER, this._ssaoFrameBuffer2);
+                this._gl.framebufferTexture2D(this._gl.FRAMEBUFFER, this._gl.COLOR_ATTACHMENT0, this._gl.TEXTURE_2D, this._ssaoTexture2, 0);
+                this._core.log.write(LogLevel.info, `ssao map resized ${this._ssaoWidth},${this._ssaoHeight}`);
+            }
+            if (this._config.isDofEnabled && this._config.dofAutoFocus) {
+                this._core.getModelManipulationOrigin(this._modelManipulationOrigin);
+                this._core.getModelPosition(this._modelPosition);
+                add(this._position, this._modelManipulationOrigin, this._modelPosition);
+                this._core.camera.getPosition(this._cameraPosition);
+                subtract(this._position, this._position, this._cameraPosition);
+                const distance = -this._position[2];
+                const amount = Math.min(elapsedTime * this._core.config.focusSmoothing, 1);
+                this._config.dofFocusDistance = MathHelper.lerp(this._config.dofFocusDistance, distance, amount);
             }
         }
         render(elapsedTime) {
@@ -21255,6 +21814,8 @@ f 5/6/6 1/12/6 8/11/6`;
             const previousBuffer = transitionBuffer.previousBuffer;
             const currentPalette = transitionBuffer.currentPalette;
             const previousPalette = transitionBuffer.previousPalette;
+            const currentAtlas = transitionBuffer.currentAtlas;
+            const previousAtlas = transitionBuffer.previousAtlas;
             const unitType = transitionBuffer.unitType === undefined ? currentBuffer.unitType : transitionBuffer.unitType;
             const id = currentBuffer.lookup[transitionBuffer.pickIdLookup[this._pickedId]];
             const hoverId = id > -1 ? UnitVertex.getIdHover(currentBuffer.dataView, id) : -1;
@@ -21406,6 +21967,59 @@ f 5/6/6 1/12/6 8/11/6`;
                     this._shaderResources.bindFramebuffer(this._pickFrameBuffer);
                     this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
                     this._gl.drawElementsInstanced(this._gl.TRIANGLE_STRIP, this._cylinderShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
+                }
+            }
+            else if (this._sdfShader.isInitialized && unitType == UnitType.sdf) {
+                this._sdfShader.instanceBuffer = currentBuffer.vertexBuffer;
+                this._sdfShader.previousInstanceBuffer = previousBuffer.vertexBuffer;
+                this._sdfShader.paletteTexture = currentPalette.texture || currentPalette.defaultTexture;
+                this._sdfShader.previousPaletteTexture = previousPalette.texture || previousPalette.defaultTexture;
+                this._sdfShader.sdfTexture = currentAtlas.texture || currentAtlas.defaultTexture;
+                this._sdfShader.previousSdfTexture = previousAtlas.texture || previousAtlas.defaultTexture;
+                this._sdfShader.prepare();
+                this._sdfShader.mMatrix = this.mMatrix;
+                this._sdfShader.time = this.transitionTime;
+                this._sdfShader.duration = this._core.config.transitionDuration / (this._core.config.transitionDuration + this._core.config.transitionStaggering);
+                this._sdfShader.rangeMin = currentBuffer.from;
+                this._sdfShader.rangeMax = currentBuffer.to;
+                this._sdfShader.hover = hoverId;
+                this._sdfShader.active = activeId;
+                this._sdfShader.specularPower = this._config.specularPower;
+                this._sdfShader.specularIntensity = this._config.specularIntensity;
+                this._sdfShader.apply();
+                this._sdfShader.isPickShader = false;
+                this._sdfShader.isShadowMap = false;
+                this._shaderResources.bindFramebuffer(this._geometryFrameBuffer);
+                for (let i = 0; i < this._viewportCount; i++) {
+                    const viewport = i + this._viewportOffset;
+                    this._gl.viewport(this._viewports[viewport].x, this._viewports[viewport].y, this._viewports[viewport].width, this._viewports[viewport].height);
+                    this._sdfShader.vMatrix = this.vMatrices[viewport];
+                    this._sdfShader.pMatrix = this.pMatrices[viewport];
+                    this._sdfShader.applyView();
+                    this._gl.drawElementsInstanced(this._gl.TRIANGLE_STRIP, this._sdfShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
+                }
+                if (this._config.isShadowEnabled) {
+                    this._shaderResources.bindFramebuffer(this._shadowFrameBuffer);
+                    this._gl.viewport(0, 0, this._config.shadowWidth, this._config.shadowHeight);
+                    this._gl.cullFace(this._gl.FRONT);
+                    this._sdfShader.isPickShader = false;
+                    this._sdfShader.isShadowMap = true;
+                    this._sdfShader.vMatrix = this._shadowVMatrix;
+                    this._sdfShader.pMatrix = this._shadowPMatrix;
+                    this._sdfShader.applyView();
+                    this._gl.drawElementsInstanced(this._gl.TRIANGLE_STRIP, this._sdfShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
+                    this._gl.colorMask(true, true, true, true);
+                    this._gl.cullFace(this._gl.BACK);
+                }
+                if (this.isPickingEnabled) {
+                    this._sdfShader.isPickShader = true;
+                    this._sdfShader.isShadowMap = false;
+                    this._sdfShader.pMatrix = this.pickPMatrix;
+                    this._sdfShader.vMatrix = this.pickVMatrix;
+                    this._sdfShader.applyView();
+                    this._shaderResources.bindFramebuffer(this._pickFrameBuffer);
+                    this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
+                    this._gl.drawElementsInstanced(this._gl.TRIANGLE_STRIP, this._sdfShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
                 }
             }
         }
@@ -21691,6 +22305,7 @@ f 5/6/6 1/12/6 8/11/6`;
             this.TEXTURE_ID_OFFSET = 12 / 4;
             this.COLOR_OFFSET = 16 / 4;
             this.GLOSSINESS_OFFSET = 28 / 4;
+            this.DENSITY_OFFSET = 32 / 4;
         }
         getType(index) {
             return this[MaterialBufferData.SIZE * index + this.TYPE_OFFSET];
@@ -21732,8 +22347,14 @@ f 5/6/6 1/12/6 8/11/6`;
         setGlossiness(index, value) {
             this[MaterialBufferData.SIZE * index + this.GLOSSINESS_OFFSET] = value;
         }
+        getDensity(index) {
+            return this[MaterialBufferData.SIZE * index + this.DENSITY_OFFSET];
+        }
+        setDensity(index, value) {
+            this[MaterialBufferData.SIZE * index + this.DENSITY_OFFSET] = value;
+        }
     }
-    MaterialBufferData.SIZE = 32 / 4;
+    MaterialBufferData.SIZE = 48 / 4;
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -21747,7 +22368,8 @@ f 5/6/6 1/12/6 8/11/6`;
             this.COLOR1_OFFSET = 16 / 4;
             this.SIZE0_OFFSET = 32 / 4;
             this.SIZE1_OFFSET = 48 / 4;
-            this.OFFSET_OFFSET = 64 / 4;
+            this.CLIP_OFFSET = 64 / 4;
+            this.OFFSET_OFFSET = 80 / 4;
         }
         getType(index) {
             return this[TextureBufferData.SIZE * index + this.TYPE_OFFSET];
@@ -21797,6 +22419,17 @@ f 5/6/6 1/12/6 8/11/6`;
             this[offset + 2] = value[2];
             this[offset + 3] = value[3];
         }
+        getClip(index, value) {
+            const offset = TextureBufferData.SIZE * index + this.CLIP_OFFSET;
+            set$2(value, this[offset], this[offset + 1], this[offset + 2], this[offset + 3]);
+        }
+        setClip(index, value) {
+            const offset = TextureBufferData.SIZE * index + this.CLIP_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+            this[offset + 2] = value[2];
+            this[offset + 3] = value[3];
+        }
         getOffset(index, value) {
             const offset = TextureBufferData.SIZE * index + this.OFFSET_OFFSET;
             set(value, this[offset], this[offset + 1]);
@@ -21807,7 +22440,7 @@ f 5/6/6 1/12/6 8/11/6`;
             this[offset + 1] = value[1];
         }
     }
-    TextureBufferData.SIZE = 80 / 4;
+    TextureBufferData.SIZE = 96 / 4;
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -21816,14 +22449,18 @@ f 5/6/6 1/12/6 8/11/6`;
     class HittableBufferData extends Float32Array {
         constructor(count) {
             super(count * HittableBufferData.SIZE);
-            this.CENTER_OFFSET = 0 / 4;
+            this.CENTER0_OFFSET = 0 / 4;
             this.TYPE_OFFSET = 12 / 4;
             this.SIZE_OFFSET = 16 / 4;
             this.MATERIAL_ID_OFFSET = 28 / 4;
             this.ROTATION_OFFSET = 32 / 4;
             this.TEXCOORD0_OFFSET = 48 / 4;
             this.TEXCOORD1_OFFSET = 56 / 4;
-            this.ROUNDING_OFFSET = 64 / 4;
+            this.CENTER1_OFFSET = 64 / 4;
+            this.ROUNDING_OFFSET = 76 / 4;
+            this.BOUNDARY_TYPE_OFFSET = 80 / 4;
+            this.TIME0_OFFSET = 84 / 4;
+            this.TIME1_OFFSET = 88 / 4;
         }
         getType(index) {
             return this[HittableBufferData.SIZE * index + this.TYPE_OFFSET];
@@ -21831,15 +22468,37 @@ f 5/6/6 1/12/6 8/11/6`;
         setType(index, value) {
             this[HittableBufferData.SIZE * index + this.TYPE_OFFSET] = value;
         }
-        getCenter(index, value) {
-            const offset = HittableBufferData.SIZE * index + this.CENTER_OFFSET;
+        getCenter0(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.CENTER0_OFFSET;
             set$3(value, this[offset], this[offset + 1], this[offset + 2]);
         }
-        setCenter(index, value) {
-            const offset = HittableBufferData.SIZE * index + this.CENTER_OFFSET;
+        setCenter0(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.CENTER0_OFFSET;
             this[offset] = value[0];
             this[offset + 1] = value[1];
             this[offset + 2] = value[2];
+        }
+        getCenter1(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.CENTER1_OFFSET;
+            set$3(value, this[offset], this[offset + 1], this[offset + 2]);
+        }
+        setCenter1(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.CENTER1_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+            this[offset + 2] = value[2];
+        }
+        getTime0(index) {
+            return this[HittableBufferData.SIZE * index + this.TIME0_OFFSET];
+        }
+        setTime0(index, value) {
+            this[HittableBufferData.SIZE * index + this.TIME0_OFFSET] = value;
+        }
+        getTime1(index) {
+            return this[HittableBufferData.SIZE * index + this.TIME1_OFFSET];
+        }
+        setTime1(index, value) {
+            this[HittableBufferData.SIZE * index + this.TIME1_OFFSET] = value;
         }
         getSize(index, value) {
             const offset = HittableBufferData.SIZE * index + this.SIZE_OFFSET;
@@ -21892,8 +22551,14 @@ f 5/6/6 1/12/6 8/11/6`;
         setRounding(index, value) {
             this[HittableBufferData.SIZE * index + this.ROUNDING_OFFSET] = value;
         }
+        getBoundaryType(index) {
+            return this[HittableBufferData.SIZE * index + this.BOUNDARY_TYPE_OFFSET];
+        }
+        setBoundaryType(index, value) {
+            this[HittableBufferData.SIZE * index + this.BOUNDARY_TYPE_OFFSET] = value;
+        }
     }
-    HittableBufferData.SIZE = 80 / 4;
+    HittableBufferData.SIZE = 96 / 4;
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -21912,6 +22577,9 @@ f 5/6/6 1/12/6 8/11/6`;
             this.FOV_OFFSET = 60 / 4;
             this.LOOKAT_OFFSET = 64 / 4;
             this.APERTURE_OFFSET = 76 / 4;
+            this.BACKGROUND_COLOR_OFFSET = 80 / 4;
+            this.TIME0_OFFSET = 92 / 4;
+            this.TIME1_OFFSET = 96 / 4;
         }
         getWidth() {
             return this[this.WIDTH_OFFSET];
@@ -21983,8 +22651,28 @@ f 5/6/6 1/12/6 8/11/6`;
             this[this.LOOKAT_OFFSET + 1] = value[1];
             this[this.LOOKAT_OFFSET + 2] = value[2];
         }
+        getBackgroundColor(value) {
+            set$3(value, this[this.BACKGROUND_COLOR_OFFSET], this[this.BACKGROUND_COLOR_OFFSET + 1], this[this.BACKGROUND_COLOR_OFFSET + 2]);
+        }
+        setBackgroundColor(value) {
+            this[this.BACKGROUND_COLOR_OFFSET] = value[0];
+            this[this.BACKGROUND_COLOR_OFFSET + 1] = value[1];
+            this[this.BACKGROUND_COLOR_OFFSET + 2] = value[2];
+        }
+        getTime0() {
+            return this[this.TIME0_OFFSET];
+        }
+        setTime0(value) {
+            this[this.TIME0_OFFSET] = value;
+        }
+        getTime1() {
+            return this[this.TIME1_OFFSET];
+        }
+        setTime1(value) {
+            this[this.TIME1_OFFSET] = value;
+        }
     }
-    ComputeUniformBufferData.SIZE = 80 / 4;
+    ComputeUniformBufferData.SIZE = 112 / 4;
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -24956,7 +25644,7 @@ f 5/6/6 1/12/6 8/11/6`;
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
-    const version$1 = '1.0.4';
+    const version$1 = '1.0.5';
 
     /*!
     * Copyright (c) Microsoft Corporation.
@@ -28366,7 +29054,7 @@ f 5/6/6 1/12/6 8/11/6`;
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
-    const version = '4.0.4';
+    const version = '4.0.5';
 
     /*!
     * Copyright (c) Microsoft Corporation.

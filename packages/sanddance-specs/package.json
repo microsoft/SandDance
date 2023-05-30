@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance-specs",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "SandDance Vega specification generator.",
   "main": "dist/es6/index.js",
   "repository": {
@@ -25,7 +25,8 @@
     "uitest-watch": "tsc -p ./uitest/ -w",
     "deploy-watch": "npm-run-all --parallel bundle-watch uitest-watch",
     "test2": "node -r esm ./test/perf.js",
-    "remove-vega": "npm un vega vega-typings"
+    "remove-vega": "npm un vega vega-typings",
+    "patch-after-vega-upgrade": "npm version patch"
   },
   "author": "",
   "license": "MIT",
@@ -36,6 +37,6 @@
     "vega-typings": "~0.24.0"
   },
   "devDependencies": {
-    "vega": "5.24"
+    "vega": "5.25.0"
   }
 }

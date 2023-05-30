@@ -14,7 +14,7 @@ Add these to the `dependencies` section of your `package.json`, then run `npm in
 "@msrvida/sanddance-react": "^4",
 "react": "^17",
 "react-dom": "^17",
-"vega": "^5.24"
+"vega": "^5.25"
 ```
 
 Import these in your JavaScript:

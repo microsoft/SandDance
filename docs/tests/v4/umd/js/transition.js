@@ -1,6 +1,5 @@
 var transition;
 (function (transition) {
-    var view;
     var lastSpec;
     var viewType = '3d';
     SandDance.use(vega);
@@ -15,7 +14,7 @@ var transition;
     }
     transition.toggleView = toggleView;
     function update(spec) {
-        view = new SandDance.VegaMorphCharts.ViewGl(vega.parse(spec), { presenter: view && view.presenter, getView: function () { return viewType; } })
+        transition.view = new SandDance.VegaMorphCharts.ViewGl(vega.parse(spec), { presenter: transition.view && transition.view.presenter, getView: function () { return viewType; } })
             .renderer('morphcharts')
             .initialize(document.querySelector('#split-right'))
             .run();

@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance-react",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "SandDance visualization canvas React component",
   "main": "dist/es6/index.js",
   "repository": {
@@ -23,7 +23,8 @@
     "bundle": "rollup -c",
     "build:sanddance-core": "npm run build-typescript && node ../../scripts/version.js && npm run build-css && npm run bundle",
     "watch-css": "sass ./src/css/sanddance-react.scss ./dist/css/sanddance-react.css --watch",
-    "remove-vega": "npm un vega"
+    "remove-vega": "npm un vega",
+    "patch-after-vega-upgrade": "npm version patch"
   },
   "keywords": [],
   "author": "",
@@ -39,6 +40,6 @@
     "react-dom": ">=16.8.0 <18.0.0"
   },
   "devDependencies": {
-    "vega": "5.24"
+    "vega": "5.25.0"
   }
 }
