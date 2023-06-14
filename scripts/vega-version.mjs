@@ -66,7 +66,7 @@ const packages = {
         {
             glob: 'packages/*/package.json',
             pattern: ({ major, minor, patch }) => [
-                `"vega-typings": "${major}.${minor}${patch.length ? '.' : ''}${patch}"`,
+                `"vega-typings": "~${major}.${minor}${patch.length ? '.' : ''}${patch}"`,
             ],
         },
     ],
