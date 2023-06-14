@@ -11,250 +11,250 @@ vega.loader().load('../../docs/sample-data/demovote.tsv').then(tsv_data => {
         colors: {
             defaultCube: [0, 0, 0],
             axisLine: [0, 0, 0],
-            axisText: [0, 0, 0]
+            axisText: [0, 0, 0],
         },
         language: {},
         maxLegends: 20,
-        tickSize: 10
+        tickSize: 10,
     };
 
     const insightPasses = [
         {
-            name: "scatter",
+            name: 'scatter',
             insight: {
-                "columns": {
-                    "x": "Longitude",
-                    "y": "Latitude",
-                    "color": "Obama",
-                    "z": "Education"
+                columns: {
+                    x: 'Longitude',
+                    y: 'Latitude',
+                    color: 'Obama',
+                    z: 'Education',
                 },
-                "scheme": "redblue",
-                "size": {
-                    "height": 600,
-                    "width": 800
+                scheme: 'redblue',
+                size: {
+                    height: 600,
+                    width: 800,
                 },
-                "chart": "scatterplot",
-                "view": "3d"
-            }
+                chart: 'scatterplot',
+                view: '3d',
+            },
         },
         {
-            name: "scatter facet wrap",
+            name: 'scatter facet wrap',
             insight: {
-                "columns": {
-                    "x": "Longitude",
-                    "y": "Latitude",
-                    "color": "Obama",
-                    "z": "Education",
-                    "facet": "MedAge"
+                columns: {
+                    x: 'Longitude',
+                    y: 'Latitude',
+                    color: 'Obama',
+                    z: 'Education',
+                    facet: 'MedAge',
                 },
-                "facetStyle": "wrap",
-                "scheme": "redblue",
-                "size": {
-                    "height": 600,
-                    "width": 800
+                facetStyle: 'wrap',
+                scheme: 'redblue',
+                size: {
+                    height: 600,
+                    width: 800,
                 },
-                "chart": "scatterplot",
-                "view": "3d"
-            }
+                chart: 'scatterplot',
+                view: '3d',
+            },
         },
         {
-            name: "scatter facet cross",
+            name: 'scatter facet cross',
             insight: {
-                "columns": {
-                    "x": "Longitude",
-                    "y": "Latitude",
-                    "color": "Obama",
-                    "z": "Education",
-                    "facet": "MedAge",
-                    "facetV": "Income"
+                columns: {
+                    x: 'Longitude',
+                    y: 'Latitude',
+                    color: 'Obama',
+                    z: 'Education',
+                    facet: 'MedAge',
+                    facetV: 'Income',
                 },
-                "facetStyle": "cross",
-                "scheme": "redblue",
-                "size": {
-                    "height": 600,
-                    "width": 800
+                facetStyle: 'cross',
+                scheme: 'redblue',
+                size: {
+                    height: 600,
+                    width: 800,
                 },
-                "chart": "scatterplot",
-                "view": "3d"
-            }
+                chart: 'scatterplot',
+                view: '3d',
+            },
         },
         {
-            name: "density",
+            name: 'density',
             insight: {
-                "columns": {
-                    "x": "Longitude",
-                    "y": "Latitude",
-                    "color": "Obama",
-                    "z": "Education"
+                columns: {
+                    x: 'Longitude',
+                    y: 'Latitude',
+                    color: 'Obama',
+                    z: 'Education',
                 },
-                "scheme": "redblue",
-                "size": {
-                    "height": 600,
-                    "width": 800
+                scheme: 'redblue',
+                size: {
+                    height: 600,
+                    width: 800,
                 },
-                "chart": "density",
-                "view": "3d"
-            }
+                chart: 'density',
+                view: '3d',
+            },
         },
         {
-            name: "density facet wrap",
+            name: 'density facet wrap',
             insight: {
-                "columns": {
-                    "x": "Longitude",
-                    "y": "Latitude",
-                    "color": "Obama",
-                    "z": "Education",
-                    "facet": "MedAge"
+                columns: {
+                    x: 'Longitude',
+                    y: 'Latitude',
+                    color: 'Obama',
+                    z: 'Education',
+                    facet: 'MedAge',
                 },
-                "facetStyle": "wrap",
-                "scheme": "redblue",
-                "size": {
-                    "height": 600,
-                    "width": 800
+                facetStyle: 'wrap',
+                scheme: 'redblue',
+                size: {
+                    height: 600,
+                    width: 800,
                 },
-                "chart": "density",
-                "view": "3d"
-            }
+                chart: 'density',
+                view: '3d',
+            },
         },
         {
-            name: "density facet cross",
+            name: 'density facet cross',
             insight: {
-                "columns": {
-                    "x": "Longitude",
-                    "y": "Latitude",
-                    "color": "Obama",
-                    "z": "Education",
-                    "facet": "MedAge",
-                    "facetV": "Income"
+                columns: {
+                    x: 'Longitude',
+                    y: 'Latitude',
+                    color: 'Obama',
+                    z: 'Education',
+                    facet: 'MedAge',
+                    facetV: 'Income',
                 },
-                "facetStyle": "cross",
-                "scheme": "redblue",
-                "size": {
-                    "height": 600,
-                    "width": 800
+                facetStyle: 'cross',
+                scheme: 'redblue',
+                size: {
+                    height: 600,
+                    width: 800,
                 },
-                "chart": "density",
-                "view": "3d"
-            }
+                chart: 'density',
+                view: '3d',
+            },
         },
         {
-            name: "column",
+            name: 'column',
             insight: {
-                "columns": {
-                    "x": "Income",
-                    "color": "Obama",
-                    "z": "Education"
+                columns: {
+                    x: 'Income',
+                    color: 'Obama',
+                    z: 'Education',
                 },
-                "scheme": "redblue",
-                "size": {
-                    "height": 600,
-                    "width": 800
+                scheme: 'redblue',
+                size: {
+                    height: 600,
+                    width: 800,
                 },
-                "chart": "barchartV",
-                "view": "3d"
-            }
+                chart: 'barchartV',
+                view: '3d',
+            },
         },
         {
-            name: "column facet wrap",
+            name: 'column facet wrap',
             insight: {
-                "columns": {
-                    "x": "Income",
-                    "color": "Obama",
-                    "z": "Education",
-                    "facet": "MedAge"
+                columns: {
+                    x: 'Income',
+                    color: 'Obama',
+                    z: 'Education',
+                    facet: 'MedAge',
                 },
-                "facetStyle": "wrap",
-                "scheme": "redblue",
-                "size": {
-                    "height": 600,
-                    "width": 800
+                facetStyle: 'wrap',
+                scheme: 'redblue',
+                size: {
+                    height: 600,
+                    width: 800,
                 },
-                "chart": "barchartV",
-                "view": "3d"
-            }
+                chart: 'barchartV',
+                view: '3d',
+            },
         },
         {
-            name: "column facet cross",
+            name: 'column facet cross',
             insight: {
-                "columns": {
-                    "x": "Income",
-                    "color": "Obama",
-                    "z": "Education",
-                    "facet": "MedAge",
-                    "facetV": "Income"
+                columns: {
+                    x: 'Income',
+                    color: 'Obama',
+                    z: 'Education',
+                    facet: 'MedAge',
+                    facetV: 'Income',
                 },
-                "facetStyle": "cross",
-                "scheme": "redblue",
-                "size": {
-                    "height": 600,
-                    "width": 800
+                facetStyle: 'cross',
+                scheme: 'redblue',
+                size: {
+                    height: 600,
+                    width: 800,
                 },
-                "chart": "barchartV",
-                "view": "3d"
-            }
+                chart: 'barchartV',
+                view: '3d',
+            },
         },
         {
-            name: "stacks not faceted",
+            name: 'stacks not faceted',
             insight: {
-                "columns": {
-                    "x": "Longitude",
-                    "y": "Latitude",
-                    "color": "Obama",
-                    "z": "Education",
-                    "sort": "State"
+                columns: {
+                    x: 'Longitude',
+                    y: 'Latitude',
+                    color: 'Obama',
+                    z: 'Education',
+                    sort: 'State',
                 },
-                "scheme": "redblue",
-                "size": {
-                    "height": 600,
-                    "width": 800
+                scheme: 'redblue',
+                size: {
+                    height: 600,
+                    width: 800,
                 },
-                "chart": "stacks",
-                "view": "3d"
-            }
+                chart: 'stacks',
+                view: '3d',
+            },
         },
         {
-            name: "stacks facet wrap",
+            name: 'stacks facet wrap',
             insight: {
-                "columns": {
-                    "x": "Longitude",
-                    "y": "Latitude",
-                    "color": "Obama",
-                    "z": "Education",
-                    "sort": "State",
-                    "facet": "MedAge"
+                columns: {
+                    x: 'Longitude',
+                    y: 'Latitude',
+                    color: 'Obama',
+                    z: 'Education',
+                    sort: 'State',
+                    facet: 'MedAge',
                 },
-                "facetStyle": "wrap",
-                "scheme": "redblue",
-                "size": {
-                    "height": 600,
-                    "width": 800
+                facetStyle: 'wrap',
+                scheme: 'redblue',
+                size: {
+                    height: 600,
+                    width: 800,
                 },
-                "chart": "stacks",
-                "view": "3d"
-            }
+                chart: 'stacks',
+                view: '3d',
+            },
         },
         {
-            name: "stacks facet cross",
+            name: 'stacks facet cross',
             insight: {
-                "columns": {
-                    "x": "Longitude",
-                    "y": "Latitude",
-                    "color": "Obama",
-                    "z": "Education",
-                    "sort": "State",
-                    "facet": "MedAge",
-                    "facetV": "Income"
+                columns: {
+                    x: 'Longitude',
+                    y: 'Latitude',
+                    color: 'Obama',
+                    z: 'Education',
+                    sort: 'State',
+                    facet: 'MedAge',
+                    facetV: 'Income',
                 },
-                "facetStyle": "cross",
-                "scheme": "redblue",
-                "size": {
-                    "height": 600,
-                    "width": 800
+                facetStyle: 'cross',
+                scheme: 'redblue',
+                size: {
+                    height: 600,
+                    width: 800,
                 },
-                "chart": "stacks",
-                "view": "3d"
-            }
-        }
+                chart: 'stacks',
+                view: '3d',
+            },
+        },
     ];
 
     const run = i => {
@@ -269,7 +269,7 @@ vega.loader().load('../../docs/sample-data/demovote.tsv').then(tsv_data => {
         const specResult = build(context, data);
 
         if (specResult.errors) {
-            console.log(errors);
+            console.log(specResult.errors);
         } else {
             const runtime = vega.parse(specResult.vegaSpec);
             const vegaView = new vega.View(runtime);
