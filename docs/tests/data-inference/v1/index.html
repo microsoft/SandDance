@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Data-Inference test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/vega@^5.25/build/vega.js" charset="utf-8"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        header {
+            margin-bottom: 1em;
+        }
+        main {
+            display: grid;
+            grid-template-columns: auto 300px;
+        }
+        .sidebar label {
+            display: block;
+            padding-top: 1em;
+        }
+        textarea {
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+        }
+        .sidebar {
+            display: grid;
+            grid-template-rows: auto auto;
+        }
+        .sidebar > div {
+            display: grid;
+            grid-template-rows: 0fr auto 40px;
+        }
+        #vega-spec {
+            border: 1px solid #ccc;
+            max-height: 600px;
+            overflow: scroll;            
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Data-Inference test</h1>
+        <label>
+            data file:
+            <select id="select-data">
+                <option>select</option>
+                <option>titanic</option>
+                <option>demovote</option>
+            </select>
+
+            other url:
+            <input type="text" id="input-data" value="https://raw.githubusercontent.com/vega/vega/master/docs/data/cars.json" />
+
+            upload:
+            <input type="file" id="input-file" />
+
+        </label>
+    </header>
+
+    <main>
+        <div id="vis"></div>
+    </main>
+
+    <script src="js/data-inference.js"></script>
+    <script src="js/index.js"></script>
+</body>
+
+</html>
