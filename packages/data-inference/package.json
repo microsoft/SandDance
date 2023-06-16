@@ -20,7 +20,7 @@
     "build-typescript": "tsc -p .",
     "build:sanddance-core": "npm run build-typescript && npm run bundle",
     "bundle": "rollup -c",
-    "deploy": "tsc -p ./uitest/ && node ./scripts/deploy.js",
+    "deploy": "node ./scripts/deploy.js",
     "remove-vega": "npm un vega vega-typings",
     "patch-after-vega-upgrade": "npm version patch"
   },

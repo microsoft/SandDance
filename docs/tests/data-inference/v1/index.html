@@ -7,6 +7,10 @@
     <title>Data-Inference test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://unpkg.com/vega@^5.25/build/vega.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/default.min.css">
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
+    <script src="js/data-inference.js"></script>
+
     <style>
         body {
             font-family: sans-serif;
@@ -15,31 +19,9 @@
         header {
             margin-bottom: 1em;
         }
+
         main {
             display: grid;
-            grid-template-columns: auto 300px;
-        }
-        .sidebar label {
-            display: block;
-            padding-top: 1em;
-        }
-        textarea {
-            box-sizing: border-box;
-            width: 100%;
-            height: 100%;
-        }
-        .sidebar {
-            display: grid;
-            grid-template-rows: auto auto;
-        }
-        .sidebar > div {
-            display: grid;
-            grid-template-rows: 0fr auto 40px;
-        }
-        #vega-spec {
-            border: 1px solid #ccc;
-            max-height: 600px;
-            overflow: scroll;            
         }
     </style>
 </head>
@@ -48,28 +30,49 @@
     <header>
         <h1>Data-Inference test</h1>
         <label>
-            data file:
-            <select id="select-data">
-                <option>select</option>
-                <option>titanic</option>
-                <option>demovote</option>
+            sample data file:
+            <select onchange="test.loadText(this.value, {type: 'tsv'})">
+                <option value="../../../sample-data/titanicmaster.tsv">titanic</option>
+                <option value="../../../sample-data/demovote.tsv">demovote</option>
             </select>
-
-            other url:
-            <input type="text" id="input-data" value="https://raw.githubusercontent.com/vega/vega/master/docs/data/cars.json" />
-
-            upload:
-            <input type="file" id="input-file" />
-
         </label>
     </header>
 
     <main>
-        <div id="vis"></div>
+
+        <button onclick="navigator.clipboard.writeText(document.getElementsByTagName('code')[0].textContent)"
+            style="float: right;">📋</button>
+
+        Columns:
+        <pre><code></code></pre>
+
     </main>
 
-    <script src="js/data-inference.js"></script>
-    <script src="js/index.js"></script>
+    <script>
+        const test = {
+            display: (content, highlight) => {
+                document.getElementsByTagName('code')[0].innerHTML = content;
+                if (highlight) {
+                    hljs.highlightAll();
+                }
+            },
+            loadObjectArray: (data) => {
+                var columns = DataInference.getColumnsFromData(vega.inferTypes, data);
+                test.display(JSON.stringify(columns, null, 2), true);
+            },
+            loadText: (url, format) => {
+                test.display('Loading...');
+                vega.loader().load(url).then(function (text) {
+                    var data = vega.read(text, format);
+                    test.loadObjectArray(data);
+                });
+            },
+        };
+
+        test.loadText('../../../sample-data/titanicmaster.tsv', { type: 'tsv' });
+
+    </script>
+
 </body>
 
 </html>
