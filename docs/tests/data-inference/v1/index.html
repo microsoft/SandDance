@@ -261,13 +261,13 @@
                 }
             },
             loadObjectArray: (data) => {
-                var columns = DataInference.getColumnsFromData(vega.inferTypes, data);
+                const columns = DataInference.getColumnsFromData(vega.inferTypes, data);
                 test.display(JSON.stringify(columns, null, 2), true);
             },
             loadText: ({ url, format }) => {
                 test.display('Loading...');
                 vega.loader().load(url).then(function (text) {
-                    var data = vega.read(text, format);
+                    const data = vega.read(text, format);
                     test.loadObjectArray(data);
                 });
             },
