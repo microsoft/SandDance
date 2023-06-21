@@ -43,6 +43,10 @@
       "url": "/docs/data-inference/v1"
     },
     {
+      "tree": "chart-types",
+      "url": "/docs/chart-types/v1"
+    },
+    {
       "hidden": true,
       "tree": "vega-deck.gl",
       "url": "/docs/vega-deck.gl/v1"
