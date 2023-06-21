@@ -4519,13 +4519,15 @@ function quantileSorted(values, p, valueof = (0, _numberJsDefault.default)) {
     var n, i = (n - 1) * p, i0 = Math.floor(i), value0 = +valueof(values[i0], i0, values), value1 = +valueof(values[i0 + 1], i0 + 1, values);
     return value0 + (value1 - value0) * (i - i0);
 }
-function quantileIndex(values, p, valueof) {
-    values = Float64Array.from((0, _numberJs.numbers)(values, valueof));
-    if (!(n = values.length) || isNaN(p = +p)) return;
-    if (p <= 0 || n < 2) return (0, _minIndexJsDefault.default)(values);
-    if (p >= 1) return (0, _maxIndexJsDefault.default)(values);
-    var n, i = Math.floor((n - 1) * p), order = (i, j)=>(0, _sortJs.ascendingDefined)(values[i], values[j]), index = (0, _quickselectJsDefault.default)(Uint32Array.from(values, (_, i)=>i), i, 0, n - 1, order);
-    return (0, _greatestJsDefault.default)(index.subarray(0, i + 1), (i)=>values[i]);
+function quantileIndex(values, p, valueof = (0, _numberJsDefault.default)) {
+    if (isNaN(p = +p)) return;
+    numbers = Float64Array.from(values, (_, i)=>(0, _numberJsDefault.default)(valueof(values[i], i, values)));
+    if (p <= 0) return (0, _minIndexJsDefault.default)(numbers);
+    if (p >= 1) return (0, _maxIndexJsDefault.default)(numbers);
+    var numbers, index = Uint32Array.from(values, (_, i)=>i), j = numbers.length - 1, i = Math.floor(j * p);
+    (0, _quickselectJsDefault.default)(index, i, 0, j, (i, j)=>(0, _sortJs.ascendingDefined)(numbers[i], numbers[j]));
+    i = (0, _greatestJsDefault.default)(index.subarray(0, i + 1), (i)=>numbers[i]);
+    return i >= 0 ? i : -1;
 }
 
 },{"./max.js":"5fCPh","./maxIndex.js":"fm7WL","./min.js":"h0RAg","./minIndex.js":"3rpRW","./quickselect.js":"doA4Q","./number.js":"gcMRK","./sort.js":"bV3FZ","./greatest.js":"c4GrS","@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}],"h0RAg":[function(require,module,exports) {
@@ -35412,7 +35414,6 @@ function orient2d(ax, ay, bx, by, cx, cy) {
     const detleft = (ay - cy) * (bx - cx);
     const detright = (ax - cx) * (by - cy);
     const det = detleft - detright;
-    if (detleft === 0 || detright === 0 || detleft > 0 !== detright > 0) return det;
     const detsum = Math.abs(detleft + detright);
     if (Math.abs(det) >= ccwerrboundA * detsum) return det;
     return -orient2dadapt(ax, ay, bx, by, cx, cy, detsum);
@@ -37226,32 +37227,22 @@ function insphere(ax, ay, az, bx, by, bz, cx, cy, cz, dx, dy, dz, ex, ey, ez) {
     const bexdey = bex * dey;
     const dexbey = dex * bey;
     const bd = bexdey - dexbey;
-    const abc = aez * bc - bez * ac + cez * ab;
-    const bcd = bez * cd - cez * bd + dez * bc;
-    const cda = cez * da + dez * ac + aez * cd;
-    const dab = dez * ab + aez * bd + bez * da;
     const alift = aex * aex + aey * aey + aez * aez;
     const blift = bex * bex + bey * bey + bez * bez;
     const clift = cex * cex + cey * cey + cez * cez;
     const dlift = dex * dex + dey * dey + dez * dez;
-    const det = clift * dab - dlift * abc + (alift * bcd - blift * cda);
+    const det = clift * (dez * ab + aez * bd + bez * da) - dlift * (aez * bc - bez * ac + cez * ab) + (alift * (bez * cd - cez * bd + dez * bc) - blift * (cez * da + dez * ac + aez * cd));
     const aezplus = Math.abs(aez);
     const bezplus = Math.abs(bez);
     const cezplus = Math.abs(cez);
     const dezplus = Math.abs(dez);
-    const aexbeyplus = Math.abs(aexbey);
-    const bexaeyplus = Math.abs(bexaey);
-    const bexceyplus = Math.abs(bexcey);
-    const cexbeyplus = Math.abs(cexbey);
-    const cexdeyplus = Math.abs(cexdey);
-    const dexceyplus = Math.abs(dexcey);
-    const dexaeyplus = Math.abs(dexaey);
-    const aexdeyplus = Math.abs(aexdey);
-    const aexceyplus = Math.abs(aexcey);
-    const cexaeyplus = Math.abs(cexaey);
-    const bexdeyplus = Math.abs(bexdey);
-    const dexbeyplus = Math.abs(dexbey);
-    const permanent = ((cexdeyplus + dexceyplus) * bezplus + (dexbeyplus + bexdeyplus) * cezplus + (bexceyplus + cexbeyplus) * dezplus) * alift + ((dexaeyplus + aexdeyplus) * cezplus + (aexceyplus + cexaeyplus) * dezplus + (cexdeyplus + dexceyplus) * aezplus) * blift + ((aexbeyplus + bexaeyplus) * dezplus + (bexdeyplus + dexbeyplus) * aezplus + (dexaeyplus + aexdeyplus) * bezplus) * clift + ((bexceyplus + cexbeyplus) * aezplus + (cexaeyplus + aexceyplus) * bezplus + (aexbeyplus + bexaeyplus) * cezplus) * dlift;
+    const aexbeyplus = Math.abs(aexbey) + Math.abs(bexaey);
+    const bexceyplus = Math.abs(bexcey) + Math.abs(cexbey);
+    const cexdeyplus = Math.abs(cexdey) + Math.abs(dexcey);
+    const dexaeyplus = Math.abs(dexaey) + Math.abs(aexdey);
+    const aexceyplus = Math.abs(aexcey) + Math.abs(cexaey);
+    const bexdeyplus = Math.abs(bexdey) + Math.abs(dexbey);
+    const permanent = (cexdeyplus * bezplus + bexdeyplus * cezplus + bexceyplus * dezplus) * alift + (dexaeyplus * cezplus + aexceyplus * dezplus + cexdeyplus * aezplus) * blift + (aexbeyplus * dezplus + bexdeyplus * aezplus + dexaeyplus * bezplus) * clift + (bexceyplus * aezplus + aexceyplus * bezplus + aexbeyplus * cezplus) * dlift;
     const errbound = isperrboundA * permanent;
     if (det > errbound || -det > errbound) return det;
     return -insphereadapt(ax, ay, az, bx, by, bz, cx, cy, cz, dx, dy, dz, ex, ey, ez, permanent);
@@ -81973,7 +81964,7 @@ const RendererGl = _RendererGl;
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "version", ()=>version);
-const version = "1.0.5";
+const version = "1.0.6";
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jA2du"}]},["dlIYU"], "dlIYU", "parcelRequire1c68")
 
