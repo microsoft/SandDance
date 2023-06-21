@@ -14,20 +14,20 @@ function convertHomePage() {
 }
 
 const map = {
-    "https://microsoft.github.io": "",
-    "dev.md": "https://github.com/Microsoft/SandDance/blob/master/dev.md",
-    "packages/sanddance/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='sanddance')[0].url}/`,
-    "packages/sanddance-specs/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-specs')[0].url}/`,
-    "packages/sanddance-react/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-react')[0].url}/`,
-    "packages/sanddance-explorer/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-explorer')[0].url}/`,
-    "packages/sanddance-embed/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-embed')[0].url}/`,
-    "packages/vega-deck.gl/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='vega-deck.gl')[0].url}/`,
-    "packages/vega-morphcharts/README.md": `/SandDance${tree.Components.filter(c=>c.tree==='vega-morphcharts')[0].url}/`,
+    'https://microsoft.github.io': '',
+    'dev.md': 'https://github.com/Microsoft/SandDance/blob/master/dev.md',
+    'packages/sanddance/README.md': `/SandDance${tree.Components.filter(c=>c.tree==='sanddance')[0].url}/`,
+    'packages/sanddance-specs/README.md': `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-specs')[0].url}/`,
+    'packages/sanddance-react/README.md': `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-react')[0].url}/`,
+    'packages/sanddance-explorer/README.md': `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-explorer')[0].url}/`,
+    'packages/sanddance-embed/README.md': `/SandDance${tree.Components.filter(c=>c.tree==='sanddance-embed')[0].url}/`,
+    'packages/vega-deck.gl/README.md': `/SandDance${tree.Components.filter(c=>c.tree==='vega-deck.gl')[0].url}/`,
+    'packages/vega-morphcharts/README.md': `/SandDance${tree.Components.filter(c=>c.tree==='vega-morphcharts')[0].url}/`,
 };
 
 //https://stackoverflow.com/questions/1144783/how-to-replace-all-occurrences-of-a-string-in-javascript
 function escapeRegExp(str) {
-    return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
 function rewriteURLs(html) {
