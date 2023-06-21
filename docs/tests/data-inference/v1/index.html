@@ -19,10 +19,6 @@
         header {
             margin-bottom: 1em;
         }
-
-        main {
-            display: grid;
-        }
     </style>
 </head>
 
@@ -31,18 +27,226 @@
         <h1>Data-Inference test</h1>
         <label>
             sample data file:
-            <select onchange="test.loadText(this.value, {type: 'tsv'})">
-                <option value="../../../sample-data/titanicmaster.tsv">titanic</option>
-                <option value="../../../sample-data/demovote.tsv">demovote</option>
+            <select onchange="test.loadText(JSON.parse(this.value))">
+                <option value='{"url": "../../../sample-data/titanicmaster.tsv", "format":{"type":"tsv"}}'>
+                    titanic
+                </option>
+                <option value='{"url": "../../../sample-data/demovote.tsv", "format":{"type":"tsv"}}'>
+                    demovote
+                </option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/airports.csv","format":{"type":"csv"}}'>
+                    vega-datasets/airports.csv</option>
+                <!-- <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/annual-precip.json","format":{"type":"json"}}'>
+                    vega-datasets/annual-precip.json</option> -->
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/anscombe.json","format":{"type":"json"}}'>
+                    vega-datasets/anscombe.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/barley.json","format":{"type":"json"}}'>
+                    vega-datasets/barley.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/birdstrikes.csv","format":{"type":"csv"}}'>
+                    vega-datasets/birdstrikes.csv</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/budget.json","format":{"type":"json"}}'>
+                    vega-datasets/budget.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/budgets.json","format":{"type":"json"}}'>
+                    vega-datasets/budgets.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/burtin.json","format":{"type":"json"}}'>
+                    vega-datasets/burtin.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/cars.json","format":{"type":"json"}}'>
+                    vega-datasets/cars.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/co2-concentration.csv","format":{"type":"csv"}}'>
+                    vega-datasets/co2-concentration.csv</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/countries.json","format":{"type":"json"}}'>
+                    vega-datasets/countries.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/crimea.json","format":{"type":"json"}}'>
+                    vega-datasets/crimea.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/disasters.csv","format":{"type":"csv"}}'>
+                    vega-datasets/disasters.csv</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/driving.json","format":{"type":"json"}}'>
+                    vega-datasets/driving.json</option>
+                <!-- <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/earthquakes.json","format":{"type":"json"}}'>
+                    vega-datasets/earthquakes.json</option> -->
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/flare-dependencies.json","format":{"type":"json"}}'>
+                    vega-datasets/flare-dependencies.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/flare.json","format":{"type":"json"}}'>
+                    vega-datasets/flare.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/flights-10k.json","format":{"type":"json"}}'>
+                    vega-datasets/flights-10k.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/flights-200k.json","format":{"type":"json"}}'>
+                    vega-datasets/flights-200k.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/flights-20k.json","format":{"type":"json"}}'>
+                    vega-datasets/flights-20k.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/flights-2k.json","format":{"type":"json"}}'>
+                    vega-datasets/flights-2k.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/flights-3m.csv","format":{"type":"csv"}}'>
+                    vega-datasets/flights-3m.csv</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/flights-5k.json","format":{"type":"json"}}'>
+                    vega-datasets/flights-5k.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/flights-airport.csv","format":{"type":"csv"}}'>
+                    vega-datasets/flights-airport.csv</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/football.json","format":{"type":"json"}}'>
+                    vega-datasets/football.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder-health-income.csv","format":{"type":"csv"}}'>
+                    vega-datasets/gapminder-health-income.csv</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json","format":{"type":"json"}}'>
+                    vega-datasets/gapminder.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/github.csv","format":{"type":"csv"}}'>
+                    vega-datasets/github.csv</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/income.json","format":{"type":"json"}}'>
+                    vega-datasets/income.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/iowa-electricity.csv","format":{"type":"csv"}}'>
+                    vega-datasets/iowa-electricity.csv</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/jobs.json","format":{"type":"json"}}'>
+                    vega-datasets/jobs.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/la-riots.csv","format":{"type":"csv"}}'>
+                    vega-datasets/la-riots.csv</option>
+                <!-- <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/londonBoroughs.json","format":{"type":"json"}}'>
+                    vega-datasets/londonBoroughs.json</option> -->
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/londonCentroids.json","format":{"type":"json"}}'>
+                    vega-datasets/londonCentroids.json</option>
+                <!-- <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/londonTubeLines.json","format":{"type":"json"}}'>
+                    vega-datasets/londonTubeLines.json</option> -->
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/lookup_groups.csv","format":{"type":"csv"}}'>
+                    vega-datasets/lookup_groups.csv</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/lookup_people.csv","format":{"type":"csv"}}'>
+                    vega-datasets/lookup_people.csv</option>
+                <!-- <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/miserables.json","format":{"type":"json"}}'>
+                    vega-datasets/miserables.json</option> -->
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/monarchs.json","format":{"type":"json"}}'>
+                    vega-datasets/monarchs.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/movies.json","format":{"type":"json"}}'>
+                    vega-datasets/movies.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/normal-2d.json","format":{"type":"json"}}'>
+                    vega-datasets/normal-2d.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/obesity.json","format":{"type":"json"}}'>
+                    vega-datasets/obesity.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/ohlc.json","format":{"type":"json"}}'>
+                    vega-datasets/ohlc.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/penguins.json","format":{"type":"json"}}'>
+                    vega-datasets/penguins.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/platformer-terrain.json","format":{"type":"json"}}'>
+                    vega-datasets/platformer-terrain.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/points.json","format":{"type":"json"}}'>
+                    vega-datasets/points.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/political-contributions.json","format":{"type":"json"}}'>
+                    vega-datasets/political-contributions.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/population.json","format":{"type":"json"}}'>
+                    vega-datasets/population.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/population_engineers_hurricanes.csv","format":{"type":"csv"}}'>
+                    vega-datasets/population_engineers_hurricanes.csv</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/seattle-weather-hourly-normals.csv","format":{"type":"csv"}}'>
+                    vega-datasets/seattle-weather-hourly-normals.csv</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/seattle-weather.csv","format":{"type":"csv"}}'>
+                    vega-datasets/seattle-weather.csv</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/sp500-2000.csv","format":{"type":"csv"}}'>
+                    vega-datasets/sp500-2000.csv</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/sp500.csv","format":{"type":"csv"}}'>
+                    vega-datasets/sp500.csv</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/stocks.csv","format":{"type":"csv"}}'>
+                    vega-datasets/stocks.csv</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/udistrict.json","format":{"type":"json"}}'>
+                    vega-datasets/udistrict.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/unemployment-across-industries.json","format":{"type":"json"}}'>
+                    vega-datasets/unemployment-across-industries.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/unemployment.tsv","format":{"type":"tsv"}}'>
+                    vega-datasets/unemployment.tsv</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/uniform-2d.json","format":{"type":"json"}}'>
+                    vega-datasets/uniform-2d.json</option>
+                <!-- <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/us-10m.json","format":{"type":"json"}}'>
+                    vega-datasets/us-10m.json</option> -->
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/us-employment.csv","format":{"type":"csv"}}'>
+                    vega-datasets/us-employment.csv</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/us-state-capitals.json","format":{"type":"json"}}'>
+                    vega-datasets/us-state-capitals.json</option>
+                <!-- <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/volcano.json","format":{"type":"json"}}'>
+                    vega-datasets/volcano.json</option> -->
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/weather.csv","format":{"type":"csv"}}'>
+                    vega-datasets/weather.csv</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/weather.json","format":{"type":"json"}}'>
+                    vega-datasets/weather.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/wheat.json","format":{"type":"json"}}'>
+                    vega-datasets/wheat.json</option>
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/windvectors.csv","format":{"type":"csv"}}'>
+                    vega-datasets/windvectors.csv</option>
+                <!-- <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/world-110m.json","format":{"type":"json"}}'>
+                    vega-datasets/world-110m.json</option> -->
+                <option
+                    value='{"url":"https://raw.githubusercontent.com/vega/vega-datasets/main/data/zipcodes.csv","format":{"type":"csv"}}'>
+                    vega-datasets/zipcodes.csv</option>
             </select>
         </label>
     </header>
 
     <main>
 
-        <button onclick="navigator.clipboard.writeText(document.getElementsByTagName('code')[0].textContent)"
-            style="float: right;">📋</button>
-
+        <button type="button"
+            onclick="navigator.clipboard.writeText(document.getElementsByTagName('code')[0].textContent)"
+            style="position:relative;right:1em;float:right;top:3em;">📋</button>
         Columns:
         <pre><code></code></pre>
 
@@ -60,7 +264,7 @@
                 var columns = DataInference.getColumnsFromData(vega.inferTypes, data);
                 test.display(JSON.stringify(columns, null, 2), true);
             },
-            loadText: (url, format) => {
+            loadText: ({ url, format }) => {
                 test.display('Loading...');
                 vega.loader().load(url).then(function (text) {
                     var data = vega.read(text, format);
@@ -69,7 +273,7 @@
             },
         };
 
-        test.loadText('../../../sample-data/titanicmaster.tsv', { type: 'tsv' });
+        test.loadText({ url: '../../../sample-data/titanicmaster.tsv', format: { type: 'tsv' } });
 
     </script>
 
