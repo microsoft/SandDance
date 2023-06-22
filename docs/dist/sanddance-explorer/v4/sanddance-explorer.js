@@ -1667,26 +1667,26 @@ function $81fdb423dd3f4d9b$export$104083a36c1647a7(specContext) {
 
 var $ae86bb470afa6626$exports = {};
 
-$parcel$export($ae86bb470afa6626$exports, "getColumnsFromData", () => $ae86bb470afa6626$export$3f19ad07848df794);
-$parcel$export($ae86bb470afa6626$exports, "inferAll", () => $ae86bb470afa6626$export$e04a97cc71178399);
 $parcel$export($ae86bb470afa6626$exports, "getSpecColumns", () => $ae86bb470afa6626$export$9e6128b2231f5173);
-$parcel$export($ae86bb470afa6626$exports, "getStats", () => $ae86bb470afa6626$export$432f698644f45d1);
-function $67aa9bbf7ac601ea$export$2e2bcd8739ae039(constructor, factory, prototype) {
+$parcel$export($ae86bb470afa6626$exports, "getColumnsFromData", () => $526ccd3650e1719b$export$3f19ad07848df794);
+$parcel$export($ae86bb470afa6626$exports, "getStats", () => $13e02d75e5567db7$export$432f698644f45d1);
+$parcel$export($ae86bb470afa6626$exports, "inferAll", () => $526ccd3650e1719b$export$e04a97cc71178399);
+function $5237ddf5a276626a$export$2e2bcd8739ae039(constructor, factory, prototype) {
     constructor.prototype = factory.prototype = prototype;
     prototype.constructor = constructor;
 }
-function $67aa9bbf7ac601ea$export$8b58be045bf06082(parent, definition) {
+function $5237ddf5a276626a$export$8b58be045bf06082(parent, definition) {
     var prototype = Object.create(parent.prototype);
     for(var key in definition)prototype[key] = definition[key];
     return prototype;
 }
 
 
-function $fe67bfce8e40eaac$export$892596cec99bc70e() {}
-var $fe67bfce8e40eaac$export$4adafc6ed0600c10 = 0.7;
-var $fe67bfce8e40eaac$export$9eace2cc0d12c98d = 1 / $fe67bfce8e40eaac$export$4adafc6ed0600c10;
-var $fe67bfce8e40eaac$var$reI = "\\s*([+-]?\\d+)\\s*", $fe67bfce8e40eaac$var$reN = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*", $fe67bfce8e40eaac$var$reP = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*", $fe67bfce8e40eaac$var$reHex = /^#([0-9a-f]{3,8})$/, $fe67bfce8e40eaac$var$reRgbInteger = new RegExp(`^rgb\\(${$fe67bfce8e40eaac$var$reI},${$fe67bfce8e40eaac$var$reI},${$fe67bfce8e40eaac$var$reI}\\)$`), $fe67bfce8e40eaac$var$reRgbPercent = new RegExp(`^rgb\\(${$fe67bfce8e40eaac$var$reP},${$fe67bfce8e40eaac$var$reP},${$fe67bfce8e40eaac$var$reP}\\)$`), $fe67bfce8e40eaac$var$reRgbaInteger = new RegExp(`^rgba\\(${$fe67bfce8e40eaac$var$reI},${$fe67bfce8e40eaac$var$reI},${$fe67bfce8e40eaac$var$reI},${$fe67bfce8e40eaac$var$reN}\\)$`), $fe67bfce8e40eaac$var$reRgbaPercent = new RegExp(`^rgba\\(${$fe67bfce8e40eaac$var$reP},${$fe67bfce8e40eaac$var$reP},${$fe67bfce8e40eaac$var$reP},${$fe67bfce8e40eaac$var$reN}\\)$`), $fe67bfce8e40eaac$var$reHslPercent = new RegExp(`^hsl\\(${$fe67bfce8e40eaac$var$reN},${$fe67bfce8e40eaac$var$reP},${$fe67bfce8e40eaac$var$reP}\\)$`), $fe67bfce8e40eaac$var$reHslaPercent = new RegExp(`^hsla\\(${$fe67bfce8e40eaac$var$reN},${$fe67bfce8e40eaac$var$reP},${$fe67bfce8e40eaac$var$reP},${$fe67bfce8e40eaac$var$reN}\\)$`);
-var $fe67bfce8e40eaac$var$named = {
+function $2a19a583ad6d6fd8$export$892596cec99bc70e() {}
+var $2a19a583ad6d6fd8$export$4adafc6ed0600c10 = 0.7;
+var $2a19a583ad6d6fd8$export$9eace2cc0d12c98d = 1 / $2a19a583ad6d6fd8$export$4adafc6ed0600c10;
+var $2a19a583ad6d6fd8$var$reI = "\\s*([+-]?\\d+)\\s*", $2a19a583ad6d6fd8$var$reN = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*", $2a19a583ad6d6fd8$var$reP = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*", $2a19a583ad6d6fd8$var$reHex = /^#([0-9a-f]{3,8})$/, $2a19a583ad6d6fd8$var$reRgbInteger = new RegExp(`^rgb\\(${$2a19a583ad6d6fd8$var$reI},${$2a19a583ad6d6fd8$var$reI},${$2a19a583ad6d6fd8$var$reI}\\)$`), $2a19a583ad6d6fd8$var$reRgbPercent = new RegExp(`^rgb\\(${$2a19a583ad6d6fd8$var$reP},${$2a19a583ad6d6fd8$var$reP},${$2a19a583ad6d6fd8$var$reP}\\)$`), $2a19a583ad6d6fd8$var$reRgbaInteger = new RegExp(`^rgba\\(${$2a19a583ad6d6fd8$var$reI},${$2a19a583ad6d6fd8$var$reI},${$2a19a583ad6d6fd8$var$reI},${$2a19a583ad6d6fd8$var$reN}\\)$`), $2a19a583ad6d6fd8$var$reRgbaPercent = new RegExp(`^rgba\\(${$2a19a583ad6d6fd8$var$reP},${$2a19a583ad6d6fd8$var$reP},${$2a19a583ad6d6fd8$var$reP},${$2a19a583ad6d6fd8$var$reN}\\)$`), $2a19a583ad6d6fd8$var$reHslPercent = new RegExp(`^hsl\\(${$2a19a583ad6d6fd8$var$reN},${$2a19a583ad6d6fd8$var$reP},${$2a19a583ad6d6fd8$var$reP}\\)$`), $2a19a583ad6d6fd8$var$reHslaPercent = new RegExp(`^hsla\\(${$2a19a583ad6d6fd8$var$reN},${$2a19a583ad6d6fd8$var$reP},${$2a19a583ad6d6fd8$var$reP},${$2a19a583ad6d6fd8$var$reN}\\)$`);
+var $2a19a583ad6d6fd8$var$named = {
     aliceblue: 0xf0f8ff,
     antiquewhite: 0xfaebd7,
     aqua: 0x00ffff,
@@ -1836,126 +1836,126 @@ var $fe67bfce8e40eaac$var$named = {
     yellow: 0xffff00,
     yellowgreen: 0x9acd32
 };
-(0, $67aa9bbf7ac601ea$export$2e2bcd8739ae039)($fe67bfce8e40eaac$export$892596cec99bc70e, $fe67bfce8e40eaac$export$2e2bcd8739ae039, {
+(0, $5237ddf5a276626a$export$2e2bcd8739ae039)($2a19a583ad6d6fd8$export$892596cec99bc70e, $2a19a583ad6d6fd8$export$2e2bcd8739ae039, {
     copy (channels) {
         return Object.assign(new this.constructor, this, channels);
     },
     displayable () {
         return this.rgb().displayable();
     },
-    hex: $fe67bfce8e40eaac$var$color_formatHex,
-    formatHex: $fe67bfce8e40eaac$var$color_formatHex,
-    formatHex8: $fe67bfce8e40eaac$var$color_formatHex8,
-    formatHsl: $fe67bfce8e40eaac$var$color_formatHsl,
-    formatRgb: $fe67bfce8e40eaac$var$color_formatRgb,
-    toString: $fe67bfce8e40eaac$var$color_formatRgb
+    hex: $2a19a583ad6d6fd8$var$color_formatHex,
+    formatHex: $2a19a583ad6d6fd8$var$color_formatHex,
+    formatHex8: $2a19a583ad6d6fd8$var$color_formatHex8,
+    formatHsl: $2a19a583ad6d6fd8$var$color_formatHsl,
+    formatRgb: $2a19a583ad6d6fd8$var$color_formatRgb,
+    toString: $2a19a583ad6d6fd8$var$color_formatRgb
 });
-function $fe67bfce8e40eaac$var$color_formatHex() {
+function $2a19a583ad6d6fd8$var$color_formatHex() {
     return this.rgb().formatHex();
 }
-function $fe67bfce8e40eaac$var$color_formatHex8() {
+function $2a19a583ad6d6fd8$var$color_formatHex8() {
     return this.rgb().formatHex8();
 }
-function $fe67bfce8e40eaac$var$color_formatHsl() {
-    return $fe67bfce8e40eaac$export$8133dc3fa904d6d1(this).formatHsl();
+function $2a19a583ad6d6fd8$var$color_formatHsl() {
+    return $2a19a583ad6d6fd8$export$8133dc3fa904d6d1(this).formatHsl();
 }
-function $fe67bfce8e40eaac$var$color_formatRgb() {
+function $2a19a583ad6d6fd8$var$color_formatRgb() {
     return this.rgb().formatRgb();
 }
-function $fe67bfce8e40eaac$export$2e2bcd8739ae039(format) {
+function $2a19a583ad6d6fd8$export$2e2bcd8739ae039(format) {
     var m, l;
     format = (format + "").trim().toLowerCase();
-    return (m = $fe67bfce8e40eaac$var$reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? $fe67bfce8e40eaac$var$rgbn(m) // #ff0000
-     : l === 3 ? new $fe67bfce8e40eaac$export$5e05a94393ac29e3(m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, (m & 0xf) << 4 | m & 0xf, 1) // #f00
-     : l === 8 ? $fe67bfce8e40eaac$var$rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-     : l === 4 ? $fe67bfce8e40eaac$var$rgba(m >> 12 & 0xf | m >> 8 & 0xf0, m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, ((m & 0xf) << 4 | m & 0xf) / 0xff) // #f000
+    return (m = $2a19a583ad6d6fd8$var$reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? $2a19a583ad6d6fd8$var$rgbn(m) // #ff0000
+     : l === 3 ? new $2a19a583ad6d6fd8$export$5e05a94393ac29e3(m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, (m & 0xf) << 4 | m & 0xf, 1) // #f00
+     : l === 8 ? $2a19a583ad6d6fd8$var$rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+     : l === 4 ? $2a19a583ad6d6fd8$var$rgba(m >> 12 & 0xf | m >> 8 & 0xf0, m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, ((m & 0xf) << 4 | m & 0xf) / 0xff) // #f000
      : null // invalid hex
-    ) : (m = $fe67bfce8e40eaac$var$reRgbInteger.exec(format)) ? new $fe67bfce8e40eaac$export$5e05a94393ac29e3(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
-     : (m = $fe67bfce8e40eaac$var$reRgbPercent.exec(format)) ? new $fe67bfce8e40eaac$export$5e05a94393ac29e3(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
-     : (m = $fe67bfce8e40eaac$var$reRgbaInteger.exec(format)) ? $fe67bfce8e40eaac$var$rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
-     : (m = $fe67bfce8e40eaac$var$reRgbaPercent.exec(format)) ? $fe67bfce8e40eaac$var$rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-     : (m = $fe67bfce8e40eaac$var$reHslPercent.exec(format)) ? $fe67bfce8e40eaac$var$hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-     : (m = $fe67bfce8e40eaac$var$reHslaPercent.exec(format)) ? $fe67bfce8e40eaac$var$hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-     : $fe67bfce8e40eaac$var$named.hasOwnProperty(format) ? $fe67bfce8e40eaac$var$rgbn($fe67bfce8e40eaac$var$named[format]) // eslint-disable-line no-prototype-builtins
-     : format === "transparent" ? new $fe67bfce8e40eaac$export$5e05a94393ac29e3(NaN, NaN, NaN, 0) : null;
+    ) : (m = $2a19a583ad6d6fd8$var$reRgbInteger.exec(format)) ? new $2a19a583ad6d6fd8$export$5e05a94393ac29e3(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+     : (m = $2a19a583ad6d6fd8$var$reRgbPercent.exec(format)) ? new $2a19a583ad6d6fd8$export$5e05a94393ac29e3(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+     : (m = $2a19a583ad6d6fd8$var$reRgbaInteger.exec(format)) ? $2a19a583ad6d6fd8$var$rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+     : (m = $2a19a583ad6d6fd8$var$reRgbaPercent.exec(format)) ? $2a19a583ad6d6fd8$var$rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+     : (m = $2a19a583ad6d6fd8$var$reHslPercent.exec(format)) ? $2a19a583ad6d6fd8$var$hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+     : (m = $2a19a583ad6d6fd8$var$reHslaPercent.exec(format)) ? $2a19a583ad6d6fd8$var$hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+     : $2a19a583ad6d6fd8$var$named.hasOwnProperty(format) ? $2a19a583ad6d6fd8$var$rgbn($2a19a583ad6d6fd8$var$named[format]) // eslint-disable-line no-prototype-builtins
+     : format === "transparent" ? new $2a19a583ad6d6fd8$export$5e05a94393ac29e3(NaN, NaN, NaN, 0) : null;
 }
-function $fe67bfce8e40eaac$var$rgbn(n) {
-    return new $fe67bfce8e40eaac$export$5e05a94393ac29e3(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+function $2a19a583ad6d6fd8$var$rgbn(n) {
+    return new $2a19a583ad6d6fd8$export$5e05a94393ac29e3(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
 }
-function $fe67bfce8e40eaac$var$rgba(r, g, b, a) {
+function $2a19a583ad6d6fd8$var$rgba(r, g, b, a) {
     if (a <= 0) r = g = b = NaN;
-    return new $fe67bfce8e40eaac$export$5e05a94393ac29e3(r, g, b, a);
+    return new $2a19a583ad6d6fd8$export$5e05a94393ac29e3(r, g, b, a);
 }
-function $fe67bfce8e40eaac$export$42da0a331c2802f5(o) {
-    if (!(o instanceof $fe67bfce8e40eaac$export$892596cec99bc70e)) o = $fe67bfce8e40eaac$export$2e2bcd8739ae039(o);
-    if (!o) return new $fe67bfce8e40eaac$export$5e05a94393ac29e3;
+function $2a19a583ad6d6fd8$export$42da0a331c2802f5(o) {
+    if (!(o instanceof $2a19a583ad6d6fd8$export$892596cec99bc70e)) o = $2a19a583ad6d6fd8$export$2e2bcd8739ae039(o);
+    if (!o) return new $2a19a583ad6d6fd8$export$5e05a94393ac29e3;
     o = o.rgb();
-    return new $fe67bfce8e40eaac$export$5e05a94393ac29e3(o.r, o.g, o.b, o.opacity);
+    return new $2a19a583ad6d6fd8$export$5e05a94393ac29e3(o.r, o.g, o.b, o.opacity);
 }
-function $fe67bfce8e40eaac$export$8972dc0e6ad9238f(r, g, b, opacity) {
-    return arguments.length === 1 ? $fe67bfce8e40eaac$export$42da0a331c2802f5(r) : new $fe67bfce8e40eaac$export$5e05a94393ac29e3(r, g, b, opacity == null ? 1 : opacity);
+function $2a19a583ad6d6fd8$export$8972dc0e6ad9238f(r, g, b, opacity) {
+    return arguments.length === 1 ? $2a19a583ad6d6fd8$export$42da0a331c2802f5(r) : new $2a19a583ad6d6fd8$export$5e05a94393ac29e3(r, g, b, opacity == null ? 1 : opacity);
 }
-function $fe67bfce8e40eaac$export$5e05a94393ac29e3(r, g, b, opacity) {
+function $2a19a583ad6d6fd8$export$5e05a94393ac29e3(r, g, b, opacity) {
     this.r = +r;
     this.g = +g;
     this.b = +b;
     this.opacity = +opacity;
 }
-(0, $67aa9bbf7ac601ea$export$2e2bcd8739ae039)($fe67bfce8e40eaac$export$5e05a94393ac29e3, $fe67bfce8e40eaac$export$8972dc0e6ad9238f, (0, $67aa9bbf7ac601ea$export$8b58be045bf06082)($fe67bfce8e40eaac$export$892596cec99bc70e, {
+(0, $5237ddf5a276626a$export$2e2bcd8739ae039)($2a19a583ad6d6fd8$export$5e05a94393ac29e3, $2a19a583ad6d6fd8$export$8972dc0e6ad9238f, (0, $5237ddf5a276626a$export$8b58be045bf06082)($2a19a583ad6d6fd8$export$892596cec99bc70e, {
     brighter (k) {
-        k = k == null ? $fe67bfce8e40eaac$export$9eace2cc0d12c98d : Math.pow($fe67bfce8e40eaac$export$9eace2cc0d12c98d, k);
-        return new $fe67bfce8e40eaac$export$5e05a94393ac29e3(this.r * k, this.g * k, this.b * k, this.opacity);
+        k = k == null ? $2a19a583ad6d6fd8$export$9eace2cc0d12c98d : Math.pow($2a19a583ad6d6fd8$export$9eace2cc0d12c98d, k);
+        return new $2a19a583ad6d6fd8$export$5e05a94393ac29e3(this.r * k, this.g * k, this.b * k, this.opacity);
     },
     darker (k) {
-        k = k == null ? $fe67bfce8e40eaac$export$4adafc6ed0600c10 : Math.pow($fe67bfce8e40eaac$export$4adafc6ed0600c10, k);
-        return new $fe67bfce8e40eaac$export$5e05a94393ac29e3(this.r * k, this.g * k, this.b * k, this.opacity);
+        k = k == null ? $2a19a583ad6d6fd8$export$4adafc6ed0600c10 : Math.pow($2a19a583ad6d6fd8$export$4adafc6ed0600c10, k);
+        return new $2a19a583ad6d6fd8$export$5e05a94393ac29e3(this.r * k, this.g * k, this.b * k, this.opacity);
     },
     rgb () {
         return this;
     },
     clamp () {
-        return new $fe67bfce8e40eaac$export$5e05a94393ac29e3($fe67bfce8e40eaac$var$clampi(this.r), $fe67bfce8e40eaac$var$clampi(this.g), $fe67bfce8e40eaac$var$clampi(this.b), $fe67bfce8e40eaac$var$clampa(this.opacity));
+        return new $2a19a583ad6d6fd8$export$5e05a94393ac29e3($2a19a583ad6d6fd8$var$clampi(this.r), $2a19a583ad6d6fd8$var$clampi(this.g), $2a19a583ad6d6fd8$var$clampi(this.b), $2a19a583ad6d6fd8$var$clampa(this.opacity));
     },
     displayable () {
         return -0.5 <= this.r && this.r < 255.5 && -0.5 <= this.g && this.g < 255.5 && -0.5 <= this.b && this.b < 255.5 && 0 <= this.opacity && this.opacity <= 1;
     },
-    hex: $fe67bfce8e40eaac$var$rgb_formatHex,
-    formatHex: $fe67bfce8e40eaac$var$rgb_formatHex,
-    formatHex8: $fe67bfce8e40eaac$var$rgb_formatHex8,
-    formatRgb: $fe67bfce8e40eaac$var$rgb_formatRgb,
-    toString: $fe67bfce8e40eaac$var$rgb_formatRgb
+    hex: $2a19a583ad6d6fd8$var$rgb_formatHex,
+    formatHex: $2a19a583ad6d6fd8$var$rgb_formatHex,
+    formatHex8: $2a19a583ad6d6fd8$var$rgb_formatHex8,
+    formatRgb: $2a19a583ad6d6fd8$var$rgb_formatRgb,
+    toString: $2a19a583ad6d6fd8$var$rgb_formatRgb
 }));
-function $fe67bfce8e40eaac$var$rgb_formatHex() {
-    return `#${$fe67bfce8e40eaac$var$hex(this.r)}${$fe67bfce8e40eaac$var$hex(this.g)}${$fe67bfce8e40eaac$var$hex(this.b)}`;
+function $2a19a583ad6d6fd8$var$rgb_formatHex() {
+    return `#${$2a19a583ad6d6fd8$var$hex(this.r)}${$2a19a583ad6d6fd8$var$hex(this.g)}${$2a19a583ad6d6fd8$var$hex(this.b)}`;
 }
-function $fe67bfce8e40eaac$var$rgb_formatHex8() {
-    return `#${$fe67bfce8e40eaac$var$hex(this.r)}${$fe67bfce8e40eaac$var$hex(this.g)}${$fe67bfce8e40eaac$var$hex(this.b)}${$fe67bfce8e40eaac$var$hex((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
+function $2a19a583ad6d6fd8$var$rgb_formatHex8() {
+    return `#${$2a19a583ad6d6fd8$var$hex(this.r)}${$2a19a583ad6d6fd8$var$hex(this.g)}${$2a19a583ad6d6fd8$var$hex(this.b)}${$2a19a583ad6d6fd8$var$hex((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
 }
-function $fe67bfce8e40eaac$var$rgb_formatRgb() {
-    const a = $fe67bfce8e40eaac$var$clampa(this.opacity);
-    return `${a === 1 ? "rgb(" : "rgba("}${$fe67bfce8e40eaac$var$clampi(this.r)}, ${$fe67bfce8e40eaac$var$clampi(this.g)}, ${$fe67bfce8e40eaac$var$clampi(this.b)}${a === 1 ? ")" : `, ${a})`}`;
+function $2a19a583ad6d6fd8$var$rgb_formatRgb() {
+    const a = $2a19a583ad6d6fd8$var$clampa(this.opacity);
+    return `${a === 1 ? "rgb(" : "rgba("}${$2a19a583ad6d6fd8$var$clampi(this.r)}, ${$2a19a583ad6d6fd8$var$clampi(this.g)}, ${$2a19a583ad6d6fd8$var$clampi(this.b)}${a === 1 ? ")" : `, ${a})`}`;
 }
-function $fe67bfce8e40eaac$var$clampa(opacity) {
+function $2a19a583ad6d6fd8$var$clampa(opacity) {
     return isNaN(opacity) ? 1 : Math.max(0, Math.min(1, opacity));
 }
-function $fe67bfce8e40eaac$var$clampi(value) {
+function $2a19a583ad6d6fd8$var$clampi(value) {
     return Math.max(0, Math.min(255, Math.round(value) || 0));
 }
-function $fe67bfce8e40eaac$var$hex(value) {
-    value = $fe67bfce8e40eaac$var$clampi(value);
+function $2a19a583ad6d6fd8$var$hex(value) {
+    value = $2a19a583ad6d6fd8$var$clampi(value);
     return (value < 16 ? "0" : "") + value.toString(16);
 }
-function $fe67bfce8e40eaac$var$hsla(h, s, l, a) {
+function $2a19a583ad6d6fd8$var$hsla(h, s, l, a) {
     if (a <= 0) h = s = l = NaN;
     else if (l <= 0 || l >= 1) h = s = NaN;
     else if (s <= 0) h = NaN;
-    return new $fe67bfce8e40eaac$var$Hsl(h, s, l, a);
+    return new $2a19a583ad6d6fd8$var$Hsl(h, s, l, a);
 }
-function $fe67bfce8e40eaac$export$8133dc3fa904d6d1(o) {
-    if (o instanceof $fe67bfce8e40eaac$var$Hsl) return new $fe67bfce8e40eaac$var$Hsl(o.h, o.s, o.l, o.opacity);
-    if (!(o instanceof $fe67bfce8e40eaac$export$892596cec99bc70e)) o = $fe67bfce8e40eaac$export$2e2bcd8739ae039(o);
-    if (!o) return new $fe67bfce8e40eaac$var$Hsl;
-    if (o instanceof $fe67bfce8e40eaac$var$Hsl) return o;
+function $2a19a583ad6d6fd8$export$8133dc3fa904d6d1(o) {
+    if (o instanceof $2a19a583ad6d6fd8$var$Hsl) return new $2a19a583ad6d6fd8$var$Hsl(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof $2a19a583ad6d6fd8$export$892596cec99bc70e)) o = $2a19a583ad6d6fd8$export$2e2bcd8739ae039(o);
+    if (!o) return new $2a19a583ad6d6fd8$var$Hsl;
+    if (o instanceof $2a19a583ad6d6fd8$var$Hsl) return o;
     o = o.rgb();
     var r = o.r / 255, g = o.g / 255, b = o.b / 255, min = Math.min(r, g, b), max = Math.max(r, g, b), h = NaN, s = max - min, l = (max + min) / 2;
     if (s) {
@@ -1965,112 +1965,95 @@ function $fe67bfce8e40eaac$export$8133dc3fa904d6d1(o) {
         s /= l < 0.5 ? max + min : 2 - max - min;
         h *= 60;
     } else s = l > 0 && l < 1 ? 0 : h;
-    return new $fe67bfce8e40eaac$var$Hsl(h, s, l, o.opacity);
+    return new $2a19a583ad6d6fd8$var$Hsl(h, s, l, o.opacity);
 }
-function $fe67bfce8e40eaac$export$8f4a7c0bb78e6ea8(h, s, l, opacity) {
-    return arguments.length === 1 ? $fe67bfce8e40eaac$export$8133dc3fa904d6d1(h) : new $fe67bfce8e40eaac$var$Hsl(h, s, l, opacity == null ? 1 : opacity);
+function $2a19a583ad6d6fd8$export$8f4a7c0bb78e6ea8(h, s, l, opacity) {
+    return arguments.length === 1 ? $2a19a583ad6d6fd8$export$8133dc3fa904d6d1(h) : new $2a19a583ad6d6fd8$var$Hsl(h, s, l, opacity == null ? 1 : opacity);
 }
-function $fe67bfce8e40eaac$var$Hsl(h, s, l, opacity) {
+function $2a19a583ad6d6fd8$var$Hsl(h, s, l, opacity) {
     this.h = +h;
     this.s = +s;
     this.l = +l;
     this.opacity = +opacity;
 }
-(0, $67aa9bbf7ac601ea$export$2e2bcd8739ae039)($fe67bfce8e40eaac$var$Hsl, $fe67bfce8e40eaac$export$8f4a7c0bb78e6ea8, (0, $67aa9bbf7ac601ea$export$8b58be045bf06082)($fe67bfce8e40eaac$export$892596cec99bc70e, {
+(0, $5237ddf5a276626a$export$2e2bcd8739ae039)($2a19a583ad6d6fd8$var$Hsl, $2a19a583ad6d6fd8$export$8f4a7c0bb78e6ea8, (0, $5237ddf5a276626a$export$8b58be045bf06082)($2a19a583ad6d6fd8$export$892596cec99bc70e, {
     brighter (k) {
-        k = k == null ? $fe67bfce8e40eaac$export$9eace2cc0d12c98d : Math.pow($fe67bfce8e40eaac$export$9eace2cc0d12c98d, k);
-        return new $fe67bfce8e40eaac$var$Hsl(this.h, this.s, this.l * k, this.opacity);
+        k = k == null ? $2a19a583ad6d6fd8$export$9eace2cc0d12c98d : Math.pow($2a19a583ad6d6fd8$export$9eace2cc0d12c98d, k);
+        return new $2a19a583ad6d6fd8$var$Hsl(this.h, this.s, this.l * k, this.opacity);
     },
     darker (k) {
-        k = k == null ? $fe67bfce8e40eaac$export$4adafc6ed0600c10 : Math.pow($fe67bfce8e40eaac$export$4adafc6ed0600c10, k);
-        return new $fe67bfce8e40eaac$var$Hsl(this.h, this.s, this.l * k, this.opacity);
+        k = k == null ? $2a19a583ad6d6fd8$export$4adafc6ed0600c10 : Math.pow($2a19a583ad6d6fd8$export$4adafc6ed0600c10, k);
+        return new $2a19a583ad6d6fd8$var$Hsl(this.h, this.s, this.l * k, this.opacity);
     },
     rgb () {
         var h = this.h % 360 + (this.h < 0) * 360, s = isNaN(h) || isNaN(this.s) ? 0 : this.s, l = this.l, m2 = l + (l < 0.5 ? l : 1 - l) * s, m1 = 2 * l - m2;
-        return new $fe67bfce8e40eaac$export$5e05a94393ac29e3($fe67bfce8e40eaac$var$hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), $fe67bfce8e40eaac$var$hsl2rgb(h, m1, m2), $fe67bfce8e40eaac$var$hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
+        return new $2a19a583ad6d6fd8$export$5e05a94393ac29e3($2a19a583ad6d6fd8$var$hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), $2a19a583ad6d6fd8$var$hsl2rgb(h, m1, m2), $2a19a583ad6d6fd8$var$hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
     },
     clamp () {
-        return new $fe67bfce8e40eaac$var$Hsl($fe67bfce8e40eaac$var$clamph(this.h), $fe67bfce8e40eaac$var$clampt(this.s), $fe67bfce8e40eaac$var$clampt(this.l), $fe67bfce8e40eaac$var$clampa(this.opacity));
+        return new $2a19a583ad6d6fd8$var$Hsl($2a19a583ad6d6fd8$var$clamph(this.h), $2a19a583ad6d6fd8$var$clampt(this.s), $2a19a583ad6d6fd8$var$clampt(this.l), $2a19a583ad6d6fd8$var$clampa(this.opacity));
     },
     displayable () {
         return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && 0 <= this.l && this.l <= 1 && 0 <= this.opacity && this.opacity <= 1;
     },
     formatHsl () {
-        const a = $fe67bfce8e40eaac$var$clampa(this.opacity);
-        return `${a === 1 ? "hsl(" : "hsla("}${$fe67bfce8e40eaac$var$clamph(this.h)}, ${$fe67bfce8e40eaac$var$clampt(this.s) * 100}%, ${$fe67bfce8e40eaac$var$clampt(this.l) * 100}%${a === 1 ? ")" : `, ${a})`}`;
+        const a = $2a19a583ad6d6fd8$var$clampa(this.opacity);
+        return `${a === 1 ? "hsl(" : "hsla("}${$2a19a583ad6d6fd8$var$clamph(this.h)}, ${$2a19a583ad6d6fd8$var$clampt(this.s) * 100}%, ${$2a19a583ad6d6fd8$var$clampt(this.l) * 100}%${a === 1 ? ")" : `, ${a})`}`;
     }
 }));
-function $fe67bfce8e40eaac$var$clamph(value) {
+function $2a19a583ad6d6fd8$var$clamph(value) {
     value = (value || 0) % 360;
     return value < 0 ? value + 360 : value;
 }
-function $fe67bfce8e40eaac$var$clampt(value) {
+function $2a19a583ad6d6fd8$var$clampt(value) {
     return Math.max(0, Math.min(1, value || 0));
 }
-/* From FvD 13.37, CSS Color Module Level 3 */ function $fe67bfce8e40eaac$var$hsl2rgb(h, m1, m2) {
+/* From FvD 13.37, CSS Color Module Level 3 */ function $2a19a583ad6d6fd8$var$hsl2rgb(h, m1, m2) {
     return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
 }
 
 
 
-function $ae86bb470afa6626$var$isColor(cssColorSpecifier) {
-    return !!(0, $fe67bfce8e40eaac$export$2e2bcd8739ae039)(cssColorSpecifier);
+function $e19a856660185092$export$e82f763eaa28f6fe(cssColorSpecifier) {
+    return !!(0, $2a19a583ad6d6fd8$export$2e2bcd8739ae039)(cssColorSpecifier);
 }
-function $ae86bb470afa6626$var$isQuantitative(column) {
-    return column.type === "number" || column.type === "integer";
-}
-function $ae86bb470afa6626$export$3f19ad07848df794(inferTypesFn, data, columnTypes) {
-    const sample = data[0];
-    const fields = sample ? Object.keys(sample) : [];
-    const inferences = Object.assign(Object.assign({}, inferTypesFn(data, fields)), columnTypes);
-    const columns = fields.map((name)=>{
-        const column = {
-            name: name,
-            type: inferences[name]
-        };
-        return column;
-    });
-    $ae86bb470afa6626$export$e04a97cc71178399(columns, data);
-    return columns;
-}
-function $ae86bb470afa6626$export$9e6128b2231f5173(insight, columns) {
-    function getColumnByName(name) {
-        return columns.filter((c)=>c.name === name)[0];
-    }
-    return {
-        color: getColumnByName(insight.columns && insight.columns.color),
-        facet: getColumnByName(insight.columns && insight.columns.facet),
-        facetV: getColumnByName(insight.columns && insight.columns.facetV),
-        group: getColumnByName(insight.columns && insight.columns.group),
-        size: getColumnByName(insight.columns && insight.columns.size),
-        sort: getColumnByName(insight.columns && insight.columns.sort),
-        uid: getColumnByName(insight.columns && insight.columns.uid),
-        x: getColumnByName(insight.columns && insight.columns.x),
-        y: getColumnByName(insight.columns && insight.columns.y),
-        z: getColumnByName(insight.columns && insight.columns.z)
-    };
-}
-function $ae86bb470afa6626$export$e04a97cc71178399(columns, data) {
-    columns.forEach((column)=>{
-        if (column) {
-            if (typeof column.quantitative !== "boolean") column.quantitative = $ae86bb470afa6626$var$isQuantitative(column);
-            if (!column.stats) column.stats = $ae86bb470afa6626$export$432f698644f45d1(data, column);
-            if (column.type === "string" && typeof column.isColorData !== "boolean") $ae86bb470afa6626$var$checkIsColorData(data, column);
-        }
-    });
-}
-function $ae86bb470afa6626$var$checkIsColorData(data, column) {
+function $e19a856660185092$export$e439be417b7eac79(data, column) {
     if (!column.stats.hasColorData) {
         column.isColorData = false;
         return;
     }
-    for(let i = 0; i < data.length; i++)if (!$ae86bb470afa6626$var$isColor(data[i][column.name])) {
+    for(let i = 0; i < data.length; i++)if (!$e19a856660185092$export$e82f763eaa28f6fe(data[i][column.name])) {
         column.isColorData = false;
         return;
     }
     column.isColorData = true;
 }
-function $ae86bb470afa6626$export$432f698644f45d1(data, ...args) {
+
+
+
+function $3c3ffef5d3671dd9$export$133e1c446a214d9e(column) {
+    return column.type === "number" || column.type === "integer";
+}
+function $3c3ffef5d3671dd9$export$dba791c9012d0533(columnName, data) {
+    for(let i = 1; i < data.length; i++){
+        const value = columnName == null ? data[i] : data[i][columnName];
+        if (value < 0) return true;
+    }
+    return false;
+}
+function $3c3ffef5d3671dd9$export$db772497a07dd838(columnName, data) {
+    if (data.length < 2) return false;
+    for(let i = 1; i < data.length; i++){
+        const curr = columnName == null ? data[i] : data[i][columnName];
+        const prev = columnName == null ? data[i - 1] : data[i - 1][columnName];
+        if (curr !== prev + 1) return false;
+    }
+    return true;
+}
+
+
+
+
+function $13e02d75e5567db7$export$432f698644f45d1(data, ...args) {
     let columnName;
     let columnType;
     let columnQuantitative;
@@ -2105,12 +2088,12 @@ function $ae86bb470afa6626$export$432f698644f45d1(data, ...args) {
             if (stats.min === null || num < stats.min) stats.min = num;
             sum += num;
         }
-        if (columnType === "string" && !stats.hasColorData && $ae86bb470afa6626$var$isColor(value)) stats.hasColorData = true;
+        if (columnType === "string" && !stats.hasColorData && (0, $e19a856660185092$export$e82f763eaa28f6fe)(value)) stats.hasColorData = true;
     }
     if (columnQuantitative) {
         stats.mean = data.length > 0 && sum / data.length;
-        stats.hasNegative = $ae86bb470afa6626$var$detectNegative(columnName, data);
-        if (columnType === "integer") stats.isSequential = $ae86bb470afa6626$var$detectSequentialColumn(columnName, data);
+        stats.hasNegative = (0, $3c3ffef5d3671dd9$export$dba791c9012d0533)(columnName, data);
+        if (columnType === "integer") stats.isSequential = (0, $3c3ffef5d3671dd9$export$db772497a07dd838)(columnName, data);
     }
     const distinctValues = Object.keys(distinctMap);
     if (distinctValuesCallback) {
@@ -2120,21 +2103,53 @@ function $ae86bb470afa6626$export$432f698644f45d1(data, ...args) {
     stats.distinctValueCount = distinctValues.length;
     return stats;
 }
-function $ae86bb470afa6626$var$detectNegative(columnName, data) {
-    for(let i = 1; i < data.length; i++){
-        const value = columnName == null ? data[i] : data[i][columnName];
-        if (value < 0) return true;
-    }
-    return false;
+
+
+function $526ccd3650e1719b$export$3f19ad07848df794(inferTypesFn, data, columnTypes) {
+    const sample = data[0];
+    const fields = sample ? Object.keys(sample) : [];
+    const inferences = Object.assign(Object.assign({}, inferTypesFn(data, fields)), columnTypes);
+    const columns = fields.map((name)=>{
+        const column = {
+            name: name,
+            type: inferences[name]
+        };
+        return column;
+    });
+    $526ccd3650e1719b$export$e04a97cc71178399(columns, data);
+    return columns;
 }
-function $ae86bb470afa6626$var$detectSequentialColumn(columnName, data) {
-    if (data.length < 2) return false;
-    for(let i = 1; i < data.length; i++){
-        const curr = columnName == null ? data[i] : data[i][columnName];
-        const prev = columnName == null ? data[i - 1] : data[i - 1][columnName];
-        if (curr !== prev + 1) return false;
+function $526ccd3650e1719b$export$e04a97cc71178399(columns, data) {
+    columns.forEach((column)=>{
+        if (column) {
+            if (typeof column.quantitative !== "boolean") column.quantitative = (0, $3c3ffef5d3671dd9$export$133e1c446a214d9e)(column);
+            if (!column.stats) column.stats = (0, $13e02d75e5567db7$export$432f698644f45d1)(data, column);
+            if (column.type === "string" && typeof column.isColorData !== "boolean") (0, $e19a856660185092$export$e439be417b7eac79)(data, column);
+        }
+    });
+}
+
+
+
+
+
+
+function $ae86bb470afa6626$export$9e6128b2231f5173(insight, columns) {
+    function getColumnByName(name) {
+        return columns.filter((c)=>c.name === name)[0];
     }
-    return true;
+    return {
+        color: getColumnByName(insight.columns && insight.columns.color),
+        facet: getColumnByName(insight.columns && insight.columns.facet),
+        facetV: getColumnByName(insight.columns && insight.columns.facetV),
+        group: getColumnByName(insight.columns && insight.columns.group),
+        size: getColumnByName(insight.columns && insight.columns.size),
+        sort: getColumnByName(insight.columns && insight.columns.sort),
+        uid: getColumnByName(insight.columns && insight.columns.uid),
+        x: getColumnByName(insight.columns && insight.columns.x),
+        y: getColumnByName(insight.columns && insight.columns.y),
+        z: getColumnByName(insight.columns && insight.columns.z)
+    };
 }
 
 
@@ -5679,7 +5694,7 @@ function $7e9d31f0ccd4826a$export$3f8fe6489e95757d(specContext, currData) {
         specColumns.y,
         specColumns.z, 
     ];
-    (0, $ae86bb470afa6626$export$e04a97cc71178399)(columns, currData);
+    (0, $526ccd3650e1719b$export$e04a97cc71178399)(columns, currData);
     const specBuilderProps = (0, $81fdb423dd3f4d9b$export$104083a36c1647a7)(specContext);
     const specBuilder = new (0, $afbd306f40f38f7e$export$e2e6dd2b1097c25b)(specBuilderProps, specContext);
     let specResult;
@@ -6061,9 +6076,9 @@ var $60e01fcba935f9e9$exports = {};
 var $944bef2715b44399$exports = {};
 
 $parcel$export($944bef2715b44399$exports, "isInternalFieldName", () => $944bef2715b44399$export$81adea670bebefbe);
-$parcel$export($944bef2715b44399$exports, "getColumnsFromData", () => $ae86bb470afa6626$export$3f19ad07848df794);
-$parcel$export($944bef2715b44399$exports, "getStats", () => $ae86bb470afa6626$export$432f698644f45d1);
-$parcel$export($944bef2715b44399$exports, "inferAll", () => $ae86bb470afa6626$export$e04a97cc71178399);
+$parcel$export($944bef2715b44399$exports, "getColumnsFromData", () => $526ccd3650e1719b$export$3f19ad07848df794);
+$parcel$export($944bef2715b44399$exports, "getStats", () => $13e02d75e5567db7$export$432f698644f45d1);
+$parcel$export($944bef2715b44399$exports, "inferAll", () => $526ccd3650e1719b$export$e04a97cc71178399);
 $parcel$export($944bef2715b44399$exports, "getPresenterStyle", () => $74c2763994d75bb8$export$c4db461e5e345a8);
 
 
@@ -36928,7 +36943,7 @@ const $d35dded7832c8625$export$6d8f9057dcd7f9e6 = $d35dded7832c8625$var$_ViewGl;
 
 
 
-const $6cb4b91d47e414da$export$83d89fbfd8236492 = "1.0.5";
+const $6cb4b91d47e414da$export$83d89fbfd8236492 = "1.0.6";
 
 
 $parcel$exportWildcard($77c6d719b6f16e7d$exports, $20fbdb0de5c041fa$exports);
@@ -37373,11 +37388,11 @@ class $bb7ed1a84d2d22a1$export$3fb74a6ae4f1171d {
         this.filteredColumnsStats = {};
     }
     getColumns(columnTypes) {
-        if (!this.columns) this.columns = (0, $ae86bb470afa6626$export$3f19ad07848df794)($94c0add5c61b9a48$export$e2253033e6e1df16.vega.inferTypes, this.data, columnTypes);
+        if (!this.columns) this.columns = (0, $526ccd3650e1719b$export$3f19ad07848df794)($94c0add5c61b9a48$export$e2253033e6e1df16.vega.inferTypes, this.data, columnTypes);
         return this.columns;
     }
     getFilteredColumnStats(columnName) {
-        if (!this.filteredColumnsStats[columnName]) this.filteredColumnsStats[columnName] = (0, $ae86bb470afa6626$export$432f698644f45d1)(this.filteredData, this.columns.filter((c)=>c.name === columnName)[0]);
+        if (!this.filteredColumnsStats[columnName]) this.filteredColumnsStats[columnName] = (0, $13e02d75e5567db7$export$432f698644f45d1)(this.filteredData, this.columns.filter((c)=>c.name === columnName)[0]);
         return this.filteredColumnsStats[columnName];
     }
     currentData() {
@@ -39240,7 +39255,7 @@ function $09e8510904f131d2$export$2be97f482a239d30(transition, currentData, sele
                     currentData.forEach((datum, i)=>{
                         values[i] = datum[transition.column.name];
                     });
-                    const stats = (0, $ae86bb470afa6626$export$432f698644f45d1)(currentData, transition.column);
+                    const stats = (0, $13e02d75e5567db7$export$432f698644f45d1)(currentData, transition.column);
                     const scale1 = (0, $815f06c57556bedf$export$2e2bcd8739ae039)(range).domain([
                         stats.min,
                         stats.max
@@ -39254,7 +39269,7 @@ function $09e8510904f131d2$export$2be97f482a239d30(transition, currentData, sele
                     currentData.forEach((datum, i)=>{
                         strings[i] = datum[transition.column.name];
                     });
-                    (0, $ae86bb470afa6626$export$432f698644f45d1)(currentData, transition.column, (distictValues)=>{
+                    (0, $13e02d75e5567db7$export$432f698644f45d1)(currentData, transition.column, (distictValues)=>{
                         currentData.forEach((datum, i)=>{
                             const glOrdinal = datum[0, $4d0539c68a8de77f$export$5672246984822a29];
                             const index = distictValues.indexOf(strings[i]);
@@ -39277,7 +39292,7 @@ function $09e8510904f131d2$export$2be97f482a239d30(transition, currentData, sele
                         const glOrdinal = datum[0, $4d0539c68a8de77f$export$5672246984822a29];
                         values1[i] = positions[glOrdinal];
                     });
-                    const stats1 = (0, $ae86bb470afa6626$export$432f698644f45d1)(values1, null, "number", true);
+                    const stats1 = (0, $13e02d75e5567db7$export$432f698644f45d1)(values1, null, "number", true);
                     const scale2 = (0, $815f06c57556bedf$export$2e2bcd8739ae039)(range).domain([
                         stats1.min,
                         stats1.max
@@ -40115,7 +40130,7 @@ class $0000a41cc7b5918f$export$2ec4afd9b3c16a85 {
  */ $0000a41cc7b5918f$export$2ec4afd9b3c16a85.defaultViewerOptions = (0, $74c2763994d75bb8$export$fb736e4909afb3d7);
 
 
-const $15874c145702a1a4$export$83d89fbfd8236492 = "4.0.5";
+const $15874c145702a1a4$export$83d89fbfd8236492 = "4.0.6";
 
 
 const $3b509b9541e52a8f$export$1f96ae73734a86cc = (0, $94c0add5c61b9a48$export$1f96ae73734a86cc);
@@ -42619,7 +42634,7 @@ const $29728562a99c68a2$export$8e76ac9f37578d1b = {
 
 
 
-const $f56a95f33c4cc847$export$83d89fbfd8236492 = "4.1.2";
+const $f56a95f33c4cc847$export$83d89fbfd8236492 = "4.1.3";
 
 
 var $4805700d8b417596$var$SandDance = $3b509b9541e52a8f$exports;

@@ -7,6 +7,9 @@ title: Examples
 
 ## Subsystem
 
+### data-inference
+* [data-inference test](../tests/data-inference/v1/) using UMD/CDN
+
 ### sanddance-specs
 * [sanddance-specs 2D vega specs tests](../tests/sanddance-specs/v1/) using UMD/CDN
 

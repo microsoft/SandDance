@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance-specs",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "description": "SandDance Vega specification generator.",
   "main": "dist/es6/index.js",
   "repository": {
@@ -32,9 +32,9 @@
   "license": "MIT",
   "dependencies": {
     "@msrvida/chart-types": "^1",
+    "@msrvida/data-inference": "^1",
     "@msrvida/search-expression": "^1",
-    "d3-color": "^3.1.0",
-    "vega-typings": "~0.24.0"
+    "vega-typings": "~0.24.1"
   },
   "devDependencies": {
     "vega": "5.25.0"

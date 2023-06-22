@@ -37,7 +37,7 @@ const packages = {
             ],
         },
         {
-            glob: 'docs/tests/sanddance-specs/v1/index.html',
+            glob: 'docs/tests/{data-inference,sanddance-specs}/v1/index.html',
             pattern: ({ major, minor }) => [
                 `vega@^${major}.${minor}`,
             ],
@@ -66,7 +66,7 @@ const packages = {
         {
             glob: 'packages/*/package.json',
             pattern: ({ major, minor, patch }) => [
-                `"vega-typings": "${major}.${minor}${patch.length ? '.' : ''}${patch}"`,
+                `"vega-typings": "~${major}.${minor}${patch.length ? '.' : ''}${patch}"`,
             ],
         },
     ],

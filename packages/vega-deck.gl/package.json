@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/vega-deck.gl",
-  "version": "3.3.5",
+  "version": "3.3.6",
   "description": "Deck.gl renderer for Vega",
   "main": "dist/es6/index.js",
   "repository": {
@@ -38,7 +38,7 @@
     "d3-ease": "^1.0.5",
     "deepmerge": "^2.1.1",
     "tsx-create-element": "^2.2.9",
-    "vega-typings": "~0.24.0"
+    "vega-typings": "~0.24.1"
   },
   "devDependencies": {
     "@deck.gl/core": "8.3.7",

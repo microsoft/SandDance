@@ -1627,69 +1627,6 @@
     function isColor(cssColorSpecifier) {
         return !!color$2(cssColorSpecifier);
     }
-    function isQuantitative(column) {
-        return column.type === 'number' || column.type === 'integer';
-    }
-    /**
-     * Derive column metadata from the data array.
-     * @param data Array of data objects.
-     */
-    function getColumnsFromData(inferTypesFn, data, columnTypes) {
-        const sample = data[0];
-        const fields = sample ? Object.keys(sample) : [];
-        const inferences = Object.assign(Object.assign({}, inferTypesFn(data, fields)), columnTypes);
-        const columns = fields.map(name => {
-            const column = {
-                name,
-                type: inferences[name],
-            };
-            return column;
-        });
-        inferAll(columns, data);
-        return columns;
-    }
-    /**
-     * Get columns associated with each Insight role.
-     * @param insight Insight to specify column roles.
-     * @param columns Array of Columns inferred from the data.
-     */
-    function getSpecColumns(insight, columns) {
-        function getColumnByName(name) {
-            return columns.filter(c => c.name === name)[0];
-        }
-        return {
-            color: getColumnByName(insight.columns && insight.columns.color),
-            facet: getColumnByName(insight.columns && insight.columns.facet),
-            facetV: getColumnByName(insight.columns && insight.columns.facetV),
-            group: getColumnByName(insight.columns && insight.columns.group),
-            size: getColumnByName(insight.columns && insight.columns.size),
-            sort: getColumnByName(insight.columns && insight.columns.sort),
-            uid: getColumnByName(insight.columns && insight.columns.uid),
-            x: getColumnByName(insight.columns && insight.columns.x),
-            y: getColumnByName(insight.columns && insight.columns.y),
-            z: getColumnByName(insight.columns && insight.columns.z),
-        };
-    }
-    /**
-     * Populate columns with type inferences and stats.
-     * @param columns Array of columns.
-     * @param data Array of data objects.
-     */
-    function inferAll(columns, data) {
-        columns.forEach(column => {
-            if (column) {
-                if (typeof column.quantitative !== 'boolean') {
-                    column.quantitative = isQuantitative(column);
-                }
-                if (!column.stats) {
-                    column.stats = getStats(data, column);
-                }
-                if (column.type === 'string' && typeof column.isColorData !== 'boolean') {
-                    checkIsColorData(data, column);
-                }
-            }
-        });
-    }
     function checkIsColorData(data, column) {
         if (!column.stats.hasColorData) {
             column.isColorData = false;
@@ -1703,6 +1640,38 @@
         }
         column.isColorData = true;
     }
+
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
+    function isQuantitative(column) {
+        return column.type === 'number' || column.type === 'integer';
+    }
+    function detectNegative(columnName, data) {
+        for (let i = 1; i < data.length; i++) {
+            const value = columnName == null ? data[i] : data[i][columnName];
+            if (value < 0)
+                return true;
+        }
+        return false;
+    }
+    function detectSequentialColumn(columnName, data) {
+        if (data.length < 2)
+            return false;
+        for (let i = 1; i < data.length; i++) {
+            const curr = columnName == null ? data[i] : data[i][columnName];
+            const prev = columnName == null ? data[i - 1] : data[i - 1][columnName];
+            if (curr !== prev + 1)
+                return false;
+        }
+        return true;
+    }
+
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     function getStats(data, ...args) {
         let columnName;
         let columnType;
@@ -1762,24 +1731,75 @@
         stats.distinctValueCount = distinctValues.length;
         return stats;
     }
-    function detectNegative(columnName, data) {
-        for (let i = 1; i < data.length; i++) {
-            const value = columnName == null ? data[i] : data[i][columnName];
-            if (value < 0)
-                return true;
-        }
-        return false;
+
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
+    /**
+     * Derive column metadata from the data array.
+     * @param data Array of data objects.
+     */
+    function getColumnsFromData(inferTypesFn, data, columnTypes) {
+        const sample = data[0];
+        const fields = sample ? Object.keys(sample) : [];
+        const inferences = Object.assign(Object.assign({}, inferTypesFn(data, fields)), columnTypes);
+        const columns = fields.map(name => {
+            const column = {
+                name,
+                type: inferences[name],
+            };
+            return column;
+        });
+        inferAll(columns, data);
+        return columns;
     }
-    function detectSequentialColumn(columnName, data) {
-        if (data.length < 2)
-            return false;
-        for (let i = 1; i < data.length; i++) {
-            const curr = columnName == null ? data[i] : data[i][columnName];
-            const prev = columnName == null ? data[i - 1] : data[i - 1][columnName];
-            if (curr !== prev + 1)
-                return false;
+    /**
+     * Populate columns with type inferences and stats.
+     * @param columns Array of columns.
+     * @param data Array of data objects.
+     */
+    function inferAll(columns, data) {
+        columns.forEach(column => {
+            if (column) {
+                if (typeof column.quantitative !== 'boolean') {
+                    column.quantitative = isQuantitative(column);
+                }
+                if (!column.stats) {
+                    column.stats = getStats(data, column);
+                }
+                if (column.type === 'string' && typeof column.isColorData !== 'boolean') {
+                    checkIsColorData(data, column);
+                }
+            }
+        });
+    }
+
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
+    /**
+     * Get columns associated with each Insight role.
+     * @param insight Insight to specify column roles.
+     * @param columns Array of Columns inferred from the data.
+     */
+    function getSpecColumns(insight, columns) {
+        function getColumnByName(name) {
+            return columns.filter(c => c.name === name)[0];
         }
-        return true;
+        return {
+            color: getColumnByName(insight.columns && insight.columns.color),
+            facet: getColumnByName(insight.columns && insight.columns.facet),
+            facetV: getColumnByName(insight.columns && insight.columns.facetV),
+            group: getColumnByName(insight.columns && insight.columns.group),
+            size: getColumnByName(insight.columns && insight.columns.size),
+            sort: getColumnByName(insight.columns && insight.columns.sort),
+            uid: getColumnByName(insight.columns && insight.columns.uid),
+            x: getColumnByName(insight.columns && insight.columns.x),
+            y: getColumnByName(insight.columns && insight.columns.y),
+            z: getColumnByName(insight.columns && insight.columns.z),
+        };
     }
 
     /*!
@@ -5187,9 +5207,9 @@
         Other: Other,
         ColorScaleNone: ColorScaleNone,
         getColumnsFromData: getColumnsFromData,
-        getSpecColumns: getSpecColumns,
+        getStats: getStats,
         inferAll: inferAll,
-        getStats: getStats
+        getSpecColumns: getSpecColumns
     });
 
     /*!
@@ -25644,7 +25664,7 @@ f 5/6/6 1/12/6 8/11/6`;
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
-    const version$1 = '1.0.5';
+    const version$1 = '1.0.6';
 
     /*!
     * Copyright (c) Microsoft Corporation.
@@ -29054,7 +29074,7 @@ f 5/6/6 1/12/6 8/11/6`;
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
-    const version = '4.0.5';
+    const version = '4.0.6';
 
     /*!
     * Copyright (c) Microsoft Corporation.
