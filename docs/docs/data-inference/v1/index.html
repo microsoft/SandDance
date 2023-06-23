@@ -1,0 +1,185 @@
+---
+layout: typedoc
+title: '@msrvida/data-inference'
+---
+<header>
+<div class="tsd-page-title">
+	<div class="typedoc-container">
+	</div>
+</div>
+</header>
+<div class="container container-main">
+<div class="row">
+	<div class="col-8 col-content">
+		<div class="tsd-panel tsd-typography">
+			<a href="#msrvidadata-inference" id="msrvidadata-inference" style="color: inherit; text-decoration: none;">
+				<h1>@msrvida/data-inference</h1>
+			</a>
+			<p>Infer column types in tabular data. Inference is from <a href="https://github.com/vega/vega/tree/main/packages/vega-loader#inferTypes">vega-loader&#39;s <code>inferTypes</code> function</a> (or similar function of your choice). This library enriches the column metadata with a <a href="https://microsoft.github.io/SandDance/docs/chart-types/v1/interfaces/ColumnStats.html">ColumnStats object</a>. </p>
+			<p><a href="https://microsoft.github.io/SandDance/tests/data-inference/v1/">Demo</a></p>
+			<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+				<h2>Usage</h2>
+			</a>
+			<p>You will need an array of data objects, so that columns types can be inferred.</p>
+			<a href="#modules" id="modules" style="color: inherit; text-decoration: none;">
+				<h3>Modules</h3>
+			</a>
+			<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">DataInference</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@msrvida/data-inference&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">inferTypes</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;vega-loader&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">data</span><span style="color: #000000"> = [</span>
+<span style="color: #000000">    {</span>
+<span style="color: #000000">        </span><span style="color: #001080">Name:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;chevrolet chevelle malibu&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">Miles_per_Gallon:</span><span style="color: #000000"> </span><span style="color: #098658">18</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">Cylinders:</span><span style="color: #000000"> </span><span style="color: #098658">8</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">Displacement:</span><span style="color: #000000"> </span><span style="color: #098658">307</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">Horsepower:</span><span style="color: #000000"> </span><span style="color: #098658">130</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">Weight_in_lbs:</span><span style="color: #000000"> </span><span style="color: #098658">3504</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">Acceleration:</span><span style="color: #000000"> </span><span style="color: #098658">12</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">Year:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;1970-01-01&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">Origin:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;USA&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    },</span>
+<span style="color: #000000">    {</span>
+<span style="color: #000000">        </span><span style="color: #001080">Name:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;buick skylark 320&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">Miles_per_Gallon:</span><span style="color: #000000"> </span><span style="color: #098658">15</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">Cylinders:</span><span style="color: #000000"> </span><span style="color: #098658">8</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">Displacement:</span><span style="color: #000000"> </span><span style="color: #098658">350</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">Horsepower:</span><span style="color: #000000"> </span><span style="color: #098658">165</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">Weight_in_lbs:</span><span style="color: #000000"> </span><span style="color: #098658">3693</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">Acceleration:</span><span style="color: #000000"> </span><span style="color: #098658">11.5</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">Year:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;1970-01-01&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">Origin:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;USA&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    },</span>
+<span style="color: #000000">];</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">columns</span><span style="color: #000000"> = </span><span style="color: #001080">DataInference</span><span style="color: #000000">.</span><span style="color: #795E26">getColumnsFromData</span><span style="color: #000000">(</span><span style="color: #001080">inferTypes</span><span style="color: #000000">, </span><span style="color: #001080">data</span><span style="color: #000000">);</span>
+<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">columns</span><span style="color: #000000">);</span>
+</code></pre>
+			<a href="#pre-built-library" id="pre-built-library" style="color: inherit; text-decoration: none;">
+				<h3>Pre-built library</h3>
+			</a>
+			<pre><code class="language-html"><span style="color: #800000">&lt;script</span><span style="color: #000000FF"> </span><span style="color: #FF0000">src</span><span style="color: #000000FF">=</span><span style="color: #0000FF">&quot;https://unpkg.com/vega@^5.25/build/vega.js&quot;</span><span style="color: #000000FF"> </span><span style="color: #FF0000">charset</span><span style="color: #000000FF">=</span><span style="color: #0000FF">&quot;utf-8&quot;</span><span style="color: #800000">&gt;&lt;/script&gt;</span>
+<span style="color: #800000">&lt;script</span><span style="color: #000000FF"> </span><span style="color: #FF0000">src</span><span style="color: #000000FF">=</span><span style="color: #0000FF">&quot;https://unpkg.com/@msrvida/data-inference@1.0.0/dist/umd/data-inference.js&quot;</span><span style="color: #000000FF"> </span><span style="color: #FF0000">charset</span><span style="color: #000000FF">=</span><span style="color: #0000FF">&quot;utf-8&quot;</span><span style="color: #800000">&gt;&lt;/script&gt;</span>
+<span style="color: #000000">    </span><span style="color: #800000">&lt;script&gt;</span>
+<span style="color: #000000FF">        </span><span style="color: #0000FF">const</span><span style="color: #000000FF"> </span><span style="color: #0070C1">data</span><span style="color: #000000FF"> </span><span style="color: #000000">=</span><span style="color: #000000FF"> [</span>
+<span style="color: #000000FF">            {</span>
+<span style="color: #000000FF">                </span><span style="color: #001080">Name:</span><span style="color: #000000FF"> </span><span style="color: #A31515">&#039;chevrolet chevelle malibu&#039;</span><span style="color: #000000FF">,</span>
+<span style="color: #000000FF">                </span><span style="color: #001080">Miles_per_Gallon:</span><span style="color: #000000FF"> </span><span style="color: #098658">18</span><span style="color: #000000FF">,</span>
+<span style="color: #000000FF">                </span><span style="color: #001080">Cylinders:</span><span style="color: #000000FF"> </span><span style="color: #098658">8</span><span style="color: #000000FF">,</span>
+<span style="color: #000000FF">                </span><span style="color: #001080">Displacement:</span><span style="color: #000000FF"> </span><span style="color: #098658">307</span><span style="color: #000000FF">,</span>
+<span style="color: #000000FF">                </span><span style="color: #001080">Horsepower:</span><span style="color: #000000FF"> </span><span style="color: #098658">130</span><span style="color: #000000FF">,</span>
+<span style="color: #000000FF">                </span><span style="color: #001080">Weight_in_lbs:</span><span style="color: #000000FF"> </span><span style="color: #098658">3504</span><span style="color: #000000FF">,</span>
+<span style="color: #000000FF">                </span><span style="color: #001080">Acceleration:</span><span style="color: #000000FF"> </span><span style="color: #098658">12</span><span style="color: #000000FF">,</span>
+<span style="color: #000000FF">                </span><span style="color: #001080">Year:</span><span style="color: #000000FF"> </span><span style="color: #A31515">&#039;1970-01-01&#039;</span><span style="color: #000000FF">,</span>
+<span style="color: #000000FF">                </span><span style="color: #001080">Origin:</span><span style="color: #000000FF"> </span><span style="color: #A31515">&#039;USA&#039;</span><span style="color: #000000FF">,</span>
+<span style="color: #000000FF">            },</span>
+<span style="color: #000000FF">            {</span>
+<span style="color: #000000FF">                </span><span style="color: #001080">Name:</span><span style="color: #000000FF"> </span><span style="color: #A31515">&#039;buick skylark 320&#039;</span><span style="color: #000000FF">,</span>
+<span style="color: #000000FF">                </span><span style="color: #001080">Miles_per_Gallon:</span><span style="color: #000000FF"> </span><span style="color: #098658">15</span><span style="color: #000000FF">,</span>
+<span style="color: #000000FF">                </span><span style="color: #001080">Cylinders:</span><span style="color: #000000FF"> </span><span style="color: #098658">8</span><span style="color: #000000FF">,</span>
+<span style="color: #000000FF">                </span><span style="color: #001080">Displacement:</span><span style="color: #000000FF"> </span><span style="color: #098658">350</span><span style="color: #000000FF">,</span>
+<span style="color: #000000FF">                </span><span style="color: #001080">Horsepower:</span><span style="color: #000000FF"> </span><span style="color: #098658">165</span><span style="color: #000000FF">,</span>
+<span style="color: #000000FF">                </span><span style="color: #001080">Weight_in_lbs:</span><span style="color: #000000FF"> </span><span style="color: #098658">3693</span><span style="color: #000000FF">,</span>
+<span style="color: #000000FF">                </span><span style="color: #001080">Acceleration:</span><span style="color: #000000FF"> </span><span style="color: #098658">11.5</span><span style="color: #000000FF">,</span>
+<span style="color: #000000FF">                </span><span style="color: #001080">Year:</span><span style="color: #000000FF"> </span><span style="color: #A31515">&#039;1970-01-01&#039;</span><span style="color: #000000FF">,</span>
+<span style="color: #000000FF">                </span><span style="color: #001080">Origin:</span><span style="color: #000000FF"> </span><span style="color: #A31515">&#039;USA&#039;</span><span style="color: #000000FF">,</span>
+<span style="color: #000000FF">            },</span>
+<span style="color: #000000FF">        ];</span>
+
+<span style="color: #000000FF">        </span><span style="color: #0000FF">const</span><span style="color: #000000FF"> </span><span style="color: #0070C1">columns</span><span style="color: #000000FF"> </span><span style="color: #000000">=</span><span style="color: #000000FF"> </span><span style="color: #001080">DataInference</span><span style="color: #000000FF">.</span><span style="color: #795E26">getColumnsFromData</span><span style="color: #000000FF">(</span><span style="color: #001080">vega</span><span style="color: #000000FF">.</span><span style="color: #001080">inferTypes</span><span style="color: #000000FF">, </span><span style="color: #001080">data</span><span style="color: #000000FF">);</span>
+<span style="color: #000000FF">        </span><span style="color: #001080">console</span><span style="color: #000000FF">.</span><span style="color: #795E26">log</span><span style="color: #000000FF">(</span><span style="color: #001080">columns</span><span style="color: #000000FF">);</span>
+<span style="color: #000000FF">    </span><span style="color: #800000">&lt;/script&gt;</span>
+</code></pre>
+			<a href="#sample-output" id="sample-output" style="color: inherit; text-decoration: none;">
+				<h2>Sample output</h2>
+			</a>
+			<pre><code class="language-json"><span style="color: #000000">[</span>
+<span style="color: #000000">    {</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;name&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;Name&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;type&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;string&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;quantitative&quot;</span><span style="color: #000000">: </span><span style="color: #0000FF">false</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;stats&quot;</span><span style="color: #000000">: {</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;distinctValueCount&quot;</span><span style="color: #000000">: </span><span style="color: #098658">2</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;max&quot;</span><span style="color: #000000">: </span><span style="color: #0000FF">null</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;mean&quot;</span><span style="color: #000000">: </span><span style="color: #0000FF">null</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;min&quot;</span><span style="color: #000000">: </span><span style="color: #0000FF">null</span>
+<span style="color: #000000">        },</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;isColorData&quot;</span><span style="color: #000000">: </span><span style="color: #0000FF">false</span>
+<span style="color: #000000">    },</span>
+<span style="color: #000000">    {</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;name&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;Miles_per_Gallon&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;type&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;integer&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;quantitative&quot;</span><span style="color: #000000">: </span><span style="color: #0000FF">true</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;stats&quot;</span><span style="color: #000000">: {</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;distinctValueCount&quot;</span><span style="color: #000000">: </span><span style="color: #098658">2</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;max&quot;</span><span style="color: #000000">: </span><span style="color: #098658">18</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;mean&quot;</span><span style="color: #000000">: </span><span style="color: #098658">16.5</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;min&quot;</span><span style="color: #000000">: </span><span style="color: #098658">15</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;hasNegative&quot;</span><span style="color: #000000">: </span><span style="color: #0000FF">false</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;isSequential&quot;</span><span style="color: #000000">: </span><span style="color: #0000FF">false</span>
+<span style="color: #000000">        }</span>
+<span style="color: #000000">    },</span>
+<span style="color: #000000">    {</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;name&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;Cylinders&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;type&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;integer&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;quantitative&quot;</span><span style="color: #000000">: </span><span style="color: #0000FF">true</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #0451A5">&quot;stats&quot;</span><span style="color: #000000">: {</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;distinctValueCount&quot;</span><span style="color: #000000">: </span><span style="color: #098658">1</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;max&quot;</span><span style="color: #000000">: </span><span style="color: #098658">8</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;mean&quot;</span><span style="color: #000000">: </span><span style="color: #098658">8</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;min&quot;</span><span style="color: #000000">: </span><span style="color: #098658">8</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;hasNegative&quot;</span><span style="color: #000000">: </span><span style="color: #0000FF">false</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #0451A5">&quot;isSequential&quot;</span><span style="color: #000000">: </span><span style="color: #0000FF">false</span>
+<span style="color: #000000">        }</span>
+<span style="color: #000000">    },</span>
+<span style="color: #000000">    </span><span style="color: #CD3131">.</span>
+<span style="color: #000000">    </span><span style="color: #CD3131">.</span>
+<span style="color: #000000">    </span><span style="color: #CD3131">.</span>
+<span style="color: #000000">]</span>
+</code></pre>
+			<a href="#for-more-information" id="for-more-information" style="color: inherit; text-decoration: none;">
+				<h2>For more information</h2>
+			</a>
+			<p>Please visit the <a href="https://microsoft.github.io/SandDance/">SandDance website</a>.</p>
+		</div>
+	</div>
+	<div class="col-4 col-menu menu-highlight">
+		<nav class="tsd-navigation primary">
+			<ul>
+				<li class=" ">
+					<a href="modules.html">Exports</a>
+				</li>
+			</ul>
+		</nav>
+		<nav class="tsd-navigation secondary">
+			<ul class="before-current">
+				<li class=" tsd-kind-function">
+					<a href="modules.html#checkIsColorData" class="tsd-kind-icon">check<wbr>IsColor<wbr>Data</a>
+				</li>
+				<li class=" tsd-kind-function">
+					<a href="modules.html#detectNegative" class="tsd-kind-icon">detect<wbr>Negative</a>
+				</li>
+				<li class=" tsd-kind-function">
+					<a href="modules.html#detectSequentialColumn" class="tsd-kind-icon">detect<wbr>Sequential<wbr>Column</a>
+				</li>
+				<li class=" tsd-kind-function">
+					<a href="modules.html#getColumnsFromData" class="tsd-kind-icon">get<wbr>Columns<wbr>From<wbr>Data</a>
+				</li>
+				<li class=" tsd-kind-function">
+					<a href="modules.html#getStats" class="tsd-kind-icon">get<wbr>Stats</a>
+				</li>
+				<li class=" tsd-kind-function">
+					<a href="modules.html#inferAll" class="tsd-kind-icon">infer<wbr>All</a>
+				</li>
+				<li class=" tsd-kind-function">
+					<a href="modules.html#isColor" class="tsd-kind-icon">is<wbr>Color</a>
+				</li>
+				<li class=" tsd-kind-function">
+					<a href="modules.html#isQuantitative" class="tsd-kind-icon">is<wbr>Quantitative</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</div>
+</div>
+<div class="overlay"></div>

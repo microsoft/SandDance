@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 var assert = require('assert');
-var recommender = require("../dist/es5");
+var recommender = require('../dist/es5');
 var fs = require('fs');
 var vega = require('vega');
 var { getColumnsFromData } = require('@msrvida/sanddance-specs/dist/umd/sanddance-specs');
@@ -12,7 +12,7 @@ function GetDataAndColumns(sampleFile) {
     return new Promise((resolve, reject) => {
         fs.readFile(sampleDir + sampleFile, function (err, buffer) {
             const rawText = buffer.toString();
-            const data = vega.read(rawText, { type: 'tsv', parse: "auto" });
+            const data = vega.read(rawText, { type: 'tsv', parse: 'auto' });
             const columns = getColumnsFromData(vega.inferTypes, data);
             resolve({ data, columns });
         });
@@ -28,7 +28,7 @@ function FileGetDataAndColumns(sampleFile) {
     return new Promise((resolve, reject) => {
         fs.readFile(sampleFile, function (err, buffer) {
             const rawText = buffer.toString();
-            const data = vega.read(rawText, { type: 'tsv', parse: "auto" });
+            const data = vega.read(rawText, { type: 'tsv', parse: 'auto' });
             resolve(RawDataAndColumns(data));
         });
     });
@@ -49,9 +49,9 @@ describe('Recommender', function () {
         });
     });
 
-    it(`x/y: recommends scatter plot`, function (done) {
+    it('x/y: recommends scatter plot', function (done) {
         const data = [
-            { x: 0, y: 0 }
+            { x: 0, y: 0 },
         ];
         const dataAndColumns = RawDataAndColumns(data);
         var r = new recommender.RecommenderSummary(dataAndColumns.columns, dataAndColumns.data);
@@ -60,7 +60,7 @@ describe('Recommender', function () {
         done();
     });
 
-    it(`longitude/latitude: recommends scatter plot`, function (done) {
+    it('longitude/latitude: recommends scatter plot', function (done) {
         let filePath = '../../docs/sample-data/demovote.tsv';
         var dataAndColumnsPromise = FileGetDataAndColumns(filePath);
         dataAndColumnsPromise.then(function (dataAndColumns) {
@@ -71,7 +71,7 @@ describe('Recommender', function () {
         });
     });
 
-    it(`test-barchart: recommends bar chart`, function (done) {
+    it('test-barchart: recommends bar chart', function (done) {
         let filePath = '../../docs/sample-data/titanicmaster.tsv';
         var dataAndColumnsPromise = FileGetDataAndColumns(filePath);
         dataAndColumnsPromise.then(function (dataAndColumns) {

@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/chart-types",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "Types for chart applications.",
   "main": "dist/es6/index.js",
   "repository": {
@@ -14,13 +14,17 @@
   ],
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
+    "predocs": "rimraf ../../docs/docs/chart-types/v1",
+    "docs": "typedoc src/index.ts -out ../../docs/docs/chart-types/v1 --theme ../../typedoc/theme --excludePrivate --gitRevision master",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
-    "build:sanddance-core": "npm run build-typescript"
+    "build:sanddance-core": "npm run build-typescript",
+    "remove-vega": "npm un vega-typings",
+    "patch-after-vega-upgrade": "npm version patch"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "vega-typings": "0.22.3"
+    "vega-typings": "~0.24.1"
   }
 }

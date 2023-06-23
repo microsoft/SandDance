@@ -10,7 +10,8 @@
     "version": "node ./scripts/version.js",
     "prepackage": "npm run version",
     "deploy": "node ./scripts/deploy.js",
-    "build:sanddance-integration": "tsc -p ."
+    "build:sanddance-integration": "tsc -p .",
+    "remove-vega": "npm un vega"
   },
   "dependencies": {
     "@babel/runtime": "^7.5.5",
@@ -24,7 +25,7 @@
     "react": ">=16.8.0 <18.0.0",
     "react-dom": ">=16.8.0 <18.0.0",
     "regenerator-runtime": "^0.13.3",
-    "vega": "5.22.1"
+    "vega": "5.25.0"
   },
   "devDependencies": {
     "@msrvida/fluentui-react-cdn-typings": "^2",

@@ -6,7 +6,8 @@
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "build:sanddance-core": "tsc -p .",
     "start": "parcel serve ./test/index.html --open",
-    "deploy": "parcel build ./src/sanddance-test-es6.ts --no-autoinstall --no-cache"
+    "deploy": "parcel build ./src/sanddance-test-es6.ts --no-autoinstall --no-cache",
+    "remove-vega": "npm un vega vega-typings"
   },
   "umd": "../../docs/tests/v4/es6/js/sanddance-test-es6.js",
   "targets": {
@@ -20,9 +21,9 @@
   },
   "dependencies": {
     "@msrvida/sanddance": "^4",
-    "vega": "5.22.1"
+    "vega": "5.25.0"
   },
   "devDependencies": {
-    "vega-typings": "0.22.3"
+    "vega-typings": "~0.24.1"
   }
 }

@@ -14,7 +14,7 @@ You will need to consider how to load the libraries that `sanddance` depends on,
 
 Load dependencies via `<script>` tags in your HTML:
 ```html
-<script src="https://unpkg.com/vega@^5.22/build/vega.js" charset="utf-8"></script>
+<script src="https://unpkg.com/vega@^5.25/build/vega.js" charset="utf-8"></script>
 <script src="https://unpkg.com/@msrvida/sanddance@^4/dist/umd/sanddance.js"></script>
 ```
 
