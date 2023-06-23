@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/sanddance-specs",
-  "version": "1.7.1",
+  "version": "1.8.1",
   "description": "SandDance Vega specification generator.",
   "main": "dist/es6/index.js",
   "repository": {
@@ -24,17 +24,19 @@
     "deploy": "tsc -p ./uitest/ && node ./scripts/deploy.js",
     "uitest-watch": "tsc -p ./uitest/ -w",
     "deploy-watch": "npm-run-all --parallel bundle-watch uitest-watch",
-    "test2": "node -r esm ./test/perf.js"
+    "test2": "node -r esm ./test/perf.js",
+    "remove-vega": "npm un vega vega-typings",
+    "patch-after-vega-upgrade": "npm version patch"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "@msrvida/chart-types": "^1",
+    "@msrvida/data-inference": "^1",
     "@msrvida/search-expression": "^1",
-    "d3-color": "^3.1.0",
-    "vega-typings": "0.22.3"
+    "vega-typings": "~0.24.1"
   },
   "devDependencies": {
-    "vega": "5.22.1"
+    "vega": "5.25.0"
   }
 }

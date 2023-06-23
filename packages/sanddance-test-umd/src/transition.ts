@@ -6,7 +6,7 @@
 namespace transition {
     declare const vega: SandDance.VegaMorphCharts.types.VegaBase;
 
-    let view: SandDance.ViewGl_Class;
+    export let view: SandDance.ViewGl_Class;
     let lastSpec: Vega.Spec;
     let viewType: SandDance.types.View = '3d';
 

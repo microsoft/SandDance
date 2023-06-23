@@ -161,7 +161,9 @@ function _ColumnTypeChanger(_props: Props) {
                                         <thead>
                                             <tr>
                                                 <th>{strings.labelColumnName}</th>
+                                                <th>{strings.labelColumnType}</th>
                                                 <th>{strings.labelColumnDistinct}</th>
+                                                <th>{strings.labelColumnHasColorData}</th>
                                                 <th>{strings.labelColumnIsColorData}</th>
                                             </tr>
                                         </thead>
@@ -169,7 +171,9 @@ function _ColumnTypeChanger(_props: Props) {
                                             {state.categoricalColumns.map((c, i) => (
                                                 <tr key={i}>
                                                     <td>{c.name}</td>
+                                                    <td>{c.type}</td>
                                                     <td>{c.stats.distinctValueCount}</td>
+                                                    <td>{(!!c.stats.hasColorData).toString()}</td>
                                                     <td>{(!!c.isColorData).toString()}</td>
                                                 </tr>
                                             ))}

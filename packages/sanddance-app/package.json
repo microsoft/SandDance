@@ -9,13 +9,14 @@
     "watch-typescript": "tsc -p . -w",
     "build-css": "sass ./src/css/sanddance-app.scss ./dist/css/sanddance-app.css",
     "build:sanddance-core": "npm run build-typescript && npm run bundle && npm run build-css",
-    "bundle": "parcel build ./dist/es6/index.js --no-autoinstall --no-cache"
+    "bundle": "parcel build ./dist/es6/index.js --no-autoinstall --no-cache",
+    "remove-vega": "npm un vega vega-typings"
   },
   "devDependencies": {
     "@types/react": ">=16.8.0 <18.0.0",
     "@types/react-dom": ">=16.8.0 <18.0.0",
     "@msrvida/fluentui-react-cdn-typings": "^2",
-    "vega-typings": "0.22.3"
+    "vega-typings": "~0.24.1"
   },
   "targets": {
     "main": false,
@@ -39,6 +40,6 @@
   "dependencies": {
     "@fluentui/react": "^8",
     "@msrvida/sanddance-explorer": "^4",
-    "vega": "5.22.1"
+    "vega": "5.25.0"
   }
 }

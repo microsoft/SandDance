@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/chart-recommender",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "Recommendation engine for SandDance charts",
   "main": "dist/es5/index.js",
   "repository": {
@@ -16,14 +16,16 @@
     "@msrvida/sanddance-specs": "^1"
   },
   "devDependencies": {
-    "vega": "5.22.1"
+    "vega": "5.25.0"
   },
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "test": "mocha",
     "build-typescript": "tsc -p .",
     "watch-typescript": "tsc -p . -w",
-    "build:sanddance-core": "npm run build-typescript"
+    "build:sanddance-core": "npm run build-typescript",
+    "remove-vega": "npm un vega",
+    "patch-after-vega-upgrade": "npm version patch"
   },
   "author": "",
   "license": "MIT"

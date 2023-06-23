@@ -8,7 +8,8 @@
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "build-css": "sass ./src/css/app.scss ./dist/app.css",
     "build-ui": "tsc -p .",
-    "build:sanddance-integration": "npm run build-css && npm run build-ui"
+    "build:sanddance-integration": "npm run build-css && npm run build-ui",
+    "remove-vega": "npm un vega"
   },
   "repository": {
     "type": "git",
@@ -24,7 +25,7 @@
     "@fluentui/react": "^8",
     "react": ">=16.8.0 <18.0.0",
     "react-dom": ">=16.8.0 <18.0.0",
-    "vega": "5.22.1"
+    "vega": "5.25.0"
   },
   "devDependencies": {
     "@msrvida/sanddance-explorer": "^4",

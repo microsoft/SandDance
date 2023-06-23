@@ -1,6 +1,6 @@
 {
 	"name": "@msrvida/vega-morphcharts",
-	"version": "1.0.4",
+	"version": "1.0.6",
 	"description": "MorphCharts renderer for Vega",
 	"main": "dist/es6/index.js",
 	"files": [
@@ -14,7 +14,9 @@
 		"watch-typescript": "tsc -p . -w",
 		"build-typescript": "tsc -p .",
 		"bundle": "rollup -c",
-		"build:sanddance-core": "npm run build-typescript && node ../../scripts/version.js && npm run bundle"
+		"build:sanddance-core": "npm run build-typescript && node ../../scripts/version.js && npm run bundle",
+		"remove-vega": "npm un vega vega-typings",
+		"patch-after-vega-upgrade": "npm version patch"
 	},
 	"keywords": [
 		"vega",
@@ -30,12 +32,12 @@
 		"is-plain-object": "^5.0.0",
 		"morphcharts": "^1",
 		"tsx-create-element": "^2.2.5",
-		"vega-typings": "0.22.3"
+		"vega-typings": "~0.24.1"
 	},
 	"devDependencies": {
 		"@types/d3-color": "^3.1.0",
 		"@types/d3-ease": "^3.0.0",
 		"@types/react": ">=16.8.0 <18.0.0",
-		"vega": "5.22.1"
+		"vega": "5.25.0"
 	}
 }
