@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/data-inference",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Infer column types in tabular data.",
   "main": "dist/es6/index.js",
   "repository": {
