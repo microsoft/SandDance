@@ -3,59 +3,73 @@ import path from 'path';
 import fs from 'fs';
 import { globSync } from 'glob';
 
+const isLoggingEnabled = process.argv.includes('--log');
+
+function log(message) {
+    if (isLoggingEnabled) {
+        console.log(message);
+    }
+}
+
 function getNpmVersion(packageName) {
     let version;
     try {
-        console.log(`Fetching NPM version for ${packageName}...`);
+        log(`Fetching NPM version for ${packageName}...`);
         const stdout = execSync(`npm view ${packageName} version`, { encoding: 'utf8' });
         version = stdout.trim();
-        console.log(`Fetched NPM version for ${packageName}: ${version}`);
+        log(`Fetched NPM version for ${packageName}: ${version}`);
     } catch (error) {
-        console.error(`Failed to get version of ${packageName} from npm`);
+        return null;  // Package not found in npm registry, it needs to be published
     }
     return version;
 }
 
 // read lerna.json
-console.log('Reading lerna.json...');
+log('Reading lerna.json...');
 const lernaJson = JSON.parse(fs.readFileSync('./lerna.json', 'utf8'));
-console.log('Successfully read lerna.json');
+log('Successfully read lerna.json');
 
 const packagesDirectories = lernaJson.packages; // the directories where the packages are located
-console.log(`Package directories to be scanned: ${packagesDirectories}`);
+log(`Package directories to be scanned: ${packagesDirectories}`);
+
+let packagesToPublish = [];  // Hold the list of packages to be published
 
 packagesDirectories.forEach(packagesPattern => {
-    console.log(`Inspecting packages matching pattern ${packagesPattern}...`);
+    log(`Inspecting packages matching pattern ${packagesPattern}...`);
 
     // Use glob to match directories
     const directories = globSync(packagesPattern);
-    console.log(`Found directories: ${directories}`);
+    log(`Found directories: ${directories}`);
 
     directories.forEach(dirPath => {
-        console.log(`Inspecting directory ${dirPath}`);
+        log(`Inspecting directory ${dirPath}`);
         const packageJsonPath = path.join(dirPath, 'package.json');
         if (fs.existsSync(packageJsonPath)) {
-            console.log(`Reading package.json from ${packageJsonPath}`);
+            log(`Reading package.json from ${packageJsonPath}`);
             const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
 
-            // bail if its private
             if (packageJson.private) {
-                console.log(`Skipping private package ${packageJson.name}`);
+                log(`Skipping private package ${packageJson.name}`);
                 return;
             }
 
             const localVersion = packageJson.version;
             const packageName = packageJson.name;
-            console.log(`Read package.json for ${packageName}, local version: ${localVersion}`);
+            log(`Read package.json for ${packageName}, local version: ${localVersion}`);
 
             const npmVersion = getNpmVersion(packageName);
 
-            console.log(`Package: ${packageName}`);
-            console.log(`Local version: ${localVersion}`);
-            console.log(`NPM version: ${npmVersion}`);
-            console.log('------');
-        } else {
-            console.log(`No package.json found in ${dirPath}`);
+            if (npmVersion !== localVersion) {
+                packagesToPublish.push(packageName);  // This package needs to be published
+            }
         }
     });
 });
+
+// Log out the packages that need to be published
+if (packagesToPublish.length > 0) {
+    console.log('The following packages need to be published:');
+    packagesToPublish.forEach(packageName => console.log(packageName));
+} else {
+    console.log('No packages need to be published.');
+}
