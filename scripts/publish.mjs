@@ -24,46 +24,38 @@ function getNpmVersion(packageName) {
     return version;
 }
 
-// read lerna.json
-log('Reading lerna.json...');
-const lernaJson = JSON.parse(fs.readFileSync('./lerna.json', 'utf8'));
-log('Successfully read lerna.json');
-
-const packagesDirectories = lernaJson.packages; // the directories where the packages are located
-log(`Package directories to be scanned: ${packagesDirectories}`);
+const packagesDirectory = 'packages'; // the directory where the packages are located
 
 let packagesToPublish = [];  // Hold the list of packages to be published
 
-packagesDirectories.forEach(packagesPattern => {
-    log(`Inspecting packages matching pattern ${packagesPattern}...`);
+log(`Inspecting packages in ${packagesDirectory}...`);
 
-    // Use glob to match directories
-    const directories = globSync(packagesPattern);
-    log(`Found directories: ${directories}`);
+// Use glob to match directories
+const directories = globSync(`${packagesDirectory}/*`);
+log(`Found directories: ${directories}`);
 
-    directories.forEach(dirPath => {
-        log(`Inspecting directory ${dirPath}`);
-        const packageJsonPath = path.join(dirPath, 'package.json');
-        if (fs.existsSync(packageJsonPath)) {
-            log(`Reading package.json from ${packageJsonPath}`);
-            const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+directories.forEach(dirPath => {
+    log(`Inspecting directory ${dirPath}`);
+    const packageJsonPath = path.join(dirPath, 'package.json');
+    if (fs.existsSync(packageJsonPath)) {
+        log(`Reading package.json from ${packageJsonPath}`);
+        const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
 
-            if (packageJson.private) {
-                log(`Skipping private package ${packageJson.name}`);
-                return;
-            }
-
-            const localVersion = packageJson.version;
-            const packageName = packageJson.name;
-            log(`Read package.json for ${packageName}, local version: ${localVersion}`);
-
-            const npmVersion = getNpmVersion(packageName);
-
-            if (npmVersion !== localVersion) {
-                packagesToPublish.push(packageName);  // This package needs to be published
-            }
+        if (packageJson.private) {
+            log(`Skipping private package ${packageJson.name}`);
+            return;
         }
-    });
+
+        const localVersion = packageJson.version;
+        const packageName = packageJson.name;
+        log(`Read package.json for ${packageName}, local version: ${localVersion}`);
+
+        const npmVersion = getNpmVersion(packageName);
+
+        if (npmVersion !== localVersion) {
+            packagesToPublish.push(packageName);  // This package needs to be published
+        }
+    }
 });
 
 // Log out the packages that need to be published
