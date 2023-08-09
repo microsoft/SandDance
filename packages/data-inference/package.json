@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/data-inference",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Infer column types in tabular data.",
   "main": "dist/es6/index.js",
   "repository": {
@@ -8,6 +8,7 @@
     "url": "https://github.com/microsoft/SandDance.git",
     "directory": "packages/data-inference"
   },
+  "type": "module",
   "types": "dist/es6/index.d.ts",
   "files": [
     "dist"
