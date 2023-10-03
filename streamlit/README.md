@@ -1,11 +1,11 @@
-# streamlit-custom-component
+# streamlit-sanddance
 
 Streamlit component that allows you to do X
 
 ## Installation instructions
 
 ```sh
-pip install streamlit-custom-component
+pip install streamlit-sanddance
 ```
 
 ## Usage instructions
@@ -13,9 +13,9 @@ pip install streamlit-custom-component
 ```python
 import streamlit as st
 
-from my_component import my_component
+from streamlit_sanddance import sanddance
 
-value = my_component()
+value = sanddance()
 
 st.write(value)
 ```

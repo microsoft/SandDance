@@ -1,1 +1,1 @@
-recursive-include my_component/frontend/build *
+recursive-include sanddance/frontend/build *

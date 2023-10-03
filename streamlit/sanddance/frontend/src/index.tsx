@@ -1,10 +1,10 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import MyComponent from "./MyComponent"
+import StreamlitSandDance from "./StreamlitSandDance"
 
 ReactDOM.render(
   <React.StrictMode>
-    <MyComponent />
+    <StreamlitSandDance />
   </React.StrictMode>,
   document.getElementById("root")
 )

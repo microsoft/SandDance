@@ -1,10 +1,10 @@
 {
-  "name": "my_component",
-  "version": "0.1.0",
+  "name": "streamlit-sanddance",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": ">=16.8.0 <18.0.0",
+    "react-dom": ">=16.8.0 <18.0.0",
     "streamlit-component-lib": "^2.0.0"
   },
   "scripts": {

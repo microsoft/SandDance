@@ -20,10 +20,10 @@ _RELEASE = False
 
 if not _RELEASE:
     _component_func = components.declare_component(
-        # We give the component a simple, descriptive name ("my_component"
+        # We give the component a simple, descriptive name ("sanddance"
         # does not fit this bill, so please choose something better for your
         # own component :)
-        "my_component",
+        "sanddance",
         # Pass `url` here to tell Streamlit that the component will be served
         # by the local dev server that you run via `npm run start`.
         # (This is useful while your component is in development.)
@@ -35,7 +35,7 @@ else:
     # build directory:
     parent_dir = os.path.dirname(os.path.abspath(__file__))
     build_dir = os.path.join(parent_dir, "frontend/build")
-    _component_func = components.declare_component("my_component", path=build_dir)
+    _component_func = components.declare_component("sanddance", path=build_dir)
 
 
 # Create a wrapper function for the component. This is an optional
@@ -43,8 +43,8 @@ else:
 # `declare_component` and call it done. The wrapper allows us to customize
 # our component's API: we can pre-process its input args, post-process its
 # output value, and add a docstring for users.
-def my_component(name, key=None):
-    """Create a new instance of "my_component".
+def sanddance(name, key=None):
+    """Create a new instance of "sanddance".
 
     Parameters
     ----------

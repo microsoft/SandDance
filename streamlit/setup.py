@@ -6,7 +6,7 @@ this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
 
 setuptools.setup(
-    name="streamlit-custom-component",
+    name="streamlit-sanddance",
     version="0.0.1",
     author="John Smith",
     author_email="john@example.com",
