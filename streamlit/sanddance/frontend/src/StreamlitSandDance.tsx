@@ -2,12 +2,17 @@ import {
   Streamlit,
   StreamlitComponentBase,
   withStreamlitConnection,
+  ArrowTable
 } from "streamlit-component-lib"
 import React, { ReactNode } from "react"
+import { convertArrowTableToRows } from "./arrow"
+import { Explorer, Explorer_Class, use } from "@msrvida/sanddance-explorer";
+
+import "@msrvida/sanddance-explorer/dist/css/sanddance-explorer.css"
+import "./StreamlitSandDance.css"
 
 interface State {
   numClicks: number
-  isFocused: boolean
 }
 
 /**
@@ -15,12 +20,17 @@ interface State {
  * automatically when your component should be re-rendered.
  */
 class StreamlitSandDance extends StreamlitComponentBase<State> {
-  public state = { numClicks: 0, isFocused: false }
+  public state: State = { numClicks: 0 }
 
   public render = (): ReactNode => {
     // Arguments that are passed to the plugin in Python are accessible
     // via `this.props.args`. Here, we access the "name" arg.
-    const name = this.props.args["name"]
+    const df: ArrowTable = this.props.args["df"]
+    const df2 = convertArrowTableToRows(df)
+
+    console.log('df', df)
+    console.log('df2', df2)
+
 
     // Streamlit sends us a theme object via props that we can use to ensure
     // that our component has visuals that match the active theme in a
@@ -33,11 +43,6 @@ class StreamlitSandDance extends StreamlitComponentBase<State> {
     if (theme) {
       // Use the theme object to style our button border. Alternatively, the
       // theme style is defined in CSS vars.
-      const borderStyling = `1px solid ${
-        this.state.isFocused ? theme.primaryColor : "gray"
-      }`
-      style.border = borderStyling
-      style.outline = borderStyling
     }
 
     // Show a button and some text.
@@ -45,18 +50,12 @@ class StreamlitSandDance extends StreamlitComponentBase<State> {
     // variable, and send its new value back to Streamlit, where it'll
     // be available to the Python program.
     return (
-      <span>
-        Hello, {name}! &nbsp;
-        <button
-          style={style}
-          onClick={this.onClicked}
-          disabled={this.props.disabled}
-          onFocus={this._onFocus}
-          onBlur={this._onBlur}
-        >
-          Click Me!
-        </button>
-      </span>
+      <Explorer
+      
+        mounted={e => {
+          e.load(df2)
+        }}
+      />
     )
   }
 
@@ -70,15 +69,6 @@ class StreamlitSandDance extends StreamlitComponentBase<State> {
     )
   }
 
-  /** Focus handler for our "Click Me!" button. */
-  private _onFocus = (): void => {
-    this.setState({ isFocused: true })
-  }
-
-  /** Blur handler for our "Click Me!" button. */
-  private _onBlur = (): void => {
-    this.setState({ isFocused: false })
-  }
 }
 
 // "withStreamlitConnection" is a wrapper function. It bootstraps the
