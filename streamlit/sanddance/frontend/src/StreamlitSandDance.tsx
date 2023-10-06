@@ -22,9 +22,7 @@ class StreamlitSandDance extends StreamlitComponentBase<State> {
   public render = (): ReactNode => {
     // Arguments that are passed to the plugin in Python are accessible
     // via `this.props.args`. Here, we access the "name" arg.
-    const df: object[] = this.props.args["df"]
-
-    console.log('df', df)
+    const records: object[] = this.props.args["records"]
 
     // Streamlit sends us a theme object via props that we can use to ensure
     // that our component has visuals that match the active theme in a
@@ -47,7 +45,7 @@ class StreamlitSandDance extends StreamlitComponentBase<State> {
       <Explorer
         compactUI={true}
         mounted={e => {
-          e.load(df)
+          e.load(records)
         }}
       />
     )
