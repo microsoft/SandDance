@@ -1,12 +1,9 @@
 import {
-  Streamlit,
   StreamlitComponentBase,
   withStreamlitConnection,
-  ArrowTable
 } from "streamlit-component-lib"
 import React, { ReactNode } from "react"
-import { convertArrowTableToRows } from "./arrow"
-import { Explorer, Explorer_Class, use } from "@msrvida/sanddance-explorer";
+import { Explorer } from "@msrvida/sanddance-explorer";
 
 import "@msrvida/sanddance-explorer/dist/css/sanddance-explorer.css"
 import "./StreamlitSandDance.css"
@@ -25,18 +22,15 @@ class StreamlitSandDance extends StreamlitComponentBase<State> {
   public render = (): ReactNode => {
     // Arguments that are passed to the plugin in Python are accessible
     // via `this.props.args`. Here, we access the "name" arg.
-    const df: ArrowTable = this.props.args["df"]
-    const df2 = convertArrowTableToRows(df)
+    const df: object[] = this.props.args["df"]
 
     console.log('df', df)
-    console.log('df2', df2)
-
 
     // Streamlit sends us a theme object via props that we can use to ensure
     // that our component has visuals that match the active theme in a
     // streamlit app.
     const { theme } = this.props
-    const style: React.CSSProperties = {}
+    //const style: React.CSSProperties = {}
 
     // Maintain compatibility with older versions of Streamlit that don't send
     // a theme object.
@@ -51,21 +45,11 @@ class StreamlitSandDance extends StreamlitComponentBase<State> {
     // be available to the Python program.
     return (
       <Explorer
-      
+        compactUI={true}
         mounted={e => {
-          e.load(df2)
+          e.load(df)
         }}
       />
-    )
-  }
-
-  /** Click handler for our "Click Me!" button. */
-  private onClicked = (): void => {
-    // Increment state.numClicks, and pass the new value back to
-    // Streamlit via `Streamlit.setComponentValue`.
-    this.setState(
-      prevState => ({ numClicks: prevState.numClicks + 1 }),
-      () => Streamlit.setComponentValue(this.state.numClicks)
     )
   }
 

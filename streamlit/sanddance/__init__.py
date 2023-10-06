@@ -1,5 +1,8 @@
 import os
 import streamlit.components.v1 as components
+import pandas as pd
+
+from typing import Optional
 
 # Create a _RELEASE constant. We'll set this to False while we're developing
 # the component, and True when we're ready to package and distribute it.
@@ -45,7 +48,7 @@ else:
 # `declare_component` and call it done. The wrapper allows us to customize
 # our component's API: we can pre-process its input args, post-process its
 # output value, and add a docstring for users.
-def sanddance(key=None, df=None):
+def sanddance(key: Optional[str] = None, df: Optional[pd.DataFrame] = None) -> int:
     """Create a new instance of "sanddance".
 
     Parameters
@@ -71,7 +74,7 @@ def sanddance(key=None, df=None):
     #
     # "default" is a special argument that specifies the initial return
     # value of the component before the user has interacted with it.
-    component_value = _component_func(df=df, key=key, default=0)
+    component_value = _component_func(df=df.to_dict(orient='records'), key=key, default=0)
 
     # We could modify the value returned from the component if we wanted.
     # There's no need to do this in our simple example - but it's an option.
