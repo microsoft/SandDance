@@ -29,6 +29,7 @@ export interface State {
 function _Renderer(_props: Props) {
 
     class __Renderer extends base.react.Component<Props, State> {
+        private mounted: boolean;
 
         constructor(props: Props) {
             super(props);
@@ -36,12 +37,20 @@ function _Renderer(_props: Props) {
             if (!this.state.viewer?.presenter?.morphchartsref) {
                 const t = setInterval(() => {
                     const newState = this.getInitialState(props);
-                    if (newState.viewer?.presenter?.morphchartsref) {
+                    if (this.mounted && newState.viewer?.presenter?.morphchartsref) {
                         clearInterval(t);
                         this.setState(newState);
                     }
                 }, 10);
             }
+        }
+        
+        componentDidMount() {
+            this.mounted = true;
+        }
+
+        componentWillUnmount() {
+            this.mounted = false;
         }
 
         getInitialState(props: Props): State {
