@@ -48,7 +48,7 @@ else:
 # `declare_component` and call it done. The wrapper allows us to customize
 # our component's API: we can pre-process its input args, post-process its
 # output value, and add a docstring for users.
-def sanddance(key: Optional[str] = None, df: Optional[pd.DataFrame] = None) -> int:
+def sanddance(key: Optional[str] = None, df: pd.DataFrame = None) -> int:
     """Create a new instance of "sanddance".
 
     Parameters
@@ -57,16 +57,8 @@ def sanddance(key: Optional[str] = None, df: Optional[pd.DataFrame] = None) -> i
         An optional key that uniquely identifies this component. If this is
         None, and the component's arguments are changed, the component will
         be re-mounted in the Streamlit frontend and lose its current state.
-    df: pandas.DataFrame or None
-        An optional dataframe parameter.
-
-    Returns
-    -------
-    int
-        The number of times the component's "Click Me" button has been clicked.
-        (This is the value passed to `Streamlit.setComponentValue` on the
-        frontend.)
-
+    df: pandas.DataFrame
+        A dataframe parameter.
     """
     # Call through to our private component function. Arguments we pass here
     # will be sent to the frontend, where they'll be available in an "args"
@@ -74,7 +66,7 @@ def sanddance(key: Optional[str] = None, df: Optional[pd.DataFrame] = None) -> i
     #
     # "default" is a special argument that specifies the initial return
     # value of the component before the user has interacted with it.
-    component_value = _component_func(df=df.to_dict(orient='records'), key=key, default=0)
+    component_value = _component_func(records=df.to_dict(orient='records'), key=key, default=0)
 
     # We could modify the value returned from the component if we wanted.
     # There's no need to do this in our simple example - but it's an option.
