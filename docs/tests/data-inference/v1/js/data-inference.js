@@ -502,7 +502,8 @@
               }
               sum += num;
           }
-          if (columnType === 'string' && !stats.hasColorData && isColor(value)) {
+          // hex codes, ex. #003300, are parsed as dates
+          if ((columnType === 'date' || columnType === 'string') && !stats.hasColorData && isColor(value)) {
               stats.hasColorData = true;
           }
       }
@@ -558,7 +559,8 @@
               if (!column.stats) {
                   column.stats = getStats(data, column);
               }
-              if (column.type === 'string' && typeof column.isColorData !== 'boolean') {
+              // hex codes, ex. #003300, are parsed as dates
+              if ((column.type === 'date' || column.type === 'string') && typeof column.isColorData !== 'boolean') {
                   checkIsColorData(data, column);
               }
           }
