@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 from enum import Enum
 from typing import Optional, List, Dict, Any
 

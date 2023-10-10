@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 import streamlit as st
 from sanddance import sanddance
 import pandas as pd
