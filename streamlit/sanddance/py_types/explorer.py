@@ -1,4 +1,4 @@
-from typing import List, Dict, Any, Union
+from typing import Any, Dict, List, Optional, Union
 
 class Snapshot:
     name: str
@@ -22,3 +22,7 @@ class ExplorerProps:
     initialRenderer: Union[None, Dict[str, Any]]
     initialSidebarClosed: Union[None, bool]
     initialSidebarPinned: Union[None, bool]
+
+class SandDanceEvent:
+    selection: Optional[str]
+    cubeClick: Optional[int]

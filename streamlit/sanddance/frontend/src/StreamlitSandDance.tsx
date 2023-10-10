@@ -1,4 +1,10 @@
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import {
+  Streamlit,
   StreamlitComponentBase,
   withStreamlitConnection,
 } from "streamlit-component-lib"
@@ -8,9 +14,9 @@ import { fluentUI } from './fluentUIComponents';
 
 import "@msrvida/sanddance-explorer/dist/css/sanddance-explorer.css"
 import "./StreamlitSandDance.css"
+import { SandDanceEvent } from "./event-types";
 
 interface State {
-  numClicks: number
 }
 
 /**
@@ -18,7 +24,7 @@ interface State {
  * automatically when your component should be re-rendered.
  */
 class StreamlitSandDance extends StreamlitComponentBase<State> {
-  public state: State = { numClicks: 0 }
+  public state: State = { }
 
   private _explorer: Explorer_Class | undefined = undefined;
 
@@ -54,6 +60,7 @@ class StreamlitSandDance extends StreamlitComponentBase<State> {
     return (
       <Explorer
         {...explorerProps}
+
       />
     )
   }
@@ -66,5 +73,17 @@ function getViewerOptions(theme: string, viewerOptions: Partial<SandDance.types.
   return {
     ...viewerOptions,
     colors: getColorSettingsFromThemePalette(themePalettes[theme]),
+    onCanvasClick: () => {
+      const sandDanceEvent: SandDanceEvent = {
+        cubeClick: -1,
+      };
+      Streamlit.setComponentValue(sandDanceEvent);
+    },
+    onCubeClick: (e, cube) => {
+      const sandDanceEvent: SandDanceEvent = {
+        cubeClick: cube.ordinal,
+      };
+      Streamlit.setComponentValue(sandDanceEvent);
+    },
   };
 }
