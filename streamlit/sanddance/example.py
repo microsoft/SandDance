@@ -16,5 +16,5 @@ df = pd.DataFrame(data)
 
 st.subheader("SandDance component from Pandas DataFrame")
 
-# Create an instance of our SandDance component with a `df` arg
-sanddance(df=df)
+# Create an instance of our SandDance component
+sanddance(df=df, explorerProps={"initialSidebarClosed": True}, insight={"chart": "treemap", "columns": {"color": "age"}, "scheme": "redyellowgreen"})

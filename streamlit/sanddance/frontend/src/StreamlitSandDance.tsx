@@ -3,7 +3,7 @@ import {
   withStreamlitConnection,
 } from "streamlit-component-lib"
 import React, { ReactNode } from "react"
-import { Explorer } from "@msrvida/sanddance-explorer";
+import { Explorer, Props as ExplorerProps, SandDance } from "@msrvida/sanddance-explorer";
 
 import "@msrvida/sanddance-explorer/dist/css/sanddance-explorer.css"
 import "./StreamlitSandDance.css"
@@ -24,38 +24,26 @@ class StreamlitSandDance extends StreamlitComponentBase<State> {
     // via `this.props.args`. Here, we access the "name" arg.
     const records: object[] = this.props.args["records"]
 
-    // Streamlit sends us a theme object via props that we can use to ensure
-    // that our component has visuals that match the active theme in a
-    // streamlit app.
-    const { theme } = this.props
-    //const style: React.CSSProperties = {}
+    const getPartialInsight: (columns: SandDance.types.Column[]) => Partial<SandDance.specs.Insight> = (columns) => {
+      return this.props.args["insight"] || {};
+    };
 
-    // Maintain compatibility with older versions of Streamlit that don't send
-    // a theme object.
-    if (theme) {
-      // Use the theme object to style our button border. Alternatively, the
-      // theme style is defined in CSS vars.
-    }
+    const explorerProps: ExplorerProps = {
+      compactUI: true,
+      mounted: e => {
+        e.load(records, getPartialInsight)
+      },
+      theme: this.props.theme?.base === "dark" ? 'dark-theme' : '',
+      ...this.props.args["explorerProps"]
+    };
 
-    // Show a button and some text.
-    // When the button is clicked, we'll increment our "numClicks" state
-    // variable, and send its new value back to Streamlit, where it'll
-    // be available to the Python program.
     return (
       <Explorer
-        compactUI={true}
-        mounted={e => {
-          e.load(records)
-        }}
+        {...explorerProps}
       />
     )
   }
 
 }
 
-// "withStreamlitConnection" is a wrapper function. It bootstraps the
-// connection between your component and the Streamlit app, and handles
-// passing arguments from Python -> Component.
-//
-// You don't need to edit withStreamlitConnection (but you're welcome to!).
 export default withStreamlitConnection(StreamlitSandDance)
