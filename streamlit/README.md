@@ -1,6 +1,6 @@
 # streamlit-sanddance
 
-Streamlit component that allows you to do X
+Streamlit component that allows you to view a SandDance visualization of a dataframe.
 
 ## Installation instructions
 
@@ -15,10 +15,11 @@ import streamlit as st
 
 from streamlit_sanddance import sanddance
 
-value = sanddance()
+sdEvent = sanddance()
 
-st.write(value)
+st.write(sdEvent)
 ```
+The return value is a dictionary of visual interaction events such as selections. 
 
 ## Dev Setup
 
