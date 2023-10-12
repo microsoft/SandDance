@@ -85,3 +85,4 @@ __pycache__
 python/jupyter-widget/lib
 python/jupyter-widget/docs
 python/jupyter-widget/sanddance/nbextension
+streamlit_sanddance.egg-info

@@ -2,7 +2,8 @@
   "lerna": "2.8.0",
   "packages": [
     "extensions/*",
-    "packages/*"
+    "packages/*",
+    "streamlit/sanddance/frontend"
   ],
   "version": "independent"
 }
