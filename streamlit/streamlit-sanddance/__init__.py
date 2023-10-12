@@ -4,8 +4,8 @@
 import os
 import streamlit.components.v1 as components
 import pandas as pd
-from .py_types.insight import Insight
-from .py_types.explorer import ExplorerProps
+from .types_insight import Insight
+from .types_explorer import ExplorerProps
 
 from typing import Optional
 
