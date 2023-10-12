@@ -15,7 +15,12 @@ import streamlit as st
 
 from streamlit_sanddance import sanddance
 
-sdEvent = sanddance()
+#sample random DataFrame
+df = pd.DataFrame(
+     np.random.randn(20, 3),
+     columns=['a', 'b', 'c'])
+
+sdEvent = sanddance(df=df)
 
 st.write(sdEvent)
 ```
