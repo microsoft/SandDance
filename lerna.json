@@ -3,7 +3,7 @@
   "packages": [
     "extensions/*",
     "packages/*",
-    "streamlit/streamlit-sanddance/frontend"
+    "streamlit/streamlit_sanddance/frontend"
   ],
   "version": "independent"
 }

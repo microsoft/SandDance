@@ -2,7 +2,7 @@
 # Licensed under the MIT License.
 
 import streamlit as st
-from sanddance import sanddance
+from streamlit_sanddance import sanddance
 import pandas as pd
 from .types_explorer import SandDanceEvent
 
