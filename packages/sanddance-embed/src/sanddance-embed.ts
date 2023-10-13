@@ -78,7 +78,7 @@ namespace SandDanceEmbed {
                     request: null,
                     errors,
                 };
-                lastRequestWithSource.source.postMessage(response, '*');
+                lastRequestWithSource?.source.postMessage(response, '*');
             },
             onCanvasClick: (e) => {
                 const request: MessageRequest_EventCanvasClick = {
@@ -88,7 +88,7 @@ namespace SandDanceEmbed {
                     request,
                     event: safeSerialize(e),
                 };
-                lastRequestWithSource.source.postMessage(response, '*');
+                lastRequestWithSource?.source.postMessage(response, '*');
             },
             onCubeClick: (e, cube) => {
                 const request: MessageRequest_EventCubeClick = {
@@ -99,7 +99,7 @@ namespace SandDanceEmbed {
                     event: safeSerialize(e),
                     ordinal: cube.ordinal,
                 };
-                lastRequestWithSource.source.postMessage(response, '*');
+                lastRequestWithSource?.source.postMessage(response, '*');
             },
         };
     }
