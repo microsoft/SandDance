@@ -494,6 +494,7 @@ function _Explorer(_props: Props) {
                     resetSelectedItemIndex(selectedItemIndex);
                     const newState: Partial<State> = {
                         camera: undefined,
+                        columns: {},
                         dataFile,
                         dataContent,
                         snapshots: dataContent.snapshots || this.state.snapshots,

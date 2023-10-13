@@ -1,1 +1,1 @@
-recursive-include sanddance/frontend/build *
+recursive-include streamlit_sanddance/frontend/build *
