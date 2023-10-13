@@ -4,7 +4,7 @@
 import streamlit as st
 from streamlit_sanddance import sanddance
 import pandas as pd
-from .types_explorer import SandDanceEvent
+from streamlit_sanddance.types_explorer import SandDanceEvent
 
 # Create a dictionary with some data
 data = {'name': ['Alice', 'Bob', 'Charlie', 'David'],
