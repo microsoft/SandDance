@@ -20,9 +20,15 @@ df = pd.DataFrame(
      np.random.randn(20, 3),
      columns=['a', 'b', 'c'])
 
-sdEvent = sanddance(df)
+#make sure to use a key to prevent refreshing after an event
+sdEvent = sanddance(df, key='sd1')
 
-st.write(sdEvent)
+#if sdEvent is not None and contains a cubeClick >= 0, display the data row
+if sdEvent is not None and 'cubeClick' in sdEvent and sdEvent['cubeClick'] is not None and sdEvent['cubeClick'] >= 0:
+        st.write(df.iloc[sdEvent['cubeClick']])
+else:
+        st.write("No cubeClick event")
+
 ```
 The return value is a dictionary of visual interaction events such as selections. 
 
