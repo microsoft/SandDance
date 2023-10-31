@@ -26,6 +26,19 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Explorer, use } from '@msrvida/sanddance-explorer';
 
+//quickstart: use the included stylesheet
+import "@msrvida/sanddance-explorer/dist/css/sanddance-explorer.css"
+
+/*
+  in your own stylesheet, you can modify the sanddance-explorer class to fit your needs.
+  Example:
+
+.sanddance-explorer {
+  height: 800px;
+}
+
+*/
+
 fluentui.initializeIcons();
 
 use(fluentui, React, ReactDOM, vega);
