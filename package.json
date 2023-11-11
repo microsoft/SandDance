@@ -24,6 +24,7 @@
         "serve-es6": "parcel serve ./test/sanddance-test-es6.html --port 8086 --open --no-autoinstall",
         "start-es6": "npm-run-all --parallel watch-typescript watch-css serve-es6",
         "serve-app": "parcel serve ./test/sanddance-app.html --port 8085 --open --no-autoinstall",
+        "streamlit-dev": "parcel serve ./test/streamlit_sanddance.html --port 8087 --open --no-autoinstall",
         "start": "npm-run-all --parallel watch-typescript watch-css serve-app",
         "parcel": "lerna run parcel --parallel",
         "restore-dist": "git checkout -q -- ./packages/sanddance/dist/umd/sanddance.d.ts ./packages/sanddance-react/dist/umd/sanddance-react.d.ts ./packages/vega-deck.gl/dist/umd/vega-deck.gl.d.ts ./packages/vega-morphcharts/dist/umd/vega-morphcharts.d.ts ./packages/sanddance-specs/dist/umd/sanddance-specs.d.ts ./packages/data-inference/dist/umd/data-inference.d.ts",

@@ -24,13 +24,22 @@ interface State {
  * automatically when your component should be re-rendered.
  */
 class StreamlitSandDance extends StreamlitComponentBase<State> {
-  public state: State = { }
+  public state: State = {}
 
-  private _explorer: Explorer_Class | undefined = undefined;
+  private _explorer?: Explorer_Class = undefined;
+  private _resizeHandler?: () => void;
+
+  public componentDidMount = (): void => {
+    this._resizeHandler = () => {
+      this._explorer && this._explorer.resize();
+    };
+    window.addEventListener('resize', this._resizeHandler);
+  }
 
   public componentWillUnmount = (): void => {
     this._explorer = undefined;
-  };
+    window.removeEventListener('resize', this._resizeHandler!);
+  }
 
   public render = (): ReactNode => {
     // Arguments that are passed to the plugin in Python are accessible
@@ -44,13 +53,16 @@ class StreamlitSandDance extends StreamlitComponentBase<State> {
 
     fluentUI.loadTheme({ palette: themePalettes[theme] });
 
+    const setHeight = this.props.args["height"];
+    Streamlit.setFrameHeight(setHeight);
+
     const viewerOptions = getViewerOptions(theme, this.props.args["explorerProps"]?.viewerOptions);
 
     const explorerProps: ExplorerProps = {
       compactUI: true,
       mounted: e => {
         this._explorer = e;
-        e.load(records, getPartialInsight)
+        e.load(records, getPartialInsight);
       },
       theme: this.props.theme?.base === "dark" ? 'dark-theme' : '',
       ...this.props.args["explorerProps"],

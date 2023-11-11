@@ -64,7 +64,7 @@ export interface State {
 export class App extends React.Component<Props, State> {
     private viewerOptions: Partial<SandDance.types.ViewerOptions>;
     public explorer: Explorer_Class;
-    private cameraTimer: NodeJS.Timeout;
+    private cameraTimer: number;
     public lastCamera: SandDance.types.Camera;
     public lastCameraStable: boolean;
 
