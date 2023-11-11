@@ -44,14 +44,14 @@ $ pip install streamlit # install streamlit
 ```
 * Initialize and run the component frontend:
 ```
-$ cd streamlit/sanddance/frontend
-$ npm install    # Install npm dependencies
+$ cd ..          # root of this repo
 $ npm run start  # Start the Webpack dev server
 ```
 * From a separate terminal, run the Streamlit app:
 ```
 $ cd streamlit
-$ . venv/bin/activate  # activate the venv you created earlier
-$ pip install -e . # install streamlit-sanddance as editable package
-$ streamlit run sanddance/example.py  # run the example
+$ . venv/bin/activate                # activate the venv you created earlier
+$ pip uninstall streamlit-sanddance  # remove production version of streamlit-sanddance package
+$ pip install -e .                   # install streamlit-sanddance as editable package
+$ streamlit run streamlit_sanddance/example.py  # run the example
 ```

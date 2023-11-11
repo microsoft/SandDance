@@ -16,5 +16,5 @@ ReactDOM.render(
   <React.StrictMode>
     <StreamlitSandDance />
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById("app")
 )

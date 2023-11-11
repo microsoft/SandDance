@@ -32,6 +32,25 @@
     ]
   },
   "homepage": ".",
+  "targets": {
+    "main": false,
+    "types": false,
+    "umd": {
+      "distDir": "./dist/umd",
+      "optimize": false,
+      "scopeHoist": false,
+      "sourceMap": false,
+      "includeNodeModules": {
+        "react": false,
+        "react-dom": false
+      }
+    }
+  },
+  "umd": "./dist/umd/streamlit_sanddance.js",
+  "alias": {
+    "react": "./alias/react-external.js",
+    "react-dom": "./alias/react-dom-external.js"
+  },
   "devDependencies": {
     "@msrvida/fluentui-react-cdn-typings": "^2",
     "@types/node": "^12.0.0",
