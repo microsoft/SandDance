@@ -350,7 +350,7 @@ export function syncTansitionDurations(viewer: SandDance.Viewer, transitionDurat
 type AutoScrubberDirection = -1 | 1;
 
 class AutoScrubber {
-    private autoScrubTimer: NodeJS.Timer;
+    private autoScrubTimer: number;
     public direction: AutoScrubberDirection;
 
     constructor(

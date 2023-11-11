@@ -72,7 +72,7 @@ export function Signal(props: Props) {
 const map: { [input: string]: (prefix: string, bind: Binding, initialValue: any, onChange: (value: any) => void, disabled: boolean, collapseLabel: boolean, ref: any) => JSX.Element } = {};
 
 map['range'] = (prefix: string, bind: BindRange, initialValue: number, onChange: (value: number) => void, disabled: boolean, collapseLabel: boolean, ref: any) => {
-    let debouncer: NodeJS.Timeout;
+    let debouncer: number;
     return (
         <base.fluentUI.Slider
             componentRef={ref}
