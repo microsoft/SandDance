@@ -65,7 +65,7 @@ export function listenCanvasEvents(core: Core, options: MorphChartsOptions) {
         mousedown = false;
     });
 
-    let canvasClickTimeout: NodeJS.Timeout;
+    let canvasClickTimeout: number;
     const clearClickTimeout = () => {
         clearTimeout(canvasClickTimeout);
         canvasClickTimeout = null;
