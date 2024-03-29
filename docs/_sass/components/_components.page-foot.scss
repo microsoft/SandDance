@@ -6,12 +6,12 @@
 
 footer {
     font-size: smaller;
-    span {
+    span a {
         border-left: 1px solid $ms-black-300;
         margin-left: 1em;
         padding-left: 1em;
     }
-    span:first-child {
+    span:first-child a {
         border-left: initial;
         margin-left: initial;
         padding-left: initial;
