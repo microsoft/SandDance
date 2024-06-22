@@ -31,7 +31,7 @@
     "@msrvida/fluentui-react-cdn-typings": "^2",
     "@types/react": ">=16.8.0 <18.0.0",
     "@types/react-dom": ">=16.8.0 <18.0.0",
-    "powerbi-visuals-tools": "^4"
+    "powerbi-visuals-tools": "^5"
   },
   "overrides": {
     "typescript": "4.4"
