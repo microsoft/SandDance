@@ -12,6 +12,7 @@ import { FluentUITypes } from '@msrvida/fluentui-react-cdn-typings';
 import { ColumnMapBaseProps } from '../controls/columnMap';
 import { IDropdownOption } from '@msrvida/fluentui-react-cdn-typings/types';
 import { BackgroundImageColumnBound, DataExtent, ImageHolder } from '../interfaces';
+import { getBackgroundImageColumnBounds } from '../columns';
 
 export interface Props extends ColumnMapBaseProps {
     themePalette: Partial<FluentUITypes.IPalette>;
@@ -47,7 +48,13 @@ function _BackgroundImageEditor(_props: Props) {
             }
             const xCol = quantitativeColumns.filter(c => c.name === insightColumns.x)[0];
             const yCol = quantitativeColumns.filter(c => c.name === insightColumns.y)[0];
-            const newState: Partial<State> = { hidden: false, xCol, yCol, backgroundImageColumnBounds: SandDance.VegaMorphCharts.util.clone(explorer.imageHolder.backgroundImageColumnBounds) };
+            let backgroundImageColumnBounds: BackgroundImageColumnBound[];
+            if (!explorer.imageHolder.backgroundImageColumnBounds.length) {
+                backgroundImageColumnBounds = getBackgroundImageColumnBounds(explorer.state.dataContent.columns);
+            } else {
+                backgroundImageColumnBounds = SandDance.VegaMorphCharts.util.clone(explorer.imageHolder.backgroundImageColumnBounds);
+            }
+            const newState: Partial<State> = { hidden: false, xCol, yCol, backgroundImageColumnBounds };
             if (!xCol || !yCol) {
                 //TODO error
             }
