@@ -49,7 +49,7 @@ function _BackgroundImageEditor(_props: Props) {
             const xCol = quantitativeColumns.filter(c => c.name === insightColumns.x)[0];
             const yCol = quantitativeColumns.filter(c => c.name === insightColumns.y)[0];
             let backgroundImageColumnBounds: BackgroundImageColumnBound[];
-            if (!explorer.imageHolder.backgroundImageColumnBounds.length) {
+            if (explorer.imageHolder.backgroundImageColumnBounds.length < quantitativeColumns.length * 4) {
                 backgroundImageColumnBounds = getBackgroundImageColumnBounds(explorer.state.dataContent.columns);
             } else {
                 backgroundImageColumnBounds = SandDance.VegaMorphCharts.util.clone(explorer.imageHolder.backgroundImageColumnBounds);
