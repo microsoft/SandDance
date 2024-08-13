@@ -10,7 +10,7 @@ const oldVersion = {
     typings: {
         major: '0',
         minor: '24',
-        patch: '0',
+        patch: '1',
     },
 };
 
@@ -21,8 +21,8 @@ const newVersion = {
         patch: '0',
     },
     typings: {
-        major: '0',
-        minor: '24',
+        major: '1',
+        minor: '3',
         patch: '1',
     },
 };

@@ -34,7 +34,7 @@
     "@msrvida/chart-types": "^1",
     "@msrvida/data-inference": "^1",
     "@msrvida/search-expression": "^1",
-    "vega-typings": "~0.24.1"
+    "vega-typings": "~1.3.1"
   },
   "devDependencies": {
     "vega": "5.30.0"
