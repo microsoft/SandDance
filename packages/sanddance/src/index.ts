@@ -12,12 +12,14 @@ import * as VegaMorphCharts from '@msrvida/vega-morphcharts';
 import { colorSchemes } from './colorSchemes';
 import { use as _use } from '@msrvida/vega-morphcharts';
 import { Viewer } from './viewer';
+import * as dataLoader from './dataLoader';
 
 const use = _use;
 
 export {
     colorSchemes,
     constants,
+    dataLoader,
     searchExpression,
     specs,
     types,

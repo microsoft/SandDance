@@ -8,26 +8,10 @@ import { SandDance } from '@msrvida/sanddance-react';
 import { SnapshotEditorProps } from './dialogs/snapshotEditor';
 import { SnapshotListProps } from './dialogs/snapshots';
 
-import Snapshot = SandDance.types.Snapshot;
-
-export type DataFileType = 'json' | 'csv' | 'tsv' | 'topojson';
-
-export interface DataFile {
-  displayName?: string;
-  dataUrl?: string;
-  snapshotsUrl?: string;
-  rawText?: string;
-  snapshots?: Snapshot[];
-  type: DataFileType;
-}
-
-export interface DataContent {
-  data: object[];
-  columns: SandDance.types.Column[];
-  snapshots?: Snapshot[];
-}
-
-export type DataExportType = DataFileType | 'html';
+export type DataFileType = SandDance.types.DataFileType;
+export type DataFile = SandDance.types.DataFile;
+export type DataContent = SandDance.types.DataContent;
+export type DataExportType = SandDance.types.DataFileType | 'html';
 
 export interface DataExportHandler {
   (data: any, datatype: DataExportType, displayName: string): void;
@@ -53,9 +37,7 @@ export interface ViewerOptions extends SandDance.types.ViewerOptions {
   colors: ColorSettings;
 }
 
-export interface DateWithSource extends Date {
-  input?: string;
-}
+export type DateWithSource = SandDance.types.DateWithSource;
 
 export interface SettingsGroup {
   groupLabel: string;

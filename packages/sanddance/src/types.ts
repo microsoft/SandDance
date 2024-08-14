@@ -410,3 +410,23 @@ export interface InsightSetup {
     setup?: Setup;
 }
 
+export type DataFileType = 'json' | 'csv' | 'tsv' | 'topojson';
+
+export interface DataFile {
+    displayName?: string;
+    dataUrl?: string;
+    snapshotsUrl?: string;
+    rawText?: string;
+    snapshots?: Snapshot[];
+    type: DataFileType;
+}
+
+export interface DataContent {
+    data: object[];
+    columns: Column[];
+    snapshots?: Snapshot[];
+}
+
+export interface DateWithSource extends Date {
+    input?: string;
+}

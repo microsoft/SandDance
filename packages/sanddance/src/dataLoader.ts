@@ -4,15 +4,40 @@
 */
 
 import {
+    ColumnTypeMap,
     DataContent,
     DataFile,
     DataFileType,
     DateWithSource,
-} from './interfaces';
-import { SandDance } from '@msrvida/sanddance-react';
+} from './types';
+import * as VegaMorphCharts from '@msrvida/vega-morphcharts';
+import { getColumnsFromData } from './util';
 
-export const loadDataFile = (dataFile: DataFile, columnTypes?: SandDance.types.ColumnTypeMap) => new Promise<DataContent>((resolve, reject) => {
-    const vega = SandDance.VegaMorphCharts.base.vega;
+export const loadData = (
+    data: DataFile | object[],
+    loadFinal: (dataFile: DataFile, dataContent: DataContent) => void,
+    reject: (reason?: any) => void, 
+    columnTypes?: ColumnTypeMap,
+) => {
+    if (Array.isArray(data)) {
+        return loadDataArray(data, 'json', columnTypes)
+            .then(result => {
+                const dataFile: DataFile = {
+                    type: 'json',
+                };
+                loadFinal(dataFile, result);
+            })
+            .catch(reject);
+    } else {
+        const dataFile = data as DataFile;
+        return loadDataFile(dataFile, columnTypes)
+            .then(result => loadFinal(dataFile, result))
+            .catch(reject);
+    }
+};
+
+export const loadDataFile = (dataFile: DataFile, columnTypes?: ColumnTypeMap) => new Promise<DataContent>((resolve, reject) => {
+    const vega = VegaMorphCharts.base.vega;
     const loader = vega.loader();
 
     function handleRawText(text: string) {
@@ -52,7 +77,7 @@ export const loadDataFile = (dataFile: DataFile, columnTypes?: SandDance.types.C
     }
 });
 
-export const loadDataArray = (data: object[], type: DataFileType, columnTypes?: SandDance.types.ColumnTypeMap) => new Promise<DataContent>((resolve, reject) => {
+export const loadDataArray = (data: object[], type: DataFileType, columnTypes?: ColumnTypeMap) => new Promise<DataContent>((resolve, reject) => {
     const parse = type === 'csv' || type === 'tsv';
     if (parse) {
         //convert empty strings to null so that vega.inferType will get dates
@@ -64,8 +89,7 @@ export const loadDataArray = (data: object[], type: DataFileType, columnTypes?: 
             }
         });
     }
-    const columns = SandDance.util.
-        getColumnsFromData(SandDance.VegaMorphCharts.base.vega.inferTypes, data, columnTypes)
+    const columns = getColumnsFromData(VegaMorphCharts.base.vega.inferTypes, data, columnTypes)
         .filter(c => c.name && c.name.trim())
         .sort((a, b) => a.name.localeCompare(b.name));
     if (parse) {

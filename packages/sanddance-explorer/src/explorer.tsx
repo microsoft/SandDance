@@ -21,7 +21,6 @@ import { IconButton } from './controls/iconButton';
 import { AutoCompleteDistinctValues } from './controls/searchTerm';
 import { Sidebar } from './controls/sidebar';
 import { Topbar } from './controls/topbar';
-import { loadDataArray, loadDataFile } from './dataLoader';
 import { defaultViewerOptions, initialExplorerState, snapshotThumbWidth } from './defaults';
 import { Chart, chartLabel } from './dialogs/chart';
 import { Color } from './dialogs/color';
@@ -466,7 +465,7 @@ function _Explorer(_props: Props) {
                 { note: null },
             );
             return new Promise<void>((resolve, reject) => {
-                const loadFinal = (dataContent: DataContent) => {
+                const loadFinal = (dataFile: DataFile, dataContent: DataContent) => {
                     let partialInsight: Partial<SandDance.specs.Insight>;
                     this.prefs = (optionsOrPrefs && (optionsOrPrefs as Options).chartPrefs || (optionsOrPrefs as Prefs)) || {};
                     this.imageHolder.backgroundImageColumnBounds = getBackgroundImageColumnBounds(dataContent.columns);
@@ -523,22 +522,7 @@ function _Explorer(_props: Props) {
                     this.activateDataBrowserItem(sideTabId, this.state.dataScopeId);
                     resolve();
                 };
-                let dataFile: DataFile;
-                if (Array.isArray(data)) {
-                    return loadDataArray(data, 'json', (optionsOrPrefs && (optionsOrPrefs as Options).columnTypes))
-                        .then(result => {
-                            dataFile = {
-                                type: 'json',
-                            };
-                            loadFinal(result);
-                        })
-                        .catch(reject);
-                } else {
-                    dataFile = data as DataFile;
-                    return loadDataFile(dataFile, (optionsOrPrefs && (optionsOrPrefs as Options).columnTypes))
-                        .then(loadFinal)
-                        .catch(reject);
-                }
+                SandDance.dataLoader.loadData(data, loadFinal, reject, (optionsOrPrefs && (optionsOrPrefs as Options).columnTypes));
             });
         }
 
