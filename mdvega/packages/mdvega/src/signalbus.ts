@@ -34,23 +34,29 @@ export class SignalBus {
         this.logLevel = LogLevel.none;
     }
 
+    private log(message: string, ...optionalParams: unknown[]) {
+        if (this.logLevel !== LogLevel.none) {
+            console.log(`[Signal Bus] ${message}`, ...optionalParams);
+        }
+    }
+
     registerSignal(id: string, name: string, value: unknown) {
         const scopedName = `${id}_${name}`;
         if (!this.signals[scopedName]) {
             this.signals[scopedName] = value;
-            console.log(`[Signal Bus] Registered signal: ${scopedName} with initial value:`, value);
+            this.log(`Registered signal: ${scopedName} with initial value:`, value);
         }
     }
 
     broadcast(originId: string, name: string, value: unknown) {
         const scopedName = `${originId}_${name}`;
         if (this.directUpdateSignals.has(scopedName)) {
-            console.log(`[Signal Bus] Ignoring direct update for signal: ${name} from ${originId}`);
+            this.log(`Ignoring direct update for signal: ${name} from ${originId}`);
             this.directUpdateSignals.delete(scopedName);
             return;
         }
 
-        console.log(`[Signal Bus] Broadcasting signal: ${name} from ${originId} with value:`, value);
+        this.log(`Broadcasting signal: ${name} from ${originId} with value:`, value);
         this.startBroadcast();
 
         this.signals[scopedName] = value;
@@ -61,13 +67,13 @@ export class SignalBus {
             if (listener.id !== originId) {
                 if (listener.hasSignal(name)) {
                     if (this.signals[listenerScopedName] !== value) {
-                        console.log(`[Signal Bus] Notifying listener: ${listener.id} with signal: ${name}, value:`, value);
+                        this.log(`Notifying listener: ${listener.id} with signal: ${name}, value:`, value);
                         listener.callback(name, value ? value.toString() : null);
                     } else {
-                        console.log(`[Signal Bus] Propagation snubbed for listener: ${listener.id}, signal: ${name}, value unchanged:`, value);
+                        this.log(`Propagation snubbed for listener: ${listener.id}, signal: ${name}, value unchanged:`, value);
                     }
                 } else {
-                    console.log(`[Signal Bus] Listener ${listener.id} does not have signal: ${name}`);
+                    this.log(`Listener ${listener.id} does not have signal: ${name}`);
                 }
             }
         });
@@ -75,11 +81,11 @@ export class SignalBus {
         this.endBroadcast();
     }
 
-    startBroadcast() {
+    private startBroadcast() {
         this.broadcastingStack.push(true);
     }
 
-    endBroadcast() {
+    private endBroadcast() {
         this.broadcastingStack.pop();
     }
 
@@ -89,7 +95,7 @@ export class SignalBus {
 
     registerListener(id: string, callback: Callback, hasSignal: (name: string) => boolean) {
         this.listeners.push({ id, callback, hasSignal });
-        console.log(`[Signal Bus] Registered listener for: ${id}`);
+        this.log(`Registered listener for: ${id}`);
     }
 
     // updateSignalDirectly(id: string, name: string, value: string | null) {
@@ -97,7 +103,7 @@ export class SignalBus {
     //     this.directUpdateSignals.add(scopedName);
     //     this.signals[scopedName] = value;
     //     /////////////////////////////////////////////////////////////////////////////////////////////////////this.updateKeyValue(name, value);
-    //     console.log(`[Signal Bus] Directly updating signal: ${name} for ${id} with value:`, value);
+    //     this.log(`Directly updating signal: ${name} for ${id} with value:`, value);
     // }
 
 
@@ -105,6 +111,6 @@ export class SignalBus {
     resetSignalListeners() {
         this.listeners = [];
         this.signals = {};
-        console.log('[Signal Bus] Signal listeners and signals have been reset.');
+        this.log('Signal listeners and signals have been reset.');
     }
 }
