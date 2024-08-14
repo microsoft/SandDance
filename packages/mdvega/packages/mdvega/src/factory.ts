@@ -1,3 +1,8 @@
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import MarkdownIt, { Token } from 'markdown-it';
 import { Renderer } from './renderer';
 

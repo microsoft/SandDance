@@ -1,3 +1,8 @@
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { Token } from 'markdown-it';
 import { Plugin } from '../factory';
 

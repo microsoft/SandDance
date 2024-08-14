@@ -1,3 +1,8 @@
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 interface Callback {
     (name: string, value: string | null): void;
 }

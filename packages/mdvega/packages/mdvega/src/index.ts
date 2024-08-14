@@ -1,3 +1,8 @@
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { definePlugin, Plugin, plugins, registerMarkdownPlugin } from './factory';
 import { Renderer } from './renderer';
 import { registerNativePlugins } from './plugins';

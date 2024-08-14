@@ -1,3 +1,8 @@
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import MarkdownIt from 'markdown-it';
 import { create, plugins } from './factory';
 import { SignalBus } from './signalbus';

@@ -1,3 +1,8 @@
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { Plugin } from '../factory';
 
 export const tablePlugin: Plugin = {

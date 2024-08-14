@@ -1,3 +1,8 @@
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { registerMarkdownPlugin } from '../factory';
 
 import { placeholdersPlugin } from './placeholders';

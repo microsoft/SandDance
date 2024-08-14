@@ -1,3 +1,8 @@
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { compile } from 'vega-lite';
 import { definePlugin, Plugin } from '../factory';
 

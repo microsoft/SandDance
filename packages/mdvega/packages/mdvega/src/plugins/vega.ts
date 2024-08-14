@@ -1,3 +1,8 @@
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { parse, Spec, View } from 'vega';
 import { Plugin, definePlugin } from '../factory';
 

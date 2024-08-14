@@ -1,3 +1,8 @@
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { MdVega, Plugin } from '@msrvida/mdvega';
 import { Spec } from './types';
 
