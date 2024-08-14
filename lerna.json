@@ -3,7 +3,8 @@
   "packages": [
     "extensions/*",
     "packages/*",
-    "streamlit/streamlit_sanddance/frontend"
+    "streamlit/streamlit_sanddance/frontend",
+    "packages/mdvega/packages/*"
   ],
   "version": "independent"
 }

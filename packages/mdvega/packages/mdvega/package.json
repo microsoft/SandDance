@@ -1,0 +1,27 @@
+{
+  "name": "@msrvida/mdvega",
+  "version": "1.0.0",
+  "description": "Markdown pages with Vega signals",
+  "main": "dist/es6/index.js",
+  "types": "dist/es6/index.d.ts",
+  "dependencies": {
+    "markdown-it": "14.1.0",
+    "vega": "5.30.0",
+    "vega-lite": "5.20.1"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "14.1.2"
+  },
+  "scripts": {
+    "watch-typescript": "tsc -p . -w",
+    "build-typescript": "tsc -p .",
+    "bundle": "rollup -c",
+    "build:sanddance-integration": "npm run build-typescript && npm run bundle"
+  },
+  "keywords": [
+    "markdown",
+    "vega"
+  ],
+  "author": "Dan Marshall",
+  "license": "MIT"
+}
