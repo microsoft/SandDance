@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "jsx": "react",
+        "jsxFactory": "VegaMorphCharts.util.createElement",
+        "moduleResolution": "node",
+        "outDir": "dist/es6",
+        "skipLibCheck": true,
+        "target": "es6"
+    },
+    "include": [
+        "src"
+    ]
+}

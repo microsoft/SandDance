@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mdv test</title>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.29.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.20.1"></script>
+    <script src="../../mdvega/dist/umd/mdvega.js"></script>
+    <script src="../dist/umd/mdvega-sanddance.js"></script>
+    
+
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            margin: 0;
+            height: 100vh;
+        }
+
+        #editor,
+        #content {
+            flex: 1;
+            overflow: auto;
+            height: 100%;
+        }
+
+        #editor {
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            width: 100%;
+            height: 80%;
+            resize: none;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px 0;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        pre code {
+            background-color: #f5f5f5;
+            padding: 10px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="editor">
+        <textarea id="markdown-input">
+# Interactive Markdown with Shared Signals in Vega
+
+## SandDance
+Here is a simple SandDance visualization.
+```sanddance
+{
+    "data": "foo",
+    "insight": {
+        "columns": []
+    }
+}
+```
+
+
+
+## Conclusion
+The chosen color is {{selectedColor}} and the coords are *{{coords}}*
+The literal text is {selectedColor}.
+
+
+
+
+</textarea>
+        <button onclick="mdPage.renderMarkdown()">Render</button>
+    </div>
+    <div id="content"></div>
+
+    <script>
+        const { MdVega } = window;
+        console.log(MdVega);
+
+        const mdvr = new MdVega.Renderer(document.getElementById('content'));
+        console.log('instance', mdvr);
+
+        const markdown = document.getElementById('markdown-input').value;
+        mdvr.render(markdown);
+
+    </script>
+
+</body>
+
+</html>
