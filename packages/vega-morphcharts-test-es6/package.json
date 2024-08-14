@@ -20,6 +20,6 @@
   },
   "dependencies": {
     "@msrvida/vega-morphcharts": "^1",
-    "vega": "5.25.0"
+    "vega": "5.30.0"
   }
 }

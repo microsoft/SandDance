@@ -4,25 +4,25 @@ import { readFileSync, writeFileSync } from 'fs';
 const oldVersion = {
     vega: {
         major: '5',
-        minor: '24',
-        patch: '',
-    },
-    typings: {
-        major: '0',
-        minor: '24',
-        patch: '0',
-    },
-};
-
-const newVersion = {
-    vega: {
-        major: '5',
         minor: '25',
         patch: '0',
     },
     typings: {
         major: '0',
         minor: '24',
+        patch: '1',
+    },
+};
+
+const newVersion = {
+    vega: {
+        major: '5',
+        minor: '30',
+        patch: '0',
+    },
+    typings: {
+        major: '1',
+        minor: '3',
         patch: '1',
     },
 };

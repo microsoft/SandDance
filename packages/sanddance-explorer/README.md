@@ -14,7 +14,7 @@ Add these to the `dependencies` section of your `package.json`, then run `npm in
 ```json
 "@msrvida/sanddance-explorer": "^4",
 "@fluentui/react": "^8",
-"vega": "^5.25"
+"vega": "^5.30"
 ```
 
 Import these in your JavaScript:
