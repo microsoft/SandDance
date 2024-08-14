@@ -4,7 +4,7 @@
     "extensions/*",
     "packages/*",
     "streamlit/streamlit_sanddance/frontend",
-    "packages/mdvega/packages/*"
+    "mdvega/packages/*"
   ],
   "version": "independent"
 }

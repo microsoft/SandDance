@@ -43,19 +43,19 @@ const packages = {
             ],
         },
         {
-            glob: '{extensions,packages}/*/package.json',
+            glob: '{extensions,packages,mdvega/packages}/*/package.json',
             pattern: ({ major, minor, patch }) => [
                 `"vega": "${major}.${minor}${patch.length ? '.' : ''}${patch}"`,
             ],
         },
         {
-            glob: 'packages/*/src/**/*.ts',
+            glob: '{packages,mdvega/packages}/*/src/**/*.ts',
             pattern: ({ major, minor }) => [
                 `vega@${major}.${minor}`,
             ],
         },
         {
-            glob: 'packages/*/README.md',
+            glob: '{packages,mdvega/packages}/*/README.md',
             pattern: ({ major, minor }) => [
                 `vega@^${major}.${minor}`,
                 `"vega": "^${major}.${minor}"`,
@@ -64,7 +64,7 @@ const packages = {
     ],
     typings: [
         {
-            glob: 'packages/*/package.json',
+            glob: '{packages,mdvega/packages}/*/package.json',
             pattern: ({ major, minor, patch }) => [
                 `"vega-typings": "~${major}.${minor}${patch.length ? '.' : ''}${patch}"`,
             ],
@@ -72,7 +72,7 @@ const packages = {
     ],
 };
 
-//loop through keys & values in packages object
+// Loop through keys & values in packages object
 Object.entries(packages).forEach(([key, patterns]) => {
 
     console.log(`key: ${key}`);
