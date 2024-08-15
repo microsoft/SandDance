@@ -7,7 +7,6 @@
     "@msrvida/sanddance": "^4"
   },
   "devDependencies": {
-    "@msrvida/chart-types": "^1",
     "@msrvida/mdvega": "^1",
     "vega-typings": "~1.3.1"
   },
