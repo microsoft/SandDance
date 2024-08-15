@@ -62,13 +62,49 @@
         <textarea id="markdown-input">
 # Interactive Markdown with Shared Signals in Vega
 
+## Size Picker
+
+This dropdown controls the color of the rectangles below.
+
+```vega
+{
+    "$schema": "https://vega.github.io/schema/vega/v5.json",
+    "signals": [
+    {
+        "name": "Chart_PointScaleSignal",
+        "value": 5,
+        "bind": {
+        "input": "select",
+        "options": [1,2,5,10,25,50,100]
+        }
+    }
+    ]
+}
+```
+
 ## SandDance
 Here is a simple SandDance visualization.
 ```sanddance
 {
-    "data": "foo",
+    "data": [
+        { "myUid": 0, "myColor": 0, "mySort": 0, "myX": 0, "myY": 0, "myZ": 0 },
+        { "myUid": 1, "myColor": 1, "mySort": 1, "myX": 1, "myY": 1, "myZ": 1 },
+        { "myUid": 2, "myColor": 2, "mySort": 2, "myX": 2, "myY": 2, "myZ": 2 }
+    ],
     "insight": {
-        "columns": []
+        "columns": {
+            "color": "myColor",
+            "sort": "mySort",
+            "uid": "myUid",
+            "x": "myX",
+            "y": "myY",
+            "z": "myZ"
+        },
+        "size": {
+            "height": 700,
+            "width": 700
+        },
+        "chart": "scatterplot"
     }
 }
 ```
