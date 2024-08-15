@@ -3,11 +3,10 @@
 * Licensed under the MIT License.
 */
 
-import { DataFile } from '@msrvida/chart-types';
-import { specs } from '@msrvida/sanddance';
+import { specs, types } from '@msrvida/sanddance';
 import { SignalRef } from 'vega-typings';
 
 export interface Spec {
-    data: object[] | DataFile | SignalRef;
+    data: object[] | types.DataFile | SignalRef;
     insight: specs.Insight;
 }
