@@ -50,8 +50,6 @@ export const sanddancePlugin: Plugin = {
                             element.style.height = `${insight.size.height}px`;
                         }
 
-                        //TODO import sanddance style sheet
-
                         const viewer = new Viewer(element);
                         viewer.render({ insight }, dataContent.data);
 
