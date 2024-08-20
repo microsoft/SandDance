@@ -13,6 +13,7 @@
     "@types/markdown-it": "14.1.2"
   },
   "scripts": {
+    "deploy": "node ./scripts/deploy.js",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "bundle": "rollup -c",
