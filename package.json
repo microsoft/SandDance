@@ -51,6 +51,7 @@
     "devDependencies": {
         "@babel/helper-compilation-targets": "^7.18.2",
         "@parcel/packager-ts": "^2.7.0",
+        "@parcel/transformer-inline-string": "^2.12.0",
         "@parcel/transformer-sass": "^2.7.0",
         "@parcel/transformer-typescript-types": "^2.7.0",
         "@rollup/plugin-buble": "^0.21.3",
@@ -72,7 +73,7 @@
         "mdast-util-toc": "^3.0.1",
         "mocha": "^10.1.0",
         "npm-run-all": "^4.1.5",
-        "parcel": "^2.7.0",
+        "parcel": "^2.12.0",
         "process": "^0.11.10",
         "rimraf": "^2.6.2",
         "rollup": "^2.70.1",
