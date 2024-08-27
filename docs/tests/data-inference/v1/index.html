@@ -245,24 +245,33 @@
     <main>
 
         <button type="button"
-            onclick="navigator.clipboard.writeText(document.getElementsByTagName('code')[0].textContent)"
+            onclick="navigator.clipboard.writeText(document.getElementById('pandasHead')[0].textContent)"
+            style="position:relative;right:1em;float:right;top:3em;">📋</button>
+        Pandas-style Head:
+        <pre id="pandasHead"></pre>
+
+        <button type="button"
+            onclick="navigator.clipboard.writeText(document.getElementById('columnsJson')[0].textContent)"
             style="position:relative;right:1em;float:right;top:3em;">📋</button>
         Columns:
-        <pre><code></code></pre>
+        <pre><code id="columnsJson"></code></pre>
 
     </main>
 
     <script>
         const test = {
-            display: (content, highlight) => {
-                document.getElementsByTagName('code')[0].innerHTML = content;
+            display: (pandasHead, columnsJson, highlight) => {
+                document.getElementById('pandasHead').innerHTML = pandasHead;
+                document.getElementById('columnsJson').innerHTML = columnsJson;
                 if (highlight) {
                     hljs.highlightAll();
                 }
             },
             loadObjectArray: (data) => {
                 const columns = DataInference.getColumnsFromData(vega.inferTypes, data);
-                test.display(JSON.stringify(columns, null, 2), true);
+                const columnsJson = JSON.stringify(columns, null, 2);
+                const pandasHead = DataInference.getPandasHead(columns, data);
+                test.display(pandasHead, columnsJson, true);
             },
             loadText: ({ url, format }) => {
                 test.display('Loading...');
