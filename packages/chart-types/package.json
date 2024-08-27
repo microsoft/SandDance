@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/chart-types",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "description": "Types for chart applications.",
   "main": "dist/es6/index.js",
   "repository": {
