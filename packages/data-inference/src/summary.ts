@@ -1,3 +1,8 @@
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/
+
 import { Column } from '@msrvida/chart-types';
 import { TypeInference } from 'vega-typings/types';
 
@@ -6,11 +11,21 @@ class Table {
     private columnWidths: number[];
     private rows: string[][];
     private maxWidth: number;
+    private underlineHeaders: boolean;
+    private align: 'left' | 'right';
 
-    constructor(columns: string[], rows: string[][], maxWidth: number = 80) {
+    constructor(
+        columns: string[],
+        rows: string[][],
+        maxWidth: number = 80,
+        underlineHeaders: boolean = false,
+        align: 'left' | 'right' = 'right',
+    ) {
         this.columns = columns;
         this.rows = rows;
         this.maxWidth = maxWidth;
+        this.underlineHeaders = underlineHeaders;
+        this.align = align;
 
         // Calculate maximum width for each column
         this.columnWidths = this.columns.map((col, idx) =>
@@ -53,8 +68,23 @@ class Table {
         return group.map(col => {
             const idx = this.columns.indexOf(col);
             const cellValue = row[idx] == null ? '' : row[idx].toString();
-            return cellValue.padStart(this.columnWidths[idx], ' ');
+            return this.align === 'right'
+                ? cellValue.padStart(this.columnWidths[idx], ' ')
+                : cellValue.padEnd(this.columnWidths[idx], ' ');
         }).join(this.createSpaces(1));
+    }
+
+    private formatHeader(group: string[]): string {
+        return group.map(col => {
+            const idx = this.columns.indexOf(col);
+            return this.align === 'right'
+                ? col.padStart(this.columnWidths[idx], ' ')
+                : col.padEnd(this.columnWidths[idx], ' ');
+        }).join(this.createSpaces(1));
+    }
+
+    private underlineHeader(group: string[]): string {
+        return group.map(col => '-'.repeat(this.columnWidths[this.columns.indexOf(col)])).join(this.createSpaces(1));
     }
 
     public render(): string {
@@ -62,12 +92,15 @@ class Table {
         const columnGroups = this.groupColumns();
 
         columnGroups.forEach((group, groupIndex) => {
-            const headerRow = group.map(col => col.padStart(this.columnWidths[this.columns.indexOf(col)], ' ')).join(this.createSpaces(1));
-            let section = this.createSpaces(4) + headerRow + (groupIndex < columnGroups.length - 1 ? ' \\' : '') + '\n';
+            const headerRow = this.formatHeader(group);
+            let section = headerRow + (groupIndex < columnGroups.length - 1 ? ' \\' : '') + '\n';
 
-            this.rows.forEach((row, rowIndex) => {
-                const rowNumber = rowIndex.toString().padEnd(4);
-                section += rowNumber + this.formatRow(row, group) + '\n';
+            if (this.underlineHeaders) {
+                section += this.underlineHeader(group) + '\n';
+            }
+
+            this.rows.forEach((row) => {
+                section += this.formatRow(row, group) + '\n';
             });
 
             output.push(section);
@@ -95,12 +128,15 @@ export namespace pandasSimulation {
         const numRows = 5;  // Number of rows as in `head(5)` from pandas
         const top = data.slice(0, numRows);  // Get the top `numRows` rows
 
-        // Extract column names and rows for the table
-        const columnNames = columns.map(col => col.name);
-        const rows = top.map(row => columns.map(col => row[col.name]?.toString() || ''));
+        // Create a "fake" row number column
+        const rowNumbers = Array.from({ length: numRows }, (_, i) => (i + 1).toString());
 
-        // Create and render the table
-        const table = new Table(columnNames, rows, maxWidth);
+        // Extract column names and rows for the table
+        const columnNames = [''].concat(columns.map(col => col.name));
+        const rows = top.map((row, i) => [rowNumbers[i]].concat(columns.map(col => row[col.name]?.toString() || '')));
+
+        // Create and render the table with right alignment
+        const table = new Table(columnNames, rows, maxWidth, false, 'right'); // Right alignment
         return table.render();
     }
 
@@ -121,8 +157,8 @@ export namespace pandasSimulation {
             return [idx.toString(), col.name, `${nonNullCount} non-null`, dtype];
         });
 
-        // Create and render the table
-        const table = new Table(columnHeaders, rows, maxWidth);
+        // Create and render the table with left alignment and header underline
+        const table = new Table(columnHeaders, rows, maxWidth, true, 'left'); // Left alignment
         output.push(table.render());
 
         // Memory usage estimation
