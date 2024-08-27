@@ -270,7 +270,7 @@
             loadObjectArray: (data) => {
                 const columns = DataInference.getColumnsFromData(vega.inferTypes, data);
                 const columnsJson = JSON.stringify(columns, null, 2);
-                const pandasHead = DataInference.getPandasHead(columns, data);
+                const pandasHead = DataInference.pandasSimulation.head(columns, data);
                 test.display(pandasHead, columnsJson, true);
             },
             loadText: ({ url, format }) => {
