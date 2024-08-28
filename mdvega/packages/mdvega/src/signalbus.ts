@@ -34,7 +34,7 @@ export class SignalBus {
         this.logLevel = LogLevel.none;
     }
 
-    private log(message: string, ...optionalParams: unknown[]) {
+    public log(message: string, ...optionalParams: unknown[]) {
         if (this.logLevel !== LogLevel.none) {
             console.log(`[Signal Bus] ${message}`, ...optionalParams);
         }

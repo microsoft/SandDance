@@ -48,7 +48,7 @@ export const vegaPlugin: Plugin = {
             if (spec.signals) {
                 spec.signals.forEach(signal => {
                     view.addSignalListener(signal.name, (name, value) => {
-                        console.log(`[Vega ${vegaId}] Signal event: ${name}, value:`, value);
+                        renderer.signalBus.log(`[Vega ${vegaId}] Signal event: ${name}, value:`, value);
                         // Only broadcast if this is an event-driven signal change
                         renderer.signalBus.broadcast(vegaId, name, value);
                     });
@@ -59,12 +59,12 @@ export const vegaPlugin: Plugin = {
             renderer.signalBus.registerListener(vegaId, (name, value) => {
                 const scopedName = `${vegaId}_${name}`;
                 if (renderer.signalBus.signals[scopedName] !== value) {
-                    console.log(`[Vega ${vegaId}] Updating signal: ${name} with value:`, value);
+                    renderer.signalBus.log(`[Vega ${vegaId}] Updating signal: ${name} with value:`, value);
                     // Mark this update as direct to prevent broadcasting it again
                     ////////////////////////////////////////////////////////////////////renderer.signalBus.updateSignalDirectly(vegaId, name, value);
                     view.signal(name, value).runAsync();
                 } else {
-                    console.log(`[Vega ${vegaId}] Signal update snubbed: ${name}, value unchanged:`, value);
+                    renderer.signalBus.log(`[Vega ${vegaId}] Signal update snubbed: ${name}, value unchanged:`, value);
                 }
             }, hasSignal);
         });

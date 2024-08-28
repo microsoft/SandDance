@@ -40,7 +40,7 @@ export class Renderer {
         this.element.innerHTML = parsedHTML;
 
         //loop through all the plugins and render them
-        console.log('rendering DOM');
+        this.signalBus.log('rendering DOM');
         plugins.forEach(plugin => {
             if (plugin.hydrateComponent) {
                 this.instances[plugin.name] = [];
