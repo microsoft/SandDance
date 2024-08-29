@@ -351,7 +351,7 @@ Click the map above to show related data.
     ]
 }
 </textarea>
-        <button onclick="mdPage.renderMarkdown()">Render</button>
+        <button onclick="renderMarkdown()">Render</button>
     </div>
     <div id="content"></div>
 
@@ -362,9 +362,12 @@ Click the map above to show related data.
         const mdvr = new MdVega.Renderer(document.getElementById('content'));
         console.log('instance', mdvr);
 
-        const markdown = document.getElementById('markdown-input').value;
-        mdvr.render(markdown);
+        function renderMarkdown() {
+            const markdown = document.getElementById('markdown-input').value;
+            mdvr.render(markdown);
+        }
 
+        renderMarkdown();
     </script>
 
 </body>
