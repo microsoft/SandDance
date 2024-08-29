@@ -5,6 +5,7 @@
 
 import { compile } from 'vega-lite';
 import { definePlugin, Plugin } from '../factory';
+import { sanitizedHTML } from './sanitize';
 
 export const vegaLitePlugin: Plugin = {
     name: 'vega-lite',
@@ -13,6 +14,6 @@ export const vegaLitePlugin: Plugin = {
         const spec = JSON.parse(token.content.trim());
         const vegaSpec = compile(spec).spec;
         const vegaId = `vega-lite-${idx}`;
-        return `<div id="${vegaId}" class="vega-chart">${JSON.stringify(vegaSpec)}</div>`;
+        return sanitizedHTML('div', { id: vegaId, class: 'vega-chart' }, JSON.stringify(vegaSpec));
     },
 };

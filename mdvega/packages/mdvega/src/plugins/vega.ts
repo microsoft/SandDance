@@ -5,6 +5,7 @@
 
 import { parse, Spec, View } from 'vega';
 import { Plugin, definePlugin } from '../factory';
+import { sanitizedHTML } from './sanitize';
 
 export const vegaPlugin: Plugin = {
     name: 'vega',
@@ -12,7 +13,7 @@ export const vegaPlugin: Plugin = {
     fence: (token, idx) => {
         const spec = JSON.parse(token.content.trim());
         const vegaId = `vega-${idx}`;
-        return `<div id="${vegaId}" class="vega-chart">${JSON.stringify(spec)}</div>`;
+        return sanitizedHTML('div', { id: vegaId, class: 'vega-chart' }, JSON.stringify(spec));
     },
     hydrateComponent: (renderer) => {
         renderer.element.querySelectorAll('.vega-chart').forEach((container, index) => {
