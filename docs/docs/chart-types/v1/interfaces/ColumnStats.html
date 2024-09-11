@@ -49,6 +49,7 @@ title: 'ColumnStats | @msrvida/chart-types'
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ColumnStats.html#max" class="tsd-kind-icon">max</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ColumnStats.html#mean" class="tsd-kind-icon">mean</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ColumnStats.html#min" class="tsd-kind-icon">min</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ColumnStats.html#nonNull" class="tsd-kind-icon">non<wbr>Null</a></li>
 						</ul>
 					</section>
 				</div>
@@ -62,7 +63,7 @@ title: 'ColumnStats | @msrvida/chart-types'
 				<div class="tsd-signature tsd-kind-icon">distinct<wbr>Value<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/chart-types/src/column.ts#L47">column.ts:47</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/chart-types/src/column.ts#L52">column.ts:52</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -77,7 +78,7 @@ title: 'ColumnStats | @msrvida/chart-types'
 				<div class="tsd-signature tsd-kind-icon">has<wbr>Color<wbr>Data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/chart-types/src/column.ts#L77">column.ts:77</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/chart-types/src/column.ts#L82">column.ts:82</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -92,7 +93,7 @@ title: 'ColumnStats | @msrvida/chart-types'
 				<div class="tsd-signature tsd-kind-icon">has<wbr>Negative<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/chart-types/src/column.ts#L72">column.ts:72</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/chart-types/src/column.ts#L77">column.ts:77</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -107,7 +108,7 @@ title: 'ColumnStats | @msrvida/chart-types'
 				<div class="tsd-signature tsd-kind-icon">is<wbr>Sequential<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/chart-types/src/column.ts#L67">column.ts:67</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/chart-types/src/column.ts#L72">column.ts:72</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -122,7 +123,7 @@ title: 'ColumnStats | @msrvida/chart-types'
 				<div class="tsd-signature tsd-kind-icon">max<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/chart-types/src/column.ts#L52">column.ts:52</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/chart-types/src/column.ts#L57">column.ts:57</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -137,7 +138,7 @@ title: 'ColumnStats | @msrvida/chart-types'
 				<div class="tsd-signature tsd-kind-icon">mean<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/chart-types/src/column.ts#L57">column.ts:57</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/chart-types/src/column.ts#L62">column.ts:62</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -152,12 +153,27 @@ title: 'ColumnStats | @msrvida/chart-types'
 				<div class="tsd-signature tsd-kind-icon">min<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/chart-types/src/column.ts#L62">column.ts:62</a></li>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/chart-types/src/column.ts#L67">column.ts:67</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
 						<p>Minimum value of data in this column, if column is numeric.</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<a name="nonNull" class="tsd-anchor"></a>
+				<h3>non<wbr>Null</h3>
+				<div class="tsd-signature tsd-kind-icon">non<wbr>Null<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/microsoft/SandDance/blob/master/packages/chart-types/src/column.ts#L47">column.ts:47</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Number of non-null values in this column.</p>
 					</div>
 				</div>
 			</section>
@@ -204,6 +220,9 @@ title: 'ColumnStats | @msrvida/chart-types'
 						</li>
 						<li class=" tsd-kind-property tsd-parent-kind-interface">
 							<a href="ColumnStats.html#min" class="tsd-kind-icon">min</a>
+						</li>
+						<li class=" tsd-kind-property tsd-parent-kind-interface">
+							<a href="ColumnStats.html#nonNull" class="tsd-kind-icon">non<wbr>Null</a>
 						</li>
 					</ul>
 				</li>
