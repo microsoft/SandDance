@@ -82,5 +82,16 @@ export const placeholdersPlugin: Plugin = {
             };
             renderer.signalBus.registerListener(key, callback, hasSignal);
         });
+        return () => {
+            elementsByKeys.forEach((elements, key) => {
+                //initialize to signal value if any
+                const existingSourceSignal = renderer.signalBus.findSourceSignal(key);
+                if (existingSourceSignal) {
+                    elements.forEach(placeholder => {
+                        placeholder.textContent = existingSourceSignal.value?.toString();
+                    });
+                }
+            });
+        };
     },
 };

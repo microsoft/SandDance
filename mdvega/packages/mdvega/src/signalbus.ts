@@ -20,6 +20,7 @@ export enum LogLevel {
 
 // Signal Bus to manage shared signals
 export class SignalBus {
+    public sources: string[];
     public signals: { [key: string]: unknown };
     public listeners: Listener[];
     public broadcastingStack: boolean[];
@@ -27,6 +28,7 @@ export class SignalBus {
     public logLevel: LogLevel;
 
     constructor() {
+        this.sources = [];
         this.signals = {};
         this.listeners = [];
         this.broadcastingStack = [];
@@ -40,9 +42,24 @@ export class SignalBus {
         }
     }
 
+    findSourceSignal(name: string, excludeId?: string) {
+        for (let i = 0; i < this.sources.length; i++) {
+            const id = this.sources[i];
+            if (id === excludeId) continue;
+            const scopedName = `${id}_${name}`;
+            if (this.signals[scopedName]) {
+                const value = this.signals[scopedName];
+                return { id, value };
+            }
+        }
+    }
+
     registerSignal(id: string, name: string, value: unknown) {
         const scopedName = `${id}_${name}`;
         if (!this.signals[scopedName]) {
+            if (!this.sources.includes(id)) {
+                this.sources.push(id);
+            }
             this.signals[scopedName] = value;
             this.log(`Registered signal: ${scopedName} with initial value:`, value);
         }
@@ -109,6 +126,7 @@ export class SignalBus {
 
     // Function to reset signal listeners
     resetSignalListeners() {
+        this.sources =[];
         this.listeners = [];
         this.signals = {};
         this.log('Signal listeners and signals have been reset.');

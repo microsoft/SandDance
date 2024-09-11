@@ -6,6 +6,7 @@
 import { parse, Spec, View } from 'vega';
 import { Plugin, definePlugin } from '../factory';
 import { sanitizedHTML } from './sanitize';
+import { InitSignal } from 'vega-typings';
 
 export const vegaPlugin: Plugin = {
     name: 'vega',
@@ -25,8 +26,13 @@ export const vegaPlugin: Plugin = {
 
             // Register initial signals with the signal bus
             if (spec.signals) {
-                spec.signals.forEach(signal => {
-                    renderer.signalBus.registerSignal(vegaId, signal.name, null /*signal.value*/); //////////////////////////////
+                spec.signals.forEach((signal: InitSignal) => {
+                    //see if signal already exists and get its value
+                    const existingSourceSignal = renderer.signalBus.findSourceSignal(signal.name, vegaId);
+                    if (existingSourceSignal) {
+                        signal.value = existingSourceSignal.value;
+                    }
+                    renderer.signalBus.registerSignal(vegaId, signal.name, signal.value);
                 });
             }
 
