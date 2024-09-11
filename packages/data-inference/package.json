@@ -8,7 +8,6 @@
     "url": "https://github.com/microsoft/SandDance.git",
     "directory": "packages/data-inference"
   },
-  "type": "module",
   "types": "dist/es6/index.d.ts",
   "files": [
     "dist"
