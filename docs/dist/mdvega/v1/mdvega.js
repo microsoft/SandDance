@@ -175,7 +175,7 @@
             const parsedHTML = this.md.render(markdown);
             this.element.innerHTML = parsedHTML;
             //loop through all the plugins and render them
-            console.log('rendering DOM');
+            this.signalBus.log('rendering DOM');
             plugins.forEach(plugin => {
                 if (plugin.hydrateComponent) {
                     this.instances[plugin.name] = [];
@@ -255,7 +255,7 @@
             //now for each key, add a listener to the signal bus to update all the elements with the new value
             elementsByKeys.forEach((elements, key) => {
                 const callback = (key, value) => {
-                    console.log(`Updating key: ${key} has ${elements.length} placeholder elements`);
+                    renderer.signalBus.log(`Updating key: ${key} has ${elements.length} placeholder elements`);
                     elements.forEach(placeholder => {
                         placeholder.textContent = value;
                     });
@@ -283,13 +283,30 @@
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
+    function sanitizedHTML(tagName, attributes, content) {
+        // Create a temp element with the specified tag name
+        const element = document.createElement(tagName);
+        // Iterate over the attribute list and set each attribute
+        Object.keys(attributes).forEach(key => {
+            element.setAttribute(key, attributes[key]);
+        });
+        // Set the textContent to automatically escape the content
+        element.textContent = content;
+        // Return the outer HTML of the element
+        return element.outerHTML;
+    }
+
+    /*!
+    * Copyright (c) Microsoft Corporation.
+    * Licensed under the MIT License.
+    */
     const vegaPlugin = {
         name: 'vega',
         initializePlugin: (md) => definePlugin(md, 'vega'),
         fence: (token, idx) => {
             const spec = JSON.parse(token.content.trim());
             const vegaId = `vega-${idx}`;
-            return `<div id="${vegaId}" class="vega-chart">${JSON.stringify(spec)}</div>`;
+            return sanitizedHTML('div', { id: vegaId, class: 'vega-chart' }, JSON.stringify(spec));
         },
         hydrateComponent: (renderer) => {
             renderer.element.querySelectorAll('.vega-chart').forEach((container, index) => {
@@ -316,7 +333,7 @@
                 if (spec.signals) {
                     spec.signals.forEach(signal => {
                         view.addSignalListener(signal.name, (name, value) => {
-                            console.log(`[Vega ${vegaId}] Signal event: ${name}, value:`, value);
+                            renderer.signalBus.log(`[Vega ${vegaId}] Signal event: ${name}, value:`, value);
                             // Only broadcast if this is an event-driven signal change
                             renderer.signalBus.broadcast(vegaId, name, value);
                         });
@@ -326,13 +343,13 @@
                 renderer.signalBus.registerListener(vegaId, (name, value) => {
                     const scopedName = `${vegaId}_${name}`;
                     if (renderer.signalBus.signals[scopedName] !== value) {
-                        console.log(`[Vega ${vegaId}] Updating signal: ${name} with value:`, value);
+                        renderer.signalBus.log(`[Vega ${vegaId}] Updating signal: ${name} with value:`, value);
                         // Mark this update as direct to prevent broadcasting it again
                         ////////////////////////////////////////////////////////////////////renderer.signalBus.updateSignalDirectly(vegaId, name, value);
                         view.signal(name, value).runAsync();
                     }
                     else {
-                        console.log(`[Vega ${vegaId}] Signal update snubbed: ${name}, value unchanged:`, value);
+                        renderer.signalBus.log(`[Vega ${vegaId}] Signal update snubbed: ${name}, value unchanged:`, value);
                     }
                 }, hasSignal);
             });
@@ -350,7 +367,7 @@
             const spec = JSON.parse(token.content.trim());
             const vegaSpec = vegaLite.compile(spec).spec;
             const vegaId = `vega-lite-${idx}`;
-            return `<div id="${vegaId}" class="vega-chart">${JSON.stringify(vegaSpec)}</div>`;
+            return sanitizedHTML('div', { id: vegaId, class: 'vega-chart' }, JSON.stringify(vegaSpec));
         },
     };
 
