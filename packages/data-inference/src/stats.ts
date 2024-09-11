@@ -5,8 +5,8 @@
 
 import { Column, ColumnStats } from '@msrvida/chart-types';
 import { TypeInference } from 'vega-typings';
-import { isColor } from './color.js';
-import { detectNegative, detectSequentialColumn } from './numeric.js';
+import { isColor } from './color';
+import { detectNegative, detectSequentialColumn } from './numeric';
 
 export function getStats(data: object[] | Float64Array, columnName: string | number, columnType: TypeInference, columnQuantitative: boolean, distinctValuesCallback?: (distinctValues: string[]) => void): ColumnStats;
 export function getStats(data: object[], column: Column, distinctValuesCallback?: (distinctValues: string[]) => void): ColumnStats;
