@@ -77,6 +77,7 @@
     // Signal Bus to manage shared signals
     class SignalBus {
         constructor() {
+            this.sources = [];
             this.signals = {};
             this.listeners = [];
             this.broadcastingStack = [];
@@ -88,9 +89,24 @@
                 console.log(`[Signal Bus] ${message}`, ...optionalParams);
             }
         }
+        findSourceSignal(name, excludeId) {
+            for (let i = 0; i < this.sources.length; i++) {
+                const id = this.sources[i];
+                if (id === excludeId)
+                    continue;
+                const scopedName = `${id}_${name}`;
+                if (this.signals[scopedName]) {
+                    const value = this.signals[scopedName];
+                    return { id, value };
+                }
+            }
+        }
         registerSignal(id, name, value) {
             const scopedName = `${id}_${name}`;
             if (!this.signals[scopedName]) {
+                if (!this.sources.includes(id)) {
+                    this.sources.push(id);
+                }
                 this.signals[scopedName] = value;
                 this.log(`Registered signal: ${scopedName} with initial value:`, value);
             }
@@ -147,6 +163,7 @@
         // }
         // Function to reset signal listeners
         resetSignalListeners() {
+            this.sources = [];
             this.listeners = [];
             this.signals = {};
             this.log('Signal listeners and signals have been reset.');
@@ -176,10 +193,16 @@
             this.element.innerHTML = parsedHTML;
             //loop through all the plugins and render them
             this.signalBus.log('rendering DOM');
+            const finals = [];
             plugins.forEach(plugin => {
                 if (plugin.hydrateComponent) {
                     this.instances[plugin.name] = [];
-                    plugin.hydrateComponent(this);
+                    finals.push(plugin.hydrateComponent(this));
+                }
+            });
+            finals.forEach(final => {
+                if (final) {
+                    final();
                 }
             });
         }
@@ -265,6 +288,19 @@
                 };
                 renderer.signalBus.registerListener(key, callback, hasSignal);
             });
+            return () => {
+                console.log('placeholder');
+                elementsByKeys.forEach((elements, key) => {
+                    //initialize to signal value if any
+                    const existingSourceSignal = renderer.signalBus.findSourceSignal(key);
+                    if (existingSourceSignal) {
+                        elements.forEach(placeholder => {
+                            var _a;
+                            placeholder.textContent = (_a = existingSourceSignal.value) === null || _a === void 0 ? void 0 : _a.toString();
+                        });
+                    }
+                });
+            };
         },
     };
 
@@ -316,8 +352,13 @@
                 const vegaId = `vega-${index}`;
                 // Register initial signals with the signal bus
                 if (spec.signals) {
-                    spec.signals.forEach(signal => {
-                        renderer.signalBus.registerSignal(vegaId, signal.name, null /*signal.value*/); //////////////////////////////
+                    spec.signals.forEach((signal) => {
+                        //see if signal already exists and get its value
+                        const existingSourceSignal = renderer.signalBus.findSourceSignal(signal.name, vegaId);
+                        if (existingSourceSignal) {
+                            signal.value = existingSourceSignal.value;
+                        }
+                        renderer.signalBus.registerSignal(vegaId, signal.name, signal.value);
                     });
                 }
                 //TODO catch errors
