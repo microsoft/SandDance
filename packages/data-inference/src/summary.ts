@@ -37,7 +37,7 @@ class Table {
     }
 
     private createSpaces(num: number): string {
-        return Array(num + 1).join(' ');
+        return ' '.repeat(num);
     }
 
     private groupColumns(): string[][] {
