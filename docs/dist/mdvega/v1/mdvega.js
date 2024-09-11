@@ -289,7 +289,6 @@
                 renderer.signalBus.registerListener(key, callback, hasSignal);
             });
             return () => {
-                console.log('placeholder');
                 elementsByKeys.forEach((elements, key) => {
                     //initialize to signal value if any
                     const existingSourceSignal = renderer.signalBus.findSourceSignal(key);
