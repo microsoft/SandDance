@@ -41,6 +41,11 @@ export interface Column {
  */
 export interface ColumnStats {
 
+    /***
+     * Number of non-null values in this column.
+     */
+    nonNull: number;
+
     /**
      * Number of unique values in this column.
      */

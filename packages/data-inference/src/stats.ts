@@ -5,8 +5,8 @@
 
 import { Column, ColumnStats } from '@msrvida/chart-types';
 import { TypeInference } from 'vega-typings';
-import { isColor } from './color.js';
-import { detectNegative, detectSequentialColumn } from './numeric.js';
+import { isColor } from './color';
+import { detectNegative, detectSequentialColumn } from './numeric';
 
 export function getStats(data: object[] | Float64Array, columnName: string | number, columnType: TypeInference, columnQuantitative: boolean, distinctValuesCallback?: (distinctValues: string[]) => void): ColumnStats;
 export function getStats(data: object[], column: Column, distinctValuesCallback?: (distinctValues: string[]) => void): ColumnStats;
@@ -29,15 +29,24 @@ export function getStats(data: object[] | Float64Array, ...args: any[]) {
     }
     const distinctMap = {};
     const stats: ColumnStats = {
+        nonNull: 0,
         distinctValueCount: null,
         max: null,
         mean: null,
         min: null,
     };
+    const columnIsString = columnType === 'string';
     let sum = 0;
     for (let i = 0; i < data.length; i++) {
         const row = data[i];
         const value = columnName == null ? row : row[columnName];
+        if (columnIsString) {
+            if (value !== '') {
+                stats.nonNull++;
+            }
+        } else if (value != null) {
+            stats.nonNull++;
+        }
         const num = +value;
         distinctMap[value] = true;
         if (!isNaN(num)) {
@@ -50,7 +59,7 @@ export function getStats(data: object[] | Float64Array, ...args: any[]) {
             sum += num;
         }
         // hex codes, ex. #003300, are parsed as dates
-        if ((columnType === 'date' || columnType === 'string') && !stats.hasColorData && isColor(value)) {
+        if ((columnType === 'date' || columnIsString) && !stats.hasColorData && isColor(value)) {
             stats.hasColorData = true;
         }
     }

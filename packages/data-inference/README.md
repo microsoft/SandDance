@@ -124,5 +124,57 @@ console.log(columns);
 ]
 ```
 
+## Pandas-style simulation
+As of version 1.2, the **pandasSimulation** namespace provides **describe()**, **head()**, and **info()** functions to emit data inferences in similar format of [Python's Pandas library](https://pandas.pydata.org/)
+
+### head
+```js
+console.log(DataInference.pandasSimulation.head(columns, data));
+```
+
+```
+                       Name Miles_per_Gallon Cylinders Displacement Horsepower \
+1 chevrolet chevelle malibu               18         8          307        130
+2         buick skylark 320               15         8          350        165
+3        plymouth satellite               18         8          318        150
+4             amc rebel sst               16         8          304        150
+5               ford torino               17         8          302        140
+
+Weight_in_lbs Acceleration       Year Origin
+         3504           12 1970-01-01    USA
+         3693         11.5 1970-01-01    USA
+         3436           11 1970-01-01    USA
+         3433           12 1970-01-01    USA
+         3449         10.5 1970-01-01    USA
+```
+
+### info
+```js
+console.log(DataInference.pandasSimulation.info(columns, data));
+```
+
+```
+info
+<class 'pandas.core.frame.DataFrame'>
+Index: 406 entries, 0 to 405
+Data columns (total 9 columns):
+
+# Column           Non-Null Count Dtype         
+- ---------------- -------------- --------------
+0 Name             406 non-null   object        
+1 Miles_per_Gallon 398 non-null   float64       
+2 Cylinders        406 non-null   int64         
+3 Displacement     406 non-null   float64       
+4 Horsepower       400 non-null   int64         
+5 Weight_in_lbs    406 non-null   int64         
+6 Acceleration     406 non-null   float64       
+7 Year             406 non-null   datetime64[ns]
+8 Origin           406 non-null   object        
+
+
+dtypes: 3 float64, 3 int64, 2 object
+memory usage: 21.0 KB
+```
+
 ## For more information
 Please visit the [SandDance website](https://microsoft.github.io/SandDance/).

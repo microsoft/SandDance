@@ -5,9 +5,9 @@
 
 import { Column, ColumnTypeMap } from '@msrvida/chart-types';
 import { inferTypes } from 'vega-typings';
-import { checkIsColorData } from './color.js';
-import { isQuantitative } from './numeric.js';
-import { getStats } from './stats.js';
+import { checkIsColorData } from './color';
+import { isQuantitative } from './numeric';
+import { getStats } from './stats';
 
 /**
  * Derive column metadata from the data array.

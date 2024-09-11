@@ -9,7 +9,6 @@
     <script src="https://unpkg.com/vega@^5.30/build/vega.js" charset="utf-8"></script>
     <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/default.min.css">
     <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
-    <script src="js/data-inference.js"></script>
 
     <style>
         body {
@@ -27,11 +26,11 @@
         <h1>Data-Inference test</h1>
         <label>
             sample data file:
-            <select onchange="test.loadText(JSON.parse(this.value))">
-                <option value='{"url": "../../../sample-data/titanicmaster.tsv", "format":{"type":"tsv"}}'>
+            <select id="selectData">
+                <option value='{"url": "https://microsoft.github.io/SandDance/sample-data/titanicmaster.tsv", "format":{"type":"tsv"}}'>
                     titanic
                 </option>
-                <option value='{"url": "../../../sample-data/demovote.tsv", "format":{"type":"tsv"}}'>
+                <option value='{"url": "https://microsoft.github.io/SandDance/sample-data/demovote.tsv", "format":{"type":"tsv"}}'>
                     demovote
                 </option>
                 <option
@@ -265,35 +264,7 @@
 
     </main>
 
-    <script>
-        const test = {
-            display: (pandasHead, pandasInfo, columnsJson, highlight) => {
-                document.getElementById('pandasHead').innerHTML = pandasHead;
-                document.getElementById('pandasInfo').innerHTML = pandasInfo;
-                document.getElementById('columnsJson').innerHTML = columnsJson;
-                if (highlight) {
-                    hljs.highlightAll();
-                }
-            },
-            loadObjectArray: (data) => {
-                const columns = DataInference.getColumnsFromData(vega.inferTypes, data);
-                const columnsJson = JSON.stringify(columns, null, 2);
-                const pandasHead = DataInference.pandasSimulation.head(columns, data);
-                const pandasInfo = DataInference.pandasSimulation.info(columns, data);
-                test.display(pandasHead, pandasInfo, columnsJson, true);
-            },
-            loadText: ({ url, format }) => {
-                test.display('Loading...');
-                vega.loader().load(url).then(function (text) {
-                    const data = vega.read(text, format);
-                    test.loadObjectArray(data);
-                });
-            },
-        };
-
-        test.loadText({ url: '../../../sample-data/titanicmaster.tsv', format: { type: 'tsv' } });
-
-    </script>
+    <script type="module" src="../packages/data-inference/test/index.ts"></script>
 
 </body>
 
