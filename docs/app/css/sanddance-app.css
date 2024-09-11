@@ -121,8 +121,6 @@
   width: 25%;
 }
 
-/*# sourceMappingURL=sanddance.css.map */
-/*# sourceMappingURL=sanddance-react.css.map */
 .sanddance-scheme.disabled {
   filter: grayscale(95%);
 }
@@ -1009,7 +1007,7 @@
   color: #009ed3;
 }
 
-/*# sourceMappingURL=sanddance-explorer.css.map */
+
 .sanddance-sidebar .sanddance-datascope {
   min-height: 7em;
 }
