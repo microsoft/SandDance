@@ -10,7 +10,7 @@ export interface Plugin {
     name: string;
     initializePlugin: (md: MarkdownIt) => void;
     fence?: (token: Token, idx: number) => string;
-    hydrateComponent?: (renderer: Renderer) => void;
+    hydrateComponent?: (renderer: Renderer) => void | (() => void);
 }
 
 export const plugins: Plugin[] = [];

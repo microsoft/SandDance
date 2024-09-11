@@ -41,10 +41,16 @@ export class Renderer {
 
         //loop through all the plugins and render them
         this.signalBus.log('rendering DOM');
+        const finals: (void | (() => void))[] = [];
         plugins.forEach(plugin => {
             if (plugin.hydrateComponent) {
                 this.instances[plugin.name] = [];
-                plugin.hydrateComponent(this);
+                finals.push(plugin.hydrateComponent(this));
+            }
+        });
+        finals.forEach(final => {
+            if (final) {
+                final();
             }
         });
     }
