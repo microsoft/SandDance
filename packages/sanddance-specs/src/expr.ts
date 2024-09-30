@@ -9,7 +9,11 @@
  * examples: "source.x", "target['x']", "[my.field]"
  */
 export function safeFieldName(field: string) {
-    return field.replace('.', '\\.').replace('[', '\\[').replace(']', '\\]');
+    return field
+        .replace(/\./g, '\\.')
+        .replace(/\[/g, '\\[')
+        .replace(/\]/g, '\\]')
+    ;
 }
 
 /**
