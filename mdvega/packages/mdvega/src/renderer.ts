@@ -11,6 +11,10 @@ export interface Handler {
     (): void;
 }
 
+export interface ErrorHandler {
+    (error: Error, pluginName: string, instanceIndex: number, phase: string): void;
+}
+
 export class Renderer {
 
     public md: MarkdownIt;
@@ -30,7 +34,13 @@ export class Renderer {
         this.destroyHandlers[type] = handler;
     }
 
-    render(markdown: string) {
+    render(markdown: string, errorHandler?: ErrorHandler) {
+        if (!errorHandler) {
+            errorHandler = (error, pluginName, instanceIndex, phase) => {
+                console.error(`Error in plugin ${pluginName} instance ${instanceIndex} phase ${phase}`, error);
+            };
+        }
+
         //loop through all the destroy handlers and call them. have the key there to help us debug
         this.destroy();
 
@@ -45,7 +55,7 @@ export class Renderer {
         plugins.forEach(plugin => {
             if (plugin.hydrateComponent) {
                 this.instances[plugin.name] = [];
-                finals.push(plugin.hydrateComponent(this));
+                finals.push(plugin.hydrateComponent(this, errorHandler));
             }
         });
         finals.forEach(final => {

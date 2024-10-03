@@ -4,13 +4,13 @@
 */
 
 import MarkdownIt, { Token } from 'markdown-it';
-import { Renderer } from './renderer';
+import { ErrorHandler, Renderer } from './renderer';
 
 export interface Plugin {
     name: string;
     initializePlugin: (md: MarkdownIt) => void;
     fence?: (token: Token, idx: number) => string;
-    hydrateComponent?: (renderer: Renderer) => void | (() => void);
+    hydrateComponent?: (renderer: Renderer, errorHandler: ErrorHandler) => void | (() => void);
 }
 
 export const plugins: Plugin[] = [];

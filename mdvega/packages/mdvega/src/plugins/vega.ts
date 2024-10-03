@@ -3,7 +3,7 @@
 * Licensed under the MIT License.
 */
 
-import { parse, Spec, View } from 'vega';
+import { parse, Runtime, Spec, View } from 'vega';
 import { Plugin, definePlugin } from '../factory';
 import { sanitizedHTML } from './sanitize';
 import { InitSignal } from 'vega-typings';
@@ -16,7 +16,7 @@ export const vegaPlugin: Plugin = {
         const vegaId = `vega-${idx}`;
         return sanitizedHTML('div', { id: vegaId, class: 'vega-chart' }, JSON.stringify(spec));
     },
-    hydrateComponent: (renderer) => {
+    hydrateComponent: (renderer, errorHandler) => {
         renderer.element.querySelectorAll('.vega-chart').forEach((container, index) => {
             if (!container.textContent) return;
 
@@ -36,15 +36,27 @@ export const vegaPlugin: Plugin = {
                 });
             }
 
-            //TODO catch errors
+            let runtime: Runtime;
+            let view: View;
 
-            const runtime = parse(spec);
-            const view = new View(runtime, { container, renderer: 'canvas' });
-            view.runAsync();
+            try {
+                runtime = parse(spec);
+            } catch (e) {
+                container.innerHTML = `<div class="error">${e.toString()}</div>`;
+                errorHandler(e, 'vega', index, 'parse');
+                return;
+            }
+            
+            try {
+                view = new View(runtime, { container, renderer: 'canvas' });
+                view.run();
+            } catch (e) {
+                container.innerHTML = `<div class="error">${e.toString()}</div>`;
+                errorHandler(e, 'vega', index, 'view');
+                return;
+            }
 
             renderer.instances['vega'].push(view);
-
-
 
             // Helper function to check if a signal is defined in the spec
             const hasSignal = (signalName: string) => {
