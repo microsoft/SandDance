@@ -9,8 +9,6 @@ import { Plugin } from '../factory';
 export const placeholdersPlugin: Plugin = {
     name: 'placeholders',
     initializePlugin: (md) => {
-        console.log('Initializing placeholders plugin', md);
-
         // Custom plugin to handle dynamic placeholders
         md.use(function (md) {
             // Add a custom rule to handle {{...}} placeholders
