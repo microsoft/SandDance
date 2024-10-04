@@ -12,7 +12,7 @@ export interface Handler {
 }
 
 export interface ErrorHandler {
-    (error: Error, pluginName: string, instanceIndex: number, phase: string): void;
+    (error: Error, pluginName: string, instanceIndex: number, phase: string, container: Element): void;
 }
 
 export class Renderer {

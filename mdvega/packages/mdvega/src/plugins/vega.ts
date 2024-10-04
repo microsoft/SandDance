@@ -43,7 +43,7 @@ export const vegaPlugin: Plugin = {
                 runtime = parse(spec);
             } catch (e) {
                 container.innerHTML = `<div class="error">${e.toString()}</div>`;
-                errorHandler(e, 'vega', index, 'parse');
+                errorHandler(e, 'vega', index, 'parse', container);
                 return;
             }
             
@@ -52,7 +52,7 @@ export const vegaPlugin: Plugin = {
                 view.run();
             } catch (e) {
                 container.innerHTML = `<div class="error">${e.toString()}</div>`;
-                errorHandler(e, 'vega', index, 'view');
+                errorHandler(e, 'vega', index, 'view', container);
                 return;
             }
 
