@@ -2096,7 +2096,10 @@
      * examples: "source.x", "target['x']", "[my.field]"
      */
     function safeFieldName(field) {
-        return field.replace('.', '\\.').replace('[', '\\[').replace(']', '\\]');
+        return field
+            .replace(/\./g, '\\.')
+            .replace(/\[/g, '\\[')
+            .replace(/\]/g, '\\]');
     }
     /**
      * Make sure the field name is usable in a Vega expression
@@ -3323,9 +3326,6 @@
                 val(0);
     }
     function obj(nameValues, clause) {
-        if (clause) {
-            nameValues = [clause, ...nameValues];
-        }
         return `{${nameValues.join()}}`;
     }
     function serializeAsVegaExpression(bin, firstFieldName, lastFieldName, clause) {
@@ -3343,7 +3343,7 @@
             ];
             return obj([
                 `expressions:[ datum[${JSON.stringify(firstFieldName)}] ? null : ${obj(low)}, datum[${JSON.stringify(lastFieldName)}] ? null : ${obj(high)}]`,
-            ], clause);
+            ]);
         }
         else {
             const exact = [
@@ -3353,7 +3353,7 @@
             ];
             return obj([
                 `expressions:[${obj(exact)}]`,
-            ], clause);
+            ]);
         }
     }
 
@@ -5336,7 +5336,5 @@
     exports.getSpecColumns = getSpecColumns;
     exports.getStats = getStats;
     exports.inferAll = inferAll;
-
-    Object.defineProperty(exports, '__esModule', { value: true });
 
 }));

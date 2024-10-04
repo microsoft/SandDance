@@ -209,7 +209,7 @@ window["vegaTest"] = {
     specRenderer
 };
 
-},{"vega":"2BRQe","@msrvida/vega-morphcharts":"6PUnN"}],"2BRQe":[function(require,module,exports) {
+},{"vega":"2BRQe","@msrvida/vega-morphcharts":"hJmrG"}],"2BRQe":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Dataflow", ()=>(0, _vegaDataflow.Dataflow));
@@ -281,7 +281,7 @@ var version = "5.30.0";
 // -- Transforms -----
 (0, _vegaUtil.extend)((0, _vegaDataflow.transforms), _vegaTransforms, _vegaViewTransforms, _vegaEncode, _vegaGeo, _vegaForce, _vegaLabel, _vegaHierarchy, _vegaRegression, _vegaVoronoi, _vegaWordcloud, _vegaCrossfilter);
 
-},{"vega-util":"bApja","vega-dataflow":"3NitK","vega-transforms":"gA9mK","vega-view-transforms":"i63Ad","vega-encode":"fpesP","vega-geo":"3rF9B","vega-force":"4JCry","vega-hierarchy":"lserr","vega-label":"lZyUZ","vega-regression":"elv3U","vega-voronoi":"96rkJ","vega-wordcloud":"7Z7Aq","vega-crossfilter":"8iEZv","vega-statistics":"5ncfv","vega-time":"27kpp","vega-loader":"gmbOr","vega-scenegraph":"jattk","vega-scale":"bEydG","vega-projection":"4wv4C","vega-view":"cGC2i","vega-format":"47kOt","vega-functions":"iuqsd","vega-parser":"hsy9Z","vega-runtime":"k7ppL","vega-expression":"2l1no","vega-event-selector":"gXMNx","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"bApja":[function(require,module,exports) {
+},{"vega-util":"bApja","vega-dataflow":"3NitK","vega-transforms":"gA9mK","vega-view-transforms":"i63Ad","vega-encode":"fpesP","vega-geo":"3rF9B","vega-force":"4JCry","vega-hierarchy":"lserr","vega-label":"lZyUZ","vega-regression":"elv3U","vega-voronoi":"96rkJ","vega-wordcloud":"7Z7Aq","vega-crossfilter":"8iEZv","vega-statistics":"5ncfv","vega-time":"27kpp","vega-loader":"gmbOr","vega-scenegraph":"jattk","vega-scale":"bEydG","vega-projection":"4wv4C","vega-view":"cGC2i","vega-format":"47kOt","vega-functions":"iuqsd","vega-parser":"hsy9Z","vega-runtime":"k7ppL","vega-expression":"2l1no","vega-event-selector":"gXMNx","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"bApja":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Debug", ()=>Debug);
@@ -1000,7 +1000,7 @@ function visitArray(array, filter, visitor) {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8NrQH":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dWZT9":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -2815,7 +2815,7 @@ function transform(type) {
     return (0, _vegaUtil.hasOwnProperty)(transforms, type) ? transforms[type] : null;
 }
 
-},{"vega-util":"bApja","vega-loader":"gmbOr","vega-format":"47kOt","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gmbOr":[function(require,module,exports) {
+},{"vega-util":"bApja","vega-loader":"gmbOr","vega-format":"47kOt","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gmbOr":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "format", ()=>format);
@@ -3115,7 +3115,7 @@ const loader = loaderFactory(typeof fetch !== "undefined" && fetch, // use built
 null // no file system access
 );
 
-},{"d2bd1b4e1a5e867b":"cYFcZ","vega-util":"bApja","d3-dsv":"70Sp2","topojson-client":"aKIOa","vega-format":"47kOt","buffer":"8reW5","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"cYFcZ":[function(require,module,exports) {
+},{"d2bd1b4e1a5e867b":"8MUtN","vega-util":"bApja","d3-dsv":"70Sp2","topojson-client":"aKIOa","vega-format":"47kOt","buffer":"aqg5E","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8MUtN":[function(require,module,exports) {
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -4345,7 +4345,7 @@ var hexSliceLookupTable = function() {
     return table;
 }();
 
-},{"8d7b0712b5ea2b3":"5YbBH","603aed6e39afb648":"3vBmt"}],"5YbBH":[function(require,module,exports) {
+},{"8d7b0712b5ea2b3":"brNM1","603aed6e39afb648":"8HYXf"}],"brNM1":[function(require,module,exports) {
 "use strict";
 exports.byteLength = byteLength;
 exports.toByteArray = toByteArray;
@@ -4445,7 +4445,7 @@ function fromByteArray(uint8) {
     return parts.join("");
 }
 
-},{}],"3vBmt":[function(require,module,exports) {
+},{}],"8HYXf":[function(require,module,exports) {
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */ exports.read = function(buffer, offset, isLE, mLen, nBytes) {
     var e, m;
     var eLen = nBytes * 8 - mLen - 1;
@@ -4541,7 +4541,7 @@ var _tsvJs = require("./tsv.js");
 var _autoTypeJs = require("./autoType.js");
 var _autoTypeJsDefault = parcelHelpers.interopDefault(_autoTypeJs);
 
-},{"./dsv.js":"fRZim","./csv.js":false,"./tsv.js":false,"./autoType.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"fRZim":[function(require,module,exports) {
+},{"./dsv.js":"fRZim","./csv.js":false,"./tsv.js":false,"./autoType.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"fRZim":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(delimiter) {
@@ -4662,7 +4662,7 @@ function formatDate(date) {
     return isNaN(date) ? "Invalid Date" : formatYear(date.getUTCFullYear(), 4) + "-" + pad(date.getUTCMonth() + 1, 2) + "-" + pad(date.getUTCDate(), 2) + (milliseconds ? "T" + pad(hours, 2) + ":" + pad(minutes, 2) + ":" + pad(seconds, 2) + "." + pad(milliseconds, 3) + "Z" : seconds ? "T" + pad(hours, 2) + ":" + pad(minutes, 2) + ":" + pad(seconds, 2) + "Z" : minutes || hours ? "T" + pad(hours, 2) + ":" + pad(minutes, 2) + "Z" : "");
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"aKIOa":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"aKIOa":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "bbox", ()=>(0, _bboxJsDefault.default));
@@ -4692,7 +4692,7 @@ var _transformJsDefault = parcelHelpers.interopDefault(_transformJs);
 var _untransformJs = require("./untransform.js");
 var _untransformJsDefault = parcelHelpers.interopDefault(_untransformJs);
 
-},{"./bbox.js":"e3LWp","./feature.js":"6K0pm","./mesh.js":"k2dDp","./merge.js":"7l4hb","./neighbors.js":"9d2MJ","./quantize.js":"kXipT","./transform.js":"ToH0M","./untransform.js":"6T4yq","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"e3LWp":[function(require,module,exports) {
+},{"./bbox.js":"e3LWp","./feature.js":"6K0pm","./mesh.js":"k2dDp","./merge.js":"7l4hb","./neighbors.js":"9d2MJ","./quantize.js":"kXipT","./transform.js":"ToH0M","./untransform.js":"6T4yq","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"e3LWp":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(topology) {
@@ -4738,7 +4738,7 @@ parcelHelpers.export(exports, "default", ()=>function(topology) {
 var _transformJs = require("./transform.js");
 var _transformJsDefault = parcelHelpers.interopDefault(_transformJs);
 
-},{"./transform.js":"ToH0M","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"ToH0M":[function(require,module,exports) {
+},{"./transform.js":"ToH0M","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"ToH0M":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(transform) {
@@ -4756,14 +4756,14 @@ parcelHelpers.export(exports, "default", ()=>function(transform) {
 var _identityJs = require("./identity.js");
 var _identityJsDefault = parcelHelpers.interopDefault(_identityJs);
 
-},{"./identity.js":"dZ2Lk","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dZ2Lk":[function(require,module,exports) {
+},{"./identity.js":"dZ2Lk","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dZ2Lk":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(x) {
         return x;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6K0pm":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6K0pm":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(topology, o) {
@@ -4860,7 +4860,7 @@ function object(topology, o) {
     return geometry(o);
 }
 
-},{"./reverse.js":"7nB9v","./transform.js":"ToH0M","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"7nB9v":[function(require,module,exports) {
+},{"./reverse.js":"7nB9v","./transform.js":"ToH0M","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"7nB9v":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(array, n) {
@@ -4868,7 +4868,7 @@ parcelHelpers.export(exports, "default", ()=>function(array, n) {
         while(i < --j)t = array[i], array[i++] = array[j], array[j] = t;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"k2dDp":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"k2dDp":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(topology) {
@@ -4931,7 +4931,7 @@ function extractArcs(topology, object, filter) {
     return arcs;
 }
 
-},{"./feature.js":"6K0pm","./stitch.js":"26mb3","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"26mb3":[function(require,module,exports) {
+},{"./feature.js":"6K0pm","./stitch.js":"26mb3","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"26mb3":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(topology, arcs) {
@@ -5007,7 +5007,7 @@ parcelHelpers.export(exports, "default", ()=>function(topology, arcs) {
         return fragments;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"7l4hb":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"7l4hb":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(topology) {
@@ -5106,7 +5106,7 @@ function mergeArcs(topology, objects) {
     };
 }
 
-},{"./feature.js":"6K0pm","./stitch.js":"26mb3","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9d2MJ":[function(require,module,exports) {
+},{"./feature.js":"6K0pm","./stitch.js":"26mb3","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9d2MJ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(objects) {
@@ -5157,7 +5157,7 @@ parcelHelpers.export(exports, "default", ()=>function(objects) {
 var _bisectJs = require("./bisect.js");
 var _bisectJsDefault = parcelHelpers.interopDefault(_bisectJs);
 
-},{"./bisect.js":"lbTH3","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lbTH3":[function(require,module,exports) {
+},{"./bisect.js":"lbTH3","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lbTH3":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(a, x) {
@@ -5170,7 +5170,7 @@ parcelHelpers.export(exports, "default", ()=>function(a, x) {
         return lo;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"kXipT":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kXipT":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(topology, transform) {
@@ -5248,7 +5248,7 @@ var _bboxJsDefault = parcelHelpers.interopDefault(_bboxJs);
 var _untransformJs = require("./untransform.js");
 var _untransformJsDefault = parcelHelpers.interopDefault(_untransformJs);
 
-},{"./bbox.js":"e3LWp","./untransform.js":"6T4yq","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6T4yq":[function(require,module,exports) {
+},{"./bbox.js":"e3LWp","./untransform.js":"6T4yq","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6T4yq":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(transform) {
@@ -5266,7 +5266,7 @@ parcelHelpers.export(exports, "default", ()=>function(transform) {
 var _identityJs = require("./identity.js");
 var _identityJsDefault = parcelHelpers.interopDefault(_identityJs);
 
-},{"./identity.js":"dZ2Lk","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"47kOt":[function(require,module,exports) {
+},{"./identity.js":"dZ2Lk","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"47kOt":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "defaultLocale", ()=>defaultLocale);
@@ -5416,7 +5416,7 @@ function resetDefaultLocale() {
     return defaultLocale();
 }
 
-},{"d3-array":"6IwJG","d3-format":"8dYFL","vega-time":"27kpp","vega-util":"bApja","d3-time-format":"242jH","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6IwJG":[function(require,module,exports) {
+},{"d3-array":"6IwJG","d3-format":"8dYFL","vega-time":"27kpp","vega-util":"bApja","d3-time-format":"242jH","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6IwJG":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "bisect", ()=>(0, _bisectJsDefault.default));
@@ -5612,7 +5612,7 @@ var _unionJs = require("./union.js");
 var _unionJsDefault = parcelHelpers.interopDefault(_unionJs);
 var _internmap = require("internmap");
 
-},{"./bisect.js":"iJojn","./ascending.js":"60o1Z","./bisector.js":"k5JwJ","./blur.js":"dJz57","./count.js":"hAOxG","./cross.js":"5Mx0K","./cumsum.js":"izk5G","./descending.js":"kIC2x","./deviation.js":"euifj","./extent.js":"2l7Ul","./fsum.js":"g7Aa0","./group.js":"gDEW5","./groupSort.js":"6XFT5","./bin.js":"k5qBC","./threshold/freedmanDiaconis.js":"7zq9L","./threshold/scott.js":"84aHL","./threshold/sturges.js":"20cg0","./max.js":"5fCPh","./maxIndex.js":"fm7WL","./mean.js":"8HbAa","./median.js":"ai1Kc","./merge.js":"d56l7","./min.js":"h0RAg","./minIndex.js":"3rpRW","./mode.js":"0gW2M","./nice.js":"lCn8Q","./pairs.js":"jCTEB","./permute.js":"3ydIg","./quantile.js":"49cDh","./quickselect.js":"doA4Q","./range.js":"7QVPN","./rank.js":"7wNFQ","./least.js":"blduW","./leastIndex.js":"9lwr3","./greatest.js":"c4GrS","./greatestIndex.js":"9hgwE","./scan.js":"6EUfu","./shuffle.js":"gPIAO","./sum.js":"hdZOC","./ticks.js":"71MAh","./transpose.js":"iwW5c","./variance.js":"gba1Y","./zip.js":"jZBBF","./every.js":"38T8N","./some.js":"8z051","./filter.js":"lgrhD","./map.js":"dbY4R","./reduce.js":"1uy4z","./reverse.js":"8g01M","./sort.js":"bV3FZ","./difference.js":"bwetK","./disjoint.js":"ilJ5C","./intersection.js":"gohoZ","./subset.js":"f9sTm","./superset.js":"9my10","./union.js":"66hcN","internmap":"3ULAv","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"iJojn":[function(require,module,exports) {
+},{"./bisect.js":"iJojn","./ascending.js":"60o1Z","./bisector.js":"k5JwJ","./blur.js":"dJz57","./count.js":"hAOxG","./cross.js":"5Mx0K","./cumsum.js":"izk5G","./descending.js":"kIC2x","./deviation.js":"euifj","./extent.js":"2l7Ul","./fsum.js":"g7Aa0","./group.js":"gDEW5","./groupSort.js":"6XFT5","./bin.js":"k5qBC","./threshold/freedmanDiaconis.js":"7zq9L","./threshold/scott.js":"84aHL","./threshold/sturges.js":"20cg0","./max.js":"5fCPh","./maxIndex.js":"fm7WL","./mean.js":"8HbAa","./median.js":"ai1Kc","./merge.js":"d56l7","./min.js":"h0RAg","./minIndex.js":"3rpRW","./mode.js":"0gW2M","./nice.js":"lCn8Q","./pairs.js":"jCTEB","./permute.js":"3ydIg","./quantile.js":"49cDh","./quickselect.js":"doA4Q","./range.js":"7QVPN","./rank.js":"7wNFQ","./least.js":"blduW","./leastIndex.js":"9lwr3","./greatest.js":"c4GrS","./greatestIndex.js":"9hgwE","./scan.js":"6EUfu","./shuffle.js":"gPIAO","./sum.js":"hdZOC","./ticks.js":"71MAh","./transpose.js":"iwW5c","./variance.js":"gba1Y","./zip.js":"jZBBF","./every.js":"38T8N","./some.js":"8z051","./filter.js":"lgrhD","./map.js":"dbY4R","./reduce.js":"1uy4z","./reverse.js":"8g01M","./sort.js":"bV3FZ","./difference.js":"bwetK","./disjoint.js":"ilJ5C","./intersection.js":"gohoZ","./subset.js":"f9sTm","./superset.js":"9my10","./union.js":"66hcN","internmap":"3ULAv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"iJojn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "bisectRight", ()=>bisectRight);
@@ -5630,7 +5630,7 @@ const bisectLeft = ascendingBisect.left;
 const bisectCenter = (0, _bisectorJsDefault.default)((0, _numberJsDefault.default)).center;
 exports.default = bisectRight;
 
-},{"./ascending.js":"60o1Z","./bisector.js":"k5JwJ","./number.js":"gcMRK","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"60o1Z":[function(require,module,exports) {
+},{"./ascending.js":"60o1Z","./bisector.js":"k5JwJ","./number.js":"gcMRK","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"60o1Z":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>ascending);
@@ -5638,7 +5638,7 @@ function ascending(a, b) {
     return a == null || b == null ? NaN : a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"k5JwJ":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"k5JwJ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>bisector);
@@ -5698,7 +5698,7 @@ function zero() {
     return 0;
 }
 
-},{"./ascending.js":"60o1Z","./descending.js":"kIC2x","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"kIC2x":[function(require,module,exports) {
+},{"./ascending.js":"60o1Z","./descending.js":"kIC2x","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kIC2x":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>descending);
@@ -5706,7 +5706,7 @@ function descending(a, b) {
     return a == null || b == null ? NaN : b < a ? -1 : b > a ? 1 : b >= a ? 0 : NaN;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gcMRK":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gcMRK":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>number);
@@ -5723,7 +5723,7 @@ function* numbers(values, valueof) {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dJz57":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dJz57":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "blur", ()=>blur);
@@ -5829,7 +5829,7 @@ function bluri(radius) {
     };
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"hAOxG":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"hAOxG":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>count);
@@ -5844,7 +5844,7 @@ function count(values, valueof) {
     return count;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"5Mx0K":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5Mx0K":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>cross);
@@ -5878,7 +5878,7 @@ function cross(...values) {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"izk5G":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"izk5G":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>cumsum);
@@ -5887,7 +5887,7 @@ function cumsum(values, valueof) {
     return Float64Array.from(values, valueof === undefined ? (v)=>sum += +v || 0 : (v)=>sum += +valueof(v, index++, values) || 0);
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"euifj":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"euifj":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>deviation);
@@ -5898,7 +5898,7 @@ function deviation(values, valueof) {
     return v ? Math.sqrt(v) : v;
 }
 
-},{"./variance.js":"gba1Y","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gba1Y":[function(require,module,exports) {
+},{"./variance.js":"gba1Y","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gba1Y":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>variance);
@@ -5924,7 +5924,7 @@ function variance(values, valueof) {
     if (count > 1) return sum / (count - 1);
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"2l7Ul":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"2l7Ul":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>extent);
@@ -5957,7 +5957,7 @@ function extent(values, valueof) {
     ];
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"g7Aa0":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"g7Aa0":[function(require,module,exports) {
 // https://github.com/python/cpython/blob/a74eea238f5baba15797e2e8b570d153bc8690a7/Modules/mathmodule.c#L1423
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
@@ -6018,7 +6018,7 @@ function fcumsum(values, valueof) {
     return Float64Array.from(values, valueof === undefined ? (v)=>adder.add(+v || 0) : (v)=>adder.add(+valueof(v, ++index, values) || 0));
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gDEW5":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gDEW5":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>group);
@@ -6087,7 +6087,7 @@ function nest(values, map, reduce, keys) {
     }(values, 0);
 }
 
-},{"internmap":"3ULAv","./identity.js":"eyTHz","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"3ULAv":[function(require,module,exports) {
+},{"internmap":"3ULAv","./identity.js":"eyTHz","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"3ULAv":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "InternMap", ()=>InternMap);
@@ -6163,7 +6163,7 @@ function keyof(value) {
     return value !== null && typeof value === "object" ? value.valueOf() : value;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"eyTHz":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"eyTHz":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>identity);
@@ -6171,7 +6171,7 @@ function identity(x) {
     return x;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6XFT5":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6XFT5":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>groupSort);
@@ -6185,7 +6185,7 @@ function groupSort(values, reduce, key) {
     return (reduce.length !== 2 ? (0, _sortJsDefault.default)((0, _groupJs.rollup)(values, reduce, key), ([ak, av], [bk, bv])=>(0, _ascendingJsDefault.default)(av, bv) || (0, _ascendingJsDefault.default)(ak, bk)) : (0, _sortJsDefault.default)((0, _groupJsDefault.default)(values, key), ([ak, av], [bk, bv])=>reduce(av, bv) || (0, _ascendingJsDefault.default)(ak, bk))).map(([key])=>key);
 }
 
-},{"./ascending.js":"60o1Z","./group.js":"gDEW5","./sort.js":"bV3FZ","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"bV3FZ":[function(require,module,exports) {
+},{"./ascending.js":"60o1Z","./group.js":"gDEW5","./sort.js":"bV3FZ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"bV3FZ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>sort);
@@ -6230,7 +6230,7 @@ function ascendingDefined(a, b) {
     return (a == null || !(a >= a)) - (b == null || !(b >= b)) || (a < b ? -1 : a > b ? 1 : 0);
 }
 
-},{"./ascending.js":"60o1Z","./permute.js":"3ydIg","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"3ydIg":[function(require,module,exports) {
+},{"./ascending.js":"60o1Z","./permute.js":"3ydIg","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"3ydIg":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>permute);
@@ -6238,7 +6238,7 @@ function permute(source, keys) {
     return Array.from(keys, (key)=>source[key]);
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"k5qBC":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"k5qBC":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>bin);
@@ -6334,7 +6334,7 @@ function bin() {
     return histogram;
 }
 
-},{"./array.js":"kI9nk","./bisect.js":"iJojn","./constant.js":"aOeVu","./extent.js":"2l7Ul","./identity.js":"eyTHz","./nice.js":"lCn8Q","./ticks.js":"71MAh","./threshold/sturges.js":"20cg0","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"kI9nk":[function(require,module,exports) {
+},{"./array.js":"kI9nk","./bisect.js":"iJojn","./constant.js":"aOeVu","./extent.js":"2l7Ul","./identity.js":"eyTHz","./nice.js":"lCn8Q","./ticks.js":"71MAh","./threshold/sturges.js":"20cg0","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kI9nk":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "slice", ()=>slice);
@@ -6343,7 +6343,7 @@ var array = Array.prototype;
 var slice = array.slice;
 var map = array.map;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"aOeVu":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"aOeVu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>constant);
@@ -6351,7 +6351,7 @@ function constant(x) {
     return ()=>x;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lCn8Q":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lCn8Q":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>nice);
@@ -6375,7 +6375,7 @@ function nice(start, stop, count) {
     }
 }
 
-},{"./ticks.js":"71MAh","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"71MAh":[function(require,module,exports) {
+},{"./ticks.js":"71MAh","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"71MAh":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>ticks);
@@ -6434,7 +6434,7 @@ function tickStep(start, stop, count) {
     return (reverse ? -1 : 1) * (inc < 0 ? 1 / -inc : inc);
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"20cg0":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"20cg0":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>thresholdSturges);
@@ -6444,7 +6444,7 @@ function thresholdSturges(values) {
     return Math.max(1, Math.ceil(Math.log((0, _countJsDefault.default)(values)) / Math.LN2) + 1);
 }
 
-},{"../count.js":"hAOxG","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"7zq9L":[function(require,module,exports) {
+},{"../count.js":"hAOxG","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"7zq9L":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>thresholdFreedmanDiaconis);
@@ -6457,7 +6457,7 @@ function thresholdFreedmanDiaconis(values, min, max) {
     return c && d ? Math.ceil((max - min) / (2 * d * Math.pow(c, -1 / 3))) : 1;
 }
 
-},{"../count.js":"hAOxG","../quantile.js":"49cDh","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"49cDh":[function(require,module,exports) {
+},{"../count.js":"hAOxG","../quantile.js":"49cDh","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"49cDh":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>quantile);
@@ -6504,7 +6504,7 @@ function quantileIndex(values, p, valueof = (0, _numberJsDefault.default)) {
     return i >= 0 ? i : -1;
 }
 
-},{"./max.js":"5fCPh","./maxIndex.js":"fm7WL","./min.js":"h0RAg","./minIndex.js":"3rpRW","./quickselect.js":"doA4Q","./number.js":"gcMRK","./sort.js":"bV3FZ","./greatest.js":"c4GrS","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"5fCPh":[function(require,module,exports) {
+},{"./max.js":"5fCPh","./maxIndex.js":"fm7WL","./min.js":"h0RAg","./minIndex.js":"3rpRW","./quickselect.js":"doA4Q","./number.js":"gcMRK","./sort.js":"bV3FZ","./greatest.js":"c4GrS","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5fCPh":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>max);
@@ -6519,7 +6519,7 @@ function max(values, valueof) {
     return max;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"fm7WL":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"fm7WL":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>maxIndex);
@@ -6537,7 +6537,7 @@ function maxIndex(values, valueof) {
     return maxIndex;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"h0RAg":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"h0RAg":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>min);
@@ -6552,7 +6552,7 @@ function min(values, valueof) {
     return min;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"3rpRW":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"3rpRW":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>minIndex);
@@ -6570,7 +6570,7 @@ function minIndex(values, valueof) {
     return minIndex;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"doA4Q":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"doA4Q":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>quickselect);
@@ -6615,7 +6615,7 @@ function swap(array, i, j) {
     array[j] = t;
 }
 
-},{"./sort.js":"bV3FZ","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"c4GrS":[function(require,module,exports) {
+},{"./sort.js":"bV3FZ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"c4GrS":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>greatest);
@@ -6643,7 +6643,7 @@ function greatest(values, compare = (0, _ascendingJsDefault.default)) {
     return max;
 }
 
-},{"./ascending.js":"60o1Z","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"84aHL":[function(require,module,exports) {
+},{"./ascending.js":"60o1Z","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"84aHL":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>thresholdScott);
@@ -6656,7 +6656,7 @@ function thresholdScott(values, min, max) {
     return c && d ? Math.ceil((max - min) * Math.cbrt(c) / (3.49 * d)) : 1;
 }
 
-},{"../count.js":"hAOxG","../deviation.js":"euifj","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8HbAa":[function(require,module,exports) {
+},{"../count.js":"hAOxG","../deviation.js":"euifj","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8HbAa":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>mean);
@@ -6672,7 +6672,7 @@ function mean(values, valueof) {
     if (count) return sum / count;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"ai1Kc":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"ai1Kc":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>median);
@@ -6686,7 +6686,7 @@ function medianIndex(values, valueof) {
     return (0, _quantileJs.quantileIndex)(values, 0.5, valueof);
 }
 
-},{"./quantile.js":"49cDh","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"d56l7":[function(require,module,exports) {
+},{"./quantile.js":"49cDh","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"d56l7":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>merge);
@@ -6697,7 +6697,7 @@ function merge(arrays) {
     return Array.from(flatten(arrays));
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"0gW2M":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"0gW2M":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>mode);
@@ -6719,7 +6719,7 @@ function mode(values, valueof) {
     return modeValue;
 }
 
-},{"internmap":"3ULAv","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"jCTEB":[function(require,module,exports) {
+},{"internmap":"3ULAv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"jCTEB":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>pairs);
@@ -6742,7 +6742,7 @@ function pair(a, b) {
     ];
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"7QVPN":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"7QVPN":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>range);
@@ -6753,7 +6753,7 @@ function range(start, stop, step) {
     return range;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"7wNFQ":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"7wNFQ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>rank);
@@ -6780,7 +6780,7 @@ function rank(values, valueof = (0, _ascendingJsDefault.default)) {
     return R;
 }
 
-},{"./ascending.js":"60o1Z","./sort.js":"bV3FZ","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"blduW":[function(require,module,exports) {
+},{"./ascending.js":"60o1Z","./sort.js":"bV3FZ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"blduW":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>least);
@@ -6808,7 +6808,7 @@ function least(values, compare = (0, _ascendingJsDefault.default)) {
     return min;
 }
 
-},{"./ascending.js":"60o1Z","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9lwr3":[function(require,module,exports) {
+},{"./ascending.js":"60o1Z","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9lwr3":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>leastIndex);
@@ -6831,7 +6831,7 @@ function leastIndex(values, compare = (0, _ascendingJsDefault.default)) {
     return min;
 }
 
-},{"./ascending.js":"60o1Z","./minIndex.js":"3rpRW","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9hgwE":[function(require,module,exports) {
+},{"./ascending.js":"60o1Z","./minIndex.js":"3rpRW","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9hgwE":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>greatestIndex);
@@ -6854,7 +6854,7 @@ function greatestIndex(values, compare = (0, _ascendingJsDefault.default)) {
     return max;
 }
 
-},{"./ascending.js":"60o1Z","./maxIndex.js":"fm7WL","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6EUfu":[function(require,module,exports) {
+},{"./ascending.js":"60o1Z","./maxIndex.js":"fm7WL","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6EUfu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>scan);
@@ -6865,7 +6865,7 @@ function scan(values, compare) {
     return index < 0 ? undefined : index;
 }
 
-},{"./leastIndex.js":"9lwr3","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gPIAO":[function(require,module,exports) {
+},{"./leastIndex.js":"9lwr3","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gPIAO":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "shuffler", ()=>shuffler);
@@ -6882,7 +6882,7 @@ function shuffler(random) {
     };
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"hdZOC":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"hdZOC":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>sum);
@@ -6897,7 +6897,7 @@ function sum(values, valueof) {
     return sum;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"iwW5c":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"iwW5c":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>transpose);
@@ -6912,7 +6912,7 @@ function length(d) {
     return d.length;
 }
 
-},{"./min.js":"h0RAg","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"jZBBF":[function(require,module,exports) {
+},{"./min.js":"h0RAg","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"jZBBF":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>zip);
@@ -6922,7 +6922,7 @@ function zip() {
     return (0, _transposeJsDefault.default)(arguments);
 }
 
-},{"./transpose.js":"iwW5c","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"38T8N":[function(require,module,exports) {
+},{"./transpose.js":"iwW5c","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"38T8N":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>every);
@@ -6935,7 +6935,7 @@ function every(values, test) {
     return true;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8z051":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8z051":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>some);
@@ -6948,7 +6948,7 @@ function some(values, test) {
     return false;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lgrhD":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lgrhD":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>filter);
@@ -6960,7 +6960,7 @@ function filter(values, test) {
     return array;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dbY4R":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dbY4R":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>map);
@@ -6970,7 +6970,7 @@ function map(values, mapper) {
     return Array.from(values, (value, index)=>mapper(value, index, values));
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"1uy4z":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1uy4z":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>reduce);
@@ -6987,7 +6987,7 @@ function reduce(values, reducer, value) {
     return value;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8g01M":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8g01M":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>reverse);
@@ -6996,7 +6996,7 @@ function reverse(values) {
     return Array.from(values).reverse();
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"bwetK":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"bwetK":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>difference);
@@ -7007,7 +7007,7 @@ function difference(values, ...others) {
     return values;
 }
 
-},{"internmap":"3ULAv","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"ilJ5C":[function(require,module,exports) {
+},{"internmap":"3ULAv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"ilJ5C":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>disjoint);
@@ -7026,7 +7026,7 @@ function disjoint(values, other) {
     return true;
 }
 
-},{"internmap":"3ULAv","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gohoZ":[function(require,module,exports) {
+},{"internmap":"3ULAv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gohoZ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>intersection);
@@ -7046,7 +7046,7 @@ function set(values) {
     return values instanceof (0, _internmap.InternSet) ? values : new (0, _internmap.InternSet)(values);
 }
 
-},{"internmap":"3ULAv","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"f9sTm":[function(require,module,exports) {
+},{"internmap":"3ULAv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"f9sTm":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>subset);
@@ -7056,7 +7056,7 @@ function subset(values, other) {
     return (0, _supersetJsDefault.default)(other, values);
 }
 
-},{"./superset.js":"9my10","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9my10":[function(require,module,exports) {
+},{"./superset.js":"9my10","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9my10":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>superset);
@@ -7079,7 +7079,7 @@ function intern(value) {
     return value !== null && typeof value === "object" ? value.valueOf() : value;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"66hcN":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"66hcN":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>union);
@@ -7090,7 +7090,7 @@ function union(...others) {
     return set;
 }
 
-},{"internmap":"3ULAv","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8dYFL":[function(require,module,exports) {
+},{"internmap":"3ULAv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8dYFL":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "formatDefaultLocale", ()=>(0, _defaultLocaleJsDefault.default));
@@ -7115,7 +7115,7 @@ var _precisionPrefixJsDefault = parcelHelpers.interopDefault(_precisionPrefixJs)
 var _precisionRoundJs = require("./precisionRound.js");
 var _precisionRoundJsDefault = parcelHelpers.interopDefault(_precisionRoundJs);
 
-},{"./defaultLocale.js":"1ffdx","./locale.js":"dwvYJ","./formatSpecifier.js":"bIdqX","./precisionFixed.js":"8IQWL","./precisionPrefix.js":"iTn3h","./precisionRound.js":"kzQd5","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"1ffdx":[function(require,module,exports) {
+},{"./defaultLocale.js":"1ffdx","./locale.js":"dwvYJ","./formatSpecifier.js":"bIdqX","./precisionFixed.js":"8IQWL","./precisionPrefix.js":"iTn3h","./precisionRound.js":"kzQd5","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1ffdx":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "format", ()=>format);
@@ -7143,7 +7143,7 @@ function defaultLocale(definition) {
     return locale;
 }
 
-},{"./locale.js":"dwvYJ","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dwvYJ":[function(require,module,exports) {
+},{"./locale.js":"dwvYJ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dwvYJ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(locale) {
@@ -7271,7 +7271,7 @@ var map = Array.prototype.map, prefixes = [
     "Y"
 ];
 
-},{"./exponent.js":"iqnEO","./formatGroup.js":"d3NPN","./formatNumerals.js":"32lVM","./formatSpecifier.js":"bIdqX","./formatTrim.js":"1v59S","./formatTypes.js":"eJoM5","./formatPrefixAuto.js":"5DQGQ","./identity.js":"5utPE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"iqnEO":[function(require,module,exports) {
+},{"./exponent.js":"iqnEO","./formatGroup.js":"d3NPN","./formatNumerals.js":"32lVM","./formatSpecifier.js":"bIdqX","./formatTrim.js":"1v59S","./formatTypes.js":"eJoM5","./formatPrefixAuto.js":"5DQGQ","./identity.js":"5utPE","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"iqnEO":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(x) {
@@ -7279,7 +7279,7 @@ parcelHelpers.export(exports, "default", ()=>function(x) {
     });
 var _formatDecimalJs = require("./formatDecimal.js");
 
-},{"./formatDecimal.js":"8WhgD","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8WhgD":[function(require,module,exports) {
+},{"./formatDecimal.js":"8WhgD","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8WhgD":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(x) {
@@ -7300,7 +7300,7 @@ function formatDecimalParts(x, p) {
     ];
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"d3NPN":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"d3NPN":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(grouping, thousands) {
@@ -7316,7 +7316,7 @@ parcelHelpers.export(exports, "default", ()=>function(grouping, thousands) {
         };
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"32lVM":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"32lVM":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(numerals) {
@@ -7327,7 +7327,7 @@ parcelHelpers.export(exports, "default", ()=>function(numerals) {
         };
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"bIdqX":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"bIdqX":[function(require,module,exports) {
 // [[fill]align][sign][symbol][0][width][,][.precision][~][type]
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
@@ -7367,7 +7367,7 @@ FormatSpecifier.prototype.toString = function() {
     return this.fill + this.align + this.sign + this.symbol + (this.zero ? "0" : "") + (this.width === undefined ? "" : Math.max(1, this.width | 0)) + (this.comma ? "," : "") + (this.precision === undefined ? "" : "." + Math.max(0, this.precision | 0)) + (this.trim ? "~" : "") + this.type;
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"1v59S":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1v59S":[function(require,module,exports) {
 // Trims insignificant zeros, e.g., replaces 1.2000k with 1.2k.
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
@@ -7388,7 +7388,7 @@ parcelHelpers.export(exports, "default", ()=>function(s) {
         return i0 > 0 ? s.slice(0, i0) + s.slice(i1 + 1) : s;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"eJoM5":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"eJoM5":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _formatDecimalJs = require("./formatDecimal.js");
@@ -7413,7 +7413,7 @@ exports.default = {
     "x": (x)=>Math.round(x).toString(16)
 };
 
-},{"./formatDecimal.js":"8WhgD","./formatPrefixAuto.js":"5DQGQ","./formatRounded.js":"dJog3","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"5DQGQ":[function(require,module,exports) {
+},{"./formatDecimal.js":"8WhgD","./formatPrefixAuto.js":"5DQGQ","./formatRounded.js":"dJog3","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5DQGQ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "prefixExponent", ()=>prefixExponent);
@@ -7426,7 +7426,7 @@ parcelHelpers.export(exports, "default", ()=>function(x, p) {
 var _formatDecimalJs = require("./formatDecimal.js");
 var prefixExponent;
 
-},{"./formatDecimal.js":"8WhgD","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dJog3":[function(require,module,exports) {
+},{"./formatDecimal.js":"8WhgD","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dJog3":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(x, p) {
@@ -7437,14 +7437,14 @@ parcelHelpers.export(exports, "default", ()=>function(x, p) {
     });
 var _formatDecimalJs = require("./formatDecimal.js");
 
-},{"./formatDecimal.js":"8WhgD","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"5utPE":[function(require,module,exports) {
+},{"./formatDecimal.js":"8WhgD","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5utPE":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(x) {
         return x;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8IQWL":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8IQWL":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(step) {
@@ -7453,7 +7453,7 @@ parcelHelpers.export(exports, "default", ()=>function(step) {
 var _exponentJs = require("./exponent.js");
 var _exponentJsDefault = parcelHelpers.interopDefault(_exponentJs);
 
-},{"./exponent.js":"iqnEO","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"iTn3h":[function(require,module,exports) {
+},{"./exponent.js":"iqnEO","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"iTn3h":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(step, value) {
@@ -7462,7 +7462,7 @@ parcelHelpers.export(exports, "default", ()=>function(step, value) {
 var _exponentJs = require("./exponent.js");
 var _exponentJsDefault = parcelHelpers.interopDefault(_exponentJs);
 
-},{"./exponent.js":"iqnEO","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"kzQd5":[function(require,module,exports) {
+},{"./exponent.js":"iqnEO","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kzQd5":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(step, max) {
@@ -7472,7 +7472,7 @@ parcelHelpers.export(exports, "default", ()=>function(step, max) {
 var _exponentJs = require("./exponent.js");
 var _exponentJsDefault = parcelHelpers.interopDefault(_exponentJs);
 
-},{"./exponent.js":"iqnEO","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"27kpp":[function(require,module,exports) {
+},{"./exponent.js":"iqnEO","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"27kpp":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "DATE", ()=>DATE);
@@ -7868,7 +7868,7 @@ function bin(opt) {
     };
 }
 
-},{"vega-util":"bApja","d3-time":"8e7eR","d3-array":"6IwJG","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8e7eR":[function(require,module,exports) {
+},{"vega-util":"bApja","d3-time":"8e7eR","d3-array":"6IwJG","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8e7eR":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "timeInterval", ()=>(0, _intervalJs.timeInterval));
@@ -7949,7 +7949,7 @@ var _monthJs = require("./month.js");
 var _yearJs = require("./year.js");
 var _ticksJs = require("./ticks.js");
 
-},{"./interval.js":false,"./millisecond.js":"1aEMD","./second.js":"22XHb","./minute.js":"6j7Ml","./hour.js":"llDoC","./day.js":"ewpwG","./week.js":"gpqk4","./month.js":"gnhQl","./year.js":"flVyx","./ticks.js":"hqlJr","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"l16eQ":[function(require,module,exports) {
+},{"./interval.js":false,"./millisecond.js":"1aEMD","./second.js":"22XHb","./minute.js":"6j7Ml","./hour.js":"llDoC","./day.js":"ewpwG","./week.js":"gpqk4","./month.js":"gnhQl","./year.js":"flVyx","./ticks.js":"hqlJr","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"l16eQ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "timeInterval", ()=>timeInterval);
@@ -8009,7 +8009,7 @@ function timeInterval(floori, offseti, count, field) {
     return interval;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"1aEMD":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1aEMD":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "millisecond", ()=>millisecond);
@@ -8037,7 +8037,7 @@ millisecond.every = (k)=>{
 };
 const milliseconds = millisecond.range;
 
-},{"./interval.js":"l16eQ","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"22XHb":[function(require,module,exports) {
+},{"./interval.js":"l16eQ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"22XHb":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "second", ()=>second);
@@ -8055,7 +8055,7 @@ const second = (0, _intervalJs.timeInterval)((date)=>{
 });
 const seconds = second.range;
 
-},{"./interval.js":"l16eQ","./duration.js":"1XXl6","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"1XXl6":[function(require,module,exports) {
+},{"./interval.js":"l16eQ","./duration.js":"1XXl6","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1XXl6":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "durationSecond", ()=>durationSecond);
@@ -8073,7 +8073,7 @@ const durationWeek = durationDay * 7;
 const durationMonth = durationDay * 30;
 const durationYear = durationDay * 365;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6j7Ml":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6j7Ml":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "timeMinute", ()=>timeMinute);
@@ -8103,7 +8103,7 @@ const utcMinute = (0, _intervalJs.timeInterval)((date)=>{
 });
 const utcMinutes = utcMinute.range;
 
-},{"./interval.js":"l16eQ","./duration.js":"1XXl6","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"llDoC":[function(require,module,exports) {
+},{"./interval.js":"l16eQ","./duration.js":"1XXl6","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"llDoC":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "timeHour", ()=>timeHour);
@@ -8133,7 +8133,7 @@ const utcHour = (0, _intervalJs.timeInterval)((date)=>{
 });
 const utcHours = utcHour.range;
 
-},{"./interval.js":"l16eQ","./duration.js":"1XXl6","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"ewpwG":[function(require,module,exports) {
+},{"./interval.js":"l16eQ","./duration.js":"1XXl6","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"ewpwG":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "timeDay", ()=>timeDay);
@@ -8167,7 +8167,7 @@ const unixDay = (0, _intervalJs.timeInterval)((date)=>{
 });
 const unixDays = unixDay.range;
 
-},{"./interval.js":"l16eQ","./duration.js":"1XXl6","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gpqk4":[function(require,module,exports) {
+},{"./interval.js":"l16eQ","./duration.js":"1XXl6","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gpqk4":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "timeSunday", ()=>timeSunday);
@@ -8249,7 +8249,7 @@ const utcThursdays = utcThursday.range;
 const utcFridays = utcFriday.range;
 const utcSaturdays = utcSaturday.range;
 
-},{"./interval.js":"l16eQ","./duration.js":"1XXl6","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gnhQl":[function(require,module,exports) {
+},{"./interval.js":"l16eQ","./duration.js":"1XXl6","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gnhQl":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "timeMonth", ()=>timeMonth);
@@ -8280,7 +8280,7 @@ const utcMonth = (0, _intervalJs.timeInterval)((date)=>{
 });
 const utcMonths = utcMonth.range;
 
-},{"./interval.js":"l16eQ","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"flVyx":[function(require,module,exports) {
+},{"./interval.js":"l16eQ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"flVyx":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "timeYear", ()=>timeYear);
@@ -8331,7 +8331,7 @@ utcYear.every = (k)=>{
 };
 const utcYears = utcYear.range;
 
-},{"./interval.js":"l16eQ","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"hqlJr":[function(require,module,exports) {
+},{"./interval.js":"l16eQ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"hqlJr":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "utcTicks", ()=>utcTicks);
@@ -8467,7 +8467,7 @@ function ticker(year, month, week, day, hour, minute) {
 const [utcTicks, utcTickInterval] = ticker((0, _yearJs.utcYear), (0, _monthJs.utcMonth), (0, _weekJs.utcSunday), (0, _dayJs.unixDay), (0, _hourJs.utcHour), (0, _minuteJs.utcMinute));
 const [timeTicks, timeTickInterval] = ticker((0, _yearJs.timeYear), (0, _monthJs.timeMonth), (0, _weekJs.timeSunday), (0, _dayJs.timeDay), (0, _hourJs.timeHour), (0, _minuteJs.timeMinute));
 
-},{"d3-array":"6IwJG","./duration.js":"1XXl6","./millisecond.js":"1aEMD","./second.js":"22XHb","./minute.js":"6j7Ml","./hour.js":"llDoC","./day.js":"ewpwG","./week.js":"gpqk4","./month.js":"gnhQl","./year.js":"flVyx","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"242jH":[function(require,module,exports) {
+},{"d3-array":"6IwJG","./duration.js":"1XXl6","./millisecond.js":"1aEMD","./second.js":"22XHb","./minute.js":"6j7Ml","./hour.js":"llDoC","./day.js":"ewpwG","./week.js":"gpqk4","./month.js":"gnhQl","./year.js":"flVyx","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"242jH":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "timeFormatDefaultLocale", ()=>(0, _defaultLocaleJsDefault.default));
@@ -8487,7 +8487,7 @@ var _isoFormatJsDefault = parcelHelpers.interopDefault(_isoFormatJs);
 var _isoParseJs = require("./isoParse.js");
 var _isoParseJsDefault = parcelHelpers.interopDefault(_isoParseJs);
 
-},{"./defaultLocale.js":"hRBbX","./locale.js":"iUewg","./isoFormat.js":false,"./isoParse.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"hRBbX":[function(require,module,exports) {
+},{"./defaultLocale.js":"hRBbX","./locale.js":"iUewg","./isoFormat.js":false,"./isoParse.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"hRBbX":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "timeFormat", ()=>timeFormat);
@@ -8566,7 +8566,7 @@ function defaultLocale(definition) {
     return locale;
 }
 
-},{"./locale.js":"iUewg","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"iUewg":[function(require,module,exports) {
+},{"./locale.js":"iUewg","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"iUewg":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>formatLocale);
@@ -9128,7 +9128,7 @@ function formatUnixTimestampSeconds(d) {
     return Math.floor(+d / 1000);
 }
 
-},{"d3-time":"8e7eR","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8reW5":[function(require,module,exports) {
+},{"d3-time":"8e7eR","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"aqg5E":[function(require,module,exports) {
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -10358,7 +10358,7 @@ var hexSliceLookupTable = function() {
     return table;
 }();
 
-},{"8d7b0712b5ea2b3":"13HIW","603aed6e39afb648":"ghEEH"}],"13HIW":[function(require,module,exports) {
+},{"8d7b0712b5ea2b3":"4K3bm","603aed6e39afb648":"kVKpn"}],"4K3bm":[function(require,module,exports) {
 "use strict";
 exports.byteLength = byteLength;
 exports.toByteArray = toByteArray;
@@ -10458,7 +10458,7 @@ function fromByteArray(uint8) {
     return parts.join("");
 }
 
-},{}],"ghEEH":[function(require,module,exports) {
+},{}],"kVKpn":[function(require,module,exports) {
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */ exports.read = function(buffer, offset, isLE, mLen, nBytes) {
     var e, m;
     var eLen = nBytes * 8 - mLen - 1;
@@ -14011,7 +14011,7 @@ function adjustRange(w, bisect) {
     if (r1 < n && !c(d[r1], d[r1 + 1])) w.i1 = bisect.right(d, d[r1]);
 }
 
-},{"vega-util":"bApja","vega-dataflow":"3NitK","vega-statistics":"5ncfv","d3-array":"6IwJG","vega-time":"27kpp","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"5ncfv":[function(require,module,exports) {
+},{"vega-util":"bApja","vega-dataflow":"3NitK","vega-statistics":"5ncfv","d3-array":"6IwJG","vega-time":"27kpp","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5ncfv":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "bandwidthNRD", ()=>estimateBandwidth);
@@ -14991,7 +14991,7 @@ function angleDelta(p, q, r, sx, sy) {
     return Math.abs(a0 - a1);
 }
 
-},{"d3-array":"6IwJG","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"i63Ad":[function(require,module,exports) {
+},{"d3-array":"6IwJG","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"i63Ad":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "bound", ()=>Bound);
@@ -16027,7 +16027,7 @@ function viewSizeLayout(view, group, viewBounds, _) {
     ], auto.resize);
 }
 
-},{"vega-dataflow":"3NitK","vega-scenegraph":"jattk","vega-util":"bApja","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"jattk":[function(require,module,exports) {
+},{"vega-dataflow":"3NitK","vega-scenegraph":"jattk","vega-util":"bApja","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"jattk":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "path", ()=>(0, _d3Path.path));
@@ -20303,7 +20303,7 @@ function resetSVGDefIds() {
     resetSVGGradientId();
 }
 
-},{"vega-util":"bApja","d3-shape":"8QPYO","d3-path":"cRa94","vega-canvas":"kPWfS","vega-loader":"gmbOr","vega-scale":"bEydG","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8QPYO":[function(require,module,exports) {
+},{"vega-util":"bApja","d3-shape":"8QPYO","d3-path":"cRa94","vega-canvas":"kPWfS","vega-loader":"gmbOr","vega-scale":"bEydG","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8QPYO":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "arc", ()=>(0, _arcJsDefault.default));
@@ -20469,7 +20469,7 @@ var _noneJsDefault1 = parcelHelpers.interopDefault(_noneJs1);
 var _reverseJs = require("./order/reverse.js");
 var _reverseJsDefault = parcelHelpers.interopDefault(_reverseJs);
 
-},{"./arc.js":"c3ptb","./area.js":"lblzF","./line.js":"jVTJi","./pie.js":false,"./areaRadial.js":false,"./lineRadial.js":false,"./pointRadial.js":false,"./link.js":false,"./symbol.js":"bcejp","./symbol/asterisk.js":false,"./symbol/circle.js":false,"./symbol/cross.js":false,"./symbol/diamond.js":false,"./symbol/diamond2.js":false,"./symbol/plus.js":false,"./symbol/square.js":false,"./symbol/square2.js":false,"./symbol/star.js":false,"./symbol/triangle.js":false,"./symbol/triangle2.js":false,"./symbol/wye.js":false,"./symbol/times.js":false,"./curve/basisClosed.js":"3uf9r","./curve/basisOpen.js":"4LPKP","./curve/basis.js":"gNfFM","./curve/bump.js":false,"./curve/bundle.js":"7Gw48","./curve/cardinalClosed.js":"e0Ty2","./curve/cardinalOpen.js":"4cTvH","./curve/cardinal.js":"i0afA","./curve/catmullRomClosed.js":"kfNnJ","./curve/catmullRomOpen.js":"amodp","./curve/catmullRom.js":"8d6GP","./curve/linearClosed.js":"gpcM0","./curve/linear.js":"huz8f","./curve/monotone.js":"kghkb","./curve/natural.js":"4f94Q","./curve/step.js":"l5kmS","./stack.js":false,"./offset/expand.js":false,"./offset/diverging.js":false,"./offset/none.js":false,"./offset/silhouette.js":false,"./offset/wiggle.js":false,"./order/appearance.js":false,"./order/ascending.js":false,"./order/descending.js":false,"./order/insideOut.js":false,"./order/none.js":false,"./order/reverse.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"c3ptb":[function(require,module,exports) {
+},{"./arc.js":"c3ptb","./area.js":"lblzF","./line.js":"jVTJi","./pie.js":false,"./areaRadial.js":false,"./lineRadial.js":false,"./pointRadial.js":false,"./link.js":false,"./symbol.js":"bcejp","./symbol/asterisk.js":false,"./symbol/circle.js":false,"./symbol/cross.js":false,"./symbol/diamond.js":false,"./symbol/diamond2.js":false,"./symbol/plus.js":false,"./symbol/square.js":false,"./symbol/square2.js":false,"./symbol/star.js":false,"./symbol/triangle.js":false,"./symbol/triangle2.js":false,"./symbol/wye.js":false,"./symbol/times.js":false,"./curve/basisClosed.js":"3uf9r","./curve/basisOpen.js":"4LPKP","./curve/basis.js":"gNfFM","./curve/bump.js":false,"./curve/bundle.js":"7Gw48","./curve/cardinalClosed.js":"e0Ty2","./curve/cardinalOpen.js":"4cTvH","./curve/cardinal.js":"i0afA","./curve/catmullRomClosed.js":"kfNnJ","./curve/catmullRomOpen.js":"amodp","./curve/catmullRom.js":"8d6GP","./curve/linearClosed.js":"gpcM0","./curve/linear.js":"huz8f","./curve/monotone.js":"kghkb","./curve/natural.js":"4f94Q","./curve/step.js":"l5kmS","./stack.js":false,"./offset/expand.js":false,"./offset/diverging.js":false,"./offset/none.js":false,"./offset/silhouette.js":false,"./offset/wiggle.js":false,"./order/appearance.js":false,"./order/ascending.js":false,"./order/descending.js":false,"./order/insideOut.js":false,"./order/none.js":false,"./order/reverse.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"c3ptb":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function() {
@@ -20624,7 +20624,7 @@ function cornerTangents(x0, y0, x1, y1, r1, rc, cw) {
     };
 }
 
-},{"./constant.js":"12DQf","./math.js":"OHDSf","./path.js":"iSEDK","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"12DQf":[function(require,module,exports) {
+},{"./constant.js":"12DQf","./math.js":"OHDSf","./path.js":"iSEDK","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"12DQf":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(x) {
@@ -20633,7 +20633,7 @@ parcelHelpers.export(exports, "default", ()=>function(x) {
         };
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"OHDSf":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"OHDSf":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "abs", ()=>abs);
@@ -20667,7 +20667,7 @@ function asin(x) {
     return x >= 1 ? halfPi : x <= -1 ? -halfPi : Math.asin(x);
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"iSEDK":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"iSEDK":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "withPath", ()=>withPath);
@@ -20687,7 +20687,7 @@ function withPath(shape) {
     return ()=>new (0, _d3Path.Path)(digits);
 }
 
-},{"d3-path":"cRa94","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"cRa94":[function(require,module,exports) {
+},{"d3-path":"cRa94","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"cRa94":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Path", ()=>(0, _pathJs.Path));
@@ -20695,7 +20695,7 @@ parcelHelpers.export(exports, "path", ()=>(0, _pathJs.path));
 parcelHelpers.export(exports, "pathRound", ()=>(0, _pathJs.pathRound));
 var _pathJs = require("./path.js");
 
-},{"./path.js":"6vvkL","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6vvkL":[function(require,module,exports) {
+},{"./path.js":"6vvkL","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6vvkL":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Path", ()=>Path);
@@ -20788,7 +20788,7 @@ function pathRound(digits = 3) {
     return new Path(+digits);
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lblzF":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lblzF":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(x0, y0, y1) {
@@ -20872,7 +20872,7 @@ var _lineJsDefault = parcelHelpers.interopDefault(_lineJs);
 var _pathJs = require("./path.js");
 var _pointJs = require("./point.js");
 
-},{"./array.js":"gwBAX","./constant.js":"12DQf","./curve/linear.js":"huz8f","./line.js":"jVTJi","./path.js":"iSEDK","./point.js":"1IQGj","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gwBAX":[function(require,module,exports) {
+},{"./array.js":"gwBAX","./constant.js":"12DQf","./curve/linear.js":"huz8f","./line.js":"jVTJi","./path.js":"iSEDK","./point.js":"1IQGj","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gwBAX":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "slice", ()=>slice);
@@ -20882,7 +20882,7 @@ parcelHelpers.export(exports, "default", ()=>function(x) {
     });
 var slice = Array.prototype.slice;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"huz8f":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"huz8f":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(context) {
@@ -20921,7 +20921,7 @@ Linear.prototype = {
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"jVTJi":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"jVTJi":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(x, y) {
@@ -20966,7 +20966,7 @@ var _linearJsDefault = parcelHelpers.interopDefault(_linearJs);
 var _pathJs = require("./path.js");
 var _pointJs = require("./point.js");
 
-},{"./array.js":"gwBAX","./constant.js":"12DQf","./curve/linear.js":"huz8f","./path.js":"iSEDK","./point.js":"1IQGj","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"1IQGj":[function(require,module,exports) {
+},{"./array.js":"gwBAX","./constant.js":"12DQf","./curve/linear.js":"huz8f","./path.js":"iSEDK","./point.js":"1IQGj","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1IQGj":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "x", ()=>x);
@@ -20978,7 +20978,7 @@ function y(p) {
     return p[1];
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"bcejp":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"bcejp":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "symbolsFill", ()=>symbolsFill);
@@ -21053,7 +21053,7 @@ function Symbol(type, size) {
     return symbol;
 }
 
-},{"./constant.js":"12DQf","./path.js":"iSEDK","./symbol/asterisk.js":"kHR3A","./symbol/circle.js":"7RXTA","./symbol/cross.js":"4cmA2","./symbol/diamond.js":"1gK3j","./symbol/diamond2.js":"WsFhi","./symbol/plus.js":"a9FVq","./symbol/square.js":"fXRAH","./symbol/square2.js":"69bxi","./symbol/star.js":"8nJiq","./symbol/triangle.js":"bClaq","./symbol/triangle2.js":"8s1uD","./symbol/wye.js":"2D9bg","./symbol/times.js":"h0Zst","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"kHR3A":[function(require,module,exports) {
+},{"./constant.js":"12DQf","./path.js":"iSEDK","./symbol/asterisk.js":"kHR3A","./symbol/circle.js":"7RXTA","./symbol/cross.js":"4cmA2","./symbol/diamond.js":"1gK3j","./symbol/diamond2.js":"WsFhi","./symbol/plus.js":"a9FVq","./symbol/square.js":"fXRAH","./symbol/square2.js":"69bxi","./symbol/star.js":"8nJiq","./symbol/triangle.js":"bClaq","./symbol/triangle2.js":"8s1uD","./symbol/wye.js":"2D9bg","./symbol/times.js":"h0Zst","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kHR3A":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _mathJs = require("../math.js");
@@ -21072,7 +21072,7 @@ exports.default = {
     }
 };
 
-},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"7RXTA":[function(require,module,exports) {
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"7RXTA":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _mathJs = require("../math.js");
@@ -21084,7 +21084,7 @@ exports.default = {
     }
 };
 
-},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"4cmA2":[function(require,module,exports) {
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"4cmA2":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _mathJs = require("../math.js");
@@ -21107,7 +21107,7 @@ exports.default = {
     }
 };
 
-},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"1gK3j":[function(require,module,exports) {
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1gK3j":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _mathJs = require("../math.js");
@@ -21125,7 +21125,7 @@ exports.default = {
     }
 };
 
-},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"WsFhi":[function(require,module,exports) {
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"WsFhi":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _mathJs = require("../math.js");
@@ -21140,7 +21140,7 @@ exports.default = {
     }
 };
 
-},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"a9FVq":[function(require,module,exports) {
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"a9FVq":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _mathJs = require("../math.js");
@@ -21154,7 +21154,7 @@ exports.default = {
     }
 };
 
-},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"fXRAH":[function(require,module,exports) {
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"fXRAH":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _mathJs = require("../math.js");
@@ -21166,7 +21166,7 @@ exports.default = {
     }
 };
 
-},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"69bxi":[function(require,module,exports) {
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"69bxi":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _mathJs = require("../math.js");
@@ -21181,7 +21181,7 @@ exports.default = {
     }
 };
 
-},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8nJiq":[function(require,module,exports) {
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8nJiq":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _mathJs = require("../math.js");
@@ -21207,7 +21207,7 @@ exports.default = {
     }
 };
 
-},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"bClaq":[function(require,module,exports) {
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"bClaq":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _mathJs = require("../math.js");
@@ -21222,7 +21222,7 @@ exports.default = {
     }
 };
 
-},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8s1uD":[function(require,module,exports) {
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8s1uD":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _mathJs = require("../math.js");
@@ -21239,7 +21239,7 @@ exports.default = {
     }
 };
 
-},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"2D9bg":[function(require,module,exports) {
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"2D9bg":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _mathJs = require("../math.js");
@@ -21266,7 +21266,7 @@ exports.default = {
     }
 };
 
-},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"h0Zst":[function(require,module,exports) {
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"h0Zst":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _mathJs = require("../math.js");
@@ -21280,7 +21280,7 @@ exports.default = {
     }
 };
 
-},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"3uf9r":[function(require,module,exports) {
+},{"../math.js":"OHDSf","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"3uf9r":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(context) {
@@ -21342,12 +21342,12 @@ BasisClosed.prototype = {
     }
 };
 
-},{"../noop.js":"9n7oj","./basis.js":"gNfFM","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9n7oj":[function(require,module,exports) {
+},{"../noop.js":"9n7oj","./basis.js":"gNfFM","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9n7oj":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function() {});
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gNfFM":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gNfFM":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "point", ()=>point);
@@ -21405,7 +21405,7 @@ Basis.prototype = {
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"4LPKP":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"4LPKP":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(context) {
@@ -21455,7 +21455,7 @@ BasisOpen.prototype = {
     }
 };
 
-},{"./basis.js":"gNfFM","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"7Gw48":[function(require,module,exports) {
+},{"./basis.js":"gNfFM","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"7Gw48":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _basisJs = require("./basis.js");
@@ -21496,7 +21496,7 @@ exports.default = function custom(beta) {
     return bundle;
 }(0.85);
 
-},{"./basis.js":"gNfFM","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"e0Ty2":[function(require,module,exports) {
+},{"./basis.js":"gNfFM","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"e0Ty2":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "CardinalClosed", ()=>CardinalClosed);
@@ -21564,7 +21564,7 @@ exports.default = function custom(tension) {
     return cardinal;
 }(0);
 
-},{"../noop.js":"9n7oj","./cardinal.js":"i0afA","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"i0afA":[function(require,module,exports) {
+},{"../noop.js":"9n7oj","./cardinal.js":"i0afA","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"i0afA":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "point", ()=>point);
@@ -21630,7 +21630,7 @@ exports.default = function custom(tension) {
     return cardinal;
 }(0);
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"4cTvH":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"4cTvH":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "CardinalOpen", ()=>CardinalOpen);
@@ -21687,7 +21687,7 @@ exports.default = function custom(tension) {
     return cardinal;
 }(0);
 
-},{"./cardinal.js":"i0afA","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"kfNnJ":[function(require,module,exports) {
+},{"./cardinal.js":"i0afA","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kfNnJ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _cardinalClosedJs = require("./cardinalClosed.js");
@@ -21761,7 +21761,7 @@ exports.default = function custom(alpha) {
     return catmullRom;
 }(0.5);
 
-},{"./cardinalClosed.js":"e0Ty2","../noop.js":"9n7oj","./catmullRom.js":"8d6GP","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8d6GP":[function(require,module,exports) {
+},{"./cardinalClosed.js":"e0Ty2","../noop.js":"9n7oj","./catmullRom.js":"8d6GP","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8d6GP":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "point", ()=>point);
@@ -21844,7 +21844,7 @@ exports.default = function custom(alpha) {
     return catmullRom;
 }(0.5);
 
-},{"../math.js":"OHDSf","./cardinal.js":"i0afA","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"amodp":[function(require,module,exports) {
+},{"../math.js":"OHDSf","./cardinal.js":"i0afA","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"amodp":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _cardinalOpenJs = require("./cardinalOpen.js");
@@ -21907,7 +21907,7 @@ exports.default = function custom(alpha) {
     return catmullRom;
 }(0.5);
 
-},{"./cardinalOpen.js":"4cTvH","./catmullRom.js":"8d6GP","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gpcM0":[function(require,module,exports) {
+},{"./cardinalOpen.js":"4cTvH","./catmullRom.js":"8d6GP","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gpcM0":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(context) {
@@ -21934,7 +21934,7 @@ LinearClosed.prototype = {
     }
 };
 
-},{"../noop.js":"9n7oj","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"kghkb":[function(require,module,exports) {
+},{"../noop.js":"9n7oj","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kghkb":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "monotoneX", ()=>monotoneX);
@@ -22043,7 +22043,7 @@ function monotoneY(context) {
     return new MonotoneY(context);
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"4f94Q":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"4f94Q":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(context) {
@@ -22099,7 +22099,7 @@ function controlPoints(x) {
     ];
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"l5kmS":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"l5kmS":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(context) {
@@ -22157,7 +22157,7 @@ function stepAfter(context) {
     return new Step(context, 1);
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"kPWfS":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kPWfS":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "canvas", ()=>domCanvas);
@@ -22176,7 +22176,7 @@ function domCanvas(w, h) {
 }
 const domImage = ()=>typeof Image !== "undefined" ? Image : null;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"bEydG":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"bEydG":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "scaleImplicit", ()=>(0, _d3Scale.scaleImplicit));
@@ -22945,7 +22945,7 @@ function domainCaption(locale, scale, opt) {
     }
 }
 
-},{"vega-util":"bApja","d3-array":"6IwJG","d3-scale":"9G9pz","d3-interpolate":"6gbPP","d3-scale-chromatic":"f3TcU","vega-time":"27kpp","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9G9pz":[function(require,module,exports) {
+},{"vega-util":"bApja","d3-array":"6IwJG","d3-scale":"9G9pz","d3-interpolate":"6gbPP","d3-scale-chromatic":"f3TcU","vega-time":"27kpp","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9G9pz":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "scaleBand", ()=>(0, _bandJsDefault.default));
@@ -23011,7 +23011,7 @@ var _divergingJsDefault = parcelHelpers.interopDefault(_divergingJs);
 var _tickFormatJs = require("./tickFormat.js");
 var _tickFormatJsDefault = parcelHelpers.interopDefault(_tickFormatJs);
 
-},{"./band.js":"6WWiS","./identity.js":"le9d2","./linear.js":"5CETT","./log.js":"2gcSE","./symlog.js":"iUUr7","./ordinal.js":"1j3zZ","./pow.js":"i4lyo","./radial.js":"5ODOz","./quantile.js":"aAURo","./quantize.js":"jjcn6","./threshold.js":"8ndX3","./time.js":"cjAqm","./utcTime.js":"cM5gE","./sequential.js":"f1sM1","./sequentialQuantile.js":"cSmYu","./diverging.js":"9Qcq3","./tickFormat.js":"dksn9","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6WWiS":[function(require,module,exports) {
+},{"./band.js":"6WWiS","./identity.js":"le9d2","./linear.js":"5CETT","./log.js":"2gcSE","./symlog.js":"iUUr7","./ordinal.js":"1j3zZ","./pow.js":"i4lyo","./radial.js":"5ODOz","./quantile.js":"aAURo","./quantize.js":"jjcn6","./threshold.js":"8ndX3","./time.js":"cjAqm","./utcTime.js":"cM5gE","./sequential.js":"f1sM1","./sequentialQuantile.js":"cSmYu","./diverging.js":"9Qcq3","./tickFormat.js":"dksn9","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6WWiS":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>band);
@@ -23090,7 +23090,7 @@ function point() {
     return pointish(band.apply(null, arguments).paddingInner(1));
 }
 
-},{"d3-array":"6IwJG","./init.js":"kLKEv","./ordinal.js":"1j3zZ","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"kLKEv":[function(require,module,exports) {
+},{"d3-array":"6IwJG","./init.js":"kLKEv","./ordinal.js":"1j3zZ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kLKEv":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "initRange", ()=>initRange);
@@ -23125,7 +23125,7 @@ function initInterpolator(domain, interpolator) {
     return this;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"1j3zZ":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1j3zZ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "implicit", ()=>implicit);
@@ -23165,7 +23165,7 @@ function ordinal() {
     return scale;
 }
 
-},{"d3-array":"6IwJG","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"le9d2":[function(require,module,exports) {
+},{"d3-array":"6IwJG","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"le9d2":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>identity);
@@ -23194,7 +23194,7 @@ function identity(domain) {
     return (0, _linearJs.linearish)(scale);
 }
 
-},{"./linear.js":"5CETT","./number.js":"bOzsY","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"5CETT":[function(require,module,exports) {
+},{"./linear.js":"5CETT","./number.js":"bOzsY","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5CETT":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "linearish", ()=>linearish);
@@ -23257,7 +23257,7 @@ function linear() {
     return linearish(scale);
 }
 
-},{"d3-array":"6IwJG","./continuous.js":"it8xE","./init.js":"kLKEv","./tickFormat.js":"dksn9","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"it8xE":[function(require,module,exports) {
+},{"d3-array":"6IwJG","./continuous.js":"it8xE","./init.js":"kLKEv","./tickFormat.js":"dksn9","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"it8xE":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "identity", ()=>identity);
@@ -23360,7 +23360,7 @@ function continuous() {
     return transformer()(identity, identity);
 }
 
-},{"d3-array":"6IwJG","d3-interpolate":"6gbPP","./constant.js":"9JgB5","./number.js":"bOzsY","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6gbPP":[function(require,module,exports) {
+},{"d3-array":"6IwJG","d3-interpolate":"6gbPP","./constant.js":"9JgB5","./number.js":"bOzsY","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6gbPP":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "interpolate", ()=>(0, _valueJsDefault.default));
@@ -23432,7 +23432,7 @@ var _piecewiseJsDefault = parcelHelpers.interopDefault(_piecewiseJs);
 var _quantizeJs = require("./quantize.js");
 var _quantizeJsDefault = parcelHelpers.interopDefault(_quantizeJs);
 
-},{"./value.js":"j390F","./array.js":"ak2mg","./basis.js":"aODfz","./basisClosed.js":"iMwsl","./date.js":"5kKci","./discrete.js":"kwucC","./hue.js":"l0WHx","./number.js":"e4PyF","./numberArray.js":"erlaq","./object.js":"4rZkd","./round.js":"l8dm5","./string.js":"5Q7tf","./transform/index.js":"ccQ0p","./zoom.js":"hXWwx","./rgb.js":"bXjD7","./hsl.js":"2r5a3","./lab.js":"4EvaS","./hcl.js":"CZyDl","./cubehelix.js":"1wxKY","./piecewise.js":"dHOj6","./quantize.js":"7aRYJ","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"j390F":[function(require,module,exports) {
+},{"./value.js":"j390F","./array.js":"ak2mg","./basis.js":"aODfz","./basisClosed.js":"iMwsl","./date.js":"5kKci","./discrete.js":"kwucC","./hue.js":"l0WHx","./number.js":"e4PyF","./numberArray.js":"erlaq","./object.js":"4rZkd","./round.js":"l8dm5","./string.js":"5Q7tf","./transform/index.js":"ccQ0p","./zoom.js":"hXWwx","./rgb.js":"bXjD7","./hsl.js":"2r5a3","./lab.js":"4EvaS","./hcl.js":"CZyDl","./cubehelix.js":"1wxKY","./piecewise.js":"dHOj6","./quantize.js":"7aRYJ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"j390F":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(a, b) {
@@ -23456,7 +23456,7 @@ var _constantJsDefault = parcelHelpers.interopDefault(_constantJs);
 var _numberArrayJs = require("./numberArray.js");
 var _numberArrayJsDefault = parcelHelpers.interopDefault(_numberArrayJs);
 
-},{"d3-color":"7SCp9","./rgb.js":"bXjD7","./array.js":"ak2mg","./date.js":"5kKci","./number.js":"e4PyF","./object.js":"4rZkd","./string.js":"5Q7tf","./constant.js":"3lDJx","./numberArray.js":"erlaq","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"7SCp9":[function(require,module,exports) {
+},{"d3-color":"7SCp9","./rgb.js":"bXjD7","./array.js":"ak2mg","./date.js":"5kKci","./number.js":"e4PyF","./object.js":"4rZkd","./string.js":"5Q7tf","./constant.js":"3lDJx","./numberArray.js":"erlaq","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"7SCp9":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "color", ()=>(0, _colorJsDefault.default));
@@ -23474,7 +23474,7 @@ var _labJsDefault = parcelHelpers.interopDefault(_labJs);
 var _cubehelixJs = require("./cubehelix.js");
 var _cubehelixJsDefault = parcelHelpers.interopDefault(_cubehelixJs);
 
-},{"./color.js":"cJlE6","./lab.js":"3FaCQ","./cubehelix.js":"6YqvJ","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"cJlE6":[function(require,module,exports) {
+},{"./color.js":"cJlE6","./lab.js":"3FaCQ","./cubehelix.js":"6YqvJ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"cJlE6":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Color", ()=>Color);
@@ -23817,7 +23817,7 @@ function clampt(value) {
     return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
 }
 
-},{"./define.js":"fa5me","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"fa5me":[function(require,module,exports) {
+},{"./define.js":"fa5me","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"fa5me":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(constructor, factory, prototype) {
@@ -23831,7 +23831,7 @@ function extend(parent, definition) {
     return prototype;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"3FaCQ":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"3FaCQ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "gray", ()=>gray);
@@ -23933,7 +23933,7 @@ function hcl2lab(o) {
     }
 }));
 
-},{"./define.js":"fa5me","./color.js":"cJlE6","./math.js":"2h5K4","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"2h5K4":[function(require,module,exports) {
+},{"./define.js":"fa5me","./color.js":"cJlE6","./math.js":"2h5K4","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"2h5K4":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "radians", ()=>radians);
@@ -23941,7 +23941,7 @@ parcelHelpers.export(exports, "degrees", ()=>degrees);
 const radians = Math.PI / 180;
 const degrees = 180 / Math.PI;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6YqvJ":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6YqvJ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>cubehelix);
@@ -23981,7 +23981,7 @@ function Cubehelix(h, s, l, opacity) {
     }
 }));
 
-},{"./define.js":"fa5me","./color.js":"cJlE6","./math.js":"2h5K4","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"bXjD7":[function(require,module,exports) {
+},{"./define.js":"fa5me","./color.js":"cJlE6","./math.js":"2h5K4","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"bXjD7":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "rgbBasis", ()=>rgbBasis);
@@ -24032,7 +24032,7 @@ function rgbSpline(spline) {
 var rgbBasis = rgbSpline((0, _basisJsDefault.default));
 var rgbBasisClosed = rgbSpline((0, _basisClosedJsDefault.default));
 
-},{"d3-color":"7SCp9","./basis.js":"aODfz","./basisClosed.js":"iMwsl","./color.js":"9VtCQ","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"aODfz":[function(require,module,exports) {
+},{"d3-color":"7SCp9","./basis.js":"aODfz","./basisClosed.js":"iMwsl","./color.js":"9VtCQ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"aODfz":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "basis", ()=>basis);
@@ -24048,7 +24048,7 @@ function basis(t1, v0, v1, v2, v3) {
     return ((1 - 3 * t1 + 3 * t2 - t3) * v0 + (4 - 6 * t2 + 3 * t3) * v1 + (1 + 3 * t1 + 3 * t2 - 3 * t3) * v2 + t3 * v3) / 6;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"iMwsl":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"iMwsl":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(values) {
@@ -24060,7 +24060,7 @@ parcelHelpers.export(exports, "default", ()=>function(values) {
     });
 var _basisJs = require("./basis.js");
 
-},{"./basis.js":"aODfz","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9VtCQ":[function(require,module,exports) {
+},{"./basis.js":"aODfz","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9VtCQ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "hue", ()=>hue);
@@ -24092,12 +24092,12 @@ function nogamma(a, b) {
     return d ? linear(a, d) : (0, _constantJsDefault.default)(isNaN(a) ? b : a);
 }
 
-},{"./constant.js":"3lDJx","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"3lDJx":[function(require,module,exports) {
+},{"./constant.js":"3lDJx","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"3lDJx":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 exports.default = (x)=>()=>x;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"ak2mg":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"ak2mg":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(a, b) {
@@ -24118,7 +24118,7 @@ function genericArray(a, b) {
     };
 }
 
-},{"./value.js":"j390F","./numberArray.js":"erlaq","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"erlaq":[function(require,module,exports) {
+},{"./value.js":"j390F","./numberArray.js":"erlaq","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"erlaq":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(a, b) {
@@ -24134,7 +24134,7 @@ function isNumberArray(x) {
     return ArrayBuffer.isView(x) && !(x instanceof DataView);
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"5kKci":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5kKci":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(a, b) {
@@ -24144,7 +24144,7 @@ parcelHelpers.export(exports, "default", ()=>function(a, b) {
         };
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"e4PyF":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"e4PyF":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(a, b) {
@@ -24153,7 +24153,7 @@ parcelHelpers.export(exports, "default", ()=>function(a, b) {
         };
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"4rZkd":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"4rZkd":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(a, b) {
@@ -24170,7 +24170,7 @@ parcelHelpers.export(exports, "default", ()=>function(a, b) {
 var _valueJs = require("./value.js");
 var _valueJsDefault = parcelHelpers.interopDefault(_valueJs);
 
-},{"./value.js":"j390F","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"5Q7tf":[function(require,module,exports) {
+},{"./value.js":"j390F","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5Q7tf":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(a, b) {
@@ -24223,7 +24223,7 @@ function one(b) {
     };
 }
 
-},{"./number.js":"e4PyF","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"kwucC":[function(require,module,exports) {
+},{"./number.js":"e4PyF","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kwucC":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(range) {
@@ -24233,7 +24233,7 @@ parcelHelpers.export(exports, "default", ()=>function(range) {
         };
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"l0WHx":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"l0WHx":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(a, b) {
@@ -24245,7 +24245,7 @@ parcelHelpers.export(exports, "default", ()=>function(a, b) {
     });
 var _colorJs = require("./color.js");
 
-},{"./color.js":"9VtCQ","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"l8dm5":[function(require,module,exports) {
+},{"./color.js":"9VtCQ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"l8dm5":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(a, b) {
@@ -24254,7 +24254,7 @@ parcelHelpers.export(exports, "default", ()=>function(a, b) {
         };
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"ccQ0p":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"ccQ0p":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "interpolateTransformCss", ()=>interpolateTransformCss);
@@ -24325,7 +24325,7 @@ function interpolateTransform(parse, pxComma, pxParen, degParen) {
 var interpolateTransformCss = interpolateTransform((0, _parseJs.parseCss), "px, ", "px)", "deg)");
 var interpolateTransformSvg = interpolateTransform((0, _parseJs.parseSvg), ", ", ")", ")");
 
-},{"../number.js":"e4PyF","./parse.js":"fyjJk","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"fyjJk":[function(require,module,exports) {
+},{"../number.js":"e4PyF","./parse.js":"fyjJk","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"fyjJk":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 /* eslint-disable no-undef */ parcelHelpers.export(exports, "parseCss", ()=>parseCss);
@@ -24346,7 +24346,7 @@ function parseSvg(value) {
     return (0, _decomposeJsDefault.default)(value.a, value.b, value.c, value.d, value.e, value.f);
 }
 
-},{"./decompose.js":"kD3Jv","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"kD3Jv":[function(require,module,exports) {
+},{"./decompose.js":"kD3Jv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kD3Jv":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "identity", ()=>identity);
@@ -24375,7 +24375,7 @@ var identity = {
     scaleY: 1
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"hXWwx":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"hXWwx":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var epsilon2 = 1e-12;
@@ -24425,7 +24425,7 @@ exports.default = function zoomRho(rho, rho2, rho4) {
     return zoom;
 }(Math.SQRT2, 2, 4);
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"2r5a3":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"2r5a3":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "hslLong", ()=>hslLong);
@@ -24447,7 +24447,7 @@ function hsl(hue) {
 exports.default = hsl((0, _colorJs.hue));
 var hslLong = hsl((0, _colorJsDefault.default));
 
-},{"d3-color":"7SCp9","./color.js":"9VtCQ","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"4EvaS":[function(require,module,exports) {
+},{"d3-color":"7SCp9","./color.js":"9VtCQ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"4EvaS":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>lab);
@@ -24465,7 +24465,7 @@ function lab(start, end) {
     };
 }
 
-},{"d3-color":"7SCp9","./color.js":"9VtCQ","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"CZyDl":[function(require,module,exports) {
+},{"d3-color":"7SCp9","./color.js":"9VtCQ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"CZyDl":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "hclLong", ()=>hclLong);
@@ -24487,7 +24487,7 @@ function hcl(hue) {
 exports.default = hcl((0, _colorJs.hue));
 var hclLong = hcl((0, _colorJsDefault.default));
 
-},{"d3-color":"7SCp9","./color.js":"9VtCQ","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"1wxKY":[function(require,module,exports) {
+},{"d3-color":"7SCp9","./color.js":"9VtCQ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1wxKY":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "cubehelixLong", ()=>cubehelixLong);
@@ -24514,7 +24514,7 @@ function cubehelix(hue) {
 exports.default = cubehelix((0, _colorJs.hue));
 var cubehelixLong = cubehelix((0, _colorJsDefault.default));
 
-},{"d3-color":"7SCp9","./color.js":"9VtCQ","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dHOj6":[function(require,module,exports) {
+},{"d3-color":"7SCp9","./color.js":"9VtCQ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dHOj6":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>piecewise);
@@ -24530,7 +24530,7 @@ function piecewise(interpolate, values) {
     };
 }
 
-},{"./value.js":"j390F","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"7aRYJ":[function(require,module,exports) {
+},{"./value.js":"j390F","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"7aRYJ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(interpolator, n) {
@@ -24539,7 +24539,7 @@ parcelHelpers.export(exports, "default", ()=>function(interpolator, n) {
         return samples;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9JgB5":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9JgB5":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>constants);
@@ -24549,7 +24549,7 @@ function constants(x) {
     };
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"bOzsY":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"bOzsY":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>number);
@@ -24557,7 +24557,7 @@ function number(x) {
     return +x;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dksn9":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dksn9":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>tickFormat);
@@ -24586,7 +24586,7 @@ function tickFormat(start, stop, count, specifier) {
     return (0, _d3Format.format)(specifier);
 }
 
-},{"d3-array":"6IwJG","d3-format":"8dYFL","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"2gcSE":[function(require,module,exports) {
+},{"d3-array":"6IwJG","d3-format":"8dYFL","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"2gcSE":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "loggish", ()=>loggish);
@@ -24707,7 +24707,7 @@ function log() {
     return scale;
 }
 
-},{"d3-array":"6IwJG","d3-format":"8dYFL","./nice.js":"dC4tu","./continuous.js":"it8xE","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dC4tu":[function(require,module,exports) {
+},{"d3-array":"6IwJG","d3-format":"8dYFL","./nice.js":"dC4tu","./continuous.js":"it8xE","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dC4tu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>nice);
@@ -24723,7 +24723,7 @@ function nice(domain, interval) {
     return domain;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"iUUr7":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"iUUr7":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "symlogish", ()=>symlogish);
@@ -24756,7 +24756,7 @@ function symlog() {
     return (0, _initJs.initRange).apply(scale, arguments);
 }
 
-},{"./linear.js":"5CETT","./continuous.js":"it8xE","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"i4lyo":[function(require,module,exports) {
+},{"./linear.js":"5CETT","./continuous.js":"it8xE","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"i4lyo":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "powish", ()=>powish);
@@ -24798,7 +24798,7 @@ function sqrt() {
     return pow.apply(null, arguments).exponent(0.5);
 }
 
-},{"./linear.js":"5CETT","./continuous.js":"it8xE","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"5ODOz":[function(require,module,exports) {
+},{"./linear.js":"5CETT","./continuous.js":"it8xE","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5ODOz":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>radial);
@@ -24851,7 +24851,7 @@ function radial() {
     return (0, _linearJs.linearish)(scale);
 }
 
-},{"./continuous.js":"it8xE","./init.js":"kLKEv","./linear.js":"5CETT","./number.js":"bOzsY","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"aAURo":[function(require,module,exports) {
+},{"./continuous.js":"it8xE","./init.js":"kLKEv","./linear.js":"5CETT","./number.js":"bOzsY","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"aAURo":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>quantile);
@@ -24900,7 +24900,7 @@ function quantile() {
     return (0, _initJs.initRange).apply(scale, arguments);
 }
 
-},{"d3-array":"6IwJG","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"jjcn6":[function(require,module,exports) {
+},{"d3-array":"6IwJG","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"jjcn6":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>quantize);
@@ -24963,7 +24963,7 @@ function quantize() {
     return (0, _initJs.initRange).apply((0, _linearJs.linearish)(scale), arguments);
 }
 
-},{"d3-array":"6IwJG","./linear.js":"5CETT","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8ndX3":[function(require,module,exports) {
+},{"d3-array":"6IwJG","./linear.js":"5CETT","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8ndX3":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>threshold);
@@ -25001,7 +25001,7 @@ function threshold() {
     return (0, _initJs.initRange).apply(scale, arguments);
 }
 
-},{"d3-array":"6IwJG","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"cjAqm":[function(require,module,exports) {
+},{"d3-array":"6IwJG","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"cjAqm":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "calendar", ()=>calendar);
@@ -25055,7 +25055,7 @@ function time() {
     ]), arguments);
 }
 
-},{"d3-time":"8e7eR","d3-time-format":"242jH","./continuous.js":"it8xE","./init.js":"kLKEv","./nice.js":"dC4tu","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"cM5gE":[function(require,module,exports) {
+},{"d3-time":"8e7eR","d3-time-format":"242jH","./continuous.js":"it8xE","./init.js":"kLKEv","./nice.js":"dC4tu","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"cM5gE":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>utcTime);
@@ -25070,7 +25070,7 @@ function utcTime() {
     ]), arguments);
 }
 
-},{"d3-time":"8e7eR","d3-time-format":"242jH","./time.js":"cjAqm","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"f1sM1":[function(require,module,exports) {
+},{"d3-time":"8e7eR","d3-time-format":"242jH","./time.js":"cjAqm","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"f1sM1":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "copy", ()=>copy);
@@ -25160,7 +25160,7 @@ function sequentialSqrt() {
     return sequentialPow.apply(null, arguments).exponent(0.5);
 }
 
-},{"d3-interpolate":"6gbPP","./continuous.js":"it8xE","./init.js":"kLKEv","./linear.js":"5CETT","./log.js":"2gcSE","./symlog.js":"iUUr7","./pow.js":"i4lyo","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"cSmYu":[function(require,module,exports) {
+},{"d3-interpolate":"6gbPP","./continuous.js":"it8xE","./init.js":"kLKEv","./linear.js":"5CETT","./log.js":"2gcSE","./symlog.js":"iUUr7","./pow.js":"i4lyo","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"cSmYu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>sequentialQuantile);
@@ -25196,7 +25196,7 @@ function sequentialQuantile() {
     return (0, _initJs.initInterpolator).apply(scale, arguments);
 }
 
-},{"d3-array":"6IwJG","./continuous.js":"it8xE","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9Qcq3":[function(require,module,exports) {
+},{"d3-array":"6IwJG","./continuous.js":"it8xE","./init.js":"kLKEv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9Qcq3":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>diverging);
@@ -25290,7 +25290,7 @@ function divergingSqrt() {
     return divergingPow.apply(null, arguments).exponent(0.5);
 }
 
-},{"d3-interpolate":"6gbPP","./continuous.js":"it8xE","./init.js":"kLKEv","./linear.js":"5CETT","./log.js":"2gcSE","./sequential.js":"f1sM1","./symlog.js":"iUUr7","./pow.js":"i4lyo","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"f3TcU":[function(require,module,exports) {
+},{"d3-interpolate":"6gbPP","./continuous.js":"it8xE","./init.js":"kLKEv","./linear.js":"5CETT","./log.js":"2gcSE","./sequential.js":"f1sM1","./symlog.js":"iUUr7","./pow.js":"i4lyo","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"f3TcU":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "schemeCategory10", ()=>(0, _category10JsDefault.default));
@@ -25458,14 +25458,14 @@ var _turboJsDefault = parcelHelpers.interopDefault(_turboJs);
 var _viridisJs = require("./sequential-multi/viridis.js");
 var _viridisJsDefault = parcelHelpers.interopDefault(_viridisJs);
 
-},{"./categorical/category10.js":"73dmt","./categorical/Accent.js":"354VI","./categorical/Dark2.js":"lRzjC","./categorical/observable10.js":"ji8JB","./categorical/Paired.js":"jDu6h","./categorical/Pastel1.js":"a9HVC","./categorical/Pastel2.js":"fqsx7","./categorical/Set1.js":"j2h0u","./categorical/Set2.js":"iGz31","./categorical/Set3.js":"Vc4dj","./categorical/Tableau10.js":false,"./diverging/BrBG.js":false,"./diverging/PRGn.js":false,"./diverging/PiYG.js":false,"./diverging/PuOr.js":false,"./diverging/RdBu.js":false,"./diverging/RdGy.js":false,"./diverging/RdYlBu.js":false,"./diverging/RdYlGn.js":false,"./diverging/Spectral.js":false,"./sequential-multi/BuGn.js":false,"./sequential-multi/BuPu.js":false,"./sequential-multi/GnBu.js":false,"./sequential-multi/OrRd.js":false,"./sequential-multi/PuBuGn.js":false,"./sequential-multi/PuBu.js":false,"./sequential-multi/PuRd.js":false,"./sequential-multi/RdPu.js":false,"./sequential-multi/YlGnBu.js":false,"./sequential-multi/YlGn.js":false,"./sequential-multi/YlOrBr.js":false,"./sequential-multi/YlOrRd.js":false,"./sequential-single/Blues.js":false,"./sequential-single/Greens.js":false,"./sequential-single/Greys.js":false,"./sequential-single/Purples.js":false,"./sequential-single/Reds.js":false,"./sequential-single/Oranges.js":false,"./sequential-multi/cividis.js":false,"./sequential-multi/cubehelix.js":false,"./sequential-multi/rainbow.js":false,"./sequential-multi/sinebow.js":false,"./sequential-multi/turbo.js":false,"./sequential-multi/viridis.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"73dmt":[function(require,module,exports) {
+},{"./categorical/category10.js":"73dmt","./categorical/Accent.js":"354VI","./categorical/Dark2.js":"lRzjC","./categorical/observable10.js":"ji8JB","./categorical/Paired.js":"jDu6h","./categorical/Pastel1.js":"a9HVC","./categorical/Pastel2.js":"fqsx7","./categorical/Set1.js":"j2h0u","./categorical/Set2.js":"iGz31","./categorical/Set3.js":"Vc4dj","./categorical/Tableau10.js":false,"./diverging/BrBG.js":false,"./diverging/PRGn.js":false,"./diverging/PiYG.js":false,"./diverging/PuOr.js":false,"./diverging/RdBu.js":false,"./diverging/RdGy.js":false,"./diverging/RdYlBu.js":false,"./diverging/RdYlGn.js":false,"./diverging/Spectral.js":false,"./sequential-multi/BuGn.js":false,"./sequential-multi/BuPu.js":false,"./sequential-multi/GnBu.js":false,"./sequential-multi/OrRd.js":false,"./sequential-multi/PuBuGn.js":false,"./sequential-multi/PuBu.js":false,"./sequential-multi/PuRd.js":false,"./sequential-multi/RdPu.js":false,"./sequential-multi/YlGnBu.js":false,"./sequential-multi/YlGn.js":false,"./sequential-multi/YlOrBr.js":false,"./sequential-multi/YlOrRd.js":false,"./sequential-single/Blues.js":false,"./sequential-single/Greens.js":false,"./sequential-single/Greys.js":false,"./sequential-single/Purples.js":false,"./sequential-single/Reds.js":false,"./sequential-single/Oranges.js":false,"./sequential-multi/cividis.js":false,"./sequential-multi/cubehelix.js":false,"./sequential-multi/rainbow.js":false,"./sequential-multi/sinebow.js":false,"./sequential-multi/turbo.js":false,"./sequential-multi/viridis.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"73dmt":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _colorsJs = require("../colors.js");
 var _colorsJsDefault = parcelHelpers.interopDefault(_colorsJs);
 exports.default = (0, _colorsJsDefault.default)("1f77b4ff7f0e2ca02cd627289467bd8c564be377c27f7f7fbcbd2217becf");
 
-},{"../colors.js":"eXXy7","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"eXXy7":[function(require,module,exports) {
+},{"../colors.js":"eXXy7","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"eXXy7":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(specifier) {
@@ -25474,70 +25474,70 @@ parcelHelpers.export(exports, "default", ()=>function(specifier) {
         return colors;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"354VI":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"354VI":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _colorsJs = require("../colors.js");
 var _colorsJsDefault = parcelHelpers.interopDefault(_colorsJs);
 exports.default = (0, _colorsJsDefault.default)("7fc97fbeaed4fdc086ffff99386cb0f0027fbf5b17666666");
 
-},{"../colors.js":"eXXy7","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lRzjC":[function(require,module,exports) {
+},{"../colors.js":"eXXy7","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lRzjC":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _colorsJs = require("../colors.js");
 var _colorsJsDefault = parcelHelpers.interopDefault(_colorsJs);
 exports.default = (0, _colorsJsDefault.default)("1b9e77d95f027570b3e7298a66a61ee6ab02a6761d666666");
 
-},{"../colors.js":"eXXy7","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"ji8JB":[function(require,module,exports) {
+},{"../colors.js":"eXXy7","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"ji8JB":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _colorsJs = require("../colors.js");
 var _colorsJsDefault = parcelHelpers.interopDefault(_colorsJs);
 exports.default = (0, _colorsJsDefault.default)("4269d0efb118ff725c6cc5b03ca951ff8ab7a463f297bbf59c6b4e9498a0");
 
-},{"../colors.js":"eXXy7","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"jDu6h":[function(require,module,exports) {
+},{"../colors.js":"eXXy7","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"jDu6h":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _colorsJs = require("../colors.js");
 var _colorsJsDefault = parcelHelpers.interopDefault(_colorsJs);
 exports.default = (0, _colorsJsDefault.default)("a6cee31f78b4b2df8a33a02cfb9a99e31a1cfdbf6fff7f00cab2d66a3d9affff99b15928");
 
-},{"../colors.js":"eXXy7","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"a9HVC":[function(require,module,exports) {
+},{"../colors.js":"eXXy7","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"a9HVC":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _colorsJs = require("../colors.js");
 var _colorsJsDefault = parcelHelpers.interopDefault(_colorsJs);
 exports.default = (0, _colorsJsDefault.default)("fbb4aeb3cde3ccebc5decbe4fed9a6ffffcce5d8bdfddaecf2f2f2");
 
-},{"../colors.js":"eXXy7","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"fqsx7":[function(require,module,exports) {
+},{"../colors.js":"eXXy7","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"fqsx7":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _colorsJs = require("../colors.js");
 var _colorsJsDefault = parcelHelpers.interopDefault(_colorsJs);
 exports.default = (0, _colorsJsDefault.default)("b3e2cdfdcdaccbd5e8f4cae4e6f5c9fff2aef1e2cccccccc");
 
-},{"../colors.js":"eXXy7","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"j2h0u":[function(require,module,exports) {
+},{"../colors.js":"eXXy7","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"j2h0u":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _colorsJs = require("../colors.js");
 var _colorsJsDefault = parcelHelpers.interopDefault(_colorsJs);
 exports.default = (0, _colorsJsDefault.default)("e41a1c377eb84daf4a984ea3ff7f00ffff33a65628f781bf999999");
 
-},{"../colors.js":"eXXy7","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"iGz31":[function(require,module,exports) {
+},{"../colors.js":"eXXy7","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"iGz31":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _colorsJs = require("../colors.js");
 var _colorsJsDefault = parcelHelpers.interopDefault(_colorsJs);
 exports.default = (0, _colorsJsDefault.default)("66c2a5fc8d628da0cbe78ac3a6d854ffd92fe5c494b3b3b3");
 
-},{"../colors.js":"eXXy7","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"Vc4dj":[function(require,module,exports) {
+},{"../colors.js":"eXXy7","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"Vc4dj":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _colorsJs = require("../colors.js");
 var _colorsJsDefault = parcelHelpers.interopDefault(_colorsJs);
 exports.default = (0, _colorsJsDefault.default)("8dd3c7ffffb3bebadafb807280b1d3fdb462b3de69fccde5d9d9d9bc80bdccebc5ffed6f");
 
-},{"../colors.js":"eXXy7","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"fpesP":[function(require,module,exports) {
+},{"../colors.js":"eXXy7","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"fpesP":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "axisticks", ()=>AxisTicks);
@@ -26337,7 +26337,7 @@ function partition(data, groupby, sort, field) {
     return groups;
 }
 
-},{"vega-dataflow":"3NitK","vega-scale":"bEydG","vega-util":"bApja","d3-array":"6IwJG","d3-interpolate":"6gbPP","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"3rF9B":[function(require,module,exports) {
+},{"vega-dataflow":"3NitK","vega-scale":"bEydG","vega-util":"bApja","d3-array":"6IwJG","d3-interpolate":"6gbPP","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"3rF9B":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "contour", ()=>Contour);
@@ -27765,7 +27765,7 @@ function featurize(f) {
         });
 }
 
-},{"vega-dataflow":"3NitK","vega-util":"bApja","d3-array":"6IwJG","vega-statistics":"5ncfv","vega-projection":"4wv4C","d3-geo":"lY61T","d3-color":"7SCp9","vega-canvas":"kPWfS","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"4wv4C":[function(require,module,exports) {
+},{"vega-dataflow":"3NitK","vega-util":"bApja","d3-array":"6IwJG","vega-statistics":"5ncfv","vega-projection":"4wv4C","d3-geo":"lY61T","d3-color":"7SCp9","vega-canvas":"kPWfS","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"4wv4C":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getProjectionPath", ()=>getProjectionPath);
@@ -27849,7 +27849,7 @@ const projections = {
 };
 for(const key in projections)projection(key, projections[key]);
 
-},{"d3-geo":"lY61T","d3-geo-projection":"ixW8K","vega-scale":"bEydG","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lY61T":[function(require,module,exports) {
+},{"d3-geo":"lY61T","d3-geo-projection":"ixW8K","vega-scale":"bEydG","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lY61T":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "geoArea", ()=>(0, _areaJsDefault.default));
@@ -27971,7 +27971,7 @@ var _streamJsDefault = parcelHelpers.interopDefault(_streamJs);
 var _transformJs = require("./transform.js");
 var _transformJsDefault = parcelHelpers.interopDefault(_transformJs);
 
-},{"./area.js":"iajNA","./bounds.js":"9Dbky","./centroid.js":"kO6wx","./circle.js":false,"./clip/antimeridian.js":false,"./clip/circle.js":false,"./clip/extent.js":false,"./clip/rectangle.js":false,"./contains.js":false,"./distance.js":false,"./graticule.js":"arQrO","./interpolate.js":false,"./length.js":false,"./path/index.js":"gBtNJ","./projection/albers.js":"dSks5","./projection/albersUsa.js":"4lZJF","./projection/azimuthalEqualArea.js":"jbLs0","./projection/azimuthalEquidistant.js":"eAR2Q","./projection/conicConformal.js":"dhBsj","./projection/conicEqualArea.js":"17j9x","./projection/conicEquidistant.js":"6B358","./projection/equalEarth.js":"bMVhy","./projection/equirectangular.js":"4kEjS","./projection/gnomonic.js":"6bdgO","./projection/identity.js":"huYSV","./projection/index.js":"cd9OX","./projection/mercator.js":"iIGjZ","./projection/naturalEarth1.js":"4AzsZ","./projection/orthographic.js":"kjinQ","./projection/stereographic.js":"6ko7r","./projection/transverseMercator.js":"i6NVd","./rotation.js":false,"./stream.js":false,"./transform.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"iajNA":[function(require,module,exports) {
+},{"./area.js":"iajNA","./bounds.js":"9Dbky","./centroid.js":"kO6wx","./circle.js":false,"./clip/antimeridian.js":false,"./clip/circle.js":false,"./clip/extent.js":false,"./clip/rectangle.js":false,"./contains.js":false,"./distance.js":false,"./graticule.js":"arQrO","./interpolate.js":false,"./length.js":false,"./path/index.js":"gBtNJ","./projection/albers.js":"dSks5","./projection/albersUsa.js":"4lZJF","./projection/azimuthalEqualArea.js":"jbLs0","./projection/azimuthalEquidistant.js":"eAR2Q","./projection/conicConformal.js":"dhBsj","./projection/conicEqualArea.js":"17j9x","./projection/conicEquidistant.js":"6B358","./projection/equalEarth.js":"bMVhy","./projection/equirectangular.js":"4kEjS","./projection/gnomonic.js":"6bdgO","./projection/identity.js":"huYSV","./projection/index.js":"cd9OX","./projection/mercator.js":"iIGjZ","./projection/naturalEarth1.js":"4AzsZ","./projection/orthographic.js":"kjinQ","./projection/stereographic.js":"6ko7r","./projection/transverseMercator.js":"i6NVd","./rotation.js":false,"./stream.js":false,"./transform.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"iajNA":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "areaRingSum", ()=>areaRingSum);
@@ -28032,7 +28032,7 @@ function areaPoint(lambda, phi) {
     lambda0 = lambda, cosPhi0 = cosPhi, sinPhi0 = sinPhi;
 }
 
-},{"d3-array":"6IwJG","./math.js":"74X19","./noop.js":"aXmaS","./stream.js":"9nFXd","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"74X19":[function(require,module,exports) {
+},{"d3-array":"6IwJG","./math.js":"74X19","./noop.js":"aXmaS","./stream.js":"9nFXd","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"74X19":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "epsilon", ()=>epsilon);
@@ -28094,13 +28094,13 @@ function haversin(x) {
     return (x = sin(x / 2)) * x;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"aXmaS":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"aXmaS":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>noop);
 function noop() {}
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9nFXd":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9nFXd":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(object, stream) {
@@ -28163,7 +28163,7 @@ function streamPolygon(coordinates, stream) {
     stream.polygonEnd();
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9Dbky":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9Dbky":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(feature) {
@@ -28335,7 +28335,7 @@ function rangeContains(range, x) {
     return range[0] <= range[1] ? range[0] <= x && x <= range[1] : x < range[0] || range[1] < x;
 }
 
-},{"d3-array":"6IwJG","./area.js":"iajNA","./cartesian.js":"i2DwM","./math.js":"74X19","./stream.js":"9nFXd","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"i2DwM":[function(require,module,exports) {
+},{"d3-array":"6IwJG","./area.js":"iajNA","./cartesian.js":"i2DwM","./math.js":"74X19","./stream.js":"9nFXd","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"i2DwM":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "spherical", ()=>spherical);
@@ -28387,7 +28387,7 @@ function cartesianNormalizeInPlace(d) {
     d[0] /= l, d[1] /= l, d[2] /= l;
 }
 
-},{"./math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"kO6wx":[function(require,module,exports) {
+},{"./math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kO6wx":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(object) {
@@ -28503,7 +28503,7 @@ function centroidRingPoint(lambda, phi) {
     centroidPointCartesian(x0, y0, z0);
 }
 
-},{"d3-array":"6IwJG","./math.js":"74X19","./noop.js":"aXmaS","./stream.js":"9nFXd","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lPX3u":[function(require,module,exports) {
+},{"d3-array":"6IwJG","./math.js":"74X19","./noop.js":"aXmaS","./stream.js":"9nFXd","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lPX3u":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // Generates a circle centered at [0°, 0°], with a given radius and precision.
@@ -28580,7 +28580,7 @@ function circleRadius(cosRadius, point) {
     return ((-point[2] < 0 ? -radius : radius) + (0, _mathJs.tau) - (0, _mathJs.epsilon)) % (0, _mathJs.tau);
 }
 
-},{"./cartesian.js":"i2DwM","./constant.js":"en6KO","./math.js":"74X19","./rotation.js":"8C7qH","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"en6KO":[function(require,module,exports) {
+},{"./cartesian.js":"i2DwM","./constant.js":"en6KO","./math.js":"74X19","./rotation.js":"8C7qH","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"en6KO":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(x) {
@@ -28589,7 +28589,7 @@ parcelHelpers.export(exports, "default", ()=>function(x) {
         };
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8C7qH":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8C7qH":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "rotateRadians", ()=>rotateRadians);
@@ -28653,7 +28653,7 @@ function rotationPhiGamma(deltaPhi, deltaGamma) {
     return rotation;
 }
 
-},{"./compose.js":"hmaf3","./math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"hmaf3":[function(require,module,exports) {
+},{"./compose.js":"hmaf3","./math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"hmaf3":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(a, b) {
@@ -28666,7 +28666,7 @@ parcelHelpers.export(exports, "default", ()=>function(a, b) {
         return compose;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"kvVxQ":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kvVxQ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _indexJs = require("./index.js");
@@ -28746,7 +28746,7 @@ function clipAntimeridianInterpolate(from, to, direction, stream) {
     } else stream.point(to[0], to[1]);
 }
 
-},{"./index.js":"gHqWc","../math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gHqWc":[function(require,module,exports) {
+},{"./index.js":"gHqWc","../math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gHqWc":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(pointVisible, clipLine, interpolate, start) {
@@ -28858,7 +28858,7 @@ function compareIntersection(a, b) {
     return ((a = a.x)[0] < 0 ? a[1] - (0, _mathJs.halfPi) - (0, _mathJs.epsilon) : (0, _mathJs.halfPi) - a[1]) - ((b = b.x)[0] < 0 ? b[1] - (0, _mathJs.halfPi) - (0, _mathJs.epsilon) : (0, _mathJs.halfPi) - b[1]);
 }
 
-},{"./buffer.js":"6d6VN","./rejoin.js":"6J55y","../math.js":"74X19","../polygonContains.js":"13VDK","d3-array":"6IwJG","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6d6VN":[function(require,module,exports) {
+},{"./buffer.js":"6d6VN","./rejoin.js":"6J55y","../math.js":"74X19","../polygonContains.js":"13VDK","d3-array":"6IwJG","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6d6VN":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function() {
@@ -28889,7 +28889,7 @@ parcelHelpers.export(exports, "default", ()=>function() {
 var _noopJs = require("../noop.js");
 var _noopJsDefault = parcelHelpers.interopDefault(_noopJs);
 
-},{"../noop.js":"aXmaS","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6J55y":[function(require,module,exports) {
+},{"../noop.js":"aXmaS","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6J55y":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // A generalized polygon clipping algorithm: given a polygon that has been cut
@@ -28970,7 +28970,7 @@ function link(array) {
     b.p = a;
 }
 
-},{"../pointEqual.js":"f0mBF","../math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"f0mBF":[function(require,module,exports) {
+},{"../pointEqual.js":"f0mBF","../math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"f0mBF":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(a, b) {
@@ -28978,7 +28978,7 @@ parcelHelpers.export(exports, "default", ()=>function(a, b) {
     });
 var _mathJs = require("./math.js");
 
-},{"./math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"13VDK":[function(require,module,exports) {
+},{"./math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"13VDK":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(polygon, point) {
@@ -29028,7 +29028,7 @@ function longitude(point) {
     return (0, _mathJs.abs)(point[0]) <= (0, _mathJs.pi) ? point[0] : (0, _mathJs.sign)(point[0]) * (((0, _mathJs.abs)(point[0]) + (0, _mathJs.pi)) % (0, _mathJs.tau) - (0, _mathJs.pi));
 }
 
-},{"d3-array":"6IwJG","./cartesian.js":"i2DwM","./math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"2PJ3I":[function(require,module,exports) {
+},{"d3-array":"6IwJG","./cartesian.js":"i2DwM","./math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"2PJ3I":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(radius) {
@@ -29169,7 +29169,7 @@ var _pointEqualJsDefault = parcelHelpers.interopDefault(_pointEqualJs);
 var _indexJs = require("./index.js");
 var _indexJsDefault = parcelHelpers.interopDefault(_indexJs);
 
-},{"../cartesian.js":"i2DwM","../circle.js":"lPX3u","../math.js":"74X19","../pointEqual.js":"f0mBF","./index.js":"gHqWc","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9kmAt":[function(require,module,exports) {
+},{"../cartesian.js":"i2DwM","../circle.js":"lPX3u","../math.js":"74X19","../pointEqual.js":"f0mBF","./index.js":"gHqWc","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9kmAt":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>clipRectangle);
@@ -29303,7 +29303,7 @@ function clipRectangle(x0, y0, x1, y1) {
     };
 }
 
-},{"../math.js":"74X19","./buffer.js":"6d6VN","./line.js":"eNqzi","./rejoin.js":"6J55y","d3-array":"6IwJG","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"eNqzi":[function(require,module,exports) {
+},{"../math.js":"74X19","./buffer.js":"6d6VN","./line.js":"eNqzi","./rejoin.js":"6J55y","d3-array":"6IwJG","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"eNqzi":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(a, b, x0, y0, x1, y1) {
@@ -29353,7 +29353,7 @@ parcelHelpers.export(exports, "default", ()=>function(a, b, x0, y0, x1, y1) {
         return true;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"arQrO":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"arQrO":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>graticule);
@@ -29504,7 +29504,7 @@ function graticule10() {
     return graticule()();
 }
 
-},{"d3-array":"6IwJG","./math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gBtNJ":[function(require,module,exports) {
+},{"d3-array":"6IwJG","./math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gBtNJ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(projection, context) {
@@ -29578,12 +29578,12 @@ var _measureJsDefault = parcelHelpers.interopDefault(_measureJs);
 var _stringJs = require("./string.js");
 var _stringJsDefault = parcelHelpers.interopDefault(_stringJs);
 
-},{"../identity.js":"kub29","../stream.js":"9nFXd","./area.js":"5SF2U","./bounds.js":"bhNL9","./centroid.js":"lPOtc","./context.js":"fIlZ0","./measure.js":"iTRFv","./string.js":"gD9Wt","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"kub29":[function(require,module,exports) {
+},{"../identity.js":"kub29","../stream.js":"9nFXd","./area.js":"5SF2U","./bounds.js":"bhNL9","./centroid.js":"lPOtc","./context.js":"fIlZ0","./measure.js":"iTRFv","./string.js":"gD9Wt","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kub29":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 exports.default = (x)=>x;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"5SF2U":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5SF2U":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _d3Array = require("d3-array");
@@ -29626,7 +29626,7 @@ function areaRingEnd() {
 }
 exports.default = areaStream;
 
-},{"d3-array":"6IwJG","../math.js":"74X19","../noop.js":"aXmaS","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"bhNL9":[function(require,module,exports) {
+},{"d3-array":"6IwJG","../math.js":"74X19","../noop.js":"aXmaS","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"bhNL9":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _noopJs = require("../noop.js");
@@ -29661,7 +29661,7 @@ function boundsPoint(x, y) {
 }
 exports.default = boundsStream;
 
-},{"../noop.js":"aXmaS","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lPOtc":[function(require,module,exports) {
+},{"../noop.js":"aXmaS","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lPOtc":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _mathJs = require("../math.js");
@@ -29743,7 +29743,7 @@ function centroidPointRing(x, y) {
 }
 exports.default = centroidStream;
 
-},{"../math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"fIlZ0":[function(require,module,exports) {
+},{"../math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"fIlZ0":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>PathContext);
@@ -29789,7 +29789,7 @@ PathContext.prototype = {
     result: (0, _noopJsDefault.default)
 };
 
-},{"../math.js":"74X19","../noop.js":"aXmaS","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"iTRFv":[function(require,module,exports) {
+},{"../math.js":"74X19","../noop.js":"aXmaS","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"iTRFv":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _d3Array = require("d3-array");
@@ -29829,7 +29829,7 @@ function lengthPoint(x, y) {
 }
 exports.default = lengthStream;
 
-},{"d3-array":"6IwJG","../math.js":"74X19","../noop.js":"aXmaS","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gD9Wt":[function(require,module,exports) {
+},{"d3-array":"6IwJG","../math.js":"74X19","../noop.js":"aXmaS","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gD9Wt":[function(require,module,exports) {
 // Simple caching for constant-radius points.
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
@@ -29910,7 +29910,7 @@ function appendRound(digits) {
     return cacheAppend;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dSks5":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dSks5":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function() {
@@ -29931,7 +29931,7 @@ parcelHelpers.export(exports, "default", ()=>function() {
 var _conicEqualAreaJs = require("./conicEqualArea.js");
 var _conicEqualAreaJsDefault = parcelHelpers.interopDefault(_conicEqualAreaJs);
 
-},{"./conicEqualArea.js":"17j9x","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"17j9x":[function(require,module,exports) {
+},{"./conicEqualArea.js":"17j9x","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"17j9x":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "conicEqualAreaRaw", ()=>conicEqualAreaRaw);
@@ -29967,7 +29967,7 @@ function conicEqualAreaRaw(y0, y1) {
     return project;
 }
 
-},{"../math.js":"74X19","./conic.js":"15g8N","./cylindricalEqualArea.js":"j13Gc","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"15g8N":[function(require,module,exports) {
+},{"../math.js":"74X19","./conic.js":"15g8N","./cylindricalEqualArea.js":"j13Gc","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"15g8N":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "conicProjection", ()=>conicProjection);
@@ -29984,7 +29984,7 @@ function conicProjection(projectAt) {
     return p;
 }
 
-},{"../math.js":"74X19","./index.js":"cd9OX","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"cd9OX":[function(require,module,exports) {
+},{"../math.js":"74X19","./index.js":"cd9OX","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"cd9OX":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>projection);
@@ -30160,7 +30160,7 @@ function projectionMutator(projectAt) {
     };
 }
 
-},{"../clip/antimeridian.js":"kvVxQ","../clip/circle.js":"2PJ3I","../clip/rectangle.js":"9kmAt","../compose.js":"hmaf3","../identity.js":"kub29","../math.js":"74X19","../rotation.js":"8C7qH","../transform.js":"9MXXE","./fit.js":"49j0j","./resample.js":"gWNAn","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9MXXE":[function(require,module,exports) {
+},{"../clip/antimeridian.js":"kvVxQ","../clip/circle.js":"2PJ3I","../clip/rectangle.js":"9kmAt","../compose.js":"hmaf3","../identity.js":"kub29","../math.js":"74X19","../rotation.js":"8C7qH","../transform.js":"9MXXE","./fit.js":"49j0j","./resample.js":"gWNAn","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9MXXE":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(methods) {
@@ -30200,7 +30200,7 @@ TransformStream.prototype = {
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"49j0j":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"49j0j":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "fitExtent", ()=>fitExtent);
@@ -30260,7 +30260,7 @@ function fitHeight(projection, height, object) {
     }, object);
 }
 
-},{"../stream.js":"9nFXd","../path/bounds.js":"bhNL9","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gWNAn":[function(require,module,exports) {
+},{"../stream.js":"9nFXd","../path/bounds.js":"bhNL9","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gWNAn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(project, delta2) {
@@ -30346,7 +30346,7 @@ function resample(project, delta2) {
     };
 }
 
-},{"../cartesian.js":"i2DwM","../math.js":"74X19","../transform.js":"9MXXE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"j13Gc":[function(require,module,exports) {
+},{"../cartesian.js":"i2DwM","../math.js":"74X19","../transform.js":"9MXXE","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"j13Gc":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "cylindricalEqualAreaRaw", ()=>cylindricalEqualAreaRaw);
@@ -30368,7 +30368,7 @@ function cylindricalEqualAreaRaw(phi0) {
     return forward;
 }
 
-},{"../math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"4lZJF":[function(require,module,exports) {
+},{"../math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"4lZJF":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // A composite projection for the United States, configured by default for
@@ -30525,7 +30525,7 @@ function multiplex(streams) {
     };
 }
 
-},{"../math.js":"74X19","./albers.js":"dSks5","./conicEqualArea.js":"17j9x","./fit.js":"49j0j","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"jbLs0":[function(require,module,exports) {
+},{"../math.js":"74X19","./albers.js":"dSks5","./conicEqualArea.js":"17j9x","./fit.js":"49j0j","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"jbLs0":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "azimuthalEqualAreaRaw", ()=>azimuthalEqualAreaRaw);
@@ -30543,7 +30543,7 @@ azimuthalEqualAreaRaw.invert = (0, _azimuthalJs.azimuthalInvert)(function(z) {
     return 2 * (0, _mathJs.asin)(z / 2);
 });
 
-},{"../math.js":"74X19","./azimuthal.js":"boRUu","./index.js":"cd9OX","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"boRUu":[function(require,module,exports) {
+},{"../math.js":"74X19","./azimuthal.js":"boRUu","./index.js":"cd9OX","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"boRUu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "azimuthalRaw", ()=>azimuthalRaw);
@@ -30572,7 +30572,7 @@ function azimuthalInvert(angle) {
     };
 }
 
-},{"../math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"eAR2Q":[function(require,module,exports) {
+},{"../math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"eAR2Q":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "azimuthalEquidistantRaw", ()=>azimuthalEquidistantRaw);
@@ -30590,7 +30590,7 @@ azimuthalEquidistantRaw.invert = (0, _azimuthalJs.azimuthalInvert)(function(z) {
     return z;
 });
 
-},{"../math.js":"74X19","./azimuthal.js":"boRUu","./index.js":"cd9OX","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dhBsj":[function(require,module,exports) {
+},{"../math.js":"74X19","./azimuthal.js":"boRUu","./index.js":"cd9OX","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dhBsj":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "conicConformalRaw", ()=>conicConformalRaw);
@@ -30630,7 +30630,7 @@ function conicConformalRaw(y0, y1) {
     return project;
 }
 
-},{"../math.js":"74X19","./conic.js":"15g8N","./mercator.js":"iIGjZ","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"iIGjZ":[function(require,module,exports) {
+},{"../math.js":"74X19","./conic.js":"15g8N","./mercator.js":"iIGjZ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"iIGjZ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "mercatorRaw", ()=>mercatorRaw);
@@ -30715,7 +30715,7 @@ function mercatorProjection(project) {
     return reclip();
 }
 
-},{"../math.js":"74X19","../rotation.js":"8C7qH","./index.js":"cd9OX","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6B358":[function(require,module,exports) {
+},{"../math.js":"74X19","../rotation.js":"8C7qH","./index.js":"cd9OX","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6B358":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "conicEquidistantRaw", ()=>conicEquidistantRaw);
@@ -30749,7 +30749,7 @@ function conicEquidistantRaw(y0, y1) {
     return project;
 }
 
-},{"../math.js":"74X19","./conic.js":"15g8N","./equirectangular.js":"4kEjS","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"4kEjS":[function(require,module,exports) {
+},{"../math.js":"74X19","./conic.js":"15g8N","./equirectangular.js":"4kEjS","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"4kEjS":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "equirectangularRaw", ()=>equirectangularRaw);
@@ -30766,7 +30766,7 @@ function equirectangularRaw(lambda, phi) {
 }
 equirectangularRaw.invert = equirectangularRaw;
 
-},{"./index.js":"cd9OX","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"bMVhy":[function(require,module,exports) {
+},{"./index.js":"cd9OX","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"bMVhy":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "equalEarthRaw", ()=>equalEarthRaw);
@@ -30798,7 +30798,7 @@ equalEarthRaw.invert = function(x, y) {
     ];
 };
 
-},{"./index.js":"cd9OX","../math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6bdgO":[function(require,module,exports) {
+},{"./index.js":"cd9OX","../math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6bdgO":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "gnomonicRaw", ()=>gnomonicRaw);
@@ -30818,7 +30818,7 @@ function gnomonicRaw(x, y) {
 }
 gnomonicRaw.invert = (0, _azimuthalJs.azimuthalInvert)((0, _mathJs.atan));
 
-},{"../math.js":"74X19","./azimuthal.js":"boRUu","./index.js":"cd9OX","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"huYSV":[function(require,module,exports) {
+},{"../math.js":"74X19","./azimuthal.js":"boRUu","./index.js":"cd9OX","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"huYSV":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function() {
@@ -30919,7 +30919,7 @@ var _transformJs = require("../transform.js");
 var _fitJs = require("./fit.js");
 var _mathJs = require("../math.js");
 
-},{"../clip/rectangle.js":"9kmAt","../identity.js":"kub29","../transform.js":"9MXXE","./fit.js":"49j0j","../math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"4AzsZ":[function(require,module,exports) {
+},{"../clip/rectangle.js":"9kmAt","../identity.js":"kub29","../transform.js":"9MXXE","./fit.js":"49j0j","../math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"4AzsZ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "naturalEarth1Raw", ()=>naturalEarth1Raw);
@@ -30948,7 +30948,7 @@ naturalEarth1Raw.invert = function(x, y) {
     ];
 };
 
-},{"./index.js":"cd9OX","../math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"kjinQ":[function(require,module,exports) {
+},{"./index.js":"cd9OX","../math.js":"74X19","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kjinQ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "orthographicRaw", ()=>orthographicRaw);
@@ -30967,7 +30967,7 @@ function orthographicRaw(x, y) {
 }
 orthographicRaw.invert = (0, _azimuthalJs.azimuthalInvert)((0, _mathJs.asin));
 
-},{"../math.js":"74X19","./azimuthal.js":"boRUu","./index.js":"cd9OX","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6ko7r":[function(require,module,exports) {
+},{"../math.js":"74X19","./azimuthal.js":"boRUu","./index.js":"cd9OX","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6ko7r":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "stereographicRaw", ()=>stereographicRaw);
@@ -30989,7 +30989,7 @@ stereographicRaw.invert = (0, _azimuthalJs.azimuthalInvert)(function(z) {
     return 2 * (0, _mathJs.atan)(z);
 });
 
-},{"../math.js":"74X19","./azimuthal.js":"boRUu","./index.js":"cd9OX","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"i6NVd":[function(require,module,exports) {
+},{"../math.js":"74X19","./azimuthal.js":"boRUu","./index.js":"cd9OX","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"i6NVd":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "transverseMercatorRaw", ()=>transverseMercatorRaw);
@@ -31036,7 +31036,7 @@ transverseMercatorRaw.invert = function(x, y) {
     ];
 };
 
-},{"../math.js":"74X19","./mercator.js":"iIGjZ","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"ixW8K":[function(require,module,exports) {
+},{"../math.js":"74X19","./mercator.js":"iIGjZ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"ixW8K":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "geoAiry", ()=>(0, _airyJsDefault.default));
@@ -31410,7 +31410,7 @@ var _wiechelJsDefault = parcelHelpers.interopDefault(_wiechelJs);
 var _winkel3Js = require("./winkel3.js");
 var _winkel3JsDefault = parcelHelpers.interopDefault(_winkel3Js);
 
-},{"./airy.js":false,"./aitoff.js":false,"./armadillo.js":false,"./august.js":false,"./baker.js":false,"./berghaus.js":false,"./bertin.js":false,"./boggs.js":false,"./bonne.js":false,"./bottomley.js":false,"./bromley.js":false,"./chamberlin.js":false,"./collignon.js":false,"./craig.js":false,"./craster.js":false,"./cylindricalEqualArea.js":false,"./cylindricalStereographic.js":false,"./eckert1.js":false,"./eckert2.js":false,"./eckert3.js":false,"./eckert4.js":false,"./eckert5.js":false,"./eckert6.js":false,"./eisenlohr.js":false,"./fahey.js":false,"./foucaut.js":false,"./foucautSinusoidal.js":false,"./gilbert.js":false,"./gingery.js":false,"./ginzburg4.js":false,"./ginzburg5.js":false,"./ginzburg6.js":false,"./ginzburg8.js":false,"./ginzburg9.js":false,"./gringorten.js":false,"./guyou.js":false,"./hammer.js":false,"./hammerRetroazimuthal.js":false,"./healpix.js":false,"./hill.js":false,"./homolosine.js":false,"./hufnagel.js":false,"./hyperelliptical.js":false,"./interrupted/index.js":false,"./interrupted/boggs.js":false,"./interrupted/homolosine.js":false,"./interrupted/mollweide.js":false,"./interrupted/mollweideHemispheres.js":false,"./interrupted/sinuMollweide.js":false,"./interrupted/sinusoidal.js":false,"./kavrayskiy7.js":false,"./lagrange.js":false,"./larrivee.js":false,"./laskowski.js":false,"./littrow.js":false,"./loximuthal.js":false,"./miller.js":false,"./modifiedStereographic.js":false,"./mollweide.js":"dkpmT","./mtFlatPolarParabolic.js":false,"./mtFlatPolarQuartic.js":false,"./mtFlatPolarSinusoidal.js":false,"./naturalEarth2.js":false,"./nellHammer.js":false,"./interrupted/quarticAuthalic.js":false,"./nicolosi.js":false,"./patterson.js":false,"./polyconic.js":false,"./polyhedral/index.js":false,"./polyhedral/butterfly.js":false,"./polyhedral/collignon.js":false,"./polyhedral/waterman.js":false,"./project/index.js":false,"./quincuncial/gringorten.js":false,"./quincuncial/peirce.js":false,"./quantize.js":false,"./quincuncial/index.js":false,"./rectangularPolyconic.js":false,"./robinson.js":false,"./satellite.js":false,"./sinuMollweide.js":false,"./sinusoidal.js":false,"./stitch.js":false,"./times.js":false,"./twoPointAzimuthal.js":false,"./twoPointEquidistant.js":false,"./vanDerGrinten.js":false,"./vanDerGrinten2.js":false,"./vanDerGrinten3.js":false,"./vanDerGrinten4.js":false,"./wagner.js":false,"./wagner4.js":false,"./wagner6.js":false,"./wiechel.js":false,"./winkel3.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dkpmT":[function(require,module,exports) {
+},{"./airy.js":false,"./aitoff.js":false,"./armadillo.js":false,"./august.js":false,"./baker.js":false,"./berghaus.js":false,"./bertin.js":false,"./boggs.js":false,"./bonne.js":false,"./bottomley.js":false,"./bromley.js":false,"./chamberlin.js":false,"./collignon.js":false,"./craig.js":false,"./craster.js":false,"./cylindricalEqualArea.js":false,"./cylindricalStereographic.js":false,"./eckert1.js":false,"./eckert2.js":false,"./eckert3.js":false,"./eckert4.js":false,"./eckert5.js":false,"./eckert6.js":false,"./eisenlohr.js":false,"./fahey.js":false,"./foucaut.js":false,"./foucautSinusoidal.js":false,"./gilbert.js":false,"./gingery.js":false,"./ginzburg4.js":false,"./ginzburg5.js":false,"./ginzburg6.js":false,"./ginzburg8.js":false,"./ginzburg9.js":false,"./gringorten.js":false,"./guyou.js":false,"./hammer.js":false,"./hammerRetroazimuthal.js":false,"./healpix.js":false,"./hill.js":false,"./homolosine.js":false,"./hufnagel.js":false,"./hyperelliptical.js":false,"./interrupted/index.js":false,"./interrupted/boggs.js":false,"./interrupted/homolosine.js":false,"./interrupted/mollweide.js":false,"./interrupted/mollweideHemispheres.js":false,"./interrupted/sinuMollweide.js":false,"./interrupted/sinusoidal.js":false,"./kavrayskiy7.js":false,"./lagrange.js":false,"./larrivee.js":false,"./laskowski.js":false,"./littrow.js":false,"./loximuthal.js":false,"./miller.js":false,"./modifiedStereographic.js":false,"./mollweide.js":"dkpmT","./mtFlatPolarParabolic.js":false,"./mtFlatPolarQuartic.js":false,"./mtFlatPolarSinusoidal.js":false,"./naturalEarth2.js":false,"./nellHammer.js":false,"./interrupted/quarticAuthalic.js":false,"./nicolosi.js":false,"./patterson.js":false,"./polyconic.js":false,"./polyhedral/index.js":false,"./polyhedral/butterfly.js":false,"./polyhedral/collignon.js":false,"./polyhedral/waterman.js":false,"./project/index.js":false,"./quincuncial/gringorten.js":false,"./quincuncial/peirce.js":false,"./quantize.js":false,"./quincuncial/index.js":false,"./rectangularPolyconic.js":false,"./robinson.js":false,"./satellite.js":false,"./sinuMollweide.js":false,"./sinusoidal.js":false,"./stitch.js":false,"./times.js":false,"./twoPointAzimuthal.js":false,"./twoPointEquidistant.js":false,"./vanDerGrinten.js":false,"./vanDerGrinten2.js":false,"./vanDerGrinten3.js":false,"./vanDerGrinten4.js":false,"./wagner.js":false,"./wagner4.js":false,"./wagner6.js":false,"./wiechel.js":false,"./winkel3.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dkpmT":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "mollweideBromleyTheta", ()=>mollweideBromleyTheta);
@@ -31444,7 +31444,7 @@ function mollweideBromleyRaw(cx, cy, cp) {
 }
 var mollweideRaw = mollweideBromleyRaw((0, _mathJs.sqrt2) / (0, _mathJs.halfPi), (0, _mathJs.sqrt2), (0, _mathJs.pi));
 
-},{"d3-geo":"lY61T","./math.js":"lq3g8","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lq3g8":[function(require,module,exports) {
+},{"d3-geo":"lY61T","./math.js":"lq3g8","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lq3g8":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "abs", ()=>abs);
@@ -31539,7 +31539,7 @@ function arcosh(x) {
     return log(x + sqrt(x * x - 1));
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"4JCry":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"4JCry":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "force", ()=>Force);
@@ -31852,7 +31852,7 @@ function setForceParam(f, v, _) {
     f((0, _vegaUtil.isFunction)(v) ? (d)=>v(d, _) : v);
 }
 
-},{"vega-dataflow":"3NitK","vega-util":"bApja","d3-force":"kTqQn","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"kTqQn":[function(require,module,exports) {
+},{"vega-dataflow":"3NitK","vega-util":"bApja","d3-force":"kTqQn","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kTqQn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "forceCenter", ()=>(0, _centerJsDefault.default));
@@ -31880,7 +31880,7 @@ var _xJsDefault = parcelHelpers.interopDefault(_xJs);
 var _yJs = require("./y.js");
 var _yJsDefault = parcelHelpers.interopDefault(_yJs);
 
-},{"./center.js":"cmuXj","./collide.js":"kAxiK","./link.js":"dpYez","./manyBody.js":"1XMYH","./radial.js":false,"./simulation.js":"k5O0L","./x.js":"byekK","./y.js":"eIzZp","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"cmuXj":[function(require,module,exports) {
+},{"./center.js":"cmuXj","./collide.js":"kAxiK","./link.js":"dpYez","./manyBody.js":"1XMYH","./radial.js":false,"./simulation.js":"k5O0L","./x.js":"byekK","./y.js":"eIzZp","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"cmuXj":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(x, y) {
@@ -31907,7 +31907,7 @@ parcelHelpers.export(exports, "default", ()=>function(x, y) {
         return force;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"kAxiK":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kAxiK":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(radius) {
@@ -31983,14 +31983,14 @@ function y(d) {
     return d.y + d.vy;
 }
 
-},{"d3-quadtree":"37u8M","./constant.js":"gq4mo","./jiggle.js":"2qIlb","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"37u8M":[function(require,module,exports) {
+},{"d3-quadtree":"37u8M","./constant.js":"gq4mo","./jiggle.js":"2qIlb","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"37u8M":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "quadtree", ()=>(0, _quadtreeJsDefault.default));
 var _quadtreeJs = require("./quadtree.js");
 var _quadtreeJsDefault = parcelHelpers.interopDefault(_quadtreeJs);
 
-},{"./quadtree.js":"3kHO8","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"3kHO8":[function(require,module,exports) {
+},{"./quadtree.js":"3kHO8","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"3kHO8":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>quadtree);
@@ -32077,7 +32077,7 @@ treeProto.visitAfter = (0, _visitAfterJsDefault.default);
 treeProto.x = (0, _xJsDefault.default);
 treeProto.y = (0, _yJsDefault.default);
 
-},{"./add.js":"5Rd7q","./cover.js":"bMVUj","./data.js":"8gCAF","./extent.js":"55OBQ","./find.js":"7wO3V","./remove.js":"aDV7k","./root.js":"i8Ybu","./size.js":"9DeOu","./visit.js":"4YvSz","./visitAfter.js":"fin30","./x.js":"39OFs","./y.js":"9VKON","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"5Rd7q":[function(require,module,exports) {
+},{"./add.js":"5Rd7q","./cover.js":"bMVUj","./data.js":"8gCAF","./extent.js":"55OBQ","./find.js":"7wO3V","./remove.js":"aDV7k","./root.js":"i8Ybu","./size.js":"9DeOu","./visit.js":"4YvSz","./visitAfter.js":"fin30","./x.js":"39OFs","./y.js":"9VKON","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5Rd7q":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(d) {
@@ -32135,7 +32135,7 @@ function addAll(data) {
     return this;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"bMVUj":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"bMVUj":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(x, y) {
@@ -32176,7 +32176,7 @@ parcelHelpers.export(exports, "default", ()=>function(x, y) {
         return this;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8gCAF":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8gCAF":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function() {
@@ -32188,7 +32188,7 @@ parcelHelpers.export(exports, "default", ()=>function() {
         return data;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"55OBQ":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"55OBQ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(_) {
@@ -32204,7 +32204,7 @@ parcelHelpers.export(exports, "default", ()=>function(_) {
         ];
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"7wO3V":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"7wO3V":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(x, y, radius) {
@@ -32244,7 +32244,7 @@ parcelHelpers.export(exports, "default", ()=>function(x, y, radius) {
 var _quadJs = require("./quad.js");
 var _quadJsDefault = parcelHelpers.interopDefault(_quadJs);
 
-},{"./quad.js":"ij3wf","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"ij3wf":[function(require,module,exports) {
+},{"./quad.js":"ij3wf","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"ij3wf":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(node, x0, y0, x1, y1) {
@@ -32255,7 +32255,7 @@ parcelHelpers.export(exports, "default", ()=>function(node, x0, y0, x1, y1) {
         this.y1 = y1;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"aDV7k":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"aDV7k":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(d) {
@@ -32296,14 +32296,14 @@ function removeAll(data) {
     return this;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"i8Ybu":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"i8Ybu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function() {
         return this._root;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9DeOu":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9DeOu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function() {
@@ -32315,7 +32315,7 @@ parcelHelpers.export(exports, "default", ()=>function() {
         return size;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"4YvSz":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"4YvSz":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(callback) {
@@ -32333,7 +32333,7 @@ parcelHelpers.export(exports, "default", ()=>function(callback) {
 var _quadJs = require("./quad.js");
 var _quadJsDefault = parcelHelpers.interopDefault(_quadJs);
 
-},{"./quad.js":"ij3wf","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"fin30":[function(require,module,exports) {
+},{"./quad.js":"ij3wf","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"fin30":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(callback) {
@@ -32356,7 +32356,7 @@ parcelHelpers.export(exports, "default", ()=>function(callback) {
 var _quadJs = require("./quad.js");
 var _quadJsDefault = parcelHelpers.interopDefault(_quadJs);
 
-},{"./quad.js":"ij3wf","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"39OFs":[function(require,module,exports) {
+},{"./quad.js":"ij3wf","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"39OFs":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "defaultX", ()=>defaultX);
@@ -32367,7 +32367,7 @@ function defaultX(d) {
     return d[0];
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9VKON":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9VKON":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "defaultY", ()=>defaultY);
@@ -32378,7 +32378,7 @@ function defaultY(d) {
     return d[1];
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gq4mo":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gq4mo":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(x) {
@@ -32387,14 +32387,14 @@ parcelHelpers.export(exports, "default", ()=>function(x) {
         };
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"2qIlb":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"2qIlb":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(random) {
         return (random() - 0.5) * 1e-6;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dpYez":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dpYez":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(links) {
@@ -32477,7 +32477,7 @@ function find(nodeById, nodeId) {
     return node;
 }
 
-},{"./constant.js":"gq4mo","./jiggle.js":"2qIlb","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"1XMYH":[function(require,module,exports) {
+},{"./constant.js":"gq4mo","./jiggle.js":"2qIlb","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1XMYH":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function() {
@@ -32562,7 +32562,7 @@ var _jiggleJs = require("./jiggle.js");
 var _jiggleJsDefault = parcelHelpers.interopDefault(_jiggleJs);
 var _simulationJs = require("./simulation.js");
 
-},{"d3-quadtree":"37u8M","./constant.js":"gq4mo","./jiggle.js":"2qIlb","./simulation.js":"k5O0L","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"k5O0L":[function(require,module,exports) {
+},{"d3-quadtree":"37u8M","./constant.js":"gq4mo","./jiggle.js":"2qIlb","./simulation.js":"k5O0L","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"k5O0L":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "x", ()=>x);
@@ -32676,14 +32676,14 @@ function y(d) {
 }
 var initialRadius = 10, initialAngle = Math.PI * (3 - Math.sqrt(5));
 
-},{"d3-dispatch":"i7nsc","d3-timer":"d15bJ","./lcg.js":"3KZNV","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"i7nsc":[function(require,module,exports) {
+},{"d3-dispatch":"i7nsc","d3-timer":"d15bJ","./lcg.js":"3KZNV","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"i7nsc":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "dispatch", ()=>(0, _dispatchJsDefault.default));
 var _dispatchJs = require("./dispatch.js");
 var _dispatchJsDefault = parcelHelpers.interopDefault(_dispatchJs);
 
-},{"./dispatch.js":"6iBKi","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6iBKi":[function(require,module,exports) {
+},{"./dispatch.js":"6iBKi","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6iBKi":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var noop = {
@@ -32761,7 +32761,7 @@ function set(type, name, callback) {
 }
 exports.default = dispatch;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"d15bJ":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"d15bJ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "now", ()=>(0, _timerJs.now));
@@ -32775,7 +32775,7 @@ var _timeoutJsDefault = parcelHelpers.interopDefault(_timeoutJs);
 var _intervalJs = require("./interval.js");
 var _intervalJsDefault = parcelHelpers.interopDefault(_intervalJs);
 
-},{"./timer.js":"1Lfpo","./timeout.js":false,"./interval.js":"dgSlx","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"1Lfpo":[function(require,module,exports) {
+},{"./timer.js":"1Lfpo","./timeout.js":false,"./interval.js":"dgSlx","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1Lfpo":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "now", ()=>now);
@@ -32871,7 +32871,7 @@ function sleep(time) {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dgSlx":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dgSlx":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(callback, delay, time) {
@@ -32891,7 +32891,7 @@ parcelHelpers.export(exports, "default", ()=>function(callback, delay, time) {
     });
 var _timerJs = require("./timer.js");
 
-},{"./timer.js":"1Lfpo","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"3KZNV":[function(require,module,exports) {
+},{"./timer.js":"1Lfpo","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"3KZNV":[function(require,module,exports) {
 // https://en.wikipedia.org/wiki/Linear_congruential_generator#Parameters_in_common_use
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
@@ -32903,7 +32903,7 @@ const a = 1664525;
 const c = 1013904223;
 const m = 4294967296; // 2^32
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"byekK":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"byekK":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(x) {
@@ -32934,7 +32934,7 @@ parcelHelpers.export(exports, "default", ()=>function(x) {
 var _constantJs = require("./constant.js");
 var _constantJsDefault = parcelHelpers.interopDefault(_constantJs);
 
-},{"./constant.js":"gq4mo","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"eIzZp":[function(require,module,exports) {
+},{"./constant.js":"gq4mo","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"eIzZp":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(y) {
@@ -32965,7 +32965,7 @@ parcelHelpers.export(exports, "default", ()=>function(y) {
 var _constantJs = require("./constant.js");
 var _constantJsDefault = parcelHelpers.interopDefault(_constantJs);
 
-},{"./constant.js":"gq4mo","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lserr":[function(require,module,exports) {
+},{"./constant.js":"gq4mo","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lserr":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "nest", ()=>Nest);
@@ -33561,7 +33561,7 @@ Treemap.Definition = {
     fields: Output
 });
 
-},{"vega-dataflow":"3NitK","vega-util":"bApja","d3-hierarchy":"4fr5p","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"4fr5p":[function(require,module,exports) {
+},{"vega-dataflow":"3NitK","vega-util":"bApja","d3-hierarchy":"4fr5p","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"4fr5p":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "cluster", ()=>(0, _clusterJsDefault.default));
@@ -33611,7 +33611,7 @@ var _squarifyJsDefault = parcelHelpers.interopDefault(_squarifyJs);
 var _resquarifyJs = require("./treemap/resquarify.js");
 var _resquarifyJsDefault = parcelHelpers.interopDefault(_resquarifyJs);
 
-},{"./cluster.js":"fviPU","./hierarchy/index.js":"jtgBj","./pack/index.js":"eQFOB","./pack/siblings.js":false,"./pack/enclose.js":false,"./partition.js":"hfHoW","./stratify.js":"1euRH","./tree.js":"5MDZW","./treemap/index.js":"ew6JB","./treemap/binary.js":"8vqlk","./treemap/dice.js":"c7pGx","./treemap/slice.js":"c9bya","./treemap/sliceDice.js":"fbNXv","./treemap/squarify.js":"dnoy6","./treemap/resquarify.js":"12ScZ","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"fviPU":[function(require,module,exports) {
+},{"./cluster.js":"fviPU","./hierarchy/index.js":"jtgBj","./pack/index.js":"eQFOB","./pack/siblings.js":false,"./pack/enclose.js":false,"./partition.js":"hfHoW","./stratify.js":"1euRH","./tree.js":"5MDZW","./treemap/index.js":"ew6JB","./treemap/binary.js":"8vqlk","./treemap/dice.js":"c7pGx","./treemap/slice.js":"c9bya","./treemap/sliceDice.js":"fbNXv","./treemap/squarify.js":"dnoy6","./treemap/resquarify.js":"12ScZ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"fviPU":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function() {
@@ -33683,7 +33683,7 @@ function leafRight(node) {
     return node;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"jtgBj":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"jtgBj":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>hierarchy);
@@ -33777,7 +33777,7 @@ Node.prototype = hierarchy.prototype = {
     [Symbol.iterator]: (0, _iteratorJsDefault.default)
 };
 
-},{"./count.js":"jNzMu","./each.js":"8q3O0","./eachBefore.js":"kBI99","./eachAfter.js":"goYvF","./find.js":"dotdr","./sum.js":"6wYAA","./sort.js":"ljhs0","./path.js":"ecIKT","./ancestors.js":"9BIjB","./descendants.js":"6MhHV","./leaves.js":"jpVT1","./links.js":"eJseT","./iterator.js":"aGwDK","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"jNzMu":[function(require,module,exports) {
+},{"./count.js":"jNzMu","./each.js":"8q3O0","./eachBefore.js":"kBI99","./eachAfter.js":"goYvF","./find.js":"dotdr","./sum.js":"6wYAA","./sort.js":"ljhs0","./path.js":"ecIKT","./ancestors.js":"9BIjB","./descendants.js":"6MhHV","./leaves.js":"jpVT1","./links.js":"eJseT","./iterator.js":"aGwDK","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"jNzMu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function() {
@@ -33790,7 +33790,7 @@ function count(node) {
     node.value = sum;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8q3O0":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8q3O0":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(callback, that) {
@@ -33799,7 +33799,7 @@ parcelHelpers.export(exports, "default", ()=>function(callback, that) {
         return this;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"kBI99":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kBI99":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(callback, that) {
@@ -33813,7 +33813,7 @@ parcelHelpers.export(exports, "default", ()=>function(callback, that) {
         return this;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"goYvF":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"goYvF":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(callback, that) {
@@ -33828,7 +33828,7 @@ parcelHelpers.export(exports, "default", ()=>function(callback, that) {
         return this;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dotdr":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dotdr":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(callback, that) {
@@ -33838,7 +33838,7 @@ parcelHelpers.export(exports, "default", ()=>function(callback, that) {
         }
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6wYAA":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6wYAA":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(value) {
@@ -33849,7 +33849,7 @@ parcelHelpers.export(exports, "default", ()=>function(value) {
         });
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"ljhs0":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"ljhs0":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(compare) {
@@ -33858,7 +33858,7 @@ parcelHelpers.export(exports, "default", ()=>function(compare) {
         });
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"ecIKT":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"ecIKT":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(end) {
@@ -33889,7 +33889,7 @@ function leastCommonAncestor(a, b) {
     return c;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9BIjB":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9BIjB":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function() {
@@ -33900,14 +33900,14 @@ parcelHelpers.export(exports, "default", ()=>function() {
         return nodes;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6MhHV":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6MhHV":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function() {
         return Array.from(this);
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"jpVT1":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"jpVT1":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function() {
@@ -33918,7 +33918,7 @@ parcelHelpers.export(exports, "default", ()=>function() {
         return leaves;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"eJseT":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"eJseT":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function() {
@@ -33932,7 +33932,7 @@ parcelHelpers.export(exports, "default", ()=>function() {
         return links;
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"aGwDK":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"aGwDK":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function*() {
@@ -33948,7 +33948,7 @@ parcelHelpers.export(exports, "default", ()=>function*() {
         }while (next.length);
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"eQFOB":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"eQFOB":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function() {
@@ -34010,7 +34010,7 @@ function translateChild(k) {
     };
 }
 
-},{"../accessors.js":"i242w","../constant.js":"i6Ely","../lcg.js":"9jKig","./siblings.js":"8RhM7","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"i242w":[function(require,module,exports) {
+},{"../accessors.js":"i242w","../constant.js":"i6Ely","../lcg.js":"9jKig","./siblings.js":"8RhM7","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"i242w":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "optional", ()=>optional);
@@ -34023,7 +34023,7 @@ function required(f) {
     return f;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"i6Ely":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"i6Ely":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "constantZero", ()=>constantZero);
@@ -34036,7 +34036,7 @@ function constantZero() {
     return 0;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9jKig":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9jKig":[function(require,module,exports) {
 // https://en.wikipedia.org/wiki/Linear_congruential_generator#Parameters_in_common_use
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
@@ -34048,7 +34048,7 @@ const a = 1664525;
 const c = 1013904223;
 const m = 4294967296; // 2^32
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8RhM7":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8RhM7":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "packSiblingsRandom", ()=>packSiblingsRandom);
@@ -34150,7 +34150,7 @@ function packSiblingsRandom(circles, random) {
     return c.r;
 }
 
-},{"../array.js":"4vcaT","../lcg.js":"9jKig","./enclose.js":"gBh5f","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"4vcaT":[function(require,module,exports) {
+},{"../array.js":"4vcaT","../lcg.js":"9jKig","./enclose.js":"gBh5f","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"4vcaT":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(x) {
@@ -34169,7 +34169,7 @@ function shuffle(array, random) {
     return array;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gBh5f":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gBh5f":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(circles) {
@@ -34259,7 +34259,7 @@ function encloseBasis3(a, b, c) {
     };
 }
 
-},{"../array.js":"4vcaT","../lcg.js":"9jKig","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"hfHoW":[function(require,module,exports) {
+},{"../array.js":"4vcaT","../lcg.js":"9jKig","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"hfHoW":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function() {
@@ -34304,7 +34304,7 @@ var _roundJsDefault = parcelHelpers.interopDefault(_roundJs);
 var _diceJs = require("./treemap/dice.js");
 var _diceJsDefault = parcelHelpers.interopDefault(_diceJs);
 
-},{"./treemap/round.js":"9PNun","./treemap/dice.js":"c7pGx","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9PNun":[function(require,module,exports) {
+},{"./treemap/round.js":"9PNun","./treemap/dice.js":"c7pGx","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9PNun":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(node) {
@@ -34314,7 +34314,7 @@ parcelHelpers.export(exports, "default", ()=>function(node) {
         node.y1 = Math.round(node.y1);
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"c7pGx":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"c7pGx":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(parent, x0, y0, x1, y1) {
@@ -34325,7 +34325,7 @@ parcelHelpers.export(exports, "default", ()=>function(parent, x0, y0, x1, y1) {
         }
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"1euRH":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1euRH":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function() {
@@ -34441,7 +34441,7 @@ function slash(path, i) {
     return false;
 }
 
-},{"./accessors.js":"i242w","./hierarchy/index.js":"jtgBj","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"5MDZW":[function(require,module,exports) {
+},{"./accessors.js":"i242w","./hierarchy/index.js":"jtgBj","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5MDZW":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // Node-link tree diagram using the Reingold-Tilford "tidy" algorithm
@@ -34630,7 +34630,7 @@ function treeRoot(root) {
     return tree;
 }
 
-},{"./hierarchy/index.js":"jtgBj","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"ew6JB":[function(require,module,exports) {
+},{"./hierarchy/index.js":"jtgBj","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"ew6JB":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function() {
@@ -34710,7 +34710,7 @@ var _accessorsJs = require("../accessors.js");
 var _constantJs = require("../constant.js");
 var _constantJsDefault = parcelHelpers.interopDefault(_constantJs);
 
-},{"./round.js":"9PNun","./squarify.js":"dnoy6","../accessors.js":"i242w","../constant.js":"i6Ely","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dnoy6":[function(require,module,exports) {
+},{"./round.js":"9PNun","./squarify.js":"dnoy6","../accessors.js":"i242w","../constant.js":"i6Ely","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dnoy6":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "phi", ()=>phi);
@@ -34766,7 +34766,7 @@ exports.default = function custom(ratio) {
     return squarify;
 }(phi);
 
-},{"./dice.js":"c7pGx","./slice.js":"c9bya","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"c9bya":[function(require,module,exports) {
+},{"./dice.js":"c7pGx","./slice.js":"c9bya","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"c9bya":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(parent, x0, y0, x1, y1) {
@@ -34777,7 +34777,7 @@ parcelHelpers.export(exports, "default", ()=>function(parent, x0, y0, x1, y1) {
         }
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8vqlk":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8vqlk":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(parent, x0, y0, x1, y1) {
@@ -34811,7 +34811,7 @@ parcelHelpers.export(exports, "default", ()=>function(parent, x0, y0, x1, y1) {
         }
     });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"fbNXv":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"fbNXv":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(parent, x0, y0, x1, y1) {
@@ -34822,7 +34822,7 @@ var _diceJsDefault = parcelHelpers.interopDefault(_diceJs);
 var _sliceJs = require("./slice.js");
 var _sliceJsDefault = parcelHelpers.interopDefault(_sliceJs);
 
-},{"./dice.js":"c7pGx","./slice.js":"c9bya","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"12ScZ":[function(require,module,exports) {
+},{"./dice.js":"c7pGx","./slice.js":"c9bya","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"12ScZ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _diceJs = require("./dice.js");
@@ -34852,7 +34852,7 @@ exports.default = function custom(ratio) {
     return resquarify;
 }((0, _squarifyJs.phi));
 
-},{"./dice.js":"c7pGx","./slice.js":"c9bya","./squarify.js":"dnoy6","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lZyUZ":[function(require,module,exports) {
+},{"./dice.js":"c7pGx","./slice.js":"c9bya","./squarify.js":"dnoy6","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lZyUZ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "label", ()=>Label);
@@ -35575,7 +35575,7 @@ Label.Definition = {
     }
 });
 
-},{"vega-scenegraph":"jattk","vega-canvas":"kPWfS","vega-dataflow":"3NitK","vega-util":"bApja","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"elv3U":[function(require,module,exports) {
+},{"vega-scenegraph":"jattk","vega-canvas":"kPWfS","vega-dataflow":"3NitK","vega-util":"bApja","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"elv3U":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "loess", ()=>Loess);
@@ -35796,7 +35796,7 @@ Regression.Definition = {
     }
 });
 
-},{"vega-statistics":"5ncfv","vega-dataflow":"3NitK","vega-util":"bApja","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"96rkJ":[function(require,module,exports) {
+},{"vega-statistics":"5ncfv","vega-dataflow":"3NitK","vega-util":"bApja","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"96rkJ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "voronoi", ()=>Voronoi);
@@ -35900,7 +35900,7 @@ function isPoint(p) {
     return p.length === 2 && p[0][0] === p[1][0] && p[0][1] === p[1][1];
 }
 
-},{"vega-dataflow":"3NitK","vega-util":"bApja","d3-delaunay":"9qKHu","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9qKHu":[function(require,module,exports) {
+},{"vega-dataflow":"3NitK","vega-util":"bApja","d3-delaunay":"9qKHu","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9qKHu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Delaunay", ()=>(0, _delaunayJsDefault.default));
@@ -35910,7 +35910,7 @@ var _delaunayJsDefault = parcelHelpers.interopDefault(_delaunayJs);
 var _voronoiJs = require("./voronoi.js");
 var _voronoiJsDefault = parcelHelpers.interopDefault(_voronoiJs);
 
-},{"./delaunay.js":"1eiyj","./voronoi.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"1eiyj":[function(require,module,exports) {
+},{"./delaunay.js":"1eiyj","./voronoi.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1eiyj":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _delaunator = require("delaunator");
@@ -36148,7 +36148,7 @@ function* flatIterable(points, fx, fy, that) {
     }
 }
 
-},{"delaunator":"auyGo","./path.js":"60Yfe","./polygon.js":"5nsXD","./voronoi.js":"a33Bo","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"auyGo":[function(require,module,exports) {
+},{"delaunator":"auyGo","./path.js":"60Yfe","./polygon.js":"5nsXD","./voronoi.js":"a33Bo","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"auyGo":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _robustPredicates = require("robust-predicates");
@@ -36540,7 +36540,7 @@ function defaultGetY(p) {
     return p[1];
 }
 
-},{"robust-predicates":"KLZHK","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"KLZHK":[function(require,module,exports) {
+},{"robust-predicates":"KLZHK","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"KLZHK":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "orient2d", ()=>(0, _orient2DJs.orient2d));
@@ -36556,7 +36556,7 @@ var _orient3DJs = require("./esm/orient3d.js");
 var _incircleJs = require("./esm/incircle.js");
 var _insphereJs = require("./esm/insphere.js");
 
-},{"./esm/orient2d.js":"9dV6v","./esm/orient3d.js":"60Ijp","./esm/incircle.js":"eSgV9","./esm/insphere.js":"lKwEh","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9dV6v":[function(require,module,exports) {
+},{"./esm/orient2d.js":"9dV6v","./esm/orient3d.js":"60Ijp","./esm/incircle.js":"eSgV9","./esm/insphere.js":"lKwEh","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9dV6v":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "orient2d", ()=>orient2d);
@@ -36725,7 +36725,7 @@ function orient2dfast(ax, ay, bx, by, cx, cy) {
     return (ay - cy) * (bx - cx) - (ax - cx) * (by - cy);
 }
 
-},{"./util.js":"3WWl7","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"3WWl7":[function(require,module,exports) {
+},{"./util.js":"3WWl7","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"3WWl7":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "epsilon", ()=>epsilon);
@@ -36851,7 +36851,7 @@ function vec(n) {
     return new Float64Array(n);
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"60Ijp":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"60Ijp":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "orient3d", ()=>orient3d);
@@ -37250,7 +37250,7 @@ function orient3dfast(ax, ay, az, bx, by, bz, cx, cy, cz, dx, dy, dz) {
     return adx * (bdy * cdz - bdz * cdy) + bdx * (cdy * adz - cdz * ady) + cdx * (ady * bdz - adz * bdy);
 }
 
-},{"./util.js":"3WWl7","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"eSgV9":[function(require,module,exports) {
+},{"./util.js":"3WWl7","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"eSgV9":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "incircle", ()=>incircle);
@@ -37896,7 +37896,7 @@ function incirclefast(ax, ay, bx, by, cx, cy, dx, dy) {
     return alift * bcdet + blift * cadet + clift * abdet;
 }
 
-},{"./util.js":"3WWl7","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lKwEh":[function(require,module,exports) {
+},{"./util.js":"3WWl7","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lKwEh":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "insphere", ()=>insphere);
@@ -38580,7 +38580,7 @@ function inspherefast(pax, pay, paz, pbx, pby, pbz, pcx, pcy, pcz, pdx, pdy, pdz
     return clift * dab - dlift * abc + (alift * bcd - blift * cda);
 }
 
-},{"./util.js":"3WWl7","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"60Yfe":[function(require,module,exports) {
+},{"./util.js":"3WWl7","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"60Yfe":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 const epsilon = 1e-6;
@@ -38620,7 +38620,7 @@ class Path {
 }
 exports.default = Path;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"5nsXD":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5nsXD":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class Polygon {
@@ -38648,7 +38648,7 @@ class Polygon {
 }
 exports.default = Polygon;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"a33Bo":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"a33Bo":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _pathJs = require("./path.js");
@@ -39032,7 +39032,7 @@ class Voronoi {
 }
 exports.default = Voronoi;
 
-},{"./path.js":"60Yfe","./polygon.js":"5nsXD","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"7Z7Aq":[function(require,module,exports) {
+},{"./path.js":"60Yfe","./polygon.js":"5nsXD","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"7Z7Aq":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "wordcloud", ()=>Wordcloud);
@@ -39517,7 +39517,7 @@ Wordcloud.Definition = {
     }
 });
 
-},{"vega-canvas":"kPWfS","vega-dataflow":"3NitK","vega-util":"bApja","vega-scale":"bEydG","vega-statistics":"5ncfv","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8iEZv":[function(require,module,exports) {
+},{"vega-canvas":"kPWfS","vega-dataflow":"3NitK","vega-util":"bApja","vega-scale":"bEydG","vega-statistics":"5ncfv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8iEZv":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "crossfilter", ()=>CrossFilter);
@@ -40025,7 +40025,7 @@ ResolveFilter.Definition = {
     }
 });
 
-},{"d3-array":"6IwJG","vega-dataflow":"3NitK","vega-util":"bApja","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"cGC2i":[function(require,module,exports) {
+},{"d3-array":"6IwJG","vega-dataflow":"3NitK","vega-util":"bApja","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"cGC2i":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "View", ()=>View);
@@ -41150,7 +41150,7 @@ function removeOperatorListener(view, op, handler) {
     _watchPixelRatio: watchPixelRatio
 });
 
-},{"vega-util":"bApja","vega-dataflow":"3NitK","vega-scenegraph":"jattk","d3-array":"6IwJG","vega-functions":"iuqsd","vega-runtime":"k7ppL","d3-timer":"d15bJ","vega-format":"47kOt","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"iuqsd":[function(require,module,exports) {
+},{"vega-util":"bApja","vega-dataflow":"3NitK","vega-scenegraph":"jattk","d3-array":"6IwJG","vega-functions":"iuqsd","vega-runtime":"k7ppL","d3-timer":"d15bJ","vega-format":"47kOt","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"iuqsd":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "DataPrefix", ()=>DataPrefix);
@@ -41899,7 +41899,7 @@ function parser(expr, scope) {
     };
 }
 
-},{"vega-util":"bApja","vega-expression":"2l1no","vega-scale":"bEydG","d3-geo":"lY61T","d3-color":"7SCp9","vega-dataflow":"3NitK","vega-scenegraph":"jattk","vega-selections":"674qo","vega-statistics":"5ncfv","vega-time":"27kpp","d3-array":"6IwJG","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"2l1no":[function(require,module,exports) {
+},{"vega-util":"bApja","vega-expression":"2l1no","vega-scale":"bEydG","d3-geo":"lY61T","d3-color":"7SCp9","vega-dataflow":"3NitK","vega-scenegraph":"jattk","vega-selections":"674qo","vega-statistics":"5ncfv","vega-time":"27kpp","d3-array":"6IwJG","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"2l1no":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ASTNode", ()=>ASTNode);
@@ -43197,7 +43197,7 @@ function codegen(opt) {
     return codegen;
 }
 
-},{"vega-util":"bApja","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"674qo":[function(require,module,exports) {
+},{"vega-util":"bApja","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"674qo":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "selectionIdTest", ()=>selectionIdTest);
@@ -43448,7 +43448,7 @@ function selectionVisitor(name, args, scope, params) {
     if (!(0, _vegaUtil.hasOwnProperty)(params, dataName)) params[dataName] = scope.getData(data).tuplesRef();
 }
 
-},{"d3-array":"6IwJG","vega-util":"bApja","vega-expression":"2l1no","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"k7ppL":[function(require,module,exports) {
+},{"d3-array":"6IwJG","vega-util":"bApja","vega-expression":"2l1no","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"k7ppL":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "context", ()=>context);
@@ -43935,7 +43935,7 @@ Context.prototype = Subcontext.prototype = {
     setState
 };
 
-},{"vega-util":"bApja","vega-dataflow":"3NitK","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"hsy9Z":[function(require,module,exports) {
+},{"vega-util":"bApja","vega-dataflow":"3NitK","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"hsy9Z":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "AxisDomainRole", ()=>AxisDomainRole);
@@ -47245,7 +47245,7 @@ function parse(spec, config, options) {
     return parseView(spec, new Scope(config, options)).toRuntime();
 }
 
-},{"vega-util":"bApja","vega-functions":"iuqsd","vega-event-selector":"gXMNx","vega-scale":"bEydG","vega-dataflow":"3NitK","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gXMNx":[function(require,module,exports) {
+},{"vega-util":"bApja","vega-functions":"iuqsd","vega-event-selector":"gXMNx","vega-scale":"bEydG","vega-dataflow":"3NitK","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gXMNx":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "parseSelector", ()=>eventSelector);
@@ -47394,7 +47394,7 @@ function parseThrottle(s) {
     });
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6PUnN":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"hJmrG":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -47420,7 +47420,7 @@ var _enums = require("./enums");
 parcelHelpers.exportAll(_enums, exports);
 var _version = require("./version");
 
-},{"./exports/controls":"esMcX","./exports/types":"90jrf","./exports/util":"fRDNt","./defaults":"bCuK9","./base":"32CD9","./presenter":"lNzvd","./vega-classes/viewGl":"7dKFA","./enums":"2wJ1O","./version":"3YB2I","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"esMcX":[function(require,module,exports) {
+},{"./exports/controls":"kh1k4","./exports/types":"eF7HM","./exports/util":"2K0TB","./defaults":"hbgLz","./base":"gkoRq","./presenter":"efiq9","./vega-classes/viewGl":"dQVP7","./enums":"392rV","./version":"6exti","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kh1k4":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -47433,7 +47433,7 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Table", ()=>(0, _controls.Table));
 var _controls = require("../controls");
 
-},{"../controls":"fVHQm","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"fVHQm":[function(require,module,exports) {
+},{"../controls":"h7GTq","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"h7GTq":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -47460,7 +47460,7 @@ const Table = (props)=>{
             }, cell.content)))));
 };
 
-},{"tsx-create-element":"3h0lN","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"3h0lN":[function(require,module,exports) {
+},{"tsx-create-element":"g6Tzv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"g6Tzv":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "createElement", ()=>createElement);
@@ -47584,20 +47584,20 @@ function tagNamespace(tag) {
     if (tag === "svg" || svgTagArray.indexOf(tag) >= 0 && !(htmlTagArray.indexOf(tag) >= 0)) return "http://www.w3.org/2000/svg";
 }
 
-},{"html-tags":"lE0Ms","svg-tags":"1XLYg","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lE0Ms":[function(require,module,exports) {
+},{"html-tags":"1FBfQ","svg-tags":"6mjzz","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1FBfQ":[function(require,module,exports) {
 "use strict";
 module.exports = require("3e2ea781b6c21086");
 
-},{"3e2ea781b6c21086":"jihZo"}],"jihZo":[function(require,module,exports) {
+},{"3e2ea781b6c21086":"keMvH"}],"keMvH":[function(require,module,exports) {
 module.exports = JSON.parse('["a","abbr","address","area","article","aside","audio","b","base","bdi","bdo","blockquote","body","br","button","canvas","caption","cite","code","col","colgroup","data","datalist","dd","del","details","dfn","dialog","div","dl","dt","em","embed","fieldset","figcaption","figure","footer","form","h1","h2","h3","h4","h5","h6","head","header","hgroup","hr","html","i","iframe","img","input","ins","kbd","keygen","label","legend","li","link","main","map","mark","math","menu","menuitem","meta","meter","nav","noscript","object","ol","optgroup","option","output","p","param","picture","pre","progress","q","rb","rp","rt","rtc","ruby","s","samp","script","section","select","slot","small","source","span","strong","style","sub","summary","sup","svg","table","tbody","td","template","textarea","tfoot","th","thead","time","title","tr","track","u","ul","var","video","wbr"]');
 
-},{}],"1XLYg":[function(require,module,exports) {
+},{}],"6mjzz":[function(require,module,exports) {
 module.exports = require("3e135a7848ae9a60");
 
-},{"3e135a7848ae9a60":"3VfmN"}],"3VfmN":[function(require,module,exports) {
+},{"3e135a7848ae9a60":"bYICv"}],"bYICv":[function(require,module,exports) {
 module.exports = JSON.parse('["a","altGlyph","altGlyphDef","altGlyphItem","animate","animateColor","animateMotion","animateTransform","circle","clipPath","color-profile","cursor","defs","desc","ellipse","feBlend","feColorMatrix","feComponentTransfer","feComposite","feConvolveMatrix","feDiffuseLighting","feDisplacementMap","feDistantLight","feFlood","feFuncA","feFuncB","feFuncG","feFuncR","feGaussianBlur","feImage","feMerge","feMergeNode","feMorphology","feOffset","fePointLight","feSpecularLighting","feSpotLight","feTile","feTurbulence","filter","font","font-face","font-face-format","font-face-name","font-face-src","font-face-uri","foreignObject","g","glyph","glyphRef","hkern","image","line","linearGradient","marker","mask","metadata","missing-glyph","mpath","path","pattern","polygon","polyline","radialGradient","rect","script","set","stop","style","svg","switch","symbol","text","textPath","title","tref","tspan","use","view","vkern"]');
 
-},{}],"90jrf":[function(require,module,exports) {
+},{}],"eF7HM":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -47610,7 +47610,7 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "MorphChartsCore", ()=>(0, _interfaces.MorphChartsCore));
 var _interfaces = require("../interfaces");
 
-},{"../interfaces":"mkr0A","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"mkr0A":[function(require,module,exports) {
+},{"../interfaces":"1BtcU","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1BtcU":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -47619,7 +47619,7 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "MorphChartsCore", ()=>(0, _morphcharts.Core));
 var _morphcharts = require("morphcharts");
 
-},{"morphcharts":"8ibZ5","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8ibZ5":[function(require,module,exports) {
+},{"morphcharts":"kTZen","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kTZen":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -47689,7 +47689,7 @@ var _indexJs7 = require("./renderers/index.js");
 var _indexJs8 = require("./tables/index.js");
 var _indexJs9 = require("./cameras/index.js");
 
-},{"./main.js":"lOZlB","./palette.js":"l54EU","./config.js":"5tBxi","./constants.js":"1uWIa","./colors.js":"2BVtY","./font.js":"jA2Lc","./map.js":"56WSB","./icons.js":"eJDtx","./components/index.js":"xnyWF","./components/axes/index.js":"j3Cf5","./helpers/index.js":"ftARq","./layouts/index.js":"4x3ck","./input/index.js":"cg0F8","./providers/index.js":"g2gld","./meshes/index.js":"jX5L8","./renderers/index.js":"7NmZt","./tables/index.js":"19Viv","./cameras/index.js":"edjTY","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lOZlB":[function(require,module,exports) {
+},{"./main.js":"2fAke","./palette.js":"kCK9i","./config.js":"a9wf8","./constants.js":"avg3j","./colors.js":"gsxzG","./font.js":"58IiL","./map.js":"k5H5C","./icons.js":"aC401","./components/index.js":"f5oyi","./components/axes/index.js":"ckbIB","./helpers/index.js":"jn1sN","./layouts/index.js":"i4m7c","./input/index.js":"6jblV","./providers/index.js":"fnqOe","./meshes/index.js":"flCvt","./renderers/index.js":"csYjJ","./tables/index.js":"lSHrT","./cameras/index.js":"3sZZ9","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"2fAke":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -48316,7 +48316,7 @@ const HexOrientation = {
     flatTop: "flatTop"
 };
 
-},{"gl-matrix":"jLybM","./cameras/altazimuth.js":"lskrt","./config.js":"5tBxi","./constants.js":"1uWIa","./debug.js":"ampT7","./fps.js":"dWILY","./helpers/angle.js":"577wE","./palette.js":"l54EU","./components/controller.js":"fwH1e","./helpers/matrix.js":"aNeWb","./components/axes/cartesian3d.js":"8QG4a","./components/axes/cartesian2d.js":"7Cdtk","./font.js":"jA2Lc","./vertex.js":"2PocE","./input/manager.js":"iRJee","./log.js":"aFYn0","./helpers/math.js":"5Chcr","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"jLybM":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","./cameras/altazimuth.js":"6pF7U","./config.js":"a9wf8","./constants.js":"avg3j","./debug.js":"6KTHp","./fps.js":"CwL6d","./helpers/angle.js":"gNCrX","./palette.js":"kCK9i","./components/controller.js":"5UvTZ","./helpers/matrix.js":"OxZ67","./components/axes/cartesian3d.js":"hZwOa","./components/axes/cartesian2d.js":"2XnIL","./font.js":"58IiL","./vertex.js":"eoXRv","./input/manager.js":"5NTeJ","./log.js":"GLrpF","./helpers/math.js":"9ea39","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"hTT1l":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "glMatrix", ()=>_commonJs);
@@ -48340,7 +48340,7 @@ var _vec2Js = require("./vec2.js");
 var _vec3Js = require("./vec3.js");
 var _vec4Js = require("./vec4.js");
 
-},{"./common.js":"8y02R","./mat2.js":false,"./mat2d.js":false,"./mat3.js":"6XSqq","./mat4.js":"5HU98","./quat.js":"11C9E","./quat2.js":false,"./vec2.js":"8Cg5O","./vec3.js":"wgNYL","./vec4.js":"lShTY","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8y02R":[function(require,module,exports) {
+},{"./common.js":"akufh","./mat2.js":false,"./mat2d.js":false,"./mat3.js":"kwegu","./mat4.js":"8dRMo","./quat.js":"2QbzB","./quat2.js":false,"./vec2.js":"gea85","./vec3.js":"iDllf","./vec4.js":"lhG4D","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"akufh":[function(require,module,exports) {
 /**
  * Common utilities
  * @module glMatrix
@@ -48388,7 +48388,7 @@ if (!Math.hypot) Math.hypot = function() {
     return Math.sqrt(y);
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6XSqq":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kwegu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 /**
@@ -49032,7 +49032,7 @@ function equals(a, b) {
 var mul = multiply;
 var sub = subtract;
 
-},{"./common.js":"8y02R","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"5HU98":[function(require,module,exports) {
+},{"./common.js":"akufh","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8dRMo":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 /**
@@ -50708,7 +50708,7 @@ function equals(a, b) {
 var mul = multiply;
 var sub = subtract;
 
-},{"./common.js":"8y02R","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"11C9E":[function(require,module,exports) {
+},{"./common.js":"akufh","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"2QbzB":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 /**
@@ -51198,7 +51198,7 @@ var setAxes = function() {
     };
 }();
 
-},{"./common.js":"8y02R","./mat3.js":"6XSqq","./vec3.js":"wgNYL","./vec4.js":"lShTY","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"wgNYL":[function(require,module,exports) {
+},{"./common.js":"akufh","./mat3.js":"kwegu","./vec3.js":"iDllf","./vec4.js":"lhG4D","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"iDllf":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 /**
@@ -51842,7 +51842,7 @@ var forEach = function() {
     };
 }();
 
-},{"./common.js":"8y02R","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lShTY":[function(require,module,exports) {
+},{"./common.js":"akufh","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lhG4D":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 /**
@@ -52391,7 +52391,7 @@ var forEach = function() {
     };
 }();
 
-},{"./common.js":"8y02R","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8Cg5O":[function(require,module,exports) {
+},{"./common.js":"akufh","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gea85":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 /**
@@ -52901,7 +52901,7 @@ var forEach = function() {
     };
 }();
 
-},{"./common.js":"8y02R","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lskrt":[function(require,module,exports) {
+},{"./common.js":"akufh","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6pF7U":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -52976,7 +52976,7 @@ class AltAzimuthCamera extends (0, _cameraJs.CameraBase) {
     }
 }
 
-},{"gl-matrix":"jLybM","../constants.js":"1uWIa","../helpers/angle.js":"577wE","../helpers/math.js":"5Chcr","./camera.js":"fixqI","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"1uWIa":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../constants.js":"avg3j","../helpers/angle.js":"gNCrX","../helpers/math.js":"9ea39","./camera.js":"kIEih","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"avg3j":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -53030,7 +53030,7 @@ Constants.QUAT_ROTATEZ_PLUS_90 = (0, _glMatrix.quat).fromValues(0, 0, Constants.
 Constants.QUAT_ROTATEZ_MINUS_90 = (0, _glMatrix.quat).fromValues(0, 0, -Constants.ROOT_TWO_OVER_TWO, Constants.ROOT_TWO_OVER_TWO);
 Constants.MILLISECONDS_PER_DAY = 86400000;
 
-},{"gl-matrix":"jLybM","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"577wE":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gNCrX":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -53084,7 +53084,7 @@ class AngleHelper {
 }
 AngleHelper._vec3 = (0, _glMatrix.vec3).create();
 
-},{"gl-matrix":"jLybM","./math.js":"5Chcr","../constants.js":"1uWIa","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"5Chcr":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","./math.js":"9ea39","../constants.js":"avg3j","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9ea39":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -53135,7 +53135,7 @@ class PseudoRandom {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"fixqI":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kIEih":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -53399,7 +53399,7 @@ class CameraBase {
     }
 }
 
-},{"gl-matrix":"jLybM","../main.js":"lOZlB","../constants.js":"1uWIa","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"5tBxi":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../main.js":"2fAke","../constants.js":"avg3j","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"a9wf8":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -53549,7 +53549,7 @@ class Config {
     }
 }
 
-},{"gl-matrix":"jLybM","./constants.js":"1uWIa","./main.js":"lOZlB","./helpers/angle.js":"577wE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"ampT7":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","./constants.js":"avg3j","./main.js":"2fAke","./helpers/angle.js":"gNCrX","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6KTHp":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -53571,7 +53571,7 @@ class DebugText {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dWILY":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"CwL6d":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -53610,7 +53610,7 @@ class Fps {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"l54EU":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kCK9i":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -55004,7 +55004,7 @@ class PaletteBase {
 class Palette extends PaletteBase {
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"fwH1e":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5UvTZ":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -55148,7 +55148,7 @@ f 5/6/6 1/12/6 8/11/6`;
     update(elapsedTime) {}
 }
 
-},{"../main.js":"lOZlB","../helpers/obj.js":"2LAg1","gl-matrix":"jLybM","../meshes/cube.js":"bfC1c","../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"2LAg1":[function(require,module,exports) {
+},{"../main.js":"2fAke","../helpers/obj.js":"iBOvK","gl-matrix":"hTT1l","../meshes/cube.js":"cBfXV","../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"iBOvK":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -55279,7 +55279,7 @@ class ObjHelper {
     }
 }
 
-},{"gl-matrix":"jLybM","../main.js":"lOZlB","../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"2PocE":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../main.js":"2fAke","../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"eoXRv":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -55714,7 +55714,7 @@ UnitVertex.ROUNDING_OFFSET_BYTES = 44;
 UnitVertex.ROTATION_OFFSET_BYTES = 48;
 UnitVertex.TEXCOORD_OFFSET_BYTES = 64;
 
-},{"gl-matrix":"jLybM","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"bfC1c":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"cBfXV":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -56020,7 +56020,7 @@ Cube.EDGE_FORWARDS = [
     (0, _glMatrix.vec3).fromValues(-(0, _constantsJs.Constants).ROOT_TWO_OVER_TWO, 0, -(0, _constantsJs.Constants).ROOT_TWO_OVER_TWO)
 ];
 
-},{"gl-matrix":"jLybM","../constants.js":"1uWIa","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"aNeWb":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../constants.js":"avg3j","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"OxZ67":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -56033,7 +56033,7 @@ class MatrixHelper {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8QG4a":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"hZwOa":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -57267,7 +57267,7 @@ class Cartesian3dAxes extends (0, _axesJs.AxesBase) {
     }
 }
 
-},{"gl-matrix":"jLybM","../../constants.js":"1uWIa","../../main.js":"lOZlB","./axes.js":"hZgZF","../../meshes/quad.js":"43617","../../meshes/cube.js":"bfC1c","../../vertex.js":"2PocE","../../helpers/axes.js":"151NA","../../helpers/text.js":"jzx4e","../../helpers/pick.js":"gcIe7","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"hZgZF":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../../constants.js":"avg3j","../../main.js":"2fAke","./axes.js":"lS2l3","../../meshes/quad.js":"4ojX4","../../meshes/cube.js":"cBfXV","../../vertex.js":"eoXRv","../../helpers/axes.js":"BhBNU","../../helpers/text.js":"5Oa8P","../../helpers/pick.js":"5Z0WN","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lS2l3":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -57373,7 +57373,7 @@ class AxesBase {
     update(elapsedTime) {}
 }
 
-},{"gl-matrix":"jLybM","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"43617":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"4ojX4":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -57583,7 +57583,7 @@ class Grid {
     }
 }
 
-},{"gl-matrix":"jLybM","../constants.js":"1uWIa","../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"151NA":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../constants.js":"avg3j","../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"BhBNU":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -57664,7 +57664,7 @@ class AxisHelper {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"jzx4e":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5Oa8P":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -57790,7 +57790,7 @@ TextHelper._topRight = (0, _glMatrix.vec3).create();
 TextHelper._bottomLeft = (0, _glMatrix.vec3).create();
 TextHelper._bottomRight = (0, _glMatrix.vec3).create();
 
-},{"gl-matrix":"jLybM","../vertex.js":"2PocE","../meshes/quad.js":"43617","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gcIe7":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../vertex.js":"eoXRv","../meshes/quad.js":"4ojX4","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5Z0WN":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -57835,7 +57835,7 @@ class PickHelper {
 }
 PickHelper._pickId = 1;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"7Cdtk":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"2XnIL":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -58977,7 +58977,7 @@ class Cartesian2dAxes extends (0, _axesJs.AxesBase) {
     }
 }
 
-},{"gl-matrix":"jLybM","../../constants.js":"1uWIa","../../main.js":"lOZlB","./axes.js":"hZgZF","../../meshes/quad.js":"43617","../../vertex.js":"2PocE","../../helpers/axes.js":"151NA","../../helpers/text.js":"jzx4e","../../helpers/pick.js":"gcIe7","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"jA2Lc":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../../constants.js":"avg3j","../../main.js":"2fAke","./axes.js":"lS2l3","../../meshes/quad.js":"4ojX4","../../vertex.js":"eoXRv","../../helpers/axes.js":"BhBNU","../../helpers/text.js":"5Oa8P","../../helpers/pick.js":"5Z0WN","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"58IiL":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -59269,7 +59269,7 @@ class GlyphRasterizer {
     }
 }
 
-},{"./main.js":"lOZlB","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"iRJee":[function(require,module,exports) {
+},{"./main.js":"2fAke","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5NTeJ":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -59595,7 +59595,7 @@ class Manager {
     }
 }
 
-},{"gl-matrix":"jLybM","../main.js":"lOZlB","./manipulationprocessor.js":"gwqOM","./mousewheel.js":"aJhXs","./pointers.js":"1Oeg6","../helpers/animation.js":"8Kydm","../constants.js":"1uWIa","./keyboard.js":"9rdKe","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gwqOM":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../main.js":"2fAke","./manipulationprocessor.js":"79H6R","./mousewheel.js":"6jZh7","./pointers.js":"8bXOp","../helpers/animation.js":"8GTSM","../constants.js":"avg3j","./keyboard.js":"eu4pD","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"79H6R":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -59751,7 +59751,7 @@ class ManipulationProcessor {
     }
 }
 
-},{"gl-matrix":"jLybM","../helpers/math.js":"5Chcr","../helpers/angle.js":"577wE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"aJhXs":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../helpers/math.js":"9ea39","../helpers/angle.js":"gNCrX","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6jZh7":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -59781,7 +59781,7 @@ class MouseWheel {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"1Oeg6":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8bXOp":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -59905,7 +59905,7 @@ class Pointers {
     }
 }
 
-},{"../input/manipulator.js":"flEnU","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"flEnU":[function(require,module,exports) {
+},{"../input/manipulator.js":"afNUa","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"afNUa":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -59928,7 +59928,7 @@ class Manipulator {
     }
 }
 
-},{"gl-matrix":"jLybM","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8Kydm":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8GTSM":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -59946,7 +59946,7 @@ class AnimationHelper {
     }
 }
 
-},{"./math.js":"5Chcr","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9rdKe":[function(require,module,exports) {
+},{"./math.js":"9ea39","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"eu4pD":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -59994,7 +59994,7 @@ class Keyboard {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"aFYn0":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"GLrpF":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -60027,7 +60027,7 @@ class Log {
     }
 }
 
-},{"./main.js":"lOZlB","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"2BVtY":[function(require,module,exports) {
+},{"./main.js":"2fAke","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gsxzG":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -60187,7 +60187,7 @@ Colors.RoseGold = (0, _glMatrix.vec3).fromValues(0xcb, 0xa3, 0xb2);
 Colors.AquaGlass = (0, _glMatrix.vec3).fromValues(0xd2, 0xe8, 0xdf);
 Colors.BlueGlass = (0, _glMatrix.vec3).fromValues(0xc7, 0xe3, 0xe1);
 
-},{"gl-matrix":"jLybM","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"56WSB":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"k5H5C":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -60632,7 +60632,7 @@ class GeoJSONRasterizer {
     }
 }
 
-},{"./helpers/map.js":"20dB6","./main.js":"lOZlB","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"20dB6":[function(require,module,exports) {
+},{"./helpers/map.js":"lLaUx","./main.js":"2fAke","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lLaUx":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -60704,7 +60704,7 @@ AlbersHelper._phi2 = (0, _angleJs.AngleHelper).degreesToRadians(45.5);
 AlbersHelper._lat0 = (0, _angleJs.AngleHelper).degreesToRadians(37.5);
 AlbersHelper._lon0 = (0, _angleJs.AngleHelper).degreesToRadians(-96);
 
-},{"./math.js":"5Chcr","./angle.js":"577wE","../constants.js":"1uWIa","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"eJDtx":[function(require,module,exports) {
+},{"./math.js":"9ea39","./angle.js":"gNCrX","../constants.js":"avg3j","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"aC401":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -60960,7 +60960,7 @@ class IconRasterizer {
     }
 }
 
-},{"./main.js":"lOZlB","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"xnyWF":[function(require,module,exports) {
+},{"./main.js":"2fAke","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"f5oyi":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -60981,7 +60981,7 @@ var _labelsJs = require("./labels.js");
 var _imageJs = require("./image.js");
 var _keysJs = require("./keys.js");
 
-},{"./controller.js":"fwH1e","./labels.js":"eiuYv","./image.js":"hBKci","./keys.js":"ebyQb","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"eiuYv":[function(require,module,exports) {
+},{"./controller.js":"5UvTZ","./labels.js":"lKpCk","./image.js":"e98zR","./keys.js":"1i5z7","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lKpCk":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -61606,7 +61606,7 @@ class LabelSet extends LabelBase {
     }
 }
 
-},{"gl-matrix":"jLybM","../main.js":"lOZlB","../helpers/text.js":"jzx4e","../constants.js":"1uWIa","../vertex.js":"2PocE","../helpers/pick.js":"gcIe7","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"hBKci":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../main.js":"2fAke","../helpers/text.js":"5Oa8P","../constants.js":"avg3j","../vertex.js":"eoXRv","../helpers/pick.js":"5Z0WN","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"e98zR":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -61863,7 +61863,7 @@ class ImageSphere extends ImageBase {
     }
 }
 
-},{"gl-matrix":"jLybM","../vertex.js":"2PocE","../meshes/quad.js":"43617","../meshes/sphere.js":"dVAj4","../constants.js":"1uWIa","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dVAj4":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../vertex.js":"eoXRv","../meshes/quad.js":"4ojX4","../meshes/sphere.js":"8HyaX","../constants.js":"avg3j","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8HyaX":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -61960,7 +61960,7 @@ class Sphere {
     }
 }
 
-},{"gl-matrix":"jLybM","../constants.js":"1uWIa","../helpers/angle.js":"577wE","../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"ebyQb":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../constants.js":"avg3j","../helpers/angle.js":"gNCrX","../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1i5z7":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -62423,7 +62423,7 @@ class NominalKey extends KeyBase {
     }
 }
 
-},{"gl-matrix":"jLybM","../main.js":"lOZlB","../helpers/text.js":"jzx4e","../layouts/scatter.js":"8o7Kz","../helpers/math.js":"5Chcr","./labels.js":"eiuYv","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8o7Kz":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../main.js":"2fAke","../helpers/text.js":"5Oa8P","../layouts/scatter.js":"8iiAO","../helpers/math.js":"9ea39","./labels.js":"lKpCk","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8iiAO":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -62585,7 +62585,7 @@ class Scatter extends (0, _layoutJs.LayoutBase) {
     }
 }
 
-},{"gl-matrix":"jLybM","../constants.js":"1uWIa","../helpers/math.js":"5Chcr","../main.js":"lOZlB","../vertex.js":"2PocE","./layout.js":"bvIMT","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"bvIMT":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../constants.js":"avg3j","../helpers/math.js":"9ea39","../main.js":"2fAke","../vertex.js":"eoXRv","./layout.js":"6HAYU","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6HAYU":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -62812,7 +62812,7 @@ class LayoutBase {
     }
 }
 
-},{"gl-matrix":"jLybM","../constants.js":"1uWIa","../helpers/bounds.js":"bO6ed","../main.js":"lOZlB","../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"bO6ed":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../constants.js":"avg3j","../helpers/bounds.js":"027aa","../main.js":"2fAke","../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"027aa":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -62859,7 +62859,7 @@ class BoundsHelper {
     }
 }
 
-},{"gl-matrix":"jLybM","../meshes/cube.js":"bfC1c","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"j3Cf5":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../meshes/cube.js":"cBfXV","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"ckbIB":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -62874,7 +62874,7 @@ var _axesJs = require("./axes.js");
 var _cartesian2DJs = require("./cartesian2d.js");
 var _cartesian3DJs = require("./cartesian3d.js");
 
-},{"./axes.js":"hZgZF","./cartesian2d.js":"7Cdtk","./cartesian3d.js":"8QG4a","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"ftARq":[function(require,module,exports) {
+},{"./axes.js":"lS2l3","./cartesian2d.js":"2XnIL","./cartesian3d.js":"hZwOa","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"jn1sN":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -62930,7 +62930,7 @@ var _setJs = require("./set.js");
 var _sdfJs = require("./sdf.js");
 var _vectorJs = require("./vector.js");
 
-},{"./angle.js":"577wE","./animation.js":"8Kydm","./array.js":"6siwA","./axes.js":"151NA","./base64.js":"eXcBf","./bin.js":"9Jm1V","./color.js":"li4I5","./csv.js":"c4zGL","./facet.js":"6lgBs","./hex.js":"adxox","./hexbin.js":"cqecZ","./line.js":"15f3M","./math.js":"5Chcr","./matrix.js":"aNeWb","./map.js":"20dB6","./palette.js":"8ReGy","./path.js":"4888i","./pick.js":"gcIe7","./table.js":"cgiXu","./text.js":"jzx4e","./texture.js":"cabQq","./set.js":"h0187","./sdf.js":"3Ru7x","./vector.js":"iYbNi","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6siwA":[function(require,module,exports) {
+},{"./angle.js":"gNCrX","./animation.js":"8GTSM","./array.js":"447Ct","./axes.js":"BhBNU","./base64.js":"hOOuA","./bin.js":"gEJ4d","./color.js":"1j4r8","./csv.js":"9skvS","./facet.js":"2ClO9","./hex.js":"bR6kE","./hexbin.js":"hQkrt","./line.js":"kGVnu","./math.js":"9ea39","./matrix.js":"OxZ67","./map.js":"lLaUx","./palette.js":"euVTC","./path.js":"5mMFZ","./pick.js":"5Z0WN","./table.js":"bmuc3","./text.js":"5Oa8P","./texture.js":"40qSN","./set.js":"cHZ6E","./sdf.js":"gAYoq","./vector.js":"c3ue6","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"447Ct":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -62968,7 +62968,7 @@ class ArrayHelper {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"eXcBf":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"hOOuA":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -62997,7 +62997,7 @@ class Base64Helper {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9Jm1V":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gEJ4d":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -63069,7 +63069,7 @@ class BinHelper {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"li4I5":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1j4r8":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -63166,7 +63166,7 @@ class ColorHelper {
 }
 ColorHelper.LUMINANCE = (0, _glMatrix.vec3).fromValues(0.2126, 0.7152, 0.0722);
 
-},{"gl-matrix":"jLybM","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"c4zGL":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9skvS":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -63224,7 +63224,7 @@ class CsvHelper {
     }
 }
 
-},{"../main.js":"lOZlB","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6lgBs":[function(require,module,exports) {
+},{"../main.js":"2fAke","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"2ClO9":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -63292,7 +63292,7 @@ class FacetHelper {
     }
 }
 
-},{"../main.js":"lOZlB","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"adxox":[function(require,module,exports) {
+},{"../main.js":"2fAke","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"bR6kE":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -63375,7 +63375,7 @@ class HexHelper {
 }
 HexHelper._vec3 = (0, _glMatrix.vec3).create();
 
-},{"gl-matrix":"jLybM","../constants.js":"1uWIa","../main.js":"lOZlB","./angle.js":"577wE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"cqecZ":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../constants.js":"avg3j","../main.js":"2fAke","./angle.js":"gNCrX","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"hQkrt":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -63459,7 +63459,7 @@ class HexBinHelper {
     }
 }
 
-},{"gl-matrix":"jLybM","../constants.js":"1uWIa","../main.js":"lOZlB","./hex.js":"adxox","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"15f3M":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../constants.js":"avg3j","../main.js":"2fAke","./hex.js":"bR6kE","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kGVnu":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -63491,7 +63491,7 @@ class LineHelper {
     }
 }
 
-},{"../main.js":"lOZlB","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8ReGy":[function(require,module,exports) {
+},{"../main.js":"2fAke","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"euVTC":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -63579,7 +63579,7 @@ class PaletteHelper {
 }
 PaletteHelper._rgb = (0, _glMatrix.vec3).create();
 
-},{"gl-matrix":"jLybM","./color.js":"li4I5","./math.js":"5Chcr","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"4888i":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","./color.js":"1j4r8","./math.js":"9ea39","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5mMFZ":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -63623,7 +63623,7 @@ class PathHelper {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"cgiXu":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"bmuc3":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -63697,7 +63697,7 @@ class TableHelper {
     }
 }
 
-},{"../main.js":"lOZlB","../tables/table.js":"fWFBO","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"fWFBO":[function(require,module,exports) {
+},{"../main.js":"2fAke","../tables/table.js":"4Urg6","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"4Urg6":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -63763,7 +63763,7 @@ const ColumnType = {
     numeric: 11
 };
 
-},{"./filter.js":"5iwnz","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"5iwnz":[function(require,module,exports) {
+},{"./filter.js":"cZaGS","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"cZaGS":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -63943,7 +63943,7 @@ class Filter {
     }
 }
 
-},{"../main.js":"lOZlB","./table.js":"fWFBO","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"cabQq":[function(require,module,exports) {
+},{"../main.js":"2fAke","./table.js":"4Urg6","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"40qSN":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -63998,7 +63998,7 @@ class TextureHelper {
     }
 }
 
-},{"./math.js":"5Chcr","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"h0187":[function(require,module,exports) {
+},{"./math.js":"9ea39","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"cHZ6E":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -64027,7 +64027,7 @@ class SetHelper {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"3Ru7x":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gAYoq":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -64067,7 +64067,7 @@ class SdfHelper {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"iYbNi":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"c3ue6":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -64086,7 +64086,7 @@ class VectorHelper {
     }
 }
 
-},{"gl-matrix":"jLybM","../constants.js":"1uWIa","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"4x3ck":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../constants.js":"avg3j","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"i4m7c":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -64112,7 +64112,7 @@ var _sheetJs = require("./sheet.js");
 var _treemapJs = require("./treemap.js");
 var _stackJs = require("./stack.js");
 
-},{"./bar.js":"8xOi3","./cube.js":"jw2d0","./line.js":"bamb0","./tree.js":"dcfEQ","./scatter.js":"8o7Kz","./sheet.js":"cjAMP","./treemap.js":"jCh0d","./stack.js":"fM2zm","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8xOi3":[function(require,module,exports) {
+},{"./bar.js":"jB2qC","./cube.js":"9PpSK","./line.js":"kGdyi","./tree.js":"euXr1","./scatter.js":"8iiAO","./sheet.js":"fbgQ7","./treemap.js":"lRPsg","./stack.js":"cfrBz","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"jB2qC":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -64257,7 +64257,7 @@ class Bar extends (0, _layoutJs.LayoutBase) {
     }
 }
 
-},{"gl-matrix":"jLybM","../constants.js":"1uWIa","../helpers/math.js":"5Chcr","../main.js":"lOZlB","../vertex.js":"2PocE","./layout.js":"bvIMT","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"jw2d0":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../constants.js":"avg3j","../helpers/math.js":"9ea39","../main.js":"2fAke","../vertex.js":"eoXRv","./layout.js":"6HAYU","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9PpSK":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -64377,7 +64377,7 @@ class Cube extends (0, _layoutJs.LayoutBase) {
     }
 }
 
-},{"gl-matrix":"jLybM","../constants.js":"1uWIa","../helpers/math.js":"5Chcr","../main.js":"lOZlB","../vertex.js":"2PocE","./layout.js":"bvIMT","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"bamb0":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../constants.js":"avg3j","../helpers/math.js":"9ea39","../main.js":"2fAke","../vertex.js":"eoXRv","./layout.js":"6HAYU","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kGdyi":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -64598,7 +64598,7 @@ class Line extends (0, _layoutJs.LayoutBase) {
     }
 }
 
-},{"gl-matrix":"jLybM","../constants.js":"1uWIa","../helpers/math.js":"5Chcr","../main.js":"lOZlB","../vertex.js":"2PocE","./layout.js":"bvIMT","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dcfEQ":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../constants.js":"avg3j","../helpers/math.js":"9ea39","../main.js":"2fAke","../vertex.js":"eoXRv","./layout.js":"6HAYU","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"euXr1":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -65084,7 +65084,7 @@ class Tree extends (0, _layoutJs.LayoutBase) {
     }
 }
 
-},{"gl-matrix":"jLybM","../constants.js":"1uWIa","../helpers/angle.js":"577wE","../helpers/math.js":"5Chcr","../main.js":"lOZlB","../vertex.js":"2PocE","./layout.js":"bvIMT","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"cjAMP":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../constants.js":"avg3j","../helpers/angle.js":"gNCrX","../helpers/math.js":"9ea39","../main.js":"2fAke","../vertex.js":"eoXRv","./layout.js":"6HAYU","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"fbgQ7":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -65202,7 +65202,7 @@ class Sheet extends (0, _layoutJs.LayoutBase) {
     }
 }
 
-},{"gl-matrix":"jLybM","../constants.js":"1uWIa","../helpers/math.js":"5Chcr","../main.js":"lOZlB","../vertex.js":"2PocE","./layout.js":"bvIMT","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"jCh0d":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../constants.js":"avg3j","../helpers/math.js":"9ea39","../main.js":"2fAke","../vertex.js":"eoXRv","./layout.js":"6HAYU","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lRPsg":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -65566,7 +65566,7 @@ class TreeMapHelper {
     }
 }
 
-},{"gl-matrix":"jLybM","../constants.js":"1uWIa","../helpers/math.js":"5Chcr","../main.js":"lOZlB","../vertex.js":"2PocE","./layout.js":"bvIMT","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"fM2zm":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../constants.js":"avg3j","../helpers/math.js":"9ea39","../main.js":"2fAke","../vertex.js":"eoXRv","./layout.js":"6HAYU","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"cfrBz":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -66004,7 +66004,7 @@ class StackTreeMap extends StackBase {
     }
 }
 
-},{"../constants.js":"1uWIa","../helpers/math.js":"5Chcr","../vertex.js":"2PocE","./treemap.js":"jCh0d","./layout.js":"bvIMT","gl-matrix":"jLybM","../main.js":"lOZlB","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"cg0F8":[function(require,module,exports) {
+},{"../constants.js":"avg3j","../helpers/math.js":"9ea39","../vertex.js":"eoXRv","./treemap.js":"lRPsg","./layout.js":"6HAYU","gl-matrix":"hTT1l","../main.js":"2fAke","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6jblV":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -66023,7 +66023,7 @@ var _manipulatorJs = require("./manipulator.js");
 var _manipulationprocessorJs = require("./manipulationprocessor.js");
 var _managerJs = require("./manager.js");
 
-},{"./keyboard.js":"9rdKe","./mousewheel.js":"aJhXs","./pointers.js":"1Oeg6","./manipulator.js":"flEnU","./manipulationprocessor.js":"gwqOM","./manager.js":"iRJee","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"g2gld":[function(require,module,exports) {
+},{"./keyboard.js":"eu4pD","./mousewheel.js":"6jZh7","./pointers.js":"8bXOp","./manipulator.js":"afNUa","./manipulationprocessor.js":"79H6R","./manager.js":"5NTeJ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"fnqOe":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -66034,7 +66034,7 @@ parcelHelpers.export(exports, "XmlHttp", ()=>(0, _xmlHttpJs.XmlHttp));
 var _fileJs = require("./file.js");
 var _xmlHttpJs = require("./xmlHttp.js");
 
-},{"./file.js":"fIDwo","./xmlHttp.js":"7Y6Bb","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"fIDwo":[function(require,module,exports) {
+},{"./file.js":"eEH3O","./xmlHttp.js":"cFrRJ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"eEH3O":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -66087,7 +66087,7 @@ class LocalFile {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"7Y6Bb":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"cFrRJ":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -66138,7 +66138,7 @@ class XmlHttp {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"jX5L8":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"flCvt":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -66151,7 +66151,7 @@ var _quadJs = require("./quad.js");
 var _cubeJs = require("./cube.js");
 var _sphereJs = require("./sphere.js");
 
-},{"./quad.js":"43617","./cube.js":"bfC1c","./sphere.js":"dVAj4","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"7NmZt":[function(require,module,exports) {
+},{"./quad.js":"4ojX4","./cube.js":"cBfXV","./sphere.js":"8HyaX","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"csYjJ":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -66166,7 +66166,7 @@ var _indexJs = require("./basic/index.js");
 var _indexJs1 = require("./advanced/index.js");
 var _indexJs2 = require("./raytracewebgpu/index.js");
 
-},{"./renderer.js":"6IqxC","./basic/index.js":"iVnce","./advanced/index.js":"gkBBk","./raytracewebgpu/index.js":"lvqva","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6IqxC":[function(require,module,exports) {
+},{"./renderer.js":"95csr","./basic/index.js":"5uVsG","./advanced/index.js":"js5CW","./raytracewebgpu/index.js":"hzRJ6","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"95csr":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -66476,7 +66476,7 @@ class RendererBase {
     }
 }
 
-},{"gl-matrix":"jLybM","../main.js":"lOZlB","../components/axes/axes.js":"hZgZF","../buffer.js":"eJrrk","../vertex.js":"2PocE","../components/labels.js":"eiuYv","../components/debug.js":"58hxE","../components/controller.js":"fwH1e","../components/image.js":"hBKci","../font.js":"jA2Lc","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"eJrrk":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../main.js":"2fAke","../components/axes/axes.js":"lS2l3","../buffer.js":"g7Adj","../vertex.js":"eoXRv","../components/labels.js":"lKpCk","../components/debug.js":"dHNLu","../components/controller.js":"5UvTZ","../components/image.js":"e98zR","../font.js":"58IiL","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"g7Adj":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -66672,7 +66672,7 @@ class TransitionBuffer extends TransitionBufferBase {
     }
 }
 
-},{"gl-matrix":"jLybM","./constants.js":"1uWIa","./palette.js":"l54EU","./vertex.js":"2PocE","./helpers/pick.js":"gcIe7","./main.js":"lOZlB","./atlas.js":"bYzjW","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"bYzjW":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","./constants.js":"avg3j","./palette.js":"kCK9i","./vertex.js":"eoXRv","./helpers/pick.js":"5Z0WN","./main.js":"2fAke","./atlas.js":"g3tAn","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"g3tAn":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -66704,7 +66704,7 @@ class AtlasBase {
 class Atlas extends AtlasBase {
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"58hxE":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dHNLu":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -66788,7 +66788,7 @@ class DebugAxes {
     }
 }
 
-},{"gl-matrix":"jLybM","../constants.js":"1uWIa","../meshes/cube.js":"bfC1c","../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"iVnce":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../constants.js":"avg3j","../meshes/cube.js":"cBfXV","../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5uVsG":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -66797,7 +66797,7 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Main", ()=>(0, _mainJs.Main));
 var _mainJs = require("./main.js");
 
-},{"./main.js":"jERtz","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"jERtz":[function(require,module,exports) {
+},{"./main.js":"8R9rx","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8R9rx":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -67617,7 +67617,7 @@ class Main extends (0, _rendererJs.RendererBase) {
     }
 }
 
-},{"gl-matrix":"jLybM","../../main.js":"lOZlB","../renderer.js":"6IqxC","./components/quad.js":"clFj9","./buffer.js":"hV5sh","./config.js":"8YfdH","./shaders/shader.js":"k0cnk","./shaders/color.js":"1SYdH","./shaders/texture.js":"l6Xl6","./shaders/lasso.js":"9MBlt","./shaders/model.js":"kouKI","./shaders/sdftext.js":"3lLeu","./shaders/pickgrid.js":"dhX5M","./shaders/unitblock.js":"dkwbl","./shaders/unitsphere.js":"lGV8u","./shaders/unitcylinder.js":"jn4NU","./shaders/unithexprism.js":"jg4SS","./shaders/unitsdf.js":"gGa6z","./shaders/anaglyph.js":"klNXZ","../../helpers/texture.js":"cabQq","../../helpers/pick.js":"gcIe7","./components/debug.js":"3Tzra","./components/axes/cartesian2d.js":"iStLE","./components/axes/cartesian3d.js":"AHSyF","./components/controller.js":"6DEp9","./components/image.js":"8CmnP","../../vertex.js":"2PocE","./components/labels.js":"fs6GZ","./font.js":"hDHQl","./components/lasso.js":"bb21k","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"clFj9":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../../main.js":"2fAke","../renderer.js":"95csr","./components/quad.js":"69TDb","./buffer.js":"1q4WU","./config.js":"dTJMv","./shaders/shader.js":"faVKr","./shaders/color.js":"78yB7","./shaders/texture.js":"e40M9","./shaders/lasso.js":"9MIDL","./shaders/model.js":"6zJDC","./shaders/sdftext.js":"cO72Z","./shaders/pickgrid.js":"5JL0x","./shaders/unitblock.js":"fYM4i","./shaders/unitsphere.js":"yiXKw","./shaders/unitcylinder.js":"8H04T","./shaders/unithexprism.js":"5qoWD","./shaders/unitsdf.js":"clWid","./shaders/anaglyph.js":"4C4gM","../../helpers/texture.js":"40qSN","../../helpers/pick.js":"5Z0WN","./components/debug.js":"6jsI5","./components/axes/cartesian2d.js":"fdu0A","./components/axes/cartesian3d.js":"lEHvZ","./components/controller.js":"j5M7N","./components/image.js":"4r5qf","../../vertex.js":"eoXRv","./components/labels.js":"fxgRp","./font.js":"dD0gu","./components/lasso.js":"gwIyy","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"69TDb":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -67656,7 +67656,7 @@ class Quad {
     }
 }
 
-},{"gl-matrix":"jLybM","../../../meshes/quad.js":"43617","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"hV5sh":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../../../meshes/quad.js":"4ojX4","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1q4WU":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -67703,7 +67703,7 @@ class TransitionBuffer extends (0, _bufferJs.TransitionBufferBase) {
     }
 }
 
-},{"../../buffer.js":"eJrrk","../../main.js":"lOZlB","./atlas.js":"cFR7q","./palette.js":"8RmMy","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"cFR7q":[function(require,module,exports) {
+},{"../../buffer.js":"g7Adj","../../main.js":"2fAke","./atlas.js":"bHqrr","./palette.js":"24FSY","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"bHqrr":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -67742,7 +67742,7 @@ class Atlas extends (0, _atlasJs.AtlasBase) {
     }
 }
 
-},{"../../helpers/texture.js":"cabQq","../../atlas.js":"bYzjW","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8RmMy":[function(require,module,exports) {
+},{"../../helpers/texture.js":"40qSN","../../atlas.js":"g3tAn","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"24FSY":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -67779,7 +67779,7 @@ class Palette extends (0, _paletteJs.PaletteBase) {
     }
 }
 
-},{"../../helpers/texture.js":"cabQq","../../palette.js":"l54EU","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8YfdH":[function(require,module,exports) {
+},{"../../helpers/texture.js":"40qSN","../../palette.js":"kCK9i","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dTJMv":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -67816,7 +67816,7 @@ class Config extends (0, _rendererJs.RendererConfig) {
     }
 }
 
-},{"gl-matrix":"jLybM","../../constants.js":"1uWIa","../../helpers/angle.js":"577wE","../renderer.js":"6IqxC","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"k0cnk":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../../constants.js":"avg3j","../../helpers/angle.js":"gNCrX","../renderer.js":"95csr","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"faVKr":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -67999,7 +67999,7 @@ class ShaderBase {
     }
 }
 
-},{"../../../helpers/path.js":"4888i","../../../main.js":"lOZlB","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"1SYdH":[function(require,module,exports) {
+},{"../../../helpers/path.js":"5mMFZ","../../../main.js":"2fAke","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"78yB7":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -68048,7 +68048,7 @@ class Color extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"k0cnk","../../../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"l6Xl6":[function(require,module,exports) {
+},{"./shader.js":"faVKr","../../../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"e40M9":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -68118,7 +68118,7 @@ class Texture extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"k0cnk","../../../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9MBlt":[function(require,module,exports) {
+},{"./shader.js":"faVKr","../../../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9MIDL":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -68169,7 +68169,7 @@ class Lasso extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"k0cnk","../../../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"kouKI":[function(require,module,exports) {
+},{"./shader.js":"faVKr","../../../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6zJDC":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -68245,7 +68245,7 @@ class Model extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"k0cnk","../../../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"3lLeu":[function(require,module,exports) {
+},{"./shader.js":"faVKr","../../../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"cO72Z":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -68332,7 +68332,7 @@ class SdfText extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"k0cnk","../../../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dhX5M":[function(require,module,exports) {
+},{"./shader.js":"faVKr","../../../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5JL0x":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -68421,7 +68421,7 @@ class PickGrid extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"k0cnk","../../../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dkwbl":[function(require,module,exports) {
+},{"./shader.js":"faVKr","../../../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"fYM4i":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -68479,7 +68479,7 @@ class UnitBlock extends (0, _unitshaderJs.UnitShader) {
     }
 }
 
-},{"../../../vertex.js":"2PocE","./unitshader.js":"37VXS","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"37VXS":[function(require,module,exports) {
+},{"../../../vertex.js":"eoXRv","./unitshader.js":"9YdhR","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9YdhR":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -68679,7 +68679,7 @@ class UnitShader extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"k0cnk","../../../meshes/cube.js":"bfC1c","../../../vertex.js":"2PocE","../../../main.js":"lOZlB","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lGV8u":[function(require,module,exports) {
+},{"./shader.js":"faVKr","../../../meshes/cube.js":"cBfXV","../../../vertex.js":"eoXRv","../../../main.js":"2fAke","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"yiXKw":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -68720,7 +68720,7 @@ class UnitSphere extends (0, _unitshaderJs.UnitShader) {
     }
 }
 
-},{"../../../vertex.js":"2PocE","./unitshader.js":"37VXS","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"jn4NU":[function(require,module,exports) {
+},{"../../../vertex.js":"eoXRv","./unitshader.js":"9YdhR","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8H04T":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -68775,7 +68775,7 @@ class UnitCylinder extends (0, _unitshaderJs.UnitShader) {
     }
 }
 
-},{"../../../vertex.js":"2PocE","./unitshader.js":"37VXS","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"jg4SS":[function(require,module,exports) {
+},{"../../../vertex.js":"eoXRv","./unitshader.js":"9YdhR","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5qoWD":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -68830,7 +68830,7 @@ class UnitHexPrism extends (0, _unitshaderJs.UnitShader) {
     }
 }
 
-},{"../../../vertex.js":"2PocE","./unitshader.js":"37VXS","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gGa6z":[function(require,module,exports) {
+},{"../../../vertex.js":"eoXRv","./unitshader.js":"9YdhR","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"clWid":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -68916,7 +68916,7 @@ class UnitSdf extends (0, _unitshaderJs.UnitShader) {
     }
 }
 
-},{"../../../vertex.js":"2PocE","./unitshader.js":"37VXS","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"klNXZ":[function(require,module,exports) {
+},{"../../../vertex.js":"eoXRv","./unitshader.js":"9YdhR","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"4C4gM":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -68986,7 +68986,7 @@ class Anaglyph extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"k0cnk","../../../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"3Tzra":[function(require,module,exports) {
+},{"./shader.js":"faVKr","../../../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6jsI5":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -69036,7 +69036,7 @@ class DebugAxesVisual {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"iStLE":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"fdu0A":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -69319,7 +69319,7 @@ class Cartesian2dVisual extends (0, _axesJs.AxesVisualBase) {
     }
 }
 
-},{"./axes.js":"1KDy5","../../../../main.js":"lOZlB","../../../../constants.js":"1uWIa","../../../../meshes/quad.js":"43617","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"1KDy5":[function(require,module,exports) {
+},{"./axes.js":"5fAs7","../../../../main.js":"2fAke","../../../../constants.js":"avg3j","../../../../meshes/quad.js":"4ojX4","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5fAs7":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -69351,7 +69351,7 @@ class AxesVisualBase {
     _renderText() {}
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"AHSyF":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lEHvZ":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -69638,7 +69638,7 @@ class Cartesian3dVisual extends (0, _axesJs.AxesVisualBase) {
     }
 }
 
-},{"./axes.js":"1KDy5","../../../../main.js":"lOZlB","../../../../constants.js":"1uWIa","../../../../meshes/cube.js":"bfC1c","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6DEp9":[function(require,module,exports) {
+},{"./axes.js":"5fAs7","../../../../main.js":"2fAke","../../../../constants.js":"avg3j","../../../../meshes/cube.js":"cBfXV","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"j5M7N":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -69734,7 +69734,7 @@ class ControllerVisual {
     }
 }
 
-},{"gl-matrix":"jLybM","../../../helpers/texture.js":"cabQq","../../../constants.js":"1uWIa","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8CmnP":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../../../helpers/texture.js":"40qSN","../../../constants.js":"avg3j","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"4r5qf":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -69813,7 +69813,7 @@ class ImageVisual {
     }
 }
 
-},{"gl-matrix":"jLybM","../../../helpers/texture.js":"cabQq","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"fs6GZ":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../../../helpers/texture.js":"40qSN","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"fxgRp":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -69925,7 +69925,7 @@ class LabelSetVisual extends LabelVisualBase {
     }
 }
 
-},{"gl-matrix":"jLybM","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"hDHQl":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dD0gu":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -69962,7 +69962,7 @@ class FontVisual {
     }
 }
 
-},{"../../helpers/texture.js":"cabQq","../../main.js":"lOZlB","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"bb21k":[function(require,module,exports) {
+},{"../../helpers/texture.js":"40qSN","../../main.js":"2fAke","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gwIyy":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -69998,7 +69998,7 @@ class Lasso {
     }
 }
 
-},{"../../../constants.js":"1uWIa","../../../meshes/quad.js":"43617","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"gkBBk":[function(require,module,exports) {
+},{"../../../constants.js":"avg3j","../../../meshes/quad.js":"4ojX4","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"js5CW":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -70007,7 +70007,7 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Main", ()=>(0, _mainJs.Main));
 var _mainJs = require("./main.js");
 
-},{"./main.js":"wZSXU","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"wZSXU":[function(require,module,exports) {
+},{"./main.js":"fuL81","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"fuL81":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -71022,7 +71022,7 @@ class Main extends (0, _rendererJs.RendererBase) {
     }
 }
 
-},{"gl-matrix":"jLybM","../../main.js":"lOZlB","../renderer.js":"6IqxC","./components/quad.js":"atmQz","./buffer.js":"agE9U","./config.js":"dxvOb","./shaders/shader.js":"aKY2w","./shaders/texture.js":"53T8d","./shaders/lasso.js":"PCXHB","./shaders/sdftext.js":"2WLHf","./shaders/pickgrid.js":"6gqcW","./shaders/unitblock.js":"4a3kX","./shaders/unitsphere.js":"5MBk3","./shaders/unitcylinder.js":"66kKY","./shaders/unitsdf.js":"db2bS","./shaders/background.js":"lmgKT","./shaders/ssao.js":"8WoHZ","./shaders/box.js":"7SknG","./shaders/deferred.js":"d8YUc","./shaders/combine.js":"kI7TJ","./shaders/dofblur.js":"dwDC0","./shaders/downsample.js":"bwkua","./shaders/gaussian.js":"lghjP","./shaders/dofcombine.js":"1KUmy","./shaders/fxaa.js":"98gMl","./shaders/bright.js":"k9WXh","../../helpers/angle.js":"577wE","../../helpers/pick.js":"gcIe7","./components/axes/cartesian2d.js":"ef8Xd","./components/axes/cartesian3d.js":"asUvx","./font.js":"2wNzB","./../../helpers/math.js":"5Chcr","../../constants.js":"1uWIa","../../vertex.js":"2PocE","../../helpers/texture.js":"cabQq","./components/labels.js":"fqtVr","./components/image.js":"5smsn","./components/lasso.js":"ft8mz","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"atmQz":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../../main.js":"2fAke","../renderer.js":"95csr","./components/quad.js":"gKfh0","./buffer.js":"64ivA","./config.js":"7sAOx","./shaders/shader.js":"9PG71","./shaders/texture.js":"kiO5n","./shaders/lasso.js":"2gXHc","./shaders/sdftext.js":"56mg4","./shaders/pickgrid.js":"RSuDb","./shaders/unitblock.js":"9j39r","./shaders/unitsphere.js":"7dPQM","./shaders/unitcylinder.js":"5EmBD","./shaders/unitsdf.js":"4GwH9","./shaders/background.js":"9LqMw","./shaders/ssao.js":"3E6MR","./shaders/box.js":"enIW0","./shaders/deferred.js":"cfzOa","./shaders/combine.js":"557FK","./shaders/dofblur.js":"5xqjN","./shaders/downsample.js":"cukpL","./shaders/gaussian.js":"faMoY","./shaders/dofcombine.js":"d7Efe","./shaders/fxaa.js":"9Pemy","./shaders/bright.js":"7E6hw","../../helpers/angle.js":"gNCrX","../../helpers/pick.js":"5Z0WN","./components/axes/cartesian2d.js":"4qSOH","./components/axes/cartesian3d.js":"fMJ3w","./font.js":"btNqG","./../../helpers/math.js":"9ea39","../../constants.js":"avg3j","../../vertex.js":"eoXRv","../../helpers/texture.js":"40qSN","./components/labels.js":"cZZmL","./components/image.js":"71BC0","./components/lasso.js":"aS9Lx","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gKfh0":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -71061,7 +71061,7 @@ class Quad {
     }
 }
 
-},{"gl-matrix":"jLybM","../../../meshes/quad.js":"43617","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"agE9U":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../../../meshes/quad.js":"4ojX4","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"64ivA":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -71111,7 +71111,7 @@ class TransitionBuffer extends (0, _bufferJs.TransitionBufferBase) {
     }
 }
 
-},{"../../buffer.js":"eJrrk","../../main.js":"lOZlB","./atlas.js":"hU5Ks","./palette.js":"6MmvT","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"hU5Ks":[function(require,module,exports) {
+},{"../../buffer.js":"g7Adj","../../main.js":"2fAke","./atlas.js":"58XMh","./palette.js":"350Q5","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"58XMh":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -71150,7 +71150,7 @@ class Atlas extends (0, _atlasJs.AtlasBase) {
     }
 }
 
-},{"../../helpers/texture.js":"cabQq","../../atlas.js":"bYzjW","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6MmvT":[function(require,module,exports) {
+},{"../../helpers/texture.js":"40qSN","../../atlas.js":"g3tAn","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"350Q5":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -71187,7 +71187,7 @@ class Palette extends (0, _paletteJs.PaletteBase) {
     }
 }
 
-},{"../../helpers/texture.js":"cabQq","../../palette.js":"l54EU","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dxvOb":[function(require,module,exports) {
+},{"../../helpers/texture.js":"40qSN","../../palette.js":"kCK9i","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"7sAOx":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -71305,7 +71305,7 @@ class Config extends (0, _rendererJs.RendererConfig) {
     }
 }
 
-},{"gl-matrix":"jLybM","../../constants.js":"1uWIa","../../helpers/angle.js":"577wE","../renderer.js":"6IqxC","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"aKY2w":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../../constants.js":"avg3j","../../helpers/angle.js":"gNCrX","../renderer.js":"95csr","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9PG71":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -71492,7 +71492,7 @@ class ShaderBase {
     }
 }
 
-},{"../../../helpers/path.js":"4888i","../../../main.js":"lOZlB","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"53T8d":[function(require,module,exports) {
+},{"../../../helpers/path.js":"5mMFZ","../../../main.js":"2fAke","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kiO5n":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -71560,7 +71560,7 @@ class Texture extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"aKY2w","../../../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"PCXHB":[function(require,module,exports) {
+},{"./shader.js":"9PG71","../../../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"2gXHc":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -71611,7 +71611,7 @@ class Lasso extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"aKY2w","../../../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"2WLHf":[function(require,module,exports) {
+},{"./shader.js":"9PG71","../../../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"56mg4":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -71697,7 +71697,7 @@ class SdfText extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"aKY2w","../../../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6gqcW":[function(require,module,exports) {
+},{"./shader.js":"9PG71","../../../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"RSuDb":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -71783,7 +71783,7 @@ class PickGrid extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"aKY2w","../../../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"4a3kX":[function(require,module,exports) {
+},{"./shader.js":"9PG71","../../../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9j39r":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -71834,7 +71834,7 @@ class UnitBlock extends (0, _unitshaderJs.UnitShader) {
     }
 }
 
-},{"../../../vertex.js":"2PocE","./unitshader.js":"cVHuY","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"cVHuY":[function(require,module,exports) {
+},{"../../../vertex.js":"eoXRv","./unitshader.js":"idRt4","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"idRt4":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -72016,7 +72016,7 @@ class UnitShader extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"aKY2w","../../../meshes/cube.js":"bfC1c","../../../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"5MBk3":[function(require,module,exports) {
+},{"./shader.js":"9PG71","../../../meshes/cube.js":"cBfXV","../../../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"7dPQM":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -72054,7 +72054,7 @@ class UnitSphere extends (0, _unitshaderJs.UnitShader) {
     }
 }
 
-},{"../../../vertex.js":"2PocE","./unitshader.js":"cVHuY","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"66kKY":[function(require,module,exports) {
+},{"../../../vertex.js":"eoXRv","./unitshader.js":"idRt4","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5EmBD":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -72105,7 +72105,7 @@ class UnitCylinder extends (0, _unitshaderJs.UnitShader) {
     }
 }
 
-},{"../../../vertex.js":"2PocE","./unitshader.js":"cVHuY","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"db2bS":[function(require,module,exports) {
+},{"../../../vertex.js":"eoXRv","./unitshader.js":"idRt4","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"4GwH9":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -72180,7 +72180,7 @@ class UnitSdf extends (0, _unitshaderJs.UnitShader) {
     }
 }
 
-},{"../../../vertex.js":"2PocE","./unitshader.js":"cVHuY","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lmgKT":[function(require,module,exports) {
+},{"../../../vertex.js":"eoXRv","./unitshader.js":"idRt4","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9LqMw":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -72230,7 +72230,7 @@ class Background extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"aKY2w","../../../vertex.js":"2PocE","../components/quad.js":"atmQz","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8WoHZ":[function(require,module,exports) {
+},{"./shader.js":"9PG71","../../../vertex.js":"eoXRv","../components/quad.js":"gKfh0","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"3E6MR":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -72324,7 +72324,7 @@ class Ssao extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"aKY2w","../../../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"7SknG":[function(require,module,exports) {
+},{"./shader.js":"9PG71","../../../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"enIW0":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -72380,7 +72380,7 @@ class Box extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"aKY2w","../../../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"d8YUc":[function(require,module,exports) {
+},{"./shader.js":"9PG71","../../../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"cfzOa":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -72530,7 +72530,7 @@ class Deferred extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"aKY2w","../../../vertex.js":"2PocE","gl-matrix":"jLybM","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"kI7TJ":[function(require,module,exports) {
+},{"./shader.js":"9PG71","../../../vertex.js":"eoXRv","gl-matrix":"hTT1l","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"557FK":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -72640,7 +72640,7 @@ class Combine extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"aKY2w","../../../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"dwDC0":[function(require,module,exports) {
+},{"./shader.js":"9PG71","../../../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5xqjN":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -72718,7 +72718,7 @@ class DofBlur extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"aKY2w","../../../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"bwkua":[function(require,module,exports) {
+},{"./shader.js":"9PG71","../../../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"cukpL":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -72775,7 +72775,7 @@ class Downsample extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"aKY2w","../../../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lghjP":[function(require,module,exports) {
+},{"./shader.js":"9PG71","../../../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"faMoY":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -72834,7 +72834,7 @@ class Gaussian extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"aKY2w","../../../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"1KUmy":[function(require,module,exports) {
+},{"./shader.js":"9PG71","../../../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"d7Efe":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -72921,7 +72921,7 @@ class DofCombine extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"aKY2w","../../../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"98gMl":[function(require,module,exports) {
+},{"./shader.js":"9PG71","../../../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9Pemy":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -72978,7 +72978,7 @@ class Fxaa extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"aKY2w","../../../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"k9WXh":[function(require,module,exports) {
+},{"./shader.js":"9PG71","../../../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"7E6hw":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -73035,7 +73035,7 @@ class Bright extends (0, _shaderJs.ShaderBase) {
     }
 }
 
-},{"./shader.js":"aKY2w","../../../vertex.js":"2PocE","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"ef8Xd":[function(require,module,exports) {
+},{"./shader.js":"9PG71","../../../vertex.js":"eoXRv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"4qSOH":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -73316,7 +73316,7 @@ class Cartesian2dVisual extends (0, _axesJs.AxesVisualBase) {
     }
 }
 
-},{"./axes.js":"5fT70","../../../../main.js":"lOZlB","../../../../meshes/quad.js":"43617","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"5fT70":[function(require,module,exports) {
+},{"./axes.js":"6oath","../../../../main.js":"2fAke","../../../../meshes/quad.js":"4ojX4","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6oath":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -73348,7 +73348,7 @@ class AxesVisualBase {
     _renderText() {}
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"asUvx":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"fMJ3w":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -73633,7 +73633,7 @@ class Cartesian3dVisual extends (0, _axesJs.AxesVisualBase) {
     }
 }
 
-},{"./axes.js":"5fT70","../../../../main.js":"lOZlB","../../../../meshes/cube.js":"bfC1c","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"2wNzB":[function(require,module,exports) {
+},{"./axes.js":"6oath","../../../../main.js":"2fAke","../../../../meshes/cube.js":"cBfXV","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"btNqG":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -73670,7 +73670,7 @@ class FontVisual {
     }
 }
 
-},{"../../helpers/texture.js":"cabQq","../../main.js":"lOZlB","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"fqtVr":[function(require,module,exports) {
+},{"../../helpers/texture.js":"40qSN","../../main.js":"2fAke","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"cZZmL":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -73781,7 +73781,7 @@ class LabelSetVisual extends LabelVisualBase {
     }
 }
 
-},{"gl-matrix":"jLybM","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"5smsn":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"71BC0":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -73849,7 +73849,7 @@ class ImageVisual {
     }
 }
 
-},{"gl-matrix":"jLybM","../../../helpers/texture.js":"cabQq","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"ft8mz":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../../../helpers/texture.js":"40qSN","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"aS9Lx":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -73885,7 +73885,7 @@ class Lasso {
     }
 }
 
-},{"../../../constants.js":"1uWIa","../../../meshes/quad.js":"43617","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lvqva":[function(require,module,exports) {
+},{"../../../constants.js":"avg3j","../../../meshes/quad.js":"4ojX4","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"hzRJ6":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -73915,7 +73915,7 @@ var _lightJs = require("./light.js");
 var _groundJs = require("./ground.js");
 var _constantsJs = require("./constants.js");
 
-},{"./main.js":"kRO5z","./material.js":"cvxos","./texture.js":"9pizx","./light.js":"l3WSL","./ground.js":"lAeUB","./constants.js":"atIP4","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"kRO5z":[function(require,module,exports) {
+},{"./main.js":"jO72B","./material.js":"9agdE","./texture.js":"dBDPv","./light.js":"hLZvJ","./ground.js":"hIblm","./constants.js":"e8O4B","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"jO72B":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -74798,7 +74798,7 @@ class Main extends (0, _rendererJs.RendererBase) {
     }
 }
 
-},{"gl-matrix":"jLybM","../renderer.js":"6IqxC","../../main.js":"lOZlB","./config.js":"aMOpM","./hittable.js":"lYykR","./material.js":"cvxos","./shaders/raytrace.js":"77VXF","./shaders/fullscreenquad.js":"c0kW1","./bvh.js":"9BK1X","./texture.js":"9pizx","./light.js":"l3WSL","../../constants.js":"1uWIa","../../helpers/angle.js":"577wE","./font.js":"ewxVA","./image.js":"4quO1","./labels.js":"2s5kJ","./buffer.js":"8fDEU","./constants.js":"atIP4","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"aMOpM":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../renderer.js":"95csr","../../main.js":"2fAke","./config.js":"j7Wy3","./hittable.js":"1FwX9","./material.js":"9agdE","./shaders/raytrace.js":"a5gLZ","./shaders/fullscreenquad.js":"c1RxO","./bvh.js":"bYamX","./texture.js":"dBDPv","./light.js":"hLZvJ","../../constants.js":"avg3j","../../helpers/angle.js":"gNCrX","./font.js":"fGbCh","./image.js":"5lraf","./labels.js":"afPDh","./buffer.js":"cX6AO","./constants.js":"e8O4B","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"j7Wy3":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -74868,7 +74868,7 @@ class Config extends (0, _rendererJs.RendererConfig) {
     }
 }
 
-},{"gl-matrix":"jLybM","../renderer.js":"6IqxC","./material.js":"cvxos","./texture.js":"9pizx","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"cvxos":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../renderer.js":"95csr","./material.js":"9agdE","./texture.js":"dBDPv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9agdE":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -75051,7 +75051,7 @@ class VarnishMaterial extends Material {
     }
 }
 
-},{"gl-matrix":"jLybM","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9pizx":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dBDPv":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -75220,7 +75220,7 @@ class GridTexture extends Texture {
     }
 }
 
-},{"gl-matrix":"jLybM","../../constants.js":"1uWIa","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lYykR":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../../constants.js":"avg3j","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1FwX9":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -75725,7 +75725,7 @@ class HittableConstantMedium extends Hittable {
     }
 }
 
-},{"gl-matrix":"jLybM","../../constants.js":"1uWIa","../../helpers/bounds.js":"bO6ed","./aabb.js":"2G79i","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"2G79i":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../../constants.js":"avg3j","../../helpers/bounds.js":"027aa","./aabb.js":"g8ugp","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"g8ugp":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -75815,7 +75815,7 @@ class AABB {
     }
 }
 
-},{"gl-matrix":"jLybM","../../meshes/cube.js":"bfC1c","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"77VXF":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../../meshes/cube.js":"cBfXV","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"a5gLZ":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -77454,7 +77454,7 @@ class ComputeUniformBufferData extends Float32Array {
 }
 ComputeUniformBufferData.SIZE = 28;
 
-},{"gl-matrix":"jLybM","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"c0kW1":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"c1RxO":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -77549,7 +77549,7 @@ class FullscreenQuadUniformBufferData extends Float32Array {
 }
 FullscreenQuadUniformBufferData.SIZE = 4;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9BK1X":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"bYamX":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -77868,7 +77868,7 @@ class LinearBVHNodeBufferData extends Float32Array {
 }
 LinearBVHNodeBufferData.SIZE = 12;
 
-},{"gl-matrix":"jLybM","../../main.js":"lOZlB","./aabb.js":"2G79i","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"l3WSL":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../../main.js":"2fAke","./aabb.js":"g8ugp","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"hLZvJ":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -77982,7 +77982,7 @@ class RectLight extends Light {
     }
 }
 
-},{"gl-matrix":"jLybM","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"ewxVA":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"fGbCh":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -78043,7 +78043,7 @@ class FontVisual {
     }
 }
 
-},{"../../main.js":"lOZlB","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"4quO1":[function(require,module,exports) {
+},{"../../main.js":"2fAke","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"5lraf":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -78167,7 +78167,7 @@ class ImageVisual {
     }
 }
 
-},{"gl-matrix":"jLybM","../../components/image.js":"hBKci","../../main.js":"lOZlB","./hittable.js":"lYykR","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"2s5kJ":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../../components/image.js":"e98zR","../../main.js":"2fAke","./hittable.js":"1FwX9","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"afPDh":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -78265,7 +78265,7 @@ class LabelSetVisual {
     }
 }
 
-},{"gl-matrix":"jLybM","../../vertex.js":"2PocE","./hittable.js":"lYykR","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8fDEU":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../../vertex.js":"eoXRv","./hittable.js":"1FwX9","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"cX6AO":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -78517,7 +78517,7 @@ class TransitionBuffer extends (0, _bufferJs.TransitionBufferBase) {
     }
 }
 
-},{"gl-matrix":"jLybM","../../atlas.js":"bYzjW","../../buffer.js":"eJrrk","../../index.js":"8ibZ5","../../main.js":"lOZlB","../../palette.js":"l54EU","../../vertex.js":"2PocE","./hittable.js":"lYykR","./material.js":"cvxos","../../helpers/math.js":"5Chcr","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"atIP4":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../../atlas.js":"g3tAn","../../buffer.js":"g7Adj","../../index.js":"kTZen","../../main.js":"2fAke","../../palette.js":"kCK9i","../../vertex.js":"eoXRv","./hittable.js":"1FwX9","./material.js":"9agdE","../../helpers/math.js":"9ea39","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"e8O4B":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -78528,7 +78528,7 @@ class Constants {
 }
 Constants.SHADOW_OFFSET = 0.001;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lAeUB":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"hIblm":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Ground", ()=>Ground);
@@ -78542,7 +78542,7 @@ class Ground {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"19Viv":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lSHrT":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -78554,7 +78554,7 @@ parcelHelpers.export(exports, "Filter", ()=>(0, _filterJs.Filter));
 var _tableJs = require("./table.js");
 var _filterJs = require("./filter.js");
 
-},{"./table.js":"fWFBO","./filter.js":"5iwnz","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"edjTY":[function(require,module,exports) {
+},{"./table.js":"4Urg6","./filter.js":"cZaGS","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"3sZZ9":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -78569,7 +78569,7 @@ var _cameraJs = require("./camera.js");
 var _altazimuthJs = require("./altazimuth.js");
 var _orbitJs = require("./orbit.js");
 
-},{"./camera.js":"fixqI","./altazimuth.js":"lskrt","./orbit.js":"8c4wf","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8c4wf":[function(require,module,exports) {
+},{"./camera.js":"kIEih","./altazimuth.js":"6pF7U","./orbit.js":"lIloB","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lIloB":[function(require,module,exports) {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -78607,7 +78607,7 @@ class OrbitCamera extends (0, _cameraJs.CameraBase) {
     }
 }
 
-},{"gl-matrix":"jLybM","../constants.js":"1uWIa","./camera.js":"fixqI","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"fRDNt":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","../constants.js":"avg3j","./camera.js":"kIEih","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"2K0TB":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -78639,7 +78639,7 @@ var _clone = require("../clone");
 var _color = require("../color");
 var _tsxCreateElement = require("tsx-create-element");
 
-},{"../array":"bWtNa","../htmlHelpers":"jtjuf","../clone":"6hfiU","../color":"11w60","tsx-create-element":"3h0lN","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"bWtNa":[function(require,module,exports) {
+},{"../array":"fiPDf","../htmlHelpers":"6vppe","../clone":"lxQkZ","../color":"YjKvL","tsx-create-element":"g6Tzv","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"fiPDf":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -78665,7 +78665,7 @@ function push(arr, items) {
     arr.push.apply(arr, items);
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"jtjuf":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6vppe":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -78706,7 +78706,7 @@ function outerSize(el) {
     };
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6hfiU":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lxQkZ":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -78732,7 +78732,7 @@ function deepMerge(...objectsToMerge) {
     });
 }
 
-},{"deepmerge":"7XSW1","is-plain-object":"65ekY","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"7XSW1":[function(require,module,exports) {
+},{"deepmerge":"kEGAR","is-plain-object":"iuHSd","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kEGAR":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var isMergeableObject = function isMergeableObject(value) {
@@ -78793,7 +78793,7 @@ deepmerge.all = function deepmergeAll(array, options) {
 var deepmerge_1 = deepmerge;
 exports.default = deepmerge_1;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"65ekY":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"iuHSd":[function(require,module,exports) {
 /*!
  * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
  *
@@ -78820,7 +78820,7 @@ function isPlainObject(o) {
     return true;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"11w60":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"YjKvL":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -78881,7 +78881,7 @@ function desaturate(color, value) {
     return rgbToDeckglColor(c);
 }
 
-},{"d3-color":"3tYi2","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"3tYi2":[function(require,module,exports) {
+},{"d3-color":"bIAuP","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"bIAuP":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "color", ()=>(0, _colorJsDefault.default));
@@ -78899,7 +78899,7 @@ var _labJsDefault = parcelHelpers.interopDefault(_labJs);
 var _cubehelixJs = require("./cubehelix.js");
 var _cubehelixJsDefault = parcelHelpers.interopDefault(_cubehelixJs);
 
-},{"./color.js":"20gOs","./lab.js":false,"./cubehelix.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"20gOs":[function(require,module,exports) {
+},{"./color.js":"68c50","./lab.js":false,"./cubehelix.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"68c50":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Color", ()=>Color);
@@ -79242,7 +79242,7 @@ function clampt(value) {
     return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
 }
 
-},{"./define.js":"3ekMN","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"3ekMN":[function(require,module,exports) {
+},{"./define.js":"1CUjQ","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1CUjQ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>function(constructor, factory, prototype) {
@@ -79256,7 +79256,7 @@ function extend(parent, definition) {
     return prototype;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"bCuK9":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"hbgLz":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -79368,7 +79368,7 @@ function removeCurrentAxes(stage, currAxis) {
     }
 }
 
-},{"./color":"11w60","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"32CD9":[function(require,module,exports) {
+},{"./color":"YjKvL","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gkoRq":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -79400,7 +79400,7 @@ function use(vega) {
     base.vega = vega;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"lNzvd":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"efiq9":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -79588,7 +79588,7 @@ class Presenter {
     }
 }
 
-},{"./clone":"6hfiU","./defaults":"bCuK9","./enums":"2wJ1O","./legend":"eHQe8","./panel":"8MiKm","./patchedCubeArray":"17hSZ","./stagers":"03D16","tsx-create-element":"3h0lN","./morphcharts":"funfc","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"2wJ1O":[function(require,module,exports) {
+},{"./clone":"lxQkZ","./defaults":"hbgLz","./enums":"392rV","./legend":"b92up","./panel":"9isks","./patchedCubeArray":"6vcrh","./stagers":"3N1tE","tsx-create-element":"g6Tzv","./morphcharts":"60pFP","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"392rV":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -79606,7 +79606,7 @@ var PresenterElement;
     PresenterElement[PresenterElement["vegaControls"] = 4] = "vegaControls";
 })(PresenterElement || (PresenterElement = {}));
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"eHQe8":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"b92up":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -79661,7 +79661,7 @@ const symbolMap = {
     }
 };
 
-},{"tsx-create-element":"3h0lN","./controls":"fVHQm","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8MiKm":[function(require,module,exports) {
+},{"tsx-create-element":"g6Tzv","./controls":"h7GTq","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9isks":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -79694,7 +79694,7 @@ function className(type, presenter) {
     return `${presenter.style.cssPrefix}${(0, _enums.PresenterElement)[type]}`;
 }
 
-},{"tsx-create-element":"3h0lN","./defaults":"bCuK9","./enums":"2wJ1O","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"17hSZ":[function(require,module,exports) {
+},{"tsx-create-element":"g6Tzv","./defaults":"hbgLz","./enums":"392rV","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6vcrh":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -79708,7 +79708,7 @@ function patchCubeArray(allocatedSize, empty, cubes) {
     return patched;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"03D16":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"3N1tE":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -79830,7 +79830,7 @@ function orderDomain(domain, dim) {
     }
 }
 
-},{"./marks/legend":"854D8","./marks/image":"k2vAq","./marks/rect":"98hjC","./marks/rule":"40rpg","./marks/line":"b75NQ","./marks/text":"l3g4F","./base":"32CD9","./color":"11w60","./defaults":"bCuK9","./marks/interfaces":"cVZSK","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"854D8":[function(require,module,exports) {
+},{"./marks/legend":"ey7oJ","./marks/image":"6J6qe","./marks/rect":"efH3C","./marks/rule":"f9sXE","./marks/line":"1Sazz","./marks/text":"10aJx","./base":"gkoRq","./color":"YjKvL","./defaults":"hbgLz","./marks/interfaces":"l5gem","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"ey7oJ":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -79869,7 +79869,7 @@ const markStager = (options, stage, scene, x, y, groupType)=>{
 };
 exports.default = markStager;
 
-},{"../base":"32CD9","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"k2vAq":[function(require,module,exports) {
+},{"../base":"gkoRq","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6J6qe":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -79900,7 +79900,7 @@ const markStager = (options, stage, scene, x, y, groupType)=>{
 };
 exports.default = markStager;
 
-},{"../base":"32CD9","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"98hjC":[function(require,module,exports) {
+},{"../base":"gkoRq","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"efH3C":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -79946,7 +79946,7 @@ const markStager = (options, stage, scene, x, y, groupType)=>{
 };
 exports.default = markStager;
 
-},{"../base":"32CD9","../color":"11w60","../defaults":"bCuK9","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"40rpg":[function(require,module,exports) {
+},{"../base":"gkoRq","../color":"YjKvL","../defaults":"hbgLz","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"f9sXE":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -80002,7 +80002,7 @@ function box(gx, gy, height, width, stroke, strokeWidth, diagonals = false) {
 }
 exports.default = markStager;
 
-},{"../base":"32CD9","../color":"11w60","../defaults":"bCuK9","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"b75NQ":[function(require,module,exports) {
+},{"../base":"gkoRq","../color":"YjKvL","../defaults":"hbgLz","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1Sazz":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -80032,7 +80032,7 @@ const markStager = (options, stage, scene, x, y, groupType)=>{
 };
 exports.default = markStager;
 
-},{"../color":"11w60","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"l3g4F":[function(require,module,exports) {
+},{"../color":"YjKvL","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"10aJx":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -80094,7 +80094,7 @@ function convertAngle(vegaTextAngle) {
 // }
 exports.default = markStager;
 
-},{"../base":"32CD9","../color":"11w60","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"cVZSK":[function(require,module,exports) {
+},{"../base":"gkoRq","../color":"YjKvL","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"l5gem":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -80110,7 +80110,7 @@ var GroupType;
     GroupType[GroupType["zAxis"] = 4] = "zAxis";
 })(GroupType || (GroupType = {}));
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"funfc":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"60pFP":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -80123,7 +80123,7 @@ parcelHelpers.exportAll(_color, exports);
 var _init = require("./init");
 parcelHelpers.exportAll(_init, exports);
 
-},{"./render":"1NB73","./color":"9MmZK","./init":"9Ikya","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"1NB73":[function(require,module,exports) {
+},{"./render":"1ffAu","./color":"grG6p","./init":"8NTVU","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"1ffAu":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -80291,7 +80291,7 @@ function convertBounds(bounds) {
     };
 }
 
-},{"./axes":"38Zyc","./bounds":"8zznX","./cubes":"1GcVE","./lines":"6hUtQ","./text":"b6gma","./image":"6AbaX","../defaults":"bCuK9","./color":"9MmZK","./defaults":"4bL93","./camera":"eScRR","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"38Zyc":[function(require,module,exports) {
+},{"./axes":"kIL7d","./bounds":"i1gRD","./cubes":"ezuGL","./lines":"dDxbq","./text":"caLg4","./image":"eXZ1a","../defaults":"hbgLz","./color":"grG6p","./defaults":"lp0Or","./camera":"9pffU","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"kIL7d":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -80625,7 +80625,7 @@ function convertAxis(axis, domain, dim, height) {
     };
 }
 
-},{"morphcharts":"8ibZ5","./bounds":"8zznX","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"8zznX":[function(require,module,exports) {
+},{"morphcharts":"kTZen","./bounds":"i1gRD","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"i1gRD":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -80669,7 +80669,7 @@ function increment(b, minBoundsX, minBoundsY, minBoundsZ, maxBoundsX, maxBoundsY
     });
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"1GcVE":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"ezuGL":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -80789,7 +80789,7 @@ function convert(stage) {
     };
 }
 
-},{"morphcharts":"8ibZ5","./bounds":"8zznX","./color":"9MmZK","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9MmZK":[function(require,module,exports) {
+},{"morphcharts":"kTZen","./bounds":"i1gRD","./color":"grG6p","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"grG6p":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -80848,7 +80848,7 @@ function colorConfig(ref, colors) {
     ref.core.renderer["_theme"] = null;
 }
 
-},{"../color":"11w60","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6hUtQ":[function(require,module,exports) {
+},{"../color":"YjKvL","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dDxbq":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -80964,7 +80964,7 @@ function convert(stage, height, width) {
     };
 }
 
-},{"morphcharts":"8ibZ5","./bounds":"8zznX","./color":"9MmZK","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"b6gma":[function(require,module,exports) {
+},{"morphcharts":"kTZen","./bounds":"i1gRD","./color":"grG6p","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"caLg4":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -81051,7 +81051,7 @@ function convert(stage) {
     };
 }
 
-},{"morphcharts":"8ibZ5","./bounds":"8zznX","./color":"9MmZK","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"6AbaX":[function(require,module,exports) {
+},{"morphcharts":"kTZen","./bounds":"i1gRD","./color":"grG6p","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"eXZ1a":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -81092,7 +81092,7 @@ function createImageQuad(core, imageData, bounds, position, width, height) {
     return new (0, _morphcharts.Components).ImageQuad(core, imageOptions);
 }
 
-},{"morphcharts":"8ibZ5","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"4bL93":[function(require,module,exports) {
+},{"morphcharts":"kTZen","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"lp0Or":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -81123,7 +81123,7 @@ function createCameraDefaults() {
 }
 const cameraDefaults = createCameraDefaults();
 
-},{"gl-matrix":"jLybM","morphcharts":"8ibZ5","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"eScRR":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","morphcharts":"kTZen","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"9pffU":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -81194,7 +81194,7 @@ function setTransitionTimeAxesVisibility(transistion2dOnly, core) {
     }
 }
 
-},{"gl-matrix":"jLybM","morphcharts":"8ibZ5","./defaults":"4bL93","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"9Ikya":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","morphcharts":"kTZen","./defaults":"lp0Or","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"8NTVU":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -81243,7 +81243,7 @@ function init(options, mcRendererOptions) {
     return ref;
 }
 
-},{"morphcharts":"8ibZ5","./renderer":"40cuj","./canvas":"3GzTk","../transition":"iuMhH","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"40cuj":[function(require,module,exports) {
+},{"morphcharts":"kTZen","./renderer":"afGEG","./canvas":"juQUq","../transition":"fQ2Wz","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"afGEG":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -81276,7 +81276,7 @@ function rendererEnabled(advanced) {
     return r.isSupported;
 }
 
-},{"morphcharts":"8ibZ5","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"3GzTk":[function(require,module,exports) {
+},{"morphcharts":"kTZen","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"juQUq":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -81351,7 +81351,7 @@ function listenCanvasEvents(core, options) {
     };
 }
 
-},{"morphcharts":"8ibZ5","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"iuMhH":[function(require,module,exports) {
+},{"morphcharts":"kTZen","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"fQ2Wz":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -81413,7 +81413,7 @@ class ModelTransitioner extends Transitioner {
     }
 }
 
-},{"gl-matrix":"jLybM","./easing":"hROeM","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"hROeM":[function(require,module,exports) {
+},{"gl-matrix":"hTT1l","./easing":"45K62","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"45K62":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -81426,7 +81426,7 @@ function easing(t) {
     return (0, _d3Ease.easeCubicInOut)(t);
 }
 
-},{"d3-ease":"5rCHh","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"5rCHh":[function(require,module,exports) {
+},{"d3-ease":"ggDXO","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"ggDXO":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "easeLinear", ()=>(0, _linearJs.linear));
@@ -81477,7 +81477,7 @@ var _bounceJs = require("./bounce.js");
 var _backJs = require("./back.js");
 var _elasticJs = require("./elastic.js");
 
-},{"./linear.js":false,"./quad.js":false,"./cubic.js":"4S9uo","./poly.js":false,"./sin.js":false,"./exp.js":false,"./circle.js":false,"./bounce.js":false,"./back.js":false,"./elastic.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"4S9uo":[function(require,module,exports) {
+},{"./linear.js":false,"./quad.js":false,"./cubic.js":"j31nd","./poly.js":false,"./sin.js":false,"./exp.js":false,"./circle.js":false,"./bounce.js":false,"./back.js":false,"./elastic.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"j31nd":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "cubicIn", ()=>cubicIn);
@@ -81493,7 +81493,7 @@ function cubicInOut(t) {
     return ((t *= 2) <= 1 ? t * t * t : (t -= 2) * t * t + 2) / 2;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"7dKFA":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"dQVP7":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -81553,7 +81553,7 @@ function _ViewGl(runtime, config) {
 }
 const ViewGl = _ViewGl;
 
-},{"../base":"32CD9","../defaults":"bCuK9","../presenter":"lNzvd","../enums":"2wJ1O","./rendererGl":"PrjAw","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"PrjAw":[function(require,module,exports) {
+},{"../base":"gkoRq","../defaults":"hbgLz","../presenter":"efiq9","../enums":"392rV","./rendererGl":"gKmIW","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"gKmIW":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -81592,7 +81592,7 @@ function _RendererGl(loader) {
 }
 const RendererGl = _RendererGl;
 
-},{"../base":"32CD9","@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}],"3YB2I":[function(require,module,exports) {
+},{"../base":"gkoRq","@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}],"6exti":[function(require,module,exports) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
@@ -81601,5 +81601,5 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "version", ()=>version);
 const version = "1.0.6";
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"8NrQH"}]},["dlIYU"], "dlIYU", "parcelRequire1c68")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"dWZT9"}]},["dlIYU"], "dlIYU", "parcelRequire1c68")
 

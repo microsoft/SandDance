@@ -19,6 +19,10 @@
 		return Object.freeze(n);
 	}
 
+	function getDefaultExportFromCjs (x) {
+		return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+	}
+
 	var require$$0$1 = [
 		"a",
 		"abbr",
@@ -140,12 +144,23 @@
 		"wbr"
 	];
 
-	var htmlTags = require$$0$1;
+	var htmlTags$1;
+	var hasRequiredHtmlTags;
 
-	var htmlTags$1 = /*#__PURE__*/_mergeNamespaces({
+	function requireHtmlTags () {
+		if (hasRequiredHtmlTags) return htmlTags$1;
+		hasRequiredHtmlTags = 1;
+		htmlTags$1 = require$$0$1;
+		return htmlTags$1;
+	}
+
+	var htmlTagsExports = requireHtmlTags();
+	var index$1 = /*@__PURE__*/getDefaultExportFromCjs(htmlTagsExports);
+
+	var htmlTags = /*#__PURE__*/_mergeNamespaces({
 		__proto__: null,
-		'default': htmlTags
-	}, [htmlTags]);
+		default: index$1
+	}, [htmlTagsExports]);
 
 	var require$$0 = [
 		"a",
@@ -230,15 +245,26 @@
 		"vkern"
 	];
 
-	var lib = require$$0;
+	var lib;
+	var hasRequiredLib;
+
+	function requireLib () {
+		if (hasRequiredLib) return lib;
+		hasRequiredLib = 1;
+		lib = require$$0;
+		return lib;
+	}
+
+	var libExports = requireLib();
+	var index = /*@__PURE__*/getDefaultExportFromCjs(libExports);
 
 	var svgTags = /*#__PURE__*/_mergeNamespaces({
 		__proto__: null,
-		'default': lib
-	}, [lib]);
+		default: index
+	}, [libExports]);
 
-	const htmlTagArray = htmlTags || htmlTags$1;
-	const svgTagArray = lib || svgTags;
+	const htmlTagArray = index$1 || htmlTags;
+	const svgTagArray = index || svgTags;
 	/**
 	 * Decamelizes a string with/without a custom separator (hyphen by default).
 	 * from: https://ourcodeworld.com/articles/read/608/how-to-camelize-and-decamelize-strings-in-javascript
@@ -421,6 +447,10 @@
 	* Copyright (c) Microsoft Corporation.
 	* Licensed under the MIT License.
 	*/
+	/**
+	 * This file is for external facing export only, do not use this for internal references,
+	 * as it may cause circular dependencies in Rollup.
+	 */
 
 	var controls = /*#__PURE__*/Object.freeze({
 		__proto__: null,
@@ -2964,7 +2994,7 @@
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class Config$2 {
+	let Config$2 = class Config {
 	    constructor(core) {
 	        this.reset();
 	    }
@@ -3096,7 +3126,7 @@
 	            }
 	        }
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
@@ -3225,8 +3255,8 @@
 	    }
 	    update() { }
 	}
-	class Palette$2 extends PaletteBase {
-	}
+	let Palette$2 = class Palette extends PaletteBase {
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
@@ -3879,13 +3909,13 @@
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class ControllerVisual$1 {
+	let ControllerVisual$1 = class ControllerVisual {
 	    render(elapsedTime, xrFrame) { }
 	    update(elapsedTime) { }
 	    constructor(controller) {
 	        this.controller = controller;
 	    }
-	}
+	};
 	class Controller {
 	    get isInitialized() { return this._isInitialized; }
 	    get mMatrix() { return this._mMatrix; }
@@ -4080,7 +4110,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class Quad$2 {
+	let Quad$2 = class Quad {
 	    static positions(transform) {
 	        const positions = new Float32Array(12);
 	        const position = create$3();
@@ -4132,7 +4162,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        }
 	        return verticesView;
 	    }
-	}
+	};
 	Quad$2.FACE_NORMALS = [
 	    fromValues$3(0, 0, 1),
 	    fromValues$3(0, 0, -1)
@@ -6322,12 +6352,12 @@ f 5/6/6 1/12/6 8/11/6`;
 	        };
 	    }
 	}
-	class FontVisual$2 {
+	let FontVisual$2 = class FontVisual {
 	    update() { }
 	    constructor(font) {
 	        this.font = font;
 	    }
-	}
+	};
 	class Font {
 	    get atlas() { return this._rasterizer.fontAtlas; }
 	    get count() { return this._chars.size; }
@@ -8068,13 +8098,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class LabelSetVisual$2 {
+	let LabelSetVisual$2 = class LabelSetVisual {
 	    render(elapsedTime, xrFrame) { }
 	    update(elapsedTime) { }
 	    constructor(labelSet) {
 	        this.label = labelSet;
 	    }
-	}
+	};
 	class LabelBase {
 	    get material() { return this._material; }
 	    get vertices() { return this._vertices; }
@@ -8495,13 +8525,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class ImageVisual$2 {
+	let ImageVisual$2 = class ImageVisual {
 	    render(elapsedTime, xrFrame) { }
 	    update(elapsedTime) { }
 	    constructor(image) {
 	        this.image = image;
 	    }
-	}
+	};
 	class ImageBase {
 	    get material() { return this._material; }
 	    get vertices() { return this._vertices; }
@@ -9507,8 +9537,8 @@ f 5/6/6 1/12/6 8/11/6`;
 	    }
 	    update() { }
 	}
-	class Atlas$2 extends AtlasBase {
-	}
+	let Atlas$2 = class Atlas extends AtlasBase {
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
@@ -9653,16 +9683,16 @@ f 5/6/6 1/12/6 8/11/6`;
 	    }
 	}
 	TransitionBufferBase._id = 1;
-	class Buffer$2 extends BufferBase {
+	let Buffer$2 = class Buffer extends BufferBase {
 	    constructor(core, ids) {
 	        super(core, ids);
 	    }
-	}
-	class TransitionBuffer$2 extends TransitionBufferBase {
+	};
+	let TransitionBuffer$2 = class TransitionBuffer extends TransitionBufferBase {
 	    constructor(core, ids) {
 	        super(core, ids, Buffer$2, Palette$2, Atlas$2);
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
@@ -10021,7 +10051,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class Quad$1 {
+	let Quad$1 = class Quad {
 	    get isInitialized() { return this._isInitialized; }
 	    get vertexBuffer() { return this._vertexBuffer; }
 	    get indexBuffer() { return this._indexBuffer; }
@@ -10041,13 +10071,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	        this._indexCount = indices.length;
 	        this._isInitialized = true;
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class Atlas$1 extends AtlasBase {
+	let Atlas$1 = class Atlas extends AtlasBase {
 	    get texture() { return this._texture; }
 	    get defaultTexture() { return this._defaultTexture; }
 	    initializeContext(core, gl) {
@@ -10070,13 +10100,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	            this._texture = null;
 	        }
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class Palette$1 extends PaletteBase {
+	let Palette$1 = class Palette extends PaletteBase {
 	    get texture() { return this._texture; }
 	    get defaultTexture() { return this._defaultTexture; }
 	    initializeContext(core, gl) {
@@ -10103,13 +10133,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	            this._texture = null;
 	        }
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class Buffer$1 extends BufferBase {
+	let Buffer$1 = class Buffer extends BufferBase {
 	    get vertexBuffer() { return this._vertexBuffer; }
 	    initializeContext(gl) {
 	        this._gl = gl;
@@ -10126,8 +10156,8 @@ f 5/6/6 1/12/6 8/11/6`;
 	            this._core.log.write(LogLevel.info, `buffer updated ${this._length} ${Math.round(window.performance.now() - start)}ms`);
 	        }
 	    }
-	}
-	class TransitionBuffer$1 extends TransitionBufferBase {
+	};
+	let TransitionBuffer$1 = class TransitionBuffer extends TransitionBufferBase {
 	    constructor(core, ids) {
 	        super(core, ids, Buffer$1, Palette$1, Atlas$1);
 	    }
@@ -10140,13 +10170,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	        this._atlas2.initializeContext(this._core, gl);
 	        this._isInitialized = true;
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class Config$1 extends RendererConfig {
+	let Config$1 = class Config extends RendererConfig {
 	    constructor() {
 	        super();
 	        this.reset();
@@ -10170,13 +10200,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	        normalize$2(this.halfAngle, this.halfAngle);
 	        this.isFxaaEnabled = false;
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class Resources$1 {
+	let Resources$1 = class Resources {
 	    bindFramebuffer(framebuffer) {
 	        if (this.framebuffer != framebuffer) {
 	            this.framebuffer = framebuffer;
@@ -10191,7 +10221,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        this.EXT_frag_depth = gl.getExtension("EXT_frag_depth");
 	        this.WEBGL_lose_context = gl.getExtension("WEBGL_lose_context");
 	    }
-	}
+	};
 	Resources$1.glsl = {
 	    "anaglyph.fragment.fx": "#version 100\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nuniform vec4 uViewport;\nuniform sampler2D uSampler1;\nuniform sampler2D uSampler2;\nconst vec3 LEFT_MASK = vec3(1.0, 0.0, 0.0);\nconst vec3 RIGHT_MASK = vec3(0.0, 1.0, 1.0);\nvoid main() {\nvec2 texCoords = (gl_FragCoord.xy - uViewport.xy) / uViewport.zw;\nvec3 color = LEFT_MASK * dot(texture2D(uSampler1, texCoords).rgb, LUMINANCE);\ncolor += RIGHT_MASK * dot(texture2D(uSampler2, texCoords).rgb, LUMINANCE);\ngl_FragColor = vec4(color, 1.0);\n}\n",
 	    "color.fragment.fx": "#version 100\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec3 vColor;\nvoid main(void)\n{\ngl_FragColor = vec4(pow(vColor, GAMMA), 1.0);\n}\n",
@@ -10220,7 +10250,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	    "common.include.fx": "const float NEAR_PLANE = 0.01;\nconst float FAR_PLANE = 100.0;\nconst float DEPTH_A = 1.0002000200020003;\nconst float DEPTH_B = 0.020002000200020003;\nconst vec3 GAMMA = vec3(0.45454545454545453);\nconst vec3 INV_GAMMA = vec3(2.2);\nconst vec3 LUMINANCE = vec3(0.2126, 0.7152, 0.0722);\nconst float PI = 3.1415926538;\nconst float ROOT_TWO = 1.4142135624;\nconst float ROOT_TWO_OVER_TWO = 0.7071067811865476;\nconst float ROOT_THREE = 1.7320508075688772;\nconst float ROOT_THREE_OVER_TWO = 0.8660254037844386;\nconst vec3 IDENTITY_ROTATION = vec3(0.0, 1.0, 0.0);\nmat3 transpose(in mat3 mat) {\nvec3 i0 = mat[0];\nvec3 i1 = mat[1];\nvec3 i2 = mat[2];\nreturn mat3\n(\nvec3(i0.x, i1.x, i2.x),\nvec3(i0.y, i1.y, i2.y),\nvec3(i0.z, i1.z, i2.z)\n);\n}\n",
 	    "quat.include.fx": "const float EPSILON = 0.000001;\nmat3 fromQuat(in vec4 q) {\nfloat x = q.x;\nfloat y = q.y;\nfloat z = q.z;\nfloat w = q.w;\nfloat x2 = x + x;\nfloat y2 = y + y;\nfloat z2 = z + z;\nfloat xx = x * x2;\nfloat yx = y * x2;\nfloat yy = y * y2;\nfloat zx = z * x2;\nfloat zy = z * y2;\nfloat zz = z * z2;\nfloat wx = w * x2;\nfloat wy = w * y2;\nfloat wz = w * z2;\nmat3 m;\nm[0][0] = 1.0 - yy - zz;\nm[0][1] = yx - wz;\nm[0][2] = zx + wy;\nm[1][0] = yx + wz;\nm[1][1] = 1.0 - xx - zz;\nm[1][2] = zy - wx;\nm[2][0] = zx - wy;\nm[2][1] = zy + wx;\nm[2][2] = 1.0 - xx - yy;\nreturn m;\n}\nvec3 rotate(in vec3 p, in vec4 q) {\nreturn p + 2.0 * cross(q.xyz, cross(q.xyz, p) + q.w * p);\n}\nvec4 slerp(in vec4 a, in vec4 b, in float t) {\nfloat cosom = dot(a, b);\nif (cosom < 0.0) {\ncosom = -cosom;\nb = -b;\n}\nfloat scale0, scale1;\nif (1.0 - cosom > EPSILON) {\nfloat omega = acos(cosom);\nfloat sinom = sin(omega);\nscale0 = sin((1.0 - t) * omega) / sinom;\nscale1 = sin(t * omega) / sinom;\n}\nelse {\nscale0 = 1.0 - t;\nscale1 = t;\n}\nreturn vec4(scale0 * a + scale1 * b);\n}\n",
 	};
-	class ShaderBase$1 {
+	let ShaderBase$1 = class ShaderBase {
 	    get isInitialized() { return this._isInitialized; }
 	    get vertexBuffer() { return this._vertexBuffer; }
 	    set vertexBuffer(value) {
@@ -10357,13 +10387,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	            callback(source);
 	        }
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class Color$1 extends ShaderBase$1 {
+	let Color$1 = class Color extends ShaderBase$1 {
 	    initializeContext(gl) {
 	        super.initializeContext(gl);
 	        if (this._isLoaded) {
@@ -10405,13 +10435,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	        this._gl.enableVertexAttribArray(this._colorAttribute);
 	        this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, this._indexBuffer);
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class Texture$1 extends ShaderBase$1 {
+	let Texture$1 = class Texture extends ShaderBase$1 {
 	    get texture2D() { return this._texture2D; }
 	    set texture2D(value) {
 	        if (this._texture2D != value) {
@@ -10472,13 +10502,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	        this._gl.activeTexture(this._gl.TEXTURE0);
 	        this._gl.bindTexture(this._gl.TEXTURE_2D, this._texture2D);
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class Lasso$3 extends ShaderBase$1 {
+	let Lasso$3 = class Lasso extends ShaderBase$1 {
 	    initializeContext(gl) {
 	        super.initializeContext(gl);
 	        if (this._isLoaded) {
@@ -10522,7 +10552,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        this._gl.enableVertexAttribArray(this._texCoordAttribute);
 	        this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, this._indexBuffer);
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
@@ -10601,7 +10631,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class SdfText$1 extends ShaderBase$1 {
+	let SdfText$1 = class SdfText extends ShaderBase$1 {
 	    get texture2D() { return this._texture2D; }
 	    set texture2D(value) {
 	        if (this._texture2D != value) {
@@ -10681,13 +10711,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	        this._gl.activeTexture(this._gl.TEXTURE0);
 	        this._gl.bindTexture(this._gl.TEXTURE_2D, this._texture2D);
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class PickGrid$1 extends ShaderBase$1 {
+	let PickGrid$1 = class PickGrid extends ShaderBase$1 {
 	    initializeContext(gl) {
 	        super.initializeContext(gl);
 	        if (this._isLoaded) {
@@ -10771,13 +10801,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	        this._gl.enableVertexAttribArray(this._boundsAttribute);
 	        this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, this._indexBuffer);
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class UnitShader$1 extends ShaderBase$1 {
+	let UnitShader$1 = class UnitShader extends ShaderBase$1 {
 	    get paletteTexture() { return this._paletteTexture; }
 	    set paletteTexture(value) {
 	        if (this._paletteTexture != value) {
@@ -10958,13 +10988,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	        ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._idAttribute, 0);
 	        ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._idColorAttribute, 0);
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class UnitBlock$1 extends UnitShader$1 {
+	let UnitBlock$1 = class UnitBlock extends UnitShader$1 {
 	    initializeContext(gl) {
 	        super.initializeContext(gl);
 	        if (this._isLoaded) {
@@ -11015,13 +11045,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	        ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._rotationAttribute, 0);
 	        ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousRotationAttribute, 0);
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class UnitSphere$1 extends UnitShader$1 {
+	let UnitSphere$1 = class UnitSphere extends UnitShader$1 {
 	    initializeContext(gl) {
 	        super.initializeContext(gl);
 	        if (this._isLoaded) {
@@ -11057,13 +11087,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	        ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousColorAttribute, 1);
 	        this._gl.enableVertexAttribArray(this._previousColorAttribute);
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class UnitCylinder$1 extends UnitShader$1 {
+	let UnitCylinder$1 = class UnitCylinder extends UnitShader$1 {
 	    initializeContext(gl) {
 	        super.initializeContext(gl);
 	        if (this._isLoaded) {
@@ -11113,7 +11143,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._rotationAttribute, 0);
 	        ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousRotationAttribute, 0);
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
@@ -11175,7 +11205,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class UnitSdf$1 extends UnitShader$1 {
+	let UnitSdf$1 = class UnitSdf extends UnitShader$1 {
 	    initializeContext(gl) {
 	        super.initializeContext(gl);
 	        if (this._isLoaded) {
@@ -11254,7 +11284,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._texCoordAttribute, 0);
 	        ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousTexCoordAttribute, 0);
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
@@ -11372,7 +11402,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class AxesVisualBase$1 {
+	let AxesVisualBase$1 = class AxesVisualBase {
 	    get isInitialized() { return this._isInitialized; }
 	    get axes() { return this._axes; }
 	    constructor(core) {
@@ -11391,13 +11421,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	    }
 	    _renderGrid() { }
 	    _renderText() { }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class Cartesian2dVisual$1 extends AxesVisualBase$1 {
+	let Cartesian2dVisual$1 = class Cartesian2dVisual extends AxesVisualBase$1 {
 	    get isInitialized() { return this._isInitialized && this._main.gridShader.isInitialized && this._main.sdfTextShader.isInitialized && this._main.fonts[this._axes.font.name].isInitialized; }
 	    constructor(core, main, cartesian2dAxes) {
 	        super(core);
@@ -11680,13 +11710,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	            this._gl.drawElements(this._gl.TRIANGLES, axes.getGridFaceIndexCount(faceId), this._gl.UNSIGNED_SHORT, axes.getGridFaceIndexOffset(faceId) * 2);
 	        }
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class Cartesian3dVisual$1 extends AxesVisualBase$1 {
+	let Cartesian3dVisual$1 = class Cartesian3dVisual extends AxesVisualBase$1 {
 	    get isInitialized() { return this._isInitialized && this._main.gridShader.isInitialized && this._main.sdfTextShader.isInitialized && this._main.fonts[this._axes.font.name].isInitialized; }
 	    constructor(core, main, cartesian3dAxes) {
 	        super(core);
@@ -11975,7 +12005,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	            this._gl.drawElements(this._gl.TRIANGLES, axes.getGridFaceIndexCount(faceId), this._gl.UNSIGNED_SHORT, axes.getGridFaceIndexOffset(faceId) * 2);
 	        }
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
@@ -12069,7 +12099,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class ImageVisual$1 {
+	let ImageVisual$1 = class ImageVisual {
 	    get isInitialized() { return this._isInitialized && this._main.textureShader.isInitialized; }
 	    get image() { return this._image; }
 	    constructor(core, main, image) {
@@ -12135,13 +12165,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	            }
 	        }
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class LabelVisualBase$1 {
+	let LabelVisualBase$1 = class LabelVisualBase {
 	    get isInitialized() { return this._isInitialized && this._main.sdfTextShader.isInitialized && this._main.fonts[this._label.font.name].isInitialized; }
 	    constructor(core, main, label) {
 	        this._core = core;
@@ -12218,27 +12248,27 @@ f 5/6/6 1/12/6 8/11/6`;
 	            }
 	        }
 	    }
-	}
-	class LabelVisual$1 extends LabelVisualBase$1 {
+	};
+	let LabelVisual$1 = class LabelVisual extends LabelVisualBase$1 {
 	    get label() { return this._label; }
 	    set text(value) { this._label.text = value; }
 	    get text() { return this._label.text; }
 	    constructor(core, main, label) {
 	        super(core, main, label);
 	    }
-	}
-	class LabelSetVisual$1 extends LabelVisualBase$1 {
+	};
+	let LabelSetVisual$1 = class LabelSetVisual extends LabelVisualBase$1 {
 	    get label() { return this._label; }
 	    constructor(core, main, label) {
 	        super(core, main, label);
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class FontVisual$1 {
+	let FontVisual$1 = class FontVisual {
 	    get isInitialized() { return this._isInitialized; }
 	    get font() { return this._font; }
 	    constructor(core, font) {
@@ -12260,13 +12290,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	            this._core.log.write(LogLevel.info, `${this._font.name} texture updated`);
 	        }
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class Lasso$2 {
+	let Lasso$2 = class Lasso {
 	    get isInitialized() { return this._isInitialized; }
 	    get vertexBuffer() { return this._vertexBuffer; }
 	    get indexBuffer() { return this._indexBuffer; }
@@ -12283,13 +12313,13 @@ f 5/6/6 1/12/6 8/11/6`;
 	        this._indexCount = indices.length;
 	        this._isInitialized = true;
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class Main$1 extends RendererBase {
+	let Main$1 = class Main extends RendererBase {
 	    get shaderResources() { return this._shaderResources; }
 	    get colorShader() { return this._colorShader; }
 	    get textureShader() { return this._textureShader; }
@@ -13076,7 +13106,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	            }
 	        }
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
@@ -13563,7 +13593,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	 * Copyright (c) Microsoft Corporation.
 	 * Licensed under the MIT License.
 	 */
-	class Lasso$1 extends ShaderBase {
+	let Lasso$1 = class Lasso extends ShaderBase {
 	    initializeContext(gl) {
 	        super.initializeContext(gl);
 	        if (this._isLoaded) {
@@ -13607,7 +13637,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	        this._gl.enableVertexAttribArray(this._texCoordAttribute);
 	        this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, this._indexBuffer);
 	    }
-	}
+	};
 
 	/*!
 	 * Copyright (c) Microsoft Corporation.
@@ -17308,6 +17338,10 @@ f 5/6/6 1/12/6 8/11/6`;
 	* Copyright (c) Microsoft Corporation.
 	* Licensed under the MIT License.
 	*/
+	/**
+	 * This file is for external facing export only, do not use this for internal references,
+	 * as it may cause circular dependencies in Rollup.
+	 */
 
 	var types = /*#__PURE__*/Object.freeze({
 		__proto__: null,
@@ -17465,7 +17499,7 @@ f 5/6/6 1/12/6 8/11/6`;
 
 	var _deepmerge = /*#__PURE__*/Object.freeze({
 		__proto__: null,
-		'default': deepmerge_1
+		default: deepmerge_1
 	});
 
 	/*!
@@ -17981,6 +18015,10 @@ f 5/6/6 1/12/6 8/11/6`;
 	* Copyright (c) Microsoft Corporation.
 	* Licensed under the MIT License.
 	*/
+	/**
+	 * This file is for external facing export only, do not use this for internal references,
+	 * as it may cause circular dependencies in Rollup.
+	 */
 
 	var util = /*#__PURE__*/Object.freeze({
 		__proto__: null,
@@ -18083,18 +18121,18 @@ f 5/6/6 1/12/6 8/11/6`;
 
 	var defaults = /*#__PURE__*/Object.freeze({
 		__proto__: null,
-		minHeight: minHeight,
-		minWidth: minWidth,
-		defaultPresenterStyle: defaultPresenterStyle,
-		defaultPresenterConfig: defaultPresenterConfig,
 		createStage: createStage,
+		defaultOnAxisItem: defaultOnAxisItem,
+		defaultPresenterConfig: defaultPresenterConfig,
+		defaultPresenterStyle: defaultPresenterStyle,
+		defaultView: defaultView,
 		groupStrokeWidth: groupStrokeWidth,
 		lineZ: lineZ,
-		defaultView: defaultView,
-		minZ: minZ,
 		min3dDepth: min3dDepth,
+		minHeight: minHeight,
 		minPixelSize: minPixelSize,
-		defaultOnAxisItem: defaultOnAxisItem
+		minWidth: minWidth,
+		minZ: minZ
 	});
 
 	/*!
@@ -18369,6 +18407,7 @@ f 5/6/6 1/12/6 8/11/6`;
 	* Copyright (c) Microsoft Corporation.
 	* Licensed under the MIT License.
 	*/
+	// import { AlignmentBaseline, TextAnchor } from '@deck.gl/layers/text-layer/text-layer';
 	const markStager = (options, stage, scene, x, y, groupType) => {
 	    //change direction of y from SVG to GL
 	    const ty = -1;
@@ -20108,7 +20147,5 @@ f 5/6/6 1/12/6 8/11/6`;
 	exports.use = use;
 	exports.util = util;
 	exports.version = version;
-
-	Object.defineProperty(exports, '__esModule', { value: true });
 
 }));

@@ -722,6 +722,4 @@
   exports.isColor = isColor;
   exports.isQuantitative = isQuantitative;
 
-  Object.defineProperty(exports, '__esModule', { value: true });
-
 }));
