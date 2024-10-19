@@ -69,7 +69,7 @@ export const placeholdersPlugin: Plugin = {
         });
         //now for each key, add a listener to the signal bus to update all the elements with the new value
         elementsByKeys.forEach((elements, key) => {
-            const callback = (key: string, value: string | null) => {
+            const signalCallback = (key: string, value: string | null) => {
                 renderer.signalBus.log(`Updating key: ${key} has ${elements.length} placeholder elements`);
                 elements.forEach(placeholder => {
                     placeholder.textContent = value;
@@ -78,7 +78,7 @@ export const placeholdersPlugin: Plugin = {
             const hasSignal = (name: string) => {
                 return name === key;
             };
-            renderer.signalBus.registerListener(key, callback, hasSignal);
+            renderer.signalBus.registerListener(key, signalCallback, hasSignal, null, () => false);
         });
         return () => {
             elementsByKeys.forEach((elements, key) => {

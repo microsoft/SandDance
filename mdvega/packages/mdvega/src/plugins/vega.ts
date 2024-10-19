@@ -3,7 +3,7 @@
 * Licensed under the MIT License.
 */
 
-import { parse, Runtime, Spec, View } from 'vega';
+import { changeset, parse, Runtime, Spec, ValuesData, View } from 'vega';
 import { Plugin, definePlugin } from '../factory';
 import { sanitizedHTML } from './sanitize';
 import { InitSignal } from 'vega-typings';
@@ -36,6 +36,19 @@ export const vegaPlugin: Plugin = {
                 });
             }
 
+            // Register initial data with the signal bus
+            if (spec.data) {
+                spec.data.filter(d => d.name.startsWith(renderer.options.dataSignalPrefix)).forEach((data: ValuesData) => {
+                    if (!data.name.startsWith(renderer.options.dataSignalPrefix)) return;
+                    //see if data already exists and get its value
+                    const existingSourceData = renderer.signalBus.findSourceData(data.name, vegaId);
+                    if (existingSourceData) {
+                        data.values = existingSourceData.values;
+                    }
+                    renderer.signalBus.registerData(vegaId, data.name, data.values);
+                });
+            }
+
             let runtime: Runtime;
             let view: View;
 
@@ -46,9 +59,9 @@ export const vegaPlugin: Plugin = {
                 errorHandler(e, 'vega', index, 'parse', container);
                 return;
             }
-            
+
             try {
-                view = new View(runtime, { container, renderer: 'canvas' });
+                view = new View(runtime, { container, renderer: renderer.options.vegaRenderer });
                 view.run();
             } catch (e) {
                 container.innerHTML = `<div class="error">${e.toString()}</div>`;
@@ -63,6 +76,10 @@ export const vegaPlugin: Plugin = {
                 return !!(spec.signals && spec.signals.some(signal => signal.name === signalName));
             };
 
+            const hasData = (dataName: string) => {
+                return !!(spec.data && spec.data.some(data => data.name === dataName));
+            };
+
             // Register a listener for each signal in this Vega instance
             if (spec.signals) {
                 spec.signals.forEach(signal => {
@@ -75,17 +92,27 @@ export const vegaPlugin: Plugin = {
             }
 
             // Register a global listener to update this Vega instance when signals change
-            renderer.signalBus.registerListener(vegaId, (name, value) => {
-                const scopedName = `${vegaId}_${name}`;
-                if (renderer.signalBus.signals[scopedName] !== value) {
-                    renderer.signalBus.log(`[Vega ${vegaId}] Updating signal: ${name} with value:`, value);
-                    // Mark this update as direct to prevent broadcasting it again
-                    ////////////////////////////////////////////////////////////////////renderer.signalBus.updateSignalDirectly(vegaId, name, value);
-                    view.signal(name, value).runAsync();
-                } else {
-                    renderer.signalBus.log(`[Vega ${vegaId}] Signal update snubbed: ${name}, value unchanged:`, value);
-                }
-            }, hasSignal);
+            renderer.signalBus.registerListener(
+                vegaId,
+                (name, value) => {
+                    const scopedName = `${vegaId}_${name}`;
+                    if (renderer.signalBus.signals[scopedName] !== value) {
+                        renderer.signalBus.log(`[Vega ${vegaId}] Updating signal: ${name} with value:`, value);
+                        // Mark this update as direct to prevent broadcasting it again
+                        ////////////////////////////////////////////////////////////////////renderer.signalBus.updateSignalDirectly(vegaId, name, value);
+                        view.signal(name, value).runAsync();
+                    } else {
+                        renderer.signalBus.log(`[Vega ${vegaId}] Signal update snubbed: ${name}, value unchanged:`, value);
+                    }
+                },
+                hasSignal,
+                (name, value) => {
+                    view
+                        .change(name, changeset().remove(() => true).insert(value))
+                        .runAsync();
+                },
+                hasData,
+            );
         });
     },
 };

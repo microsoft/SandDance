@@ -4,6 +4,7 @@
 */
 
 import MarkdownIt from 'markdown-it';
+import { Renderers } from 'vega-typings/types';
 import { create, plugins } from './factory';
 import { SignalBus } from './signalbus';
 
@@ -15,17 +16,29 @@ export interface ErrorHandler {
     (error: Error, pluginName: string, instanceIndex: number, phase: string, container: Element): void;
 }
 
+export interface RendererOptions {
+    vegaRenderer?: Renderers;
+    dataSignalPrefix?: string;
+}
+
+const defaultRendererOptions: RendererOptions = {
+    vegaRenderer: 'canvas',
+    dataSignalPrefix: 'data-signal:',
+};
+
 export class Renderer {
 
     public md: MarkdownIt;
     public instances: { [key: string]: unknown[] };
     public signalBus: SignalBus;
+    public options: RendererOptions;
 
     private destroyHandlers: { [key: string]: Handler };
 
-    constructor(public element: HTMLElement) {
+    constructor(public element: HTMLElement, options?: RendererOptions) {
+        this.options = { ...defaultRendererOptions, ...options };
         this.md = create();
-        this.signalBus = new SignalBus();
+        this.signalBus = new SignalBus(this.options.dataSignalPrefix);
         this.instances = {};
         this.destroyHandlers = {};
     }

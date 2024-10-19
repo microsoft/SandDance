@@ -3,14 +3,22 @@
 * Licensed under the MIT License.
 */
 
-interface Callback {
+import { Datum } from 'vega';
+
+interface SignalCallback {
     (name: string, value: string | null): void;
+}
+
+interface DataCallback {
+    (name: string, value: unknown): void;
 }
 
 interface Listener {
     id: string;
-    callback: Callback;
+    signalCallback: SignalCallback;
+    dataCallback: DataCallback;
     hasSignal: (name: string) => boolean;
+    hasData: (name: string) => boolean;
 }
 
 export enum LogLevel {
@@ -20,15 +28,19 @@ export enum LogLevel {
 
 // Signal Bus to manage shared signals
 export class SignalBus {
-    public sources: string[];
+    public signalSources: string[];
     public signals: { [key: string]: unknown };
+    public dataSources: string[];
+    public data: { [key: string]: Datum[] | object };
     public listeners: Listener[];
     public broadcastingStack: boolean[];
     public directUpdateSignals: Set<unknown>;
     public logLevel: LogLevel;
 
-    constructor() {
-        this.sources = [];
+    constructor(public dataSignalPrefix: string) {
+        this.dataSources = [];
+        this.data = {};
+        this.signalSources = [];
         this.signals = {};
         this.listeners = [];
         this.broadcastingStack = [];
@@ -42,9 +54,21 @@ export class SignalBus {
         }
     }
 
+    findSourceData(name: string, excludeId?: string) {
+        for (let i = 0; i < this.dataSources.length; i++) {
+            const id = this.dataSources[i];
+            if (id === excludeId) continue;
+            const scopedName = `${id}_${name}`;
+            if (this.data[scopedName]) {
+                const values = this.data[scopedName];
+                return { id, values };
+            }
+        }
+    }
+
     findSourceSignal(name: string, excludeId?: string) {
-        for (let i = 0; i < this.sources.length; i++) {
-            const id = this.sources[i];
+        for (let i = 0; i < this.signalSources.length; i++) {
+            const id = this.signalSources[i];
             if (id === excludeId) continue;
             const scopedName = `${id}_${name}`;
             if (this.signals[scopedName]) {
@@ -54,11 +78,22 @@ export class SignalBus {
         }
     }
 
+    registerData(id: string, name: string, values: Datum[] | object) {
+        const scopedName = `${id}_${name}`;
+        if (!this.data[scopedName]) {
+            if (!this.dataSources.includes(id)) {
+                this.dataSources.push(id);
+            }
+            this.data[scopedName] = values;
+            this.log(`Registered data: ${scopedName} with initial value:`, values);
+        }
+    }
+
     registerSignal(id: string, name: string, value: unknown) {
         const scopedName = `${id}_${name}`;
         if (!this.signals[scopedName]) {
-            if (!this.sources.includes(id)) {
-                this.sources.push(id);
+            if (!this.signalSources.includes(id)) {
+                this.signalSources.push(id);
             }
             this.signals[scopedName] = value;
             this.log(`Registered signal: ${scopedName} with initial value:`, value);
@@ -85,12 +120,18 @@ export class SignalBus {
                 if (listener.hasSignal(name)) {
                     if (this.signals[listenerScopedName] !== value) {
                         this.log(`Notifying listener: ${listener.id} with signal: ${name}, value:`, value);
-                        listener.callback(name, value ? value.toString() : null);
+                        listener.signalCallback(name, value ? value.toString() : null);
                     } else {
                         this.log(`Propagation snubbed for listener: ${listener.id}, signal: ${name}, value unchanged:`, value);
                     }
                 } else {
                     this.log(`Listener ${listener.id} does not have signal: ${name}`);
+                }
+                if (listener.dataCallback && name.startsWith(this.dataSignalPrefix)) {
+                    if (listener.hasData(name)) {
+                        this.log(`Notifying listener: ${listener.id} with data: ${name}, value:`, value);
+                        listener.dataCallback(name, value);
+                    }
                 }
             }
         });
@@ -110,8 +151,8 @@ export class SignalBus {
         return this.broadcastingStack.length > 0;
     }
 
-    registerListener(id: string, callback: Callback, hasSignal: (name: string) => boolean) {
-        this.listeners.push({ id, callback, hasSignal });
+    registerListener(id: string, signalCallback: SignalCallback, hasSignal: (name: string) => boolean, dataCallback: DataCallback, hasData: (name: string) => boolean) {
+        this.listeners.push({ id, signalCallback, hasSignal, dataCallback, hasData });
         this.log(`Registered listener for: ${id}`);
     }
 
@@ -126,7 +167,7 @@ export class SignalBus {
 
     // Function to reset signal listeners
     resetSignalListeners() {
-        this.sources =[];
+        this.signalSources = [];
         this.listeners = [];
         this.signals = {};
         this.log('Signal listeners and signals have been reset.');
