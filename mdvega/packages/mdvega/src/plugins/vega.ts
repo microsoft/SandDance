@@ -24,31 +24,6 @@ export const vegaPlugin: Plugin = {
 
             const vegaId = `vega-${index}`;
 
-            // Register initial signals with the signal bus
-            if (spec.signals) {
-                spec.signals.forEach((signal: InitSignal) => {
-                    //see if signal already exists and get its value
-                    const existingSourceSignal = renderer.signalBus.findSourceSignal(signal.name, vegaId);
-                    if (existingSourceSignal) {
-                        signal.value = existingSourceSignal.value;
-                    }
-                    renderer.signalBus.registerSourceSignal(vegaId, signal.name, signal.value);
-                });
-            }
-
-            // Register initial data with the signal bus
-            if (spec.data) {
-                spec.data.filter(d => d.name.startsWith(renderer.options.dataSignalPrefix)).forEach((data: ValuesData) => {
-                    if (!data.name.startsWith(renderer.options.dataSignalPrefix)) return;
-                    //see if data already exists and get its value
-                    const existingSourceData = renderer.signalBus.findSourceData(data.name, vegaId);
-                    if (existingSourceData) {
-                        data.values = existingSourceData.values;
-                    }
-                    renderer.signalBus.registerSourceData(vegaId, data.name, data.values);
-                });
-            }
-
             let runtime: Runtime;
             let view: View;
 
@@ -67,6 +42,31 @@ export const vegaPlugin: Plugin = {
                 container.innerHTML = `<div class="error">${e.toString()}</div>`;
                 errorHandler(e, 'vega', index, 'view', container);
                 return;
+            }
+
+            // Register initial signals with the signal bus
+            if (spec.signals) {
+                spec.signals.forEach((signal: InitSignal) => {
+                    //see if signal already exists and get its value
+                    const existingSourceSignal = renderer.signalBus.findSourceSignal(signal.name, vegaId);
+                    if (existingSourceSignal) {
+                        signal.value = existingSourceSignal.value;
+                    }
+                    renderer.signalBus.registerSourceSignal(vegaId, signal.name, view.signal(signal.name));
+                });
+            }
+
+            // Register initial data with the signal bus
+            if (spec.data) {
+                spec.data.filter(d => d.name.startsWith(renderer.options.dataSignalPrefix)).forEach((data: ValuesData) => {
+                    if (!data.name.startsWith(renderer.options.dataSignalPrefix)) return;
+                    //see if data already exists and get its value
+                    const existingSourceData = renderer.signalBus.findSourceData(data.name, vegaId);
+                    if (existingSourceData) {
+                        data.values = existingSourceData.values;
+                    }
+                    renderer.signalBus.registerSourceData(vegaId, data.name, view.data(data.name));
+                });
             }
 
             renderer.instances['vega'].push(view);
