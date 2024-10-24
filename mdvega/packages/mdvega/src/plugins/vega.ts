@@ -32,7 +32,7 @@ export const vegaPlugin: Plugin = {
                     if (existingSourceSignal) {
                         signal.value = existingSourceSignal.value;
                     }
-                    renderer.signalBus.registerSignal(vegaId, signal.name, signal.value);
+                    renderer.signalBus.registerSourceSignal(vegaId, signal.name, signal.value);
                 });
             }
 
@@ -45,7 +45,7 @@ export const vegaPlugin: Plugin = {
                     if (existingSourceData) {
                         data.values = existingSourceData.values;
                     }
-                    renderer.signalBus.registerData(vegaId, data.name, data.values);
+                    renderer.signalBus.registerSourceData(vegaId, data.name, data.values);
                 });
             }
 
@@ -94,20 +94,20 @@ export const vegaPlugin: Plugin = {
             // Register a global listener to update this Vega instance when signals change
             renderer.signalBus.registerListener(
                 vegaId,
-                (name, value) => {
+                async (name, value) => {
                     const scopedName = `${vegaId}_${name}`;
-                    if (renderer.signalBus.signals[scopedName] !== value) {
+                    if (renderer.signalBus.signalValues[scopedName] !== value) {
                         renderer.signalBus.log(`[Vega ${vegaId}] Updating signal: ${name} with value:`, value);
                         // Mark this update as direct to prevent broadcasting it again
                         ////////////////////////////////////////////////////////////////////renderer.signalBus.updateSignalDirectly(vegaId, name, value);
-                        view.signal(name, value).runAsync();
+                        await view.signal(name, value).runAsync();
                     } else {
                         renderer.signalBus.log(`[Vega ${vegaId}] Signal update snubbed: ${name}, value unchanged:`, value);
                     }
                 },
                 hasSignal,
-                (name, value) => {
-                    view
+                async (name, value) => {
+                    await view
                         .change(name, changeset().remove(() => true).insert(value))
                         .runAsync();
                 },
