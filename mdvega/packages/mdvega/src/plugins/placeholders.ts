@@ -52,27 +52,30 @@ export const placeholdersPlugin: Plugin = {
 
     },
     hydrateComponent(renderer) {
-        //collect all the placeholders within this container to get their keys
+        // Collect all the placeholders within this container to get their keys
         const placeholders = renderer.element.querySelectorAll('.dynamic-placeholder');
         const elementsByKeys = new Map<string, Element[]>();
         placeholders.forEach(placeholder => {
             const key = placeholder.getAttribute('data-key') as string;
-            //see if key exists in the map
+            // See if key exists in the map
             if (elementsByKeys.has(key)) {
-                //if it does, append the element to the existing array
+                // If it does, append the element to the existing array
                 const elements = elementsByKeys.get(key) as Element[];
                 elements.push(placeholder);
             } else {
-                //if it doesn't, create a new array with the element
+                // If it doesn't, create a new array with the element
                 elementsByKeys.set(key, [placeholder]);
             }
         });
-        //now for each key, add a listener to the signal bus to update all the elements with the new value
+
+        // Now for each key, add a listener to the signal bus to update all the elements with the new value
         elementsByKeys.forEach((elements, key) => {
             const signalCallback = async (key: string, value: string | null) => {
                 renderer.signalBus.log(`Updating key: ${key} has ${elements.length} placeholder elements`);
+
                 elements.forEach(placeholder => {
-                    placeholder.textContent = value;
+                    const parsedMarkdown = renderer.md.renderInline(value || '');
+                    placeholder.innerHTML = parsedMarkdown;
                 });
             };
             const hasSignal = (name: string) => {
@@ -80,13 +83,15 @@ export const placeholdersPlugin: Plugin = {
             };
             renderer.signalBus.registerListener(key, signalCallback, hasSignal, null, () => false);
         });
+
         return () => {
             elementsByKeys.forEach((elements, key) => {
-                //initialize to signal value if any
+                // Initialize to signal value if any
                 const existingSourceSignal = renderer.signalBus.findSourceSignal(key);
                 if (existingSourceSignal) {
+                    const parsedMarkdown = renderer.md.renderInline(existingSourceSignal.value?.toString() || '');
                     elements.forEach(placeholder => {
-                        placeholder.textContent = existingSourceSignal.value?.toString();
+                        placeholder.innerHTML = parsedMarkdown;
                     });
                 }
             });
