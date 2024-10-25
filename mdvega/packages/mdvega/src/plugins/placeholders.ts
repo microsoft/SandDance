@@ -74,7 +74,7 @@ export const placeholdersPlugin: Plugin = {
                 renderer.signalBus.log(`Updating key: ${key} has ${elements.length} placeholder elements`);
 
                 elements.forEach(placeholder => {
-                    const parsedMarkdown = renderer.md.renderInline(value || '');
+                    const parsedMarkdown = renderer.md.renderInline(value?.toString() || '');
                     placeholder.innerHTML = parsedMarkdown;
                 });
             };
