@@ -50,26 +50,27 @@ export const vegaPlugin: Plugin = {
                     //see if signal already exists and get its value
                     const existingSourceSignal = renderer.signalBus.findSourceSignal(signal.name, vegaId);
                     if (existingSourceSignal) {
-                        signal.value = existingSourceSignal.value;
+                        view.signal(signal.name, existingSourceSignal.value);
                     }
                     renderer.signalBus.registerSourceSignal(vegaId, signal.name, view.signal(signal.name));
                 });
             }
 
-            // Register initial data with the signal bus
+            // get initial data from the signal bus
             if (spec.data) {
                 spec.data.filter(d => d.name.startsWith(renderer.options.dataSignalPrefix)).forEach((data: ValuesData) => {
                     if (!data.name.startsWith(renderer.options.dataSignalPrefix)) return;
                     //see if data already exists and get its value
-                    const existingSourceData = renderer.signalBus.findSourceData(data.name, vegaId);
+                    const existingSourceData = renderer.signalBus.findSourceSignal(data.name, vegaId);
                     if (existingSourceData) {
-                        data.values = existingSourceData.values;
+                        view
+                            .change(data.name, changeset().remove(() => true).insert(existingSourceData.value))
+                            .run();
                     }
-                    renderer.signalBus.registerSourceData(vegaId, data.name, view.data(data.name));
                 });
             }
 
-            renderer.instances['vega'].push(view);
+            renderer.instances['vega'].push({ view, spec, vegaId });
 
             // Helper function to check if a signal is defined in the spec
             const hasSignal = (signalName: string) => {
@@ -95,7 +96,7 @@ export const vegaPlugin: Plugin = {
             renderer.signalBus.registerListener(
                 vegaId,
                 async (name, value) => {
-                    const scopedName = `${vegaId}_${name}`;
+                    const scopedName = renderer.signalBus.getScopedName(vegaId, name);
                     if (renderer.signalBus.signalValues[scopedName] !== value) {
                         renderer.signalBus.log(`[Vega ${vegaId}] Updating signal: ${name} with value:`, value);
                         // Mark this update as direct to prevent broadcasting it again

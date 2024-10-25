@@ -3,10 +3,8 @@
 * Licensed under the MIT License.
 */
 
-import { Datum } from 'vega';
-
 interface SignalCallback {
-    (name: string, value: string | null): Promise<void>;
+    (name: string, value: unknown): Promise<void>;
 }
 
 interface DataCallback {
@@ -31,14 +29,12 @@ export class SignalBus {
     public signalSources: string[];
     public signalValues: { [key: string]: unknown };
     public dataSources: string[];
-    public data: { [key: string]: Datum[] | object };
     public listeners: Listener[];
     public broadcastingStack: boolean[];
     public logLevel: LogLevel;
 
     constructor(public dataSignalPrefix: string) {
         this.dataSources = [];
-        this.data = {};
         this.signalSources = [];
         this.signalValues = {};
         this.listeners = [];
@@ -52,28 +48,29 @@ export class SignalBus {
         }
     }
 
-    findSourceData(name: string, excludeId?: string) {
-        for (let i = 0; i < this.dataSources.length; i++) {
-            const id = this.dataSources[i];
-            if (id === excludeId) continue;
-            const scopedName = getScopedName(id, name);
-            if (this.data[scopedName]) {
-                const values = this.data[scopedName];
-                return { id, values };
-            }
-        }
-    }
-
     findSourceSignal(name: string, excludeId?: string) {
         for (let i = 0; i < this.signalSources.length; i++) {
             const id = this.signalSources[i];
             if (id === excludeId) continue;
-            const scopedName = getScopedName(id, name);
-            if (this.signalValues[scopedName]) {
+            const scopedName = this.getScopedName(id, name);
+            if (scopedName in this.signalValues) {
                 const value = this.signalValues[scopedName];
                 return { id, value };
             }
         }
+    }
+
+    getState() {
+        const state: { [key: string]: unknown } = {};
+        this.signalSources.forEach(id => {
+            Object.keys(this.signalValues).forEach(key => {
+                if (key.startsWith(`${id}_`)) {
+                    const signalName = key.substring(id.length + 1);
+                    state[signalName] = this.signalValues[key];
+                }
+            });
+        });
+        return state;
     }
 
     async setState(state: { [key: string]: unknown }) {
@@ -87,12 +84,12 @@ export class SignalBus {
 
     async narrowcast(originId: string, name: string, value: unknown) {
         const originalListeners = this.listeners.filter(l => l.id === originId);
-        const scopedName = getScopedName(originId, name);
+        const scopedName = this.getScopedName(originId, name);
         originalListeners.forEach(async listener => {
             if (listener.hasSignal(name)) {
                 if (this.signalValues[scopedName] !== value) {
                     this.log(`Notifying original listener: ${listener.id} with signal: ${name}, value:`, value);
-                    await listener.signalCallback(name, value ? value.toString() : null);
+                    await listener.signalCallback(name, value);
                     this.signalValues[scopedName] = value;
                 } else {
                     this.log(`Propagation snubbed for original listener: ${listener.id}, signal: ${name}, value unchanged:`, value);
@@ -109,19 +106,8 @@ export class SignalBus {
         });
     }
 
-    registerSourceData(id: string, name: string, values: Datum[] | object) {
-        const scopedName = getScopedName(id, name);
-        if (!this.data[scopedName]) {
-            if (!this.dataSources.includes(id)) {
-                this.dataSources.push(id);
-            }
-            this.data[scopedName] = values;
-            this.log(`Registered data: ${scopedName} with initial value:`, values);
-        }
-    }
-
     registerSourceSignal(id: string, name: string, value: unknown) {
-        const scopedName = getScopedName(id, name);
+        const scopedName = this.getScopedName(id, name);
         if (!this.signalValues[scopedName]) {
             if (!this.signalSources.includes(id)) {
                 this.signalSources.push(id);
@@ -132,7 +118,7 @@ export class SignalBus {
     }
 
     async broadcast(originId: string, name: string, value: unknown) {
-        const scopedName = getScopedName(originId, name);
+        const scopedName = this.getScopedName(originId, name);
 
         this.log(`Broadcasting signal: ${name} from ${originId} with value:`, value);
         this.startBroadcast();
@@ -142,11 +128,11 @@ export class SignalBus {
         // Notify other listeners if they have the signal defined and the value has changed
         const otherListeners = this.listeners.filter(l => l.id !== originId);
         otherListeners.forEach(async listener => {
-            const listenerScopedName = getScopedName(listener.id, name);
+            const listenerScopedName = this.getScopedName(listener.id, name);
             if (listener.hasSignal(name)) {
                 if (this.signalValues[listenerScopedName] !== value) {
                     this.log(`Notifying listener: ${listener.id} with signal: ${name}, value:`, value);
-                    await listener.signalCallback(name, value ? value.toString() : null);
+                    await listener.signalCallback(name, value);
                 } else {
                     this.log(`Propagation snubbed for listener: ${listener.id}, signal: ${name}, value unchanged:`, value);
                 }
@@ -188,8 +174,9 @@ export class SignalBus {
         this.signalValues = {};
         this.log('Signal listeners and signals have been reset.');
     }
-}
 
-function getScopedName(id: string, name: string) {
-    return `${id}_${name}`;
+    getScopedName(id: string, name: string) {
+        return `${id}_${name}`;
+    }
+
 }
