@@ -8,6 +8,8 @@ import { Plugin, definePlugin } from '../factory';
 import { sanitizedHTML } from './sanitize';
 import { InitSignal } from 'vega-typings';
 
+const ignoredSignals = ['width', 'height', 'padding', 'autosize', 'background', 'style', 'parent', 'datum', 'item', 'event', 'cursor'];
+
 export const vegaPlugin: Plugin = {
     name: 'vega',
     initializePlugin: (md) => definePlugin(md, 'vega'),
@@ -47,6 +49,8 @@ export const vegaPlugin: Plugin = {
             // Register initial signals with the signal bus
             if (spec.signals) {
                 spec.signals.forEach((signal: InitSignal) => {
+                    if (ignoredSignals.includes(signal.name)) return;
+
                     //see if signal already exists and get its value
                     const existingSourceSignal = renderer.signalBus.findSourceSignal(signal.name, vegaId);
                     if (existingSourceSignal) {
@@ -84,6 +88,8 @@ export const vegaPlugin: Plugin = {
             // Register a listener for each signal in this Vega instance
             if (spec.signals) {
                 spec.signals.forEach(signal => {
+                    if (ignoredSignals.includes(signal.name)) return;
+                    
                     view.addSignalListener(signal.name, (name, value) => {
                         renderer.signalBus.log(`[Vega ${vegaId}] Signal event: ${name}, value:`, value);
                         // Only broadcast if this is an event-driven signal change
