@@ -47,7 +47,7 @@ export class Renderer {
         this.destroyHandlers[type] = handler;
     }
 
-    render(markdown: string, errorHandler?: ErrorHandler) {
+    async render(markdown: string, errorHandler?: ErrorHandler) {
         if (!errorHandler) {
             errorHandler = (error, pluginName, instanceIndex, phase) => {
                 console.error(`Error in plugin ${pluginName} instance ${instanceIndex} phase ${phase}`, error);
@@ -65,10 +65,10 @@ export class Renderer {
         //loop through all the plugins and render them
         this.signalBus.log('rendering DOM');
         const finals: (void | (() => void))[] = [];
-        plugins.forEach(plugin => {
+        plugins.forEach(async plugin => {
             if (plugin.hydrateComponent) {
                 this.instances[plugin.name] = [];
-                finals.push(plugin.hydrateComponent(this, errorHandler));
+                finals.push(await plugin.hydrateComponent(this, errorHandler));
             }
         });
         finals.forEach(final => {

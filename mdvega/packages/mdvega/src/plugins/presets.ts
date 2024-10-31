@@ -20,7 +20,7 @@ export const presetsPlugin: Plugin = {
         const pluginId = `preset-${idx}`;
         return sanitizedHTML('div', { id: pluginId, class: 'presets' }, JSON.stringify(spec));
     },
-    hydrateComponent: (renderer, errorHandler) => {
+    hydrateComponent: async (renderer, errorHandler) => {
         renderer.element.querySelectorAll('.presets').forEach((container, index) => {
             if (!container.textContent) return;
 

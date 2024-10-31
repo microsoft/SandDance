@@ -51,7 +51,7 @@ export const placeholdersPlugin: Plugin = {
         });
 
     },
-    hydrateComponent(renderer) {
+    hydrateComponent: async (renderer) => {
         // Collect all the placeholders within this container to get their keys
         const placeholders = renderer.element.querySelectorAll('.dynamic-placeholder');
         const elementsByKeys = new Map<string, Element[]>();

@@ -7,23 +7,43 @@ import { changeset, parse, Runtime, Spec, ValuesData, View } from 'vega';
 import { Plugin, definePlugin } from '../factory';
 import { sanitizedHTML } from './sanitize';
 import { InitSignal } from 'vega-typings';
+import { resolveSpec } from '../resolver';
 
 const ignoredSignals = ['width', 'height', 'padding', 'autosize', 'background', 'style', 'parent', 'datum', 'item', 'event', 'cursor'];
+
+interface VegaInstance {
+    view: View;
+    spec: Spec;
+    vegaId: string;
+}
 
 export const vegaPlugin: Plugin = {
     name: 'vega',
     initializePlugin: (md) => definePlugin(md, 'vega'),
     fence: (token, idx) => {
-        const spec = JSON.parse(token.content.trim());
         const vegaId = `vega-${idx}`;
-        return sanitizedHTML('div', { id: vegaId, class: 'vega-chart' }, JSON.stringify(spec));
+        return sanitizedHTML('div', { id: vegaId, class: 'vega-chart', style: 'display: none' }, token.content.trim());
     },
-    hydrateComponent: (renderer, errorHandler) => {
-        renderer.element.querySelectorAll('.vega-chart').forEach((container, index) => {
-            if (!container.textContent) return;
+    hydrateComponent: async (renderer, errorHandler) => {
+        const instances: VegaInstance[] = [];
 
-            const spec = JSON.parse(container.textContent) as Spec;
+        for (const [index, container] of Array.from(renderer.element.querySelectorAll('.vega-chart')).entries()) {
+            if (!container.textContent) {
+                container.innerHTML = '<div class="error">Expected a spec object or a url</div>';
+                return;
+            }
 
+            const result = await resolveSpec(container.textContent);
+            if (result.error) {
+                container.innerHTML = `<div class="error">${result.error.toString()}</div>`;
+                errorHandler(result.error, 'vega', index, 'resolve', container);
+                return;
+            }
+            if (!result.spec) {
+                container.innerHTML = '<div class="error">Expected a spec object</div>';
+                return;
+            }
+            const { spec } = result;
             const vegaId = `vega-${index}`;
 
             let runtime: Runtime;
@@ -46,6 +66,15 @@ export const vegaPlugin: Plugin = {
                 return;
             }
 
+            instances.push({ view, spec, vegaId });
+            console.log('pushed', instances);
+        }
+
+        renderer.instances['vega'] = instances;
+        //TODO: determine signal priority - a "bind" to a UI element should be the definitive initial value
+        console.log('vega instances', instances);
+
+        instances.forEach(({ view, spec, vegaId }) => {
             // Register initial signals with the signal bus
             if (spec.signals) {
                 spec.signals.forEach((signal: InitSignal) => {
@@ -74,7 +103,8 @@ export const vegaPlugin: Plugin = {
                 });
             }
 
-            renderer.instances['vega'].push({ view, spec, vegaId });
+            const x = { view, spec, vegaId };
+            renderer.instances['vega'].push(x);
 
             // Helper function to check if a signal is defined in the spec
             const hasSignal = (signalName: string) => {
@@ -89,7 +119,7 @@ export const vegaPlugin: Plugin = {
             if (spec.signals) {
                 spec.signals.forEach(signal => {
                     if (ignoredSignals.includes(signal.name)) return;
-                    
+
                     view.addSignalListener(signal.name, (name, value) => {
                         renderer.signalBus.log(`[Vega ${vegaId}] Signal event: ${name}, value:`, value);
                         // Only broadcast if this is an event-driven signal change
@@ -121,5 +151,8 @@ export const vegaPlugin: Plugin = {
                 hasData,
             );
         });
+        for (const [index, container] of Array.from(renderer.element.querySelectorAll('.vega-chart')).entries()) {
+            (container as HTMLElement).style.display = '';
+        }
     },
 };
