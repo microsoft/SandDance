@@ -3,7 +3,7 @@
 * Licensed under the MIT License.
 */
 
-import { changeset, parse, Runtime, Spec, ValuesData, View } from 'vega';
+import { changeset, NewSignal, parse, Runtime, Signal, Spec, ValuesData, View } from 'vega';
 import { Plugin, definePlugin } from '../factory';
 import { sanitizedHTML } from './sanitize';
 import { InitSignal } from 'vega-typings';
@@ -74,28 +74,45 @@ export const vegaPlugin: Plugin = {
             }
 
             instances.push({ view, spec, vegaId });
-            console.log('pushed', instances);
         }
 
         renderer.instances['vega'] = instances;
-        //TODO: determine signal priority - a "bind" to a UI element should be the definitive initial value
-        console.log('vega instances', instances);
+
+        // determine signal priority - a "bind" to a UI element should be the definitive initial value
+        // separate instances into 2 groups - those with signals with "bind" and those without
+        const stackItemsWithBind: StackItem[] = [];
+        const stackItemsWithoutBind: StackItem[] = [];
+        instances.forEach((instance) => {
+            if (!instance.spec.signals) return;
+            instance.spec.signals.forEach((signal: InitSignal | NewSignal) => {
+                const stackItem: StackItem = { signal, vegaInstace: instance };
+                if (signal.bind) {
+                    stackItemsWithBind.push(stackItem);
+                } else {
+                    stackItemsWithoutBind.push(stackItem);
+                }
+            });
+        });
+        const stackItems = stackItemsWithBind.concat(stackItemsWithoutBind);
+
+        // Register initial signals with the signal bus
+        stackItems.forEach(stackItem => {
+            const { signal } = stackItem;
+            const { view, vegaId } = stackItem.vegaInstace;
+            if (ignoredSignals.includes(signal.name)) return;
+
+            //see if signal already exists and get its value
+            const existingSourceSignal = renderer.signalBus.findSourceSignal(signal.name, vegaId);
+            if (existingSourceSignal) {
+                renderer.signalBus.log(`[Vega ${vegaId}] uses existing signal: ${signal.name} with value:`, existingSourceSignal.value);
+                view.signal(signal.name, existingSourceSignal.value);
+            } else {
+                renderer.signalBus.log(`[Vega ${vegaId}] Registering first signal: ${signal.name} with value:`, view.signal(signal.name));
+            }
+            renderer.signalBus.registerSourceSignal(vegaId, signal.name, view.signal(signal.name));
+        });
 
         instances.forEach(({ view, spec, vegaId }) => {
-            // Register initial signals with the signal bus
-            if (spec.signals) {
-                spec.signals.forEach((signal: InitSignal) => {
-                    if (ignoredSignals.includes(signal.name)) return;
-
-                    //see if signal already exists and get its value
-                    const existingSourceSignal = renderer.signalBus.findSourceSignal(signal.name, vegaId);
-                    if (existingSourceSignal) {
-                        view.signal(signal.name, existingSourceSignal.value);
-                    }
-                    renderer.signalBus.registerSourceSignal(vegaId, signal.name, view.signal(signal.name));
-                });
-            }
-
             // get initial data from the signal bus
             if (spec.data) {
                 spec.data.filter(d => d.name.startsWith(renderer.options.dataSignalPrefix)).forEach((data: ValuesData) => {
@@ -104,14 +121,10 @@ export const vegaPlugin: Plugin = {
                     const existingSourceData = renderer.signalBus.findSourceSignal(data.name, vegaId);
                     if (existingSourceData) {
                         view
-                            .change(data.name, changeset().remove(() => true).insert(existingSourceData.value))
-                            .run();
+                            .change(data.name, changeset().remove(() => true).insert(existingSourceData.value));
                     }
                 });
             }
-
-            const x = { view, spec, vegaId };
-            renderer.instances['vega'].push(x);
 
             // Helper function to check if a signal is defined in the spec
             const hasSignal = (signalName: string) => {
@@ -158,8 +171,19 @@ export const vegaPlugin: Plugin = {
                 hasData,
             );
         });
+
+        //now that they are all wired up, run each view
+        instances.forEach(({ view }) => {
+            view.run();
+        });
+
         for (const [index, container] of Array.from(renderer.element.querySelectorAll('.vega-chart')).entries()) {
             (container as HTMLElement).style.display = '';
         }
     },
 };
+
+interface StackItem {
+    signal: Signal;
+    vegaInstace: VegaInstance;
+}
