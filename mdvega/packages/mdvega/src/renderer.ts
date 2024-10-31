@@ -65,12 +65,14 @@ export class Renderer {
         //loop through all the plugins and render them
         this.signalBus.log('rendering DOM');
         const finals: (void | (() => void))[] = [];
-        plugins.forEach(async plugin => {
+        //use async friendly iterator
+        for (const plugin of plugins) {
             if (plugin.hydrateComponent) {
                 this.instances[plugin.name] = [];
-                finals.push(await plugin.hydrateComponent(this, errorHandler));
+                const final = await plugin.hydrateComponent(this, errorHandler);
+                finals.push(final);
             }
-        });
+        }
         finals.forEach(final => {
             if (final) {
                 final();
