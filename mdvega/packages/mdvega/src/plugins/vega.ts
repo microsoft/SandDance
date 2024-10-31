@@ -7,7 +7,7 @@ import { changeset, parse, Runtime, Spec, ValuesData, View } from 'vega';
 import { Plugin, definePlugin } from '../factory';
 import { sanitizedHTML } from './sanitize';
 import { InitSignal } from 'vega-typings';
-import { resolveSpec } from '../resolver';
+import { Resolver, resolveSpec } from '../resolver';
 
 const ignoredSignals = ['width', 'height', 'padding', 'autosize', 'background', 'style', 'parent', 'datum', 'item', 'event', 'cursor'];
 
@@ -30,18 +30,25 @@ export const vegaPlugin: Plugin = {
         for (const [index, container] of Array.from(renderer.element.querySelectorAll('.vega-chart')).entries()) {
             if (!container.textContent) {
                 container.innerHTML = '<div class="error">Expected a spec object or a url</div>';
-                return;
+                continue;
             }
 
-            const result = await resolveSpec(container.textContent);
+            let result: Resolver;
+            try {
+                result = await resolveSpec(container.textContent);
+            } catch (e) {
+                container.innerHTML = `<div class="error">${e.toString()}</div>`;
+                errorHandler(e, 'vega', index, 'resolve', container);
+                continue;
+            }
             if (result.error) {
                 container.innerHTML = `<div class="error">${result.error.toString()}</div>`;
                 errorHandler(result.error, 'vega', index, 'resolve', container);
-                return;
+                continue;
             }
             if (!result.spec) {
                 container.innerHTML = '<div class="error">Expected a spec object</div>';
-                return;
+                continue;
             }
             const { spec } = result;
             const vegaId = `vega-${index}`;
@@ -54,7 +61,7 @@ export const vegaPlugin: Plugin = {
             } catch (e) {
                 container.innerHTML = `<div class="error">${e.toString()}</div>`;
                 errorHandler(e, 'vega', index, 'parse', container);
-                return;
+                continue;
             }
 
             try {
@@ -63,7 +70,7 @@ export const vegaPlugin: Plugin = {
             } catch (e) {
                 container.innerHTML = `<div class="error">${e.toString()}</div>`;
                 errorHandler(e, 'vega', index, 'view', container);
-                return;
+                continue;
             }
 
             instances.push({ view, spec, vegaId });
