@@ -39,7 +39,8 @@ function resolveToVega(either: any): Resolver {
         if (either.$schema.includes('vega-lite')) {
             //compile to vega
             try {
-                const spec = compile(either).spec;
+                const runtime = compile(either);
+                const { spec } = runtime;
                 return { spec };
             } catch (error) {
                 //did not compile
