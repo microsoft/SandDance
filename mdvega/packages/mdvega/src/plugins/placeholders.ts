@@ -8,7 +8,7 @@ import { Plugin } from '../factory';
 
 export const placeholdersPlugin: Plugin = {
     name: 'placeholders',
-    initializePlugin: (md) => {
+    initializePlugin: async (md) => {
         // Custom plugin to handle dynamic placeholders
         md.use(function (md) {
             // Add a custom rule to handle {{...}} placeholders
@@ -55,7 +55,7 @@ export const placeholdersPlugin: Plugin = {
         // Collect all the placeholders within this container to get their keys
         const placeholders = renderer.element.querySelectorAll('.dynamic-placeholder');
         const elementsByKeys = new Map<string, Element[]>();
-        placeholders.forEach(placeholder => {
+        for (const placeholder of placeholders) {
             const key = placeholder.getAttribute('data-key') as string;
             // See if key exists in the map
             if (elementsByKeys.has(key)) {
@@ -66,35 +66,44 @@ export const placeholdersPlugin: Plugin = {
                 // If it doesn't, create a new array with the element
                 elementsByKeys.set(key, [placeholder]);
             }
-        });
+        }
 
         // Now for each key, add a listener to the signal bus to update all the elements with the new value
-        elementsByKeys.forEach((elements, key) => {
-            const signalCallback = async (key: string, value: string | null) => {
-                renderer.signalBus.log(`Updating key: ${key} has ${elements.length} placeholder elements`);
+        const signalCallback = async (name: string, value: string | null) => {
+            for (const key of elementsByKeys.keys()) {
+                if (name === key) {
+                    const elements = elementsByKeys.get(key) as Element[];
+                    renderer.signalBus.log(key, `Updating key: ${key} has ${elements.length} placeholder elements`);
 
-                elements.forEach(placeholder => {
-                    const parsedMarkdown = renderer.md.renderInline(value?.toString() || '');
-                    placeholder.innerHTML = parsedMarkdown;
-                });
-            };
-            const hasSignal = (name: string) => {
-                return name === key;
-            };
-            renderer.signalBus.registerListener(key, signalCallback, hasSignal, null, () => false);
-        });
-
-        return () => {
-            elementsByKeys.forEach((elements, key) => {
-                // Initialize to signal value if any
-                const existingSourceSignal = renderer.signalBus.findSourceSignal(key);
-                if (existingSourceSignal) {
-                    const parsedMarkdown = renderer.md.renderInline(existingSourceSignal.value?.toString() || '');
-                    elements.forEach(placeholder => {
+                    for (const placeholder of elements) {
+                        const parsedMarkdown = renderer.md.renderInline(value?.toString() || '');
                         placeholder.innerHTML = parsedMarkdown;
-                    });
+                    }
                 }
-            });
+            }   
+        };
+        const hasSignal = (name: string) => {
+            for (const key of elementsByKeys.keys()) {
+                if (name === key) return true;
+            }
+            return false;
+        };
+        renderer.signalBus.registerListener('placeholders', signalCallback, hasSignal, null, () => false);
+
+        return {
+            pluginName: placeholdersPlugin.name,
+            finalize: async () => {
+                for (const [key, elements] of elementsByKeys) {
+                    // Initialize to signal value if any
+                    const existingSourceSignal = renderer.signalBus.findSourceSignal(key);
+                    if (existingSourceSignal) {
+                        const parsedMarkdown = renderer.md.renderInline(existingSourceSignal.value?.toString() || '');
+                        for (const placeholder of elements) {
+                            placeholder.innerHTML = parsedMarkdown;
+                        }
+                    }
+                }
+            },
         };
     },
 };

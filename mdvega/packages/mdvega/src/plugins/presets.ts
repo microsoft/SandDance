@@ -12,6 +12,11 @@ interface Preset {
     state: { [signalName: string]: unknown };
 }
 
+interface PresetsInstance {
+    presets: Preset[];
+    element: HTMLUListElement;
+}
+
 export const presetsPlugin: Plugin = {
     name: 'presets',
     initializePlugin: (md) => definePlugin(md, 'presets'),
@@ -21,8 +26,10 @@ export const presetsPlugin: Plugin = {
         return sanitizedHTML('div', { id: pluginId, class: 'presets' }, JSON.stringify(spec));
     },
     hydrateComponent: async (renderer, errorHandler) => {
-        renderer.element.querySelectorAll('.presets').forEach((container, index) => {
-            if (!container.textContent) return;
+        const instances: PresetsInstance[] = [];
+        const containers = renderer.element.querySelectorAll('.presets');
+        for (const [index, container] of containers.entries()) {
+            if (!container.textContent) continue;
 
             let presets: Preset[];
             try {
@@ -30,17 +37,17 @@ export const presetsPlugin: Plugin = {
             } catch (e) {
                 container.innerHTML = `<div class="error">${e.toString()}</div>`;
                 errorHandler(e, 'presets', index, 'parse', container);
-                return;
+                continue;
             }
             if (!Array.isArray(presets)) {
                 container.innerHTML = '<div class="error">Expected an array of presets</div>';
-                return;
+                continue;
             }
             //clear the container
             container.innerHTML = '';
             const ul = document.createElement('ul');
             container.appendChild(ul);
-            presets.forEach((preset, i) => {
+            for (const preset of presets) {
                 //make a button for each preset
                 const li = document.createElement('li');
                 if (!preset.name || !preset.state) {
@@ -63,7 +70,12 @@ export const presetsPlugin: Plugin = {
                     }
                 }
                 ul.appendChild(li);
-            });
-        });
+            }
+            instances.push({ presets, element: ul });
+        }
+        return {
+            pluginName: presetsPlugin.name,
+            instances,
+        };
     },
 };

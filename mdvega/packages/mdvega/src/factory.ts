@@ -6,11 +6,17 @@
 import MarkdownIt, { Token } from 'markdown-it';
 import { ErrorHandler, Renderer } from './renderer';
 
+export interface Hydration {
+    pluginName: string;
+    finalize?: () => Promise<void>;
+    instances?: unknown[];
+}
+
 export interface Plugin {
     name: string;
     initializePlugin: (md: MarkdownIt) => void;
     fence?: (token: Token, idx: number) => string;
-    hydrateComponent?: (renderer: Renderer, errorHandler: ErrorHandler) => Promise<void | (() => void)>;
+    hydrateComponent?: (renderer: Renderer, errorHandler: ErrorHandler) => Promise<Hydration>;
 }
 
 export const plugins: Plugin[] = [];
@@ -22,9 +28,9 @@ export function registerMarkdownPlugin(plugin: Plugin) {
 
 export function create() {
     const md = new MarkdownIt();
-    plugins.forEach(plugin => {
+    for (const plugin of plugins) {
         plugin.initializePlugin(md);
-    });
+    }
 
     // Default handler to preserve existing functionality
     const originalFence = md.renderer.rules.fence;

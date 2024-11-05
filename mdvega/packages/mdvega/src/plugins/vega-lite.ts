@@ -11,6 +11,6 @@ export const vegaLitePlugin: Plugin = {
     initializePlugin: (md) => definePlugin(md, 'vega-lite'),
     fence: (token, idx) => {
         const vegaLiteId = `vega-lite-${idx}`;
-        return sanitizedHTML('div', { id: vegaLiteId, class: 'vega-chart', style: 'display: none' }, token.content.trim());
+        return sanitizedHTML('div', { id: vegaLiteId, class: 'vega-chart' }, token.content.trim());
     },
 };
