@@ -1,0 +1,8 @@
+{
+    "plugin": [
+        "typedoc-plugin-markdown",
+        "typedoc-plugin-frontmatter"
+    ],
+    "excludePrivate": true,
+    "gitRevision": "main"
+}

@@ -15,7 +15,7 @@
   "scripts": {
     "uitest": "parcel serve ./test/index.html --open --no-autoinstall --no-cache",
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "docs": "typedoc src/index.ts -out ../../docs/docs/sanddance-react/v4 --plugin typedoc-plugin-markdown --excludePrivate --gitRevision master",
+    "docs": "typedoc src/index.ts -out ../../docs/docs/sanddance-react/v4 --options ../../typedoc.json",
     "deploy": "node ./scripts/deploy.js",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",

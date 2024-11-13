@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "docs": "typedoc src/sanddance-embed.ts src/types/message-request.d.ts src/types/message-response.d.ts -out ../../docs/docs/sanddance-embed/v4 --plugin typedoc-plugin-markdown --excludePrivate --gitRevision master --disableOutputCheck",
+    "docs": "typedoc src/sanddance-embed.ts src/types/message-request.d.ts src/types/message-response.d.ts -out ../../docs/docs/sanddance-embed/v4 --options ../../typedoc.json --disableOutputCheck",
     "gen": "node ./scripts/gen.js",
     "build-css": "sass ./src/css/sanddance-embed.scss ./dist/css/sanddance-embed.css",
     "build-typescript": "tsc -p .",
