@@ -4,5 +4,8 @@
         "typedoc-plugin-frontmatter"
     ],
     "excludePrivate": true,
-    "gitRevision": "main"
+    "gitRevision": "main",
+    "frontmatterGlobals": {
+        "layout": "typedoc"
+    }
 }
