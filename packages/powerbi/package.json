@@ -2,7 +2,7 @@
   "name": "powerbi",
   "private": true,
   "scripts": {
-    "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
+    "x_eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts* --debug",
     "lint": "npm run eslint",
     "pbiviz": "pbiviz",
     "start": "pbiviz start",
