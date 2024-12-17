@@ -15,9 +15,6 @@
     "@msrvida/chart-types": "^1",
     "@msrvida/sanddance-specs": "^1"
   },
-  "devDependencies": {
-    "vega": "5.30.0"
-  },
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "test": "mocha",

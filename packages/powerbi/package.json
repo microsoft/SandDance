@@ -13,26 +13,6 @@
     "build:sanddance-integration": "tsc -p .",
     "remove-vega": "npm un vega"
   },
-  "dependencies": {
-    "@babel/runtime": "^7.5.5",
-    "@babel/runtime-corejs2": "^7.5.5",
-    "@fluentui/react": "^8",
-    "@msrvida/sanddance-explorer": "^4",
-    "core-js": "3.2.1",
-    "powerbi-models": "^1.6.0",
-    "powerbi-visuals-api": "^3.8.0",
-    "powerbi-visuals-utils-dataviewutils": "^2.4.0",
-    "react": ">=16.8.0 <18.0.0",
-    "react-dom": ">=16.8.0 <18.0.0",
-    "regenerator-runtime": "^0.13.3",
-    "vega": "5.30.0"
-  },
-  "devDependencies": {
-    "@msrvida/fluentui-react-cdn-typings": "^2",
-    "@types/react": ">=16.8.0 <18.0.0",
-    "@types/react-dom": ">=16.8.0 <18.0.0",
-    "powerbi-visuals-tools": "^5"
-  },
   "overrides": {
     "typescript": "4.4"
   }

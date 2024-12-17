@@ -17,9 +17,5 @@
       "scopeHoist": false,
       "sourceMap": false
     }
-  },
-  "dependencies": {
-    "@msrvida/vega-morphcharts": "^1",
-    "vega": "5.30.0"
   }
 }
