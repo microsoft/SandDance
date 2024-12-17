@@ -68,7 +68,6 @@
         "fs-extra": "^7.0.1",
         "glob": "^10.2.5",
         "inuitcss": "^6.0.0",
-        "lerna": "^6.0.1",
         "marked": "^4.0.10",
         "mdast-util-toc": "^3.0.1",
         "mocha": "^10.1.0",
