@@ -38,8 +38,5 @@
     "@types/react-dom": ">=16.8.0 <18.0.0",
     "react": ">=16.8.0 <18.0.0",
     "react-dom": ">=16.8.0 <18.0.0"
-  },
-  "devDependencies": {
-    "vega": "5.30.0"
   }
 }

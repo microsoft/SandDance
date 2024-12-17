@@ -20,16 +20,5 @@
   "bugs": {
     "url": "https://github.com/Microsoft/SandDance/issues"
   },
-  "homepage": "https://github.com/Microsoft/SandDance#readme",
-  "dependencies": {
-    "@fluentui/react": "^8",
-    "react": ">=16.8.0 <18.0.0",
-    "react-dom": ">=16.8.0 <18.0.0",
-    "vega": "5.30.0"
-  },
-  "devDependencies": {
-    "@msrvida/sanddance-explorer": "^4",
-    "@types/react": ">=16.8.0 <18.0.0",
-    "@types/react-dom": ">=16.8.0 <18.0.0"
-  }
+  "homepage": "https://github.com/Microsoft/SandDance#readme"
 }

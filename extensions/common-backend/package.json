@@ -17,8 +17,5 @@
   "bugs": {
     "url": "https://github.com/Microsoft/SandDance/issues"
   },
-  "homepage": "https://github.com/Microsoft/SandDance#readme",
-  "devDependencies": {
-    "@types/vscode": "^1.45.1"
-  }
+  "homepage": "https://github.com/Microsoft/SandDance#readme"
 }

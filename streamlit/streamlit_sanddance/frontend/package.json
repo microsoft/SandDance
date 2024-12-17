@@ -8,7 +8,7 @@
     "react": ">=16.8.0 <18.0.0",
     "react-dom": ">=16.8.0 <18.0.0",
     "streamlit-component-lib": "^2.0.0",
-    "vega": "5.25.0"
+    "vega": "5.30.0"
   },
   "scripts": {
     "build:sanddance-integration": "npm run bundle",
@@ -48,11 +48,5 @@
   "alias": {
     "react": "./alias/react-external.js",
     "react-dom": "./alias/react-dom-external.js"
-  },
-  "devDependencies": {
-    "@msrvida/fluentui-react-cdn-typings": "^2",
-    "@types/react": ">=16.8.0 <18.0.0",
-    "@types/react-dom": ">=16.8.0 <18.0.0",
-    "vega-typings": "~0.24.1"
   }
 }
