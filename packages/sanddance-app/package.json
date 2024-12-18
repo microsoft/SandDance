@@ -22,5 +22,13 @@
       "sourceMap": false
     }
   },
-  "umd": "./dist/umd/sanddance-app.js"
+  "umd": "./dist/umd/sanddance-app.js",
+  "alias": {
+    "react": {
+      "global": "React"
+    },
+    "react-dom": {
+      "global": "ReactDOM"
+    }
+  }
 }

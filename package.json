@@ -122,14 +122,6 @@
             "es2015"
         ]
     },
-    "alias": {
-        "react": {
-            "global": "React"
-        },
-        "react-dom": {
-            "global": "ReactDOM"
-        }
-    },
     "workspaces": {
         "packages": [
             "extensions/*",
