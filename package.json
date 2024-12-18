@@ -19,7 +19,7 @@
         "build:07": "npm run build:07 --workspaces --if-present",
         "build:08": "npm run build:08 --workspaces --if-present",
         "build:09": "npm run build:09 --workspaces --if-present",
-        "build": "npm run build:01 && npm run build:02 && npm run build:03 && npm run build:04 && npm run build:05 && npm run build:06 && npm run build:07 && npm run build:08 && npm run build:09",
+        "build": "npm run build:01 && npm run build:02 && npm run build:03 && npm run build:04 && npm run build:05 && npm run build:06 && npm run build:07 && npm run build:08",
         "build-test": "npm run build-test --workspaces --if-present",
         "watch-css": "npm run watch-css --workspaces --if-present",
         "watch-typescript": "npm run watch-typescript --workspaces --if-present",
