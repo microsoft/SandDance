@@ -50,7 +50,7 @@ export function colorConfig(ref: MorphChartsRef, colors: MorphChartsColors) {
     if (!colors) return;
     const { config } = ref.core;
     config.activeColor = convert(colors.activeItemColor);
-    config.backgroundColor = convert(colors.backgroundColor);
+    config.backgroundColor = new Float32Array(convert(colors.backgroundColor));
     config.textColor = convert(colors.textColor);
     config.textBorderColor = convert(colors.textBorderColor);
     config.axesTextColor = convert(colors.axesTextLabelColor);

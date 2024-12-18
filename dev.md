@@ -1,6 +1,6 @@
 # SandDance development
 
-The SandDance repo is a monorepo made up of several packages, managed by [Lerna](). SandDance is a component stack with the layer hierarchy below:
+The SandDance repo is a monorepo made up of several packages, managed by npm workspaces. SandDance is a component stack with the layer hierarchy below:
 
 1. [Deck.gl](https://github.com/uber/deck.gl) - WebGL rendering and canvas control.
 1. [Vega](https://github.com/vega/vega) - chart layout.

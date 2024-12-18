@@ -177,6 +177,7 @@ export class Presenter {
             const classes = createDeckGLClassesForPresenter({
                 doubleClickHandler: () => {
                     this.homeCamera();
+                    return true;
                 },
             });
             this.OrbitControllerClass = classes.OrbitControllerClass;

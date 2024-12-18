@@ -6,19 +6,20 @@
     "lint": "npm run eslint",
     "pbiviz": "pbiviz",
     "start": "pbiviz start",
-    "package": "pbiviz package",
+    "build:08": "pbiviz package",
     "version": "node ./scripts/version.js",
     "prepackage": "npm run version",
     "deploy": "node ./scripts/deploy.js",
-    "build:sanddance-integration": "tsc -p .",
+    "build:07": "tsc -p .",
     "remove-vega": "npm un vega"
   },
   "dependencies": {
     "@babel/runtime": "^7.5.5",
     "@babel/runtime-corejs2": "^7.5.5",
     "@fluentui/react": "^8",
-    "@msrvida/sanddance-explorer": "^4",
+    "@msrvida/sanddance-explorer": "file:../sanddance-explorer",
     "core-js": "3.2.1",
+    "powerbi": "file:",
     "powerbi-models": "^1.6.0",
     "powerbi-visuals-api": "^3.8.0",
     "powerbi-visuals-utils-dataviewutils": "^2.4.0",
@@ -28,12 +29,9 @@
     "vega": "5.30.0"
   },
   "devDependencies": {
-    "@msrvida/fluentui-react-cdn-typings": "^2",
+    "@msrvida/fluentui-react-cdn-typings": "file:../fluentui-react-cdn-typings",
     "@types/react": ">=16.8.0 <18.0.0",
     "@types/react-dom": ">=16.8.0 <18.0.0",
     "powerbi-visuals-tools": "^5"
-  },
-  "overrides": {
-    "typescript": "4.4"
   }
 }

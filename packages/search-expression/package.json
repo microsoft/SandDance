@@ -16,7 +16,7 @@
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
-    "build:sanddance-core": "npm run build-typescript",
+    "build:02": "npm run build-typescript",
     "remove-vega": "npm un vega-typings",
     "patch-after-vega-upgrade": "npm version patch"
   },

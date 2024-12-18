@@ -8,10 +8,10 @@
     "react": ">=16.8.0 <18.0.0",
     "react-dom": ">=16.8.0 <18.0.0",
     "streamlit-component-lib": "^2.0.0",
-    "vega": "5.25.0"
+    "vega": "5.30.0"
   },
   "scripts": {
-    "build:sanddance-integration": "npm run bundle",
+    "build:07": "npm run bundle",
     "bundle": "parcel build ./src/index.tsx --no-autoinstall --no-cache"
   },
   "eslintConfig": {
@@ -37,22 +37,16 @@
       "distDir": "./dist/umd",
       "optimize": false,
       "scopeHoist": false,
-      "sourceMap": false,
-      "includeNodeModules": {
-        "react": false,
-        "react-dom": false
-      }
+      "sourceMap": false
     }
   },
   "umd": "./dist/umd/streamlit_sanddance.js",
   "alias": {
-    "react": "./alias/react-external.js",
-    "react-dom": "./alias/react-dom-external.js"
-  },
-  "devDependencies": {
-    "@msrvida/fluentui-react-cdn-typings": "^2",
-    "@types/react": ">=16.8.0 <18.0.0",
-    "@types/react-dom": ">=16.8.0 <18.0.0",
-    "vega-typings": "~0.24.1"
+    "react": {
+      "global": "React"
+    },
+    "react-dom": {
+      "global": "ReactDOM"
+    }
   }
 }

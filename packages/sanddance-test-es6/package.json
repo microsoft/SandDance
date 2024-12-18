@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "build:sanddance-core": "tsc -p .",
+    "build:05": "tsc -p .",
     "start": "parcel serve ./test/index.html --open",
     "deploy": "parcel build ./src/sanddance-test-es6.ts --no-autoinstall --no-cache",
     "remove-vega": "npm un vega vega-typings"
@@ -18,12 +18,5 @@
       "scopeHoist": false,
       "sourceMap": false
     }
-  },
-  "dependencies": {
-    "@msrvida/sanddance": "^4",
-    "vega": "5.30.0"
-  },
-  "devDependencies": {
-    "vega-typings": "~1.3.1"
   }
 }

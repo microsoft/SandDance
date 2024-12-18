@@ -13,26 +13,16 @@
   ],
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "docs": "typedoc src/sanddance-embed.ts src/types/message-request.d.ts src/types/message-response.d.ts -out ../../docs/docs/sanddance-embed/v4 --theme ../../typedoc/theme --excludePrivate --gitRevision master --disableOutputCheck",
     "gen": "node ./scripts/gen.js",
     "build-css": "sass ./src/css/sanddance-embed.scss ./dist/css/sanddance-embed.css",
     "build-typescript": "tsc -p .",
     "build-gen": "tsc -p ./src/gen",
-    "build:sanddance-core": "npm run build-css && npm run build-typescript",
+    "build:07": "npm run build-css && npm run build-typescript",
     "remove-vega": "npm un vega",
     "patch-after-vega-upgrade": "npm version patch"
   },
   "dependencies": {
     "@msrvida/sanddance-explorer": "^4"
-  },
-  "devDependencies": {
-    "@fluentui/react": "^8",
-    "@msrvida/fluentui-react-cdn-typings": "^2",
-    "@types/react": ">=16.8.0 <18.0.0",
-    "@types/react-dom": ">=16.8.0 <18.0.0",
-    "react": ">=16.8.0 <18.0.0",
-    "react-dom": ">=16.8.0 <18.0.0",
-    "vega": "5.30.0"
   },
   "author": "",
   "license": "MIT"

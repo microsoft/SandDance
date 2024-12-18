@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-///<reference path='../node_modules/@msrvida/sanddance/node_modules/@msrvida/vega-morphcharts/dist/umd/vega-morphcharts.d.ts' />
+///<reference path='../../vega-morphcharts/dist/umd/vega-morphcharts.d.ts' />
 ///<reference path='vega.d.ts' />
 
 namespace vegaMorphChartsTest {

@@ -15,15 +15,12 @@
     "@msrvida/chart-types": "^1",
     "@msrvida/sanddance-specs": "^1"
   },
-  "devDependencies": {
-    "vega": "5.30.0"
-  },
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "test": "mocha",
     "build-typescript": "tsc -p .",
     "watch-typescript": "tsc -p . -w",
-    "build:sanddance-core": "npm run build-typescript",
+    "build:04": "npm run build-typescript",
     "remove-vega": "npm un vega",
     "patch-after-vega-upgrade": "npm version patch"
   },

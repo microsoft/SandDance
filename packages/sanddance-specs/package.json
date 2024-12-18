@@ -15,10 +15,9 @@
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "predocs": "rimraf ../../docs/docs/sanddance-specs/v1",
-    "docs": "typedoc src/index.ts -out ../../docs/docs/sanddance-specs/v1 --theme ../../typedoc/theme --excludePrivate --gitRevision master",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
-    "build:sanddance-core": "npm run build-typescript && npm run bundle",
+    "build:03": "npm run build-typescript && npm run bundle",
     "bundle": "rollup -c",
     "bundle-watch": "rollup -c -w -o ../../docs/tests/sanddance-specs/v1/js/sanddance-specs.js",
     "deploy": "tsc -p ./uitest/ && node ./scripts/deploy.js",
@@ -35,8 +34,5 @@
     "@msrvida/data-inference": "^1",
     "@msrvida/search-expression": "^1",
     "vega-typings": "~1.3.1"
-  },
-  "devDependencies": {
-    "vega": "5.30.0"
   }
 }

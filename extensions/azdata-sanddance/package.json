@@ -97,23 +97,11 @@
         "vscode:prepublish": "webpack --mode production",
         "webpack": "webpack --mode development",
         "webpack-dev": "webpack --mode development --watch",
-        "resources": "node ./node_modules/common-frontend/scripts/resources.js",
+        "resources": "node ../common-frontend/scripts/resources.js",
         "compile": "tsc -p ./",
-        "build:sanddance-integration": "npm run compile && npm run resources",
+        "build:08": "npm run compile && npm run resources",
         "x-test": "npm run compile && node ./node_modules/vscode/bin/test",
-        "deploy": "node ./scripts/deploy.js",
-        "package": "vsce package"
-    },
-    "devDependencies": {
-        "@types/azdata": "^1.29.0",
-        "@types/node": "^8.10.25",
-        "@types/vscode": "^1.53.0",
-        "common-backend": "*",
-        "common-frontend": "*",
-        "vscode-test": "^1.3.0"
-    },
-    "dependencies": {
-        "@types/temp-write": "^3.3.0",
-        "temp-write": "^3.4.0"
+        "x-deploy": "node ./scripts/deploy.js",
+        "build:09": "vsce package"
     }
 }

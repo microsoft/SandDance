@@ -14,13 +14,12 @@
   "scripts": {
     "vegatest": "parcel serve ./test/vegaspec/vega-deck.gl.test.html --port 8087 --open --no-hmr --no-autoinstall",
     "cubetest": "parcel serve ./test/cubelayer/cubeTest.html --port 8087 --open --no-hmr",
-    "docs": "typedoc src/index.ts -out ../../docs/docs/vega-deck.gl/v3 --theme ../../typedoc/theme --excludePrivate --gitRevision master",
     "deploy": "node ./scripts/deploy.js",
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "bundle": "rollup -c",
-    "build:sanddance-core": "npm run build-typescript && npm run bundle",
+    "build:02": "npm run build-typescript && npm run bundle",
     "remove-vega": "npm un vega vega-typings",
     "patch-after-vega-upgrade": "npm version patch"
   },
@@ -39,12 +38,5 @@
     "deepmerge": "^2.1.1",
     "tsx-create-element": "^2.2.9",
     "vega-typings": "~1.3.1"
-  },
-  "devDependencies": {
-    "@deck.gl/core": "8.3.7",
-    "@deck.gl/layers": "8.3.7",
-    "@luma.gl/core": "8.3.1",
-    "@types/react": ">=16.8.0 <18.0.0",
-    "vega": "5.30.0"
   }
 }

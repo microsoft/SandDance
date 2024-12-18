@@ -7,7 +7,7 @@ import OrbitController from '@deck.gl/core/controllers/orbit-controller';
 import { base } from '../base';
 
 export interface OrbitControllerClassOptions {
-    doubleClickHandler?: (e: MouseEvent, orbitController: OrbitController_Class) => void;
+    doubleClickHandler?: (e: MouseEvent, orbitController: OrbitController_Class) => boolean;
 }
 
 export function createOrbitControllerClass(factoryOptions: OrbitControllerClassOptions): typeof OrbitController_Class {
