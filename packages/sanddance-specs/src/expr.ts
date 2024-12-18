@@ -10,9 +10,12 @@
  */
 export function safeFieldName(field: string) {
     return field
-        .replace(/\./g, '\\.')
-        .replace(/\[/g, '\\[')
-        .replace(/\]/g, '\\]')
+        .replace(/\\/g, '\\\\') //escape backslashes
+        .replace(/'/g, '\\\'')  //escape single quotes
+        .replace(/"/g, '\\"')   //escape double quotes
+        .replace(/\./g, '\\.')  //escape periods
+        .replace(/\[/g, '\\[')  //escape left square brackets
+        .replace(/\]/g, '\\]')  //escape right square brackets
     ;
 }
 
