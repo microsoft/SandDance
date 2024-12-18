@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-///<reference path='../node_modules/@msrvida/sanddance/dist/umd/sanddance.d.ts' />
+///<reference path='../../sanddance/dist/umd/sanddance.d.ts' />
 
 namespace quanBarChartTest {
 
