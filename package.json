@@ -7,7 +7,7 @@
         "vegatest": "npm run vegatest --workspaces --if-present",
         "eslint": "npm run eslint --workspaces --if-present",
         "build-az": "npm run build --workspace azdata-sanddance",
-        "postinstall": "node ./scripts/copy_inuitcss.js",
+        "postinstall": "node ./scripts/copy_inuitcss.js && cd packages/powerbi && npm install --prefix . && cd ../..",
         "predocs": "npm run predocs --workspaces --if-present && rimraf docs/docs/vega-deck.gl/v3 && rimraf docs/docs/vega-morphcharts/v1 && rimraf docs/docs/sanddance-specs/v1 && rimraf docs/docs/sanddance/v4 && rimraf docs/docs/sanddance-explorer/v4 && rimraf docs/docs/sanddance-react/v4",
         "docs": "npm run docs --workspaces --if-present && node ./scripts/readme.js",
         "build:01": "npm run build:01 --workspaces --if-present",
@@ -135,9 +135,15 @@
             "es2015"
         ]
     },
-    "workspaces": [
-        "extensions/*",
-        "packages/*",
-        "streamlit/streamlit_sanddance/frontend"
-    ]
+    "workspaces": {
+        "packages": [
+            "extensions/*",
+            "packages/*",
+            "streamlit/streamlit_sanddance/frontend"
+        ],
+        "nohoist": [
+            "packages/powerbi/**",
+            "packages/powerbi/**/**"
+        ]
+    }
 }
