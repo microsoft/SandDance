@@ -6,7 +6,7 @@
     "lint": "npm run eslint",
     "pbiviz": "pbiviz",
     "start": "pbiviz start",
-    "package": "pbiviz package",
+    "build:08": "pbiviz package",
     "version": "node ./scripts/version.js",
     "prepackage": "npm run version",
     "deploy": "node ./scripts/deploy.js",
