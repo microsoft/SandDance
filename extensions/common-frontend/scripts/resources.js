@@ -2,13 +2,13 @@ const path = require('path');
 const fs = require('fs');
 
 const resources = [
-    "./node_modules/common-frontend/dist/app.css",
-    "./node_modules/common-frontend/dist/app.js",
-    "./node_modules/common-frontend/node_modules/@msrvida/sanddance-explorer/dist/umd/sanddance-explorer.js",
-    "./node_modules/common-frontend/node_modules/vega/build/vega.js",
-    "./node_modules/common-frontend/node_modules/react/umd/react.production.min.js",
-    "./node_modules/common-frontend/node_modules/react-dom/umd/react-dom.production.min.js",
-    "./node_modules/common-frontend/node_modules/@fluentui/react/dist/fluentui-react.js"
+    '../common-frontend/dist/app.css',
+    '../common-frontend/dist/app.js',
+    '../../packages/sanddance-explorer/dist/umd/sanddance-explorer.js',
+    '../../node_modules/vega/build/vega.js',
+    '../../node_modules/react/umd/react.production.min.js',
+    '../../node_modules/react-dom/umd/react-dom.production.min.js',
+    '../../node_modules/@fluentui/react/dist/fluentui-react.js',
 ];
 
 const errors = [];
