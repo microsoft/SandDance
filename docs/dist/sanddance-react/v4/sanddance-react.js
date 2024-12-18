@@ -4,8 +4,7 @@
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.SandDanceReact = {}, global.SandDance));
 })(this, (function (exports, SandDance) { 'use strict';
 
-  function _interopNamespace(e) {
-    if (e && e.__esModule) return e;
+  function _interopNamespaceDefault(e) {
     var n = Object.create(null);
     if (e) {
       Object.keys(e).forEach(function (k) {
@@ -18,11 +17,11 @@
         }
       });
     }
-    n["default"] = e;
+    n.default = e;
     return Object.freeze(n);
   }
 
-  var SandDance__namespace = /*#__PURE__*/_interopNamespace(SandDance);
+  var SandDance__namespace = /*#__PURE__*/_interopNamespaceDefault(SandDance);
 
   var collectionCompare = compare;
 
@@ -111,7 +110,7 @@
 
   var compare$1 = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    'default': collectionCompare
+    default: collectionCompare
   });
 
   /*!
@@ -137,8 +136,8 @@
   var util = /*#__PURE__*/Object.freeze({
     __proto__: null,
     classList: classList,
-    deepCompare: deepCompare,
-    compareInsight: compareInsight
+    compareInsight: compareInsight,
+    deepCompare: deepCompare
   });
 
   /*!
@@ -261,7 +260,5 @@
   exports.use = use;
   exports.util = util;
   exports.version = version;
-
-  Object.defineProperty(exports, '__esModule', { value: true });
 
 }));

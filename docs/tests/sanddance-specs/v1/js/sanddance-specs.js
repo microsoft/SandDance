@@ -975,7 +975,7 @@
                 roles: [
                     {
                         role: 'size',
-                        allowNone: true,
+                        allowNone: true, //size by none is a count
                         excludeCategoric: true,
                     },
                     {
@@ -1855,7 +1855,7 @@
         // Mapping TypeScript types to Python-like dtypes
         const typeMapping = {
             boolean: 'bool',
-            number: 'float64',
+            number: 'float64', // Assuming 'number' is used for floating-point numbers
             date: 'datetime64[ns]',
             string: 'object',
             integer: 'int64',
@@ -2096,7 +2096,14 @@
      * examples: "source.x", "target['x']", "[my.field]"
      */
     function safeFieldName(field) {
-        return field.replace('.', '\\.').replace('[', '\\[').replace(']', '\\]');
+        return field
+            .replace(/\\/g, '\\\\') //escape backslashes
+            .replace(/'/g, '\\\'') //escape single quotes
+            .replace(/"/g, '\\"') //escape double quotes
+            .replace(/\./g, '\\.') //escape periods
+            .replace(/\[/g, '\\[') //escape left square brackets
+            .replace(/\]/g, '\\]') //escape right square brackets
+        ;
     }
     /**
      * Make sure the field name is usable in a Vega expression
@@ -3323,9 +3330,6 @@
                 val(0);
     }
     function obj(nameValues, clause) {
-        if (clause) {
-            nameValues = [clause, ...nameValues];
-        }
         return `{${nameValues.join()}}`;
     }
     function serializeAsVegaExpression(bin, firstFieldName, lastFieldName, clause) {
@@ -3343,7 +3347,7 @@
             ];
             return obj([
                 `expressions:[ datum[${JSON.stringify(firstFieldName)}] ? null : ${obj(low)}, datum[${JSON.stringify(lastFieldName)}] ? null : ${obj(high)}]`,
-            ], clause);
+            ]);
         }
         else {
             const exact = [
@@ -3353,7 +3357,7 @@
             ];
             return obj([
                 `expressions:[${obj(exact)}]`,
-            ], clause);
+            ]);
         }
     }
 
@@ -5336,7 +5340,5 @@
     exports.getSpecColumns = getSpecColumns;
     exports.getStats = getStats;
     exports.inferAll = inferAll;
-
-    Object.defineProperty(exports, '__esModule', { value: true });
 
 }));

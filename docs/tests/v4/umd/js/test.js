@@ -12,13 +12,13 @@ var test;
             uid: 'myUid',
             x: 'myX',
             y: 'myY',
-            z: 'myZ'
+            z: 'myZ',
         },
         size: {
             height: 700,
-            width: 700
+            width: 700,
         },
-        chart: 'scatterplot'
+        chart: 'scatterplot',
     };
     SandDance.use(vega);
     test.viewer = new SandDance.Viewer(document.querySelector('#vis'));

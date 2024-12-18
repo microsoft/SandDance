@@ -990,7 +990,7 @@
                 roles: [
                     {
                         role: 'size',
-                        allowNone: true,
+                        allowNone: true, //size by none is a count
                         excludeCategoric: true,
                     },
                     {
@@ -1214,34 +1214,34 @@
         }
     }
 
-    function define$2(constructor, factory, prototype) {
+    function define(constructor, factory, prototype) {
       constructor.prototype = factory.prototype = prototype;
       prototype.constructor = constructor;
     }
 
-    function extend$2(parent, definition) {
+    function extend(parent, definition) {
       var prototype = Object.create(parent.prototype);
       for (var key in definition) prototype[key] = definition[key];
       return prototype;
     }
 
-    function Color$3() {}
+    function Color$1() {}
 
-    var darker$2 = 0.7;
-    var brighter$2 = 1 / darker$2;
+    var darker = 0.7;
+    var brighter = 1 / darker;
 
-    var reI$2 = "\\s*([+-]?\\d+)\\s*",
-        reN$2 = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*",
-        reP$2 = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
-        reHex$2 = /^#([0-9a-f]{3,8})$/,
-        reRgbInteger$2 = new RegExp(`^rgb\\(${reI$2},${reI$2},${reI$2}\\)$`),
-        reRgbPercent$2 = new RegExp(`^rgb\\(${reP$2},${reP$2},${reP$2}\\)$`),
-        reRgbaInteger$2 = new RegExp(`^rgba\\(${reI$2},${reI$2},${reI$2},${reN$2}\\)$`),
-        reRgbaPercent$2 = new RegExp(`^rgba\\(${reP$2},${reP$2},${reP$2},${reN$2}\\)$`),
-        reHslPercent$2 = new RegExp(`^hsl\\(${reN$2},${reP$2},${reP$2}\\)$`),
-        reHslaPercent$2 = new RegExp(`^hsla\\(${reN$2},${reP$2},${reP$2},${reN$2}\\)$`);
+    var reI = "\\s*([+-]?\\d+)\\s*",
+        reN = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+        reP = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+        reHex = /^#([0-9a-f]{3,8})$/,
+        reRgbInteger = new RegExp(`^rgb\\(${reI},${reI},${reI}\\)$`),
+        reRgbPercent = new RegExp(`^rgb\\(${reP},${reP},${reP}\\)$`),
+        reRgbaInteger = new RegExp(`^rgba\\(${reI},${reI},${reI},${reN}\\)$`),
+        reRgbaPercent = new RegExp(`^rgba\\(${reP},${reP},${reP},${reN}\\)$`),
+        reHslPercent = new RegExp(`^hsl\\(${reN},${reP},${reP}\\)$`),
+        reHslaPercent = new RegExp(`^hsla\\(${reN},${reP},${reP},${reN}\\)$`);
 
-    var named$2 = {
+    var named = {
       aliceblue: 0xf0f8ff,
       antiquewhite: 0xfaebd7,
       aqua: 0x00ffff,
@@ -1392,97 +1392,97 @@
       yellowgreen: 0x9acd32
     };
 
-    define$2(Color$3, color$2, {
+    define(Color$1, color, {
       copy(channels) {
         return Object.assign(new this.constructor, this, channels);
       },
       displayable() {
         return this.rgb().displayable();
       },
-      hex: color_formatHex$2, // Deprecated! Use color.formatHex.
-      formatHex: color_formatHex$2,
-      formatHex8: color_formatHex8$2,
-      formatHsl: color_formatHsl$2,
-      formatRgb: color_formatRgb$2,
-      toString: color_formatRgb$2
+      hex: color_formatHex, // Deprecated! Use color.formatHex.
+      formatHex: color_formatHex,
+      formatHex8: color_formatHex8,
+      formatHsl: color_formatHsl,
+      formatRgb: color_formatRgb,
+      toString: color_formatRgb
     });
 
-    function color_formatHex$2() {
+    function color_formatHex() {
       return this.rgb().formatHex();
     }
 
-    function color_formatHex8$2() {
+    function color_formatHex8() {
       return this.rgb().formatHex8();
     }
 
-    function color_formatHsl$2() {
-      return hslConvert$2(this).formatHsl();
+    function color_formatHsl() {
+      return hslConvert(this).formatHsl();
     }
 
-    function color_formatRgb$2() {
+    function color_formatRgb() {
       return this.rgb().formatRgb();
     }
 
-    function color$2(format) {
+    function color(format) {
       var m, l;
       format = (format + "").trim().toLowerCase();
-      return (m = reHex$2.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$2(m) // #ff0000
-          : l === 3 ? new Rgb$2((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
-          : l === 8 ? rgba$2(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-          : l === 4 ? rgba$2((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+      return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
+          : l === 3 ? new Rgb((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
+          : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+          : l === 4 ? rgba((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
           : null) // invalid hex
-          : (m = reRgbInteger$2.exec(format)) ? new Rgb$2(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
-          : (m = reRgbPercent$2.exec(format)) ? new Rgb$2(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
-          : (m = reRgbaInteger$2.exec(format)) ? rgba$2(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
-          : (m = reRgbaPercent$2.exec(format)) ? rgba$2(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-          : (m = reHslPercent$2.exec(format)) ? hsla$2(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-          : (m = reHslaPercent$2.exec(format)) ? hsla$2(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-          : named$2.hasOwnProperty(format) ? rgbn$2(named$2[format]) // eslint-disable-line no-prototype-builtins
-          : format === "transparent" ? new Rgb$2(NaN, NaN, NaN, 0)
+          : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+          : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+          : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+          : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+          : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+          : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+          : named.hasOwnProperty(format) ? rgbn(named[format]) // eslint-disable-line no-prototype-builtins
+          : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0)
           : null;
     }
 
-    function rgbn$2(n) {
-      return new Rgb$2(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+    function rgbn(n) {
+      return new Rgb(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
     }
 
-    function rgba$2(r, g, b, a) {
+    function rgba(r, g, b, a) {
       if (a <= 0) r = g = b = NaN;
-      return new Rgb$2(r, g, b, a);
+      return new Rgb(r, g, b, a);
     }
 
-    function rgbConvert$2(o) {
-      if (!(o instanceof Color$3)) o = color$2(o);
-      if (!o) return new Rgb$2;
+    function rgbConvert(o) {
+      if (!(o instanceof Color$1)) o = color(o);
+      if (!o) return new Rgb;
       o = o.rgb();
-      return new Rgb$2(o.r, o.g, o.b, o.opacity);
+      return new Rgb(o.r, o.g, o.b, o.opacity);
     }
 
-    function rgb$3(r, g, b, opacity) {
-      return arguments.length === 1 ? rgbConvert$2(r) : new Rgb$2(r, g, b, opacity == null ? 1 : opacity);
+    function rgb$1(r, g, b, opacity) {
+      return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
     }
 
-    function Rgb$2(r, g, b, opacity) {
+    function Rgb(r, g, b, opacity) {
       this.r = +r;
       this.g = +g;
       this.b = +b;
       this.opacity = +opacity;
     }
 
-    define$2(Rgb$2, rgb$3, extend$2(Color$3, {
+    define(Rgb, rgb$1, extend(Color$1, {
       brighter(k) {
-        k = k == null ? brighter$2 : Math.pow(brighter$2, k);
-        return new Rgb$2(this.r * k, this.g * k, this.b * k, this.opacity);
+        k = k == null ? brighter : Math.pow(brighter, k);
+        return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
       },
       darker(k) {
-        k = k == null ? darker$2 : Math.pow(darker$2, k);
-        return new Rgb$2(this.r * k, this.g * k, this.b * k, this.opacity);
+        k = k == null ? darker : Math.pow(darker, k);
+        return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
       },
       rgb() {
         return this;
       },
       clamp() {
-        return new Rgb$2(clampi$2(this.r), clampi$2(this.g), clampi$2(this.b), clampa$2(this.opacity));
+        return new Rgb(clampi(this.r), clampi(this.g), clampi(this.b), clampa(this.opacity));
       },
       displayable() {
         return (-0.5 <= this.r && this.r < 255.5)
@@ -1490,51 +1490,51 @@
             && (-0.5 <= this.b && this.b < 255.5)
             && (0 <= this.opacity && this.opacity <= 1);
       },
-      hex: rgb_formatHex$2, // Deprecated! Use color.formatHex.
-      formatHex: rgb_formatHex$2,
-      formatHex8: rgb_formatHex8$2,
-      formatRgb: rgb_formatRgb$2,
-      toString: rgb_formatRgb$2
+      hex: rgb_formatHex, // Deprecated! Use color.formatHex.
+      formatHex: rgb_formatHex,
+      formatHex8: rgb_formatHex8,
+      formatRgb: rgb_formatRgb,
+      toString: rgb_formatRgb
     }));
 
-    function rgb_formatHex$2() {
-      return `#${hex$2(this.r)}${hex$2(this.g)}${hex$2(this.b)}`;
+    function rgb_formatHex() {
+      return `#${hex(this.r)}${hex(this.g)}${hex(this.b)}`;
     }
 
-    function rgb_formatHex8$2() {
-      return `#${hex$2(this.r)}${hex$2(this.g)}${hex$2(this.b)}${hex$2((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
+    function rgb_formatHex8() {
+      return `#${hex(this.r)}${hex(this.g)}${hex(this.b)}${hex((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
     }
 
-    function rgb_formatRgb$2() {
-      const a = clampa$2(this.opacity);
-      return `${a === 1 ? "rgb(" : "rgba("}${clampi$2(this.r)}, ${clampi$2(this.g)}, ${clampi$2(this.b)}${a === 1 ? ")" : `, ${a})`}`;
+    function rgb_formatRgb() {
+      const a = clampa(this.opacity);
+      return `${a === 1 ? "rgb(" : "rgba("}${clampi(this.r)}, ${clampi(this.g)}, ${clampi(this.b)}${a === 1 ? ")" : `, ${a})`}`;
     }
 
-    function clampa$2(opacity) {
+    function clampa(opacity) {
       return isNaN(opacity) ? 1 : Math.max(0, Math.min(1, opacity));
     }
 
-    function clampi$2(value) {
+    function clampi(value) {
       return Math.max(0, Math.min(255, Math.round(value) || 0));
     }
 
-    function hex$2(value) {
-      value = clampi$2(value);
+    function hex(value) {
+      value = clampi(value);
       return (value < 16 ? "0" : "") + value.toString(16);
     }
 
-    function hsla$2(h, s, l, a) {
+    function hsla(h, s, l, a) {
       if (a <= 0) h = s = l = NaN;
       else if (l <= 0 || l >= 1) h = s = NaN;
       else if (s <= 0) h = NaN;
-      return new Hsl$2(h, s, l, a);
+      return new Hsl(h, s, l, a);
     }
 
-    function hslConvert$2(o) {
-      if (o instanceof Hsl$2) return new Hsl$2(o.h, o.s, o.l, o.opacity);
-      if (!(o instanceof Color$3)) o = color$2(o);
-      if (!o) return new Hsl$2;
-      if (o instanceof Hsl$2) return o;
+    function hslConvert(o) {
+      if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
+      if (!(o instanceof Color$1)) o = color(o);
+      if (!o) return new Hsl;
+      if (o instanceof Hsl) return o;
       o = o.rgb();
       var r = o.r / 255,
           g = o.g / 255,
@@ -1553,28 +1553,28 @@
       } else {
         s = l > 0 && l < 1 ? 0 : h;
       }
-      return new Hsl$2(h, s, l, o.opacity);
+      return new Hsl(h, s, l, o.opacity);
     }
 
-    function hsl$2(h, s, l, opacity) {
-      return arguments.length === 1 ? hslConvert$2(h) : new Hsl$2(h, s, l, opacity == null ? 1 : opacity);
+    function hsl(h, s, l, opacity) {
+      return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
     }
 
-    function Hsl$2(h, s, l, opacity) {
+    function Hsl(h, s, l, opacity) {
       this.h = +h;
       this.s = +s;
       this.l = +l;
       this.opacity = +opacity;
     }
 
-    define$2(Hsl$2, hsl$2, extend$2(Color$3, {
+    define(Hsl, hsl, extend(Color$1, {
       brighter(k) {
-        k = k == null ? brighter$2 : Math.pow(brighter$2, k);
-        return new Hsl$2(this.h, this.s, this.l * k, this.opacity);
+        k = k == null ? brighter : Math.pow(brighter, k);
+        return new Hsl(this.h, this.s, this.l * k, this.opacity);
       },
       darker(k) {
-        k = k == null ? darker$2 : Math.pow(darker$2, k);
-        return new Hsl$2(this.h, this.s, this.l * k, this.opacity);
+        k = k == null ? darker : Math.pow(darker, k);
+        return new Hsl(this.h, this.s, this.l * k, this.opacity);
       },
       rgb() {
         var h = this.h % 360 + (this.h < 0) * 360,
@@ -1582,15 +1582,15 @@
             l = this.l,
             m2 = l + (l < 0.5 ? l : 1 - l) * s,
             m1 = 2 * l - m2;
-        return new Rgb$2(
-          hsl2rgb$2(h >= 240 ? h - 240 : h + 120, m1, m2),
-          hsl2rgb$2(h, m1, m2),
-          hsl2rgb$2(h < 120 ? h + 240 : h - 120, m1, m2),
+        return new Rgb(
+          hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2),
+          hsl2rgb(h, m1, m2),
+          hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2),
           this.opacity
         );
       },
       clamp() {
-        return new Hsl$2(clamph$2(this.h), clampt$2(this.s), clampt$2(this.l), clampa$2(this.opacity));
+        return new Hsl(clamph(this.h), clampt(this.s), clampt(this.l), clampa(this.opacity));
       },
       displayable() {
         return (0 <= this.s && this.s <= 1 || isNaN(this.s))
@@ -1598,22 +1598,22 @@
             && (0 <= this.opacity && this.opacity <= 1);
       },
       formatHsl() {
-        const a = clampa$2(this.opacity);
-        return `${a === 1 ? "hsl(" : "hsla("}${clamph$2(this.h)}, ${clampt$2(this.s) * 100}%, ${clampt$2(this.l) * 100}%${a === 1 ? ")" : `, ${a})`}`;
+        const a = clampa(this.opacity);
+        return `${a === 1 ? "hsl(" : "hsla("}${clamph(this.h)}, ${clampt(this.s) * 100}%, ${clampt(this.l) * 100}%${a === 1 ? ")" : `, ${a})`}`;
       }
     }));
 
-    function clamph$2(value) {
+    function clamph(value) {
       value = (value || 0) % 360;
       return value < 0 ? value + 360 : value;
     }
 
-    function clampt$2(value) {
+    function clampt(value) {
       return Math.max(0, Math.min(1, value || 0));
     }
 
     /* From FvD 13.37, CSS Color Module Level 3 */
-    function hsl2rgb$2(h, m1, m2) {
+    function hsl2rgb(h, m1, m2) {
       return (h < 60 ? m1 + (m2 - m1) * h / 60
           : h < 180 ? m2
           : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
@@ -1625,7 +1625,7 @@
     * Licensed under the MIT License.
     */
     function isColor(cssColorSpecifier) {
-        return !!color$2(cssColorSpecifier);
+        return !!color(cssColorSpecifier);
     }
     function checkIsColorData(data, column) {
         if (!column.stats.hasColorData) {
@@ -1791,7 +1791,7 @@
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
-    class Table$2 {
+    let Table$2 = class Table {
         constructor(columns, rows, maxWidth = 80, underlineHeaders = false, align = 'right') {
             this.columns = columns;
             this.rows = rows;
@@ -1864,13 +1864,13 @@
             });
             return output.join('');
         }
-    }
+    };
     var pandasSimulation;
     (function (pandasSimulation) {
         // Mapping TypeScript types to Python-like dtypes
         const typeMapping = {
             boolean: 'bool',
-            number: 'float64',
+            number: 'float64', // Assuming 'number' is used for floating-point numbers
             date: 'datetime64[ns]',
             string: 'object',
             integer: 'int64',
@@ -2111,7 +2111,14 @@
      * examples: "source.x", "target['x']", "[my.field]"
      */
     function safeFieldName(field) {
-        return field.replace('.', '\\.').replace('[', '\\[').replace(']', '\\]');
+        return field
+            .replace(/\\/g, '\\\\') //escape backslashes
+            .replace(/'/g, '\\\'') //escape single quotes
+            .replace(/"/g, '\\"') //escape double quotes
+            .replace(/\./g, '\\.') //escape periods
+            .replace(/\[/g, '\\[') //escape left square brackets
+            .replace(/\]/g, '\\]') //escape right square brackets
+        ;
     }
     /**
      * Make sure the field name is usable in a Vega expression
@@ -3338,9 +3345,6 @@
                 val(0);
     }
     function obj(nameValues, clause) {
-        if (clause) {
-            nameValues = [clause, ...nameValues];
-        }
         return `{${nameValues.join()}}`;
     }
     function serializeAsVegaExpression(bin, firstFieldName, lastFieldName, clause) {
@@ -3358,7 +3362,7 @@
             ];
             return obj([
                 `expressions:[ datum[${JSON.stringify(firstFieldName)}] ? null : ${obj(low)}, datum[${JSON.stringify(lastFieldName)}] ? null : ${obj(high)}]`,
-            ], clause);
+            ]);
         }
         else {
             const exact = [
@@ -3368,7 +3372,7 @@
             ];
             return obj([
                 `expressions:[${obj(exact)}]`,
-            ], clause);
+            ]);
         }
     }
 
@@ -3617,7 +3621,7 @@
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
-    class Scatter$1 extends Layout {
+    let Scatter$1 = class Scatter extends Layout {
         constructor(props) {
             super(props);
             this.props = props;
@@ -3833,7 +3837,7 @@
                 },
             };
         }
-    }
+    };
 
     /*!
     * Copyright (c) Microsoft Corporation.
@@ -5346,18 +5350,18 @@
     * Licensed under the MIT License.
     */
 
-    var index$2 = /*#__PURE__*/Object.freeze({
+    var index$4 = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        build: build,
+        ColorScaleNone: ColorScaleNone,
         FieldNames: FieldNames,
+        Other: Other,
         ScaleNames: ScaleNames,
         SignalNames: SignalNames,
-        Other: Other,
-        ColorScaleNone: ColorScaleNone,
+        build: build,
         getColumnsFromData: getColumnsFromData,
+        getSpecColumns: getSpecColumns,
         getStats: getStats,
-        inferAll: inferAll,
-        getSpecColumns: getSpecColumns
+        inferAll: inferAll
     });
 
     /*!
@@ -5368,9 +5372,9 @@
 
     var constants$1 = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        GL_ORDINAL: GL_ORDINAL,
         ColorScaleNone: ColorScaleNone,
         FieldNames: FieldNames,
+        GL_ORDINAL: GL_ORDINAL,
         ScaleNames: ScaleNames,
         SignalNames: SignalNames
     });
@@ -5711,18 +5715,18 @@
     * Licensed under the MIT License.
     */
 
-    var index$1 = /*#__PURE__*/Object.freeze({
+    var index$3 = /*#__PURE__*/Object.freeze({
         __proto__: null,
+        Exec: Exec,
+        compare: compare,
         compareExpression: compareExpression,
         compareGroup: compareGroup,
-        compare: compare,
-        startsWith: startsWith,
-        Exec: Exec,
-        isSearchExpressionGroup: isSearchExpressionGroup,
         createGroupFromExpression: createGroupFromExpression,
         ensureSearchExpressionGroupArray: ensureSearchExpressionGroupArray,
         invert: invert$1,
-        narrow: narrow
+        isSearchExpressionGroup: isSearchExpressionGroup,
+        narrow: narrow,
+        startsWith: startsWith
     });
 
     /*!
@@ -5733,6 +5737,10 @@
     var types$1 = /*#__PURE__*/Object.freeze({
         __proto__: null
     });
+
+    function getDefaultExportFromCjs (x) {
+    	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+    }
 
     var require$$0$1 = [
     	"a",
@@ -5855,12 +5863,23 @@
     	"wbr"
     ];
 
-    var htmlTags = require$$0$1;
+    var htmlTags$1;
+    var hasRequiredHtmlTags;
 
-    var htmlTags$1 = /*#__PURE__*/_mergeNamespaces({
+    function requireHtmlTags () {
+    	if (hasRequiredHtmlTags) return htmlTags$1;
+    	hasRequiredHtmlTags = 1;
+    	htmlTags$1 = require$$0$1;
+    	return htmlTags$1;
+    }
+
+    var htmlTagsExports = requireHtmlTags();
+    var index$2 = /*@__PURE__*/getDefaultExportFromCjs(htmlTagsExports);
+
+    var htmlTags = /*#__PURE__*/_mergeNamespaces({
         __proto__: null,
-        'default': htmlTags
-    }, [htmlTags]);
+        default: index$2
+    }, [htmlTagsExports]);
 
     var require$$0 = [
     	"a",
@@ -5945,15 +5964,26 @@
     	"vkern"
     ];
 
-    var lib = require$$0;
+    var lib;
+    var hasRequiredLib;
+
+    function requireLib () {
+    	if (hasRequiredLib) return lib;
+    	hasRequiredLib = 1;
+    	lib = require$$0;
+    	return lib;
+    }
+
+    var libExports = requireLib();
+    var index$1 = /*@__PURE__*/getDefaultExportFromCjs(libExports);
 
     var svgTags = /*#__PURE__*/_mergeNamespaces({
         __proto__: null,
-        'default': lib
-    }, [lib]);
+        default: index$1
+    }, [libExports]);
 
-    const htmlTagArray = htmlTags || htmlTags$1;
-    const svgTagArray = lib || svgTags;
+    const htmlTagArray = index$2 || htmlTags;
+    const svgTagArray = index$1 || svgTags;
     /**
      * Decamelizes a string with/without a custom separator (hyphen by default).
      * from: https://ourcodeworld.com/articles/read/608/how-to-camelize-and-decamelize-strings-in-javascript
@@ -6136,6 +6166,10 @@
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
+    /**
+     * This file is for external facing export only, do not use this for internal references,
+     * as it may cause circular dependencies in Rollup.
+     */
 
     var controls = /*#__PURE__*/Object.freeze({
         __proto__: null,
@@ -7423,7 +7457,7 @@
      * @returns {Boolean} True if the vectors are equal, false otherwise.
      */
 
-    function exactEquals(a, b) {
+    function exactEquals$1(a, b) {
       return a[0] === b[0] && a[1] === b[1] && a[2] === b[2];
     }
     /**
@@ -7628,6 +7662,17 @@
       out[2] = m[2] * x + m[6] * y + m[10] * z + m[14] * w;
       out[3] = m[3] * x + m[7] * y + m[11] * z + m[15] * w;
       return out;
+    }
+    /**
+     * Returns whether or not the vectors have exactly the same elements in the same position (when compared with ===)
+     *
+     * @param {ReadonlyVec4} a The first vector.
+     * @param {ReadonlyVec4} b The second vector.
+     * @returns {Boolean} True if the vectors are equal, false otherwise.
+     */
+
+    function exactEquals(a, b) {
+      return a[0] === b[0] && a[1] === b[1] && a[2] === b[2] && a[3] === b[3];
     }
     /**
      * Returns whether or not the vectors have approximately the same elements in the same position.
@@ -8283,6 +8328,22 @@
      * Licensed under the MIT License.
      */
     class MathHelper {
+        static simpleLinearRegression(points) {
+            const n = points.length;
+            let sumX = 0;
+            let sumY = 0;
+            let sumXY = 0;
+            let sumXX = 0;
+            for (let i = 0; i < n; i++) {
+                sumX += points[i].x;
+                sumY += points[i].y;
+                sumXY += points[i].x * points[i].y;
+                sumXX += points[i].x * points[i].x;
+            }
+            const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+            const yIntercept = (sumY - slope * sumX) / n;
+            return { slope, yIntercept };
+        }
         static clamp(value, min, max) {
             return Math.max(Math.min(value, max), min);
         }
@@ -8359,7 +8420,7 @@
             result[1] = Math.asin(y);
         }
         static angleBetweenVectors(from, to) {
-            if (exactEquals(from, to)) {
+            if (exactEquals$1(from, to)) {
                 return 0;
             }
             else {
@@ -8368,7 +8429,7 @@
             }
         }
         static signedAngleBetweenVectors(from, to, up) {
-            if (exactEquals(from, to)) {
+            if (exactEquals$1(from, to)) {
                 return 0;
             }
             else {
@@ -8524,7 +8585,20 @@
             view[14] = -dot(this._forward, this._combinedPosition);
             const aspectRatio = this.width / this.height;
             if (this._core.config.stereoMode == StereoMode.none) {
-                perspective(this.pMatrices[0], this._core.config.fov, aspectRatio, this._core.config.nearPlane, this._core.config.farPlane);
+                if (this._core.config.tilesX != 1 || this._core.config.tilesY != 1) {
+                    const top = Math.tan(this._core.config.fov * 0.5) * this._core.config.nearPlane;
+                    const bottom = -top;
+                    const left = -aspectRatio * top;
+                    const right = aspectRatio * top;
+                    const width = right - left;
+                    const height = top - bottom;
+                    const tileWidth = width / this._core.config.tilesX;
+                    const tileHeight = height / this._core.config.tilesY;
+                    frustum(this._pMatrices[0], left + this._core.config.tileOffsetX * tileWidth, left + (this._core.config.tileOffsetX + 1) * tileWidth, bottom + (this._core.config.tilesY - this._core.config.tileOffsetY - 1) * tileHeight, bottom + (this._core.config.tilesY - this._core.config.tileOffsetY) * tileHeight, this._core.config.nearPlane, this._core.config.farPlane);
+                }
+                else {
+                    perspective(this.pMatrices[0], this._core.config.fov, aspectRatio, this._core.config.nearPlane, this._core.config.farPlane);
+                }
                 multiply$2(this._mvMatrices[0], this._vMatrices[0], this.modelMMatrix);
                 invert(this._inverseVMatrices[0], this.vMatrices[0]);
                 invert(this._inversePMatrices[0], this.pMatrices[0]);
@@ -8679,7 +8753,7 @@
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class Config$2 {
+    let Config$2 = class Config {
         constructor(core) {
             this.reset();
         }
@@ -8724,7 +8798,7 @@
             this.textColor = create$3();
             this.textHoverColor = create$3();
             this.textBorderColor = create$3();
-            this.textBorderWidth = 0.1;
+            this.textBorderWidth = 0x18 / 0xff;
             this.identityRotation = Constants.VECTOR3_UNITY;
             this.axesTextLabelMaxGlyphs = 32;
             this.axesTextColor = create$3();
@@ -8736,6 +8810,9 @@
             this.axesTextTitleSize = 0.05;
             this.axesTextHeadingMaxGlyphs = 128;
             this.axesTextHeadingSize = 0.075;
+            this.axesTextTitleLineHeight = 1.5;
+            this.axesTextHeadingLineHeight = 1.5;
+            this.axesTextLabelLineHeight = 1.5;
             this.axesGridMajorThickness = 0.0002;
             this.axesGridMinorThickness = 0.0001;
             this.axesGridZeroThickness = 0.002;
@@ -8757,12 +8834,30 @@
             this.lassoColor = create$3();
             this.minCubifiedTreeMapSlice = 0.01;
             this.sdfBuffer = 0xc0;
+            this.sdfBorder = 0x0;
+            this.forceDirectIsEnabled = false;
+            this.forceDirectAttraction = 1;
+            this.forceDirectRepulsion = 1;
+            this.forceDirectGravity = 1;
+            this.forceDirectInterval = 0.1;
+            this.forceDirectMaxDistance = 0.1;
+            this.forceDirectTheta = 1;
+            this.forceDirectIterationsPerLayout = 1;
+            this.forceDirectEdgeWeightPower = 1;
+            this.forceDirectLockX = false;
+            this.forceDirectLockY = false;
+            this.forceDirectLockZ = false;
             this.transitionDuration = 400;
             this.transitionStaggering = 100;
             this.transitionView = true;
             this.isTransitionPickingEnabled = false;
-            this.backgroundColor = create$3();
+            this.backgroundColor = create$2();
             this.theme = Theme.light;
+            this.renderMode = RenderMode.color;
+            this.tilesX = 1;
+            this.tilesY = 1;
+            this.tileOffsetX = 0;
+            this.tileOffsetY = 0;
         }
         get theme() { return this._theme; }
         set theme(value) {
@@ -8770,7 +8865,7 @@
                 this._theme = value;
                 switch (value) {
                     case Theme.dark:
-                        set$3(this.backgroundColor, 0, 0, 0);
+                        set$2(this.backgroundColor, 0, 0, 0, 1);
                         set$3(this.textColor, 0.9, 0.9, 0.9);
                         set$3(this.textHoverColor, 1, 1, 1);
                         set$3(this.textBorderColor, 0, 0, 0);
@@ -8788,7 +8883,7 @@
                         set$3(this.lassoColor, 0.9, 0.9, 0.9);
                         break;
                     case Theme.light:
-                        set$3(this.backgroundColor, 1, 1, 1);
+                        set$2(this.backgroundColor, 1, 1, 1, 1);
                         set$3(this.textColor, 0, 0, 0);
                         set$3(this.textHoverColor, 0.1, 0.1, 0.1);
                         set$3(this.textBorderColor, 1, 1, 1);
@@ -8811,7 +8906,7 @@
                 }
             }
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -8940,8 +9035,8 @@
         }
         update() { }
     }
-    class Palette$2 extends PaletteBase {
-    }
+    let Palette$2 = class Palette extends PaletteBase {
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -9281,6 +9376,24 @@
         static copyRounding(fromBufferView, fromIndex, toBufferView, toIndex) {
             toBufferView.setFloat32(UnitVertex.SIZE_BYTES * toIndex + this.ROUNDING_OFFSET_BYTES, fromBufferView.getFloat32(UnitVertex.SIZE_BYTES * fromIndex + this.ROUNDING_OFFSET_BYTES, true), true);
         }
+        static getParameter1(bufferView, index) {
+            return bufferView.getFloat32(UnitVertex.SIZE_BYTES * index + this.PARAMETER_1_OFFSET_BYTES, true);
+        }
+        static setParameter1(bufferView, index, value) {
+            bufferView.setFloat32(UnitVertex.SIZE_BYTES * index + this.PARAMETER_1_OFFSET_BYTES, value, true);
+        }
+        static copyParameter1(fromBufferView, fromIndex, toBufferView, toIndex) {
+            toBufferView.setFloat32(UnitVertex.SIZE_BYTES * toIndex + this.PARAMETER_1_OFFSET_BYTES, fromBufferView.getFloat32(UnitVertex.SIZE_BYTES * fromIndex + this.PARAMETER_1_OFFSET_BYTES, true), true);
+        }
+        static getParameter2(bufferView, index) {
+            return bufferView.getFloat32(UnitVertex.SIZE_BYTES * index + this.PARAMETER_2_OFFSET_BYTES, true);
+        }
+        static setParameter2(bufferView, index, value) {
+            bufferView.setFloat32(UnitVertex.SIZE_BYTES * index + this.PARAMETER_2_OFFSET_BYTES, value, true);
+        }
+        static copyParameter2(fromBufferView, fromIndex, toBufferView, toIndex) {
+            toBufferView.setFloat32(UnitVertex.SIZE_BYTES * toIndex + this.PARAMETER_2_OFFSET_BYTES, fromBufferView.getFloat32(UnitVertex.SIZE_BYTES * fromIndex + this.PARAMETER_2_OFFSET_BYTES, true), true);
+        }
         static getMaterial(bufferView, index) {
             return bufferView.getUint16(UnitVertex.SIZE_BYTES * index + this.MATERIAL_OFFSET_BYTES);
         }
@@ -9290,8 +9403,35 @@
         static copyMaterial(fromBufferView, fromIndex, toBufferView, toIndex) {
             toBufferView.setUint16(UnitVertex.SIZE_BYTES * toIndex + this.MATERIAL_OFFSET_BYTES, fromBufferView.getUint16(UnitVertex.SIZE_BYTES * fromIndex + this.MATERIAL_OFFSET_BYTES, true), true);
         }
+        static getTexture(bufferView, index) {
+            return bufferView.getUint8(UnitVertex.SIZE_BYTES * index + this.TEXTURE_OFFSET_BYTES);
+        }
+        static setTexture(bufferView, index, value) {
+            bufferView.setUint8(UnitVertex.SIZE_BYTES * index + this.TEXTURE_OFFSET_BYTES, value);
+        }
+        static copyTexture(fromBufferView, fromIndex, toBufferView, toIndex) {
+            toBufferView.setUint8(UnitVertex.SIZE_BYTES * toIndex + this.TEXTURE_OFFSET_BYTES, fromBufferView.getUint8(UnitVertex.SIZE_BYTES * fromIndex + this.TEXTURE_OFFSET_BYTES));
+        }
+        static getSdfBuffer(bufferView, index) {
+            return bufferView.getUint8(UnitVertex.SIZE_BYTES * index + this.SDF_BUFFER_OFFSET_BYTES);
+        }
+        static setSdfBuffer(bufferView, index, value) {
+            bufferView.setUint8(UnitVertex.SIZE_BYTES * index + this.SDF_BUFFER_OFFSET_BYTES, value);
+        }
+        static copySdfBuffer(fromBufferView, fromIndex, toBufferView, toIndex) {
+            toBufferView.setUint8(UnitVertex.SIZE_BYTES * toIndex + this.SDF_BUFFER_OFFSET_BYTES, fromBufferView.getUint8(UnitVertex.SIZE_BYTES * fromIndex + this.SDF_BUFFER_OFFSET_BYTES));
+        }
+        static getSdfBorder(bufferView, index) {
+            return bufferView.getUint8(UnitVertex.SIZE_BYTES * index + this.SDF_BORDER_OFFSET_BYTES);
+        }
+        static setSdfBorder(bufferView, index, value) {
+            bufferView.setUint8(UnitVertex.SIZE_BYTES * index + this.SDF_BORDER_OFFSET_BYTES, value);
+        }
+        static copySdfBorder(fromBufferView, fromIndex, toBufferView, toIndex) {
+            toBufferView.setUint8(UnitVertex.SIZE_BYTES * toIndex + this.SDF_BORDER_OFFSET_BYTES, fromBufferView.getUint8(UnitVertex.SIZE_BYTES * fromIndex + this.SDF_BORDER_OFFSET_BYTES));
+        }
     }
-    UnitVertex.SIZE_BYTES = 84;
+    UnitVertex.SIZE_BYTES = 92;
     UnitVertex.ID_HOVER_OFFSET_BYTES = 0;
     UnitVertex.ID_COLOR_OFFSET_BYTES = 4;
     UnitVertex.ORDER_OFFSET_BYTES = 8;
@@ -9304,6 +9444,11 @@
     UnitVertex.ROUNDING_OFFSET_BYTES = 44;
     UnitVertex.ROTATION_OFFSET_BYTES = 48;
     UnitVertex.TEXCOORD_OFFSET_BYTES = 64;
+    UnitVertex.TEXTURE_OFFSET_BYTES = 81;
+    UnitVertex.SDF_BUFFER_OFFSET_BYTES = 82;
+    UnitVertex.SDF_BORDER_OFFSET_BYTES = 83;
+    UnitVertex.PARAMETER_1_OFFSET_BYTES = 84;
+    UnitVertex.PARAMETER_2_OFFSET_BYTES = 88;
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -9594,13 +9739,13 @@
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class ControllerVisual$1 {
+    let ControllerVisual$1 = class ControllerVisual {
         render(elapsedTime, xrFrame) { }
         update(elapsedTime) { }
         constructor(controller) {
             this.controller = controller;
         }
-    }
+    };
     class Controller {
         get isInitialized() { return this._isInitialized; }
         get mMatrix() { return this._mMatrix; }
@@ -9785,7 +9930,6 @@ f 5/6/6 1/12/6 8/11/6`;
             this.gridMinorThickness = core.config.axesGridMinorThickness;
             this.gridZeroThickness = core.config.axesGridZeroThickness;
             this._font = core.font;
-            this._lineHeight = 1.5;
             this.isGridPickingEnabled = false;
         }
         update(elapsedTime) { }
@@ -9795,7 +9939,7 @@ f 5/6/6 1/12/6 8/11/6`;
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class Quad$2 {
+    let Quad$2 = class Quad {
         static positions(transform) {
             const positions = new Float32Array(12);
             const position = create$3();
@@ -9847,7 +9991,7 @@ f 5/6/6 1/12/6 8/11/6`;
             }
             return verticesView;
         }
-    }
+    };
     Quad$2.FACE_NORMALS = [
         fromValues$3(0, 0, 1),
         fromValues$3(0, 0, -1)
@@ -10602,7 +10746,7 @@ f 5/6/6 1/12/6 8/11/6`;
             let distance = this._distances[edgeId];
             let maxLabelSize = this._maxLabelSize[axisId][1];
             if (orientation == AxesTextOrientation.parallel)
-                maxLabelSize *= this._lineHeight;
+                maxLabelSize *= this._core.config.axesTextLabelLineHeight;
             distance += maxLabelSize * 0.5;
             multiply$1(this._vec3, Cube.EDGE_POSITIONS[edgeId], this._size);
             scaleAndAdd(this._vec3, this._vec3, Cube.EDGE_NORMALS[edgeId], distance);
@@ -10647,7 +10791,7 @@ f 5/6/6 1/12/6 8/11/6`;
         }
         _updateTitle(axisId, edgeId) {
             let distance = this._distances[edgeId];
-            const titleTextSize = this._titleSizes[axisId] * this._lineHeight;
+            const titleTextSize = this._titleSizes[axisId] * this._core.config.axesTextTitleLineHeight;
             distance += titleTextSize * 0.5;
             multiply$1(this._vec3, Cube.EDGE_POSITIONS[edgeId], this._size);
             scaleAndAdd(this._vec3, this._vec3, Cube.EDGE_NORMALS[edgeId], distance);
@@ -10673,7 +10817,7 @@ f 5/6/6 1/12/6 8/11/6`;
         }
         _updateHeading(axisId, edgeId) {
             let distance = this._distances[edgeId];
-            const headingTextSize = this._headingSizes[axisId] * this._lineHeight;
+            const headingTextSize = this._headingSizes[axisId] * this._core.config.axesTextHeadingLineHeight;
             distance += headingTextSize * 0.5;
             multiply$1(this._vec3, Cube.EDGE_POSITIONS[edgeId], this._size);
             scaleAndAdd(this._vec3, this._vec3, Cube.EDGE_NORMALS[edgeId], distance);
@@ -11558,7 +11702,7 @@ f 5/6/6 1/12/6 8/11/6`;
             let distance = this._distances[edgeId];
             let maxLabelSize = this._maxLabelSize[axisId][1];
             if (orientation == AxesTextOrientation.parallel)
-                maxLabelSize *= this._lineHeight;
+                maxLabelSize *= this._core.config.axesTextLabelLineHeight;
             distance += maxLabelSize * 0.5;
             multiply$1(this._vec3, Quad$2.EDGE_POSITIONS[edgeId], this._size);
             scaleAndAdd(this._vec3, this._vec3, Quad$2.EDGE_NORMALS[edgeId], distance);
@@ -11603,7 +11747,7 @@ f 5/6/6 1/12/6 8/11/6`;
         }
         _updateTitle(axisId, edgeId) {
             let distance = this._distances[edgeId];
-            const titleTextSize = this._titleSizes[axisId] * this._lineHeight;
+            const titleTextSize = this._titleSizes[axisId] * this._core.config.axesTextTitleLineHeight;
             distance += titleTextSize * 0.5;
             multiply$1(this._vec3, Quad$2.EDGE_POSITIONS[edgeId], this._size);
             scaleAndAdd(this._vec3, this._vec3, Quad$2.EDGE_NORMALS[edgeId], distance);
@@ -11629,7 +11773,7 @@ f 5/6/6 1/12/6 8/11/6`;
         }
         _updateHeading(axisId, edgeId) {
             let distance = this._distances[edgeId];
-            const headingTextSize = this._headingSizes[axisId] * this._lineHeight;
+            const headingTextSize = this._headingSizes[axisId] * this._core.config.axesTextHeadingLineHeight;
             distance += headingTextSize * 0.5;
             multiply$1(this._vec3, Quad$2.EDGE_POSITIONS[edgeId], this._size);
             scaleAndAdd(this._vec3, this._vec3, Quad$2.EDGE_NORMALS[edgeId], distance);
@@ -12037,12 +12181,12 @@ f 5/6/6 1/12/6 8/11/6`;
             };
         }
     }
-    class FontVisual$2 {
+    let FontVisual$2 = class FontVisual {
         update() { }
         constructor(font) {
             this.font = font;
         }
-    }
+    };
     class Font {
         get atlas() { return this._rasterizer.fontAtlas; }
         get count() { return this._chars.size; }
@@ -13101,6 +13245,15 @@ f 5/6/6 1/12/6 8/11/6`;
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
+    var __awaiter$4 = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+        function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+        return new (P || (P = Promise))(function (resolve, reject) {
+            function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+            function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+            step((generator = generator.apply(thisArg, _arguments || [])).next());
+        });
+    };
     class Core {
         get container() { return this._container; }
         get started() { return this._started; }
@@ -13135,11 +13288,16 @@ f 5/6/6 1/12/6 8/11/6`;
         get webXRSession() { return this._webXRSession; }
         get renderer() { return this._renderer; }
         set renderer(renderer) {
+            if (this._renderer == renderer) {
+                return;
+            }
             if (this._renderer) {
                 this.stop();
                 this._renderer.remove();
             }
-            renderer.initialize(this);
+            if (!renderer.isInitialized) {
+                renderer.initialize(this);
+            }
             if (this._renderer) {
                 renderer.transitionTime = this._renderer.transitionTime;
                 for (let i = 0; i < this._renderer.transitionBuffers.length; i++) {
@@ -13262,7 +13420,7 @@ f 5/6/6 1/12/6 8/11/6`;
             }
         }
         resetManipulationOrigin() {
-            if (!exactEquals(this._modelManipulationOrigin, Constants.VECTOR3_ZERO)) {
+            if (!exactEquals$1(this._modelManipulationOrigin, Constants.VECTOR3_ZERO)) {
                 this._updateManipulationOrigin(Constants.VECTOR3_ZERO);
             }
         }
@@ -13370,18 +13528,20 @@ f 5/6/6 1/12/6 8/11/6`;
             }
         }
         _tick(currentTime, xrFrame) {
-            let elapsedTime = currentTime - this._previousTime;
-            this._previousTime = currentTime;
-            if (elapsedTime > 0) {
-                this.update(elapsedTime, xrFrame);
-                this.render(elapsedTime, xrFrame);
-            }
-            if (xrFrame) {
-                xrFrame.session.requestAnimationFrame((currentTime, xrframe) => this._tick(currentTime, xrframe));
-            }
-            else if (this._started) {
-                this._windowAnimationFrame = window.requestAnimationFrame((currentTime) => this._tick(currentTime));
-            }
+            return __awaiter$4(this, void 0, void 0, function* () {
+                let elapsedTime = currentTime - this._previousTime;
+                this._previousTime = currentTime;
+                if (elapsedTime > 0) {
+                    this.update(elapsedTime, xrFrame);
+                    yield this.render(elapsedTime, xrFrame);
+                }
+                if (xrFrame) {
+                    xrFrame.session.requestAnimationFrame((currentTime, xrframe) => this._tick(currentTime, xrframe));
+                }
+                else if (this._started) {
+                    this._windowAnimationFrame = window.requestAnimationFrame((currentTime) => this._tick(currentTime));
+                }
+            });
         }
         update(elapsedTime, xrFrame) {
             this._renderer.setSize(elapsedTime);
@@ -13442,13 +13602,15 @@ f 5/6/6 1/12/6 8/11/6`;
             }
         }
         render(elapsedTime, xrFrame) {
-            this._fps.render();
-            if (this._renderer.isInitialized) {
-                this._renderer.render(elapsedTime, xrFrame);
-                if (this.afterRenderCallback) {
-                    this.afterRenderCallback();
+            return __awaiter$4(this, void 0, void 0, function* () {
+                this._fps.render();
+                if (this._renderer.isInitialized) {
+                    yield this._renderer.render(elapsedTime, xrFrame);
+                    if (this.afterRenderCallback) {
+                        this.afterRenderCallback();
+                    }
                 }
-            }
+            });
         }
         _syncSmooth() {
             copy$4(this._smoothedModelPosition, this._modelPosition);
@@ -13456,12 +13618,12 @@ f 5/6/6 1/12/6 8/11/6`;
             copy$2(this._smoothedModelRotation, this._modelRotation);
         }
         _updateManipulationOrigin(position) {
+            this._log.write(LogLevel.info, `manipulation origin ${position[0].toFixed(3)},${position[1].toFixed(3)},${position[2].toFixed(3)}`);
             this._camera.updateModelManipulationOrigin(this._modelManipulationOrigin, position);
             copy$4(this._modelManipulationOrigin, position);
             transformMat4$2(this._vec3, this._modelManipulationOrigin, this._modelMMatrix);
             subtract(this._modelPosition, this._vec3, this._modelManipulationOrigin);
             copy$4(this._smoothedModelPosition, this._modelPosition);
-            this._log.write(LogLevel.info, `manipulation origin ${position[0].toFixed(3)},${position[1].toFixed(3)},${position[2].toFixed(3)}`);
             if (this.manipulationOriginChangedCallback) {
                 const result = {
                     x: position[0],
@@ -13591,6 +13753,8 @@ f 5/6/6 1/12/6 8/11/6`;
         hexPrism: "hexPrism",
         hexPrismSdf: "hexPrismSdf",
         sdf: "sdf",
+        disk: "disk",
+        ringSdf: "ringSdf",
     };
     const SingleTouchAction = {
         none: "none",
@@ -13623,6 +13787,14 @@ f 5/6/6 1/12/6 8/11/6`;
         backRight: 9,
         backLeft: 10,
         frontLeft: 11,
+    };
+    const RenderMode = {
+        color: "color",
+        hdr: "hdr",
+        depth: "depth",
+        normal: "normal",
+        segment: "segment",
+        edge: "edge",
     };
 
     /*!
@@ -13783,13 +13955,13 @@ f 5/6/6 1/12/6 8/11/6`;
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class LabelSetVisual$2 {
+    let LabelSetVisual$2 = class LabelSetVisual {
         render(elapsedTime, xrFrame) { }
         update(elapsedTime) { }
         constructor(labelSet) {
             this.label = labelSet;
         }
-    }
+    };
     class LabelBase {
         get material() { return this._material; }
         get vertices() { return this._vertices; }
@@ -13913,7 +14085,7 @@ f 5/6/6 1/12/6 8/11/6`;
         initialize() {
             this._vertices = new ArrayBuffer(PositionTexturePickVertex.SIZE_BYTES * this._maxGlyphs * 4);
             this._verticesView = new DataView(this._vertices);
-            this._indices = new Uint16Array(this._maxGlyphs * 6);
+            this._indices = new Uint32Array(this._maxGlyphs * 6);
             this._isInitialized = true;
         }
         update(elapsedTime) { }
@@ -14081,6 +14253,13 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._hasChanged = true;
             }
         }
+        get scalesScaling() { return this._scalesScaling; }
+        set scalesScaling(value) {
+            if (this._scalesScaling != value) {
+                this._scalesScaling = value;
+                this._hasChanged = true;
+            }
+        }
         constructor(core, options) {
             super(core, options);
             this._quat = create$1();
@@ -14112,6 +14291,7 @@ f 5/6/6 1/12/6 8/11/6`;
                 this.verticalAlignments = options.verticalAlignments;
             if (options.scales)
                 this.scales = options.scales;
+            this.scalesScaling = options.scalesScaling ? options.scalesScaling : 1;
         }
         update(elapsedTime) {
             if (this._hasChanged && this._isInitialized) {
@@ -14139,7 +14319,7 @@ f 5/6/6 1/12/6 8/11/6`;
                         const offsetY = (this._offsetsY ? this._offsetsY[i] / 2 : this._offsetY) * boundsScaling * this._offsetScalingY;
                         const offsetZ = (this._offsetsZ ? this._offsetsZ[i] / 2 : this._offsetZ) * boundsScaling * this._offsetScalingZ;
                         const text = TextHelper.truncate(this._text[i], this._maxGlyphs - glyphs);
-                        const scale = (this._scales ? this._scales[i] : this._scale) * boundsScaling / this._font.size;
+                        const scale = (this._scales ? this._scales[i] * this._scalesScaling : this._scale) * boundsScaling / this._font.size;
                         TextHelper.measure(this._font, text, this._textMetric);
                         const width = this._textMetric.width * scale;
                         const lineHeight = this._font.size * scale;
@@ -14210,13 +14390,13 @@ f 5/6/6 1/12/6 8/11/6`;
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class ImageVisual$2 {
+    let ImageVisual$2 = class ImageVisual {
         render(elapsedTime, xrFrame) { }
         update(elapsedTime) { }
         constructor(image) {
             this.image = image;
         }
-    }
+    };
     class ImageBase {
         get material() { return this._material; }
         get vertices() { return this._vertices; }
@@ -14380,7 +14560,7 @@ f 5/6/6 1/12/6 8/11/6`;
      * Licensed under the MIT License.
      */
     class BoundsHelper {
-        static rotateBounds(minBounds, maxBounds, rotation, rotatedMinBounds, rotatedMaxBounds) {
+        static rotateBounds(minBounds, maxBounds, rotation, rotatedMinBounds, rotatedMaxBounds, offset) {
             const sizeX = maxBounds[0] - minBounds[0];
             const sizeY = maxBounds[1] - minBounds[1];
             const sizeZ = maxBounds[2] - minBounds[2];
@@ -14392,7 +14572,9 @@ f 5/6/6 1/12/6 8/11/6`;
             const position = create$3();
             for (let i = 0; i < 8; i++) {
                 set$3(position, vertices[i * 3] * sizeX, vertices[i * 3 + 1] * sizeY, vertices[i * 3 + 2] * sizeZ);
+                add(position, position, offset);
                 transformQuat(position, position, rotation);
+                subtract(position, position, offset);
                 min(min$1, min$1, position);
                 max(max$1, max$1, position);
             }
@@ -14592,7 +14774,7 @@ f 5/6/6 1/12/6 8/11/6`;
                         maxBounds0[0] = unitTranslation[0] + unitScale[0] / 2;
                         maxBounds0[1] = unitTranslation[1] + unitScale[1] / 2;
                         maxBounds0[2] = unitTranslation[2] + unitScale[2] / 2;
-                        BoundsHelper.rotateBounds(minBounds0, maxBounds0, unitRotation, minBounds1, maxBounds1);
+                        BoundsHelper.rotateBounds(minBounds0, maxBounds0, unitRotation, minBounds1, maxBounds1, Constants.VECTOR3_ZERO);
                         min(minBounds, minBounds, minBounds1);
                         max(maxBounds, maxBounds, maxBounds1);
                     }
@@ -14808,6 +14990,10 @@ f 5/6/6 1/12/6 8/11/6`;
                 UnitVertex.setOrder(dataView, index, _vec2);
                 UnitVertex.setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
                 UnitVertex.setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
+                UnitVertex.setParameter1(dataView, index, options.parameter1 ? options.parameter1 : options.parameters1 ? options.parameters1[id] : 0);
+                UnitVertex.setParameter2(dataView, index, options.parameter2 ? options.parameter2 : options.parameters2 ? options.parameters2[id] : 0);
+                UnitVertex.setSdfBuffer(dataView, index, options.sdfBuffer ? options.sdfBuffer : options.sdfBuffers ? options.sdfBuffers[id] : this._core.config.sdfBuffer);
+                UnitVertex.setSdfBorder(dataView, index, options.sdfBorder ? options.sdfBorder : options.sdfBorders ? options.sdfBorders[id] : this._core.config.sdfBorder);
                 if (options.texCoords) {
                     _vec4[0] = options.texCoords[id * 4];
                     _vec4[1] = options.texCoords[id * 4 + 1];
@@ -14990,8 +15176,8 @@ f 5/6/6 1/12/6 8/11/6`;
             const lookup = buffer.lookup;
             for (let i = 0; i < count; i++) {
                 const id = ids[i + offset];
-                const fromId = fromIds[i + offset];
-                const toId = toIds[i + offset];
+                const fromId = fromIds[id];
+                const toId = toIds[id];
                 const index = lookup[id];
                 let toPositionX = options.positionsX ? options.positionsX[toId] * positionScalingX : 0;
                 let toPositionY = options.positionsY ? options.positionsY[toId] * positionScalingY : 0;
@@ -15092,8 +15278,8 @@ f 5/6/6 1/12/6 8/11/6`;
             const selection = options.selected && options.selected.size > 0;
             for (let i = 0; i < count; i++) {
                 const id = ids[i + offset];
-                const fromId = fromIds[i + offset];
-                const toId = toIds[i + offset];
+                const fromId = fromIds[id];
+                const toId = toIds[id];
                 const index = lookup[id];
                 let positionX = this._positions[index * 3];
                 let positionY = this._positions[index * 3 + 1];
@@ -15190,6 +15376,8 @@ f 5/6/6 1/12/6 8/11/6`;
                 UnitVertex.setOrder(dataView, index, _vec2);
                 UnitVertex.setMaterial(dataView, index, options.material ? options.material : options.materials ? options.materials[id] : 0);
                 UnitVertex.setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
+                UnitVertex.setSdfBuffer(dataView, index, options.sdfBuffer ? options.sdfBuffer : options.sdfBuffers ? options.sdfBuffers[id] : this._core.config.sdfBuffer);
+                UnitVertex.setSdfBorder(dataView, index, options.sdfBorder ? options.sdfBorder : options.sdfBorders ? options.sdfBorders[id] : this._core.config.sdfBorder);
             }
             buffer.update();
             this._core.log.write(LogLevel.info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -15222,8 +15410,8 @@ f 5/6/6 1/12/6 8/11/6`;
         }
         update() { }
     }
-    class Atlas$2 extends AtlasBase {
-    }
+    let Atlas$2 = class Atlas extends AtlasBase {
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -15251,6 +15439,7 @@ f 5/6/6 1/12/6 8/11/6`;
             for (let i = 0; i < this._length; i++) {
                 const id = ids[i];
                 this._lookup[id] = i;
+                UnitVertex.setRotation(this._dataView, i, Constants.QUAT_IDENTITY);
             }
         }
         createShared() {
@@ -15277,6 +15466,11 @@ f 5/6/6 1/12/6 8/11/6`;
                     UnitVertex.copyRounding(fromDataView, index, toDataView, i);
                     UnitVertex.copyOrder(fromDataView, index, toDataView, i);
                     UnitVertex.copyTexCoord(fromDataView, index, toDataView, i);
+                    UnitVertex.copyTexture(fromDataView, index, toDataView, i);
+                    UnitVertex.copySdfBuffer(fromDataView, index, toDataView, i);
+                    UnitVertex.copySdfBorder(fromDataView, index, toDataView, i);
+                    UnitVertex.copyParameter1(fromDataView, index, toDataView, i);
+                    UnitVertex.copyParameter2(fromDataView, index, toDataView, i);
                 }
                 else {
                     UnitVertex.setRotation(toDataView, i, Constants.QUAT_IDENTITY);
@@ -15368,16 +15562,16 @@ f 5/6/6 1/12/6 8/11/6`;
         }
     }
     TransitionBufferBase._id = 1;
-    class Buffer$2 extends BufferBase {
+    let Buffer$2 = class Buffer extends BufferBase {
         constructor(core, ids) {
             super(core, ids);
         }
-    }
-    class TransitionBuffer$2 extends TransitionBufferBase {
+    };
+    let TransitionBuffer$2 = class TransitionBuffer extends TransitionBufferBase {
         constructor(core, ids) {
             super(core, ids, Buffer$2, Palette$2, Atlas$2);
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -15454,6 +15648,15 @@ f 5/6/6 1/12/6 8/11/6`;
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
+    var __awaiter$3 = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+        function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+        return new (P || (P = Promise))(function (resolve, reject) {
+            function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+            function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+            step((generator = generator.apply(thisArg, _arguments || [])).next());
+        });
+    };
     class RendererConfig {
         reset() { }
     }
@@ -15725,7 +15928,9 @@ f 5/6/6 1/12/6 8/11/6`;
                 }
             }
         }
-        render(elapsedTime, xrFrame) { }
+        render(elapsedTime, xrFrame) {
+            return __awaiter$3(this, void 0, void 0, function* () { });
+        }
         prepare(xrFrame) { }
         initializeWebXR(session) {
             return null;
@@ -15736,7 +15941,7 @@ f 5/6/6 1/12/6 8/11/6`;
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class Quad$1 {
+    let Quad$1 = class Quad {
         get isInitialized() { return this._isInitialized; }
         get vertexBuffer() { return this._vertexBuffer; }
         get indexBuffer() { return this._indexBuffer; }
@@ -15756,13 +15961,13 @@ f 5/6/6 1/12/6 8/11/6`;
             this._indexCount = indices.length;
             this._isInitialized = true;
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class Atlas$1 extends AtlasBase {
+    let Atlas$1 = class Atlas extends AtlasBase {
         get texture() { return this._texture; }
         get defaultTexture() { return this._defaultTexture; }
         initializeContext(core, gl) {
@@ -15785,13 +15990,13 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._texture = null;
             }
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class Palette$1 extends PaletteBase {
+    let Palette$1 = class Palette extends PaletteBase {
         get texture() { return this._texture; }
         get defaultTexture() { return this._defaultTexture; }
         initializeContext(core, gl) {
@@ -15818,13 +16023,13 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._texture = null;
             }
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class Buffer$1 extends BufferBase {
+    let Buffer$1 = class Buffer extends BufferBase {
         get vertexBuffer() { return this._vertexBuffer; }
         initializeContext(gl) {
             this._gl = gl;
@@ -15841,8 +16046,8 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._core.log.write(LogLevel.info, `buffer updated ${this._length} ${Math.round(window.performance.now() - start)}ms`);
             }
         }
-    }
-    class TransitionBuffer$1 extends TransitionBufferBase {
+    };
+    let TransitionBuffer$1 = class TransitionBuffer extends TransitionBufferBase {
         constructor(core, ids) {
             super(core, ids, Buffer$1, Palette$1, Atlas$1);
         }
@@ -15855,13 +16060,13 @@ f 5/6/6 1/12/6 8/11/6`;
             this._atlas2.initializeContext(this._core, gl);
             this._isInitialized = true;
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class Config$1 extends RendererConfig {
+    let Config$1 = class Config extends RendererConfig {
         constructor() {
             super();
             this.reset();
@@ -15870,6 +16075,7 @@ f 5/6/6 1/12/6 8/11/6`;
             this.specularIntensity = 0.15;
             this.specularPower = 150;
             this.lightPosition = fromValues$3(-0.5, 0.5, 0);
+            this.ambient = 0.01;
             const _quat1 = create$1();
             const _quat2 = create$1();
             let angle = AngleHelper.degreesToRadians(15);
@@ -15885,13 +16091,13 @@ f 5/6/6 1/12/6 8/11/6`;
             normalize$3(this.halfAngle, this.halfAngle);
             this.isFxaaEnabled = false;
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class Resources$1 {
+    let Resources$1 = class Resources {
         bindFramebuffer(framebuffer) {
             if (this.framebuffer != framebuffer) {
                 this.framebuffer = framebuffer;
@@ -15904,9 +16110,10 @@ f 5/6/6 1/12/6 8/11/6`;
             this.ANGLE_instanced_arrays = gl.getExtension("ANGLE_instanced_arrays");
             this.OES_standard_derivatives = gl.getExtension("OES_standard_derivatives");
             this.EXT_frag_depth = gl.getExtension("EXT_frag_depth");
+            this.OES_element_index_uint = gl.getExtension("OES_element_index_uint");
             this.WEBGL_lose_context = gl.getExtension("WEBGL_lose_context");
         }
-    }
+    };
     Resources$1.glsl = {
         "anaglyph.fragment.fx": "#version 100\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nuniform vec4 uViewport;\nuniform sampler2D uSampler1;\nuniform sampler2D uSampler2;\nconst vec3 LEFT_MASK = vec3(1.0, 0.0, 0.0);\nconst vec3 RIGHT_MASK = vec3(0.0, 1.0, 1.0);\nvoid main() {\nvec2 texCoords = (gl_FragCoord.xy - uViewport.xy) / uViewport.zw;\nvec3 color = LEFT_MASK * dot(texture2D(uSampler1, texCoords).rgb, LUMINANCE);\ncolor += RIGHT_MASK * dot(texture2D(uSampler2, texCoords).rgb, LUMINANCE);\ngl_FragColor = vec4(color, 1.0);\n}\n",
         "color.fragment.fx": "#version 100\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec3 vColor;\nvoid main(void)\n{\ngl_FragColor = vec4(pow(vColor, GAMMA), 1.0);\n}\n",
@@ -15922,20 +16129,20 @@ f 5/6/6 1/12/6 8/11/6`;
         "simple.vertex.fx": "#version 100\nattribute vec3 aPosition;\nvoid main(void) {\ngl_Position = vec4(aPosition, 1.0);\n}\n",
         "texture.fragment.fx": "#version 100\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\nuniform sampler2D uSampler;\nuniform bool uPick;\nvarying mediump vec2 vTexCoord;\nvoid main(void)\n{\nif (uPick) {\ngl_FragColor = vec4(0.0);\n}\nelse {\ngl_FragColor = vec4(texture2D(uSampler, vTexCoord).xyz, 1.0);\n}\n}\n",
         "texture.vertex.fx": "#version 100\nattribute vec3 aPosition;\nattribute mediump vec3 aNormal;\nattribute mediump vec2 aTexCoord;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nvarying mediump vec3 vNormal;\nvarying mediump vec2 vTexCoord;\nvoid main(void) {\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvNormal = normalize((mvMatrix * vec4(aNormal, 0.0)).xyz);\ngl_Position = uPMatrix * mvMatrix * vec4(aPosition, 1.0);\nvTexCoord = aTexCoord;\n}\n",
-        "unitblock.fragment.fx": "#version 100\n#define Derivatives\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\n#ifdef Derivatives\nvarying vec3 vViewPosition;\n#endif\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\n#ifdef Derivatives\n#extension GL_OES_standard_derivatives : enable\n#endif\nvoid main(void)\n{\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat ambient = 0.01;\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uActiveColor, vActive);\ncolor = mix(color, uActiveColor, vActive);\npreviousColor = mix(previousColor, uHoverColor, vHover);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nfloat diffuse, specular;\n#ifdef Derivatives\nvec3 normal = normalize(cross(dFdx(vViewPosition), dFdy(vViewPosition)));\ndiffuse = dot(uDirectionToLight, normal);\nspecular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\n#else\ndiffuse = 1.0;\nspecular = 0.0;\n#endif\ncolor *= (ambient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n",
+        "unitblock.fragment.fx": "#version 100\n#define Derivatives\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\n#ifdef Derivatives\nvarying vec3 vViewPosition;\n#endif\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform float uAmbient;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\n#ifdef Derivatives\n#extension GL_OES_standard_derivatives : enable\n#endif\nvoid main(void)\n{\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uActiveColor, vActive);\ncolor = mix(color, uActiveColor, vActive);\npreviousColor = mix(previousColor, uHoverColor, vHover);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nfloat diffuse, specular;\n#ifdef Derivatives\nvec3 normal = normalize(cross(dFdx(vViewPosition), dFdy(vViewPosition)));\ndiffuse = clamp(dot(uDirectionToLight, normal), 0.0, 1.0);\nspecular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\n#else\ndiffuse = 1.0;\nspecular = 0.0;\n#endif\ncolor *= (uAmbient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n",
         "unitblock.vertex.fx": "#version 100\n#include \"quat.include.fx\"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute mediump vec4 aRotation;\nattribute mediump vec4 aPreviousRotation;\nattribute lowp vec2 aColor;\nattribute lowp vec2 aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute vec2 aOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\n#define Derivatives\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\n#ifdef Derivatives\nvarying vec3 vViewPosition;\n#endif\nvoid main(void)\n{\nif (aOrder.x < uOrderFrom || aOrder.x > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\ngl_Position = vec4(0.0);\n#ifdef Derivatives\nvViewPosition = vec3(0.0);\n#endif\n}\nelse\n{\nvIdColor = aIdColor;\nfloat staggerOrder = aOrder.y;\nfloat startTime = staggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvec3 position = aPosition * scale;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\n}\nposition += mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\n#ifdef Derivatives\nvec4 viewPosition = mvMatrix * vec4(position, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\n#else\ngl_Position = uPMatrix * mvMatrix * vec4(position, 1.0);\n#endif\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\n}\n}\n",
-        "unitcylinder.fragment.fx": "#version 100\n#define FragDepth\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec4 vCircle1;\nvarying vec4 vCircle2;\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\n#ifdef FragDepth\n#extension GL_EXT_frag_depth : enable\n#endif\nfloat dot2(in vec2 v) { return dot(v, v); }\nfloat dot2(in vec3 v) { return dot(v, v); }\nvec4 iCappedCone(in vec3 ro, in vec3 rd,\nin vec3 pa, in vec3 pb,\nin float ra, in float rb)\n{\nvec3 ba = pb - pa;\nvec3 oa = ro - pa;\nvec3 ob = ro - pb;\nfloat m0 = dot(ba, ba);\nfloat m1 = dot(oa, ba);\nfloat m2 = dot(ob, ba);\nfloat m3 = dot(rd, ba);\nif (m1 < 0.0) { if (dot2(oa * m3 - rd * m1) < (ra * ra * m3 * m3)) return vec4(-m1 / m3, -ba * inversesqrt(m0)); }\nelse if (m2 > 0.0) { if (dot2(ob * m3 - rd * m2) < (rb * rb * m3 * m3)) return vec4(-m2 / m3, ba * inversesqrt(m0)); }\nfloat m4 = dot(rd, oa);\nfloat m5 = dot(oa, oa);\nfloat rr = ra - rb;\nfloat hy = m0 + rr * rr;\nfloat k2 = m0 * m0 - m3 * m3 * hy;\nfloat k1 = m0 * m0 * m4 - m1 * m3 * hy + m0 * ra * (rr * m3 * 1.0);\nfloat k0 = m0 * m0 * m5 - m1 * m1 * hy + m0 * ra * (rr * m1 * 2.0 - m0 * ra);\nfloat h = k1 * k1 - k2 * k0;\nif (h < 0.0) return vec4(-1.0);\nfloat t = (-k1 - sqrt(h)) / k2;\nfloat y = m1 + t * m3;\nif (y > 0.0 && y < m0)\n{\nreturn vec4(t, normalize(m0 * (m0 * (oa + t * rd) + rr * ba * ra) - ba * hy * y));\n}\nreturn vec4(-1.0);\n}\nvec4 iRoundedCone(in vec3 ro, in vec3 rd,\nin vec3 pa, in vec3 pb,\nin float ra, in float rb)\n{\nvec3 ba = pb - pa;\nvec3 oa = ro - pa;\nvec3 ob = ro - pb;\nfloat rr = ra - rb;\nfloat m0 = dot(ba, ba);\nfloat m1 = dot(ba, oa);\nfloat m2 = dot(ba, rd);\nfloat m3 = dot(rd, oa);\nfloat m5 = dot(oa, oa);\nfloat m6 = dot(ob, rd);\nfloat m7 = dot(ob, ob);\nfloat d2 = m0 - rr * rr;\nfloat k2 = d2 - m2 * m2;\nfloat k1 = d2 * m3 - m1 * m2 + m2 * rr * ra;\nfloat k0 = d2 * m5 - m1 * m1 + m1 * rr * ra * 2.0 - m0 * ra * ra;\nfloat h = k1 * k1 - k0 * k2;\nif (h < 0.0) return vec4(-1.0);\nfloat t = (-sqrt(h) - k1) / k2;\nfloat y = m1 - ra * rr + t * m2;\nif (y > 0.0 && y < d2)\n{\nreturn vec4(t, normalize(d2 * (oa + t * rd) - ba * y));\n}\nfloat h1 = m3 * m3 - m5 + ra * ra;\nfloat h2 = m6 * m6 - m7 + rb * rb;\nif (max(h1, h2) < 0.0) return vec4(-1.0);\nvec4 r = vec4(1e20);\nif (h1 > 0.0)\n{\nt = -m3 - sqrt(h1);\nr = vec4(t, (oa + t * rd) / ra);\n}\nif (h2 > 0.0)\n{\nt = -m6 - sqrt(h2);\nif (t < r.x)\nr = vec4(t, (ob + t * rd) / rb);\n}\nreturn r;\n}\nvoid main(void)\n{\nvec3 rd = normalize(vViewPosition);\nvec3 ro = vec3(0.0);\nvec4 tnor = iCappedCone(ro, rd, vCircle1.xyz, vCircle2.xyz, vCircle1.w, vCircle2.w);\nfloat t = tnor.x;\nif (t < 0.0)\n{\ndiscard;\n}\nelse\n{\nvec3 viewPosition = rd * t;\n#ifdef FragDepth\nfloat ndcDepth = DEPTH_A + DEPTH_B / viewPosition.z;\ngl_FragDepthEXT = ndcDepth * 0.5 + 0.5;\n#endif\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat ambient = 0.01;\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uActiveColor, vActive);\ncolor = mix(color, uActiveColor, vActive);\npreviousColor = mix(previousColor, uHoverColor, vHover);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nvec3 normal = tnor.yzw;\nfloat diffuse = dot(uDirectionToLight, normal);\nfloat specular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\ncolor *= (ambient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n}\n",
+        "unitcylinder.fragment.fx": "#version 100\n#define FragDepth\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec4 vCircle1;\nvarying vec4 vCircle2;\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform float uAmbient;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\n#ifdef FragDepth\n#extension GL_EXT_frag_depth : enable\n#endif\nfloat dot2(in vec2 v) { return dot(v, v); }\nfloat dot2(in vec3 v) { return dot(v, v); }\nvec4 iCappedCone(in vec3 ro, in vec3 rd,\nin vec3 pa, in vec3 pb,\nin float ra, in float rb)\n{\nvec3 ba = pb - pa;\nvec3 oa = ro - pa;\nvec3 ob = ro - pb;\nfloat m0 = dot(ba, ba);\nfloat m1 = dot(oa, ba);\nfloat m2 = dot(ob, ba);\nfloat m3 = dot(rd, ba);\nif (m1 < 0.0) { if (dot2(oa * m3 - rd * m1) < (ra * ra * m3 * m3)) return vec4(-m1 / m3, -ba * inversesqrt(m0)); }\nelse if (m2 > 0.0) { if (dot2(ob * m3 - rd * m2) < (rb * rb * m3 * m3)) return vec4(-m2 / m3, ba * inversesqrt(m0)); }\nfloat m4 = dot(rd, oa);\nfloat m5 = dot(oa, oa);\nfloat rr = ra - rb;\nfloat hy = m0 + rr * rr;\nfloat k2 = m0 * m0 - m3 * m3 * hy;\nfloat k1 = m0 * m0 * m4 - m1 * m3 * hy + m0 * ra * (rr * m3 * 1.0);\nfloat k0 = m0 * m0 * m5 - m1 * m1 * hy + m0 * ra * (rr * m1 * 2.0 - m0 * ra);\nfloat h = k1 * k1 - k2 * k0;\nif (h < 0.0) return vec4(-1.0);\nfloat t = (-k1 - sqrt(h)) / k2;\nfloat y = m1 + t * m3;\nif (y > 0.0 && y < m0)\n{\nreturn vec4(t, normalize(m0 * (m0 * (oa + t * rd) + rr * ba * ra) - ba * hy * y));\n}\nreturn vec4(-1.0);\n}\nvec4 iRoundedCone(in vec3 ro, in vec3 rd,\nin vec3 pa, in vec3 pb,\nin float ra, in float rb)\n{\nvec3 ba = pb - pa;\nvec3 oa = ro - pa;\nvec3 ob = ro - pb;\nfloat rr = ra - rb;\nfloat m0 = dot(ba, ba);\nfloat m1 = dot(ba, oa);\nfloat m2 = dot(ba, rd);\nfloat m3 = dot(rd, oa);\nfloat m5 = dot(oa, oa);\nfloat m6 = dot(ob, rd);\nfloat m7 = dot(ob, ob);\nfloat d2 = m0 - rr * rr;\nfloat k2 = d2 - m2 * m2;\nfloat k1 = d2 * m3 - m1 * m2 + m2 * rr * ra;\nfloat k0 = d2 * m5 - m1 * m1 + m1 * rr * ra * 2.0 - m0 * ra * ra;\nfloat h = k1 * k1 - k0 * k2;\nif (h < 0.0) return vec4(-1.0);\nfloat t = (-sqrt(h) - k1) / k2;\nfloat y = m1 - ra * rr + t * m2;\nif (y > 0.0 && y < d2)\n{\nreturn vec4(t, normalize(d2 * (oa + t * rd) - ba * y));\n}\nfloat h1 = m3 * m3 - m5 + ra * ra;\nfloat h2 = m6 * m6 - m7 + rb * rb;\nif (max(h1, h2) < 0.0) return vec4(-1.0);\nvec4 r = vec4(1e20);\nif (h1 > 0.0)\n{\nt = -m3 - sqrt(h1);\nr = vec4(t, (oa + t * rd) / ra);\n}\nif (h2 > 0.0)\n{\nt = -m6 - sqrt(h2);\nif (t < r.x)\nr = vec4(t, (ob + t * rd) / rb);\n}\nreturn r;\n}\nvoid main(void)\n{\nvec3 rd = normalize(vViewPosition);\nvec3 ro = vec3(0.0);\nvec4 tnor = iCappedCone(ro, rd, vCircle1.xyz, vCircle2.xyz, vCircle1.w, vCircle2.w);\nfloat t = tnor.x;\nif (t < 0.0)\n{\ndiscard;\n}\nelse\n{\nvec3 viewPosition = rd * t;\n#ifdef FragDepth\nfloat ndcDepth = DEPTH_A + DEPTH_B / viewPosition.z;\ngl_FragDepthEXT = ndcDepth * 0.5 + 0.5;\n#endif\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uActiveColor, vActive);\ncolor = mix(color, uActiveColor, vActive);\npreviousColor = mix(previousColor, uHoverColor, vHover);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nvec3 normal = tnor.yzw;\nfloat diffuse = clamp(dot(uDirectionToLight, normal), 0.0, 1.0);\nfloat specular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\ncolor *= (uAmbient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n}\n",
         "unitcylinder.vertex.fx": "#version 100\n#include \"common.include.fx\"\n#include \"quat.include.fx\"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute mediump vec4 aRotation;\nattribute mediump vec4 aPreviousRotation;\nattribute lowp vec2 aColor;\nattribute lowp vec2 aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute vec2 aOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nuniform vec3 uIdentityRotation;\n#define Derivatives\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec4 vCircle1;\nvarying vec4 vCircle2;\nvoid main(void)\n{\nif (aOrder.x < uOrderFrom || aOrder.x > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvViewPosition = vec3(0.0);\nvCircle1 = vec4(0.0);\nvCircle2 = vec4(0.0);\ngl_Position = vec4(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nfloat staggerOrder = aOrder.y;\nfloat startTime = staggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 translation = mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvec3 viewCenter = (mvMatrix * vec4(translation, 1.0)).xyz;\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvec3 position = aPosition;\nposition.xz *= max(scale.x, scale.z);\nposition.y *= scale.y;\nvec3 direction = IDENTITY_ROTATION;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\ndirection = rotate(direction, quat);\n}\nvec3 viewDirection = (mvMatrix * vec4(direction, 0.0)).xyz;\nvec3 h = viewDirection * scale.y * 0.5;\nfloat r1 = length(viewDirection) * 0.5;\nfloat r2 = r1 * scale.z;\nr1 *= scale.x;\nvCircle1 = vec4(viewCenter - h, r1);\nvCircle2 = vec4(viewCenter + h, r2);\nvec4 viewPosition = mvMatrix * vec4(position + translation, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\n}\n}\n",
-        "unithexprism.fragment.fx": "#version 100\n#define FragDepth\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvarying float vRadius;\nvarying float vHeight;\nvarying float vScaling;\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\nuniform mat4 uVMatrix;\n#ifdef FragDepth\n#extension GL_EXT_frag_depth : enable\n#endif\nvec4 iHexPrism( in vec3 ro, in vec3 rd, in float ra, in float he )\n{\nconst vec3 n1 = vec3( 1.0,0.0,0.0);\nconst vec3 n2 = vec3( 0.5,0.0,ROOT_THREE_OVER_TWO);\nconst vec3 n3 = vec3(-0.5,0.0,ROOT_THREE_OVER_TWO);\nconst vec3 n4 = vec3( 0.0,1.0,0.0);\nvec3 t1 = vec3((vec2(ra,-ra)-dot(ro,n1))/dot(rd,n1), 1.0);\nvec3 t2 = vec3((vec2(ra,-ra)-dot(ro,n2))/dot(rd,n2), 1.0);\nvec3 t3 = vec3((vec2(ra,-ra)-dot(ro,n3))/dot(rd,n3), 1.0);\nvec3 t4 = vec3((vec2(he,-he)-dot(ro,n4))/dot(rd,n4), 1.0);\nif( t1.y<t1.x ) t1=vec3(t1.yx,-1.0);\nif( t2.y<t2.x ) t2=vec3(t2.yx,-1.0);\nif( t3.y<t3.x ) t3=vec3(t3.yx,-1.0);\nif( t4.y<t4.x ) t4=vec3(t4.yx,-1.0);\nvec4 tN=vec4(t1.x,t1.z*n1);\nif( t2.x>tN.x ) tN=vec4(t2.x,t2.z*n2);\nif( t3.x>tN.x ) tN=vec4(t3.x,t3.z*n3);\nif( t4.x>tN.x ) tN=vec4(t4.x,t4.z*n4);\nfloat tF = min(min(t1.y,t2.y),min(t3.y,t4.y));\nif( tN.x>tF || tF<0.0) return vec4(-1.0);\nreturn tN;\n}\nvoid main(void)\n{\nvec3 rd = normalize(vViewPosition);\nvec3 ro = -vViewCenter;\nmat3 rot = mat3(uVMatrix);\nvec3 rdd = rd * rot;\nvec3 roo = ro * rot;\nvec4 tnor = iHexPrism(roo, rdd, vRadius * vScaling, vHeight * vScaling);\nfloat t = tnor.x;\nif (t < 0.0)\n{\ndiscard;\n}\nelse\n{\nvec3 viewPosition = rd * t;\n#ifdef FragDepth\nfloat ndcDepth = DEPTH_A + DEPTH_B / viewPosition.z;\ngl_FragDepthEXT = ndcDepth * 0.5 + 0.5;\n#endif\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat ambient = 0.01;\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uActiveColor, vActive);\ncolor = mix(color, uActiveColor, vActive);\npreviousColor = mix(previousColor, uHoverColor, vHover);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nvec3 normal = rot * tnor.yzw;\nfloat diffuse = dot(uDirectionToLight, normal);\nfloat specular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\ncolor *= (ambient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n}\n",
+        "unithexprism.fragment.fx": "#version 100\n#define FragDepth\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvarying float vRadius;\nvarying float vHeight;\nvarying float vScaling;\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform float uAmbient;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\nuniform mat4 uVMatrix;\n#ifdef FragDepth\n#extension GL_EXT_frag_depth : enable\n#endif\nvec4 iHexPrism( in vec3 ro, in vec3 rd, in float ra, in float he )\n{\nconst vec3 n1 = vec3( 1.0,0.0,0.0);\nconst vec3 n2 = vec3( 0.5,0.0,ROOT_THREE_OVER_TWO);\nconst vec3 n3 = vec3(-0.5,0.0,ROOT_THREE_OVER_TWO);\nconst vec3 n4 = vec3( 0.0,1.0,0.0);\nvec3 t1 = vec3((vec2(ra,-ra)-dot(ro,n1))/dot(rd,n1), 1.0);\nvec3 t2 = vec3((vec2(ra,-ra)-dot(ro,n2))/dot(rd,n2), 1.0);\nvec3 t3 = vec3((vec2(ra,-ra)-dot(ro,n3))/dot(rd,n3), 1.0);\nvec3 t4 = vec3((vec2(he,-he)-dot(ro,n4))/dot(rd,n4), 1.0);\nif( t1.y<t1.x ) t1=vec3(t1.yx,-1.0);\nif( t2.y<t2.x ) t2=vec3(t2.yx,-1.0);\nif( t3.y<t3.x ) t3=vec3(t3.yx,-1.0);\nif( t4.y<t4.x ) t4=vec3(t4.yx,-1.0);\nvec4 tN=vec4(t1.x,t1.z*n1);\nif( t2.x>tN.x ) tN=vec4(t2.x,t2.z*n2);\nif( t3.x>tN.x ) tN=vec4(t3.x,t3.z*n3);\nif( t4.x>tN.x ) tN=vec4(t4.x,t4.z*n4);\nfloat tF = min(min(t1.y,t2.y),min(t3.y,t4.y));\nif( tN.x>tF || tF<0.0) return vec4(-1.0);\nreturn tN;\n}\nvoid main(void)\n{\nvec3 rd = normalize(vViewPosition);\nvec3 ro = -vViewCenter;\nmat3 rot = mat3(uVMatrix);\nvec3 rdd = rd * rot;\nvec3 roo = ro * rot;\nvec4 tnor = iHexPrism(roo, rdd, vRadius * vScaling, vHeight * vScaling);\nfloat t = tnor.x;\nif (t < 0.0)\n{\ndiscard;\n}\nelse\n{\nvec3 viewPosition = rd * t;\n#ifdef FragDepth\nfloat ndcDepth = DEPTH_A + DEPTH_B / viewPosition.z;\ngl_FragDepthEXT = ndcDepth * 0.5 + 0.5;\n#endif\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uActiveColor, vActive);\ncolor = mix(color, uActiveColor, vActive);\npreviousColor = mix(previousColor, uHoverColor, vHover);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nvec3 normal = rot * tnor.yzw;\nfloat diffuse = clamp(dot(uDirectionToLight, normal), 0.0, 1.0);\nfloat specular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\ncolor *= (uAmbient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n}\n",
         "unithexprism.vertex.fx": "#version 100\n#include \"common.include.fx\"\n#include \"quat.include.fx\"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute mediump vec4 aRotation;\nattribute mediump vec4 aPreviousRotation;\nattribute lowp vec2 aColor;\nattribute lowp vec2 aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute vec2 aOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nuniform vec3 uIdentityRotation;\n#define Derivatives\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvarying float vRadius;\nvarying float vHeight;\nvarying float vScaling;\nvoid main(void)\n{\nif (aOrder.x < uOrderFrom || aOrder.x > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvViewPosition = vec3(0.0);\nvRadius = 0.0;\nvHeight = 0.0;\ngl_Position = vec4(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nfloat staggerOrder = aOrder.y;\nfloat startTime = staggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 translation = mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvViewCenter = (mvMatrix * vec4(translation, 1.0)).xyz;\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvRadius = scale.x * ROOT_THREE_OVER_TWO;\nvHeight = scale.y;\nvec3 position = aPosition;\nposition.y *= scale.y;\nposition.z *= scale.x;\nposition.x *= scale.x * ROOT_THREE_OVER_TWO;\nvec3 direction = IDENTITY_ROTATION;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\ndirection = rotate(direction, quat);\n}\nvec3 viewDirection = (mvMatrix * vec4(direction, 0.0)).xyz;\nvec4 viewPosition = mvMatrix * vec4(position + translation, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\nvScaling = length(uMMatrix[0].xyz) / 2.0;\n}\n}\n",
-        "unitsdf.fragment.fx": "#version 100\n#define Derivatives\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying mediump vec2 vTexCoord;\nvarying mediump vec2 vPreviousTexCoord;\n#ifdef Derivatives\nvarying vec3 vViewPosition;\n#endif\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform sampler2D uSampler1;\nuniform sampler2D uPreviousSampler1;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\nuniform vec3	 uBackgroundColor;\nuniform float 	 uBuffer;\n#ifdef Derivatives\n#extension GL_OES_standard_derivatives : enable\n#endif\nvoid main(void) {\nfloat distance = mix(texture2D(uPreviousSampler1, vPreviousTexCoord).r, texture2D(uSampler1, vTexCoord).r, vAnimation);\nif (distance < uBuffer) {\ndiscard;\n}\nif (uPick) {\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat ambient = 0.01;\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uActiveColor, vActive);\ncolor = mix(color, uActiveColor, vActive);\npreviousColor = mix(previousColor, uHoverColor, vHover);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nfloat diffuse, specular;\n#ifdef Derivatives\nvec3 normal = normalize(cross(dFdx(vViewPosition), dFdy(vViewPosition)));\ndiffuse = dot(uDirectionToLight, normal);\nspecular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\n#else\ndiffuse = 1.0;\nspecular = 0.0;\n#endif\ncolor *= (ambient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\nfloat uGamma = 0.0;\nfloat gamma;\n#ifdef Derivatives\ngamma = fwidth(distance);\n#else\ngamma = uGamma;\n#endif\nfloat value = smoothstep(uBuffer + gamma, uBuffer, distance);\ngl_FragColor = vec4(mix(color, uBackgroundColor, value), 1.0);\n}\n}\n",
+        "unitsdf.fragment.fx": "#version 100\n#define Derivatives\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying mediump vec2 vTexCoord;\nvarying mediump vec2 vPreviousTexCoord;\n#ifdef Derivatives\nvarying vec3 vViewPosition;\n#endif\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform sampler2D uSampler1;\nuniform sampler2D uPreviousSampler1;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform float uAmbient;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\nuniform vec3	 uBackgroundColor;\nuniform float 	 uBuffer;\n#ifdef Derivatives\n#extension GL_OES_standard_derivatives : enable\n#endif\nvoid main(void) {\nfloat distance = mix(texture2D(uPreviousSampler1, vPreviousTexCoord).r, texture2D(uSampler1, vTexCoord).r, vAnimation);\nif (distance < uBuffer) {\ndiscard;\n}\nif (uPick) {\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uActiveColor, vActive);\ncolor = mix(color, uActiveColor, vActive);\npreviousColor = mix(previousColor, uHoverColor, vHover);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nfloat diffuse, specular;\n#ifdef Derivatives\nvec3 normal = normalize(cross(dFdx(vViewPosition), dFdy(vViewPosition)));\ndiffuse = clamp(dot(uDirectionToLight, normal), 0.0, 1.0);\nspecular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\n#else\ndiffuse = 1.0;\nspecular = 0.0;\n#endif\ncolor *= (uAmbient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\nfloat uGamma = 0.0;\nfloat gamma;\n#ifdef Derivatives\ngamma = fwidth(distance);\n#else\ngamma = uGamma;\n#endif\nfloat value = smoothstep(uBuffer + gamma, uBuffer, distance);\ngl_FragColor = vec4(mix(color, uBackgroundColor, value), 1.0);\n}\n}\n",
         "unitsdf.vertex.fx": "#version 100\n#include \"quat.include.fx\"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute mediump vec4 aRotation;\nattribute mediump vec4 aPreviousRotation;\nattribute mediump vec4 aTexCoord;\nattribute mediump vec4 aPreviousTexCoord;\nattribute lowp vec2 aColor;\nattribute lowp vec2 aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute vec2 aOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\n#define Derivatives\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying mediump vec2 vTexCoord;\nvarying mediump vec2 vPreviousTexCoord;\n#ifdef Derivatives\nvarying vec3 vViewPosition;\n#endif\nvoid main(void)\n{\nif (aOrder.x < uOrderFrom || aOrder.x > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\ngl_Position = vec4(0.0);\n#ifdef Derivatives\nvViewPosition = vec3(0.0);\n#endif\n}\nelse\n{\nvIdColor = aIdColor;\nfloat staggerOrder = aOrder.y;\nfloat startTime = staggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nvec3 scale = mix(aPreviousScale, aScale, animation);\nvec3 position = aPosition * scale;\nif (aRotation.w * aPreviousRotation.w != 1.0)\n{\nvec4 quat = slerp(aPreviousRotation, aRotation, animation);\nposition = rotate(position, quat);\n}\nposition += mix(aPreviousTranslation, aTranslation, animation);\nmat4 mvMatrix = uVMatrix * uMMatrix;\n#ifdef Derivatives\nvec4 viewPosition = mvMatrix * vec4(position, 1.0);\nvViewPosition = viewPosition.xyz;\ngl_Position = uPMatrix * viewPosition;\n#else\ngl_Position = uPMatrix * mvMatrix * vec4(position, 1.0);\n#endif\nvVertexColor = aPosition.y < 0.0 ? vec2(aColor.x, aPreviousColor.x) : vec2(aColor.y, aPreviousColor.y);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\nvPreviousTexCoord.x = aPosition.x < 0.0 ? aPreviousTexCoord.x : aPreviousTexCoord.z;\nvPreviousTexCoord.y = aPosition.y > 0.0 ? aPreviousTexCoord.y : aPreviousTexCoord.w;\nvTexCoord.x = aPosition.x < 0.0 ? aTexCoord.x : aTexCoord.z;\nvTexCoord.y = aPosition.y > 0.0 ? aTexCoord.y : aTexCoord.w;\n}\n}\n",
-        "unitsphere.fragment.fx": "#version 100\n#define FragDepth\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvarying mediump float vRadius;\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\n#ifdef FragDepth\n#extension GL_EXT_frag_depth : enable\n#endif\nfloat sphIntersect(in vec3 ro, in vec3 rd, in vec4 sph)\n{\nvec3 oc = ro - sph.xyz;\nfloat b = dot(oc, rd);\nfloat c = dot(oc, oc) - sph.w * sph.w;\nfloat h = b * b - c;\nif (h < 0.0) return -1.0;\nreturn -b - sqrt(h);\n}\nvoid main(void)\n{\nvec3 rd = normalize(vViewPosition);\nvec3 ro = vec3(0.0);\nvec4 s = vec4(vViewCenter, vRadius);\nfloat t = sphIntersect(ro, rd, s);\nif (t < 0.0)\n{\ndiscard;\n}\nelse\n{\nvec3 viewPosition = rd * t;\n#ifdef FragDepth\nfloat ndcDepth = DEPTH_A + DEPTH_B / viewPosition.z;\ngl_FragDepthEXT = ndcDepth * 0.5 + 0.5;\n#endif\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat ambient = 0.01;\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uActiveColor, vActive);\ncolor = mix(color, uActiveColor, vActive);\npreviousColor = mix(previousColor, uHoverColor, vHover);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nvec3 normal = (viewPosition - vViewCenter) / s.w;\nfloat diffuse = dot(uDirectionToLight, normal);\nfloat specular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\ncolor *= (ambient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n}\n",
+        "unitsphere.fragment.fx": "#version 100\n#define FragDepth\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#include \"common.include.fx\"\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvarying mediump float vRadius;\nuniform sampler2D uSampler;\nuniform sampler2D uPreviousSampler;\nuniform bool uPick;\nuniform vec3 uDirectionToLight;\nuniform vec3 uHalfAngle;\nuniform float uSpecularPower;\nuniform float uSpecularIntensity;\nuniform float uAmbient;\nuniform vec3 uHoverColor;\nuniform vec3 uActiveColor;\nuniform vec3 uSelectedColor;\nuniform float uHighlightMode;\n#ifdef FragDepth\n#extension GL_EXT_frag_depth : enable\n#endif\nfloat sphIntersect(in vec3 ro, in vec3 rd, in vec4 sph)\n{\nvec3 oc = ro - sph.xyz;\nfloat b = dot(oc, rd);\nfloat c = dot(oc, oc) - sph.w * sph.w;\nfloat h = b * b - c;\nif (h < 0.0) return -1.0;\nreturn -b - sqrt(h);\n}\nvoid main(void)\n{\nvec3 rd = normalize(vViewPosition);\nvec3 ro = vec3(0.0);\nvec4 s = vec4(vViewCenter, vRadius);\nfloat t = sphIntersect(ro, rd, s);\nif (t < 0.0)\n{\ndiscard;\n}\nelse\n{\nvec3 viewPosition = rd * t;\n#ifdef FragDepth\nfloat ndcDepth = DEPTH_A + DEPTH_B / viewPosition.z;\ngl_FragDepthEXT = ndcDepth * 0.5 + 0.5;\n#endif\nif (uPick)\n{\ngl_FragColor = vIdColor;\n}\nelse\n{\nfloat emissive = 0.0;\nvec3 previousColor = texture2D(uPreviousSampler, vec2(vVertexColor.y, 0.0)).xyz;\nvec3 color = texture2D(uSampler, vec2(vVertexColor.x, 0.0)).xyz;\nif (uHighlightMode < 0.5) {\nemissive = vVertexSelected * 0.5;\nemissive += 1.5 * max(vHover, vActive);\nemissive /= 4.0;\n}\nelse {\npreviousColor = mix(previousColor, vec3(dot(LUMINANCE, previousColor)), max(-vVertexSelected, 0.0));\ncolor = mix(color, vec3(dot(LUMINANCE, color)), max(-vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uSelectedColor, max(vVertexSelected, 0.0));\ncolor = mix(color, uSelectedColor, max(vVertexSelected, 0.0));\npreviousColor = mix(previousColor, uActiveColor, vActive);\ncolor = mix(color, uActiveColor, vActive);\npreviousColor = mix(previousColor, uHoverColor, vHover);\ncolor = mix(color, uHoverColor, vHover);\n}\ncolor = mix(previousColor, color, vAnimation);\nvec3 normal = (viewPosition - vViewCenter) / s.w;\nfloat diffuse = clamp(dot(uDirectionToLight, normal), 0.0, 1.0);\nfloat specular = pow(clamp(dot(normal, uHalfAngle), 0.0, 1.0), uSpecularPower) * uSpecularIntensity;\ncolor *= (uAmbient + diffuse + emissive);\ncolor += specular;\ncolor = clamp(color, 0.0, 1.0);\ncolor = pow(color, GAMMA);\ngl_FragColor = vec4(color, 1.0);\n}\n}\n}\n",
         "unitsphere.vertex.fx": "#version 100\n#include \"common.include.fx\"\nattribute mediump vec3 aPosition;\nattribute vec3 aTranslation;\nattribute vec3 aPreviousTranslation;\nattribute lowp float aColor;\nattribute lowp float aPreviousColor;\nattribute vec3 aScale;\nattribute vec3 aPreviousScale;\nattribute float aId;\nattribute vec2 aOrder;\nattribute lowp float aSelected;\nattribute lowp float aPreviousSelected;\nattribute lowp vec4 aIdColor;\nuniform mat4 uMMatrix;\nuniform mat4 uVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nuniform float uDuration;\nuniform float uOrderFrom;\nuniform float uOrderTo;\nuniform float uHover;\nuniform float uActive;\nvarying lowp vec4 vIdColor;\nvarying lowp vec2 vVertexColor;\nvarying lowp float vVertexSelected;\nvarying highp float vAnimation;\nvarying lowp float vHover;\nvarying lowp float vActive;\nvarying mediump float vRadius;\nvarying vec3 vViewPosition;\nvarying vec3 vViewCenter;\nvoid main(void)\n{\nif (aOrder.x < uOrderFrom || aOrder.x > uOrderTo)\n{\nvIdColor = vec4(0.0);\nvVertexColor = vec2(0.0);\nvVertexSelected = 0.0;\nvAnimation = 0.0;\nvHover = 0.0;\nvActive = 0.0;\nvViewPosition = vec3(0.0);\nvViewCenter = vec3(0.0);\nvRadius = 0.0;\ngl_Position = vec4(0.0);\n}\nelse\n{\nvIdColor = aIdColor;\nfloat staggerOrder = aOrder.y;\nfloat startTime = staggerOrder * (1.0 - uDuration);\nfloat animation = clamp((uTime - startTime) / uDuration, 0.0, 1.0);\nanimation = smoothstep(0.0, 1.0, animation);\nfloat scale = mix(min(aPreviousScale.x, min(aPreviousScale.y, aPreviousScale.z)), min(aScale.x, min(aScale.y, aScale.z)), animation);\nvec4 translation = vec4(mix(aPreviousTranslation, aTranslation, animation), 1.0);\nmat4 mvMatrix = uVMatrix * uMMatrix;\nvViewCenter = (mvMatrix * translation).xyz;\ntranslation.xyz += aPosition * scale;\nvViewPosition = (mvMatrix * translation).xyz;\ngl_Position = uPMatrix * vec4(vViewPosition, 1.0);\nvVertexColor = vec2(aColor, aPreviousColor);\nvVertexSelected = mix(aPreviousSelected, aSelected, animation);\nvAnimation = animation;\nvHover = uHover == aId ? 1.0 : 0.0;\nvActive = uActive == aId ? 1.0 : 0.0;\nvRadius = distance(vViewPosition, vViewCenter) / ROOT_THREE;\n}\n}\n",
         "common.include.fx": "const float NEAR_PLANE = 0.01;\nconst float FAR_PLANE = 100.0;\nconst float DEPTH_A = 1.0002000200020003;\nconst float DEPTH_B = 0.020002000200020003;\nconst vec3 GAMMA = vec3(0.45454545454545453);\nconst vec3 INV_GAMMA = vec3(2.2);\nconst vec3 LUMINANCE = vec3(0.2126, 0.7152, 0.0722);\nconst float PI = 3.1415926538;\nconst float ROOT_TWO = 1.4142135624;\nconst float ROOT_TWO_OVER_TWO = 0.7071067811865476;\nconst float ROOT_THREE = 1.7320508075688772;\nconst float ROOT_THREE_OVER_TWO = 0.8660254037844386;\nconst vec3 IDENTITY_ROTATION = vec3(0.0, 1.0, 0.0);\nmat3 transpose(in mat3 mat) {\nvec3 i0 = mat[0];\nvec3 i1 = mat[1];\nvec3 i2 = mat[2];\nreturn mat3\n(\nvec3(i0.x, i1.x, i2.x),\nvec3(i0.y, i1.y, i2.y),\nvec3(i0.z, i1.z, i2.z)\n);\n}\n",
         "quat.include.fx": "const float EPSILON = 0.000001;\nmat3 fromQuat(in vec4 q) {\nfloat x = q.x;\nfloat y = q.y;\nfloat z = q.z;\nfloat w = q.w;\nfloat x2 = x + x;\nfloat y2 = y + y;\nfloat z2 = z + z;\nfloat xx = x * x2;\nfloat yx = y * x2;\nfloat yy = y * y2;\nfloat zx = z * x2;\nfloat zy = z * y2;\nfloat zz = z * z2;\nfloat wx = w * x2;\nfloat wy = w * y2;\nfloat wz = w * z2;\nmat3 m;\nm[0][0] = 1.0 - yy - zz;\nm[0][1] = yx - wz;\nm[0][2] = zx + wy;\nm[1][0] = yx + wz;\nm[1][1] = 1.0 - xx - zz;\nm[1][2] = zy - wx;\nm[2][0] = zx - wy;\nm[2][1] = zy + wx;\nm[2][2] = 1.0 - xx - yy;\nreturn m;\n}\nvec3 rotate(in vec3 p, in vec4 q) {\nreturn p + 2.0 * cross(q.xyz, cross(q.xyz, p) + q.w * p);\n}\nvec4 slerp(in vec4 a, in vec4 b, in float t) {\nfloat cosom = dot(a, b);\nif (cosom < 0.0) {\ncosom = -cosom;\nb = -b;\n}\nfloat scale0, scale1;\nif (1.0 - cosom > EPSILON) {\nfloat omega = acos(cosom);\nfloat sinom = sin(omega);\nscale0 = sin((1.0 - t) * omega) / sinom;\nscale1 = sin(t * omega) / sinom;\n}\nelse {\nscale0 = 1.0 - t;\nscale1 = t;\n}\nreturn vec4(scale0 * a + scale1 * b);\n}\n",
     };
-    class ShaderBase$1 {
+    let ShaderBase$1 = class ShaderBase {
         get isInitialized() { return this._isInitialized; }
         get vertexBuffer() { return this._vertexBuffer; }
         set vertexBuffer(value) {
@@ -16072,13 +16279,13 @@ f 5/6/6 1/12/6 8/11/6`;
                 callback(source);
             }
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class Color$2 extends ShaderBase$1 {
+    class Color extends ShaderBase$1 {
         initializeContext(gl) {
             super.initializeContext(gl);
             if (this._isLoaded) {
@@ -16126,7 +16333,7 @@ f 5/6/6 1/12/6 8/11/6`;
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class Texture$1 extends ShaderBase$1 {
+    let Texture$1 = class Texture extends ShaderBase$1 {
         get texture2D() { return this._texture2D; }
         set texture2D(value) {
             if (this._texture2D != value) {
@@ -16187,13 +16394,13 @@ f 5/6/6 1/12/6 8/11/6`;
             this._gl.activeTexture(this._gl.TEXTURE0);
             this._gl.bindTexture(this._gl.TEXTURE_2D, this._texture2D);
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class Lasso$3 extends ShaderBase$1 {
+    let Lasso$3 = class Lasso extends ShaderBase$1 {
         initializeContext(gl) {
             super.initializeContext(gl);
             if (this._isLoaded) {
@@ -16237,7 +16444,7 @@ f 5/6/6 1/12/6 8/11/6`;
             this._gl.enableVertexAttribArray(this._texCoordAttribute);
             this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, this._indexBuffer);
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -16316,7 +16523,7 @@ f 5/6/6 1/12/6 8/11/6`;
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class SdfText$1 extends ShaderBase$1 {
+    let SdfText$1 = class SdfText extends ShaderBase$1 {
         get texture2D() { return this._texture2D; }
         set texture2D(value) {
             if (this._texture2D != value) {
@@ -16396,13 +16603,13 @@ f 5/6/6 1/12/6 8/11/6`;
             this._gl.activeTexture(this._gl.TEXTURE0);
             this._gl.bindTexture(this._gl.TEXTURE_2D, this._texture2D);
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class PickGrid$1 extends ShaderBase$1 {
+    let PickGrid$1 = class PickGrid extends ShaderBase$1 {
         initializeContext(gl) {
             super.initializeContext(gl);
             if (this._isLoaded) {
@@ -16486,13 +16693,13 @@ f 5/6/6 1/12/6 8/11/6`;
             this._gl.enableVertexAttribArray(this._boundsAttribute);
             this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, this._indexBuffer);
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class UnitShader$1 extends ShaderBase$1 {
+    let UnitShader$1 = class UnitShader extends ShaderBase$1 {
         get paletteTexture() { return this._paletteTexture; }
         set paletteTexture(value) {
             if (this._paletteTexture != value) {
@@ -16569,6 +16776,7 @@ f 5/6/6 1/12/6 8/11/6`;
             this._specularPowerUniform = gl.getUniformLocation(this._program, "uSpecularPower");
             this._specularIntensityUniform = gl.getUniformLocation(this._program, "uSpecularIntensity");
             this._hoverColorUniform = gl.getUniformLocation(this._program, "uHoverColor");
+            this._ambientUniform = gl.getUniformLocation(this._program, "uAmbient");
             this._activeColorUniform = gl.getUniformLocation(this._program, "uActiveColor");
             this._selectedColorUniform = gl.getUniformLocation(this._program, "uSelectedColor");
             this._highlightModeUniform = gl.getUniformLocation(this._program, "uHighlightMode");
@@ -16638,6 +16846,7 @@ f 5/6/6 1/12/6 8/11/6`;
             this._gl.uniform1i(this._sampler0Uniform, 1);
             this._gl.uniform1f(this._specularPowerUniform, this.specularPower);
             this._gl.uniform1f(this._specularIntensityUniform, this.specularIntensity);
+            this._gl.uniform1f(this._ambientUniform, this.ambient);
             this._gl.uniform3fv(this._hoverColorUniform, this.hoverColor);
             this._gl.uniform3fv(this._activeColorUniform, this.activeColor);
             this._gl.uniform3fv(this._selectedColorUniform, this.selectedColor);
@@ -16673,13 +16882,13 @@ f 5/6/6 1/12/6 8/11/6`;
             ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._idAttribute, 0);
             ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._idColorAttribute, 0);
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class UnitBlock$1 extends UnitShader$1 {
+    let UnitBlock$1 = class UnitBlock extends UnitShader$1 {
         initializeContext(gl) {
             super.initializeContext(gl);
             if (this._isLoaded) {
@@ -16730,13 +16939,13 @@ f 5/6/6 1/12/6 8/11/6`;
             ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._rotationAttribute, 0);
             ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousRotationAttribute, 0);
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class UnitSphere$1 extends UnitShader$1 {
+    let UnitSphere$1 = class UnitSphere extends UnitShader$1 {
         initializeContext(gl) {
             super.initializeContext(gl);
             if (this._isLoaded) {
@@ -16772,13 +16981,13 @@ f 5/6/6 1/12/6 8/11/6`;
             ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousColorAttribute, 1);
             this._gl.enableVertexAttribArray(this._previousColorAttribute);
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class UnitCylinder$1 extends UnitShader$1 {
+    let UnitCylinder$1 = class UnitCylinder extends UnitShader$1 {
         initializeContext(gl) {
             super.initializeContext(gl);
             if (this._isLoaded) {
@@ -16828,7 +17037,7 @@ f 5/6/6 1/12/6 8/11/6`;
             ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._rotationAttribute, 0);
             ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousRotationAttribute, 0);
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -16890,7 +17099,7 @@ f 5/6/6 1/12/6 8/11/6`;
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class UnitSdf$1 extends UnitShader$1 {
+    let UnitSdf$1 = class UnitSdf extends UnitShader$1 {
         initializeContext(gl) {
             super.initializeContext(gl);
             if (this._isLoaded) {
@@ -16969,7 +17178,7 @@ f 5/6/6 1/12/6 8/11/6`;
             ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._texCoordAttribute, 0);
             ANGLE_instanced_arrays.vertexAttribDivisorANGLE(this._previousTexCoordAttribute, 0);
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -17087,7 +17296,7 @@ f 5/6/6 1/12/6 8/11/6`;
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class AxesVisualBase$1 {
+    let AxesVisualBase$1 = class AxesVisualBase {
         get isInitialized() { return this._isInitialized; }
         get axes() { return this._axes; }
         constructor(core) {
@@ -17106,13 +17315,13 @@ f 5/6/6 1/12/6 8/11/6`;
         }
         _renderGrid() { }
         _renderText() { }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class Cartesian2dVisual$1 extends AxesVisualBase$1 {
+    let Cartesian2dVisual$1 = class Cartesian2dVisual extends AxesVisualBase$1 {
         get isInitialized() { return this._isInitialized && this._main.gridShader.isInitialized && this._main.sdfTextShader.isInitialized && this._main.fonts[this._axes.font.name].isInitialized; }
         constructor(core, main, cartesian2dAxes) {
             super(core);
@@ -17395,13 +17604,13 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._gl.drawElements(this._gl.TRIANGLES, axes.getGridFaceIndexCount(faceId), this._gl.UNSIGNED_SHORT, axes.getGridFaceIndexOffset(faceId) * 2);
             }
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class Cartesian3dVisual$1 extends AxesVisualBase$1 {
+    let Cartesian3dVisual$1 = class Cartesian3dVisual extends AxesVisualBase$1 {
         get isInitialized() { return this._isInitialized && this._main.gridShader.isInitialized && this._main.sdfTextShader.isInitialized && this._main.fonts[this._axes.font.name].isInitialized; }
         constructor(core, main, cartesian3dAxes) {
             super(core);
@@ -17690,7 +17899,7 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._gl.drawElements(this._gl.TRIANGLES, axes.getGridFaceIndexCount(faceId), this._gl.UNSIGNED_SHORT, axes.getGridFaceIndexOffset(faceId) * 2);
             }
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -17784,7 +17993,7 @@ f 5/6/6 1/12/6 8/11/6`;
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class ImageVisual$1 {
+    let ImageVisual$1 = class ImageVisual {
         get isInitialized() { return this._isInitialized && this._main.textureShader.isInitialized; }
         get image() { return this._image; }
         constructor(core, main, image) {
@@ -17850,13 +18059,13 @@ f 5/6/6 1/12/6 8/11/6`;
                 }
             }
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class LabelVisualBase$1 {
+    let LabelVisualBase$1 = class LabelVisualBase {
         get isInitialized() { return this._isInitialized && this._main.sdfTextShader.isInitialized && this._main.fonts[this._label.font.name].isInitialized; }
         constructor(core, main, label) {
             this._core = core;
@@ -17919,7 +18128,7 @@ f 5/6/6 1/12/6 8/11/6`;
                         shader.vMatrix = this.vMatrices[viewport];
                         shader.pMatrix = this.pMatrices[viewport];
                         shader.applyView();
-                        this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, 0);
+                        this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_INT, 0);
                     }
                     if (this.isPickingEnabled) {
                         shader.isPickShader = true;
@@ -17928,32 +18137,32 @@ f 5/6/6 1/12/6 8/11/6`;
                         shader.applyView();
                         this._main.shaderResources.bindFramebuffer(this.pickFramebuffer);
                         this._gl.viewport(0, 0, this._core.config.pickWidth, this._core.config.pickHeight);
-                        this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_SHORT, 0);
+                        this._gl.drawElements(this._gl.TRIANGLES, indexCount, this._gl.UNSIGNED_INT, 0);
                     }
                 }
             }
         }
-    }
-    class LabelVisual$1 extends LabelVisualBase$1 {
+    };
+    let LabelVisual$1 = class LabelVisual extends LabelVisualBase$1 {
         get label() { return this._label; }
         set text(value) { this._label.text = value; }
         get text() { return this._label.text; }
         constructor(core, main, label) {
             super(core, main, label);
         }
-    }
-    class LabelSetVisual$1 extends LabelVisualBase$1 {
+    };
+    let LabelSetVisual$1 = class LabelSetVisual extends LabelVisualBase$1 {
         get label() { return this._label; }
         constructor(core, main, label) {
             super(core, main, label);
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class FontVisual$1 {
+    let FontVisual$1 = class FontVisual {
         get isInitialized() { return this._isInitialized; }
         get font() { return this._font; }
         constructor(core, font) {
@@ -17975,13 +18184,13 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._core.log.write(LogLevel.info, `${this._font.name} texture updated`);
             }
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class Lasso$2 {
+    let Lasso$2 = class Lasso {
         get isInitialized() { return this._isInitialized; }
         get vertexBuffer() { return this._vertexBuffer; }
         get indexBuffer() { return this._indexBuffer; }
@@ -17998,13 +18207,22 @@ f 5/6/6 1/12/6 8/11/6`;
             this._indexCount = indices.length;
             this._isInitialized = true;
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class Main$1 extends RendererBase {
+    var __awaiter$2 = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+        function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+        return new (P || (P = Promise))(function (resolve, reject) {
+            function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+            function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+            step((generator = generator.apply(thisArg, _arguments || [])).next());
+        });
+    };
+    let Main$1 = class Main extends RendererBase {
         get shaderResources() { return this._shaderResources; }
         get colorShader() { return this._colorShader; }
         get textureShader() { return this._textureShader; }
@@ -18057,7 +18275,7 @@ f 5/6/6 1/12/6 8/11/6`;
         initialize(core) {
             super.initialize(core);
             this._shaderResources = new Resources$1();
-            this._colorShader = new Color$2(this._core, this);
+            this._colorShader = new Color(this._core, this);
             this._textureShader = new Texture$1(this._core, this);
             this._lassoShader = new Lasso$3(this._core, this);
             this._modelShader = new Model(this._core, this);
@@ -18157,7 +18375,13 @@ f 5/6/6 1/12/6 8/11/6`;
         }
         _createContext(canvas) {
             const antialias = this._options ? this._options.antialias === undefined ? true : this._options.antialias : true;
-            return canvas.getContext("webgl", { stencil: true, alpha: false, antialias: antialias });
+            const preserveDrawingBuffer = this._options ? this._options.preserveDrawingBuffer === undefined ? false : this._options.preserveDrawingBuffer : false;
+            return canvas.getContext("webgl", {
+                stencil: true,
+                alpha: true,
+                antialias: antialias,
+                preserveDrawingBuffer: preserveDrawingBuffer,
+            });
         }
         initializeWebXR(session) {
             const promise = new Promise((resolve, reject) => {
@@ -18311,164 +18535,166 @@ f 5/6/6 1/12/6 8/11/6`;
             return this._canvas.toDataURL(mimeType);
         }
         render(elapsedTime, xrFrame) {
-            if (this.depthEnabled) {
-                this._gl.enable(this._gl.DEPTH_TEST);
-            }
-            else {
-                this._gl.disable(this._gl.DEPTH_TEST);
-            }
-            this._gl.enable(this._gl.CULL_FACE);
-            this._gl.disable(this._gl.BLEND);
-            if (this.isPickingEnabled) {
-                this._shaderResources.bindFramebuffer(this._pickFrameBuffer);
-                this._gl.clearColor(0, 0, 0, 0);
-                this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT);
-            }
-            const backgroundColor = this._backgroundColor || this._core.config.backgroundColor;
-            this._gl.clearColor(backgroundColor[0], backgroundColor[1], backgroundColor[2], 1);
-            if (xrFrame) {
-                const glLayer = xrFrame.session.renderState.baseLayer;
-                this._shaderResources.bindFramebuffer(glLayer.framebuffer);
-                this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT);
-            }
-            else if (this._core.config.stereoMode == StereoMode.anaglyph) {
-                for (let i = 0; i < 2; i++) {
-                    this._shaderResources.bindFramebuffer(this.anaglyphFramebuffers[i]);
+            return __awaiter$2(this, void 0, void 0, function* () {
+                if (this.depthEnabled) {
+                    this._gl.enable(this._gl.DEPTH_TEST);
+                }
+                else {
+                    this._gl.disable(this._gl.DEPTH_TEST);
+                }
+                this._gl.enable(this._gl.CULL_FACE);
+                this._gl.disable(this._gl.BLEND);
+                if (this.isPickingEnabled) {
+                    this._shaderResources.bindFramebuffer(this._pickFrameBuffer);
+                    this._gl.clearColor(0, 0, 0, 0);
                     this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT);
                 }
-                this._shaderResources.bindFramebuffer(null);
-                this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT);
-            }
-            else {
-                this._shaderResources.bindFramebuffer(null);
-                this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT);
-            }
-            if (this._core.config.isDebugVisible) {
-                this._debugAxesVisual.framebuffers = this._framebuffers;
-                this._debugAxesVisual.render(elapsedTime, xrFrame);
-            }
-            const axesVisuals = this.axesVisibility == AxesVisibility.current ? this.currentAxes : this.axesVisibility == AxesVisibility.previous ? this.previousAxes : null;
-            if (axesVisuals) {
-                for (let i = 0; i < axesVisuals.length; i++) {
-                    const axesVisual = axesVisuals[i];
-                    if (axesVisual.isVisible) {
-                        axesVisual.pickedIdColor = this._pickedIdColor;
-                        axesVisual.pickFramebuffer = this._pickFrameBuffer;
-                        axesVisual.framebuffers = this._framebuffers;
-                        axesVisual.render(elapsedTime, xrFrame);
+                const backgroundColor = this._backgroundColor || this._core.config.backgroundColor;
+                this._gl.clearColor(backgroundColor[0], backgroundColor[1], backgroundColor[2], backgroundColor[3]);
+                if (xrFrame) {
+                    const glLayer = xrFrame.session.renderState.baseLayer;
+                    this._shaderResources.bindFramebuffer(glLayer.framebuffer);
+                    this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT);
+                }
+                else if (this._core.config.stereoMode == StereoMode.anaglyph) {
+                    for (let i = 0; i < 2; i++) {
+                        this._shaderResources.bindFramebuffer(this.anaglyphFramebuffers[i]);
+                        this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT);
                     }
+                    this._shaderResources.bindFramebuffer(null);
+                    this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT);
                 }
-            }
-            for (let i = 0; i < this.transitionBuffers.length; i++) {
-                const transitionBuffer = this.transitionBuffers[i];
-                if (transitionBuffer.isVisible) {
-                    this._renderTransitionBuffer(xrFrame, transitionBuffer);
+                else {
+                    this._shaderResources.bindFramebuffer(null);
+                    this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT);
                 }
-            }
-            if (this.areLabelsVisible) {
-                for (let i = 0; i < this.labelSets.length; i++) {
-                    const labelSetVisual = this.labelSets[i];
-                    if (labelSetVisual.isVisible) {
-                        labelSetVisual.pickedIdColor = this._pickedIdColor;
-                        labelSetVisual.pickFramebuffer = this._pickFrameBuffer;
-                        labelSetVisual.framebuffers = this._framebuffers;
-                        labelSetVisual.render(elapsedTime, xrFrame);
-                    }
+                if (this._core.config.isDebugVisible) {
+                    this._debugAxesVisual.framebuffers = this._framebuffers;
+                    this._debugAxesVisual.render(elapsedTime, xrFrame);
                 }
-            }
-            if (this.areImagesVisible) {
-                for (let i = 0; i < this.images.length; i++) {
-                    const imageVisual = this.images[i];
-                    if (imageVisual.isVisible) {
-                        imageVisual.framebuffers = this._framebuffers;
-                        imageVisual.pickFramebuffer = this._pickFrameBuffer;
-                        imageVisual.isPickingEnabled = this.isPickingEnabled;
-                        imageVisual.render(elapsedTime, xrFrame);
-                    }
-                }
-            }
-            for (let i = 0; i < this.controllers.length; i++) {
-                const controllerVisual = this.controllers[i];
-                if (controllerVisual.isVisible) {
-                    controllerVisual.isRayVisible = this.isPickingEnabled;
-                    controllerVisual.framebuffers = this._framebuffers;
-                    controllerVisual.render(elapsedTime, xrFrame);
-                }
-            }
-            if (this.isPickingEnabled) {
-                this._shaderResources.bindFramebuffer(this._pickFrameBuffer);
-                this._gl.readPixels(this._core.config.pickWidth / 2, this._core.config.pickHeight / 2, 1, 1, this._gl.RGBA, this._gl.UNSIGNED_BYTE, this._pickedPixels);
-                this._pickedType = PickHelper.decodeType(this._pickedPixels);
-                set$2(this._pickedIdColor, this._pickedPixels[0] / 0xff, this._pickedPixels[1] / 0xff, this._pickedPixels[2] / 0xff, this._pickedPixels[3] / 0xff);
-                this._pickedId = PickHelper.decodeNumber(this._pickedPixels);
-                if (this._isCapturingPickImage && this.capturePickImageCallback) {
-                    this._isCapturingPickImage = false;
-                    const data = new Uint8ClampedArray(this._core.config.pickWidth * this._core.config.pickHeight * 4);
-                    this._gl.readPixels(0, 0, this._core.config.pickWidth, this._core.config.pickHeight, this._gl.RGBA, this._gl.UNSIGNED_BYTE, data);
-                    for (let i = 0; i < data.length / 4; i++) {
-                        if (data[i * 4 + 3] == PickType.data) {
-                            data[i * 4 + 3] = 255;
-                        }
-                        else {
-                            data[i * 4] = 0;
-                            data[i * 4 + 1] = 0;
-                            data[i * 4 + 2] = 0;
-                            data[i * 4 + 3] = 0;
+                const axesVisuals = this.axesVisibility == AxesVisibility.current ? this.currentAxes : this.axesVisibility == AxesVisibility.previous ? this.previousAxes : null;
+                if (axesVisuals) {
+                    for (let i = 0; i < axesVisuals.length; i++) {
+                        const axesVisual = axesVisuals[i];
+                        if (axesVisual.isVisible) {
+                            axesVisual.pickedIdColor = this._pickedIdColor;
+                            axesVisual.pickFramebuffer = this._pickFrameBuffer;
+                            axesVisual.framebuffers = this._framebuffers;
+                            axesVisual.render(elapsedTime, xrFrame);
                         }
                     }
-                    const length = this._core.config.pickWidth * this._core.config.pickHeight * 4;
-                    const row = this._core.config.pickWidth * 4;
-                    const end = (this._core.config.pickHeight - 1) * row;
-                    const flipped = new Uint8ClampedArray(length);
-                    for (let i = 0; i < length; i += row) {
-                        flipped.set(data.subarray(i, i + row), end - i);
+                }
+                for (let i = 0; i < this.transitionBuffers.length; i++) {
+                    const transitionBuffer = this.transitionBuffers[i];
+                    if (transitionBuffer.isVisible) {
+                        this._renderTransitionBuffer(xrFrame, transitionBuffer);
                     }
-                    this.capturePickImageCallback(flipped, this._core.config.pickWidth, this._core.config.pickHeight);
                 }
-            }
-            else {
-                set$2(this._pickedIdColor, 0, 0, 0, 0);
-                this._pickedId = 0;
-            }
-            if (this.isLassoPicking && this._lassoShader.isInitialized) {
-                this._lassoShader.vertexBuffer = this._lasso.vertexBuffer;
-                this._lassoShader.indexBuffer = this._lasso.indexBuffer;
-                const lassoWidth = this.lassoX1 - this.lassoX0;
-                const lassoHeight = this.lassoY1 - this.lassoY0;
-                this._lassoShader.prepare();
-                this._lassoShader.color = this.lassoColor ? this.lassoColor : this._core.config.lassoColor;
-                this._lassoShader.dashWidth = this.lassoDashWidth ? this.lassoDashWidth : this._core.config.lassoDashWidth;
-                this._lassoShader.apply();
-                const lassoThickness = this.lassoThickness ? this.lassoThickness : this._core.config.lassoThickness;
-                for (let i = 0; i < this._viewportCount; i++) {
-                    const viewportIndex = i + this._viewportOffset;
-                    this._shaderResources.bindFramebuffer(this._framebuffers[viewportIndex]);
-                    const viewport = this._viewports[viewportIndex];
-                    this._gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
-                    this._lassoMMatrix[0] = lassoWidth * 2 / viewport.width;
-                    this._lassoMMatrix[5] = lassoHeight * 2 / viewport.height;
-                    this._lassoMMatrix[10] = 1;
-                    this._lassoMMatrix[12] = ((this.lassoX0 + lassoWidth / 2) / viewport.width) * 2 - 1;
-                    this._lassoMMatrix[13] = 1 - ((this.lassoY0 + lassoHeight / 2) / viewport.height) * 2;
-                    this._lassoShader.mMatrix = this._lassoMMatrix;
-                    set(this._lassoThickness, lassoThickness / lassoWidth, lassoThickness / lassoHeight);
-                    this._lassoShader.thickness = this._lassoThickness;
-                    this._lassoShader.applyView();
-                    this._gl.drawElements(this._gl.TRIANGLES, this._lasso.indexCount, this._gl.UNSIGNED_SHORT, 0);
+                if (this.areLabelsVisible) {
+                    for (let i = 0; i < this.labelSets.length; i++) {
+                        const labelSetVisual = this.labelSets[i];
+                        if (labelSetVisual.isVisible) {
+                            labelSetVisual.pickedIdColor = this._pickedIdColor;
+                            labelSetVisual.pickFramebuffer = this._pickFrameBuffer;
+                            labelSetVisual.framebuffers = this._framebuffers;
+                            labelSetVisual.render(elapsedTime, xrFrame);
+                        }
+                    }
                 }
-            }
-            if (this._core.config.stereoMode == StereoMode.anaglyph && this._anaglyphShader.isInitialized && this._quad.isInitialized) {
-                this._shaderResources.bindFramebuffer(null);
-                this._gl.viewport(this._viewports[0].x, this._viewports[0].y, this._viewports[0].width, this._viewports[0].height);
-                this._anaglyphShader.vertexBuffer = this._quad.vertexBuffer;
-                this._anaglyphShader.indexBuffer = this._quad.indexBuffer;
-                this._anaglyphShader.texture2D1 = this._anaglyphTextures[0];
-                this._anaglyphShader.texture2D2 = this._anaglyphTextures[1];
-                this._anaglyphShader.prepare();
-                this._anaglyphShader.viewport = this._viewports[0];
-                this._anaglyphShader.apply();
-                this._gl.drawElements(this._gl.TRIANGLES, this._quad.indexCount, this._gl.UNSIGNED_SHORT, 0);
-            }
+                if (this.areImagesVisible) {
+                    for (let i = 0; i < this.images.length; i++) {
+                        const imageVisual = this.images[i];
+                        if (imageVisual.isVisible) {
+                            imageVisual.framebuffers = this._framebuffers;
+                            imageVisual.pickFramebuffer = this._pickFrameBuffer;
+                            imageVisual.isPickingEnabled = this.isPickingEnabled;
+                            imageVisual.render(elapsedTime, xrFrame);
+                        }
+                    }
+                }
+                for (let i = 0; i < this.controllers.length; i++) {
+                    const controllerVisual = this.controllers[i];
+                    if (controllerVisual.isVisible) {
+                        controllerVisual.isRayVisible = this.isPickingEnabled;
+                        controllerVisual.framebuffers = this._framebuffers;
+                        controllerVisual.render(elapsedTime, xrFrame);
+                    }
+                }
+                if (this.isPickingEnabled) {
+                    this._shaderResources.bindFramebuffer(this._pickFrameBuffer);
+                    this._gl.readPixels(this._core.config.pickWidth / 2, this._core.config.pickHeight / 2, 1, 1, this._gl.RGBA, this._gl.UNSIGNED_BYTE, this._pickedPixels);
+                    this._pickedType = PickHelper.decodeType(this._pickedPixels);
+                    set$2(this._pickedIdColor, this._pickedPixels[0] / 0xff, this._pickedPixels[1] / 0xff, this._pickedPixels[2] / 0xff, this._pickedPixels[3] / 0xff);
+                    this._pickedId = PickHelper.decodeNumber(this._pickedPixels);
+                    if (this._isCapturingPickImage && this.capturePickImageCallback) {
+                        this._isCapturingPickImage = false;
+                        const data = new Uint8ClampedArray(this._core.config.pickWidth * this._core.config.pickHeight * 4);
+                        this._gl.readPixels(0, 0, this._core.config.pickWidth, this._core.config.pickHeight, this._gl.RGBA, this._gl.UNSIGNED_BYTE, data);
+                        for (let i = 0; i < data.length / 4; i++) {
+                            if (data[i * 4 + 3] == PickType.data) {
+                                data[i * 4 + 3] = 255;
+                            }
+                            else {
+                                data[i * 4] = 0;
+                                data[i * 4 + 1] = 0;
+                                data[i * 4 + 2] = 0;
+                                data[i * 4 + 3] = 0;
+                            }
+                        }
+                        const length = this._core.config.pickWidth * this._core.config.pickHeight * 4;
+                        const row = this._core.config.pickWidth * 4;
+                        const end = (this._core.config.pickHeight - 1) * row;
+                        const flipped = new Uint8ClampedArray(length);
+                        for (let i = 0; i < length; i += row) {
+                            flipped.set(data.subarray(i, i + row), end - i);
+                        }
+                        this.capturePickImageCallback(flipped, this._core.config.pickWidth, this._core.config.pickHeight);
+                    }
+                }
+                else {
+                    set$2(this._pickedIdColor, 0, 0, 0, 0);
+                    this._pickedId = 0;
+                }
+                if (this.isLassoPicking && this._lassoShader.isInitialized) {
+                    this._lassoShader.vertexBuffer = this._lasso.vertexBuffer;
+                    this._lassoShader.indexBuffer = this._lasso.indexBuffer;
+                    const lassoWidth = this.lassoX1 - this.lassoX0;
+                    const lassoHeight = this.lassoY1 - this.lassoY0;
+                    this._lassoShader.prepare();
+                    this._lassoShader.color = this.lassoColor ? this.lassoColor : this._core.config.lassoColor;
+                    this._lassoShader.dashWidth = this.lassoDashWidth ? this.lassoDashWidth : this._core.config.lassoDashWidth;
+                    this._lassoShader.apply();
+                    const lassoThickness = this.lassoThickness ? this.lassoThickness : this._core.config.lassoThickness;
+                    for (let i = 0; i < this._viewportCount; i++) {
+                        const viewportIndex = i + this._viewportOffset;
+                        this._shaderResources.bindFramebuffer(this._framebuffers[viewportIndex]);
+                        const viewport = this._viewports[viewportIndex];
+                        this._gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
+                        this._lassoMMatrix[0] = lassoWidth * 2 / viewport.width;
+                        this._lassoMMatrix[5] = lassoHeight * 2 / viewport.height;
+                        this._lassoMMatrix[10] = 1;
+                        this._lassoMMatrix[12] = ((this.lassoX0 + lassoWidth / 2) / viewport.width) * 2 - 1;
+                        this._lassoMMatrix[13] = 1 - ((this.lassoY0 + lassoHeight / 2) / viewport.height) * 2;
+                        this._lassoShader.mMatrix = this._lassoMMatrix;
+                        set(this._lassoThickness, lassoThickness / lassoWidth, lassoThickness / lassoHeight);
+                        this._lassoShader.thickness = this._lassoThickness;
+                        this._lassoShader.applyView();
+                        this._gl.drawElements(this._gl.TRIANGLES, this._lasso.indexCount, this._gl.UNSIGNED_SHORT, 0);
+                    }
+                }
+                if (this._core.config.stereoMode == StereoMode.anaglyph && this._anaglyphShader.isInitialized && this._quad.isInitialized) {
+                    this._shaderResources.bindFramebuffer(null);
+                    this._gl.viewport(this._viewports[0].x, this._viewports[0].y, this._viewports[0].width, this._viewports[0].height);
+                    this._anaglyphShader.vertexBuffer = this._quad.vertexBuffer;
+                    this._anaglyphShader.indexBuffer = this._quad.indexBuffer;
+                    this._anaglyphShader.texture2D1 = this._anaglyphTextures[0];
+                    this._anaglyphShader.texture2D2 = this._anaglyphTextures[1];
+                    this._anaglyphShader.prepare();
+                    this._anaglyphShader.viewport = this._viewports[0];
+                    this._anaglyphShader.apply();
+                    this._gl.drawElements(this._gl.TRIANGLES, this._quad.indexCount, this._gl.UNSIGNED_SHORT, 0);
+                }
+            });
         }
         _renderTransitionBuffer(xrFrame, transitionBuffer) {
             const currentBuffer = transitionBuffer.currentBuffer;
@@ -18481,7 +18707,7 @@ f 5/6/6 1/12/6 8/11/6`;
             const id = currentBuffer.lookup[transitionBuffer.pickIdLookup[this._pickedId]];
             const hoverId = id > -1 ? UnitVertex.getIdHover(currentBuffer.dataView, id) : -1;
             const activeId = transitionBuffer.activeId;
-            if (this._blockShader.isInitialized && (unitType == UnitType.block || unitType == UnitType.blockSdf)) {
+            if (this._blockShader.isInitialized && (unitType == UnitType.block || unitType == UnitType.blockSdf || unitType == UnitType.ringSdf)) {
                 this._blockShader.instanceBuffer = currentBuffer.vertexBuffer;
                 this._blockShader.previousInstanceBuffer = previousBuffer.vertexBuffer;
                 this._blockShader.paletteTexture = currentPalette.texture || currentPalette.defaultTexture;
@@ -18500,6 +18726,7 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._blockShader.highlightMode = this._core.config.highlightMode;
                 this._blockShader.specularPower = this._config.specularPower;
                 this._blockShader.specularIntensity = this._config.specularIntensity;
+                this._blockShader.ambient = this._config.ambient;
                 this._blockShader.apply();
                 this._blockShader.isPickShader = false;
                 for (let i = 0; i < this._viewportCount; i++) {
@@ -18542,7 +18769,7 @@ f 5/6/6 1/12/6 8/11/6`;
                     this._shaderResources.ANGLE_instanced_arrays.drawElementsInstancedANGLE(this._gl.TRIANGLE_STRIP, this._blockShader.indexCount, this._gl.UNSIGNED_SHORT, 0, transitionBuffer.length);
                 }
             }
-            else if (this._sphereShader.isInitialized && (unitType == UnitType.sphere || unitType == UnitType.sphereSdf)) {
+            else if (this._sphereShader.isInitialized && (unitType == UnitType.sphere || unitType == UnitType.sphereSdf || unitType == UnitType.disk)) {
                 this._sphereShader.instanceBuffer = currentBuffer.vertexBuffer;
                 this._sphereShader.previousInstanceBuffer = previousBuffer.vertexBuffer;
                 this._sphereShader.paletteTexture = currentPalette.texture || currentPalette.defaultTexture;
@@ -18561,6 +18788,7 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._sphereShader.highlightMode = this._core.config.highlightMode;
                 this._sphereShader.specularPower = this._config.specularPower;
                 this._sphereShader.specularIntensity = this._config.specularIntensity;
+                this._sphereShader.ambient = this._config.ambient;
                 this._sphereShader.apply();
                 this._sphereShader.isPickShader = false;
                 for (let i = 0; i < this._viewportCount; i++) {
@@ -18622,6 +18850,7 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._cylinderShader.highlightMode = this._core.config.highlightMode;
                 this._cylinderShader.specularPower = this._config.specularPower;
                 this._cylinderShader.specularIntensity = this._config.specularIntensity;
+                this._cylinderShader.ambient = this._config.ambient;
                 this._cylinderShader.apply();
                 this._cylinderShader.isPickShader = false;
                 for (let i = 0; i < this._viewportCount; i++) {
@@ -18683,6 +18912,7 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._hexPrismShader.highlightMode = this._core.config.highlightMode;
                 this._hexPrismShader.specularPower = this._config.specularPower;
                 this._hexPrismShader.specularIntensity = this._config.specularIntensity;
+                this._hexPrismShader.ambient = this._config.ambient;
                 this._hexPrismShader.apply();
                 this._hexPrismShader.isPickShader = false;
                 for (let i = 0; i < this._viewportCount; i++) {
@@ -18745,9 +18975,10 @@ f 5/6/6 1/12/6 8/11/6`;
                 this._sdfShader.activeColor = this._core.config.activeColor;
                 this._sdfShader.highlightMode = this._core.config.highlightMode;
                 this._sdfShader.sdfBuffer = (this.sdfBuffer || this._core.config.sdfBuffer) / 0xff;
-                this._sdfShader.sdfBackgroundColor = this.sdfBackgroundColor || this._core.config.backgroundColor;
+                this._sdfShader.sdfBackgroundColor = this.sdfBackgroundColor || fromValues$3(this._core.config.backgroundColor[0], this._core.config.backgroundColor[1], this._core.config.backgroundColor[2]);
                 this._sdfShader.specularPower = this._config.specularPower;
                 this._sdfShader.specularIntensity = this._config.specularIntensity;
+                this._sdfShader.ambient = this._config.ambient;
                 this._sdfShader.apply();
                 this._sdfShader.isPickShader = false;
                 for (let i = 0; i < this._viewportCount; i++) {
@@ -18791,7 +19022,7 @@ f 5/6/6 1/12/6 8/11/6`;
                 }
             }
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -19278,7 +19509,7 @@ f 5/6/6 1/12/6 8/11/6`;
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
-    class Lasso$1 extends ShaderBase {
+    let Lasso$1 = class Lasso extends ShaderBase {
         initializeContext(gl) {
             super.initializeContext(gl);
             if (this._isLoaded) {
@@ -19322,7 +19553,7 @@ f 5/6/6 1/12/6 8/11/6`;
             this._gl.enableVertexAttribArray(this._texCoordAttribute);
             this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, this._indexBuffer);
         }
-    }
+    };
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -21488,6 +21719,15 @@ f 5/6/6 1/12/6 8/11/6`;
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
+    var __awaiter$1 = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+        function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+        return new (P || (P = Promise))(function (resolve, reject) {
+            function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+            function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+            step((generator = generator.apply(thisArg, _arguments || [])).next());
+        });
+    };
     class Main extends RendererBase {
         get shaderResources() { return this._shaderResources; }
         get textureShader() { return this._textureShader; }
@@ -21732,10 +21972,12 @@ f 5/6/6 1/12/6 8/11/6`;
         }
         _createContext(canvas) {
             let supported = false;
+            const preserveDrawingBuffer = this._options ? this._options.preserveDrawingBuffer === undefined ? false : this._options.preserveDrawingBuffer : false;
             const options = {
                 stencil: true,
                 alpha: false,
                 antialias: false,
+                preserveDrawingBuffer: preserveDrawingBuffer,
             };
             const gl = canvas.getContext("webgl2", options);
             if (gl) {
@@ -21861,121 +22103,123 @@ f 5/6/6 1/12/6 8/11/6`;
             }
         }
         render(elapsedTime) {
-            this._gl.enable(this._gl.DEPTH_TEST);
-            this._gl.enable(this._gl.CULL_FACE);
-            this._gl.cullFace(this._gl.BACK);
-            this._gl.disable(this._gl.BLEND);
-            if (this.isPickingEnabled) {
-                this._shaderResources.bindFramebuffer(this._pickFrameBuffer);
-                this._gl.clearColor(0, 0, 0, 0);
-                this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT);
-            }
-            this._shaderResources.bindFramebuffer(this._geometryFrameBuffer);
-            const backgroundColor = this._backgroundColor || this._core.config.backgroundColor;
-            this._gl.clearColor(backgroundColor[0], backgroundColor[1], backgroundColor[2], 1);
-            this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT | this._gl.STENCIL_BUFFER_BIT);
-            if (this.config.isShadowEnabled) {
-                this._shaderResources.bindFramebuffer(this._shadowFrameBuffer);
-                this._gl.clear(this._gl.DEPTH_BUFFER_BIT);
-                perspective(this._shadowPMatrix, AngleHelper.degreesToRadians(30), this._config.shadowWidth / this._config.shadowHeight, this._core.config.nearPlane, this._core.config.farPlane);
-                set$3(this._modelPosition, this.mMatrix[12], this.mMatrix[13], this.mMatrix[14]);
-                fromMat4(this._cameraRotation, this.inverseVMatrices[0]);
-                transformMat3(this._position, this._config.keyLightPosition, this._cameraRotation);
-                add(this._position, this._position, this._modelPosition);
-                lookAt(this._shadowVMatrix, this._position, this._modelPosition, Constants.VECTOR3_UNITY);
-            }
-            for (let i = 0; i < this.transitionBuffers.length; i++) {
-                const transitionBuffer = this.transitionBuffers[i];
-                if (transitionBuffer.isVisible) {
-                    this._renderTransitionBuffer(transitionBuffer);
+            return __awaiter$1(this, void 0, void 0, function* () {
+                this._gl.enable(this._gl.DEPTH_TEST);
+                this._gl.enable(this._gl.CULL_FACE);
+                this._gl.cullFace(this._gl.BACK);
+                this._gl.disable(this._gl.BLEND);
+                if (this.isPickingEnabled) {
+                    this._shaderResources.bindFramebuffer(this._pickFrameBuffer);
+                    this._gl.clearColor(0, 0, 0, 0);
+                    this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT);
                 }
-            }
-            const axesVisuals = this.axesVisibility == AxesVisibility.current ? this.currentAxes : this.axesVisibility == AxesVisibility.previous ? this.previousAxes : null;
-            if (axesVisuals) {
-                for (let i = 0; i < axesVisuals.length; i++) {
-                    const axesVisual = axesVisuals[i];
-                    if (axesVisual.isVisible) {
-                        axesVisual.pickedIdColor = this._pickedIdColor;
-                        axesVisual.pickFramebuffer = this._pickFrameBuffer;
-                        axesVisual.geometryFramebuffer = this._geometryFrameBuffer;
-                        axesVisual.render(elapsedTime);
-                    }
-                }
-            }
-            if (this.areLabelsVisible) {
-                for (let i = 0; i < this.labelSets.length; i++) {
-                    const labelSetVisual = this.labelSets[i];
-                    if (labelSetVisual.isVisible) {
-                        labelSetVisual.pickedIdColor = this._pickedIdColor;
-                        labelSetVisual.pickFramebuffer = this._pickFrameBuffer;
-                        labelSetVisual.geometryFramebuffer = this._geometryFrameBuffer;
-                        labelSetVisual.render(elapsedTime);
-                    }
-                }
-            }
-            if (this.areImagesVisible) {
-                for (let i = 0; i < this.images.length; i++) {
-                    const imageVisual = this.images[i];
-                    if (imageVisual.isVisible) {
-                        imageVisual.geometryFramebuffer = this._geometryFrameBuffer;
-                        imageVisual.render(elapsedTime);
-                    }
-                }
-            }
-            if (this._backgroundShader.isInitialized) {
-                this._backgroundShader.prepare();
-                this._backgroundShader.color = this._core.config.backgroundColor;
-                this._backgroundShader.apply();
                 this._shaderResources.bindFramebuffer(this._geometryFrameBuffer);
-                for (let i = 0; i < this._viewportCount; i++) {
-                    const viewport = i + this._viewportOffset;
-                    this._gl.viewport(this._viewports[viewport].x, this._viewports[viewport].y, this._viewports[viewport].width, this._viewports[viewport].height);
-                    this._gl.drawElements(this._gl.TRIANGLES, this._quad.indexCount, this._gl.UNSIGNED_SHORT, 0);
+                const backgroundColor = this._backgroundColor || this._core.config.backgroundColor;
+                this._gl.clearColor(backgroundColor[0], backgroundColor[1], backgroundColor[2], 1);
+                this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT | this._gl.STENCIL_BUFFER_BIT);
+                if (this.config.isShadowEnabled) {
+                    this._shaderResources.bindFramebuffer(this._shadowFrameBuffer);
+                    this._gl.clear(this._gl.DEPTH_BUFFER_BIT);
+                    perspective(this._shadowPMatrix, AngleHelper.degreesToRadians(30), this._config.shadowWidth / this._config.shadowHeight, this._core.config.nearPlane, this._core.config.farPlane);
+                    set$3(this._modelPosition, this.mMatrix[12], this.mMatrix[13], this.mMatrix[14]);
+                    fromMat4(this._cameraRotation, this.inverseVMatrices[0]);
+                    transformMat3(this._position, this._config.keyLightPosition, this._cameraRotation);
+                    add(this._position, this._position, this._modelPosition);
+                    lookAt(this._shadowVMatrix, this._position, this._modelPosition, Constants.VECTOR3_UNITY);
                 }
-                this._gl.bindVertexArray(null);
-            }
-            if (this.isPickingEnabled) {
-                this._shaderResources.bindFramebuffer(this._pickFrameBuffer);
-                this._gl.readPixels(this._core.config.pickWidth / 2, this._core.config.pickHeight / 2, 1, 1, this._gl.RGBA, this._gl.UNSIGNED_BYTE, this._pickedPixels);
-                this._pickedType = PickHelper.decodeType(this._pickedPixels);
-                set$2(this._pickedIdColor, this._pickedPixels[0] / 0xff, this._pickedPixels[1] / 0xff, this._pickedPixels[2] / 0xff, this._pickedPixels[3] / 0xff);
-                this._pickedId = PickHelper.decodeNumber(this._pickedPixels);
-            }
-            else {
-                set$2(this._pickedIdColor, 0, 0, 0, 0);
-                this._pickedId = 0;
-            }
-            if (this.transitionBuffers.length > 0 && this._quad.isInitialized) {
-                const viewport = this._viewportOffset;
-                this._postProcess(this.vMatrices[viewport], this.inverseVMatrices[viewport], this.pMatrices[viewport], this._viewports[viewport]);
-            }
-            if (this.isLassoPicking && this._lassoShader.isInitialized) {
-                this._lassoShader.vertexBuffer = this._lasso.vertexBuffer;
-                this._lassoShader.indexBuffer = this._lasso.indexBuffer;
-                const lassoWidth = this.lassoX1 - this.lassoX0;
-                const lassoHeight = this.lassoY1 - this.lassoY0;
-                this._lassoShader.prepare();
-                this._lassoShader.color = this.lassoColor ? this.lassoColor : this._core.config.lassoColor;
-                this._lassoShader.dashWidth = this.lassoDashWidth ? this.lassoDashWidth : this._core.config.lassoDashWidth;
-                this._lassoShader.apply();
-                const lassoThickness = this.lassoThickness ? this.lassoThickness : this._core.config.lassoThickness;
-                for (let i = 0; i < this._viewportCount; i++) {
-                    const viewportIndex = i + this._viewportOffset;
-                    this._shaderResources.bindFramebuffer(this._framebuffers[viewportIndex]);
-                    const viewport = this._viewports[viewportIndex];
-                    this._gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
-                    this._lassoMMatrix[0] = lassoWidth * 2 / viewport.width;
-                    this._lassoMMatrix[5] = lassoHeight * 2 / viewport.height;
-                    this._lassoMMatrix[10] = 1;
-                    this._lassoMMatrix[12] = ((this.lassoX0 + lassoWidth / 2) / viewport.width) * 2 - 1;
-                    this._lassoMMatrix[13] = 1 - ((this.lassoY0 + lassoHeight / 2) / viewport.height) * 2;
-                    this._lassoShader.mMatrix = this._lassoMMatrix;
-                    set(this._lassoThickness, lassoThickness / lassoWidth, lassoThickness / lassoHeight);
-                    this._lassoShader.thickness = this._lassoThickness;
-                    this._lassoShader.applyView();
-                    this._gl.drawElements(this._gl.TRIANGLES, this._lasso.indexCount, this._gl.UNSIGNED_SHORT, 0);
+                for (let i = 0; i < this.transitionBuffers.length; i++) {
+                    const transitionBuffer = this.transitionBuffers[i];
+                    if (transitionBuffer.isVisible) {
+                        this._renderTransitionBuffer(transitionBuffer);
+                    }
                 }
-            }
+                const axesVisuals = this.axesVisibility == AxesVisibility.current ? this.currentAxes : this.axesVisibility == AxesVisibility.previous ? this.previousAxes : null;
+                if (axesVisuals) {
+                    for (let i = 0; i < axesVisuals.length; i++) {
+                        const axesVisual = axesVisuals[i];
+                        if (axesVisual.isVisible) {
+                            axesVisual.pickedIdColor = this._pickedIdColor;
+                            axesVisual.pickFramebuffer = this._pickFrameBuffer;
+                            axesVisual.geometryFramebuffer = this._geometryFrameBuffer;
+                            axesVisual.render(elapsedTime);
+                        }
+                    }
+                }
+                if (this.areLabelsVisible) {
+                    for (let i = 0; i < this.labelSets.length; i++) {
+                        const labelSetVisual = this.labelSets[i];
+                        if (labelSetVisual.isVisible) {
+                            labelSetVisual.pickedIdColor = this._pickedIdColor;
+                            labelSetVisual.pickFramebuffer = this._pickFrameBuffer;
+                            labelSetVisual.geometryFramebuffer = this._geometryFrameBuffer;
+                            labelSetVisual.render(elapsedTime);
+                        }
+                    }
+                }
+                if (this.areImagesVisible) {
+                    for (let i = 0; i < this.images.length; i++) {
+                        const imageVisual = this.images[i];
+                        if (imageVisual.isVisible) {
+                            imageVisual.geometryFramebuffer = this._geometryFrameBuffer;
+                            imageVisual.render(elapsedTime);
+                        }
+                    }
+                }
+                if (this._backgroundShader.isInitialized) {
+                    this._backgroundShader.prepare();
+                    this._backgroundShader.color = fromValues$3(this._core.config.backgroundColor[0], this._core.config.backgroundColor[1], this._core.config.backgroundColor[2]);
+                    this._backgroundShader.apply();
+                    this._shaderResources.bindFramebuffer(this._geometryFrameBuffer);
+                    for (let i = 0; i < this._viewportCount; i++) {
+                        const viewport = i + this._viewportOffset;
+                        this._gl.viewport(this._viewports[viewport].x, this._viewports[viewport].y, this._viewports[viewport].width, this._viewports[viewport].height);
+                        this._gl.drawElements(this._gl.TRIANGLES, this._quad.indexCount, this._gl.UNSIGNED_SHORT, 0);
+                    }
+                    this._gl.bindVertexArray(null);
+                }
+                if (this.isPickingEnabled) {
+                    this._shaderResources.bindFramebuffer(this._pickFrameBuffer);
+                    this._gl.readPixels(this._core.config.pickWidth / 2, this._core.config.pickHeight / 2, 1, 1, this._gl.RGBA, this._gl.UNSIGNED_BYTE, this._pickedPixels);
+                    this._pickedType = PickHelper.decodeType(this._pickedPixels);
+                    set$2(this._pickedIdColor, this._pickedPixels[0] / 0xff, this._pickedPixels[1] / 0xff, this._pickedPixels[2] / 0xff, this._pickedPixels[3] / 0xff);
+                    this._pickedId = PickHelper.decodeNumber(this._pickedPixels);
+                }
+                else {
+                    set$2(this._pickedIdColor, 0, 0, 0, 0);
+                    this._pickedId = 0;
+                }
+                if (this.transitionBuffers.length > 0 && this._quad.isInitialized) {
+                    const viewport = this._viewportOffset;
+                    this._postProcess(this.vMatrices[viewport], this.inverseVMatrices[viewport], this.pMatrices[viewport], this._viewports[viewport]);
+                }
+                if (this.isLassoPicking && this._lassoShader.isInitialized) {
+                    this._lassoShader.vertexBuffer = this._lasso.vertexBuffer;
+                    this._lassoShader.indexBuffer = this._lasso.indexBuffer;
+                    const lassoWidth = this.lassoX1 - this.lassoX0;
+                    const lassoHeight = this.lassoY1 - this.lassoY0;
+                    this._lassoShader.prepare();
+                    this._lassoShader.color = this.lassoColor ? this.lassoColor : this._core.config.lassoColor;
+                    this._lassoShader.dashWidth = this.lassoDashWidth ? this.lassoDashWidth : this._core.config.lassoDashWidth;
+                    this._lassoShader.apply();
+                    const lassoThickness = this.lassoThickness ? this.lassoThickness : this._core.config.lassoThickness;
+                    for (let i = 0; i < this._viewportCount; i++) {
+                        const viewportIndex = i + this._viewportOffset;
+                        this._shaderResources.bindFramebuffer(this._framebuffers[viewportIndex]);
+                        const viewport = this._viewports[viewportIndex];
+                        this._gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
+                        this._lassoMMatrix[0] = lassoWidth * 2 / viewport.width;
+                        this._lassoMMatrix[5] = lassoHeight * 2 / viewport.height;
+                        this._lassoMMatrix[10] = 1;
+                        this._lassoMMatrix[12] = ((this.lassoX0 + lassoWidth / 2) / viewport.width) * 2 - 1;
+                        this._lassoMMatrix[13] = 1 - ((this.lassoY0 + lassoHeight / 2) / viewport.height) * 2;
+                        this._lassoShader.mMatrix = this._lassoMMatrix;
+                        set(this._lassoThickness, lassoThickness / lassoWidth, lassoThickness / lassoHeight);
+                        this._lassoShader.thickness = this._lassoThickness;
+                        this._lassoShader.applyView();
+                        this._gl.drawElements(this._gl.TRIANGLES, this._lasso.indexCount, this._gl.UNSIGNED_SHORT, 0);
+                    }
+                }
+            });
         }
         _renderTransitionBuffer(transitionBuffer) {
             const currentBuffer = transitionBuffer.currentBuffer;
@@ -22473,7 +22717,8 @@ f 5/6/6 1/12/6 8/11/6`;
             this.TEXTURE_ID_OFFSET = 12 / 4;
             this.COLOR_OFFSET = 16 / 4;
             this.GLOSSINESS_OFFSET = 28 / 4;
-            this.DENSITY_OFFSET = 32 / 4;
+            this.ID_COLOR_OFFSET = 32 / 4;
+            this.DENSITY_OFFSET = 48 / 4;
         }
         getType(index) {
             return this[MaterialBufferData.SIZE * index + this.TYPE_OFFSET];
@@ -22521,8 +22766,19 @@ f 5/6/6 1/12/6 8/11/6`;
         setDensity(index, value) {
             this[MaterialBufferData.SIZE * index + this.DENSITY_OFFSET] = value;
         }
+        getIdColor(index, value) {
+            const offset = MaterialBufferData.SIZE * index + this.ID_COLOR_OFFSET;
+            set$2(value, this[offset], this[offset + 1], this[offset + 2], this[offset + 3]);
+        }
+        setIdColor(index, value) {
+            const offset = MaterialBufferData.SIZE * index + this.ID_COLOR_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+            this[offset + 2] = value[2];
+            this[offset + 3] = value[3];
+        }
     }
-    MaterialBufferData.SIZE = 48 / 4;
+    MaterialBufferData.SIZE = 64 / 4;
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -22619,16 +22875,23 @@ f 5/6/6 1/12/6 8/11/6`;
             super(count * HittableBufferData.SIZE);
             this.CENTER0_OFFSET = 0 / 4;
             this.TYPE_OFFSET = 12 / 4;
-            this.SIZE_OFFSET = 16 / 4;
+            this.SIZE0_OFFSET = 16 / 4;
             this.MATERIAL_ID_OFFSET = 28 / 4;
-            this.ROTATION_OFFSET = 32 / 4;
-            this.TEXCOORD0_OFFSET = 48 / 4;
-            this.TEXCOORD1_OFFSET = 56 / 4;
-            this.CENTER1_OFFSET = 64 / 4;
-            this.ROUNDING_OFFSET = 76 / 4;
-            this.BOUNDARY_TYPE_OFFSET = 80 / 4;
-            this.TIME0_OFFSET = 84 / 4;
-            this.TIME1_OFFSET = 88 / 4;
+            this.ROTATION0_OFFSET = 32 / 4;
+            this.ROTATION1_OFFSET = 48 / 4;
+            this.TEXCOORD0_OFFSET = 64 / 4;
+            this.TEXCOORD1_OFFSET = 72 / 4;
+            this.CENTER1_OFFSET = 80 / 4;
+            this.ROUNDING_OFFSET = 92 / 4;
+            this.SIZE1_OFFSET = 96 / 4;
+            this.BOUNDARY_TYPE_OFFSET = 108 / 4;
+            this.TIME0_OFFSET = 112 / 4;
+            this.TIME1_OFFSET = 116 / 4;
+            this.TEX_ID_OFFSET = 120 / 4;
+            this.SDF_BUFFER_OFFSET = 124 / 4;
+            this.SDF_BORDER_OFFSET = 128 / 4;
+            this.PARAMETER_1_OFFSET = 132 / 4;
+            this.PARAMETER_2_OFFSET = 136 / 4;
         }
         getType(index) {
             return this[HittableBufferData.SIZE * index + this.TYPE_OFFSET];
@@ -22668,12 +22931,22 @@ f 5/6/6 1/12/6 8/11/6`;
         setTime1(index, value) {
             this[HittableBufferData.SIZE * index + this.TIME1_OFFSET] = value;
         }
-        getSize(index, value) {
-            const offset = HittableBufferData.SIZE * index + this.SIZE_OFFSET;
+        getSize0(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.SIZE0_OFFSET;
             set$3(value, this[offset], this[offset + 1], this[offset + 2]);
         }
-        setSize(index, value) {
-            const offset = HittableBufferData.SIZE * index + this.SIZE_OFFSET;
+        setSize0(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.SIZE0_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+            this[offset + 2] = value[2];
+        }
+        getSize1(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.SIZE1_OFFSET;
+            set$3(value, this[offset], this[offset + 1], this[offset + 2]);
+        }
+        setSize1(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.SIZE1_OFFSET;
             this[offset] = value[0];
             this[offset + 1] = value[1];
             this[offset + 2] = value[2];
@@ -22684,12 +22957,23 @@ f 5/6/6 1/12/6 8/11/6`;
         setMaterialId(index, value) {
             this[HittableBufferData.SIZE * index + this.MATERIAL_ID_OFFSET] = value;
         }
-        getRotation(index, value) {
-            const offset = HittableBufferData.SIZE * index + this.ROTATION_OFFSET;
+        getRotation0(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.ROTATION0_OFFSET;
             set$1(value, this[offset], this[offset + 1], this[offset + 2], this[offset + 3]);
         }
-        setRotation(index, value) {
-            const offset = HittableBufferData.SIZE * index + this.ROTATION_OFFSET;
+        setRotation0(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.ROTATION0_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+            this[offset + 2] = value[2];
+            this[offset + 3] = value[3];
+        }
+        getRotation1(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.ROTATION1_OFFSET;
+            set$1(value, this[offset], this[offset + 1], this[offset + 2], this[offset + 3]);
+        }
+        setRotation1(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.ROTATION1_OFFSET;
             this[offset] = value[0];
             this[offset + 1] = value[1];
             this[offset + 2] = value[2];
@@ -22719,14 +23003,44 @@ f 5/6/6 1/12/6 8/11/6`;
         setRounding(index, value) {
             this[HittableBufferData.SIZE * index + this.ROUNDING_OFFSET] = value;
         }
+        getParameter1(index) {
+            return this[HittableBufferData.SIZE * index + this.PARAMETER_1_OFFSET];
+        }
+        setParameter1(index, value) {
+            this[HittableBufferData.SIZE * index + this.PARAMETER_1_OFFSET] = value;
+        }
+        getParameter2(index) {
+            return this[HittableBufferData.SIZE * index + this.PARAMETER_2_OFFSET];
+        }
+        setParameter2(index, value) {
+            this[HittableBufferData.SIZE * index + this.PARAMETER_2_OFFSET] = value;
+        }
         getBoundaryType(index) {
             return this[HittableBufferData.SIZE * index + this.BOUNDARY_TYPE_OFFSET];
         }
         setBoundaryType(index, value) {
             this[HittableBufferData.SIZE * index + this.BOUNDARY_TYPE_OFFSET] = value;
         }
+        getTexId(index) {
+            return this[HittableBufferData.SIZE * index + this.TEX_ID_OFFSET];
+        }
+        setTexId(index, value) {
+            this[HittableBufferData.SIZE * index + this.TEX_ID_OFFSET] = value;
+        }
+        getSdfBuffer(index) {
+            return this[HittableBufferData.SIZE * index + this.SDF_BUFFER_OFFSET];
+        }
+        setSdfBuffer(index, value) {
+            this[HittableBufferData.SIZE * index + this.SDF_BUFFER_OFFSET] = value;
+        }
+        getSdfBorder(index) {
+            return this[HittableBufferData.SIZE * index + this.SDF_BORDER_OFFSET];
+        }
+        setSdfBorder(index, value) {
+            this[HittableBufferData.SIZE * index + this.SDF_BORDER_OFFSET] = value;
+        }
     }
-    HittableBufferData.SIZE = 96 / 4;
+    HittableBufferData.SIZE = 144 / 4;
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -22748,6 +23062,11 @@ f 5/6/6 1/12/6 8/11/6`;
             this.BACKGROUND_COLOR_OFFSET = 80 / 4;
             this.TIME0_OFFSET = 92 / 4;
             this.TIME1_OFFSET = 96 / 4;
+            this.TILES_X = 100 / 4;
+            this.TILES_Y = 104 / 4;
+            this.TILE_OFFSET_X = 108 / 4;
+            this.TILE_OFFSET_Y = 112 / 4;
+            this.RAYS_PER_FRAME_OFFSET = 116 / 4;
         }
         getWidth() {
             return this[this.WIDTH_OFFSET];
@@ -22766,6 +23085,12 @@ f 5/6/6 1/12/6 8/11/6`;
         }
         setSeed(value) {
             this[this.SEED_OFFSET] = value;
+        }
+        getRaysPerFrame() {
+            return this[this.RAYS_PER_FRAME_OFFSET];
+        }
+        setRaysPerFrame(value) {
+            this[this.RAYS_PER_FRAME_OFFSET] = value;
         }
         getFieldOfView() {
             return this[this.FOV_OFFSET];
@@ -22820,7 +23145,7 @@ f 5/6/6 1/12/6 8/11/6`;
             this[this.LOOKAT_OFFSET + 2] = value[2];
         }
         getBackgroundColor(value) {
-            set$3(value, this[this.BACKGROUND_COLOR_OFFSET], this[this.BACKGROUND_COLOR_OFFSET + 1], this[this.BACKGROUND_COLOR_OFFSET + 2]);
+            set$2(value, this[this.BACKGROUND_COLOR_OFFSET], this[this.BACKGROUND_COLOR_OFFSET + 1], this[this.BACKGROUND_COLOR_OFFSET + 2], 1);
         }
         setBackgroundColor(value) {
             this[this.BACKGROUND_COLOR_OFFSET] = value[0];
@@ -22839,8 +23164,32 @@ f 5/6/6 1/12/6 8/11/6`;
         setTime1(value) {
             this[this.TIME1_OFFSET] = value;
         }
+        getTilesX() {
+            return this[this.TILES_X];
+        }
+        setTilesX(value) {
+            this[this.TILES_X] = value;
+        }
+        getTilesY() {
+            return this[this.TILES_Y];
+        }
+        setTilesY(value) {
+            this[this.TILES_Y] = value;
+        }
+        getTileOffsetX() {
+            return this[this.TILE_OFFSET_X];
+        }
+        setTileOffsetX(value) {
+            this[this.TILE_OFFSET_X] = value;
+        }
+        getTileOffsetY() {
+            return this[this.TILE_OFFSET_Y];
+        }
+        setTileOffsetY(value) {
+            this[this.TILE_OFFSET_Y] = value;
+        }
     }
-    ComputeUniformBufferData.SIZE = 112 / 4;
+    ComputeUniformBufferData.SIZE = 128 / 4;
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -22853,6 +23202,10 @@ f 5/6/6 1/12/6 8/11/6`;
             this.HEIGHT_OFFSET = 4 / 4;
             this.SPP_OFFSET = 8 / 4;
             this.EXPOSURE_OFFSET = 12 / 4;
+            this.MIN_DEPTH_OFFSET = 16 / 4;
+            this.MAX_DEPTH_OFFSET = 20 / 4;
+            this.EDGE_NORMAL_OFFSET = 24 / 4;
+            this.EDGE_DEPTH_OFFSET = 28 / 4;
         }
         getWidth() {
             return this[this.WIDTH_OFFSET];
@@ -22878,8 +23231,32 @@ f 5/6/6 1/12/6 8/11/6`;
         setExposure(value) {
             this[this.EXPOSURE_OFFSET] = value;
         }
+        getMinDepth() {
+            return this[this.MIN_DEPTH_OFFSET];
+        }
+        setMinDepth(value) {
+            this[this.MIN_DEPTH_OFFSET] = value;
+        }
+        getMaxDepth() {
+            return this[this.MAX_DEPTH_OFFSET];
+        }
+        setMaxDepth(value) {
+            this[this.MAX_DEPTH_OFFSET] = value;
+        }
+        getEdgeDepth() {
+            return this[this.EDGE_DEPTH_OFFSET];
+        }
+        setEdgeDepth(value) {
+            this[this.EDGE_DEPTH_OFFSET] = value;
+        }
+        getEdgeNormal() {
+            return this[this.EDGE_NORMAL_OFFSET];
+        }
+        setEdgeNormal(value) {
+            this[this.EDGE_NORMAL_OFFSET] = value;
+        }
     }
-    FullscreenQuadUniformBufferData.SIZE = 16 / 4;
+    FullscreenQuadUniformBufferData.SIZE = 32 / 4;
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -23023,6 +23400,10 @@ f 5/6/6 1/12/6 8/11/6`;
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
+    /**
+     * This file is for external facing export only, do not use this for internal references,
+     * as it may cause circular dependencies in Rollup.
+     */
 
     var types = /*#__PURE__*/Object.freeze({
         __proto__: null,
@@ -23180,7 +23561,7 @@ f 5/6/6 1/12/6 8/11/6`;
 
     var _deepmerge = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        'default': deepmerge_1
+        default: deepmerge_1
     });
 
     /*!
@@ -23232,412 +23613,6 @@ f 5/6/6 1/12/6 8/11/6`;
         return deepmerge.all(objects, { arrayMerge: dontMerge, isMergeableObject: isPlainObject });
     }
 
-    function define$1(constructor, factory, prototype) {
-      constructor.prototype = factory.prototype = prototype;
-      prototype.constructor = constructor;
-    }
-
-    function extend$1(parent, definition) {
-      var prototype = Object.create(parent.prototype);
-      for (var key in definition) prototype[key] = definition[key];
-      return prototype;
-    }
-
-    function Color$1() {}
-
-    var darker$1 = 0.7;
-    var brighter$1 = 1 / darker$1;
-
-    var reI$1 = "\\s*([+-]?\\d+)\\s*",
-        reN$1 = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*",
-        reP$1 = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
-        reHex$1 = /^#([0-9a-f]{3,8})$/,
-        reRgbInteger$1 = new RegExp(`^rgb\\(${reI$1},${reI$1},${reI$1}\\)$`),
-        reRgbPercent$1 = new RegExp(`^rgb\\(${reP$1},${reP$1},${reP$1}\\)$`),
-        reRgbaInteger$1 = new RegExp(`^rgba\\(${reI$1},${reI$1},${reI$1},${reN$1}\\)$`),
-        reRgbaPercent$1 = new RegExp(`^rgba\\(${reP$1},${reP$1},${reP$1},${reN$1}\\)$`),
-        reHslPercent$1 = new RegExp(`^hsl\\(${reN$1},${reP$1},${reP$1}\\)$`),
-        reHslaPercent$1 = new RegExp(`^hsla\\(${reN$1},${reP$1},${reP$1},${reN$1}\\)$`);
-
-    var named$1 = {
-      aliceblue: 0xf0f8ff,
-      antiquewhite: 0xfaebd7,
-      aqua: 0x00ffff,
-      aquamarine: 0x7fffd4,
-      azure: 0xf0ffff,
-      beige: 0xf5f5dc,
-      bisque: 0xffe4c4,
-      black: 0x000000,
-      blanchedalmond: 0xffebcd,
-      blue: 0x0000ff,
-      blueviolet: 0x8a2be2,
-      brown: 0xa52a2a,
-      burlywood: 0xdeb887,
-      cadetblue: 0x5f9ea0,
-      chartreuse: 0x7fff00,
-      chocolate: 0xd2691e,
-      coral: 0xff7f50,
-      cornflowerblue: 0x6495ed,
-      cornsilk: 0xfff8dc,
-      crimson: 0xdc143c,
-      cyan: 0x00ffff,
-      darkblue: 0x00008b,
-      darkcyan: 0x008b8b,
-      darkgoldenrod: 0xb8860b,
-      darkgray: 0xa9a9a9,
-      darkgreen: 0x006400,
-      darkgrey: 0xa9a9a9,
-      darkkhaki: 0xbdb76b,
-      darkmagenta: 0x8b008b,
-      darkolivegreen: 0x556b2f,
-      darkorange: 0xff8c00,
-      darkorchid: 0x9932cc,
-      darkred: 0x8b0000,
-      darksalmon: 0xe9967a,
-      darkseagreen: 0x8fbc8f,
-      darkslateblue: 0x483d8b,
-      darkslategray: 0x2f4f4f,
-      darkslategrey: 0x2f4f4f,
-      darkturquoise: 0x00ced1,
-      darkviolet: 0x9400d3,
-      deeppink: 0xff1493,
-      deepskyblue: 0x00bfff,
-      dimgray: 0x696969,
-      dimgrey: 0x696969,
-      dodgerblue: 0x1e90ff,
-      firebrick: 0xb22222,
-      floralwhite: 0xfffaf0,
-      forestgreen: 0x228b22,
-      fuchsia: 0xff00ff,
-      gainsboro: 0xdcdcdc,
-      ghostwhite: 0xf8f8ff,
-      gold: 0xffd700,
-      goldenrod: 0xdaa520,
-      gray: 0x808080,
-      green: 0x008000,
-      greenyellow: 0xadff2f,
-      grey: 0x808080,
-      honeydew: 0xf0fff0,
-      hotpink: 0xff69b4,
-      indianred: 0xcd5c5c,
-      indigo: 0x4b0082,
-      ivory: 0xfffff0,
-      khaki: 0xf0e68c,
-      lavender: 0xe6e6fa,
-      lavenderblush: 0xfff0f5,
-      lawngreen: 0x7cfc00,
-      lemonchiffon: 0xfffacd,
-      lightblue: 0xadd8e6,
-      lightcoral: 0xf08080,
-      lightcyan: 0xe0ffff,
-      lightgoldenrodyellow: 0xfafad2,
-      lightgray: 0xd3d3d3,
-      lightgreen: 0x90ee90,
-      lightgrey: 0xd3d3d3,
-      lightpink: 0xffb6c1,
-      lightsalmon: 0xffa07a,
-      lightseagreen: 0x20b2aa,
-      lightskyblue: 0x87cefa,
-      lightslategray: 0x778899,
-      lightslategrey: 0x778899,
-      lightsteelblue: 0xb0c4de,
-      lightyellow: 0xffffe0,
-      lime: 0x00ff00,
-      limegreen: 0x32cd32,
-      linen: 0xfaf0e6,
-      magenta: 0xff00ff,
-      maroon: 0x800000,
-      mediumaquamarine: 0x66cdaa,
-      mediumblue: 0x0000cd,
-      mediumorchid: 0xba55d3,
-      mediumpurple: 0x9370db,
-      mediumseagreen: 0x3cb371,
-      mediumslateblue: 0x7b68ee,
-      mediumspringgreen: 0x00fa9a,
-      mediumturquoise: 0x48d1cc,
-      mediumvioletred: 0xc71585,
-      midnightblue: 0x191970,
-      mintcream: 0xf5fffa,
-      mistyrose: 0xffe4e1,
-      moccasin: 0xffe4b5,
-      navajowhite: 0xffdead,
-      navy: 0x000080,
-      oldlace: 0xfdf5e6,
-      olive: 0x808000,
-      olivedrab: 0x6b8e23,
-      orange: 0xffa500,
-      orangered: 0xff4500,
-      orchid: 0xda70d6,
-      palegoldenrod: 0xeee8aa,
-      palegreen: 0x98fb98,
-      paleturquoise: 0xafeeee,
-      palevioletred: 0xdb7093,
-      papayawhip: 0xffefd5,
-      peachpuff: 0xffdab9,
-      peru: 0xcd853f,
-      pink: 0xffc0cb,
-      plum: 0xdda0dd,
-      powderblue: 0xb0e0e6,
-      purple: 0x800080,
-      rebeccapurple: 0x663399,
-      red: 0xff0000,
-      rosybrown: 0xbc8f8f,
-      royalblue: 0x4169e1,
-      saddlebrown: 0x8b4513,
-      salmon: 0xfa8072,
-      sandybrown: 0xf4a460,
-      seagreen: 0x2e8b57,
-      seashell: 0xfff5ee,
-      sienna: 0xa0522d,
-      silver: 0xc0c0c0,
-      skyblue: 0x87ceeb,
-      slateblue: 0x6a5acd,
-      slategray: 0x708090,
-      slategrey: 0x708090,
-      snow: 0xfffafa,
-      springgreen: 0x00ff7f,
-      steelblue: 0x4682b4,
-      tan: 0xd2b48c,
-      teal: 0x008080,
-      thistle: 0xd8bfd8,
-      tomato: 0xff6347,
-      turquoise: 0x40e0d0,
-      violet: 0xee82ee,
-      wheat: 0xf5deb3,
-      white: 0xffffff,
-      whitesmoke: 0xf5f5f5,
-      yellow: 0xffff00,
-      yellowgreen: 0x9acd32
-    };
-
-    define$1(Color$1, color$1, {
-      copy(channels) {
-        return Object.assign(new this.constructor, this, channels);
-      },
-      displayable() {
-        return this.rgb().displayable();
-      },
-      hex: color_formatHex$1, // Deprecated! Use color.formatHex.
-      formatHex: color_formatHex$1,
-      formatHex8: color_formatHex8$1,
-      formatHsl: color_formatHsl$1,
-      formatRgb: color_formatRgb$1,
-      toString: color_formatRgb$1
-    });
-
-    function color_formatHex$1() {
-      return this.rgb().formatHex();
-    }
-
-    function color_formatHex8$1() {
-      return this.rgb().formatHex8();
-    }
-
-    function color_formatHsl$1() {
-      return hslConvert$1(this).formatHsl();
-    }
-
-    function color_formatRgb$1() {
-      return this.rgb().formatRgb();
-    }
-
-    function color$1(format) {
-      var m, l;
-      format = (format + "").trim().toLowerCase();
-      return (m = reHex$1.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$1(m) // #ff0000
-          : l === 3 ? new Rgb$1((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
-          : l === 8 ? rgba$1(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-          : l === 4 ? rgba$1((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
-          : null) // invalid hex
-          : (m = reRgbInteger$1.exec(format)) ? new Rgb$1(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
-          : (m = reRgbPercent$1.exec(format)) ? new Rgb$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
-          : (m = reRgbaInteger$1.exec(format)) ? rgba$1(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
-          : (m = reRgbaPercent$1.exec(format)) ? rgba$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-          : (m = reHslPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-          : (m = reHslaPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-          : named$1.hasOwnProperty(format) ? rgbn$1(named$1[format]) // eslint-disable-line no-prototype-builtins
-          : format === "transparent" ? new Rgb$1(NaN, NaN, NaN, 0)
-          : null;
-    }
-
-    function rgbn$1(n) {
-      return new Rgb$1(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
-    }
-
-    function rgba$1(r, g, b, a) {
-      if (a <= 0) r = g = b = NaN;
-      return new Rgb$1(r, g, b, a);
-    }
-
-    function rgbConvert$1(o) {
-      if (!(o instanceof Color$1)) o = color$1(o);
-      if (!o) return new Rgb$1;
-      o = o.rgb();
-      return new Rgb$1(o.r, o.g, o.b, o.opacity);
-    }
-
-    function rgb$2(r, g, b, opacity) {
-      return arguments.length === 1 ? rgbConvert$1(r) : new Rgb$1(r, g, b, opacity == null ? 1 : opacity);
-    }
-
-    function Rgb$1(r, g, b, opacity) {
-      this.r = +r;
-      this.g = +g;
-      this.b = +b;
-      this.opacity = +opacity;
-    }
-
-    define$1(Rgb$1, rgb$2, extend$1(Color$1, {
-      brighter(k) {
-        k = k == null ? brighter$1 : Math.pow(brighter$1, k);
-        return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
-      },
-      darker(k) {
-        k = k == null ? darker$1 : Math.pow(darker$1, k);
-        return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
-      },
-      rgb() {
-        return this;
-      },
-      clamp() {
-        return new Rgb$1(clampi$1(this.r), clampi$1(this.g), clampi$1(this.b), clampa$1(this.opacity));
-      },
-      displayable() {
-        return (-0.5 <= this.r && this.r < 255.5)
-            && (-0.5 <= this.g && this.g < 255.5)
-            && (-0.5 <= this.b && this.b < 255.5)
-            && (0 <= this.opacity && this.opacity <= 1);
-      },
-      hex: rgb_formatHex$1, // Deprecated! Use color.formatHex.
-      formatHex: rgb_formatHex$1,
-      formatHex8: rgb_formatHex8$1,
-      formatRgb: rgb_formatRgb$1,
-      toString: rgb_formatRgb$1
-    }));
-
-    function rgb_formatHex$1() {
-      return `#${hex$1(this.r)}${hex$1(this.g)}${hex$1(this.b)}`;
-    }
-
-    function rgb_formatHex8$1() {
-      return `#${hex$1(this.r)}${hex$1(this.g)}${hex$1(this.b)}${hex$1((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
-    }
-
-    function rgb_formatRgb$1() {
-      const a = clampa$1(this.opacity);
-      return `${a === 1 ? "rgb(" : "rgba("}${clampi$1(this.r)}, ${clampi$1(this.g)}, ${clampi$1(this.b)}${a === 1 ? ")" : `, ${a})`}`;
-    }
-
-    function clampa$1(opacity) {
-      return isNaN(opacity) ? 1 : Math.max(0, Math.min(1, opacity));
-    }
-
-    function clampi$1(value) {
-      return Math.max(0, Math.min(255, Math.round(value) || 0));
-    }
-
-    function hex$1(value) {
-      value = clampi$1(value);
-      return (value < 16 ? "0" : "") + value.toString(16);
-    }
-
-    function hsla$1(h, s, l, a) {
-      if (a <= 0) h = s = l = NaN;
-      else if (l <= 0 || l >= 1) h = s = NaN;
-      else if (s <= 0) h = NaN;
-      return new Hsl$1(h, s, l, a);
-    }
-
-    function hslConvert$1(o) {
-      if (o instanceof Hsl$1) return new Hsl$1(o.h, o.s, o.l, o.opacity);
-      if (!(o instanceof Color$1)) o = color$1(o);
-      if (!o) return new Hsl$1;
-      if (o instanceof Hsl$1) return o;
-      o = o.rgb();
-      var r = o.r / 255,
-          g = o.g / 255,
-          b = o.b / 255,
-          min = Math.min(r, g, b),
-          max = Math.max(r, g, b),
-          h = NaN,
-          s = max - min,
-          l = (max + min) / 2;
-      if (s) {
-        if (r === max) h = (g - b) / s + (g < b) * 6;
-        else if (g === max) h = (b - r) / s + 2;
-        else h = (r - g) / s + 4;
-        s /= l < 0.5 ? max + min : 2 - max - min;
-        h *= 60;
-      } else {
-        s = l > 0 && l < 1 ? 0 : h;
-      }
-      return new Hsl$1(h, s, l, o.opacity);
-    }
-
-    function hsl$1(h, s, l, opacity) {
-      return arguments.length === 1 ? hslConvert$1(h) : new Hsl$1(h, s, l, opacity == null ? 1 : opacity);
-    }
-
-    function Hsl$1(h, s, l, opacity) {
-      this.h = +h;
-      this.s = +s;
-      this.l = +l;
-      this.opacity = +opacity;
-    }
-
-    define$1(Hsl$1, hsl$1, extend$1(Color$1, {
-      brighter(k) {
-        k = k == null ? brighter$1 : Math.pow(brighter$1, k);
-        return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
-      },
-      darker(k) {
-        k = k == null ? darker$1 : Math.pow(darker$1, k);
-        return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
-      },
-      rgb() {
-        var h = this.h % 360 + (this.h < 0) * 360,
-            s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
-            l = this.l,
-            m2 = l + (l < 0.5 ? l : 1 - l) * s,
-            m1 = 2 * l - m2;
-        return new Rgb$1(
-          hsl2rgb$1(h >= 240 ? h - 240 : h + 120, m1, m2),
-          hsl2rgb$1(h, m1, m2),
-          hsl2rgb$1(h < 120 ? h + 240 : h - 120, m1, m2),
-          this.opacity
-        );
-      },
-      clamp() {
-        return new Hsl$1(clamph$1(this.h), clampt$1(this.s), clampt$1(this.l), clampa$1(this.opacity));
-      },
-      displayable() {
-        return (0 <= this.s && this.s <= 1 || isNaN(this.s))
-            && (0 <= this.l && this.l <= 1)
-            && (0 <= this.opacity && this.opacity <= 1);
-      },
-      formatHsl() {
-        const a = clampa$1(this.opacity);
-        return `${a === 1 ? "hsl(" : "hsla("}${clamph$1(this.h)}, ${clampt$1(this.s) * 100}%, ${clampt$1(this.l) * 100}%${a === 1 ? ")" : `, ${a})`}`;
-      }
-    }));
-
-    function clamph$1(value) {
-      value = (value || 0) % 360;
-      return value < 0 ? value + 360 : value;
-    }
-
-    function clampt$1(value) {
-      return Math.max(0, Math.min(1, value || 0));
-    }
-
-    /* From FvD 13.37, CSS Color Module Level 3 */
-    function hsl2rgb$1(h, m1, m2) {
-      return (h < 60 ? m1 + (m2 - m1) * h / 60
-          : h < 180 ? m2
-          : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
-          : m1) * 255;
-    }
-
     /*!
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
@@ -23666,7 +23641,7 @@ f 5/6/6 1/12/6 8/11/6`;
      */
     function colorFromString(cssColorSpecifier) {
         if (cssColorSpecifier) {
-            const dc = color$1(cssColorSpecifier);
+            const dc = color(cssColorSpecifier);
             if (dc) {
                 const c = dc.rgb();
                 return rgbToDeckglColor(c);
@@ -23685,8 +23660,8 @@ f 5/6/6 1/12/6 8/11/6`;
         return `rgba(${c.join(',')})`;
     }
     function desaturate(color, value) {
-        const rgb = rgb$2(color[0], color[1], color[2], color[3] / 255);
-        const hslColor = hsl$1(rgb);
+        const rgb = rgb$1(color[0], color[1], color[2], color[3] / 255);
+        const hslColor = hsl(rgb);
         hslColor.s = value;
         const c = hslColor.rgb();
         return rgbToDeckglColor(c);
@@ -23696,6 +23671,10 @@ f 5/6/6 1/12/6 8/11/6`;
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
+    /**
+     * This file is for external facing export only, do not use this for internal references,
+     * as it may cause circular dependencies in Rollup.
+     */
 
     var util$1 = /*#__PURE__*/Object.freeze({
         __proto__: null,
@@ -23798,18 +23777,18 @@ f 5/6/6 1/12/6 8/11/6`;
 
     var defaults = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        minHeight: minHeight,
-        minWidth: minWidth,
-        defaultPresenterStyle: defaultPresenterStyle$1,
-        defaultPresenterConfig: defaultPresenterConfig,
         createStage: createStage,
+        defaultOnAxisItem: defaultOnAxisItem,
+        defaultPresenterConfig: defaultPresenterConfig,
+        defaultPresenterStyle: defaultPresenterStyle$1,
+        defaultView: defaultView$1,
         groupStrokeWidth: groupStrokeWidth,
         lineZ: lineZ,
-        defaultView: defaultView$1,
-        minZ: minZ,
         min3dDepth: min3dDepth,
+        minHeight: minHeight,
         minPixelSize: minPixelSize,
-        defaultOnAxisItem: defaultOnAxisItem
+        minWidth: minWidth,
+        minZ: minZ
     });
 
     /*!
@@ -24037,7 +24016,7 @@ f 5/6/6 1/12/6 8/11/6`;
     };
     function styledLine(x1, y1, x2, y2, stroke, strokeWidth) {
         const line = {
-            sourcePosition: [x1, -y1, lineZ],
+            sourcePosition: [x1, -y1, lineZ], //-1 = change direction of y from SVG to GL
             targetPosition: [x2, -y2, lineZ],
             color: colorFromString(stroke),
             strokeWidth: strokeWidth,
@@ -24084,6 +24063,7 @@ f 5/6/6 1/12/6 8/11/6`;
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
+    // import { AlignmentBaseline, TextAnchor } from '@deck.gl/layers/text-layer/text-layer';
     const markStager = (options, stage, scene, x, y, groupType) => {
         //change direction of y from SVG to GL
         const ty = -1;
@@ -24096,7 +24076,7 @@ f 5/6/6 1/12/6 8/11/6`;
             const yOffset = 0;
             const textItem = {
                 color: colorFromString(item.fill),
-                text: item.limit === undefined ? item.text : base.vega.truncate(item.text, item.limit, 'right', item.ellipsis || '...'),
+                text: item.limit === undefined ? item.text : base.vega.truncate(item.text, item.limit, 'right', item.ellipsis || '...'), //use dots instead of unicode ellipsis for
                 position: [x + (item.x || 0), ty * (y + (item.y || 0) + yOffset), 0],
                 size,
                 angle: convertAngle(item.angle),
@@ -24667,7 +24647,7 @@ f 5/6/6 1/12/6 8/11/6`;
             return;
         const { config } = ref.core;
         config.activeColor = convert$3(colors.activeItemColor);
-        config.backgroundColor = convert$3(colors.backgroundColor);
+        config.backgroundColor = new Float32Array(convert$3(colors.backgroundColor));
         config.textColor = convert$3(colors.textColor);
         config.textBorderColor = convert$3(colors.textBorderColor);
         config.axesTextColor = convert$3(colors.axesTextLabelColor);
@@ -25530,17 +25510,6 @@ f 5/6/6 1/12/6 8/11/6`;
      */
     class Presenter {
         /**
-         * Instantiate a new Presenter.
-         * @param el Parent HTMLElement to present within.
-         * @param style Optional PresenterStyle styling options.
-         */
-        constructor(el, style) {
-            this.el = el;
-            this.style = deepMerge(defaultPresenterStyle$1, style);
-            initializePanel(this);
-            this._last = { view: null, height: null, width: null, cubeCount: null, stage: null };
-        }
-        /**
          * Get the previously rendered Stage object.
          */
         get stage() {
@@ -25551,6 +25520,17 @@ f 5/6/6 1/12/6 8/11/6`;
          */
         get view() {
             return this._last.view;
+        }
+        /**
+         * Instantiate a new Presenter.
+         * @param el Parent HTMLElement to present within.
+         * @param style Optional PresenterStyle styling options.
+         */
+        constructor(el, style) {
+            this.el = el;
+            this.style = deepMerge(defaultPresenterStyle$1, style);
+            initializePanel(this);
+            this._last = { view: null, height: null, width: null, cubeCount: null, stage: null };
         }
         /**
          * Cancels any pending animation, calling animationCanceled() on original queue.
@@ -25821,16 +25801,16 @@ f 5/6/6 1/12/6 8/11/6`;
 
     var index = /*#__PURE__*/Object.freeze({
         __proto__: null,
+        Presenter: Presenter,
+        get PresenterElement () { return PresenterElement; },
+        ViewGl: ViewGl,
+        base: base,
         controls: controls,
         defaults: defaults,
         types: types,
-        util: util$1,
-        base: base,
         use: use$1,
-        Presenter: Presenter,
-        ViewGl: ViewGl,
-        version: version$1,
-        get PresenterElement () { return PresenterElement; }
+        util: util$1,
+        version: version$1
     });
 
     /*!
@@ -25892,7 +25872,7 @@ f 5/6/6 1/12/6 8/11/6`;
             zScaleProportion: 'Z scale proportion to Y',
             selectionCount: count => `${count} items selected`,
         },
-        maxLegends: 19,
+        maxLegends: 19, //20 would be "other"
         onError: (errors) => {
             //console.log(`UnitVisViewer errors: ${errors.join('\n')}`);
         },
@@ -25942,11 +25922,11 @@ f 5/6/6 1/12/6 8/11/6`;
 
     var util = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        isInternalFieldName: isInternalFieldName,
         getColumnsFromData: getColumnsFromData,
+        getPresenterStyle: getPresenterStyle,
         getStats: getStats,
         inferAll: inferAll,
-        getPresenterStyle: getPresenterStyle
+        isInternalFieldName: isInternalFieldName
     });
 
     /*!
@@ -27070,7 +27050,6 @@ f 5/6/6 1/12/6 8/11/6`;
     const ascendingBisect = bisector(ascending);
     const bisectRight = ascendingBisect.right;
     bisector(number$1).center;
-    var bisect = bisectRight;
 
     const e10 = Math.sqrt(50),
         e5 = Math.sqrt(10),
@@ -27135,412 +27114,6 @@ f 5/6/6 1/12/6 8/11/6`;
         default: this.range(range).domain(domain); break;
       }
       return this;
-    }
-
-    function define(constructor, factory, prototype) {
-      constructor.prototype = factory.prototype = prototype;
-      prototype.constructor = constructor;
-    }
-
-    function extend(parent, definition) {
-      var prototype = Object.create(parent.prototype);
-      for (var key in definition) prototype[key] = definition[key];
-      return prototype;
-    }
-
-    function Color() {}
-
-    var darker = 0.7;
-    var brighter = 1 / darker;
-
-    var reI = "\\s*([+-]?\\d+)\\s*",
-        reN = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*",
-        reP = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
-        reHex = /^#([0-9a-f]{3,8})$/,
-        reRgbInteger = new RegExp(`^rgb\\(${reI},${reI},${reI}\\)$`),
-        reRgbPercent = new RegExp(`^rgb\\(${reP},${reP},${reP}\\)$`),
-        reRgbaInteger = new RegExp(`^rgba\\(${reI},${reI},${reI},${reN}\\)$`),
-        reRgbaPercent = new RegExp(`^rgba\\(${reP},${reP},${reP},${reN}\\)$`),
-        reHslPercent = new RegExp(`^hsl\\(${reN},${reP},${reP}\\)$`),
-        reHslaPercent = new RegExp(`^hsla\\(${reN},${reP},${reP},${reN}\\)$`);
-
-    var named = {
-      aliceblue: 0xf0f8ff,
-      antiquewhite: 0xfaebd7,
-      aqua: 0x00ffff,
-      aquamarine: 0x7fffd4,
-      azure: 0xf0ffff,
-      beige: 0xf5f5dc,
-      bisque: 0xffe4c4,
-      black: 0x000000,
-      blanchedalmond: 0xffebcd,
-      blue: 0x0000ff,
-      blueviolet: 0x8a2be2,
-      brown: 0xa52a2a,
-      burlywood: 0xdeb887,
-      cadetblue: 0x5f9ea0,
-      chartreuse: 0x7fff00,
-      chocolate: 0xd2691e,
-      coral: 0xff7f50,
-      cornflowerblue: 0x6495ed,
-      cornsilk: 0xfff8dc,
-      crimson: 0xdc143c,
-      cyan: 0x00ffff,
-      darkblue: 0x00008b,
-      darkcyan: 0x008b8b,
-      darkgoldenrod: 0xb8860b,
-      darkgray: 0xa9a9a9,
-      darkgreen: 0x006400,
-      darkgrey: 0xa9a9a9,
-      darkkhaki: 0xbdb76b,
-      darkmagenta: 0x8b008b,
-      darkolivegreen: 0x556b2f,
-      darkorange: 0xff8c00,
-      darkorchid: 0x9932cc,
-      darkred: 0x8b0000,
-      darksalmon: 0xe9967a,
-      darkseagreen: 0x8fbc8f,
-      darkslateblue: 0x483d8b,
-      darkslategray: 0x2f4f4f,
-      darkslategrey: 0x2f4f4f,
-      darkturquoise: 0x00ced1,
-      darkviolet: 0x9400d3,
-      deeppink: 0xff1493,
-      deepskyblue: 0x00bfff,
-      dimgray: 0x696969,
-      dimgrey: 0x696969,
-      dodgerblue: 0x1e90ff,
-      firebrick: 0xb22222,
-      floralwhite: 0xfffaf0,
-      forestgreen: 0x228b22,
-      fuchsia: 0xff00ff,
-      gainsboro: 0xdcdcdc,
-      ghostwhite: 0xf8f8ff,
-      gold: 0xffd700,
-      goldenrod: 0xdaa520,
-      gray: 0x808080,
-      green: 0x008000,
-      greenyellow: 0xadff2f,
-      grey: 0x808080,
-      honeydew: 0xf0fff0,
-      hotpink: 0xff69b4,
-      indianred: 0xcd5c5c,
-      indigo: 0x4b0082,
-      ivory: 0xfffff0,
-      khaki: 0xf0e68c,
-      lavender: 0xe6e6fa,
-      lavenderblush: 0xfff0f5,
-      lawngreen: 0x7cfc00,
-      lemonchiffon: 0xfffacd,
-      lightblue: 0xadd8e6,
-      lightcoral: 0xf08080,
-      lightcyan: 0xe0ffff,
-      lightgoldenrodyellow: 0xfafad2,
-      lightgray: 0xd3d3d3,
-      lightgreen: 0x90ee90,
-      lightgrey: 0xd3d3d3,
-      lightpink: 0xffb6c1,
-      lightsalmon: 0xffa07a,
-      lightseagreen: 0x20b2aa,
-      lightskyblue: 0x87cefa,
-      lightslategray: 0x778899,
-      lightslategrey: 0x778899,
-      lightsteelblue: 0xb0c4de,
-      lightyellow: 0xffffe0,
-      lime: 0x00ff00,
-      limegreen: 0x32cd32,
-      linen: 0xfaf0e6,
-      magenta: 0xff00ff,
-      maroon: 0x800000,
-      mediumaquamarine: 0x66cdaa,
-      mediumblue: 0x0000cd,
-      mediumorchid: 0xba55d3,
-      mediumpurple: 0x9370db,
-      mediumseagreen: 0x3cb371,
-      mediumslateblue: 0x7b68ee,
-      mediumspringgreen: 0x00fa9a,
-      mediumturquoise: 0x48d1cc,
-      mediumvioletred: 0xc71585,
-      midnightblue: 0x191970,
-      mintcream: 0xf5fffa,
-      mistyrose: 0xffe4e1,
-      moccasin: 0xffe4b5,
-      navajowhite: 0xffdead,
-      navy: 0x000080,
-      oldlace: 0xfdf5e6,
-      olive: 0x808000,
-      olivedrab: 0x6b8e23,
-      orange: 0xffa500,
-      orangered: 0xff4500,
-      orchid: 0xda70d6,
-      palegoldenrod: 0xeee8aa,
-      palegreen: 0x98fb98,
-      paleturquoise: 0xafeeee,
-      palevioletred: 0xdb7093,
-      papayawhip: 0xffefd5,
-      peachpuff: 0xffdab9,
-      peru: 0xcd853f,
-      pink: 0xffc0cb,
-      plum: 0xdda0dd,
-      powderblue: 0xb0e0e6,
-      purple: 0x800080,
-      rebeccapurple: 0x663399,
-      red: 0xff0000,
-      rosybrown: 0xbc8f8f,
-      royalblue: 0x4169e1,
-      saddlebrown: 0x8b4513,
-      salmon: 0xfa8072,
-      sandybrown: 0xf4a460,
-      seagreen: 0x2e8b57,
-      seashell: 0xfff5ee,
-      sienna: 0xa0522d,
-      silver: 0xc0c0c0,
-      skyblue: 0x87ceeb,
-      slateblue: 0x6a5acd,
-      slategray: 0x708090,
-      slategrey: 0x708090,
-      snow: 0xfffafa,
-      springgreen: 0x00ff7f,
-      steelblue: 0x4682b4,
-      tan: 0xd2b48c,
-      teal: 0x008080,
-      thistle: 0xd8bfd8,
-      tomato: 0xff6347,
-      turquoise: 0x40e0d0,
-      violet: 0xee82ee,
-      wheat: 0xf5deb3,
-      white: 0xffffff,
-      whitesmoke: 0xf5f5f5,
-      yellow: 0xffff00,
-      yellowgreen: 0x9acd32
-    };
-
-    define(Color, color, {
-      copy(channels) {
-        return Object.assign(new this.constructor, this, channels);
-      },
-      displayable() {
-        return this.rgb().displayable();
-      },
-      hex: color_formatHex, // Deprecated! Use color.formatHex.
-      formatHex: color_formatHex,
-      formatHex8: color_formatHex8,
-      formatHsl: color_formatHsl,
-      formatRgb: color_formatRgb,
-      toString: color_formatRgb
-    });
-
-    function color_formatHex() {
-      return this.rgb().formatHex();
-    }
-
-    function color_formatHex8() {
-      return this.rgb().formatHex8();
-    }
-
-    function color_formatHsl() {
-      return hslConvert(this).formatHsl();
-    }
-
-    function color_formatRgb() {
-      return this.rgb().formatRgb();
-    }
-
-    function color(format) {
-      var m, l;
-      format = (format + "").trim().toLowerCase();
-      return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
-          : l === 3 ? new Rgb((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
-          : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-          : l === 4 ? rgba((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
-          : null) // invalid hex
-          : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
-          : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
-          : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
-          : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-          : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-          : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-          : named.hasOwnProperty(format) ? rgbn(named[format]) // eslint-disable-line no-prototype-builtins
-          : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0)
-          : null;
-    }
-
-    function rgbn(n) {
-      return new Rgb(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
-    }
-
-    function rgba(r, g, b, a) {
-      if (a <= 0) r = g = b = NaN;
-      return new Rgb(r, g, b, a);
-    }
-
-    function rgbConvert(o) {
-      if (!(o instanceof Color)) o = color(o);
-      if (!o) return new Rgb;
-      o = o.rgb();
-      return new Rgb(o.r, o.g, o.b, o.opacity);
-    }
-
-    function rgb$1(r, g, b, opacity) {
-      return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
-    }
-
-    function Rgb(r, g, b, opacity) {
-      this.r = +r;
-      this.g = +g;
-      this.b = +b;
-      this.opacity = +opacity;
-    }
-
-    define(Rgb, rgb$1, extend(Color, {
-      brighter(k) {
-        k = k == null ? brighter : Math.pow(brighter, k);
-        return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
-      },
-      darker(k) {
-        k = k == null ? darker : Math.pow(darker, k);
-        return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
-      },
-      rgb() {
-        return this;
-      },
-      clamp() {
-        return new Rgb(clampi(this.r), clampi(this.g), clampi(this.b), clampa(this.opacity));
-      },
-      displayable() {
-        return (-0.5 <= this.r && this.r < 255.5)
-            && (-0.5 <= this.g && this.g < 255.5)
-            && (-0.5 <= this.b && this.b < 255.5)
-            && (0 <= this.opacity && this.opacity <= 1);
-      },
-      hex: rgb_formatHex, // Deprecated! Use color.formatHex.
-      formatHex: rgb_formatHex,
-      formatHex8: rgb_formatHex8,
-      formatRgb: rgb_formatRgb,
-      toString: rgb_formatRgb
-    }));
-
-    function rgb_formatHex() {
-      return `#${hex(this.r)}${hex(this.g)}${hex(this.b)}`;
-    }
-
-    function rgb_formatHex8() {
-      return `#${hex(this.r)}${hex(this.g)}${hex(this.b)}${hex((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
-    }
-
-    function rgb_formatRgb() {
-      const a = clampa(this.opacity);
-      return `${a === 1 ? "rgb(" : "rgba("}${clampi(this.r)}, ${clampi(this.g)}, ${clampi(this.b)}${a === 1 ? ")" : `, ${a})`}`;
-    }
-
-    function clampa(opacity) {
-      return isNaN(opacity) ? 1 : Math.max(0, Math.min(1, opacity));
-    }
-
-    function clampi(value) {
-      return Math.max(0, Math.min(255, Math.round(value) || 0));
-    }
-
-    function hex(value) {
-      value = clampi(value);
-      return (value < 16 ? "0" : "") + value.toString(16);
-    }
-
-    function hsla(h, s, l, a) {
-      if (a <= 0) h = s = l = NaN;
-      else if (l <= 0 || l >= 1) h = s = NaN;
-      else if (s <= 0) h = NaN;
-      return new Hsl(h, s, l, a);
-    }
-
-    function hslConvert(o) {
-      if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
-      if (!(o instanceof Color)) o = color(o);
-      if (!o) return new Hsl;
-      if (o instanceof Hsl) return o;
-      o = o.rgb();
-      var r = o.r / 255,
-          g = o.g / 255,
-          b = o.b / 255,
-          min = Math.min(r, g, b),
-          max = Math.max(r, g, b),
-          h = NaN,
-          s = max - min,
-          l = (max + min) / 2;
-      if (s) {
-        if (r === max) h = (g - b) / s + (g < b) * 6;
-        else if (g === max) h = (b - r) / s + 2;
-        else h = (r - g) / s + 4;
-        s /= l < 0.5 ? max + min : 2 - max - min;
-        h *= 60;
-      } else {
-        s = l > 0 && l < 1 ? 0 : h;
-      }
-      return new Hsl(h, s, l, o.opacity);
-    }
-
-    function hsl(h, s, l, opacity) {
-      return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
-    }
-
-    function Hsl(h, s, l, opacity) {
-      this.h = +h;
-      this.s = +s;
-      this.l = +l;
-      this.opacity = +opacity;
-    }
-
-    define(Hsl, hsl, extend(Color, {
-      brighter(k) {
-        k = k == null ? brighter : Math.pow(brighter, k);
-        return new Hsl(this.h, this.s, this.l * k, this.opacity);
-      },
-      darker(k) {
-        k = k == null ? darker : Math.pow(darker, k);
-        return new Hsl(this.h, this.s, this.l * k, this.opacity);
-      },
-      rgb() {
-        var h = this.h % 360 + (this.h < 0) * 360,
-            s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
-            l = this.l,
-            m2 = l + (l < 0.5 ? l : 1 - l) * s,
-            m1 = 2 * l - m2;
-        return new Rgb(
-          hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2),
-          hsl2rgb(h, m1, m2),
-          hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2),
-          this.opacity
-        );
-      },
-      clamp() {
-        return new Hsl(clamph(this.h), clampt(this.s), clampt(this.l), clampa(this.opacity));
-      },
-      displayable() {
-        return (0 <= this.s && this.s <= 1 || isNaN(this.s))
-            && (0 <= this.l && this.l <= 1)
-            && (0 <= this.opacity && this.opacity <= 1);
-      },
-      formatHsl() {
-        const a = clampa(this.opacity);
-        return `${a === 1 ? "hsl(" : "hsla("}${clamph(this.h)}, ${clampt(this.s) * 100}%, ${clampt(this.l) * 100}%${a === 1 ? ")" : `, ${a})`}`;
-      }
-    }));
-
-    function clamph(value) {
-      value = (value || 0) % 360;
-      return value < 0 ? value + 360 : value;
-    }
-
-    function clampt(value) {
-      return Math.max(0, Math.min(1, value || 0));
-    }
-
-    /* From FvD 13.37, CSS Color Module Level 3 */
-    function hsl2rgb(h, m1, m2) {
-      return (h < 60 ? m1 + (m2 - m1) * h / 60
-          : h < 180 ? m2
-          : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
-          : m1) * 255;
     }
 
     var constant = x => () => x;
@@ -27793,7 +27366,7 @@ f 5/6/6 1/12/6 8/11/6`;
       }
 
       return function(x) {
-        var i = bisect(domain, x, 1, j) - 1;
+        var i = bisectRight(domain, x, 1, j) - 1;
         return r[i](d[i](x));
       };
     }
@@ -28693,8 +28266,8 @@ f 5/6/6 1/12/6 8/11/6`;
          * @param data Array of data objects.
          * @param renderOptions Optional RenderOptions object.
          */
-        render(insightSetup, data, renderOptions = {}) {
-            return __awaiter(this, void 0, void 0, function* () {
+        render(insightSetup_1, data_1) {
+            return __awaiter(this, arguments, void 0, function* (insightSetup, data, renderOptions = {}) {
                 const { insight, setup } = insightSetup;
                 let result;
                 //see if refine expression has changed
@@ -29234,13 +28807,11 @@ f 5/6/6 1/12/6 8/11/6`;
     exports.Viewer = Viewer;
     exports.colorSchemes = colorSchemes;
     exports.constants = constants$1;
-    exports.searchExpression = index$1;
-    exports.specs = index$2;
+    exports.searchExpression = index$3;
+    exports.specs = index$4;
     exports.types = types$1;
     exports.use = use;
     exports.util = util;
     exports.version = version;
-
-    Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
