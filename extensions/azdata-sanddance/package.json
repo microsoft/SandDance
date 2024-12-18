@@ -102,6 +102,6 @@
         "build:08": "npm run compile && npm run resources",
         "x-test": "npm run compile && node ./node_modules/vscode/bin/test",
         "deploy": "node ./scripts/deploy.js",
-        "package": "vsce package"
+        "build:09": "vsce package"
     }
 }
