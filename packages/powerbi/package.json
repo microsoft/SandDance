@@ -10,7 +10,7 @@
     "version": "node ./scripts/version.js",
     "prepackage": "npm run version",
     "deploy": "node ./scripts/deploy.js",
-    "build:sanddance-integration": "tsc -p .",
+    "build:07": "tsc -p .",
     "remove-vega": "npm un vega"
   },
   "overrides": {

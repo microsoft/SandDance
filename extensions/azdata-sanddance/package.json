@@ -99,7 +99,7 @@
         "webpack-dev": "webpack --mode development --watch",
         "resources": "node ./node_modules/common-frontend/scripts/resources.js",
         "compile": "tsc -p ./",
-        "build:sanddance-integration": "npm run compile && npm run resources",
+        "build:08": "npm run compile && npm run resources",
         "x-test": "npm run compile && node ./node_modules/vscode/bin/test",
         "deploy": "node ./scripts/deploy.js",
         "package": "vsce package"
