@@ -19,16 +19,16 @@
       "distDir": "./dist/umd",
       "optimize": false,
       "scopeHoist": false,
-      "sourceMap": false,
-      "includeNodeModules": {
-        "react": false,
-        "react-dom": false
-      }
+      "sourceMap": false
     }
   },
   "umd": "./dist/umd/sanddance-app.js",
   "alias": {
-    "react": "./alias/react-external.js",
-    "react-dom": "./alias/react-dom-external.js"
+    "react": {
+      "global": "React"
+    },
+    "react-dom": {
+      "global": "ReactDOM"
+    }
   }
 }
