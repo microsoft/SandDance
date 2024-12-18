@@ -21,7 +21,6 @@ steps:
 
 - script: |
     npm install
-    npm run bootstrap
   displayName: 'npm install'
 
 - task: ComponentGovernanceComponentDetection@0
