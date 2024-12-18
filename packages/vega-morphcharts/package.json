@@ -14,7 +14,7 @@
 		"watch-typescript": "tsc -p . -w",
 		"build-typescript": "tsc -p .",
 		"bundle": "rollup -c",
-		"build:sanddance-core": "npm run build-typescript && node ../../scripts/version.js && npm run bundle",
+		"build:02": "npm run build-typescript && node ../../scripts/version.js && npm run bundle",
 		"remove-vega": "npm un vega vega-typings",
 		"patch-after-vega-upgrade": "npm version patch"
 	},
