@@ -8,7 +8,6 @@
 	],
 	"scripts": {
 		"vegatest": "parcel serve ./test/vegaspec/vega-morphcharts.test.html --open --no-hmr --no-autoinstall --no-cache",
-		"docs": "typedoc src/index.ts -out ../../docs/docs/vega-morphcharts/v1 --theme ../../typedoc/theme --excludePrivate --gitRevision master",
 		"deploy": "node ./scripts/deploy.js",
 		"eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
 		"watch-typescript": "tsc -p . -w",

@@ -14,7 +14,6 @@
   ],
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "docs": "typedoc src/index.ts -out ../../docs/docs/sanddance/v4 --theme ../../typedoc/theme --excludePrivate --gitRevision master",
     "deploy": "node ./scripts/deploy.js",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",

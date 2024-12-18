@@ -15,7 +15,6 @@
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "predocs": "rimraf ../../docs/docs/data-inference/v1",
-    "docs": "typedoc src/index.ts -out ../../docs/docs/data-inference/v1 --theme ../../typedoc/theme --excludePrivate --gitRevision master",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "build:02": "npm run build-typescript && npm run bundle",

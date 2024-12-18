@@ -15,7 +15,6 @@
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
     "predocs": "rimraf ../../docs/docs/chart-types/v1",
-    "docs": "typedoc src/index.ts -out ../../docs/docs/chart-types/v1 --theme ../../typedoc/theme --excludePrivate --gitRevision master",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "build:01": "npm run build-typescript",
