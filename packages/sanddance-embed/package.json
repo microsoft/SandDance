@@ -18,7 +18,7 @@
     "build-css": "sass ./src/css/sanddance-embed.scss ./dist/css/sanddance-embed.css",
     "build-typescript": "tsc -p .",
     "build-gen": "tsc -p ./src/gen",
-    "build:sanddance-core": "npm run build-css && npm run build-typescript",
+    "build:07": "npm run build-css && npm run build-typescript",
     "remove-vega": "npm un vega",
     "patch-after-vega-upgrade": "npm version patch"
   },

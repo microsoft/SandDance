@@ -18,7 +18,7 @@
     "docs": "typedoc src/index.ts -out ../../docs/docs/data-inference/v1 --theme ../../typedoc/theme --excludePrivate --gitRevision master",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
-    "build:sanddance-core": "npm run build-typescript && npm run bundle",
+    "build:02": "npm run build-typescript && npm run bundle",
     "bundle": "rollup -c",
     "deploy": "node ./scripts/deploy.js",
     "remove-vega": "npm un vega vega-typings",

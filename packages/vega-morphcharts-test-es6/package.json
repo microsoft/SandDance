@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
-    "build:sanddance-core": "tsc -p .",
+    "build:03": "tsc -p .",
     "deploy": "parcel build ./src/vega-morphcharts-test-es6.ts --no-autoinstall --no-cache",
     "remove-vega": "npm un vega"
   },
