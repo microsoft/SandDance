@@ -33,7 +33,7 @@
         "start": "npm-run-all --parallel watch-typescript watch-css serve-app",
         "parcel": "npm run parcel --workspaces --if-present",
         "restore-dist": "git checkout -q -- ./packages/sanddance/dist/umd/sanddance.d.ts ./packages/sanddance-react/dist/umd/sanddance-react.d.ts ./packages/vega-deck.gl/dist/umd/vega-deck.gl.d.ts ./packages/vega-morphcharts/dist/umd/vega-morphcharts.d.ts ./packages/sanddance-specs/dist/umd/sanddance-specs.d.ts ./packages/data-inference/dist/umd/data-inference.d.ts",
-        "clean-parcel-cache": "rimraf ./packages/**/.cache/ && rimraf ./packages/**/.parcel-cache/",
+        "clean-parcel-cache": "rimraf ./.parcel-cache/ && rimraf ./packages/**/.cache/ && rimraf ./packages/**/.parcel-cache/",
         "clean-build": "npm run clean-parcel-cache && rimraf ./packages/**/dist/",
         "clean": "npm run clean --workspaces --if-present && npm run clean-build && npm run restore-dist",
         "remove-pem": "rimraf **/*.pem && rimraf **/*.key",
