@@ -11,7 +11,7 @@
     "vega": "5.30.0"
   },
   "scripts": {
-    "build:sanddance-integration": "npm run bundle",
+    "build:07": "npm run bundle",
     "bundle": "parcel build ./src/index.tsx --no-autoinstall --no-cache"
   },
   "eslintConfig": {
