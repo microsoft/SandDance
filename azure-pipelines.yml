@@ -34,6 +34,8 @@ steps:
   displayName: 'npm version'
 
 - script: |
+    # workaround for https://github.com/npm/cli/issues/4828
+    git checkout main -- package-lock.json
     npm run build
   displayName: 'npm build'
 
