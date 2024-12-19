@@ -20,7 +20,7 @@ layout: default
 
                     {% assign tree_url = site.baseurl | append: "/docs/" | append : tree[0] | append: "/v3/api/" %}
 
-                    <li class="c-tree__item o-list-bare__item">
+                    <li class="c-tree__item o-list-bare__item" role="treeitem">
                         <div class="c-tree__toggle js-tree-toggle{% if page_url == tree_url %} is-open is-active{% endif %}">
                             <a href="{{ tree_url }}" {% if page_url == tree_url %}class="is-active"{% endif %}>
                                 {{ tree[0] }}
