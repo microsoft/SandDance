@@ -47084,13 +47084,15 @@ function $c8096a1892befafb$export$fcc7818a78919c8c(props) {
 
 function $d7542c73853af2f5$export$a8fc19311f33df91(props) {
     const selected = !props.closed && props.selectedSideTab === props.sideTabId;
+    const buttonProps = props.omitAriaSelected ? {} : {
+        'aria-selected': selected
+    };
     return (0, $a601a4135959dcb0$export$e2253033e6e1df16).react.createElement("div", {
         className: (0, $e295d8097c1ad61a$exports).classList('vbutton', selected && 'selected')
     }, props.badgeText && (0, $a601a4135959dcb0$export$e2253033e6e1df16).react.createElement("div", {
         className: "count"
-    }, props.badgeText), (0, $a601a4135959dcb0$export$e2253033e6e1df16).react.createElement((0, $baf9c68afdd76912$export$c25acd513dcc8062), {
+    }, props.badgeText), (0, $a601a4135959dcb0$export$e2253033e6e1df16).react.createElement((0, $baf9c68afdd76912$export$c25acd513dcc8062), Object.assign({}, buttonProps, {
         role: props.role || 'tab',
-        "aria-selected": selected,
         themePalette: props.themePalette,
         className: "vbutton",
         iconName: props.iconName,
@@ -47098,7 +47100,7 @@ function $d7542c73853af2f5$export$a8fc19311f33df91(props) {
         onClick: ()=>{
             props.onSideTabClick(props.sideTabId);
         }
-    }));
+    })));
 }
 
 
@@ -47161,11 +47163,13 @@ function $a4defabaac4a9afe$export$1ba59dacbcbf90fe(props) {
         })))), !props.hideSidebarControls && (0, $a601a4135959dcb0$export$e2253033e6e1df16).react.createElement("div", {
         className: "sidebar-controls"
     }, (0, $a601a4135959dcb0$export$e2253033e6e1df16).react.createElement((0, $d7542c73853af2f5$export$a8fc19311f33df91), Object.assign({}, props, {
+        omitAriaSelected: true,
         role: 'button',
         sideTabId: (0, $2752fa503c160704$export$f3b7566ffe363e3b).Pin,
         iconName: props.pinned ? 'Pinned' : 'Pin',
         title: props.pinned ? (0, $d5b6ce321475881f$export$21c51bc433c16634).buttonToolbarFloat : (0, $d5b6ce321475881f$export$21c51bc433c16634).buttonToolbarDock
     })), (0, $a601a4135959dcb0$export$e2253033e6e1df16).react.createElement((0, $d7542c73853af2f5$export$a8fc19311f33df91), Object.assign({}, props, {
+        omitAriaSelected: true,
         role: 'button',
         sideTabId: (0, $2752fa503c160704$export$f3b7566ffe363e3b).Collapse,
         iconName: props.closed ? 'DoubleChevronRight12' : 'DoubleChevronLeft12',

@@ -85,6 +85,7 @@ export function Sidebar(props: Props) {
                         <div className="sidebar-controls">
                             <Sidebutton
                                 {...props}
+                                omitAriaSelected={true}
                                 role='button'
                                 sideTabId={SideTabId.Pin}
                                 iconName={props.pinned ? 'Pinned' : 'Pin'}
@@ -92,6 +93,7 @@ export function Sidebar(props: Props) {
                             />
                             <Sidebutton
                                 {...props}
+                                omitAriaSelected={true}
                                 role='button'
                                 sideTabId={SideTabId.Collapse}
                                 iconName={props.closed ? 'DoubleChevronRight12' : 'DoubleChevronLeft12'}
