@@ -5,8 +5,6 @@ View component for [Vega](https://vega.github.io/) visualizations, using [deck.g
 This project combines two great visualization libraries into one. You have the expressiveness of [Vega specifications](https://vega.github.io/vega/docs/specification/) and the WebGL rendering of [deck.gl](https://deck.gl). As a result, you have the option of visualizing data in 3 dimensions.
 
 
-[API Reference](https://microsoft.github.io/SandDance/docs/vega-deck.gl/v2/api)
-
 ## Limitations
 
 This project does not fully implement every feature provided by Vega. Some interactive features are omitted due to the nature of the 3D rendering model which breaks correspondence to the 2D rendering plane. Other features simply have yet to be developed, for these we will gladly accept a pull request.

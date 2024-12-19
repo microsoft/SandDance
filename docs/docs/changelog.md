@@ -5,6 +5,7 @@ title: Documentation Changelog
 
 # Documentation Changelog
 
+* December 2024 - API docs taken down for maintenance
 * July 2022 - Major version to v4
 * May 2021 - Docs generated with <a href="https://typedoc.org">TypeDoc</a>
 * June 2020 - Major version to v3 - [see what's new in v3](v3)

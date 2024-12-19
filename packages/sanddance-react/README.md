@@ -4,7 +4,7 @@ Visually explore, understand, and present your data.
 
 ![sanddance-animation](https://user-images.githubusercontent.com/11507384/189461831-9467863e-bff8-47d2-aa03-ab2b74658814.gif)
 
-[Demo](https://microsoft.github.io/SandDance/app) - [API Reference](https://microsoft.github.io/SandDance/docs/sanddance-react/v4)
+[Demo](https://microsoft.github.io/SandDance/app)
 
 ## Installation
 
