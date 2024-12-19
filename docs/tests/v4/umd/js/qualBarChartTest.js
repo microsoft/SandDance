@@ -16,11 +16,11 @@ var qualBarChartTest;
         var v = getValue(i);
         data.push({
             myUid: i,
-            myX: "cat" + v,
+            myX: "cat".concat(v),
             myY: i,
             myZ: i,
             myColor: v.toString(),
-            mySort: i
+            mySort: i,
         });
     }
     var glDiv = qualBarChartTest.viewer.presenter.getElement(SandDance.VegaMorphCharts.PresenterElement.gl);
@@ -31,15 +31,15 @@ var qualBarChartTest;
             uid: 'myUid',
             x: 'myX',
             y: 'myY',
-            z: 'myZ'
+            z: 'myZ',
         },
         scheme: 'category20',
         size: {
             height: glDiv.offsetHeight,
-            width: glDiv.offsetWidth
+            width: glDiv.offsetWidth,
         },
         chart: 'barchart',
-        view: '2d'
+        view: '2d',
     };
     qualBarChartTest.viewer.render({ insight: insight }, data, { columnTypes: { myColor: 'string' } });
 })(qualBarChartTest || (qualBarChartTest = {}));

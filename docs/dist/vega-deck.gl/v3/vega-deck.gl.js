@@ -36,6 +36,10 @@
         layerNames: layerNames
     });
 
+    function getDefaultExportFromCjs (x) {
+    	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+    }
+
     var require$$0$1 = [
     	"a",
     	"abbr",
@@ -157,12 +161,23 @@
     	"wbr"
     ];
 
-    var htmlTags = require$$0$1;
+    var htmlTags$1;
+    var hasRequiredHtmlTags;
 
-    var htmlTags$1 = /*#__PURE__*/_mergeNamespaces({
+    function requireHtmlTags () {
+    	if (hasRequiredHtmlTags) return htmlTags$1;
+    	hasRequiredHtmlTags = 1;
+    	htmlTags$1 = require$$0$1;
+    	return htmlTags$1;
+    }
+
+    var htmlTagsExports = requireHtmlTags();
+    var index$1 = /*@__PURE__*/getDefaultExportFromCjs(htmlTagsExports);
+
+    var htmlTags = /*#__PURE__*/_mergeNamespaces({
         __proto__: null,
-        'default': htmlTags
-    }, [htmlTags]);
+        default: index$1
+    }, [htmlTagsExports]);
 
     var require$$0 = [
     	"a",
@@ -247,15 +262,26 @@
     	"vkern"
     ];
 
-    var lib = require$$0;
+    var lib;
+    var hasRequiredLib;
+
+    function requireLib () {
+    	if (hasRequiredLib) return lib;
+    	hasRequiredLib = 1;
+    	lib = require$$0;
+    	return lib;
+    }
+
+    var libExports = requireLib();
+    var index = /*@__PURE__*/getDefaultExportFromCjs(libExports);
 
     var svgTags = /*#__PURE__*/_mergeNamespaces({
         __proto__: null,
-        'default': lib
-    }, [lib]);
+        default: index
+    }, [libExports]);
 
-    const htmlTagArray = htmlTags || htmlTags$1;
-    const svgTagArray = lib || svgTags;
+    const htmlTagArray = index$1 || htmlTags;
+    const svgTagArray = index || svgTags;
     /**
      * Decamelizes a string with/without a custom separator (hyphen by default).
      * from: https://ourcodeworld.com/articles/read/608/how-to-camelize-and-decamelize-strings-in-javascript
@@ -438,6 +464,10 @@
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
+    /**
+     * This file is for external facing export only, do not use this for internal references,
+     * as it may cause circular dependencies in Rollup.
+     */
 
     var controls = /*#__PURE__*/Object.freeze({
         __proto__: null,
@@ -604,7 +634,7 @@
 
     var _deepmerge = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        'default': deepmerge_1
+        default: deepmerge_1
     });
 
     /*!
@@ -1250,19 +1280,37 @@ void main(void) {
 
     var defaults = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        minHeight: minHeight,
-        minWidth: minWidth,
-        defaultPresenterStyle: defaultPresenterStyle,
-        defaultPresenterConfig: defaultPresenterConfig,
         createStage: createStage,
+        defaultPresenterConfig: defaultPresenterConfig,
+        defaultPresenterStyle: defaultPresenterStyle,
+        defaultView: defaultView,
         groupStrokeWidth: groupStrokeWidth,
         lineZ: lineZ,
-        defaultView: defaultView,
         min3dDepth: min3dDepth,
-        minPixelSize: minPixelSize
+        minHeight: minHeight,
+        minPixelSize: minPixelSize,
+        minWidth: minWidth
     });
 
     // Copyright (c) 2015 - 2017 Uber Technologies, Inc.
+    //
+    // Permission is hereby granted, free of charge, to any person obtaining a copy
+    // of this software and associated documentation files (the "Software"), to deal
+    // in the Software without restriction, including without limitation the rights
+    // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    // copies of the Software, and to permit persons to whom the Software is
+    // furnished to do so, subject to the following conditions:
+    //
+    // The above copyright notice and this permission notice shall be included in
+    // all copies or substantial portions of the Software.
+    //
+    // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    // THE SOFTWARE.
     var vs = `\
 #define SHADER_NAME cube-layer-vertex-shader
 
@@ -1313,6 +1361,25 @@ void main(void) {
 `;
 
     // Copyright (c) 2015 - 2017 Uber Technologies, Inc.
+    //
+    // Permission is hereby granted, free of charge, to any person obtaining a copy
+    // of this software and associated documentation files (the "Software"), to deal
+    // in the Software without restriction, including without limitation the rights
+    // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    // copies of the Software, and to permit persons to whom the Software is
+    // furnished to do so, subject to the following conditions:
+    //
+    // The above copyright notice and this permission notice shall be included in
+    // all copies or substantial portions of the Software.
+    //
+    // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    // THE SOFTWARE.
+    // Adapted from https://github.com/uber/deck.gl/blob/5.3-release/modules/layers/src/grid-cell-layer/grid-cell-layer.js
     //https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants
     const UNSIGNED_BYTE = 0x1401;
     const DOUBLE = 0x140a;
@@ -1614,6 +1681,10 @@ void main(void) {
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
+    /**
+     * This file is for external facing export only, do not use this for internal references,
+     * as it may cause circular dependencies in Rollup.
+     */
 
     var util = /*#__PURE__*/Object.freeze({
         __proto__: null,
@@ -1897,7 +1968,7 @@ void main(void) {
     };
     function styledLine(x1, y1, x2, y2, stroke, strokeWidth) {
         const line = {
-            sourcePosition: [x1, -y1, lineZ],
+            sourcePosition: [x1, -y1, lineZ], //-1 = change direction of y from SVG to GL
             targetPosition: [x2, -y2, lineZ],
             color: colorFromString(stroke),
             strokeWidth: strokeWidth,
@@ -2046,7 +2117,7 @@ void main(void) {
             const yOffset = alignmentBaseline === 'top' ? item.fontSize / 2 : 0; //fixup to get tick text correct
             const textItem = {
                 color: colorFromString(item.fill),
-                text: item.limit === undefined ? item.text : base.vega.truncate(item.text, item.limit, 'right', item.ellipsis || '...'),
+                text: item.limit === undefined ? item.text : base.vega.truncate(item.text, item.limit, 'right', item.ellipsis || '...'), //use dots instead of unicode ellipsis for deck.gl's default font atlas
                 position: [x + (item.x || 0), ty * (y + (item.y || 0) + yOffset), 0],
                 size,
                 angle: convertAngle(item.angle),
@@ -2303,17 +2374,6 @@ void main(void) {
      */
     class Presenter {
         /**
-         * Instantiate a new Presenter.
-         * @param el Parent HTMLElement to present within.
-         * @param style Optional PresenterStyle styling options.
-         */
-        constructor(el, style) {
-            this.el = el;
-            this.style = deepMerge(defaultPresenterStyle, style);
-            initializePanel(this);
-            this._last = { view: null, height: null, width: null, cubeCount: null, stage: null };
-        }
-        /**
          * Get the previously rendered Stage object.
          */
         get stage() {
@@ -2324,6 +2384,17 @@ void main(void) {
          */
         get view() {
             return this._last.view;
+        }
+        /**
+         * Instantiate a new Presenter.
+         * @param el Parent HTMLElement to present within.
+         * @param style Optional PresenterStyle styling options.
+         */
+        constructor(el, style) {
+            this.el = el;
+            this.style = deepMerge(defaultPresenterStyle, style);
+            initializePanel(this);
+            this._last = { view: null, height: null, width: null, cubeCount: null, stage: null };
         }
         /**
          * Cancels any pending animation, calling animationCanceled() on original queue.
@@ -2398,6 +2469,7 @@ void main(void) {
                 const classes = createDeckGLClassesForPresenter({
                     doubleClickHandler: () => {
                         this.homeCamera();
+                        return true;
                     },
                 });
                 this.OrbitControllerClass = classes.OrbitControllerClass;
@@ -2701,7 +2773,5 @@ void main(void) {
     exports.types = types;
     exports.use = use;
     exports.util = util;
-
-    Object.defineProperty(exports, '__esModule', { value: true });
 
 }));

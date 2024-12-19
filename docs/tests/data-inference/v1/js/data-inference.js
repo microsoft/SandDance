@@ -660,7 +660,7 @@
       // Mapping TypeScript types to Python-like dtypes
       const typeMapping = {
           boolean: 'bool',
-          number: 'float64',
+          number: 'float64', // Assuming 'number' is used for floating-point numbers
           date: 'datetime64[ns]',
           string: 'object',
           integer: 'int64',
@@ -721,7 +721,5 @@
   exports.inferAll = inferAll;
   exports.isColor = isColor;
   exports.isQuantitative = isQuantitative;
-
-  Object.defineProperty(exports, '__esModule', { value: true });
 
 }));

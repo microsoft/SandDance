@@ -20,7 +20,7 @@ var quanBarChartTest;
             myY: i,
             myZ: i,
             myColor: v,
-            mySort: i
+            mySort: i,
         });
     }
     var glDiv = quanBarChartTest.viewer.presenter.getElement(SandDance.VegaMorphCharts.PresenterElement.gl);
@@ -31,15 +31,15 @@ var quanBarChartTest;
             uid: 'myUid',
             x: 'myX',
             y: 'myY',
-            z: 'myZ'
+            z: 'myZ',
         },
         scheme: 'redblue',
         size: {
             height: glDiv.offsetHeight,
-            width: glDiv.offsetWidth
+            width: glDiv.offsetWidth,
         },
         chart: 'barchart',
-        view: '2d'
+        view: '2d',
     };
     quanBarChartTest.viewer.render({ insight: insight }, data);
 })(quanBarChartTest || (quanBarChartTest = {}));
