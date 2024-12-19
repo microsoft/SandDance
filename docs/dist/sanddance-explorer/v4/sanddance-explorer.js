@@ -47152,10 +47152,10 @@ function $a4defabaac4a9afe$export$1ba59dacbcbf90fe(props) {
     }, (0, $a601a4135959dcb0$export$e2253033e6e1df16).react.createElement("div", {
         className: "sidebar-content"
     }, (0, $a601a4135959dcb0$export$e2253033e6e1df16).react.createElement((0, $86b892255d8eb4f0$export$3fb74a6ae4f1171d), Object.assign({}, props.dataScopeProps)), (0, $a601a4135959dcb0$export$e2253033e6e1df16).react.createElement("div", {
-        className: "vbuttons",
-        role: 'tablist'
+        className: "vbuttons"
     }, (0, $a601a4135959dcb0$export$e2253033e6e1df16).react.createElement("div", {
-        className: "sidebar-dialogs"
+        className: "sidebar-dialogs",
+        role: 'tablist'
     }, sidebuttons.map((sidebutton, i)=>(0, $a601a4135959dcb0$export$e2253033e6e1df16).react.createElement((0, $d7542c73853af2f5$export$a8fc19311f33df91), Object.assign({
             key: i
         }, props, sidebutton, {

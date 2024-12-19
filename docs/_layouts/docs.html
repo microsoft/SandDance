@@ -24,7 +24,7 @@ layout: default
             <div class="o-layout__item u-1/4@tablet c-tree-stick">
                 <ul id="site-tree" class="c-tree o-list-bare" role="tree">
                     {% for tree in site.data.tree %}
-                    <li class="c-tree__item o-list-bare__item">
+                    <li class="c-tree__item o-list-bare__item" role="treeitem">
                         <div class="c-tree__toggle js-tree-toggle">
                             {{ tree[0] }}
                         </div>
