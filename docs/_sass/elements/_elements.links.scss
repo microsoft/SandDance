@@ -5,13 +5,6 @@
 \*------------------------------------*/
 
 a {
-    text-decoration: none;
-
-    &:hover,
-    &:focus {
-        text-decoration: underline;
-    }
-
     .c-page-main &, footer & {
         color: $ms-sky-400;
 
