@@ -70,8 +70,8 @@ export function Sidebar(props: Props) {
                 <DataScope
                     {...props.dataScopeProps}
                 />
-                <div className="vbuttons" role='tablist'>
-                    <div className="sidebar-dialogs">
+                <div className="vbuttons">
+                    <div className="sidebar-dialogs" role='tablist'>
                         {sidebuttons.map((sidebutton, i) => (
                             <Sidebutton
                                 key={i}
