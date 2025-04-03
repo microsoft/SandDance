@@ -8,7 +8,7 @@
     "react": ">=16.8.0 <18.0.0",
     "react-dom": ">=16.8.0 <18.0.0",
     "streamlit-component-lib": "^2.0.0",
-    "vega": "5.30.0"
+    "vega": "5.32.0"
   },
   "scripts": {
     "build:07": "npm run bundle",
