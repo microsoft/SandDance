@@ -44,7 +44,7 @@ console.log(columns);
 
 ### Pre-built library
 ```html
-<script src="https://unpkg.com/vega@^5.30/build/vega.js" charset="utf-8"></script>
+<script src="https://unpkg.com/vega@^5.32/build/vega.js" charset="utf-8"></script>
 <script src="https://unpkg.com/@msrvida/data-inference@1.0.0/dist/umd/data-inference.js" charset="utf-8"></script>
     <script>
         const data = [

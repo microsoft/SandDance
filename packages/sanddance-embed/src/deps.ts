@@ -39,7 +39,7 @@ namespace SandDanceEmbed {
                 type: 'script',
                 url: `${localDev
                     ? '../../node_modules/vega'
-                    : 'https://unpkg.com/vega@5.30'
+                    : 'https://unpkg.com/vega@5.32'
                 }/build/vega${minified ? '.min' : ''}.js`,
             },
             {

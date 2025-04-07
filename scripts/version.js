@@ -12,4 +12,4 @@ const js = fs.readFileSync(file, 'utf8').replace('DEBUG', packageJson.version);
 
 fs.writeFileSync(file, js);
 
-console.log(`versioning complete`);
+console.log('versioning complete');
