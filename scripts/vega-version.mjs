@@ -1,20 +1,9 @@
 import { globSync } from 'glob';
 import { readFileSync, writeFileSync } from 'fs';
 
-const oldVersion = {
-    vega: {
-        major: '5',
-        minor: '25',
-        patch: '0',
-    },
-    typings: {
-        major: '0',
-        minor: '24',
-        patch: '1',
-    },
-};
+//note - manually upgrade vega and vega-typings versions in root package.json
 
-const newVersion = {
+const oldVersion = {
     vega: {
         major: '5',
         minor: '30',
@@ -24,6 +13,19 @@ const newVersion = {
         major: '1',
         minor: '3',
         patch: '1',
+    },
+};
+
+const newVersion = {
+    vega: {
+        major: '5',
+        minor: '32',
+        patch: '0',
+    },
+    typings: {
+        major: '1',
+        minor: '5',
+        patch: '0',
     },
 };
 
@@ -37,6 +39,12 @@ const packages = {
             ],
         },
         {
+            glob: 'test/*.html',
+            pattern: ({ major, minor }) => [
+                `vega@^${major}.${minor}`,
+            ],
+        },
+        {
             glob: 'docs/tests/{data-inference,sanddance-specs}/v1/index.html',
             pattern: ({ major, minor }) => [
                 `vega@^${major}.${minor}`,
@@ -44,6 +52,12 @@ const packages = {
         },
         {
             glob: '{extensions,packages}/*/package.json',
+            pattern: ({ major, minor, patch }) => [
+                `"vega": "${major}.${minor}${patch.length ? '.' : ''}${patch}"`,
+            ],
+        },
+        {
+            glob: 'streamlit/streamlit_sanddance/frontend/package.json',
             pattern: ({ major, minor, patch }) => [
                 `"vega": "${major}.${minor}${patch.length ? '.' : ''}${patch}"`,
             ],
@@ -86,6 +100,9 @@ Object.entries(packages).forEach(([key, patterns]) => {
         const files = globSync(`${value.glob}`);
 
         files.forEach(file => {
+
+            console.log(`  file: ${file}`);
+
             let content = readFileSync(file, 'utf8');
             let updatedContent = content;
             searches.forEach((searchStr, i) => {
@@ -108,3 +125,4 @@ Object.entries(packages).forEach(([key, patterns]) => {
         });
     });
 });
+

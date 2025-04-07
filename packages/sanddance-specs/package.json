@@ -33,6 +33,6 @@
     "@msrvida/chart-types": "^1",
     "@msrvida/data-inference": "^1",
     "@msrvida/search-expression": "^1",
-    "vega-typings": "~1.3.1"
+    "vega-typings": "~1.5.0"
   }
 }
