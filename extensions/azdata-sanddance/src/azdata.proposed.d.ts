@@ -1079,7 +1079,7 @@ declare module 'azdata' {
 	
 	    constructor(
 			container: HTMLElement, options: IInsightOptions = defaultOptions,
-			@IInstantiationService _instantiationService: IInstantiationService
+			_instantiationService: IInstantiationService
 		);
 	
 	    public layout(dim: Dimension);
