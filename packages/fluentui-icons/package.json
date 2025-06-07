@@ -1,17 +1,25 @@
 {
   "name": "@msrvida/fluentui-icons",
-  "private": true,
   "version": "1.0.0",
+  "description": "Fluent UI icons for use in MsrVida data visualization applications.",
   "main": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/SandDance.git",
+    "directory": "packages/fluentui-icons"
+  },
   "files": [
     "dist"
   ],
+  "author": "Dan Marshall",
+  "license": "MIT",
   "scripts": {
     "clean": "rimraf ./dist",
     "eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
     "prebuild": "node ./scripts/prebuild.js",
     "build": "tsc -p .",
-    "build:05": "npm run build"
+    "bundle": "rollup -c",
+    "build:05": "npm run build && npm run bundle"
   }
 }
