@@ -1,0 +1,16 @@
+{
+  "name": "@msrvida/fluentui-icons",
+  "private": true,
+  "version": "1.0.0",
+  "main": "dist/es6/index.js",
+  "types": "dist/es6/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
+    "prebuild": "node ./scripts/prebuild.js",
+    "build": "tsc -p .",
+    "build:05": "npm run build"
+  }
+}

@@ -1,0 +1,71 @@
+/*
+  Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fabric-assets-license
+*/
+@font-face {
+  font-family: 'FabricMDL2Icons';
+  src: url('../fonts/fabric-icons-994712d3.woff') format('woff');
+}
+
+.ms-Icon {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-family: 'FabricMDL2Icons';
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+}
+
+.ms-Icon--Accept:before { content: "\E8FB"; }
+.ms-Icon--Add:before { content: "\E710"; }
+.ms-Icon--BIDashboard:before { content: "\F543"; }
+.ms-Icon--Camera:before { content: "\E722"; }
+.ms-Icon--Cancel:before { content: "\E711"; }
+.ms-Icon--ChevronDown:before { content: "\E70D"; }
+.ms-Icon--ChevronLeftMed:before { content: "\E973"; }
+.ms-Icon--ChevronRightMed:before { content: "\E974"; }
+.ms-Icon--Clear:before { content: "\E894"; }
+.ms-Icon--ClearFilter:before { content: "\EF8F"; }
+.ms-Icon--ClearNight:before { content: "\E9C2"; }
+.ms-Icon--CloudDownload:before { content: "\EBD3"; }
+.ms-Icon--Color:before { content: "\E790"; }
+.ms-Icon--Copy:before { content: "\E8C8"; }
+.ms-Icon--CubeShape:before { content: "\F1AA"; }
+.ms-Icon--Delete:before { content: "\E74D"; }
+.ms-Icon--Diamond:before { content: "\ED02"; }
+.ms-Icon--DiamondSolid:before { content: "\F34C"; }
+.ms-Icon--DoubleChevronLeft12:before { content: "\EE98"; }
+.ms-Icon--DoubleChevronRight12:before { content: "\EE99"; }
+.ms-Icon--Download:before { content: "\E896"; }
+.ms-Icon--Edit:before { content: "\E70F"; }
+.ms-Icon--Filter:before { content: "\E71C"; }
+.ms-Icon--Filters:before { content: "\E795"; }
+.ms-Icon--FiltersSolid:before { content: "\F353"; }
+.ms-Icon--Flow:before { content: "\EF90"; }
+.ms-Icon--History:before { content: "\E81C"; }
+.ms-Icon--HourGlass:before { content: "\EA03"; }
+.ms-Icon--Next:before { content: "\E893"; }
+.ms-Icon--OpenInNewWindow:before { content: "\E8A7"; }
+.ms-Icon--Page:before { content: "\E7C3"; }
+.ms-Icon--Pause:before { content: "\E769"; }
+.ms-Icon--Photo2Add:before { content: "\ECAB"; }
+.ms-Icon--Photo2Remove:before { content: "\ECAC"; }
+.ms-Icon--PicturePosition:before { content: "\F524"; }
+.ms-Icon--Pin:before { content: "\E718"; }
+.ms-Icon--Pinned:before { content: "\E840"; }
+.ms-Icon--PlayResume:before { content: "\F2C6"; }
+.ms-Icon--PlayReverseResume:before { content: "\F3E4"; }
+.ms-Icon--Previous:before { content: "\E892"; }
+.ms-Icon--RadioBtnOff:before { content: "\ECCA"; }
+.ms-Icon--RadioBtnOn:before { content: "\ECCB"; }
+.ms-Icon--RadioBullet:before { content: "\E915"; }
+.ms-Icon--Redo:before { content: "\E7A6"; }
+.ms-Icon--RemoveFilter:before { content: "\EB08"; }
+.ms-Icon--ScaleVolume:before { content: "\F18C"; }
+.ms-Icon--Search:before { content: "\E721"; }
+.ms-Icon--Settings:before { content: "\E713"; }
+.ms-Icon--SortDown:before { content: "\EE69"; }
+.ms-Icon--SortUp:before { content: "\EE68"; }
+.ms-Icon--Sunny:before { content: "\E9BD"; }
+.ms-Icon--Table:before { content: "\ED86"; }
+.ms-Icon--Undo:before { content: "\E7A7"; }

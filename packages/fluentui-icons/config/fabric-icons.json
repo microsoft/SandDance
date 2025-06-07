@@ -1,0 +1,222 @@
+{
+  "fontName": "fabric-icons",
+  "fontFamilyName": "FabricMDL2Icons",
+  "excludeGlyphs": false,
+  "excludeThirdPartyIcons": false,
+  "chunkSubsets": false,
+  "hashFontFileName": true,
+  "glyphs": [
+    {
+      "name": "Accept",
+      "unicode": "E8FB"
+    },
+    {
+      "name": "Add",
+      "unicode": "E710"
+    },
+    {
+      "name": "BIDashboard",
+      "unicode": "F543"
+    },
+    {
+      "name": "Camera",
+      "unicode": "E722"
+    },
+    {
+      "name": "Cancel",
+      "unicode": "E711"
+    },
+    {
+      "name": "ChevronDown",
+      "unicode": "E70D"
+    },
+    {
+      "name": "ChevronLeftMed",
+      "unicode": "E973"
+    },
+    {
+      "name": "ChevronRightMed",
+      "unicode": "E974"
+    },
+    {
+      "name": "Clear",
+      "unicode": "E894"
+    },
+    {
+      "name": "ClearFilter",
+      "unicode": "EF8F"
+    },
+    {
+      "name": "ClearNight",
+      "unicode": "E9C2"
+    },
+    {
+      "name": "CloudDownload",
+      "unicode": "EBD3"
+    },
+    {
+      "name": "Color",
+      "unicode": "E790"
+    },
+    {
+      "name": "Copy",
+      "unicode": "E8C8"
+    },
+    {
+      "name": "CubeShape",
+      "unicode": "F1AA"
+    },
+    {
+      "name": "Delete",
+      "unicode": "E74D"
+    },
+    {
+      "name": "Diamond",
+      "unicode": "ED02"
+    },
+    {
+      "name": "DiamondSolid",
+      "unicode": "F34C"
+    },
+    {
+      "name": "DoubleChevronLeft12",
+      "unicode": "EE98"
+    },
+    {
+      "name": "DoubleChevronRight12",
+      "unicode": "EE99"
+    },
+    {
+      "name": "Download",
+      "unicode": "E896"
+    },
+    {
+      "name": "Edit",
+      "unicode": "E70F"
+    },
+    {
+      "name": "Filter",
+      "unicode": "E71C"
+    },
+    {
+      "name": "Filters",
+      "unicode": "E795"
+    },
+    {
+      "name": "FiltersSolid",
+      "unicode": "F353"
+    },
+    {
+      "name": "Flow",
+      "unicode": "EF90"
+    },
+    {
+      "name": "History",
+      "unicode": "E81C"
+    },
+    {
+      "name": "HourGlass",
+      "unicode": "EA03"
+    },
+    {
+      "name": "Next",
+      "unicode": "E893"
+    },
+    {
+      "name": "OpenInNewWindow",
+      "unicode": "E8A7"
+    },
+    {
+      "name": "Page",
+      "unicode": "E7C3"
+    },
+    {
+      "name": "Pause",
+      "unicode": "E769"
+    },
+    {
+      "name": "Photo2Add",
+      "unicode": "ECAB"
+    },
+    {
+      "name": "Photo2Remove",
+      "unicode": "ECAC"
+    },
+    {
+      "name": "PicturePosition",
+      "unicode": "F524"
+    },
+    {
+      "name": "Pin",
+      "unicode": "E718"
+    },
+    {
+      "name": "Pinned",
+      "unicode": "E840"
+    },
+    {
+      "name": "PlayResume",
+      "unicode": "F2C6"
+    },
+    {
+      "name": "PlayReverseResume",
+      "unicode": "F3E4"
+    },
+    {
+      "name": "Previous",
+      "unicode": "E892"
+    },
+    {
+      "name": "RadioBtnOff",
+      "unicode": "ECCA"
+    },
+    {
+      "name": "RadioBtnOn",
+      "unicode": "ECCB"
+    },
+    {
+      "name": "RadioBullet",
+      "unicode": "E915"
+    },
+    {
+      "name": "Redo",
+      "unicode": "E7A6"
+    },
+    {
+      "name": "RemoveFilter",
+      "unicode": "EB08"
+    },
+    {
+      "name": "ScaleVolume",
+      "unicode": "F18C"
+    },
+    {
+      "name": "Search",
+      "unicode": "E721"
+    },
+    {
+      "name": "Settings",
+      "unicode": "E713"
+    },
+    {
+      "name": "SortDown",
+      "unicode": "EE69"
+    },
+    {
+      "name": "SortUp",
+      "unicode": "EE68"
+    },
+    {
+      "name": "Sunny",
+      "unicode": "E9BD"
+    },
+    {
+      "name": "Table",
+      "unicode": "ED86"
+    },
+    {
+      "name": "Undo",
+      "unicode": "E7A7"
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+/*
+  Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fabric-assets-license
+*/
+@font-face {
+  font-family: 'FabricMDL2Icons';
+  src: url('../fonts/fabric-icons-994712d3.woff') format('woff');
+}
+
+.ms-Icon {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-family: 'FabricMDL2Icons';
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+}
+
+// Mixins
+@mixin ms-Icon--Accept { content: "\E8FB"; }
+@mixin ms-Icon--Add { content: "\E710"; }
+@mixin ms-Icon--BIDashboard { content: "\F543"; }
+@mixin ms-Icon--Camera { content: "\E722"; }
+@mixin ms-Icon--Cancel { content: "\E711"; }
+@mixin ms-Icon--ChevronDown { content: "\E70D"; }
+@mixin ms-Icon--ChevronLeftMed { content: "\E973"; }
+@mixin ms-Icon--ChevronRightMed { content: "\E974"; }
+@mixin ms-Icon--Clear { content: "\E894"; }
+@mixin ms-Icon--ClearFilter { content: "\EF8F"; }
+@mixin ms-Icon--ClearNight { content: "\E9C2"; }
+@mixin ms-Icon--CloudDownload { content: "\EBD3"; }
+@mixin ms-Icon--Color { content: "\E790"; }
+@mixin ms-Icon--Copy { content: "\E8C8"; }
+@mixin ms-Icon--CubeShape { content: "\F1AA"; }
+@mixin ms-Icon--Delete { content: "\E74D"; }
+@mixin ms-Icon--Diamond { content: "\ED02"; }
+@mixin ms-Icon--DiamondSolid { content: "\F34C"; }
+@mixin ms-Icon--DoubleChevronLeft12 { content: "\EE98"; }
+@mixin ms-Icon--DoubleChevronRight12 { content: "\EE99"; }
+@mixin ms-Icon--Download { content: "\E896"; }
+@mixin ms-Icon--Edit { content: "\E70F"; }
+@mixin ms-Icon--Filter { content: "\E71C"; }
+@mixin ms-Icon--Filters { content: "\E795"; }
+@mixin ms-Icon--FiltersSolid { content: "\F353"; }
+@mixin ms-Icon--Flow { content: "\EF90"; }
+@mixin ms-Icon--History { content: "\E81C"; }
+@mixin ms-Icon--HourGlass { content: "\EA03"; }
+@mixin ms-Icon--Next { content: "\E893"; }
+@mixin ms-Icon--OpenInNewWindow { content: "\E8A7"; }
+@mixin ms-Icon--Page { content: "\E7C3"; }
+@mixin ms-Icon--Pause { content: "\E769"; }
+@mixin ms-Icon--Photo2Add { content: "\ECAB"; }
+@mixin ms-Icon--Photo2Remove { content: "\ECAC"; }
+@mixin ms-Icon--PicturePosition { content: "\F524"; }
+@mixin ms-Icon--Pin { content: "\E718"; }
+@mixin ms-Icon--Pinned { content: "\E840"; }
+@mixin ms-Icon--PlayResume { content: "\F2C6"; }
+@mixin ms-Icon--PlayReverseResume { content: "\F3E4"; }
+@mixin ms-Icon--Previous { content: "\E892"; }
+@mixin ms-Icon--RadioBtnOff { content: "\ECCA"; }
+@mixin ms-Icon--RadioBtnOn { content: "\ECCB"; }
+@mixin ms-Icon--RadioBullet { content: "\E915"; }
+@mixin ms-Icon--Redo { content: "\E7A6"; }
+@mixin ms-Icon--RemoveFilter { content: "\EB08"; }
+@mixin ms-Icon--ScaleVolume { content: "\F18C"; }
+@mixin ms-Icon--Search { content: "\E721"; }
+@mixin ms-Icon--Settings { content: "\E713"; }
+@mixin ms-Icon--SortDown { content: "\EE69"; }
+@mixin ms-Icon--SortUp { content: "\EE68"; }
+@mixin ms-Icon--Sunny { content: "\E9BD"; }
+@mixin ms-Icon--Table { content: "\ED86"; }
+@mixin ms-Icon--Undo { content: "\E7A7"; }
+
+
+// Classes
+.ms-Icon--Accept:before { @include ms-Icon--Accept }
+.ms-Icon--Add:before { @include ms-Icon--Add }
+.ms-Icon--BIDashboard:before { @include ms-Icon--BIDashboard }
+.ms-Icon--Camera:before { @include ms-Icon--Camera }
+.ms-Icon--Cancel:before { @include ms-Icon--Cancel }
+.ms-Icon--ChevronDown:before { @include ms-Icon--ChevronDown }
+.ms-Icon--ChevronLeftMed:before { @include ms-Icon--ChevronLeftMed }
+.ms-Icon--ChevronRightMed:before { @include ms-Icon--ChevronRightMed }
+.ms-Icon--Clear:before { @include ms-Icon--Clear }
+.ms-Icon--ClearFilter:before { @include ms-Icon--ClearFilter }
+.ms-Icon--ClearNight:before { @include ms-Icon--ClearNight }
+.ms-Icon--CloudDownload:before { @include ms-Icon--CloudDownload }
+.ms-Icon--Color:before { @include ms-Icon--Color }
+.ms-Icon--Copy:before { @include ms-Icon--Copy }
+.ms-Icon--CubeShape:before { @include ms-Icon--CubeShape }
+.ms-Icon--Delete:before { @include ms-Icon--Delete }
+.ms-Icon--Diamond:before { @include ms-Icon--Diamond }
+.ms-Icon--DiamondSolid:before { @include ms-Icon--DiamondSolid }
+.ms-Icon--DoubleChevronLeft12:before { @include ms-Icon--DoubleChevronLeft12 }
+.ms-Icon--DoubleChevronRight12:before { @include ms-Icon--DoubleChevronRight12 }
+.ms-Icon--Download:before { @include ms-Icon--Download }
+.ms-Icon--Edit:before { @include ms-Icon--Edit }
+.ms-Icon--Filter:before { @include ms-Icon--Filter }
+.ms-Icon--Filters:before { @include ms-Icon--Filters }
+.ms-Icon--FiltersSolid:before { @include ms-Icon--FiltersSolid }
+.ms-Icon--Flow:before { @include ms-Icon--Flow }
+.ms-Icon--History:before { @include ms-Icon--History }
+.ms-Icon--HourGlass:before { @include ms-Icon--HourGlass }
+.ms-Icon--Next:before { @include ms-Icon--Next }
+.ms-Icon--OpenInNewWindow:before { @include ms-Icon--OpenInNewWindow }
+.ms-Icon--Page:before { @include ms-Icon--Page }
+.ms-Icon--Pause:before { @include ms-Icon--Pause }
+.ms-Icon--Photo2Add:before { @include ms-Icon--Photo2Add }
+.ms-Icon--Photo2Remove:before { @include ms-Icon--Photo2Remove }
+.ms-Icon--PicturePosition:before { @include ms-Icon--PicturePosition }
+.ms-Icon--Pin:before { @include ms-Icon--Pin }
+.ms-Icon--Pinned:before { @include ms-Icon--Pinned }
+.ms-Icon--PlayResume:before { @include ms-Icon--PlayResume }
+.ms-Icon--PlayReverseResume:before { @include ms-Icon--PlayReverseResume }
+.ms-Icon--Previous:before { @include ms-Icon--Previous }
+.ms-Icon--RadioBtnOff:before { @include ms-Icon--RadioBtnOff }
+.ms-Icon--RadioBtnOn:before { @include ms-Icon--RadioBtnOn }
+.ms-Icon--RadioBullet:before { @include ms-Icon--RadioBullet }
+.ms-Icon--Redo:before { @include ms-Icon--Redo }
+.ms-Icon--RemoveFilter:before { @include ms-Icon--RemoveFilter }
+.ms-Icon--ScaleVolume:before { @include ms-Icon--ScaleVolume }
+.ms-Icon--Search:before { @include ms-Icon--Search }
+.ms-Icon--Settings:before { @include ms-Icon--Settings }
+.ms-Icon--SortDown:before { @include ms-Icon--SortDown }
+.ms-Icon--SortUp:before { @include ms-Icon--SortUp }
+.ms-Icon--Sunny:before { @include ms-Icon--Sunny }
+.ms-Icon--Table:before { @include ms-Icon--Table }
+.ms-Icon--Undo:before { @include ms-Icon--Undo }
+
