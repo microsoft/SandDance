@@ -6,7 +6,16 @@
 // anything defined in a previous bundle is accessed via the
 // orig method which is the require for previous bundles
 
-(function (modules, entry, mainEntry, parcelRequireName, globalName) {
+(function (
+  modules,
+  entry,
+  mainEntry,
+  parcelRequireName,
+  externals,
+  distDir,
+  publicUrl,
+  devServer
+) {
   /* eslint-disable no-undef */
   var globalObject =
     typeof globalThis !== 'undefined'
@@ -25,6 +34,7 @@
     typeof globalObject[parcelRequireName] === 'function' &&
     globalObject[parcelRequireName];
 
+  var importMap = previousRequire.i || {};
   var cache = previousRequire.cache || {};
   // Do not use `require` to prevent Webpack from trying to bundle this call
   var nodeRequire =
@@ -35,6 +45,9 @@
   function newRequire(name, jumped) {
     if (!cache[name]) {
       if (!modules[name]) {
+        if (externals[name]) {
+          return externals[name];
+        }
         // if we cannot find the module within our internal map or
         // cache jump to the current global require ie. the last bundle
         // that was added to the page.
@@ -93,6 +106,7 @@
   function Module(moduleName) {
     this.id = moduleName;
     this.bundle = newRequire;
+    this.require = nodeRequire;
     this.exports = {};
   }
 
@@ -101,6 +115,10 @@
   newRequire.modules = modules;
   newRequire.cache = cache;
   newRequire.parent = previousRequire;
+  newRequire.distDir = distDir;
+  newRequire.publicUrl = publicUrl;
+  newRequire.devServer = devServer;
+  newRequire.i = importMap;
   newRequire.register = function (id, exports) {
     modules[id] = [
       function (require, module) {
@@ -109,6 +127,10 @@
       {},
     ];
   };
+
+  // Only insert newRequire.load when it is actually used.
+  // The code in this file is linted against ES5, so dynamic import is not allowed.
+  // INSERT_LOAD_HERE
 
   Object.defineProperty(newRequire, 'root', {
     get: function () {
@@ -136,10 +158,6 @@
       define(function () {
         return mainExports;
       });
-
-      // <script>
-    } else if (globalName) {
-      this[globalName] = mainExports;
     }
   }
 })({"1dxDQ":[function(require,module,exports,__globalThis) {
@@ -277,7 +295,7 @@ var _vegaParser = require("vega-parser");
 var _vegaRuntime = require("vega-runtime");
 var _vegaExpression = require("vega-expression");
 var _vegaEventSelector = require("vega-event-selector");
-var version = "5.30.0";
+var version = "5.32.0";
 // -- Transforms -----
 (0, _vegaUtil.extend)((0, _vegaDataflow.transforms), _vegaTransforms, _vegaViewTransforms, _vegaEncode, _vegaGeo, _vegaForce, _vegaLabel, _vegaHierarchy, _vegaRegression, _vegaVoronoi, _vegaWordcloud, _vegaCrossfilter);
 
@@ -760,9 +778,8 @@ function extentIndex(array, f) {
         v
     ];
 }
-const hop = Object.prototype.hasOwnProperty;
 function has(object, property) {
-    return hop.call(object, property);
+    return Object.hasOwn(object, property);
 }
 const NULL = {};
 function fastmap(input) {
@@ -2854,7 +2871,7 @@ const fileProtocol = 'file://';
             options: options || {},
             sanitize: sanitize,
             load: load,
-            fileAccess: !!fs,
+            fileAccess: false,
             file: fileLoader(fs),
             http: httpLoader(fetch1)
         });
@@ -41598,6 +41615,7 @@ parcelHelpers.export(exports, "scaleVisitor", ()=>scaleVisitor);
 parcelHelpers.export(exports, "screen", ()=>screen);
 parcelHelpers.export(exports, "setdata", ()=>setdata);
 parcelHelpers.export(exports, "slice", ()=>slice);
+parcelHelpers.export(exports, "sort", ()=>sort);
 parcelHelpers.export(exports, "timeFormat", ()=>timeFormat);
 parcelHelpers.export(exports, "timeParse", ()=>timeParse);
 parcelHelpers.export(exports, "treeAncestors", ()=>treeAncestors);
@@ -41699,10 +41717,11 @@ function addScaleDependency(scope, params, name) {
     // TODO: error handling? warning?
     }
 }
-function getScale(nameOrFunction, ctx) {
-    if ((0, _vegaUtil.isFunction)(nameOrFunction)) return nameOrFunction;
-    if ((0, _vegaUtil.isString)(nameOrFunction)) {
-        const maybeScale = ctx.scales[nameOrFunction];
+/**
+ * Name must be a string. Return undefined if the scale is not registered.
+ */ function getScale(name, ctx) {
+    if ((0, _vegaUtil.isString)(name)) {
+        const maybeScale = ctx.scales[name];
         return maybeScale && (0, _vegaScale.isRegisteredScale)(maybeScale.value) ? maybeScale.value : undefined;
     }
     return undefined;
@@ -41874,10 +41893,14 @@ function slice(seq) {
 }
 function replace(str, pattern, repl) {
     if ((0, _vegaUtil.isFunction)(repl)) (0, _vegaUtil.error)('Function argument passed to replace.');
+    if (!(0, _vegaUtil.isString)(pattern) && !(0, _vegaUtil.isRegExp)(pattern)) (0, _vegaUtil.error)('Please pass a string or RegExp argument to replace.');
     return String(str).replace(pattern, repl);
 }
 function reverse(seq) {
     return array(seq).slice().reverse();
+}
+function sort(seq) {
+    return array(seq).slice().sort((0, _vegaUtil.ascending));
 }
 function bandspace(count, paddingInner, paddingOuter) {
     return (0, _vegaScale.bandSpace)(count || 0, paddingInner || 0, paddingOuter || 0);
@@ -41906,8 +41929,11 @@ function scale(name, value, group) {
     const s = getScale(name, (group || this).context);
     return s ? s(value) : undefined;
 }
-function scaleGradient(scale, p0, p1, count, group) {
-    scale = getScale(scale, (group || this).context);
+/**
+ * Passing a function is only used for for testing.
+ * Outside of tests, the first argument should be a string.
+ */ function scaleGradient(scaleOrFunction, p0, p1, count, group) {
+    let scale = typeof scaleOrFunction === 'string' ? getScale(scaleOrFunction, (group || this).context) : scaleOrFunction;
     const gradient = (0, _vegaScenegraph.Gradient)(p0, p1);
     let stops = scale.domain(), min = stops[0], max = (0, _vegaUtil.peek)(stops), fraction = (0, _vegaUtil.identity);
     if (!(max - min)) // expand scale if domain has zero span, fix #1479
@@ -42116,6 +42142,7 @@ const functionContext = {
     lastindexof,
     replace,
     reverse,
+    sort,
     slice,
     flush: (0, _vegaUtil.flush),
     lerp: (0, _vegaUtil.lerp),
@@ -43507,6 +43534,9 @@ function Functions(codegen) {
         substring: fn('substring', STRING),
         split: fn('split', STRING),
         trim: fn('trim', STRING, 0),
+        // base64 encode/decode
+        btoa: 'btoa',
+        atob: 'atob',
         // REGEXP functions
         regexp: REGEXP,
         test: fn('test', REGEXP),
@@ -43617,7 +43647,7 @@ const Or = 'or';
 const And = 'and';
 const SelectionId = '_vgsid_';
 const $selectionId = (0, _vegaUtil.field)(SelectionId);
-const TYPE_ENUM = 'E', TYPE_RANGE_INC = 'R', TYPE_RANGE_EXC = 'R-E', TYPE_RANGE_LE = 'R-LE', TYPE_RANGE_RE = 'R-RE', UNIT_INDEX = 'index:unit';
+const TYPE_ENUM = 'E', TYPE_RANGE_INC = 'R', TYPE_RANGE_EXC = 'R-E', TYPE_RANGE_LE = 'R-LE', TYPE_RANGE_RE = 'R-RE', TYPE_PRED_LT = 'E-LT', TYPE_PRED_LTE = 'E-LTE', TYPE_PRED_GT = 'E-GT', TYPE_PRED_GTE = 'E-GTE', TYPE_PRED_VALID = 'E-VALID', TYPE_PRED_ONE_OF = 'E-ONE', UNIT_INDEX = 'index:unit';
 // TODO: revisit date coercion?
 function testPoint(datum, entry) {
     var fields = entry.fields, values = entry.values, n = fields.length, i = 0, dval, f;
@@ -43630,7 +43660,7 @@ function testPoint(datum, entry) {
         if (f.type === TYPE_ENUM) {
             // Enumerated fields can either specify individual values (single/multi selections)
             // or an array of values (interval selections).
-            if ((0, _vegaUtil.isArray)(values[i]) ? values[i].indexOf(dval) < 0 : dval !== values[i]) return false;
+            if ((0, _vegaUtil.isArray)(values[i]) ? !values[i].includes(dval) : dval !== values[i]) return false;
         } else {
             if (f.type === TYPE_RANGE_INC) {
                 if (!(0, _vegaUtil.inrange)(dval, values[i])) return false;
@@ -43642,6 +43672,18 @@ function testPoint(datum, entry) {
                 if (!(0, _vegaUtil.inrange)(dval, values[i], false, false)) return false;
             } else if (f.type === TYPE_RANGE_LE) {
                 if (!(0, _vegaUtil.inrange)(dval, values[i], false, true)) return false;
+            } else if (f.type === TYPE_PRED_LT) {
+                if (dval >= values[i]) return false;
+            } else if (f.type === TYPE_PRED_LTE) {
+                if (dval > values[i]) return false;
+            } else if (f.type === TYPE_PRED_GT) {
+                if (dval <= values[i]) return false;
+            } else if (f.type === TYPE_PRED_GTE) {
+                if (dval < values[i]) return false;
+            } else if (f.type === TYPE_PRED_VALID) {
+                if (dval === null || isNaN(dval)) return false;
+            } else if (f.type === TYPE_PRED_ONE_OF) {
+                if (values[i].indexOf(dval) === -1) return false;
             }
         }
     }
@@ -43792,11 +43834,11 @@ var ops = {
     E_union: function(base, value) {
         if (!base.length) return value;
         var i = 0, n = value.length;
-        for(; i < n; ++i)if (base.indexOf(value[i]) < 0) base.push(value[i]);
+        for(; i < n; ++i)if (!base.includes(value[i])) base.push(value[i]);
         return base;
     },
     E_intersect: function(base, value) {
-        return !base.length ? value : base.filter((v)=>value.indexOf(v) >= 0);
+        return !base.length ? value : base.filter((v)=>value.includes(v));
     },
     R_union: function(base, value) {
         var lo = (0, _vegaUtil.toNumber)(value[0]), hi = (0, _vegaUtil.toNumber)(value[1]);
@@ -45083,7 +45125,7 @@ const GuideLabelStyle = 'guide-label';
 const GuideTitleStyle = 'guide-title';
 const GroupTitleStyle = 'group-title';
 const GroupSubtitleStyle = 'group-subtitle';
-const Symbols = 'symbol';
+/** All values of LegendType */ const Symbols = 'symbol';
 const Gradient = 'gradient';
 const Discrete = 'discrete';
 const Size = 'size';
@@ -84192,5 +84234,5 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "version", ()=>version);
 const version = '1.0.6';
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}]},["1dxDQ"], "1dxDQ", "parcelRequire94c2")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}]},["1dxDQ"], "1dxDQ", "parcelRequirec6f8", {})
 

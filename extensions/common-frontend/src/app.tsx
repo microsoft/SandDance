@@ -5,8 +5,11 @@ import VegaMorphCharts = SandDance.VegaMorphCharts;
 
 declare let vega: VegaMorphCharts.types.VegaBase;
 declare let FluentUIReact: _FluentUI.FluentUIComponents;
+declare let FluentUIIcons: _FluentUIIcons.FluentUIIconsBase;
 
 namespace SandDanceApp {
+    FluentUIIcons.use(FluentUIReact.registerIcons, FluentUIReact.unregisterIcons);
+    FluentUIIcons.initializeIcons();
     SandDanceExplorer.use(FluentUIReact, React, ReactDOM, vega);
 
     function getTextcolor() {

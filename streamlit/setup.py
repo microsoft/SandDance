@@ -7,7 +7,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setuptools.setup(
     name="streamlit-sanddance",
-    version="0.0.1",
+    version="0.0.2",
     author="Dan Marshall",
     author_email="danmar@microsoft.com",
     description="Streamlit component that allows you to view a SandDance visualization of a dataframe.",

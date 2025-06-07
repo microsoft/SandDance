@@ -30,7 +30,7 @@ function $parcel$defineInteropFlag(a) {
 var $parcel$modules = {};
 var $parcel$inits = {};
 
-var parcelRequire = $parcel$global["parcelRequire94c2"];
+var parcelRequire = $parcel$global["parcelRequirec6f8"];
 
 if (parcelRequire == null) {
   parcelRequire = function(id) {
@@ -54,7 +54,7 @@ if (parcelRequire == null) {
     $parcel$inits[id] = init;
   };
 
-  $parcel$global["parcelRequire94c2"] = parcelRequire;
+  $parcel$global["parcelRequirec6f8"] = parcelRequire;
 }
 
 var parcelRegister = parcelRequire.register;
@@ -43619,6 +43619,152 @@ function $baf9c68afdd76912$export$c25acd513dcc8062(props) {
 }
 
 
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var $c0a1d2df3eff3893$exports = {};
+"use strict";
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ var $c0a1d2df3eff3893$var$__createBinding = $c0a1d2df3eff3893$exports && $c0a1d2df3eff3893$exports.__createBinding || (Object.create ? function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) desc = {
+        enumerable: true,
+        get: function() {
+            return m[k];
+        }
+    };
+    Object.defineProperty(o, k2, desc);
+} : function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+});
+var $c0a1d2df3eff3893$var$__exportStar = $c0a1d2df3eff3893$exports && $c0a1d2df3eff3893$exports.__exportStar || function(m, exports1) {
+    for(var p in m)if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports1, p)) $c0a1d2df3eff3893$var$__createBinding(exports1, m, p);
+};
+Object.defineProperty($c0a1d2df3eff3893$exports, "__esModule", {
+    value: true
+});
+
+$c0a1d2df3eff3893$var$__exportStar((parcelRequire("2FnuA")), $c0a1d2df3eff3893$exports);
+
+$c0a1d2df3eff3893$var$__exportStar((parcelRequire("bvDTm")), $c0a1d2df3eff3893$exports);
+
+$c0a1d2df3eff3893$var$__exportStar((parcelRequire("7Kus9")), $c0a1d2df3eff3893$exports);
+
+$c0a1d2df3eff3893$var$__exportStar((parcelRequire("lSaje")), $c0a1d2df3eff3893$exports);
+
+$c0a1d2df3eff3893$var$__exportStar((parcelRequire("b7pOC")), $c0a1d2df3eff3893$exports);
+
+
+
+
+function $cdd6162a40e9c08a$export$1e096674a95fd43b(insightColumns, actualColumns, transform) {
+    //ensure columns exist
+    for(const role in insightColumns){
+        const columnName = insightColumns[role];
+        const column = actualColumns.filter((c)=>c.name === columnName)[0];
+        const transformColumn = transform ? transform.filter((t)=>{
+            switch(t.type){
+                case 'formula':
+                    return t.as === columnName;
+            }
+        })[0] : null;
+        if (!(column || transformColumn)) delete insightColumns[role];
+    }
+}
+function $cdd6162a40e9c08a$export$c2563952d877899(chart, totalStyle, insightColumns, actualColumns) {
+    //ensure columns are populated
+    const nonInternal = actualColumns.filter((c)=>!(0, $1342cf7df79546f0$exports).util.isInternalFieldName(c.name));
+    const firstColumn = nonInternal[0];
+    const firstColumnName = firstColumn && firstColumn.name;
+    const firstQuantitative = nonInternal.filter((c)=>c.quantitative)[0];
+    const firstQuantitativeColumnName = firstQuantitative && firstQuantitative.name;
+    const ensureColumn = (role, quantitative, treemap)=>{
+        if (!insightColumns[role]) {
+            if (treemap) insightColumns[role] = $cdd6162a40e9c08a$export$7e0d3b5c6570ae8b(actualColumns).name;
+            else insightColumns[role] = quantitative ? firstQuantitativeColumnName : firstColumnName;
+        }
+    };
+    function checkRequiresSize() {
+        switch(totalStyle){
+            case 'sum-strip':
+            case 'sum-strip-percent':
+                ensureColumn('size', true);
+                break;
+            case 'sum-treemap':
+                ensureColumn('size', true, true);
+                break;
+        }
+    }
+    switch(chart){
+        case 'barchart':
+        case 'barchartV':
+            ensureColumn('x');
+            checkRequiresSize();
+            break;
+        case 'barchartH':
+            ensureColumn('y');
+            checkRequiresSize();
+            break;
+        case 'density':
+            ensureColumn('x');
+            ensureColumn('y');
+            checkRequiresSize();
+            break;
+        case 'scatterplot':
+        case 'stacks':
+            ensureColumn('x');
+            ensureColumn('y');
+            break;
+        case 'treemap':
+            if (!insightColumns.size) insightColumns.size = $cdd6162a40e9c08a$export$7e0d3b5c6570ae8b(actualColumns).name;
+            if (!insightColumns.size) //error - no numeric column
+            return [
+                (0, $d5b6ce321475881f$export$21c51bc433c16634).errorColumnMustBeNumeric
+            ];
+            break;
+    }
+}
+function $cdd6162a40e9c08a$export$7e0d3b5c6570ae8b(columns) {
+    let column = (0, $c0a1d2df3eff3893$exports.preferredColumnForTreemapSize)(columns, true);
+    if (!column) column = (0, $c0a1d2df3eff3893$exports.preferredColumnForTreemapSize)(columns, false);
+    return column;
+}
+function $cdd6162a40e9c08a$export$3351a8d90bcc13aa(insight, columns) {
+    if (columns && insight.columns && insight.columns.color) return columns.filter((c)=>c.name === insight.columns.color)[0];
+}
+function $cdd6162a40e9c08a$export$46ec3e17747a00c9(columns) {
+    const bounds = [];
+    const getBound = (dimension, dataExtent, column)=>{
+        const { stats: stats } = column;
+        const numericValue = dataExtent === 'max' ? stats.max : stats.min;
+        return {
+            columnName: column.name,
+            dimension: dimension,
+            valid: true,
+            dataExtent: dataExtent,
+            numericValue: numericValue,
+            stringValue: numericValue.toString()
+        };
+    };
+    const dataExtents = [
+        'max',
+        'min'
+    ];
+    const dimensions = [
+        'x',
+        'y'
+    ];
+    columns.forEach((c)=>{
+        if (c.quantitative) dimensions.forEach((dimension)=>dataExtents.forEach((dataExtent)=>bounds.push(getBound(dimension, dataExtent, c))));
+    });
+    return bounds;
+}
+
+
 function $15c8a952544b8f28$var$_BackgroundImageEditor(_props) {
     class __BackgroundImageEditor extends (0, $a601a4135959dcb0$export$e2253033e6e1df16).react.Component {
         constructor(props){
@@ -43635,11 +43781,14 @@ function $15c8a952544b8f28$var$_BackgroundImageEditor(_props) {
             return;
             const xCol = quantitativeColumns.filter((c)=>c.name === insightColumns.x)[0];
             const yCol = quantitativeColumns.filter((c)=>c.name === insightColumns.y)[0];
+            let backgroundImageColumnBounds;
+            if (explorer.imageHolder.backgroundImageColumnBounds.length < quantitativeColumns.length * 4) backgroundImageColumnBounds = (0, $cdd6162a40e9c08a$export$46ec3e17747a00c9)(explorer.state.dataContent.columns);
+            else backgroundImageColumnBounds = (0, $1342cf7df79546f0$exports).VegaMorphCharts.util.clone(explorer.imageHolder.backgroundImageColumnBounds);
             const newState = {
                 hidden: false,
                 xCol: xCol,
                 yCol: yCol,
-                backgroundImageColumnBounds: (0, $1342cf7df79546f0$exports).VegaMorphCharts.util.clone(explorer.imageHolder.backgroundImageColumnBounds)
+                backgroundImageColumnBounds: backgroundImageColumnBounds
             };
             !xCol || yCol;
             this.setState(newState);
@@ -44395,8 +44544,9 @@ const $0edfbb46d4822ac6$export$12df67f310f5f846 = $0edfbb46d4822ac6$var$_ColumnT
 <body>
     <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/vega@5.30/build/vega.min.js"></script>
+    <script src="https://unpkg.com/vega@5.32/build/vega.min.js"></script>
     <script src="https://unpkg.com/@fluentui/react@8/dist/fluentui-react.js"></script>
+    <script src="https://unpkg.com/@msrvida/fluentui-icons@1/dist/umd/fluentui-icons.js"></script>
     <script src="https://unpkg.com/@msrvida/sanddance-explorer@4/dist/umd/sanddance-explorer.js"></script>
     <script src="https://unpkg.com/@msrvida/sanddance-embed@4.4/dist/umd/sanddance-embed.js"></script>
     ${embed}
@@ -44649,151 +44799,6 @@ function $2ec5b051a3376e1a$export$ce08aabc421980f4(props) {
         })))));
 }
 
-
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var $c0a1d2df3eff3893$exports = {};
-"use strict";
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ var $c0a1d2df3eff3893$var$__createBinding = $c0a1d2df3eff3893$exports && $c0a1d2df3eff3893$exports.__createBinding || (Object.create ? function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) desc = {
-        enumerable: true,
-        get: function() {
-            return m[k];
-        }
-    };
-    Object.defineProperty(o, k2, desc);
-} : function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-});
-var $c0a1d2df3eff3893$var$__exportStar = $c0a1d2df3eff3893$exports && $c0a1d2df3eff3893$exports.__exportStar || function(m, exports1) {
-    for(var p in m)if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports1, p)) $c0a1d2df3eff3893$var$__createBinding(exports1, m, p);
-};
-Object.defineProperty($c0a1d2df3eff3893$exports, "__esModule", {
-    value: true
-});
-
-$c0a1d2df3eff3893$var$__exportStar((parcelRequire("2FnuA")), $c0a1d2df3eff3893$exports);
-
-$c0a1d2df3eff3893$var$__exportStar((parcelRequire("bvDTm")), $c0a1d2df3eff3893$exports);
-
-$c0a1d2df3eff3893$var$__exportStar((parcelRequire("7Kus9")), $c0a1d2df3eff3893$exports);
-
-$c0a1d2df3eff3893$var$__exportStar((parcelRequire("lSaje")), $c0a1d2df3eff3893$exports);
-
-$c0a1d2df3eff3893$var$__exportStar((parcelRequire("b7pOC")), $c0a1d2df3eff3893$exports);
-
-
-
-
-function $cdd6162a40e9c08a$export$1e096674a95fd43b(insightColumns, actualColumns, transform) {
-    //ensure columns exist
-    for(const role in insightColumns){
-        const columnName = insightColumns[role];
-        const column = actualColumns.filter((c)=>c.name === columnName)[0];
-        const transformColumn = transform ? transform.filter((t)=>{
-            switch(t.type){
-                case 'formula':
-                    return t.as === columnName;
-            }
-        })[0] : null;
-        if (!(column || transformColumn)) delete insightColumns[role];
-    }
-}
-function $cdd6162a40e9c08a$export$c2563952d877899(chart, totalStyle, insightColumns, actualColumns) {
-    //ensure columns are populated
-    const nonInternal = actualColumns.filter((c)=>!(0, $1342cf7df79546f0$exports).util.isInternalFieldName(c.name));
-    const firstColumn = nonInternal[0];
-    const firstColumnName = firstColumn && firstColumn.name;
-    const firstQuantitative = nonInternal.filter((c)=>c.quantitative)[0];
-    const firstQuantitativeColumnName = firstQuantitative && firstQuantitative.name;
-    const ensureColumn = (role, quantitative, treemap)=>{
-        if (!insightColumns[role]) {
-            if (treemap) insightColumns[role] = $cdd6162a40e9c08a$export$7e0d3b5c6570ae8b(actualColumns).name;
-            else insightColumns[role] = quantitative ? firstQuantitativeColumnName : firstColumnName;
-        }
-    };
-    function checkRequiresSize() {
-        switch(totalStyle){
-            case 'sum-strip':
-            case 'sum-strip-percent':
-                ensureColumn('size', true);
-                break;
-            case 'sum-treemap':
-                ensureColumn('size', true, true);
-                break;
-        }
-    }
-    switch(chart){
-        case 'barchart':
-        case 'barchartV':
-            ensureColumn('x');
-            checkRequiresSize();
-            break;
-        case 'barchartH':
-            ensureColumn('y');
-            checkRequiresSize();
-            break;
-        case 'density':
-            ensureColumn('x');
-            ensureColumn('y');
-            checkRequiresSize();
-            break;
-        case 'scatterplot':
-        case 'stacks':
-            ensureColumn('x');
-            ensureColumn('y');
-            break;
-        case 'treemap':
-            if (!insightColumns.size) insightColumns.size = $cdd6162a40e9c08a$export$7e0d3b5c6570ae8b(actualColumns).name;
-            if (!insightColumns.size) //error - no numeric column
-            return [
-                (0, $d5b6ce321475881f$export$21c51bc433c16634).errorColumnMustBeNumeric
-            ];
-            break;
-    }
-}
-function $cdd6162a40e9c08a$export$7e0d3b5c6570ae8b(columns) {
-    let column = (0, $c0a1d2df3eff3893$exports.preferredColumnForTreemapSize)(columns, true);
-    if (!column) column = (0, $c0a1d2df3eff3893$exports.preferredColumnForTreemapSize)(columns, false);
-    return column;
-}
-function $cdd6162a40e9c08a$export$3351a8d90bcc13aa(insight, columns) {
-    if (columns && insight.columns && insight.columns.color) return columns.filter((c)=>c.name === insight.columns.color)[0];
-}
-function $cdd6162a40e9c08a$export$46ec3e17747a00c9(columns) {
-    const bounds = [];
-    const getBound = (dimension, dataExtent, column)=>{
-        const { stats: stats } = column;
-        const numericValue = dataExtent === 'max' ? stats.max : stats.min;
-        return {
-            columnName: column.name,
-            dimension: dimension,
-            valid: true,
-            dataExtent: dataExtent,
-            numericValue: numericValue,
-            stringValue: numericValue.toString()
-        };
-    };
-    const dataExtents = [
-        'max',
-        'min'
-    ];
-    const dimensions = [
-        'x',
-        'y'
-    ];
-    columns.forEach((c)=>{
-        if (c.quantitative) dimensions.forEach((dimension)=>dataExtents.forEach((dataExtent)=>bounds.push(getBound(dimension, dataExtent, c))));
-    });
-    return bounds;
-}
 
 
 
@@ -45670,7 +45675,7 @@ const $4293b5c02e7b8c3d$export$8e76ac9f37578d1b = {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
-*/ const $ce16cf456563b677$export$83d89fbfd8236492 = '4.1.7';
+*/ const $ce16cf456563b677$export$83d89fbfd8236492 = '4.1.8';
 
 
 var $e46ab1f70cbc9878$var$SandDance = $1342cf7df79546f0$exports;
