@@ -1,6 +1,6 @@
 {
   "name": "@msrvida/fluentui-icons",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Fluent UI icons for use in MsrVida data visualization applications.",
   "main": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
