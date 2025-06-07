@@ -17,7 +17,7 @@ import { Customizer } from '@fluentui/react/lib/Utilities';
 import { Dialog, DialogFooter, DialogType } from '@fluentui/react/lib/Dialog';
 import { Dropdown, DropdownMenuItemType } from '@fluentui/react/lib/Dropdown';
 import { FluentUIComponents } from '@msrvida/fluentui-react-cdn-typings';
-import { getFocusStyle, getTheme, loadTheme, registerIcons } from '@fluentui/react/lib/Styling';
+import { getFocusStyle, getTheme, loadTheme, registerIcons, unregisterIcons } from '@fluentui/react/lib/Styling';
 import { Icon } from '@fluentui/react/lib/Icon';
 import { initializeIcons, use } from '@msrvida/fluentui-icons';
 import { Label } from '@fluentui/react/lib/Label';
@@ -27,7 +27,7 @@ import { Spinner, SpinnerSize } from '@fluentui/react/lib/Spinner';
 import { TextField } from '@fluentui/react/lib/TextField';
 import { Toggle } from '@fluentui/react/lib/Toggle';
 
-use(registerIcons);
+use(registerIcons, unregisterIcons);
 initializeIcons();
 
 export const fluentUI: FluentUIComponents = {
@@ -57,4 +57,5 @@ export const fluentUI: FluentUIComponents = {
     TextField: TextField as any,
     Toggle: Toggle as any,
     registerIcons,
+    unregisterIcons,
 };
