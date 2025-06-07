@@ -2,10 +2,24 @@ import { initializeIcons as i } from './fabric-icons';
 
 import { IIconOptions } from '@uifabric/styling';
 
-export function initializeIcons(
-  options?: IIconOptions
-): void {
+let registerIcons: (iconSubset: any, options?: Partial<IIconOptions>) => void;
+let unregisterIcons: (iconNames: string[]) => void;
+
+export function initializeIcons(): void {
   [i].forEach(
-    (initialize: (options?: IIconOptions) => void) => initialize(options)
-  );
+    (initialize) => {
+      const subset = initialize();
+      unregisterIcons(Object.keys(subset.icons));
+      registerIcons(subset, {
+        disableWarnings: true,
+      });
+    });
+}
+
+export function use(
+  _registerIcons: (iconSubset: any, options?: Partial<IIconOptions>) => void,
+  _unregisterIcons: (iconNames: string[]) => void,
+): void {
+  registerIcons = _registerIcons;
+  unregisterIcons = _unregisterIcons;
 }

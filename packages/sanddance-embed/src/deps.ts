@@ -24,30 +24,37 @@ namespace SandDanceEmbed {
             {
                 type: 'script',
                 url: `${localDev
-                    ? '../../node_modules/react'
+                    ? '../../../../node_modules/react'
                     : 'https://unpkg.com/react@17'
                 }/umd/react.${minified ? 'production.min' : 'development'}.js`,
             },
             {
                 type: 'script',
                 url: `${localDev
-                    ? '../../node_modules/react-dom'
+                    ? '../../../../node_modules/react-dom'
                     : 'https://unpkg.com/react-dom@17'
                 }/umd/react-dom.${minified ? 'production.min' : 'development'}.js`,
             },
             {
                 type: 'script',
                 url: `${localDev
-                    ? '../../node_modules/vega'
+                    ? '../../../../node_modules/vega'
                     : 'https://unpkg.com/vega@5.32'
                 }/build/vega${minified ? '.min' : ''}.js`,
             },
             {
                 type: 'script',
                 url: `${localDev
-                    ? '../../node_modules/@fluentui/react'
+                    ? '../../../../node_modules/@fluentui/react'
                     : 'https://unpkg.com/@fluentui/react@8'
                 }/dist/fluentui-react.js`,
+            },
+            {
+                type: 'script',
+                url: `${localDev
+                    ? '../../../fluentui-icons'
+                    : 'https://unpkg.com/@msrvida/fluentui-icons@1'
+                }/dist/umd/fluentui-icons.js`,
             },
             {
                 type: 'script',

@@ -15,7 +15,7 @@ import { ContextualMenuItemType } from '@fluentui/react/lib/ContextualMenu';
 import { Customizer } from '@fluentui/react/lib/utilities';
 import { Dialog, DialogFooter, DialogType } from '@fluentui/react/lib/Dialog';
 import { Dropdown, DropdownMenuItemType } from '@fluentui/react/lib/Dropdown';
-import { getFocusStyle, getTheme, loadTheme } from '@fluentui/react/lib/Styling';
+import { getFocusStyle, getTheme, loadTheme, registerIcons, unregisterIcons } from '@fluentui/react/lib/Styling';
 import { Icon } from '@fluentui/react/lib/Icon';
 import { Label } from '@fluentui/react/lib/Label';
 import { Modal } from '@fluentui/react/lib/Modal';
@@ -52,4 +52,6 @@ export interface FluentUIComponents {
   SpinnerSize: typeof SpinnerSize;
   TextField: typeof TextField;
   Toggle: typeof Toggle;
+  registerIcons?: typeof registerIcons;
+  unregisterIcons?: typeof unregisterIcons;
 }

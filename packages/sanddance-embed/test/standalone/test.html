@@ -8,11 +8,18 @@
     <link rel="stylesheet" type="text/css" href="../../dist/css/sanddance-embed.css" />
 </head>
 <body>
-    <script src="../../node_modules/react/umd/react.production.min.js"></script>
-    <script src="../../node_modules/react-dom/umd/react-dom.production.min.js"></script>
-    <script src="../../node_modules/vega/build/vega.min.js"></script>
-    <script src="../../node_modules/@fluentui/react/dist/fluentui-react.js"></script>
+    <script src="../../../../node_modules/react/umd/react.production.min.js"></script>
+    <script src="../../../../node_modules/react-dom/umd/react-dom.production.min.js"></script>
+    <script src="../../../../node_modules/vega/build/vega.min.js"></script>
+    <script src="../../../../node_modules/@fluentui/react/dist/fluentui-react.js"></script>
+    <script src="../../../fluentui-icons/dist/umd/fluentui-icons.js"></script>
     <script src="../../../sanddance-explorer/dist/umd/sanddance-explorer.js"></script>
+    <script>
+        //comment out to test production build
+        var SandDanceEmbed = { 
+            localDev: true
+         };
+    </script>
     <script src="../../dist/umd/sanddance-embed.js"></script>
 <script>
 const data = [
