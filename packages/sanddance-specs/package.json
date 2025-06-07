@@ -13,7 +13,7 @@
     "dist"
   ],
   "scripts": {
-    "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
+    "eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
     "predocs": "rimraf ../../docs/docs/sanddance-specs/v1",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",

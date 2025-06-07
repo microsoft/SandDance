@@ -5,7 +5,7 @@
   "description": "Common backend code for vscode-extension based projects",
   "main": "dist/es6/index.js",
   "scripts": {
-    "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
+    "eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
     "build:07": "tsc -p ."
   },
   "repository": {

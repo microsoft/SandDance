@@ -84,7 +84,7 @@
         }
     },
     "scripts": {
-        "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
+        "eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
         "clean": "rimraf ./resources/*.*",
         "vscode:prepublish": "webpack --mode production",
         "webpack": "webpack --mode development",

@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
+    "eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
     "build:05": "tsc -p .",
     "start": "parcel serve ./test/index.html --open",
     "deploy": "parcel build ./src/sanddance-test-es6.ts --no-autoinstall --no-cache",

@@ -3,7 +3,7 @@
   "private": true,
   "version": "4.0.0",
   "scripts": {
-    "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
+    "eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
     "deploy": "npm run bundle && node ./scripts/deploy.js",
     "build-typescript": "tsc -p .",
     "watch-typescript": "tsc -p . -w",

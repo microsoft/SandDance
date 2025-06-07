@@ -9,7 +9,7 @@
 	"scripts": {
 		"vegatest": "parcel serve ./test/vegaspec/vega-morphcharts.test.html --open --no-hmr --no-autoinstall --no-cache",
 		"deploy": "node ./scripts/deploy.js",
-		"eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
+		"eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
 		"watch-typescript": "tsc -p . -w",
 		"build-typescript": "tsc -p .",
 		"bundle": "rollup -c",
