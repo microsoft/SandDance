@@ -5,7 +5,7 @@ import resolve from '@rollup/plugin-node-resolve';
 export default {
     input: './dist/es6/index.js',
     output: {
-        file: './dist/umd/fluent-ui-icons.js',
+        file: './dist/umd/fluentui-icons.js',
         format: 'umd',
         name: 'FluentUIIcons',
     },
