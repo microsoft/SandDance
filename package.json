@@ -73,6 +73,7 @@
         "@types/vscode": "^1.53.0",
         "@typescript-eslint/eslint-plugin": "^8.33.1",
         "@typescript-eslint/parser": "^8.33.1",
+        "@uifabric/styling": "^7.25.1",
         "@vscode/vsce": "^2.19.0",
         "core-js": "3.2.1",
         "d3-color": "^3.1.0",
