@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MdVega test</title>
+    <link href="https://unpkg.com/tabulator-tables@6.3.0/dist/css/tabulator.min.css" rel="stylesheet" />
+    
+    <script src="https://unpkg.com/markdown-it/dist/markdown-it.min.js"></script>
+    <script src="https://unpkg.com/vega@5.32.0"></script>
+    <script src="https://unpkg.com/vega-lite@5"></script>
+    <script src="https://unpkg.com/tabulator-tables@6.3.0/dist/js/tabulator.min.js"></script>
+    <script src="../dist/umd/mdvega.js"></script>
+
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            margin: 0;
+            height: 100vh;
+        }
+
+        #editor,
+        #content {
+            flex: 1;
+            overflow: auto;
+            height: 100%;
+        }
+
+        #editor {
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            width: 100%;
+            height: 80%;
+            resize: none;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px 0;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        pre code {
+            background-color: #f5f5f5;
+            padding: 10px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="editor">
+        <textarea id="markdown-input">
+# Interactive Markdown with Shared Signals in Vega
+
+## Mermaid Diagram
+Here is a simple Mermaid diagram.
+```mermaid
+flowchart LR
+
+A[Hard] -->|Text| B(Round)
+B --> C{Decision}
+C -->|One| D[Result 1]
+C -->|Two| E[Result 2]
+```
+
+## Color Picker
+
+This dropdown controls the color of the rectangles below.
+
+```vega
+{
+    "$schema": "https://vega.github.io/schema/vega/v5.json",
+    "signals": [
+    {
+        "name": "selectedColor",
+        "value": "steelblue",
+        "bind": {
+        "input": "select",
+        "options": ["steelblue", "red", "green", "orange", "purple"],
+        "labels": ["Steel Blue", "Red", "Green", "Orange", "Purple"]
+        }
+    }
+    ]
+}
+```
+
+## First Rectangle with Mousemove
+
+This rectangle changes color based on the selection above and tracks the mouse coordinates.
+
+```vega
+{
+    "$schema": "https://vega.github.io/schema/vega/v5.json",
+    "width": 200,
+    "height": 100,
+    "signals": [
+    {"name": "selectedColor", "value": "steelblue"},
+    {
+        "name": "coords",
+        "value": "nada",
+        "on": [
+        {
+            "events": "mousemove", 
+            "update": "'(' + format(x(), '.2f') + ', ' + format(y(), '.2f') + ')'"
+        },
+        {
+            "events": "mouseout",
+            "update": "'nada'"
+        }
+        ]
+    }
+    ],
+    "marks": [
+    {
+        "type": "rect",
+        "encode": {
+        "enter": {
+            "x": {"value": 0},
+            "y": {"value": 0},
+            "width": {"value": 200},
+            "height": {"value": 100}
+        },
+        "update": {
+            "fill": {"signal": "selectedColor"}
+        }
+        }
+    },
+    {
+        "type": "text",
+        "encode": {
+        "enter": {
+            "x": {"value": 100},
+            "y": {"value": 50},
+            "align": {"value": "center"},
+            "baseline": {"value": "middle"},
+            "fontSize": {"value": 20}
+        },
+        "update": {
+            "text": {"signal": "selectedColor"},
+            "fill": {"value": "white"}
+        }
+        }
+    }
+    ]
+}
+```
+
+## More Info
+
+Some more markdown text can go here. 
+
+## Second Rectangle Displaying Coordinates
+
+This rectangle also changes color based on the selection above and displays the coordinates from the first rectangle.
+
+```vega
+{
+    "$schema": "https://vega.github.io/schema/vega/v5.json",
+    "width": 200,
+    "height": 100,
+    "signals": [
+    {"name": "selectedColor", "value": "steelblue"},
+    {"name": "coords", "value": "nada"}
+    ],
+    "marks": [
+    {
+        "type": "rect",
+        "encode": {
+        "enter": {
+            "x": {"value": 0},
+            "y": {"value": 0},
+            "width": {"value": 200},
+            "height": {"value": 100}
+        },
+        "update": {
+            "fill": {"signal": "selectedColor"}
+        }
+        }
+    },
+    {
+        "type": "text",
+        "encode": {
+        "enter": {
+            "x": {"value": 100},
+            "y": {"value": 50},
+            "align": {"value": "center"},
+            "baseline": {"value": "middle"},
+            "fontSize": {"value": 20}
+        },
+        "update": {
+            "text": {"signal": "coords"},
+            "fill": {"value": "white"}
+        }
+        }
+    }
+    ]
+}
+```
+
+
+## Conclusion
+The chosen color is {{selectedColor}} and the coords are *{{coords}}*
+The literal text is {selectedColor}.
+
+```vega-lite
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "An interactive visualization of connections among major U.S. airports in 2008, with hover for interactive discovery and click to lock-in the displayed connections. Connection lines change color based on interaction.",
+    "layer": [
+    {
+        "mark": {
+        "type": "geoshape",
+        "fill": "#ddd",
+        "stroke": "#fff",
+        "strokeWidth": 1
+        },
+        "data": {
+        "url": "https://vega.github.io/editor/data/us-10m.json",
+        "format": {
+            "type": "topojson",
+            "feature": "states"
+        }
+        }
+    },
+    {
+        "mark": {"type": "rule", "opacity": 0.35},
+        "data": {"url": "https://vega.github.io/editor/data/flights-airport.csv"},
+        "transform": [
+        {
+            "lookup": "origin",
+            "from": {
+            "data": {"url": "https://vega.github.io/editor/data/airports.csv"},
+            "key": "iata",
+            "fields": ["latitude", "longitude"]
+            }
+        },
+        {
+            "lookup": "destination",
+            "from": {
+            "data": {"url": "https://vega.github.io/editor/data/airports.csv"},
+            "key": "iata",
+            "fields": ["latitude", "longitude"]
+            },
+            "as": ["lat2", "lon2"]
+        },
+        {
+            "filter": {
+            "or": [
+                {"param": "hover", "empty": false},
+                {"param": "click", "empty": false}
+            ]
+            }
+        }
+        ],
+        "encoding": {
+        "latitude": {"field": "latitude", "type": "quantitative"},
+        "longitude": {"field": "longitude", "type": "quantitative"},
+        "latitude2": {"field": "lat2", "type": "quantitative"},
+        "longitude2": {"field": "lon2", "type": "quantitative"},
+        "color": {
+            "condition": [
+            {"param": "hover", "value": "red"},
+            {"param": "click", "value": "black"}
+            ],
+            "value": "grey"
+        }
+        }
+    },
+    {
+        "mark": {"type": "circle"},
+        "data": {"url": "https://vega.github.io/editor/data/flights-airport.csv"},
+        "transform": [
+        {"aggregate": [{"op": "count", "as": "routes"}], "groupby": ["origin"]},
+        {
+            "lookup": "origin",
+            "from": {
+            "data": {"url": "https://vega.github.io/editor/data/airports.csv"},
+            "key": "iata",
+            "fields": ["state", "latitude", "longitude"]
+            }
+        },
+        {"filter": "datum.state !== 'PR' && datum.state !== 'VI'"}
+        ],
+        "params": [
+        {
+            "name": "hover",
+            "select": {
+            "type": "point",
+            "on": "mouseover",
+            "fields": ["origin"],
+            "nearest": true
+            }
+        },
+        {
+            "name": "click",
+            "select": {
+            "type": "point",
+            "on": "click",
+            "fields": ["origin"],
+            "toggle": true,
+            "nearest": true
+            }
+        }
+        ],
+        "encoding": {
+        "latitude": {"field": "latitude", "type": "quantitative"},
+        "longitude": {"field": "longitude", "type": "quantitative"},
+        "size": {
+            "field": "routes",
+            "type": "quantitative",
+            "scale": {"rangeMax": 1000},
+            "legend": null
+        },
+        "order": {
+            "field": "routes",
+            "sort": "descending"
+        }
+        }
+    }
+    ],
+    "projection": {
+    "type": "albersUsa"
+    },
+    "width": 900,
+    "height": 500
+}
+```
+
+Click the map above to show related data.
+</textarea>
+        <button onclick="renderMarkdown()">Render</button>
+    </div>
+    <div id="content"></div>
+
+    <script>
+        const { MdVega } = window;
+        console.log(MdVega);
+
+        const mdvr = new MdVega.Renderer(document.getElementById('content'));
+        console.log('instance', mdvr);
+
+        function renderMarkdown() {
+            const markdown = document.getElementById('markdown-input').value;
+            mdvr.render(markdown);
+        }
+
+        renderMarkdown();
+    </script>
+
+</body>
+
+</html>
