@@ -7,7 +7,7 @@ import {
   IIconSubset,
   registerIcons
 } from '@uifabric/styling';
-import fontData from 'url:../fonts/fabric-icons-994712d3.woff';
+import { fabricIconsWoff } from './fabric_icons_994712d3';
 
 export function initializeIcons(
   options?: IIconOptions
@@ -22,7 +22,7 @@ export function initializeIcons(
     },
     fontFace: {
       fontFamily: `"FabricMDL2Icons"`,
-      src: `url('${fontData}') format('woff')`
+      src: `url("${fabricIconsWoff}") format("woff")`,
     },
     icons: {
       'Accept': '\uE8FB',
