@@ -9,6 +9,7 @@
         "outFile": "dist/app.js"
     },
     "files": [
+        "src/fluentui-icons.d.ts",
         "src/fluentui.d.ts",
         "src/interfaces.d.ts",
         "src/sanddance-explorer.d.ts",
