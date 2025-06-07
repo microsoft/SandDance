@@ -9,7 +9,7 @@
     "directory": "packages/fluentui-react-cdn-typings"
   },
   "scripts": {
-    "eslint": "eslint -c ../../.eslintrc.json --fix ./*.d.ts",
+    "eslint": "eslint -c ../../eslint.config.mjs --fix ./*.d.ts",
     "test": "tsc index.d.ts --lib es6 --skipLibCheck true"
   },
   "keywords": [],

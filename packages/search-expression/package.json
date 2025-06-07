@@ -13,7 +13,7 @@
     "dist"
   ],
   "scripts": {
-    "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
+    "eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "build:02": "npm run build-typescript",

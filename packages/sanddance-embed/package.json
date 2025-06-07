@@ -12,7 +12,7 @@
     "dist"
   ],
   "scripts": {
-    "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
+    "eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
     "gen": "node ./scripts/gen.js",
     "build-css": "sass ./src/css/sanddance-embed.scss ./dist/css/sanddance-embed.css",
     "build-typescript": "tsc -p .",

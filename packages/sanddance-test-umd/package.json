@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "eslint": "eslint -c ../../.eslintrc.json --fix ./src/**/*.ts*",
+    "eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
     "deploy": "tsc -p ."
   }
 }
