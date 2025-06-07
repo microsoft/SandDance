@@ -17,6 +17,7 @@ export const embedHtml = (title: string, embed: string) => `<!DOCTYPE html>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/vega@5.32/build/vega.min.js"></script>
     <script src="https://unpkg.com/@fluentui/react@8/dist/fluentui-react.js"></script>
+    <script src="https://unpkg.com/@msrvida/fluentui-icons@1/dist/umd/fluentui-icons.js"></script>
     <script src="https://unpkg.com/@msrvida/sanddance-explorer@4/dist/umd/sanddance-explorer.js"></script>
     <script src="https://unpkg.com/@msrvida/sanddance-embed@4.4/dist/umd/sanddance-embed.js"></script>
     ${embed}
