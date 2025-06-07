@@ -41,6 +41,7 @@
         "deploy": "npm run clean-parcel-cache && npm run deploy --workspaces --if-present",
         "test": "npm run eslint && npm run test --workspaces --if-present",
         "dev": "npm run dev --workspace dev --if-present",
+        "pbiviz": "npm run start -w powerbi",
         "build-rec": "npm run build --workspace @msrvida/chart-recommender",
         "test-rec": "npm run test --workspace @msrvida/chart-recommender",
         "azdata-webpack-extension": "npm run webpack --workspace azdata-sanddance",
