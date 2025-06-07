@@ -16,7 +16,7 @@ import { Dropdown, DropdownMenuItemType } from '@fluentui/react/lib/Dropdown';
 import { FluentUIComponents } from '@msrvida/fluentui-react-cdn-typings';
 import { getFocusStyle, getTheme, loadTheme } from '@fluentui/react/lib/Styling';
 import { Icon } from '@fluentui/react/lib/Icon';
-import { initializeIcons } from '@fluentui/react/lib/Icons';
+import { initializeIcons } from '@msrvida/fluentui-icons';
 import { Label } from '@fluentui/react/lib/Label';
 import { Modal } from '@fluentui/react/lib/Modal';
 import { Slider } from '@fluentui/react/lib/Slider';
