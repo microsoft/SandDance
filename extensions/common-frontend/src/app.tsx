@@ -8,10 +8,8 @@ declare let FluentUIReact: _FluentUI.FluentUIComponents;
 declare let FluentUIIcons: _FluentUIIcons.FluentUIIconsBase;
 
 namespace SandDanceApp {
-    if (typeof FluentUIIcons !== 'undefined' && FluentUIIcons) {
-        FluentUIIcons.use(FluentUIReact.registerIcons, FluentUIReact.unregisterIcons);
-        FluentUIIcons.initializeIcons();
-    }
+    FluentUIIcons.use(FluentUIReact.registerIcons, FluentUIReact.unregisterIcons);
+    FluentUIIcons.initializeIcons();
     SandDanceExplorer.use(FluentUIReact, React, ReactDOM, vega);
 
     function getTextcolor() {
