@@ -16,7 +16,7 @@
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "bundle": "rollup -c",
-    "build:00": "npm run build-typescript && npm run bundle"
+    "build:01": "npm run build-typescript && npm run bundle"
   },
   "keywords": [
     "markdown",
