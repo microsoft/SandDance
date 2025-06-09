@@ -111,6 +111,7 @@
         "regenerator-runtime": "^0.13.3",
         "rimraf": "^2.6.2",
         "rollup": "^4.22.5",
+        "rollup-plugin-postcss": "^4.0.2",
         "sass": "^1.32.4",
         "streamlit-component-lib": "^2.0.0",
         "temp-write": "^3.4.0",
