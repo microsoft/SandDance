@@ -1,0 +1,24 @@
+{
+  "name": "@msrvida/mdvega-sanddance",
+  "version": "1.0.0",
+  "description": "SandDance plugin for mdvega",
+  "main": "dist/es6/index.js",
+  "types": "dist/es6/index.d.ts",
+  "devDependencies": {
+    "@msrvida/mdvega": "^1"
+  },
+  "scripts": {
+    "deploy": "node ./scripts/deploy.js",
+    "watch-typescript": "tsc -p . -w",
+    "build-typescript": "tsc -p .",
+    "bundle": "rollup -c",
+    "build:02": "npm run build-typescript && npm run bundle"
+  },
+  "keywords": [
+    "markdown",
+    "vega",
+    "sanddance"
+  ],
+  "author": "Dan Marshall",
+  "license": "MIT"
+}

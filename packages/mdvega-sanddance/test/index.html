@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MdVega test</title>
+    <link href="https://unpkg.com/tabulator-tables@6.3.0/dist/css/tabulator.min.css" rel="stylesheet" />
+    
+    <script src="https://unpkg.com/markdown-it/dist/markdown-it.min.js"></script>
+    <script src="https://unpkg.com/vega@5.32.0"></script>
+    <script src="https://unpkg.com/vega-lite@5"></script>
+    <script src="https://unpkg.com/tabulator-tables@6.3.0/dist/js/tabulator.min.js"></script>
+    <script src="../../mdvega/dist/umd/mdvega.js"></script>
+    <script src="../dist/umd/mdvega-sanddance.js"></script>
+
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            margin: 0;
+            height: 100vh;
+        }
+
+        #editor,
+        #content {
+            flex: 1;
+            overflow: auto;
+            height: 100%;
+        }
+
+        #editor {
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            width: 100%;
+            height: 80%;
+            resize: none;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px 0;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        pre code {
+            background-color: #f5f5f5;
+            padding: 10px;
+            display: block;
+        }
+        .sanddance-root {
+            height: 500px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="editor">
+        <textarea id="markdown-input">
+# Interactive Markdown with Shared Signals in Vega
+
+## Data
+
+```vega
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "data": [
+    {
+      "name": "titanic",
+      "url": "https://microsoft.github.io/SandDance/sample-data/titanicmaster.tsv",
+      "format": {
+        "type": "tsv"
+      }
+    }
+  ],
+  "signals": [
+    {
+        "name": "titanic",
+        "update": "data('titanic')"
+    }
+  ]
+}
+```
+
+## SandDance Treemap
+
+```sanddance
+{
+    "dataSignalName": "titanic",
+    "insight": {
+        "columns": {
+            "color": "Class",
+            "size": "TicketCost",
+            "uid": "Name"
+        },
+        "scheme": "category10",
+        "size": {
+            "height": 400,
+            "width": 600
+        },
+        "chart": "treemap"
+    }
+}
+```
+
+Click the map above to show related data.
+
+```tabulator
+{
+  "dataSignalName": "titanic-selected",
+  "options": {
+    "autoColumns": true,
+    "layout": "fitColumns",
+    "minHeight": "200px",
+    "maxHeight": "200px"
+  }
+}
+```
+</textarea>
+        <button onclick="renderMarkdown()">Render</button>
+    </div>
+    <div id="content"></div>
+
+    <script>
+        const { MdVega } = window;
+        console.log(MdVega);
+
+        const mdvr = new MdVega.Renderer(document.getElementById('content'));
+        console.log('instance', mdvr);
+
+        function renderMarkdown() {
+            const markdown = document.getElementById('markdown-input').value;
+            mdvr.render(markdown);
+        }
+
+        renderMarkdown();
+    </script>
+
+</body>
+
+</html>
