@@ -118,5 +118,5 @@ export const tabulatorPlugin: Plugin = {
             };
         });
         return instances;
-    }
+    },
 };

@@ -66,7 +66,7 @@ export const vegaPlugin: Plugin = {
                 const dataSignal = dataSignals.find(signal =>
                     (signal.name === data.name)                 //exact match
                     ||
-                    (`${signal.name}${dataNameSelectedSuffix}` === data.name)   //match a selection from Tabulator
+                    (`${signal.name}${dataNameSelectedSuffix}` === data.name),   //match a selection from Tabulator
                 );
                 if (dataSignal) {
                     //if we find a match, add it to our initialSignals
