@@ -1,4 +1,18 @@
 {
+    "privileges": [
+        {
+            "name": "WebAccess",
+            "essential": false
+        },
+        {
+            "name": "ExportContent",
+            "essential": true
+        },
+        {
+            "name": "LocalStorage",
+            "essential": false
+        }
+    ],
     "dataRoles": [
         {
             "displayName": "Values",

@@ -70,7 +70,7 @@ namespace SandDanceEmbed {
                     type: 'script',
                     url: `${localDev
                         ? '../..'
-                        : 'https://unpkg.com/@msrvida/sanddance-embed@4.4'
+                        : 'https://unpkg.com/@msrvida/sanddance-embed@4'
                     }/dist/umd/sanddance-embed.js`,
                 },
             );
