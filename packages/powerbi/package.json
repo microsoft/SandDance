@@ -8,7 +8,7 @@
     "start": "pbiviz start",
     "build:08": "pbiviz package",
     "version": "node ./scripts/version.js",
-    "prepackage": "npm run version",
+    "prebuild:08": "npm run version",
     "deploy": "node ./scripts/deploy.js",
     "build:07": "tsc -p .",
     "remove-vega": "npm un vega"

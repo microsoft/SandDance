@@ -3,7 +3,7 @@ const path = require('path');
 
 const cwd = process.cwd();
 
-console.log(`versioning...`);
+console.log('versioning...');
 
 const pbivizJson = require(path.resolve(cwd, 'pbiviz.json'));
 
@@ -17,4 +17,4 @@ const file = path.resolve(cwd, 'src', 'version.ts');
 
 fs.writeFileSync(file, ts);
 
-console.log(`versioning complete`);
+console.log('versioning complete');
