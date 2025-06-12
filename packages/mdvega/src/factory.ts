@@ -75,12 +75,18 @@ export function create(options?: CreateOptions) {
         const token = tokens[idx];
         const info = token.info.trim();
 
-        // Check if a handler exists for the block type and use it
-        const plugin = plugins.filter(p => p.name === info)[0];
-        if (plugin && plugin.fence) {
-            return plugin.fence(token, idx);
+        // Check if the info starts with "json " and extract the plugin name
+        if (info.startsWith('json ')) {
+            const pluginName = info.slice(5).trim();
+
+            // Find the plugin by name
+            const plugin = plugins.find(p => p.name === pluginName);
+            if (plugin && plugin.fence) {
+                return plugin.fence(token, idx);
+            }
         }
 
+        // Fallback to the original fence renderer if no plugin matches
         if (originalFence) {
             return originalFence(tokens, idx, options, env, slf);
         } else {
@@ -96,7 +102,9 @@ export function definePlugin(md: MarkdownIt, pluginName: string) {
         const start = state.bMarks[startLine] + state.tShift[startLine];
         const max = state.eMarks[startLine];
 
-        if (state.src.slice(start, max).trim() !== '```' + pluginName) {
+        // Check if the block starts with "```json <plugin_name>"
+        const marker = `json ${pluginName}`;
+        if (!state.src.slice(start, max).trim().startsWith('```' + marker)) {
             return false;
         }
 
@@ -110,7 +118,7 @@ export function definePlugin(md: MarkdownIt, pluginName: string) {
 
         state.line = nextLine + 1;
         const token = state.push('fence', 'code', 0);
-        token.info = pluginName;
+        token.info = marker;
         token.content = state.getLines(startLine + 1, nextLine, state.blkIndent, true);
         token.map = [startLine, state.line];
 

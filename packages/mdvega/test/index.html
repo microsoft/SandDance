@@ -63,7 +63,7 @@
 
 ## Mermaid Diagram
 Here is a simple Mermaid diagram.
-```mermaid
+```json mermaid
 flowchart LR
 
 A[Hard] -->|Text| B(Round)
@@ -76,7 +76,7 @@ C -->|Two| E[Result 2]
 
 This dropdown controls the color of the rectangles below.
 
-```vega
+```json vega
 {
     "$schema": "https://vega.github.io/schema/vega/v5.json",
     "signals": [
@@ -97,7 +97,7 @@ This dropdown controls the color of the rectangles below.
 
 This rectangle changes color based on the selection above and tracks the mouse coordinates.
 
-```vega
+```json vega
 {
     "$schema": "https://vega.github.io/schema/vega/v5.json",
     "width": 200,
@@ -162,7 +162,7 @@ Some more markdown text can go here.
 
 This rectangle also changes color based on the selection above and displays the coordinates from the first rectangle.
 
-```vega
+```json vega
 {
     "$schema": "https://vega.github.io/schema/vega/v5.json",
     "width": 200,
@@ -211,7 +211,7 @@ This rectangle also changes color based on the selection above and displays the 
 The chosen color is {{selectedColor}} and the coords are *{{coords}}*
 The literal text is {selectedColor}.
 
-```vega-lite
+```json vega-lite
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "description": "An interactive visualization of connections among major U.S. airports in 2008, with hover for interactive discovery and click to lock-in the displayed connections. Connection lines change color based on interaction.",
