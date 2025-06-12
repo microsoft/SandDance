@@ -409,4 +409,3 @@ export interface InsightSetup {
     insight: Insight;
     setup?: Setup;
 }
-
