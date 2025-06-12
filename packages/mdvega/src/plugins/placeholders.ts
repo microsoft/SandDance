@@ -6,20 +6,20 @@
 import { Token } from 'markdown-it';
 import { Batch, IInstance, Plugin, PrioritizedSignal } from '../factory';
 
-function createTemplateFunction(template) {
+function createTemplateFunction(template: string) {
     const parts = template.split(/(%7B%7B.*?%7D%7D)/g).map(part => {
         if (part.startsWith('%7B%7B') && part.endsWith('%7D%7D')) {
             const key = part.slice(6, -6); // Extract key from %7B%7Bkey%7D%7D
-            return (batch) => batch[key]?.value?.toString() || '';
+            return (batch: Batch) => batch[key]?.value?.toString() || '';
         } else {
             return () => part; // Static part of the template
         }
     });
 
-    return (batch) => parts.map(fn => fn(batch)).join('');
+    return (batch: Batch) => parts.map(fn => fn(batch)).join('');
 }
 
-function handleDynamicUrl(tokens, idx, attrName, elementType) {
+function handleDynamicUrl(tokens: Token[], idx: number, attrName: string, elementType: string) {
     const token = tokens[idx];
     const attrValue = token.attrGet(attrName);
 

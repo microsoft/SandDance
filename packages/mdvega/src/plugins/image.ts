@@ -85,7 +85,7 @@ export const imagePlugin: Plugin = {
                         value: null,
                         priority: -1,
                         isData: false,
-                    }
+                    },
                 ],
                 destroy: async () => {
                     if (element) {
@@ -108,9 +108,9 @@ export const imagePlugin: Plugin = {
                             element.style.opacity = ImageOpacity.full;
                         }
                     }
-                }
-            }
+                },
+            };
         });
         return instances;
-    }
+    },
 };

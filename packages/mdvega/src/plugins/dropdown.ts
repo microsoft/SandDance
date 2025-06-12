@@ -152,7 +152,7 @@ ${getOptions(spec.multiple, spec.options, spec.value)}
             };
         });
         return instances;
-    }
+    },
 };
 
 function getOptions(multiple: boolean, options: string[], selected: string | string[]) {
@@ -182,5 +182,5 @@ function getOptions(multiple: boolean, options: string[], selected: string | str
             attr = selected === option ? 'selected' : '';
         }
         return `<option value="${option}" ${attr}>${option}</option>`;
-    }).join('\n')
+    }).join('\n');
 }
