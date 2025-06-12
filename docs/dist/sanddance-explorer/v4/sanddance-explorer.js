@@ -44548,7 +44548,7 @@ const $0edfbb46d4822ac6$export$12df67f310f5f846 = $0edfbb46d4822ac6$var$_ColumnT
     <script src="https://unpkg.com/@fluentui/react@8/dist/fluentui-react.js"></script>
     <script src="https://unpkg.com/@msrvida/fluentui-icons@1/dist/umd/fluentui-icons.js"></script>
     <script src="https://unpkg.com/@msrvida/sanddance-explorer@4/dist/umd/sanddance-explorer.js"></script>
-    <script src="https://unpkg.com/@msrvida/sanddance-embed@4.4/dist/umd/sanddance-embed.js"></script>
+    <script src="https://unpkg.com/@msrvida/sanddance-embed@4/dist/umd/sanddance-embed.js"></script>
     ${embed}
 </body>
 </html>`;
