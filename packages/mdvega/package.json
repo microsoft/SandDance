@@ -12,6 +12,7 @@
     "vega-typings": "~1.5.0"
   },
   "scripts": {
+    "clean": "rimraf dist",
     "deploy": "node ./scripts/deploy.js",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
