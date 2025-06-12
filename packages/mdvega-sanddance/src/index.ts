@@ -12,13 +12,15 @@ declare const MdVega: MdVega;
 
 interface SandDanceInstance {
     id: string;
-    spec: SandDanceSpec;
+    spec: SdMdSpec;
     viewer: SandDance.Viewer;
+    viewIndex: number;
 }
 
-export interface SandDanceSpec {
-    insight: SandDance.specs.Insight;
+export interface SdMdSpec {
     dataSignalName?: string;
+    views: (SandDance.specs.Insight | SandDance.types.Snapshot)[];
+    viewIndexSignalName?: string;
 }
 
 export const sanddancePlugin: Plugin = {
@@ -38,11 +40,9 @@ export const sanddancePlugin: Plugin = {
             if (!container.textContent) continue;
 
             try {
-                const spec: SandDanceSpec = JSON.parse(container.textContent);
-
+                const spec: SdMdSpec = JSON.parse(container.textContent);
                 const viewer = new SandDance.Viewer(container as HTMLElement, {});
-
-                const sanddanceInstance: SandDanceInstance = { id: container.id, spec, viewer };
+                const sanddanceInstance: SandDanceInstance = { id: container.id, spec, viewer, viewIndex: 0 };
                 sanddanceInstances.push(sanddanceInstance);
             } catch (e) {
                 container.innerHTML = `<div class="error">${e.toString()}</div>`;
@@ -70,25 +70,45 @@ export const sanddancePlugin: Plugin = {
                 ...sanddanceInstance,
                 initialSignals,
                 recieveBatch: async (batch) => {
-                    console.log(`SandDance: received batch for viewer ${sanddanceInstance.id}`, batch);
+                    let viewIndex = sanddanceInstance.viewIndex;
+                    if (spec.viewIndexSignalName) {
+                        const viewIndexSignal = batch[spec.viewIndexSignalName];
+                        if (viewIndexSignal && typeof viewIndexSignal.value === 'number') {
+                            viewIndex = viewIndexSignal.value;
+                        }
+                    }
                     if (spec.dataSignalName) {
                         const newData = batch[spec.dataSignalName]?.value as object[];
                         if (newData) {
-                            //load data into the viewer
-
-                            console.log(`SandDance: loading data into viewer ${sanddanceInstance.id}`, newData);
-
-                            viewer.render({
-                                insight: spec.insight,
-                            }, newData);
+                            let insight: SandDance.specs.Insight | undefined;
+                            let setup: SandDance.types.Setup | undefined;
+                            if (spec.views && spec.views[viewIndex]) {
+                                const view = spec.views[viewIndex];
+                                const snapshot = view as SandDance.types.Snapshot;
+                                if (snapshot.insight) {
+                                    //this is a snapshot
+                                    insight = {
+                                        ...snapshot.insight,
+                                        size: {
+                                            //TODO make sure this is a reasonable size
+                                            height: 400,
+                                            width: 600,
+                                        },
+                                    };
+                                    setup = snapshot.setup;
+                                } else {
+                                    //this is an insight
+                                    insight = view as SandDance.specs.Insight;
+                                }
+                            }
+                            viewer.render({ insight, setup }, newData);
                         }
+                    } else {
+                        //no new data but check if in
                     }
                 },
                 beginListening() {
                     sanddanceInstance.viewer.options.onSelectionChanged = (search: SandDance.searchExpression.Search, activeIndex?: number, selectedData?: object[]) => {
-
-                        console.log(`SandDance: selection changed in viewer ${sanddanceInstance.id}`, search, activeIndex, selectedData);
-
                         const batch: Batch = {
                             [`${spec.dataSignalName}${MdVega.common.dataNameSelectedSuffix}`]: {
                                 value: selectedData || [],
