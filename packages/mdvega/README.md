@@ -1,13 +1,8 @@
-# md-vega
-
-[Vega](https://vega.github.io/)-flavored markdown.
+# interactive-documents
 
 Add [Vega](https://vega.github.io/vega/), [Vega-lite](https://vega.github.io/vega-lite/), and other interactive components to your markdown pages. Communicate [signals](https://vega.github.io/vega/docs/signals/) between components via a shared signal bus.
 
 Powered by [markdown-it](https://markdown-it.github.io/) plugins.
-
-## Philosophy
-Composition over code.
 
 ## Features
 * Add interactive components to markdown
