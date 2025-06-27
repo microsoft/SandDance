@@ -19,7 +19,7 @@ fs.readdirSync('./fonts').forEach(file => {
         
         // Create TypeScript file with the base64 data using constant export name
         const tsContent = `// Auto-generated font data - do not edit manually
-export const fabricIconsWoff = "${base64Font}";
+export const fabricIconsWoff = '${base64Font}';
 `;
         
         fs.writeFileSync(`./src/${fileName}.ts`, tsContent);
