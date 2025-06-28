@@ -5,19 +5,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Azure Data Studio",
-            "type": "sqlopsExtensionHost",
-            "request": "launch",
-            "runtimeExecutable": "azuredatastudio",
-            "args": [
-                "--extensionDevelopmentPath=${workspaceRoot}/extensions/azdata-sanddance"
-            ],
-            "outFiles": [
-                "${workspaceRoot}/extensions/azdata-sanddance/out/**/*.js"
-            ],
-            "preLaunchTask": "azdata-webpack-extension"
-        },
-        {
             "name": "VsCode Extension",
             "type": "extensionHost",
             "request": "launch",

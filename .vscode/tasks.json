@@ -3,14 +3,6 @@
 	"tasks": [
 		{
 			"type": "npm",
-			"script": "azdata-webpack-extension",
-			"path": ".",
-			"problemMatcher": [],
-			"label": "azdata-webpack-extension",
-			"detail": "azdata-webpack-extension"
-		},
-		{
-			"type": "npm",
 			"script": "vscode-webpack-extension",
 			"path": ".",
 			"problemMatcher": [],
