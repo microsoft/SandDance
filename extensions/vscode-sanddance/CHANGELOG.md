@@ -1,5 +1,8 @@
 # Change Log
 
+## [4.2.1]
+- Offline icons
+
 ## [4.1.0]
 - Column type editor in Data Browser
 

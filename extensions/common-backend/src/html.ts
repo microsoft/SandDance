@@ -28,6 +28,7 @@ export function getWebviewContent(webView: vscode.Webview, extensionPath: string
     ${script(resourceUrl('react.production.min.js'))}
     ${script(resourceUrl('react-dom.production.min.js'))}
     ${script(resourceUrl('fluentui-react.js'))}
+    ${script(resourceUrl('fluentui-icons.js'))}
     ${script(resourceUrl('sanddance-explorer.js'))}
     ${script(resourceUrl('app.js'))}
 </body>
