@@ -99,9 +99,9 @@
         "webpack-dev": "webpack --mode development --watch",
         "resources": "node ../common-frontend/scripts/resources.js",
         "compile": "tsc -p ./",
-        "build:08": "npm run compile && npm run resources",
+        "x-build:08": "npm run compile && npm run resources",
         "x-test": "npm run compile && node ./node_modules/vscode/bin/test",
         "x-deploy": "node ./scripts/deploy.js",
-        "build:09": "vsce package"
+        "x-build:09": "vsce package"
     }
 }

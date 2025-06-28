@@ -24,7 +24,7 @@ import { Spinner, SpinnerSize } from '@fluentui/react/lib/Spinner';
 import { TextField } from '@fluentui/react/lib/TextField';
 import { Toggle } from '@fluentui/react/lib/Toggle';
 
-use(registerIcons, unregisterIcons);
+use(registerIcons);
 initializeIcons();
 
 export const fluentUI: FluentUIComponents = {

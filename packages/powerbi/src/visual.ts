@@ -25,6 +25,7 @@
 */
 'use strict';
 
+import './fontfix';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import './../style/visual.less';

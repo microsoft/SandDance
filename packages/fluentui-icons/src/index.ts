@@ -6,20 +6,20 @@ let registerIcons: (iconSubset: any, options?: Partial<IIconOptions>) => void;
 let unregisterIcons: (iconNames: string[]) => void;
 
 export function initializeIcons(): void {
-  [i].forEach(
-    (initialize) => {
-      const subset = initialize();
-      unregisterIcons(Object.keys(subset.icons));
-      registerIcons(subset, {
-        disableWarnings: true,
-      });
-    });
+    [i].forEach(
+        (initialize) => {
+            const subset = initialize();
+            unregisterIcons && unregisterIcons(Object.keys(subset.icons));
+            registerIcons(subset, {
+                disableWarnings: true,
+            });
+        });
 }
 
 export function use(
-  _registerIcons: (iconSubset: any, options?: Partial<IIconOptions>) => void,
-  _unregisterIcons: (iconNames: string[]) => void,
+    _registerIcons: (iconSubset: any, options?: Partial<IIconOptions>) => void,
+    _unregisterIcons?: (iconNames: string[]) => void,
 ): void {
-  registerIcons = _registerIcons;
-  unregisterIcons = _unregisterIcons;
+    registerIcons = _registerIcons;
+    unregisterIcons = _unregisterIcons;
 }

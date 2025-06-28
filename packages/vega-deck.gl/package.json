@@ -14,12 +14,12 @@
   "scripts": {
     "vegatest": "parcel serve ./test/vegaspec/vega-deck.gl.test.html --port 8087 --open --no-hmr --no-autoinstall",
     "cubetest": "parcel serve ./test/cubelayer/cubeTest.html --port 8087 --open --no-hmr",
-    "deploy": "node ./scripts/deploy.js",
+    "x-deploy": "node ./scripts/deploy.js",
     "eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "bundle": "rollup -c",
-    "build:02": "npm run build-typescript && npm run bundle",
+    "x-build:02": "npm run build-typescript && npm run bundle",
     "remove-vega": "npm un vega vega-typings",
     "patch-after-vega-upgrade": "npm version patch"
   },
