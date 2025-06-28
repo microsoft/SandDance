@@ -80,6 +80,18 @@
                     "command": "sanddance.view",
                     "when": "resourceLangId == tsv"
                 }
+            ],
+            "editor/title": [
+                {
+                    "command": "sanddance.view",
+                    "when": "resourceLangId == csv",
+                    "group": "navigation"
+                },
+                {
+                    "command": "sanddance.view",
+                    "when": "resourceLangId == tsv",
+                    "group": "navigation"
+                }
             ]
         }
     },
