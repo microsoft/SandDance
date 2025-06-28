@@ -1,9 +1,16 @@
-.vscode/**
-.vscode-test/**
-dist/**/*.map
-node_modules/**
-src/**
-.gitignore
-tsconfig.json
-*.vsix
-webpack.config.js
+# Exclude parent directories (critical for monorepos)
+../../**
+../**
+
+# Exclude everything first
+**
+
+# Then include only what we want
+!dist/extension-bundle.js
+!resources/
+!resources/**
+!README.md
+!LICENSE
+!CHANGELOG.md
+!sanddance-logo.png
+!package.json

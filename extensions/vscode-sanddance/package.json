@@ -80,6 +80,18 @@
                     "command": "sanddance.view",
                     "when": "resourceLangId == tsv"
                 }
+            ],
+            "editor/title": [
+                {
+                    "command": "sanddance.view",
+                    "when": "resourceLangId == csv",
+                    "group": "navigation"
+                },
+                {
+                    "command": "sanddance.view",
+                    "when": "resourceLangId == tsv",
+                    "group": "navigation"
+                }
             ]
         }
     },
@@ -93,7 +105,7 @@
         "compile": "tsc -p ./",
         "build:08": "npm run compile && npm run resources",
         "x-test": "npm run compile && node ./out/test/runTest.js",
-        "x-deploy": "node ./scripts/deploy.js",
+        "deploy": "node ./scripts/deploy.js",
         "build:09": "vsce package"
     }
 }
