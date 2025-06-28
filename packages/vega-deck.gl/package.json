@@ -19,7 +19,7 @@
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "bundle": "rollup -c",
-    "build:02": "npm run build-typescript && npm run bundle",
+    "x-build:02": "npm run build-typescript && npm run bundle",
     "remove-vega": "npm un vega vega-typings",
     "patch-after-vega-upgrade": "npm version patch"
   },
