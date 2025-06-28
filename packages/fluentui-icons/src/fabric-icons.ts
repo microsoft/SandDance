@@ -3,7 +3,7 @@
 // tslint:disable:max-line-length
 
 import { IIconSubset } from '@uifabric/styling';
-import { fabricIconsWoff } from './fabric_icons_994712d3';
+import { fabricIconsWoff } from './fabric_icons_4ac17eec';
 
 export function initializeIcons() {
     const subset: IIconSubset = {
