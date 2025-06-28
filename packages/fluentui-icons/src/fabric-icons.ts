@@ -47,6 +47,7 @@ export function initializeIcons() {
             Flow: '\uEF90',
             History: '\uE81C',
             HourGlass: '\uEA03',
+            More: '\uE712',
             Next: '\uE893',
             OpenInNewWindow: '\uE8A7',
             Page: '\uE7C3',
