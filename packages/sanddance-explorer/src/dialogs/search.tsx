@@ -190,16 +190,19 @@ function _Search(_props: Props) {
 
         addExpression(groupIndex: number) {
             const groups: InputSearchExpressionGroup[] = [...this.state.groups];
-            const group = groups[groupIndex];
-            const maxKey = group.expressions.reduce((max, p) => p.key > max ? p.key : max, group.expressions[0].key);
+            const group = { ...groups[groupIndex] };
+            const expressions = [...group.expressions];
+            const maxKey = expressions.reduce((max, p) => p.key > max ? p.key : max, expressions[0].key);
             const newEx = this.newExpression(maxKey + 1, '&&');
-            group.expressions.push(newEx);
-            if (group.expressions.length === 2) {
+            expressions.push(newEx);
+            if (expressions.length === 2) {
                 newEx.unlocked = true;
             } else {
-                group.expressions.forEach(ex => ex.unlocked = false);
-                newEx.clause = group.expressions[1].clause;
+                expressions.forEach(ex => ex.unlocked = false);
+                newEx.clause = expressions[1].clause;
             }
+            group.expressions = expressions;
+            groups[groupIndex] = group;
             this.setState({ groups });
         }
 
@@ -233,13 +236,14 @@ function _Search(_props: Props) {
 
         deleteExpression(groupIndex: number, index: number) {
             const groups: InputSearchExpressionGroup[] = [...this.state.groups];
-            const group = groups[groupIndex];
+            const group = { ...groups[groupIndex] };
             const expressions: InputSearchExpression[] = [...group.expressions];
             expressions.splice(index, 1);
             if (expressions.length === 2) {
                 expressions[1].unlocked = true;
             }
             group.expressions = expressions;
+            groups[groupIndex] = group;
             this.setState({ groups });
         }
 
