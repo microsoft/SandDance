@@ -20,14 +20,13 @@ import {
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { Column } from '@msrvida/chart-types';
-import { JoinAggregateTransform, LinearScale, SignalRef } from 'vega-typings';
+import { JoinAggregateTransform, LinearScale } from 'vega-typings';
 
 export interface AggregateContainerProps extends LayoutProps {
     dock: 'bottom' | 'top' | 'left';
     sumBy: Column;
     globalAggregateMaxExtentSignal: string;
     globalAggregateMaxExtentScaledSignal: string;
-    niceScale: boolean | SignalRef;
     showAxes: boolean;
 }
 
@@ -69,7 +68,7 @@ export class AggregateContainer extends Layout {
 
     public build(): InnerScope {
         const { aggregation, names, props } = this;
-        const { dock, globalScope, groupings, niceScale, parentScope, showAxes } = props;
+        const { dock, globalScope, groupings, parentScope, showAxes } = props;
 
         addTransforms(globalScope.data,
             {
@@ -137,7 +136,7 @@ export class AggregateContainer extends Layout {
                     },
                     0,
                 ],
-            nice: niceScale,
+            nice: { signal: globalScope.signals.scaleNice.name },
             zero: true,
             reverse: dock === 'top',
         };
