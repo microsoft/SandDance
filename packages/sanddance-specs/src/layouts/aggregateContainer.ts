@@ -4,8 +4,7 @@
 */
 
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { FieldNames, SignalNames } from '../constants';
-import { debounce } from '../defaults';
+import { FieldNames } from '../constants';
 import { safeFieldName } from '../expr';
 import {
     AxisScale,
@@ -29,7 +28,6 @@ export interface AggregateContainerProps extends LayoutProps {
     globalAggregateMaxExtentSignal: string;
     globalAggregateMaxExtentScaledSignal: string;
     niceScale: boolean | SignalRef;
-    niceScaleDisplay?: string;
     showAxes: boolean;
 }
 
@@ -71,22 +69,7 @@ export class AggregateContainer extends Layout {
 
     public build(): InnerScope {
         const { aggregation, names, props } = this;
-        const { dock, globalScope, groupings, niceScale, niceScaleDisplay, parentScope, showAxes } = props;
-
-        // Add the nice scale signal if display name is provided
-        if (niceScaleDisplay) {
-            addSignals(globalScope.scope,
-                {
-                    name: SignalNames.ScaleNice,
-                    value: true,
-                    bind: {
-                        name: niceScaleDisplay,
-                        debounce,
-                        input: 'checkbox',
-                    },
-                },
-            );
-        }
+        const { dock, globalScope, groupings, niceScale, parentScope, showAxes } = props;
 
         addTransforms(globalScope.data,
             {

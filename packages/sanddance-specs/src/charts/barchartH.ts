@@ -63,7 +63,6 @@ export default function (specContext: SpecContext): SpecBuilderProps {
     } else {
         const aggProps: AggregateContainerProps = {
             niceScale: { signal: SignalNames.ScaleNice },
-            niceScaleDisplay: specViewOptions.language.scaleNice,
             dock: 'left',
             globalAggregateMaxExtentSignal: 'aggMaxExtent',
             globalAggregateMaxExtentScaledSignal: 'aggMaxExtentScaled',
