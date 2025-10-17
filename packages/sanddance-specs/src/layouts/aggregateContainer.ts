@@ -4,7 +4,8 @@
 */
 
 import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { FieldNames } from '../constants';
+import { FieldNames, SignalNames } from '../constants';
+import { debounce } from '../defaults';
 import { safeFieldName } from '../expr';
 import {
     AxisScale,
@@ -20,14 +21,15 @@ import {
 } from '../scope';
 import { testForCollapseSelection } from '../selection';
 import { Column } from '@msrvida/chart-types';
-import { JoinAggregateTransform, LinearScale } from 'vega-typings';
+import { JoinAggregateTransform, LinearScale, SignalRef } from 'vega-typings';
 
 export interface AggregateContainerProps extends LayoutProps {
     dock: 'bottom' | 'top' | 'left';
     sumBy: Column;
     globalAggregateMaxExtentSignal: string;
     globalAggregateMaxExtentScaledSignal: string;
-    niceScale: boolean;
+    niceScale: boolean | SignalRef;
+    niceScaleDisplay?: string;
     showAxes: boolean;
 }
 
@@ -69,7 +71,22 @@ export class AggregateContainer extends Layout {
 
     public build(): InnerScope {
         const { aggregation, names, props } = this;
-        const { dock, globalScope, groupings, niceScale, parentScope, showAxes } = props;
+        const { dock, globalScope, groupings, niceScale, niceScaleDisplay, parentScope, showAxes } = props;
+
+        // Add the nice scale signal if display name is provided
+        if (niceScaleDisplay) {
+            addSignals(globalScope.scope,
+                {
+                    name: SignalNames.BarChartNice,
+                    value: true,
+                    bind: {
+                        name: niceScaleDisplay,
+                        debounce,
+                        input: 'checkbox',
+                    },
+                },
+            );
+        }
 
         addTransforms(globalScope.data,
             {

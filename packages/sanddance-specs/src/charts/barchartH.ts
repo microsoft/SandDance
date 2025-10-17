@@ -62,7 +62,8 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         });
     } else {
         const aggProps: AggregateContainerProps = {
-            niceScale: true,
+            niceScale: { signal: SignalNames.BarChartNice },
+            niceScaleDisplay: specViewOptions.language.barChartNice,
             dock: 'left',
             globalAggregateMaxExtentSignal: 'aggMaxExtent',
             globalAggregateMaxExtentScaledSignal: 'aggMaxExtentScaled',
@@ -153,6 +154,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         specCapabilities: {
             countsAndSums: true,
             percentage: true,
+            signals: totalStyle !== 'sum-strip-percent' ? [SignalNames.BarChartNice] : undefined,
             roles: [
                 {
                     role: 'y',

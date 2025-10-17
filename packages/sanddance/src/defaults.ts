@@ -52,6 +52,7 @@ export const defaultViewerOptions: ViewerOptions = {
         InnerPaddingSize: 'Inner padding size',
         OuterPaddingSize: 'Outer padding size',
         treeMapMethod: 'Treemap layout',
+        barChartNice: 'Nice scale',
         facetColumns: 'Facet columns',
         facetRows: 'Facet rows',
         markOpacitySignal: 'Mark opacity',
