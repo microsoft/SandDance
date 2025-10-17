@@ -190,53 +190,60 @@ function _Search(_props: Props) {
 
         addExpression(groupIndex: number) {
             const groups: InputSearchExpressionGroup[] = [...this.state.groups];
-            const group = groups[groupIndex];
-            const maxKey = group.expressions.reduce((max, p) => p.key > max ? p.key : max, group.expressions[0].key);
+            const group = { ...groups[groupIndex] };
+            const expressions = [...group.expressions];
+            const maxKey = expressions.reduce((max, p) => p.key > max ? p.key : max, expressions[0].key);
             const newEx = this.newExpression(maxKey + 1, '&&');
-            group.expressions.push(newEx);
-            if (group.expressions.length === 2) {
+            expressions.push(newEx);
+            if (expressions.length === 2) {
                 newEx.unlocked = true;
             } else {
-                group.expressions.forEach(ex => ex.unlocked = false);
-                newEx.clause = group.expressions[1].clause;
+                expressions.forEach(ex => ex.unlocked = false);
+                newEx.clause = expressions[1].clause;
             }
+            group.expressions = expressions;
+            groups[groupIndex] = group;
             this.setState({ groups });
         }
 
         updateExpression(partialEx: Partial<InputSearchExpression>, groupIndex: number, index: number) {
             const groups: InputSearchExpressionGroup[] = [...this.state.groups];
-            const group = groups[groupIndex];
-            const ex = SandDance.VegaMorphCharts.util.clone(group.expressions[index]);
-            if (ex.name !== partialEx.name) {
+            const group = { ...groups[groupIndex] };
+            const expressions = [...group.expressions];
+            const currentEx = expressions[index];
+            if (currentEx.name !== partialEx.name) {
                 //choose an appropriate operator when switching data type
-                const oldColumn = getColumnWithName(ex.name, this.state.sortedColumns);
+                const oldColumn = getColumnWithName(currentEx.name, this.state.sortedColumns);
                 const newColumn = getColumnWithName(partialEx.name, this.state.sortedColumns);
                 const oldType = oldColumn && oldColumn.type;
                 const newType = newColumn && newColumn.type;
                 if (oldType !== newType) {
                     const newOperators = getValidOperators(newColumn).map(validOperator => validOperator[0]);
                     //see if old operator is compatible
-                    if (newOperators.indexOf(ex.operator) < 0) {
+                    if (newOperators.indexOf(currentEx.operator) < 0) {
                         //not compatible, so choose "equal"
                         partialEx.operator = '==';
                     }
                 }
             }
-            Object.assign(ex, partialEx);
+            const ex = { ...currentEx, ...partialEx };
             clearExpressionValidation(ex);
-            group.expressions[index] = ex;
+            expressions[index] = ex;
+            group.expressions = expressions;
+            groups[groupIndex] = group;
             this.setState({ groups });
         }
 
         deleteExpression(groupIndex: number, index: number) {
             const groups: InputSearchExpressionGroup[] = [...this.state.groups];
-            const group = groups[groupIndex];
+            const group = { ...groups[groupIndex] };
             const expressions: InputSearchExpression[] = [...group.expressions];
             expressions.splice(index, 1);
             if (expressions.length === 2) {
                 expressions[1].unlocked = true;
             }
             group.expressions = expressions;
+            groups[groupIndex] = group;
             this.setState({ groups });
         }
 
