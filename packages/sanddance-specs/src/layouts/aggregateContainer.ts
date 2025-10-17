@@ -77,7 +77,7 @@ export class AggregateContainer extends Layout {
         if (niceScaleDisplay) {
             addSignals(globalScope.scope,
                 {
-                    name: SignalNames.BarChartNice,
+                    name: SignalNames.ScaleNice,
                     value: true,
                     bind: {
                         name: niceScaleDisplay,

@@ -224,9 +224,9 @@ export interface SpecLanguage {
     treeMapMethod: string;
 
     /**
-     * Label for bar chart nice scale toggle.
+     * Label for nice scale toggle.
      */
-    barChartNice: string;
+    scaleNice: string;
 
     /**
      * Label for scatterPlot point scale slider.

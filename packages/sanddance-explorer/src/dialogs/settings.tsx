@@ -65,7 +65,7 @@ function filterSignals(signal: NewSignal) {
         case SandDance.constants.SignalNames.ColorReverse:
         case SandDance.constants.SignalNames.PointScale:
         case SandDance.constants.SignalNames.TreeMapMethod:
-        case SandDance.constants.SignalNames.BarChartNice:
+        case SandDance.constants.SignalNames.ScaleNice:
         case SandDance.constants.SignalNames.ZGrounded:
             return false;
         default:
