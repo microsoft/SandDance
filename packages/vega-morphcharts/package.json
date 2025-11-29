@@ -14,7 +14,7 @@
 		"build-typescript": "tsc -p .",
 		"bundle": "rollup -c",
 		"build:02": "npm run build-typescript && node ../../scripts/version.js && npm run bundle",
-		"remove-vega": "npm un vega vega-typings",
+		"remove-vega": "npm un vega-typings",
 		"patch-after-vega-upgrade": "npm version patch"
 	},
 	"keywords": [
@@ -31,6 +31,6 @@
 		"is-plain-object": "^5.0.0",
 		"morphcharts": "^1",
 		"tsx-create-element": "^2.2.5",
-		"vega-typings": "~1.5.0"
+		"vega-typings": "~2.1.0"
 	}
 }

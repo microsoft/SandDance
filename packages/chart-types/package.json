@@ -24,6 +24,6 @@
   "author": "Dan Marshall",
   "license": "MIT",
   "dependencies": {
-    "vega-typings": "~1.5.0"
+    "vega-typings": "~2.1.0"
   }
 }

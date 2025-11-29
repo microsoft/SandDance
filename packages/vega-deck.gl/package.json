@@ -20,7 +20,7 @@
     "build-typescript": "tsc -p .",
     "bundle": "rollup -c",
     "x-build:02": "npm run build-typescript && npm run bundle",
-    "remove-vega": "npm un vega vega-typings",
+    "remove-vega": "npm un vega-typings",
     "patch-after-vega-upgrade": "npm version patch"
   },
   "keywords": [
@@ -37,6 +37,6 @@
     "d3-ease": "^1.0.5",
     "deepmerge": "^2.1.1",
     "tsx-create-element": "^2.2.9",
-    "vega-typings": "~1.5.0"
+    "vega-typings": "~2.1.0"
   }
 }

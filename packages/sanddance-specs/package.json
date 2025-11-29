@@ -24,7 +24,7 @@
     "uitest-watch": "tsc -p ./uitest/ -w",
     "deploy-watch": "npm-run-all --parallel bundle-watch uitest-watch",
     "test2": "node -r esm ./test/perf.js",
-    "remove-vega": "npm un vega vega-typings",
+    "remove-vega": "npm un vega-typings",
     "patch-after-vega-upgrade": "npm version patch"
   },
   "author": "",
@@ -33,6 +33,6 @@
     "@msrvida/chart-types": "^1",
     "@msrvida/data-inference": "^1",
     "@msrvida/search-expression": "^1",
-    "vega-typings": "~1.5.0"
+    "vega-typings": "~2.1.0"
   }
 }
