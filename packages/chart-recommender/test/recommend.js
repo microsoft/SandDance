@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var assert = require('assert');
-var recommender = require('../dist/es5');
-var fs = require('fs');
-var vega = require('vega');
-var { getColumnsFromData } = require('@msrvida/sanddance-specs/dist/umd/sanddance-specs');
+import assert from 'assert';
+import recommender from '../dist/es5/index.js';
+import fs from 'fs';
+import * as vega from 'vega';
+import { getColumnsFromData } from '@msrvida/sanddance-specs/dist/umd/sanddance-specs';
 
-var sampleDir = './test-data/';
+const sampleDir = './test-data/';
 
 function GetDataAndColumns(sampleFile) {
     return new Promise((resolve, reject) => {

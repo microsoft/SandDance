@@ -1,0 +1,5 @@
+{
+  "node-option": [
+    "experimental-specifier-resolution=node"
+  ]
+}
