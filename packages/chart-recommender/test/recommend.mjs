@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import assert from 'assert';
-import recommender from '../dist/es5/index.js';
+import recommender from '../dist/es6/index.js';
 import fs from 'fs';
 import * as vega from 'vega';
-import { getColumnsFromData } from '@msrvida/sanddance-specs/dist/umd/sanddance-specs';
+import { getColumnsFromData } from '@msrvida/sanddance-specs';
 
 const sampleDir = './test-data/';
 
