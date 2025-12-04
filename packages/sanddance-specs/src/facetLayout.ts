@@ -3,17 +3,17 @@
 * Licensed under the MIT License.
 */
 
-import { CrossProps } from './layouts/cross';
-import { DiscreteColumn } from './interfaces';
+import { CrossProps } from './layouts/cross.js';
+import { DiscreteColumn } from './interfaces.js';
 import {
     facetPaddingBottom,
     facetPaddingLeft,
     facetPaddingRight,
     facetPaddingTop,
-} from './defaults';
-import { FacetStyle } from './types';
-import { LayoutPair } from './layouts/layout';
-import { WrapProps } from './layouts/wrap';
+} from './defaults.js';
+import { FacetStyle } from './types.js';
+import { LayoutPair } from './layouts/layout.js';
+import { WrapProps } from './layouts/wrap.js';
 
 export interface PlotPadding {
     x: number;

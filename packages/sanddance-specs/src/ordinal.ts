@@ -3,8 +3,8 @@
 * Licensed under the MIT License.
 */
 
-import { FieldNames } from './constants';
-import { safeFieldName } from './expr';
+import { FieldNames } from './constants.js';
+import { safeFieldName } from './expr.js';
 import { Data, OrdinalScale, SortOrder } from 'vega-typings';
 
 export interface OrdinalResult {

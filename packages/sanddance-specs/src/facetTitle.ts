@@ -3,16 +3,16 @@
 * Licensed under the MIT License.
 */
 
-import { addData, addMarks, addScales } from './scope';
-import { AxesScopeMap } from './axes';
+import { addData, addMarks, addScales } from './scope.js';
+import { AxesScopeMap } from './axes.js';
 import {
     Data,
     GroupMark,
     Scale,
     Scope,
 } from 'vega-typings';
-import { FieldNames, SignalNames } from './constants';
-import { InnerScope, SizeSignals, TitleSource } from './interfaces';
+import { FieldNames, SignalNames } from './constants.js';
+import { InnerScope, SizeSignals, TitleSource } from './interfaces.js';
 
 export function addFacetColRowTitles(globalScope: Scope, colTitleSource: TitleSource, rowTitleSource: TitleSource, sizeSignals: SizeSignals, axisTextColor: string) {
     const titleSignal = `parent[${JSON.stringify(FieldNames.FacetTitle)}]`;

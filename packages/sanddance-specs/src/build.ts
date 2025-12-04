@@ -3,12 +3,12 @@
 * Licensed under the MIT License.
 */
 
-import { getSpecBuilderPropsForChart } from './charts';
-import { inferAll } from './inference';
-import { SpecContext } from './types';
-import { SpecResult } from './interfaces';
+import { getSpecBuilderPropsForChart } from './charts/index.js';
+import { inferAll } from './inference.js';
+import { SpecContext } from './types.js';
+import { SpecResult } from './interfaces.js';
 import { ValuesData } from 'vega-typings';
-import { SpecBuilder } from './specBuilder';
+import { SpecBuilder } from './specBuilder.js';
 
 export function build(specContext: SpecContext, currData: object[]): SpecResult {
     const { specColumns } = specContext;

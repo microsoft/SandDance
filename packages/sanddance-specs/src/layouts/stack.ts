@@ -3,9 +3,9 @@
 * Licensed under the MIT License.
 */
 
-import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { safeFieldName } from '../expr';
-import { InnerScope, LayoutOffsets } from '../interfaces';
+import { Layout, LayoutBuildProps, LayoutProps } from './layout.js';
+import { safeFieldName } from '../expr.js';
+import { InnerScope, LayoutOffsets } from '../interfaces.js';
 import {
     addData,
     addMarks,
@@ -13,8 +13,8 @@ import {
     addSignals,
     addTransforms,
     getGroupBy,
-} from '../scope';
-import { testForCollapseSelection } from '../selection';
+} from '../scope.js';
+import { testForCollapseSelection } from '../selection.js';
 import { Column } from '@msrvida/chart-types';
 import { LinearScale, RectMark } from 'vega-typings';
 

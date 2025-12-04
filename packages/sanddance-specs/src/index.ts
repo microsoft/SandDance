@@ -3,8 +3,8 @@
 * Licensed under the MIT License.
 */
 
-export * from './build';
-export * from './constants';
-export * from './inference';
-export * from './interfaces';
-export * from './types';
+export * from './build.js';
+export * from './constants.js';
+export * from './inference.js';
+export * from './interfaces.js';
+export * from './types.js';

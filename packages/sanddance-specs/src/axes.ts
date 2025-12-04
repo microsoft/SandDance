@@ -3,12 +3,12 @@
 * Licensed under the MIT License.
 */
 
-import { SignalNames } from './constants';
-import { axesLabelLimit, axesTitleLimit } from './defaults';
-import { GlobalScope } from './globalScope';
-import { AxisScale, AxisScales, GlobalScales } from './interfaces';
-import { addAxes, addScales } from './scope';
-import { SpecColumns, SpecViewOptions } from './types';
+import { SignalNames } from './constants.js';
+import { axesLabelLimit, axesTitleLimit } from './defaults.js';
+import { GlobalScope } from './globalScope.js';
+import { AxisScale, AxisScales, GlobalScales } from './interfaces.js';
+import { addAxes, addScales } from './scope.js';
+import { SpecColumns, SpecViewOptions } from './types.js';
 import { Column, View } from '@msrvida/chart-types';
 import {
     Axis,

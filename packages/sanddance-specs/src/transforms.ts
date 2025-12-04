@@ -5,7 +5,7 @@
 
 import { Column } from '@msrvida/chart-types';
 import { ExtentTransform } from 'vega-typings';
-import { safeFieldName } from './expr';
+import { safeFieldName } from './expr.js';
 
 export function dataExtent(column: Column, signal: string): ExtentTransform {
     return {

@@ -3,10 +3,10 @@
 * Licensed under the MIT License.
 */
 
-import { SignalNames } from './constants';
-import { InnerScope } from './interfaces';
-import { LayoutOffsets, SizeSignals } from './interfaces';
-import { getDataByName } from './scope';
+import { SignalNames } from './constants.js';
+import { InnerScope } from './interfaces.js';
+import { LayoutOffsets, SizeSignals } from './interfaces.js';
+import { getDataByName } from './scope.js';
 import {
     Data,
     GroupMark,

@@ -3,13 +3,13 @@
 * Licensed under the MIT License.
 */
 
-import { AggregateContainerProps } from '../layouts/aggregateContainer';
-import { AxisScales } from '../interfaces';
-import { LayoutPair } from '../layouts/layout';
-import { SignalNames } from '../constants';
-import { SpecBuilderProps } from '../specBuilder';
-import { SpecContext } from '../types';
-import { StripProps } from '../layouts/strip';
+import { AggregateContainerProps } from '../layouts/aggregateContainer.js';
+import { AxisScales } from '../interfaces.js';
+import { LayoutPair } from '../layouts/layout.js';
+import { SignalNames } from '../constants.js';
+import { SpecBuilderProps } from '../specBuilder.js';
+import { SpecContext } from '../types.js';
+import { StripProps } from '../layouts/strip.js';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns } = specContext;

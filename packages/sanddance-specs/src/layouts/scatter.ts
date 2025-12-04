@@ -3,12 +3,12 @@
 * Licensed under the MIT License.
 */
 
-import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { SignalNames } from '../constants';
-import { debounce, scatterSizedDiv } from '../defaults';
-import { safeFieldName } from '../expr';
-import { GlobalScales, InnerScope } from '../interfaces';
-import { linearScale, pointScale } from '../scales';
+import { Layout, LayoutBuildProps, LayoutProps } from './layout.js';
+import { SignalNames } from '../constants.js';
+import { debounce, scatterSizedDiv } from '../defaults.js';
+import { safeFieldName } from '../expr.js';
+import { GlobalScales, InnerScope } from '../interfaces.js';
+import { linearScale, pointScale } from '../scales.js';
 import {
     addData,
     addMarks,
@@ -16,8 +16,8 @@ import {
     addScales,
     addSignals,
     addTransforms,
-} from '../scope';
-import { testForCollapseSelection } from '../selection';
+} from '../scope.js';
+import { testForCollapseSelection } from '../selection.js';
 import { Column, Dimension3D, View } from '@msrvida/chart-types';
 import {
     RectEncodeEntry,
@@ -27,9 +27,9 @@ import {
     SignalRef,
     Transforms,
 } from 'vega-typings';
-import { Extents } from '../types';
-import { dataExtent } from '../transforms';
-import { outerExtentSignal, shouldBeIntegralBinStep } from '../bin';
+import { Extents } from '../types.js';
+import { dataExtent } from '../transforms.js';
+import { outerExtentSignal, shouldBeIntegralBinStep } from '../bin.js';
 
 export interface ScatterProps extends LayoutProps {
     x: Column;

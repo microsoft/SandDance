@@ -3,11 +3,11 @@
 * Licensed under the MIT License.
 */
 
-import { AxisScales } from '../interfaces';
-import { SignalNames } from '../constants';
-import { SpecBuilderProps } from '../specBuilder';
-import { SpecContext } from '../types';
-import { SquareProps } from '../layouts/square';
+import { AxisScales } from '../interfaces.js';
+import { SignalNames } from '../constants.js';
+import { SpecBuilderProps } from '../specBuilder.js';
+import { SpecContext } from '../types.js';
+import { SquareProps } from '../layouts/square.js';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns } = specContext;

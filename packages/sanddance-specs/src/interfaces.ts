@@ -3,7 +3,7 @@
 * Licensed under the MIT License.
 */
 
-import { SpecCapabilities, SpecContext } from './types';
+import { SpecCapabilities, SpecContext } from './types.js';
 import { Column } from '@msrvida/chart-types';
 import {
     AggregateOp,

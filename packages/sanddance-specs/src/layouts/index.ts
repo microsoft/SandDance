@@ -3,17 +3,17 @@
 * Licensed under the MIT License.
 */
 
-import { AggregateContainer } from './aggregateContainer';
-import { AggregateSquare } from './aggregateSquare';
-import { Band } from './band';
-import { Cross } from './cross';
-import { Layout } from './layout';
-import { Scatter } from './scatter';
-import { Square } from './square';
-import { Stack } from './stack';
-import { Strip } from './strip';
-import { Treemap } from './treemap';
-import { Wrap } from './wrap';
+import { AggregateContainer } from './aggregateContainer.js';
+import { AggregateSquare } from './aggregateSquare.js';
+import { Band } from './band.js';
+import { Cross } from './cross.js';
+import { Layout } from './layout.js';
+import { Scatter } from './scatter.js';
+import { Square } from './square.js';
+import { Stack } from './stack.js';
+import { Strip } from './strip.js';
+import { Treemap } from './treemap.js';
+import { Wrap } from './wrap.js';
 
 export type LayoutType =
     'AggregateContainer' |

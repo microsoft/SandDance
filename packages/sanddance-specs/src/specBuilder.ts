@@ -3,9 +3,9 @@
 * Licensed under the MIT License.
 */
 
-import { addGlobalAxes, AxesScopeMap } from './axes';
-import { addColor } from './color';
-import { FieldNames, ScaleNames, SignalNames } from './constants';
+import { addGlobalAxes, AxesScopeMap } from './axes.js';
+import { addColor } from './color.js';
+import { FieldNames, ScaleNames, SignalNames } from './constants.js';
 import {
     axesOffsetX,
     axesOffsetY,
@@ -15,12 +15,12 @@ import {
     axesTitlePaddingY,
     facetPaddingBottom,
     facetPaddingLeft,
-} from './defaults';
-import { minFacetHeight, minFacetWidth } from './defaults';
-import { FacetLayout } from './facetLayout';
-import { addFacetAxesGroupMarks } from './facetTitle';
-import { fill, opacity } from './fill';
-import { GlobalScope, GlobalSignals } from './globalScope';
+} from './defaults.js';
+import { minFacetHeight, minFacetWidth } from './defaults.js';
+import { FacetLayout } from './facetLayout.js';
+import { addFacetAxesGroupMarks } from './facetTitle.js';
+import { fill, opacity } from './fill.js';
+import { GlobalScope, GlobalSignals } from './globalScope.js';
 import {
     AxisScales,
     EncodingRule,
@@ -28,21 +28,21 @@ import {
     Grouping,
     InnerScope,
     SpecResult,
-} from './interfaces';
-import { LayoutBuildProps, LayoutPair, LayoutProps } from './layouts/layout';
+} from './interfaces.js';
+import { LayoutBuildProps, LayoutPair, LayoutProps } from './layouts/layout.js';
 import {
     addData,
     addSignals,
-} from './scope';
-import { textSignals } from './signals';
-import { SpecCapabilities, SpecContext } from './types';
+} from './scope.js';
+import { textSignals } from './signals.js';
+import { SpecCapabilities, SpecContext } from './types.js';
 import {
     GroupMark,
     LinearScale,
     Spec,
 } from 'vega-typings';
-import { layoutClasses } from './layouts/index';
-import { getImageMark } from './image';
+import { layoutClasses } from './layouts/index.js';
+import { getImageMark } from './image.js';
 
 export interface SpecBuilderProps {
     axisScales?: AxisScales;

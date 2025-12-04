@@ -3,9 +3,9 @@
 * Licensed under the MIT License.
 */
 
-import { SignalNames } from './constants';
-import { safeFieldName } from './expr';
-import { SpecContext } from './types';
+import { SignalNames } from './constants.js';
+import { safeFieldName } from './expr.js';
+import { SpecContext } from './types.js';
 import { ColorValueRef, NumericValueRef, ProductionRule } from 'vega-typings';
 
 export function fill(context: SpecContext, colorFieldName: string, scale: string): ProductionRule<ColorValueRef> {

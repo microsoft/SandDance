@@ -4,7 +4,7 @@
 */
 
 import { Column } from '@msrvida/chart-types';
-import { SpecContext } from './types';
+import { SpecContext } from './types.js';
 import { Legend } from 'vega-typings';
 
 function legend(column: Column, fill: string) {

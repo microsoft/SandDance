@@ -3,18 +3,18 @@
 * Licensed under the MIT License.
 */
 
-import { SignalNames } from '../constants';
-import { defaultBins, maxbins, minBarBandWidth } from '../defaults';
-import { AxisScale, AxisScales } from '../interfaces';
-import { AggregateContainerProps } from '../layouts/aggregateContainer';
-import { BandProps } from '../layouts/band';
-import { LayoutPair } from '../layouts/layout';
-import { SquareProps } from '../layouts/square';
-import { StripProps } from '../layouts/strip';
-import { TreemapProps } from '../layouts/treemap';
-import { allowNoneForSize } from '../size';
-import { SpecBuilderProps } from '../specBuilder';
-import { SpecContext } from '../types';
+import { SignalNames } from '../constants.js';
+import { defaultBins, maxbins, minBarBandWidth } from '../defaults.js';
+import { AxisScale, AxisScales } from '../interfaces.js';
+import { AggregateContainerProps } from '../layouts/aggregateContainer.js';
+import { BandProps } from '../layouts/band.js';
+import { LayoutPair } from '../layouts/layout.js';
+import { SquareProps } from '../layouts/square.js';
+import { StripProps } from '../layouts/strip.js';
+import { TreemapProps } from '../layouts/treemap.js';
+import { allowNoneForSize } from '../size.js';
+import { SpecBuilderProps } from '../specBuilder.js';
+import { SpecContext } from '../types.js';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns, specViewOptions } = specContext;

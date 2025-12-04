@@ -3,9 +3,9 @@
 * Licensed under the MIT License.
 */
 
-import { ColorScaleNone, SignalNames } from './constants';
-import { safeFieldName } from './expr';
-import { ColorBin } from './types';
+import { ColorScaleNone, SignalNames } from './constants.js';
+import { safeFieldName } from './expr.js';
+import { ColorBin } from './types.js';
 import {
     LinearScale,
     PointScale,
