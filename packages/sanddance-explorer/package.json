@@ -40,7 +40,7 @@
   },
   "umd": "./dist/umd/sanddance-explorer.js",
   "dependencies": {
-    "@msrvida/chart-recommender": "^3",
+    "@msrvida/chart-recommender": "^4",
     "@msrvida/fluentui-react-cdn-typings": "^2",
     "@msrvida/sanddance-react": "^4",
     "d3-format": "^1.3.2"

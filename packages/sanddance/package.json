@@ -32,7 +32,7 @@
   "dependencies": {
     "d3-scale": "^4.0.2",
     "@msrvida/chart-types": "^1",
-    "@msrvida/sanddance-specs": "^1",
+    "@msrvida/sanddance-specs": "^2",
     "@msrvida/search-expression": "^1",
     "@msrvida/vega-morphcharts": "^1",
     "vega-typings": "~2.1.0"

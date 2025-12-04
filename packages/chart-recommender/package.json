@@ -14,7 +14,7 @@
   ],
   "dependencies": {
     "@msrvida/chart-types": "^1",
-    "@msrvida/sanddance-specs": "^1"
+    "@msrvida/sanddance-specs": "^2"
   },
   "scripts": {
     "eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
