@@ -5,8 +5,7 @@
   "scripts": {
     "eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
     "build:03": "tsc -p .",
-    "deploy": "parcel build ./src/vega-morphcharts-test-es6.ts --no-autoinstall --no-cache",
-    "remove-vega": "npm un vega"
+    "deploy": "parcel build ./src/vega-morphcharts-test-es6.ts --no-autoinstall --no-cache"
   },
   "umd": "../../docs/tests/v3/es6/js/vega-morphcharts-test-es6.js",
   "targets": {

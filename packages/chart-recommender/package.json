@@ -22,7 +22,6 @@
     "build-typescript": "tsc -p .",
     "watch-typescript": "tsc -p . -w",
     "build:04": "npm run build-typescript",
-    "remove-vega": "npm un vega",
     "patch-after-vega-upgrade": "npm version patch"
   },
   "author": "",
