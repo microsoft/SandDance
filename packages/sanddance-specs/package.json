@@ -30,7 +30,7 @@
   "license": "MIT",
   "dependencies": {
     "@msrvida/chart-types": "^1",
-    "@msrvida/data-inference": "^1",
+    "@msrvida/data-inference": "^2",
     "@msrvida/search-expression": "^1",
     "vega-typings": "~2.1.0"
   }
