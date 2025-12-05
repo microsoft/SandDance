@@ -20,7 +20,7 @@ steps:
   displayName: 'Install npm 10'
 
 - script: |
-    npm ci
+    npm ci --include=optional
   displayName: 'npm ci'
 
 - task: ComponentGovernanceComponentDetection@0
