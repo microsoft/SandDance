@@ -57,6 +57,7 @@
         "@fluentui/react": "^8",
         "@luma.gl/core": "8.3.1",
         "@parcel/transformer-sass": "^2.16.1",
+        "@parcel/watcher": "^2.5.1",
         "@rollup/plugin-buble": "^1.0.3",
         "@rollup/plugin-commonjs": "^29.0.0",
         "@rollup/plugin-json": "^6.1.0",
