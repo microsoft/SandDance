@@ -90,7 +90,7 @@ Use `postMessage` to communicate with `embedIframe.contentWindow`. For all comma
     *Note that the `props` member is for initializing the instance of SandDance Explorer. A new dataset can be loaded with a subsequent load command, but `props` will be not be used.*
 
 
-    * The `insight` member, of type [Insight](https://microsoft.github.io/SandDance/docs/sanddance-specs/v1/interfaces/Insight.html), to specify a chart view: 
+    * The `insight` member, of type [Insight](https://github.com/microsoft/SandDance/blob/main/packages/sanddance-specs/src/insight.ts), to specify a chart view: 
     ```js
     const insight = {
         chart: 'barchartH',
