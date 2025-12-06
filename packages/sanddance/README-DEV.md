@@ -6,8 +6,6 @@ The build of vega-deck.gl is meant to satisfy these constraints:
 
 Specifically, the use of base classes in Vega and Deck.gl which were declared using the `class` keyword, subclasses in vega-deck.gl must also use the `class` keyword when extending these. 
 
-Note that as of this writing, [the Parcel bundler has a bug](https://github.com/parcel-bundler/parcel/issues/839) that transpiles the `class` keyword to a `function`, resulting in a runtime error `Class constructor [extended class] cannot be invoked without 'new'`. This can be alleviated if the base classes in Vega and Deck.gl are also run through the bundler as ES6 modules.
-
 2. TypeScript
 
 We want to leverage TypeScript as much as possible.
