@@ -4,7 +4,7 @@
 
 ![image](https://user-images.githubusercontent.com/11507384/82498036-238d5380-9aa4-11ea-85b0-8fcb31522461.png)
 
-[Demo](https://microsoft.github.io/SandDance/tests/sanddance-specs/v1/)
+[Demo](https://microsoft.github.io/SandDance/tests/sanddance-specs/v2/)
 
 ## Usage
 

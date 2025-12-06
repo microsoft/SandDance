@@ -45,7 +45,7 @@ const packages = {
             ],
         },
         {
-            glob: 'docs/tests/{data-inference,sanddance-specs}/v1/index.html',
+            glob: 'docs/tests/{data-inference,sanddance-specs}/v2/index.html',
             pattern: ({ major, minor }) => [
                 `vega@^${major}.${minor}`,
             ],

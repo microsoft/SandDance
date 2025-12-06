@@ -1,8 +1,8 @@
 # @msrvida/data-inference
 
-Infer column types in tabular data. Inference is from [vega-loader's `inferTypes` function](https://github.com/vega/vega/tree/main/packages/vega-loader#inferTypes) (or similar function of your choice). This library enriches the column metadata with a [ColumnStats object](https://microsoft.github.io/SandDance/docs/chart-types/v1/interfaces/ColumnStats.html). 
+Infer column types in tabular data. Inference is from [vega-loader's `inferTypes` function](https://github.com/vega/vega/tree/main/packages/vega-loader#inferTypes) (or similar function of your choice). This library enriches the column metadata with a [ColumnStats object](https://github.com/microsoft/SandDance/blob/main/packages/chart-types/src/stats.ts). 
 
-[Demo](https://microsoft.github.io/SandDance/tests/data-inference/v1/)
+[Demo](https://microsoft.github.io/SandDance/tests/data-inference/v2/)
 
 ## Usage
 

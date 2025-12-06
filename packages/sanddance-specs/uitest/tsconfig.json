@@ -3,7 +3,7 @@
         "lib": [
             "dom", "es2015"
         ],
-        "outDir": "../../../docs/tests/sanddance-specs/v1/js/",
+        "outDir": "../../../docs/tests/sanddance-specs/v2/js/",
         "removeComments": true,
         "skipLibCheck": true
     }

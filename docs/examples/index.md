@@ -8,10 +8,10 @@ title: Examples
 ## Subsystem
 
 ### data-inference
-* [data-inference test](../tests/data-inference/v1/) using UMD/CDN
+* [data-inference test](../tests/data-inference/v2/) using UMD/CDN
 
 ### sanddance-specs
-* [sanddance-specs 2D vega specs tests](../tests/sanddance-specs/v1/) using UMD/CDN
+* [sanddance-specs 2D vega specs tests](../tests/sanddance-specs/v2/) using UMD/CDN
 
 ### vega-morphcharts
 * [simple vega spec](../tests/v4/umd/vega-morphcharts.test.html) using UMD/CDN
