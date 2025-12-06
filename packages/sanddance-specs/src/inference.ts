@@ -4,7 +4,8 @@
 */
 
 import { Column } from '@msrvida/chart-types';
-import { Insight, SpecColumns } from './types.js';
+import { SpecColumns } from './types.js';
+import { Insight } from './insight.js';
 
 export { getColumnsFromData, getStats, inferAll } from '@msrvida/data-inference';
 
