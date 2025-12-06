@@ -14,7 +14,6 @@
   ],
   "scripts": {
     "eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
-    "predocs": "rimraf ../../docs/docs/chart-types/v1",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "build:01": "npm run build-typescript",
