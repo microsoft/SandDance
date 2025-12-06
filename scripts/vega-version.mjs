@@ -57,12 +57,6 @@ const packages = {
             ],
         },
         {
-            glob: 'streamlit/streamlit_sanddance/frontend/package.json',
-            pattern: ({ major, minor, patch }) => [
-                `"vega": "${major}.${minor}${patch.length ? '.' : ''}${patch}"`,
-            ],
-        },
-        {
             glob: 'packages/*/src/**/*.ts',
             pattern: ({ major, minor }) => [
                 `vega@${major}.${minor}`,

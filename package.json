@@ -102,7 +102,6 @@
         "rimraf": "^6.1.2",
         "rollup": "^4.53.3",
         "sass": "^1.32.4",
-        "streamlit-component-lib": "^2.0.0",
         "temp-write": "^3.4.0",
         "ts-loader": "^9.3.1",
         "tsx-create-element": "^2.2.9",
@@ -131,8 +130,7 @@
     "workspaces": {
         "packages": [
             "extensions/*",
-            "packages/*",
-            "streamlit/streamlit_sanddance/frontend"
+            "packages/*"
         ],
         "nohoist": [
             "packages/powerbi/**",
