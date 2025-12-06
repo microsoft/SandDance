@@ -4,21 +4,6 @@
     (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.SandDance = {}));
 })(this, (function (exports) { 'use strict';
 
-    function _mergeNamespaces(n, m) {
-        m.forEach(function (e) {
-            e && typeof e !== 'string' && !Array.isArray(e) && Object.keys(e).forEach(function (k) {
-                if (k !== 'default' && !(k in n)) {
-                    var d = Object.getOwnPropertyDescriptor(e, k);
-                    Object.defineProperty(n, k, d.get ? d : {
-                        enumerable: true,
-                        get: function () { return e[k]; }
-                    });
-                }
-            });
-        });
-        return Object.freeze(n);
-    }
-
     /*!
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
@@ -5350,7 +5335,7 @@
     * Licensed under the MIT License.
     */
 
-    var index$4 = /*#__PURE__*/Object.freeze({
+    var index$2 = /*#__PURE__*/Object.freeze({
         __proto__: null,
         ColorScaleNone: ColorScaleNone,
         FieldNames: FieldNames,
@@ -5715,7 +5700,7 @@
     * Licensed under the MIT License.
     */
 
-    var index$3 = /*#__PURE__*/Object.freeze({
+    var index$1 = /*#__PURE__*/Object.freeze({
         __proto__: null,
         Exec: Exec,
         compare: compare,
@@ -5738,252 +5723,7 @@
         __proto__: null
     });
 
-    function getDefaultExportFromCjs (x) {
-    	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
-    }
-
-    var require$$0$1 = [
-    	"a",
-    	"abbr",
-    	"address",
-    	"area",
-    	"article",
-    	"aside",
-    	"audio",
-    	"b",
-    	"base",
-    	"bdi",
-    	"bdo",
-    	"blockquote",
-    	"body",
-    	"br",
-    	"button",
-    	"canvas",
-    	"caption",
-    	"cite",
-    	"code",
-    	"col",
-    	"colgroup",
-    	"data",
-    	"datalist",
-    	"dd",
-    	"del",
-    	"details",
-    	"dfn",
-    	"dialog",
-    	"div",
-    	"dl",
-    	"dt",
-    	"em",
-    	"embed",
-    	"fieldset",
-    	"figcaption",
-    	"figure",
-    	"footer",
-    	"form",
-    	"h1",
-    	"h2",
-    	"h3",
-    	"h4",
-    	"h5",
-    	"h6",
-    	"head",
-    	"header",
-    	"hgroup",
-    	"hr",
-    	"html",
-    	"i",
-    	"iframe",
-    	"img",
-    	"input",
-    	"ins",
-    	"kbd",
-    	"keygen",
-    	"label",
-    	"legend",
-    	"li",
-    	"link",
-    	"main",
-    	"map",
-    	"mark",
-    	"math",
-    	"menu",
-    	"menuitem",
-    	"meta",
-    	"meter",
-    	"nav",
-    	"noscript",
-    	"object",
-    	"ol",
-    	"optgroup",
-    	"option",
-    	"output",
-    	"p",
-    	"param",
-    	"picture",
-    	"pre",
-    	"progress",
-    	"q",
-    	"rb",
-    	"rp",
-    	"rt",
-    	"rtc",
-    	"ruby",
-    	"s",
-    	"samp",
-    	"script",
-    	"section",
-    	"select",
-    	"slot",
-    	"small",
-    	"source",
-    	"span",
-    	"strong",
-    	"style",
-    	"sub",
-    	"summary",
-    	"sup",
-    	"svg",
-    	"table",
-    	"tbody",
-    	"td",
-    	"template",
-    	"textarea",
-    	"tfoot",
-    	"th",
-    	"thead",
-    	"time",
-    	"title",
-    	"tr",
-    	"track",
-    	"u",
-    	"ul",
-    	"var",
-    	"video",
-    	"wbr"
-    ];
-
-    var htmlTags$1;
-    var hasRequiredHtmlTags;
-
-    function requireHtmlTags () {
-    	if (hasRequiredHtmlTags) return htmlTags$1;
-    	hasRequiredHtmlTags = 1;
-    	htmlTags$1 = require$$0$1;
-    	return htmlTags$1;
-    }
-
-    var htmlTagsExports = requireHtmlTags();
-    var index$2 = /*@__PURE__*/getDefaultExportFromCjs(htmlTagsExports);
-
-    var htmlTags = /*#__PURE__*/_mergeNamespaces({
-        __proto__: null,
-        default: index$2
-    }, [htmlTagsExports]);
-
-    var require$$0 = [
-    	"a",
-    	"altGlyph",
-    	"altGlyphDef",
-    	"altGlyphItem",
-    	"animate",
-    	"animateColor",
-    	"animateMotion",
-    	"animateTransform",
-    	"circle",
-    	"clipPath",
-    	"color-profile",
-    	"cursor",
-    	"defs",
-    	"desc",
-    	"ellipse",
-    	"feBlend",
-    	"feColorMatrix",
-    	"feComponentTransfer",
-    	"feComposite",
-    	"feConvolveMatrix",
-    	"feDiffuseLighting",
-    	"feDisplacementMap",
-    	"feDistantLight",
-    	"feFlood",
-    	"feFuncA",
-    	"feFuncB",
-    	"feFuncG",
-    	"feFuncR",
-    	"feGaussianBlur",
-    	"feImage",
-    	"feMerge",
-    	"feMergeNode",
-    	"feMorphology",
-    	"feOffset",
-    	"fePointLight",
-    	"feSpecularLighting",
-    	"feSpotLight",
-    	"feTile",
-    	"feTurbulence",
-    	"filter",
-    	"font",
-    	"font-face",
-    	"font-face-format",
-    	"font-face-name",
-    	"font-face-src",
-    	"font-face-uri",
-    	"foreignObject",
-    	"g",
-    	"glyph",
-    	"glyphRef",
-    	"hkern",
-    	"image",
-    	"line",
-    	"linearGradient",
-    	"marker",
-    	"mask",
-    	"metadata",
-    	"missing-glyph",
-    	"mpath",
-    	"path",
-    	"pattern",
-    	"polygon",
-    	"polyline",
-    	"radialGradient",
-    	"rect",
-    	"script",
-    	"set",
-    	"stop",
-    	"style",
-    	"svg",
-    	"switch",
-    	"symbol",
-    	"text",
-    	"textPath",
-    	"title",
-    	"tref",
-    	"tspan",
-    	"use",
-    	"view",
-    	"vkern"
-    ];
-
-    var lib;
-    var hasRequiredLib;
-
-    function requireLib () {
-    	if (hasRequiredLib) return lib;
-    	hasRequiredLib = 1;
-    	lib = require$$0;
-    	return lib;
-    }
-
-    var libExports = requireLib();
-    var index$1 = /*@__PURE__*/getDefaultExportFromCjs(libExports);
-
-    var svgTags = /*#__PURE__*/_mergeNamespaces({
-        __proto__: null,
-        default: index$1
-    }, [libExports]);
-
-    const htmlTagArray = index$2 || htmlTags;
-    const svgTagArray = index$1 || svgTags;
+    const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
     /**
      * Decamelizes a string with/without a custom separator (hyphen by default).
      * from: https://ourcodeworld.com/articles/read/608/how-to-camelize-and-decamelize-strings-in-javascript
@@ -6000,12 +5740,18 @@
     function createElement(tag, attrs, ...children) {
         if (typeof tag === 'function') {
             const fn = tag;
-            const props = attrs;
-            props.children = children;
+            let props = attrs;
+            // Handle case where props is null but children are provided
+            if (props === null || props === undefined) {
+                props = { children };
+            }
+            else {
+                props.children = children;
+            }
             return fn(props);
         }
         else {
-            const ns = tagNamespace(tag);
+            const ns = (tag === 'svg') ? SVG_NAMESPACE : null;
             const el = ns ? document.createElementNS(ns, tag) : document.createElement(tag);
             const map = attrs;
             let ref;
@@ -6061,6 +5807,44 @@
             arr.push(`${decamelize(prop, '-')}:${o[prop]}`);
         return arr.join(';');
     }
+    function isInsideForeignObject(element) {
+        let current = element;
+        while (current) {
+            if (current.tagName.toLowerCase() === 'foreignobject') {
+                return true;
+            }
+            current = current.parentElement;
+        }
+        return false;
+    }
+    function recreateWithSvgNamespace(element) {
+        const svgElement = document.createElementNS(SVG_NAMESPACE, element.tagName.toLowerCase());
+        // Copy attributes
+        for (let i = 0; i < element.attributes.length; i++) {
+            const attr = element.attributes[i];
+            svgElement.setAttributeNS(null, attr.name, attr.value);
+        }
+        // Copy event handlers and other properties
+        // Common event handlers that need to be copied
+        const eventProperties = ['onclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmouseout',
+            'onmousemove', 'onkeydown', 'onkeyup', 'onkeypress', 'onfocus', 'onblur'];
+        for (const prop of eventProperties) {
+            if (element[prop]) {
+                svgElement[prop] = element[prop];
+            }
+        }
+        // Copy children recursively
+        for (let i = 0; i < element.childNodes.length; i++) {
+            const child = element.childNodes[i];
+            if (child.nodeType === Node.ELEMENT_NODE) {
+                svgElement.appendChild(recreateWithSvgNamespace(child));
+            }
+            else {
+                svgElement.appendChild(child.cloneNode(true));
+            }
+        }
+        return svgElement;
+    }
     function addChild(parentElement, child) {
         if (child === null || child === undefined || typeof child === "boolean") {
             return;
@@ -6069,7 +5853,19 @@
             appendChildren(parentElement, child);
         }
         else if (isElement(child)) {
-            parentElement.appendChild(child);
+            const childEl = child;
+            // If parent is SVG and child was created with wrong namespace, recreate it
+            // Exception: don't recreate elements inside foreignObject as they should remain HTML
+            if (parentElement.namespaceURI === SVG_NAMESPACE &&
+                childEl.namespaceURI !== SVG_NAMESPACE &&
+                childEl.tagName.toLowerCase() !== 'foreignobject' &&
+                !isInsideForeignObject(parentElement)) {
+                const recreated = recreateWithSvgNamespace(childEl);
+                parentElement.appendChild(recreated);
+            }
+            else {
+                parentElement.appendChild(childEl);
+            }
         }
         else {
             parentElement.appendChild(document.createTextNode(child.toString()));
@@ -6138,12 +5934,6 @@
             childPosition++;
         return childPosition;
     }
-    function tagNamespace(tag) {
-        //issue: this won't disambiguate certain tags which exist in both svg and html: <a>, <title> ...
-        if (tag === 'svg' || (svgTagArray.indexOf(tag) >= 0 && !(htmlTagArray.indexOf(tag) >= 0))) {
-            return "http://www.w3.org/2000/svg";
-        }
-    }
 
     /*!
     * Copyright (c) Microsoft Corporation.
@@ -6180,28 +5970,19 @@
      * Common utilities
      * @module glMatrix
      */
+
     // Configuration Constants
     var EPSILON = 0.000001;
-    var ARRAY_TYPE = typeof Float32Array !== 'undefined' ? Float32Array : Array;
+    var ARRAY_TYPE = typeof Float32Array !== "undefined" ? Float32Array : Array;
+
     /**
      * Sets the type of array used when creating new vectors and matrices
      *
      * @param {Float32ArrayConstructor | ArrayConstructor} type Array type, such as Float32Array or Array
      */
-
     function setMatrixArrayType(type) {
       ARRAY_TYPE = type;
     }
-    if (!Math.hypot) Math.hypot = function () {
-      var y = 0,
-          i = arguments.length;
-
-      while (i--) {
-        y += arguments[i] * arguments[i];
-      }
-
-      return Math.sqrt(y);
-    };
 
     /**
      * 3x3 Matrix
@@ -6213,10 +5994,8 @@
      *
      * @returns {mat3} a new 3x3 matrix
      */
-
     function create$5() {
       var out = new ARRAY_TYPE(9);
-
       if (ARRAY_TYPE != Float32Array) {
         out[1] = 0;
         out[2] = 0;
@@ -6225,12 +6004,12 @@
         out[6] = 0;
         out[7] = 0;
       }
-
       out[0] = 1;
       out[4] = 1;
       out[8] = 1;
       return out;
     }
+
     /**
      * Copies the upper-left 3x3 values into the given mat3.
      *
@@ -6238,7 +6017,6 @@
      * @param {ReadonlyMat4} a   the source 4x4 matrix
      * @returns {mat3} out
      */
-
     function fromMat4(out, a) {
       out[0] = a[0];
       out[1] = a[1];
@@ -6251,6 +6029,7 @@
       out[8] = a[10];
       return out;
     }
+
     /**
      * Create a new mat3 with the given values
      *
@@ -6265,7 +6044,6 @@
      * @param {Number} m22 Component in column 2, row 2 position (index 8)
      * @returns {mat3} A new mat3
      */
-
     function fromValues$5(m00, m01, m02, m10, m11, m12, m20, m21, m22) {
       var out = new ARRAY_TYPE(9);
       out[0] = m00;
@@ -6279,6 +6057,7 @@
       out[8] = m22;
       return out;
     }
+
     /**
      * Calculates a 3x3 matrix from the given quaternion
      *
@@ -6287,12 +6066,11 @@
      *
      * @returns {mat3} out
      */
-
     function fromQuat$1(out, q) {
       var x = q[0],
-          y = q[1],
-          z = q[2],
-          w = q[3];
+        y = q[1],
+        z = q[2],
+        w = q[3];
       var x2 = x + x;
       var y2 = y + y;
       var z2 = z + z;
@@ -6327,10 +6105,8 @@
      *
      * @returns {mat4} a new 4x4 matrix
      */
-
     function create$4() {
       var out = new ARRAY_TYPE(16);
-
       if (ARRAY_TYPE != Float32Array) {
         out[1] = 0;
         out[2] = 0;
@@ -6345,13 +6121,13 @@
         out[13] = 0;
         out[14] = 0;
       }
-
       out[0] = 1;
       out[5] = 1;
       out[10] = 1;
       out[15] = 1;
       return out;
     }
+
     /**
      * Copy the values from one mat4 to another
      *
@@ -6359,7 +6135,6 @@
      * @param {ReadonlyMat4} a the source matrix
      * @returns {mat4} out
      */
-
     function copy$5(out, a) {
       out[0] = a[0];
       out[1] = a[1];
@@ -6379,6 +6154,7 @@
       out[15] = a[15];
       return out;
     }
+
     /**
      * Create a new mat4 with the given values
      *
@@ -6400,7 +6176,6 @@
      * @param {Number} m33 Component in column 3, row 3 position (index 15)
      * @returns {mat4} A new mat4
      */
-
     function fromValues$4(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33) {
       var out = new ARRAY_TYPE(16);
       out[0] = m00;
@@ -6421,13 +6196,13 @@
       out[15] = m33;
       return out;
     }
+
     /**
      * Set a mat4 to the identity matrix
      *
      * @param {mat4} out the receiving matrix
      * @returns {mat4} out
      */
-
     function identity$2(out) {
       out[0] = 1;
       out[1] = 0;
@@ -6447,31 +6222,31 @@
       out[15] = 1;
       return out;
     }
+
     /**
      * Inverts a mat4
      *
      * @param {mat4} out the receiving matrix
      * @param {ReadonlyMat4} a the source matrix
-     * @returns {mat4} out
+     * @returns {mat4 | null} out, or null if source matrix is not invertible
      */
-
     function invert(out, a) {
       var a00 = a[0],
-          a01 = a[1],
-          a02 = a[2],
-          a03 = a[3];
+        a01 = a[1],
+        a02 = a[2],
+        a03 = a[3];
       var a10 = a[4],
-          a11 = a[5],
-          a12 = a[6],
-          a13 = a[7];
+        a11 = a[5],
+        a12 = a[6],
+        a13 = a[7];
       var a20 = a[8],
-          a21 = a[9],
-          a22 = a[10],
-          a23 = a[11];
+        a21 = a[9],
+        a22 = a[10],
+        a23 = a[11];
       var a30 = a[12],
-          a31 = a[13],
-          a32 = a[14],
-          a33 = a[15];
+        a31 = a[13],
+        a32 = a[14],
+        a33 = a[15];
       var b00 = a00 * a11 - a01 * a10;
       var b01 = a00 * a12 - a02 * a10;
       var b02 = a00 * a13 - a03 * a10;
@@ -6483,14 +6258,13 @@
       var b08 = a20 * a33 - a23 * a30;
       var b09 = a21 * a32 - a22 * a31;
       var b10 = a21 * a33 - a23 * a31;
-      var b11 = a22 * a33 - a23 * a32; // Calculate the determinant
+      var b11 = a22 * a33 - a23 * a32;
 
+      // Calculate the determinant
       var det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
-
       if (!det) {
         return null;
       }
-
       det = 1.0 / det;
       out[0] = (a11 * b11 - a12 * b10 + a13 * b09) * det;
       out[1] = (a02 * b10 - a01 * b11 - a03 * b09) * det;
@@ -6510,6 +6284,7 @@
       out[15] = (a20 * b03 - a21 * b01 + a22 * b00) * det;
       return out;
     }
+
     /**
      * Multiplies two mat4s
      *
@@ -6518,29 +6293,29 @@
      * @param {ReadonlyMat4} b the second operand
      * @returns {mat4} out
      */
-
     function multiply$2(out, a, b) {
       var a00 = a[0],
-          a01 = a[1],
-          a02 = a[2],
-          a03 = a[3];
+        a01 = a[1],
+        a02 = a[2],
+        a03 = a[3];
       var a10 = a[4],
-          a11 = a[5],
-          a12 = a[6],
-          a13 = a[7];
+        a11 = a[5],
+        a12 = a[6],
+        a13 = a[7];
       var a20 = a[8],
-          a21 = a[9],
-          a22 = a[10],
-          a23 = a[11];
+        a21 = a[9],
+        a22 = a[10],
+        a23 = a[11];
       var a30 = a[12],
-          a31 = a[13],
-          a32 = a[14],
-          a33 = a[15]; // Cache only the current line of the second matrix
+        a31 = a[13],
+        a32 = a[14],
+        a33 = a[15];
 
+      // Cache only the current line of the second matrix
       var b0 = b[0],
-          b1 = b[1],
-          b2 = b[2],
-          b3 = b[3];
+        b1 = b[1],
+        b2 = b[2],
+        b3 = b[3];
       out[0] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
       out[1] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
       out[2] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
@@ -6571,6 +6346,7 @@
       out[15] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
       return out;
     }
+
     /**
      * Translate a mat4 by the given vector
      *
@@ -6579,15 +6355,13 @@
      * @param {ReadonlyVec3} v vector to translate by
      * @returns {mat4} out
      */
-
     function translate(out, a, v) {
       var x = v[0],
-          y = v[1],
-          z = v[2];
+        y = v[1],
+        z = v[2];
       var a00, a01, a02, a03;
       var a10, a11, a12, a13;
       var a20, a21, a22, a23;
-
       if (a === out) {
         out[12] = a[0] * x + a[4] * y + a[8] * z + a[12];
         out[13] = a[1] * x + a[5] * y + a[9] * z + a[13];
@@ -6623,9 +6397,9 @@
         out[14] = a02 * x + a12 * y + a22 * z + a[14];
         out[15] = a03 * x + a13 * y + a23 * z + a[15];
       }
-
       return out;
     }
+
     /**
      * Scales the mat4 by the dimensions in the given vec3 not using vectorization
      *
@@ -6634,11 +6408,10 @@
      * @param {ReadonlyVec3} v the vec3 to scale the matrix by
      * @returns {mat4} out
      **/
-
     function scale$1(out, a, v) {
       var x = v[0],
-          y = v[1],
-          z = v[2];
+        y = v[1],
+        z = v[2];
       out[0] = a[0] * x;
       out[1] = a[1] * x;
       out[2] = a[2] * x;
@@ -6657,6 +6430,7 @@
       out[15] = a[15];
       return out;
     }
+
     /**
      * Creates a matrix from a vector scaling
      * This is equivalent to (but much faster than):
@@ -6668,7 +6442,6 @@
      * @param {ReadonlyVec3} v Scaling vector
      * @returns {mat4} out
      */
-
     function fromScaling(out, v) {
       out[0] = v[0];
       out[1] = 0;
@@ -6688,30 +6461,30 @@
       out[15] = 1;
       return out;
     }
+
     /**
      * Creates a matrix from a quaternion rotation, vector translation and vector scale
      * This is equivalent to (but much faster than):
      *
      *     mat4.identity(dest);
-     *     mat4.translate(dest, vec);
+     *     mat4.translate(dest, dest, vec);
      *     let quatMat = mat4.create();
-     *     quat4.toMat4(quat, quatMat);
-     *     mat4.multiply(dest, quatMat);
-     *     mat4.scale(dest, scale)
+     *     mat4.fromQuat(quatMat, quat);
+     *     mat4.multiply(dest, dest, quatMat);
+     *     mat4.scale(dest, dest, scale)
      *
      * @param {mat4} out mat4 receiving operation result
-     * @param {quat4} q Rotation quaternion
+     * @param {quat} q Rotation quaternion
      * @param {ReadonlyVec3} v Translation vector
      * @param {ReadonlyVec3} s Scaling vector
      * @returns {mat4} out
      */
-
     function fromRotationTranslationScale(out, q, v, s) {
       // Quaternion math
       var x = q[0],
-          y = q[1],
-          z = q[2],
-          w = q[3];
+        y = q[1],
+        z = q[2],
+        w = q[3];
       var x2 = x + x;
       var y2 = y + y;
       var z2 = z + z;
@@ -6745,33 +6518,33 @@
       out[15] = 1;
       return out;
     }
+
     /**
      * Creates a matrix from a quaternion rotation, vector translation and vector scale, rotating and scaling around the given origin
      * This is equivalent to (but much faster than):
      *
      *     mat4.identity(dest);
-     *     mat4.translate(dest, vec);
-     *     mat4.translate(dest, origin);
+     *     mat4.translate(dest, dest, vec);
+     *     mat4.translate(dest, dest, origin);
      *     let quatMat = mat4.create();
-     *     quat4.toMat4(quat, quatMat);
-     *     mat4.multiply(dest, quatMat);
-     *     mat4.scale(dest, scale)
-     *     mat4.translate(dest, negativeOrigin);
+     *     mat4.fromQuat(quatMat, quat);
+     *     mat4.multiply(dest, dest, quatMat);
+     *     mat4.scale(dest, dest, scale)
+     *     mat4.translate(dest, dest, negativeOrigin);
      *
      * @param {mat4} out mat4 receiving operation result
-     * @param {quat4} q Rotation quaternion
+     * @param {quat} q Rotation quaternion
      * @param {ReadonlyVec3} v Translation vector
      * @param {ReadonlyVec3} s Scaling vector
      * @param {ReadonlyVec3} o The origin vector around which to scale and rotate
      * @returns {mat4} out
      */
-
     function fromRotationTranslationScaleOrigin(out, q, v, s, o) {
       // Quaternion math
       var x = q[0],
-          y = q[1],
-          z = q[2],
-          w = q[3];
+        y = q[1],
+        z = q[2],
+        w = q[3];
       var x2 = x + x;
       var y2 = y + y;
       var z2 = z + z;
@@ -6817,6 +6590,7 @@
       out[15] = 1;
       return out;
     }
+
     /**
      * Calculates a 4x4 matrix from the given quaternion
      *
@@ -6825,12 +6599,11 @@
      *
      * @returns {mat4} out
      */
-
     function fromQuat(out, q) {
       var x = q[0],
-          y = q[1],
-          z = q[2],
-          w = q[3];
+        y = q[1],
+        z = q[2],
+        w = q[3];
       var x2 = x + x;
       var y2 = y + y;
       var z2 = z + z;
@@ -6861,6 +6634,7 @@
       out[15] = 1;
       return out;
     }
+
     /**
      * Generates a frustum matrix with the given bounds
      *
@@ -6873,7 +6647,6 @@
      * @param {Number} far Far bound of the frustum
      * @returns {mat4} out
      */
-
     function frustum(out, left, right, bottom, top, near, far) {
       var rl = 1 / (right - left);
       var tb = 1 / (top - bottom);
@@ -6896,6 +6669,7 @@
       out[15] = 0;
       return out;
     }
+
     /**
      * Generates a perspective projection matrix with the given bounds.
      * The near/far clip planes correspond to a normalized device coordinate Z range of [-1, 1],
@@ -6909,10 +6683,8 @@
      * @param {number} far Far bound of the frustum, can be null or Infinity
      * @returns {mat4} out
      */
-
     function perspectiveNO(out, fovy, aspect, near, far) {
-      var f = 1.0 / Math.tan(fovy / 2),
-          nf;
+      var f = 1.0 / Math.tan(fovy / 2);
       out[0] = f / aspect;
       out[1] = 0;
       out[2] = 0;
@@ -6927,24 +6699,23 @@
       out[12] = 0;
       out[13] = 0;
       out[15] = 0;
-
       if (far != null && far !== Infinity) {
-        nf = 1 / (near - far);
+        var nf = 1 / (near - far);
         out[10] = (far + near) * nf;
         out[14] = 2 * far * near * nf;
       } else {
         out[10] = -1;
         out[14] = -2 * near;
       }
-
       return out;
     }
+
     /**
      * Alias for {@link mat4.perspectiveNO}
      * @function
      */
-
     var perspective = perspectiveNO;
+
     /**
      * Generates a look-at matrix with the given eye position, focal point, and up axis.
      * If you want a matrix that actually makes an object look at another object, you should use targetTo instead.
@@ -6955,7 +6726,6 @@
      * @param {ReadonlyVec3} up vec3 pointing up
      * @returns {mat4} out
      */
-
     function lookAt(out, eye, center, up) {
       var x0, x1, x2, y0, y1, y2, z0, z1, z2, len;
       var eyex = eye[0];
@@ -6967,23 +6737,20 @@
       var centerx = center[0];
       var centery = center[1];
       var centerz = center[2];
-
       if (Math.abs(eyex - centerx) < EPSILON && Math.abs(eyey - centery) < EPSILON && Math.abs(eyez - centerz) < EPSILON) {
         return identity$2(out);
       }
-
       z0 = eyex - centerx;
       z1 = eyey - centery;
       z2 = eyez - centerz;
-      len = 1 / Math.hypot(z0, z1, z2);
+      len = 1 / Math.sqrt(z0 * z0 + z1 * z1 + z2 * z2);
       z0 *= len;
       z1 *= len;
       z2 *= len;
       x0 = upy * z2 - upz * z1;
       x1 = upz * z0 - upx * z2;
       x2 = upx * z1 - upy * z0;
-      len = Math.hypot(x0, x1, x2);
-
+      len = Math.sqrt(x0 * x0 + x1 * x1 + x2 * x2);
       if (!len) {
         x0 = 0;
         x1 = 0;
@@ -6994,12 +6761,10 @@
         x1 *= len;
         x2 *= len;
       }
-
       y0 = z1 * x2 - z2 * x1;
       y1 = z2 * x0 - z0 * x2;
       y2 = z0 * x1 - z1 * x0;
-      len = Math.hypot(y0, y1, y2);
-
+      len = Math.sqrt(y0 * y0 + y1 * y1 + y2 * y2);
       if (!len) {
         y0 = 0;
         y1 = 0;
@@ -7010,7 +6775,6 @@
         y1 *= len;
         y2 *= len;
       }
-
       out[0] = x0;
       out[1] = y0;
       out[2] = z0;
@@ -7029,11 +6793,11 @@
       out[15] = 1;
       return out;
     }
+
     /**
      * Alias for {@link mat4.multiply}
      * @function
      */
-
     var mul = multiply$2;
 
     /**
@@ -7046,25 +6810,22 @@
      *
      * @returns {vec3} a new 3D vector
      */
-
     function create$3() {
       var out = new ARRAY_TYPE(3);
-
       if (ARRAY_TYPE != Float32Array) {
         out[0] = 0;
         out[1] = 0;
         out[2] = 0;
       }
-
       return out;
     }
+
     /**
      * Creates a new vec3 initialized with values from an existing vector
      *
      * @param {ReadonlyVec3} a vector to clone
      * @returns {vec3} a new 3D vector
      */
-
     function clone$4(a) {
       var out = new ARRAY_TYPE(3);
       out[0] = a[0];
@@ -7072,19 +6833,20 @@
       out[2] = a[2];
       return out;
     }
+
     /**
      * Calculates the length of a vec3
      *
      * @param {ReadonlyVec3} a vector to calculate length of
      * @returns {Number} length of a
      */
-
     function length(a) {
       var x = a[0];
       var y = a[1];
       var z = a[2];
-      return Math.hypot(x, y, z);
+      return Math.sqrt(x * x + y * y + z * z);
     }
+
     /**
      * Creates a new vec3 initialized with the given values
      *
@@ -7093,7 +6855,6 @@
      * @param {Number} z Z component
      * @returns {vec3} a new 3D vector
      */
-
     function fromValues$3(x, y, z) {
       var out = new ARRAY_TYPE(3);
       out[0] = x;
@@ -7101,6 +6862,7 @@
       out[2] = z;
       return out;
     }
+
     /**
      * Copy the values from one vec3 to another
      *
@@ -7108,13 +6870,13 @@
      * @param {ReadonlyVec3} a the source vector
      * @returns {vec3} out
      */
-
     function copy$4(out, a) {
       out[0] = a[0];
       out[1] = a[1];
       out[2] = a[2];
       return out;
     }
+
     /**
      * Set the components of a vec3 to the given values
      *
@@ -7124,13 +6886,13 @@
      * @param {Number} z Z component
      * @returns {vec3} out
      */
-
     function set$3(out, x, y, z) {
       out[0] = x;
       out[1] = y;
       out[2] = z;
       return out;
     }
+
     /**
      * Adds two vec3's
      *
@@ -7139,13 +6901,13 @@
      * @param {ReadonlyVec3} b the second operand
      * @returns {vec3} out
      */
-
     function add(out, a, b) {
       out[0] = a[0] + b[0];
       out[1] = a[1] + b[1];
       out[2] = a[2] + b[2];
       return out;
     }
+
     /**
      * Subtracts vector b from vector a
      *
@@ -7154,13 +6916,13 @@
      * @param {ReadonlyVec3} b the second operand
      * @returns {vec3} out
      */
-
     function subtract(out, a, b) {
       out[0] = a[0] - b[0];
       out[1] = a[1] - b[1];
       out[2] = a[2] - b[2];
       return out;
     }
+
     /**
      * Multiplies two vec3's
      *
@@ -7169,13 +6931,13 @@
      * @param {ReadonlyVec3} b the second operand
      * @returns {vec3} out
      */
-
     function multiply$1(out, a, b) {
       out[0] = a[0] * b[0];
       out[1] = a[1] * b[1];
       out[2] = a[2] * b[2];
       return out;
     }
+
     /**
      * Returns the minimum of two vec3's
      *
@@ -7184,13 +6946,13 @@
      * @param {ReadonlyVec3} b the second operand
      * @returns {vec3} out
      */
-
     function min(out, a, b) {
       out[0] = Math.min(a[0], b[0]);
       out[1] = Math.min(a[1], b[1]);
       out[2] = Math.min(a[2], b[2]);
       return out;
     }
+
     /**
      * Returns the maximum of two vec3's
      *
@@ -7199,13 +6961,13 @@
      * @param {ReadonlyVec3} b the second operand
      * @returns {vec3} out
      */
-
     function max(out, a, b) {
       out[0] = Math.max(a[0], b[0]);
       out[1] = Math.max(a[1], b[1]);
       out[2] = Math.max(a[2], b[2]);
       return out;
     }
+
     /**
      * Scales a vec3 by a scalar number
      *
@@ -7214,13 +6976,13 @@
      * @param {Number} b amount to scale the vector by
      * @returns {vec3} out
      */
-
     function scale(out, a, b) {
       out[0] = a[0] * b;
       out[1] = a[1] * b;
       out[2] = a[2] * b;
       return out;
     }
+
     /**
      * Adds two vec3's after scaling the second operand by a scalar value
      *
@@ -7230,13 +6992,13 @@
      * @param {Number} scale the amount to scale b by before adding
      * @returns {vec3} out
      */
-
     function scaleAndAdd(out, a, b, scale) {
       out[0] = a[0] + b[0] * scale;
       out[1] = a[1] + b[1] * scale;
       out[2] = a[2] + b[2] * scale;
       return out;
     }
+
     /**
      * Calculates the euclidian distance between two vec3's
      *
@@ -7244,13 +7006,13 @@
      * @param {ReadonlyVec3} b the second operand
      * @returns {Number} distance between a and b
      */
-
     function distance(a, b) {
       var x = b[0] - a[0];
       var y = b[1] - a[1];
       var z = b[2] - a[2];
-      return Math.hypot(x, y, z);
+      return Math.sqrt(x * x + y * y + z * z);
     }
+
     /**
      * Calculates the squared euclidian distance between two vec3's
      *
@@ -7258,26 +7020,26 @@
      * @param {ReadonlyVec3} b the second operand
      * @returns {Number} squared distance between a and b
      */
-
     function squaredDistance(a, b) {
       var x = b[0] - a[0];
       var y = b[1] - a[1];
       var z = b[2] - a[2];
       return x * x + y * y + z * z;
     }
+
     /**
      * Calculates the squared length of a vec3
      *
      * @param {ReadonlyVec3} a vector to calculate squared length of
      * @returns {Number} squared length of a
      */
-
     function squaredLength(a) {
       var x = a[0];
       var y = a[1];
       var z = a[2];
       return x * x + y * y + z * z;
     }
+
     /**
      * Negates the components of a vec3
      *
@@ -7285,13 +7047,13 @@
      * @param {ReadonlyVec3} a vector to negate
      * @returns {vec3} out
      */
-
     function negate(out, a) {
       out[0] = -a[0];
       out[1] = -a[1];
       out[2] = -a[2];
       return out;
     }
+
     /**
      * Normalize a vec3
      *
@@ -7299,23 +7061,21 @@
      * @param {ReadonlyVec3} a vector to normalize
      * @returns {vec3} out
      */
-
     function normalize$3(out, a) {
       var x = a[0];
       var y = a[1];
       var z = a[2];
       var len = x * x + y * y + z * z;
-
       if (len > 0) {
         //TODO: evaluate use of glm_invsqrt here?
         len = 1 / Math.sqrt(len);
       }
-
       out[0] = a[0] * len;
       out[1] = a[1] * len;
       out[2] = a[2] * len;
       return out;
     }
+
     /**
      * Calculates the dot product of two vec3's
      *
@@ -7323,10 +7083,10 @@
      * @param {ReadonlyVec3} b the second operand
      * @returns {Number} dot product of a and b
      */
-
-    function dot(a, b) {
+    function dot$1(a, b) {
       return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
     }
+
     /**
      * Computes the cross product of two vec3's
      *
@@ -7335,19 +7095,19 @@
      * @param {ReadonlyVec3} b the second operand
      * @returns {vec3} out
      */
-
     function cross(out, a, b) {
       var ax = a[0],
-          ay = a[1],
-          az = a[2];
+        ay = a[1],
+        az = a[2];
       var bx = b[0],
-          by = b[1],
-          bz = b[2];
+        by = b[1],
+        bz = b[2];
       out[0] = ay * bz - az * by;
       out[1] = az * bx - ax * bz;
       out[2] = ax * by - ay * bx;
       return out;
     }
+
     /**
      * Performs a linear interpolation between two vec3's
      *
@@ -7357,7 +7117,6 @@
      * @param {Number} t interpolation amount, in the range [0-1], between the two inputs
      * @returns {vec3} out
      */
-
     function lerp(out, a, b, t) {
       var ax = a[0];
       var ay = a[1];
@@ -7367,6 +7126,7 @@
       out[2] = az + t * (b[2] - az);
       return out;
     }
+
     /**
      * Transforms the vec3 with a mat4.
      * 4th vector component is implicitly '1'
@@ -7376,11 +7136,10 @@
      * @param {ReadonlyMat4} m matrix to transform with
      * @returns {vec3} out
      */
-
     function transformMat4$2(out, a, m) {
       var x = a[0],
-          y = a[1],
-          z = a[2];
+        y = a[1],
+        z = a[2];
       var w = m[3] * x + m[7] * y + m[11] * z + m[15];
       w = w || 1.0;
       out[0] = (m[0] * x + m[4] * y + m[8] * z + m[12]) / w;
@@ -7388,6 +7147,7 @@
       out[2] = (m[2] * x + m[6] * y + m[10] * z + m[14]) / w;
       return out;
     }
+
     /**
      * Transforms the vec3 with a mat3.
      *
@@ -7396,59 +7156,54 @@
      * @param {ReadonlyMat3} m the 3x3 matrix to transform with
      * @returns {vec3} out
      */
-
     function transformMat3(out, a, m) {
       var x = a[0],
-          y = a[1],
-          z = a[2];
+        y = a[1],
+        z = a[2];
       out[0] = x * m[0] + y * m[3] + z * m[6];
       out[1] = x * m[1] + y * m[4] + z * m[7];
       out[2] = x * m[2] + y * m[5] + z * m[8];
       return out;
     }
+
     /**
      * Transforms the vec3 with a quat
      * Can also be used for dual quaternions. (Multiply it with the real part)
      *
      * @param {vec3} out the receiving vector
      * @param {ReadonlyVec3} a the vector to transform
-     * @param {ReadonlyQuat} q quaternion to transform with
+     * @param {ReadonlyQuat} q normalized quaternion to transform with
      * @returns {vec3} out
      */
-
     function transformQuat(out, a, q) {
-      // benchmarks: https://jsperf.com/quaternion-transform-vec3-implementations-fixed
+      // Fast Vector Rotation using Quaternions by Robert Eisele
+      // https://raw.org/proof/vector-rotation-using-quaternions/
+
       var qx = q[0],
-          qy = q[1],
-          qz = q[2],
-          qw = q[3];
-      var x = a[0],
-          y = a[1],
-          z = a[2]; // var qvec = [qx, qy, qz];
-      // var uv = vec3.cross([], qvec, a);
+        qy = q[1],
+        qz = q[2],
+        qw = q[3];
+      var vx = a[0],
+        vy = a[1],
+        vz = a[2];
 
-      var uvx = qy * z - qz * y,
-          uvy = qz * x - qx * z,
-          uvz = qx * y - qy * x; // var uuv = vec3.cross([], qvec, uv);
+      // t = q x v
+      var tx = qy * vz - qz * vy;
+      var ty = qz * vx - qx * vz;
+      var tz = qx * vy - qy * vx;
 
-      var uuvx = qy * uvz - qz * uvy,
-          uuvy = qz * uvx - qx * uvz,
-          uuvz = qx * uvy - qy * uvx; // vec3.scale(uv, uv, 2 * w);
+      // t = 2t
+      tx = tx + tx;
+      ty = ty + ty;
+      tz = tz + tz;
 
-      var w2 = qw * 2;
-      uvx *= w2;
-      uvy *= w2;
-      uvz *= w2; // vec3.scale(uuv, uuv, 2);
-
-      uuvx *= 2;
-      uuvy *= 2;
-      uuvz *= 2; // return vec3.add(out, a, vec3.add(out, uv, uuv));
-
-      out[0] = x + uvx + uuvx;
-      out[1] = y + uvy + uuvy;
-      out[2] = z + uvz + uuvz;
+      // v + w t + q x t
+      out[0] = vx + qw * tx + qy * tz - qz * ty;
+      out[1] = vy + qw * ty + qz * tx - qx * tz;
+      out[2] = vz + qw * tz + qx * ty - qy * tx;
       return out;
     }
+
     /**
      * Returns whether or not the vectors have exactly the same elements in the same position (when compared with ===)
      *
@@ -7456,10 +7211,10 @@
      * @param {ReadonlyVec3} b The second vector.
      * @returns {Boolean} True if the vectors are equal, false otherwise.
      */
-
     function exactEquals$1(a, b) {
       return a[0] === b[0] && a[1] === b[1] && a[2] === b[2];
     }
+
     /**
      * Returns whether or not the vectors have approximately the same elements in the same position.
      *
@@ -7467,22 +7222,22 @@
      * @param {ReadonlyVec3} b The second vector.
      * @returns {Boolean} True if the vectors are equal, false otherwise.
      */
-
-    function equals$3(a, b) {
+    function equals$2(a, b) {
       var a0 = a[0],
-          a1 = a[1],
-          a2 = a[2];
+        a1 = a[1],
+        a2 = a[2];
       var b0 = b[0],
-          b1 = b[1],
-          b2 = b[2];
+        b1 = b[1],
+        b2 = b[2];
       return Math.abs(a0 - b0) <= EPSILON * Math.max(1.0, Math.abs(a0), Math.abs(b0)) && Math.abs(a1 - b1) <= EPSILON * Math.max(1.0, Math.abs(a1), Math.abs(b1)) && Math.abs(a2 - b2) <= EPSILON * Math.max(1.0, Math.abs(a2), Math.abs(b2));
     }
+
     /**
      * Alias for {@link vec3.length}
      * @function
      */
-
     var len = length;
+
     /**
      * Perform some operation over an array of vec3s.
      *
@@ -7495,26 +7250,21 @@
      * @returns {Array} a
      * @function
      */
-
     (function () {
       var vec = create$3();
       return function (a, stride, offset, count, fn, arg) {
         var i, l;
-
         if (!stride) {
           stride = 3;
         }
-
         if (!offset) {
           offset = 0;
         }
-
         if (count) {
           l = Math.min(count * stride + offset, a.length);
         } else {
           l = a.length;
         }
-
         for (i = offset; i < l; i += stride) {
           vec[0] = a[i];
           vec[1] = a[i + 1];
@@ -7524,7 +7274,6 @@
           a[i + 1] = vec[1];
           a[i + 2] = vec[2];
         }
-
         return a;
       };
     })();
@@ -7539,26 +7288,23 @@
      *
      * @returns {vec4} a new 4D vector
      */
-
     function create$2() {
       var out = new ARRAY_TYPE(4);
-
       if (ARRAY_TYPE != Float32Array) {
         out[0] = 0;
         out[1] = 0;
         out[2] = 0;
         out[3] = 0;
       }
-
       return out;
     }
+
     /**
      * Creates a new vec4 initialized with values from an existing vector
      *
      * @param {ReadonlyVec4} a vector to clone
      * @returns {vec4} a new 4D vector
      */
-
     function clone$3(a) {
       var out = new ARRAY_TYPE(4);
       out[0] = a[0];
@@ -7567,6 +7313,7 @@
       out[3] = a[3];
       return out;
     }
+
     /**
      * Creates a new vec4 initialized with the given values
      *
@@ -7576,7 +7323,6 @@
      * @param {Number} w W component
      * @returns {vec4} a new 4D vector
      */
-
     function fromValues$2(x, y, z, w) {
       var out = new ARRAY_TYPE(4);
       out[0] = x;
@@ -7585,6 +7331,7 @@
       out[3] = w;
       return out;
     }
+
     /**
      * Copy the values from one vec4 to another
      *
@@ -7592,7 +7339,6 @@
      * @param {ReadonlyVec4} a the source vector
      * @returns {vec4} out
      */
-
     function copy$3(out, a) {
       out[0] = a[0];
       out[1] = a[1];
@@ -7600,6 +7346,7 @@
       out[3] = a[3];
       return out;
     }
+
     /**
      * Set the components of a vec4 to the given values
      *
@@ -7610,7 +7357,6 @@
      * @param {Number} w W component
      * @returns {vec4} out
      */
-
     function set$2(out, x, y, z, w) {
       out[0] = x;
       out[1] = y;
@@ -7618,6 +7364,7 @@
       out[3] = w;
       return out;
     }
+
     /**
      * Normalize a vec4
      *
@@ -7625,24 +7372,33 @@
      * @param {ReadonlyVec4} a vector to normalize
      * @returns {vec4} out
      */
-
     function normalize$2(out, a) {
       var x = a[0];
       var y = a[1];
       var z = a[2];
       var w = a[3];
       var len = x * x + y * y + z * z + w * w;
-
       if (len > 0) {
         len = 1 / Math.sqrt(len);
       }
-
       out[0] = x * len;
       out[1] = y * len;
       out[2] = z * len;
       out[3] = w * len;
       return out;
     }
+
+    /**
+     * Calculates the dot product of two vec4's
+     *
+     * @param {ReadonlyVec4} a the first operand
+     * @param {ReadonlyVec4} b the second operand
+     * @returns {Number} dot product of a and b
+     */
+    function dot(a, b) {
+      return a[0] * b[0] + a[1] * b[1] + a[2] * b[2] + a[3] * b[3];
+    }
+
     /**
      * Transforms the vec4 with a mat4.
      *
@@ -7651,18 +7407,18 @@
      * @param {ReadonlyMat4} m matrix to transform with
      * @returns {vec4} out
      */
-
     function transformMat4$1(out, a, m) {
       var x = a[0],
-          y = a[1],
-          z = a[2],
-          w = a[3];
+        y = a[1],
+        z = a[2],
+        w = a[3];
       out[0] = m[0] * x + m[4] * y + m[8] * z + m[12] * w;
       out[1] = m[1] * x + m[5] * y + m[9] * z + m[13] * w;
       out[2] = m[2] * x + m[6] * y + m[10] * z + m[14] * w;
       out[3] = m[3] * x + m[7] * y + m[11] * z + m[15] * w;
       return out;
     }
+
     /**
      * Returns whether or not the vectors have exactly the same elements in the same position (when compared with ===)
      *
@@ -7670,29 +7426,10 @@
      * @param {ReadonlyVec4} b The second vector.
      * @returns {Boolean} True if the vectors are equal, false otherwise.
      */
-
     function exactEquals(a, b) {
       return a[0] === b[0] && a[1] === b[1] && a[2] === b[2] && a[3] === b[3];
     }
-    /**
-     * Returns whether or not the vectors have approximately the same elements in the same position.
-     *
-     * @param {ReadonlyVec4} a The first vector.
-     * @param {ReadonlyVec4} b The second vector.
-     * @returns {Boolean} True if the vectors are equal, false otherwise.
-     */
 
-    function equals$2(a, b) {
-      var a0 = a[0],
-          a1 = a[1],
-          a2 = a[2],
-          a3 = a[3];
-      var b0 = b[0],
-          b1 = b[1],
-          b2 = b[2],
-          b3 = b[3];
-      return Math.abs(a0 - b0) <= EPSILON * Math.max(1.0, Math.abs(a0), Math.abs(b0)) && Math.abs(a1 - b1) <= EPSILON * Math.max(1.0, Math.abs(a1), Math.abs(b1)) && Math.abs(a2 - b2) <= EPSILON * Math.max(1.0, Math.abs(a2), Math.abs(b2)) && Math.abs(a3 - b3) <= EPSILON * Math.max(1.0, Math.abs(a3), Math.abs(b3));
-    }
     /**
      * Perform some operation over an array of vec4s.
      *
@@ -7705,26 +7442,21 @@
      * @returns {Array} a
      * @function
      */
-
     (function () {
       var vec = create$2();
       return function (a, stride, offset, count, fn, arg) {
         var i, l;
-
         if (!stride) {
           stride = 4;
         }
-
         if (!offset) {
           offset = 0;
         }
-
         if (count) {
           l = Math.min(count * stride + offset, a.length);
         } else {
           l = a.length;
         }
-
         for (i = offset; i < l; i += stride) {
           vec[0] = a[i];
           vec[1] = a[i + 1];
@@ -7736,13 +7468,12 @@
           a[i + 2] = vec[2];
           a[i + 3] = vec[3];
         }
-
         return a;
       };
     })();
 
     /**
-     * Quaternion
+     * Quaternion in the format XYZW
      * @module quat
      */
 
@@ -7751,19 +7482,17 @@
      *
      * @returns {quat} a new quaternion
      */
-
     function create$1() {
       var out = new ARRAY_TYPE(4);
-
       if (ARRAY_TYPE != Float32Array) {
         out[0] = 0;
         out[1] = 0;
         out[2] = 0;
       }
-
       out[3] = 1;
       return out;
     }
+
     /**
      * Sets a quat from the given angle and rotation axis,
      * then returns it.
@@ -7773,7 +7502,6 @@
      * @param {Number} rad the angle in radians
      * @returns {quat} out
      **/
-
     function setAxisAngle(out, axis, rad) {
       rad = rad * 0.5;
       var s = Math.sin(rad);
@@ -7783,6 +7511,7 @@
       out[3] = Math.cos(rad);
       return out;
     }
+
     /**
      * Multiplies two quat's
      *
@@ -7791,22 +7520,22 @@
      * @param {ReadonlyQuat} b the second operand
      * @returns {quat} out
      */
-
     function multiply(out, a, b) {
       var ax = a[0],
-          ay = a[1],
-          az = a[2],
-          aw = a[3];
+        ay = a[1],
+        az = a[2],
+        aw = a[3];
       var bx = b[0],
-          by = b[1],
-          bz = b[2],
-          bw = b[3];
+        by = b[1],
+        bz = b[2],
+        bw = b[3];
       out[0] = ax * bw + aw * bx + ay * bz - az * by;
       out[1] = ay * bw + aw * by + az * bx - ax * bz;
       out[2] = az * bw + aw * bz + ax * by - ay * bx;
       out[3] = aw * bw - ax * bx - ay * by - az * bz;
       return out;
     }
+
     /**
      * Rotates a quaternion by the given angle about the X axis
      *
@@ -7815,21 +7544,21 @@
      * @param {number} rad angle (in radians) to rotate
      * @returns {quat} out
      */
-
     function rotateX(out, a, rad) {
       rad *= 0.5;
       var ax = a[0],
-          ay = a[1],
-          az = a[2],
-          aw = a[3];
+        ay = a[1],
+        az = a[2],
+        aw = a[3];
       var bx = Math.sin(rad),
-          bw = Math.cos(rad);
+        bw = Math.cos(rad);
       out[0] = ax * bw + aw * bx;
       out[1] = ay * bw + az * bx;
       out[2] = az * bw - ay * bx;
       out[3] = aw * bw - ax * bx;
       return out;
     }
+
     /**
      * Rotates a quaternion by the given angle about the Y axis
      *
@@ -7838,21 +7567,21 @@
      * @param {number} rad angle (in radians) to rotate
      * @returns {quat} out
      */
-
     function rotateY(out, a, rad) {
       rad *= 0.5;
       var ax = a[0],
-          ay = a[1],
-          az = a[2],
-          aw = a[3];
+        ay = a[1],
+        az = a[2],
+        aw = a[3];
       var by = Math.sin(rad),
-          bw = Math.cos(rad);
+        bw = Math.cos(rad);
       out[0] = ax * bw - az * by;
       out[1] = ay * bw + aw * by;
       out[2] = az * bw + ax * by;
       out[3] = aw * bw - ay * by;
       return out;
     }
+
     /**
      * Performs a spherical linear interpolation between two quat
      *
@@ -7862,31 +7591,30 @@
      * @param {Number} t interpolation amount, in the range [0-1], between the two inputs
      * @returns {quat} out
      */
-
     function slerp(out, a, b, t) {
       // benchmarks:
       //    http://jsperf.com/quaternion-slerp-implementations
       var ax = a[0],
-          ay = a[1],
-          az = a[2],
-          aw = a[3];
+        ay = a[1],
+        az = a[2],
+        aw = a[3];
       var bx = b[0],
-          by = b[1],
-          bz = b[2],
-          bw = b[3];
-      var omega, cosom, sinom, scale0, scale1; // calc cosine
+        by = b[1],
+        bz = b[2],
+        bw = b[3];
+      var omega, cosom, sinom, scale0, scale1;
 
-      cosom = ax * bx + ay * by + az * bz + aw * bw; // adjust signs (if necessary)
-
+      // calc cosine
+      cosom = ax * bx + ay * by + az * bz + aw * bw;
+      // adjust signs (if necessary)
       if (cosom < 0.0) {
         cosom = -cosom;
         bx = -bx;
         by = -by;
         bz = -bz;
         bw = -bw;
-      } // calculate coefficients
-
-
+      }
+      // calculate coefficients
       if (1.0 - cosom > EPSILON) {
         // standard case (slerp)
         omega = Math.acos(cosom);
@@ -7898,15 +7626,15 @@
         //  ... so we can do a linear interpolation
         scale0 = 1.0 - t;
         scale1 = t;
-      } // calculate final values
-
-
+      }
+      // calculate final values
       out[0] = scale0 * ax + scale1 * bx;
       out[1] = scale0 * ay + scale1 * by;
       out[2] = scale0 * az + scale1 * bz;
       out[3] = scale0 * aw + scale1 * bw;
       return out;
     }
+
     /**
      * Calculates the conjugate of a quat
      * If the quaternion is normalized, this function is faster than quat.inverse and produces the same result.
@@ -7915,7 +7643,6 @@
      * @param {ReadonlyQuat} a quat to calculate conjugate of
      * @returns {quat} out
      */
-
     function conjugate(out, a) {
       out[0] = -a[0];
       out[1] = -a[1];
@@ -7923,6 +7650,7 @@
       out[3] = a[3];
       return out;
     }
+
     /**
      * Creates a quaternion from the given 3x3 rotation matrix.
      *
@@ -7934,20 +7662,16 @@
      * @returns {quat} out
      * @function
      */
-
     function fromMat3(out, m) {
       // Algorithm in Ken Shoemake's article in 1987 SIGGRAPH course notes
       // article "Quaternion Calculus and Fast Animation".
       var fTrace = m[0] + m[4] + m[8];
       var fRoot;
-
       if (fTrace > 0.0) {
         // |w| > 1/2, may as well choose w > 1/2
         fRoot = Math.sqrt(fTrace + 1.0); // 2w
-
         out[3] = 0.5 * fRoot;
         fRoot = 0.5 / fRoot; // 1/(4w)
-
         out[0] = (m[5] - m[7]) * fRoot;
         out[1] = (m[6] - m[2]) * fRoot;
         out[2] = (m[1] - m[3]) * fRoot;
@@ -7965,9 +7689,9 @@
         out[j] = (m[j * 3 + i] + m[i * 3 + j]) * fRoot;
         out[k] = (m[k * 3 + i] + m[i * 3 + k]) * fRoot;
       }
-
       return out;
     }
+
     /**
      * Creates a new quat initialized with values from an existing quaternion
      *
@@ -7975,8 +7699,8 @@
      * @returns {quat} a new quaternion
      * @function
      */
-
     var clone$2 = clone$3;
+
     /**
      * Creates a new quat initialized with the given values
      *
@@ -7987,8 +7711,8 @@
      * @returns {quat} a new quaternion
      * @function
      */
-
     var fromValues$1 = fromValues$2;
+
     /**
      * Copy the values from one quat to another
      *
@@ -7997,8 +7721,8 @@
      * @returns {quat} out
      * @function
      */
-
     var copy$2 = copy$3;
+
     /**
      * Set the components of a quat to the given values
      *
@@ -8010,8 +7734,8 @@
      * @returns {quat} out
      * @function
      */
-
     var set$1 = set$2;
+
     /**
      * Normalize a quat
      *
@@ -8020,17 +7744,21 @@
      * @returns {quat} out
      * @function
      */
-
     var normalize$1 = normalize$2;
-    /**
-     * Returns whether or not the quaternions have approximately the same elements in the same position.
-     *
-     * @param {ReadonlyQuat} a The first vector.
-     * @param {ReadonlyQuat} b The second vector.
-     * @returns {Boolean} True if the vectors are equal, false otherwise.
-     */
 
-    var equals$1 = equals$2;
+    /**
+     * Returns whether or not the quaternions point approximately to the same direction.
+     *
+     * Both quaternions are assumed to be unit length.
+     *
+     * @param {ReadonlyQuat} a The first unit quaternion.
+     * @param {ReadonlyQuat} b The second unit quaternion.
+     * @returns {Boolean} True if the quaternions are equal, false otherwise.
+     */
+    function equals$1(a, b) {
+      return Math.abs(dot(a, b)) >= 1 - EPSILON;
+    }
+
     /**
      * Sets a quaternion to represent the shortest rotation from one
      * vector to another.
@@ -8042,21 +7770,19 @@
      * @param {ReadonlyVec3} b the destination vector
      * @returns {quat} out
      */
-
     var rotationTo = function () {
       var tmpvec3 = create$3();
       var xUnitVec3 = fromValues$3(1, 0, 0);
       var yUnitVec3 = fromValues$3(0, 1, 0);
       return function (out, a, b) {
-        var dot$1 = dot(a, b);
-
-        if (dot$1 < -0.999999) {
+        var dot = dot$1(a, b);
+        if (dot < -0.999999) {
           cross(tmpvec3, xUnitVec3, a);
           if (len(tmpvec3) < 0.000001) cross(tmpvec3, yUnitVec3, a);
           normalize$3(tmpvec3, tmpvec3);
           setAxisAngle(out, tmpvec3, Math.PI);
           return out;
-        } else if (dot$1 > 0.999999) {
+        } else if (dot > 0.999999) {
           out[0] = 0;
           out[1] = 0;
           out[2] = 0;
@@ -8067,11 +7793,12 @@
           out[0] = tmpvec3[0];
           out[1] = tmpvec3[1];
           out[2] = tmpvec3[2];
-          out[3] = 1 + dot$1;
+          out[3] = 1 + dot;
           return normalize$1(out, out);
         }
       };
     }();
+
     /**
      * Performs a spherical linear interpolation with two control points
      *
@@ -8083,7 +7810,6 @@
      * @param {Number} t interpolation amount, in the range [0-1], between the two inputs
      * @returns {quat} out
      */
-
     (function () {
       var temp1 = create$1();
       var temp2 = create$1();
@@ -8094,6 +7820,7 @@
         return out;
       };
     })();
+
     /**
      * Sets the specified quaternion with values corresponding to the given
      * axes. Each axis is a vec3 and is expected to be unit length and
@@ -8104,7 +7831,6 @@
      * @param {ReadonlyVec3} up    the vector representing the local "up" direction
      * @returns {quat} out
      */
-
     (function () {
       var matr = create$5();
       return function (out, view, right, up) {
@@ -8131,30 +7857,28 @@
      *
      * @returns {vec2} a new 2D vector
      */
-
     function create() {
       var out = new ARRAY_TYPE(2);
-
       if (ARRAY_TYPE != Float32Array) {
         out[0] = 0;
         out[1] = 0;
       }
-
       return out;
     }
+
     /**
      * Creates a new vec2 initialized with values from an existing vector
      *
      * @param {ReadonlyVec2} a vector to clone
      * @returns {vec2} a new 2D vector
      */
-
     function clone$1(a) {
       var out = new ARRAY_TYPE(2);
       out[0] = a[0];
       out[1] = a[1];
       return out;
     }
+
     /**
      * Creates a new vec2 initialized with the given values
      *
@@ -8162,13 +7886,13 @@
      * @param {Number} y Y component
      * @returns {vec2} a new 2D vector
      */
-
     function fromValues(x, y) {
       var out = new ARRAY_TYPE(2);
       out[0] = x;
       out[1] = y;
       return out;
     }
+
     /**
      * Copy the values from one vec2 to another
      *
@@ -8176,12 +7900,12 @@
      * @param {ReadonlyVec2} a the source vector
      * @returns {vec2} out
      */
-
     function copy$1(out, a) {
       out[0] = a[0];
       out[1] = a[1];
       return out;
     }
+
     /**
      * Set the components of a vec2 to the given values
      *
@@ -8190,12 +7914,12 @@
      * @param {Number} y Y component
      * @returns {vec2} out
      */
-
     function set(out, x, y) {
       out[0] = x;
       out[1] = y;
       return out;
     }
+
     /**
      * Transforms the vec2 with a mat4
      * 3rd vector component is implicitly '0'
@@ -8206,7 +7930,6 @@
      * @param {ReadonlyMat4} m matrix to transform with
      * @returns {vec2} out
      */
-
     function transformMat4(out, a, m) {
       var x = a[0];
       var y = a[1];
@@ -8214,6 +7937,7 @@
       out[1] = m[1] * x + m[5] * y + m[13];
       return out;
     }
+
     /**
      * Returns whether or not the vectors have approximately the same elements in the same position.
      *
@@ -8221,14 +7945,14 @@
      * @param {ReadonlyVec2} b The second vector.
      * @returns {Boolean} True if the vectors are equal, false otherwise.
      */
-
     function equals(a, b) {
       var a0 = a[0],
-          a1 = a[1];
+        a1 = a[1];
       var b0 = b[0],
-          b1 = b[1];
+        b1 = b[1];
       return Math.abs(a0 - b0) <= EPSILON * Math.max(1.0, Math.abs(a0), Math.abs(b0)) && Math.abs(a1 - b1) <= EPSILON * Math.max(1.0, Math.abs(a1), Math.abs(b1));
     }
+
     /**
      * Perform some operation over an array of vec2s.
      *
@@ -8241,26 +7965,21 @@
      * @returns {Array} a
      * @function
      */
-
     (function () {
       var vec = create();
       return function (a, stride, offset, count, fn, arg) {
         var i, l;
-
         if (!stride) {
           stride = 2;
         }
-
         if (!offset) {
           offset = 0;
         }
-
         if (count) {
           l = Math.min(count * stride + offset, a.length);
         } else {
           l = a.length;
         }
-
         for (i = offset; i < l; i += stride) {
           vec[0] = a[i];
           vec[1] = a[i + 1];
@@ -8268,7 +7987,6 @@
           a[i] = vec[0];
           a[i + 1] = vec[1];
         }
-
         return a;
       };
     })();
@@ -8424,8 +8142,8 @@
                 return 0;
             }
             else {
-                const dot$1 = MathHelper.clamp(dot(from, to), -1, 1);
-                return Math.acos(dot$1);
+                const dot = MathHelper.clamp(dot$1(from, to), -1, 1);
+                return Math.acos(dot);
             }
         }
         static signedAngleBetweenVectors(from, to, up) {
@@ -8433,10 +8151,10 @@
                 return 0;
             }
             else {
-                const dot$1 = MathHelper.clamp(dot(from, to), -1, 1);
-                let angle = Math.acos(dot$1);
+                const dot = MathHelper.clamp(dot$1(from, to), -1, 1);
+                let angle = Math.acos(dot);
                 cross(AngleHelper._vec3, from, to);
-                if (dot(AngleHelper._vec3, up) < 0) {
+                if (dot$1(AngleHelper._vec3, up) < 0) {
                     angle = -angle;
                 }
                 return angle;
@@ -8580,9 +8298,9 @@
             view[8] = this._right[2];
             view[9] = this._up[2];
             view[10] = this._forward[2];
-            view[12] = -dot(this._right, this._combinedPosition);
-            view[13] = -dot(this._up, this._combinedPosition);
-            view[14] = -dot(this._forward, this._combinedPosition);
+            view[12] = -dot$1(this._right, this._combinedPosition);
+            view[13] = -dot$1(this._up, this._combinedPosition);
+            view[14] = -dot$1(this._forward, this._combinedPosition);
             const aspectRatio = this.width / this.height;
             if (this._core.config.stereoMode == StereoMode.none) {
                 if (this._core.config.tilesX != 1 || this._core.config.tilesY != 1) {
@@ -8779,8 +8497,8 @@
             this.positionSmoothing = 0.02;
             this.focusSmoothing = 0.01;
             this.scaleSmoothing = 0.02;
-            this.mouseWheelZoomScale = -0.002;
-            this.mouseWheelRotationScale = -0.002;
+            this.mouseWheelZoomScale = -2e-3;
+            this.mouseWheelRotationScale = -2e-3;
             this.dragToleranceSquared = 100;
             this.manipulatorMinRelativeDistanceSquared = 100;
             this.isMultiTouchEnabled = true;
@@ -8853,6 +8571,7 @@
             this.isTransitionPickingEnabled = false;
             this.backgroundColor = create$2();
             this.theme = Theme.light;
+            this.ambientColor = create$3();
             this.renderMode = RenderMode.color;
             this.tilesX = 1;
             this.tilesY = 1;
@@ -9004,6 +8723,8 @@
                 "redyellowgreen": { type: PaletteType.diverging, colors: new Uint8Array([165, 0, 38, 215, 48, 39, 244, 109, 67, 253, 174, 97, 254, 224, 139, 255, 255, 191, 217, 239, 139, 166, 217, 106, 102, 189, 99, 26, 152, 80, 0, 104, 55]) },
                 "spectral": { type: PaletteType.diverging, colors: new Uint8Array([158, 1, 66, 213, 62, 79, 244, 109, 67, 253, 174, 97, 254, 224, 139, 255, 255, 191, 230, 245, 152, 171, 221, 164, 102, 194, 165, 50, 136, 189, 94, 79, 162]) },
                 "accent": { type: PaletteType.qualitative, colors: new Uint8Array([127, 201, 127, 190, 174, 212, 253, 192, 134, 255, 255, 153, 56, 108, 176, 240, 2, 127, 191, 91, 23, 102, 102, 102]) },
+                "category10": { type: PaletteType.qualitative, colors: new Uint8Array([31, 119, 180, 255, 127, 14, 44, 160, 44, 214, 39, 40, 148, 103, 189, 140, 86, 75, 227, 119, 194, 127, 127, 127, 188, 189, 34, 23, 190, 207]) },
+                "category20": { type: PaletteType.qualitative, colors: new Uint8Array([31, 119, 180, 174, 199, 232, 255, 127, 14, 255, 187, 120, 44, 160, 44, 152, 223, 138, 214, 39, 40, 255, 152, 150, 148, 103, 189, 197, 176, 213, 140, 86, 75, 196, 156, 148, 227, 119, 194, 247, 182, 210, 127, 127, 127, 199, 199, 199, 188, 189, 34, 219, 219, 141, 23, 190, 207, 158, 218, 229]) },
                 "dark2": { type: PaletteType.qualitative, colors: new Uint8Array([27, 158, 119, 217, 95, 2, 117, 112, 179, 231, 41, 138, 102, 166, 30, 230, 171, 2, 166, 118, 29, 102, 102, 102]) },
                 "paired": { type: PaletteType.qualitative, colors: new Uint8Array([166, 206, 227, 31, 120, 180, 178, 223, 138, 51, 160, 44, 251, 154, 153, 227, 26, 28, 253, 191, 111, 255, 127, 0, 202, 178, 214, 106, 61, 154, 255, 255, 153, 177, 89, 40]) },
                 "pastel1": { type: PaletteType.qualitative, colors: new Uint8Array([251, 180, 174, 179, 205, 227, 204, 235, 197, 222, 203, 228, 254, 217, 166, 255, 255, 204, 229, 216, 189, 253, 218, 236, 242, 242, 242]) },
@@ -9430,8 +9151,98 @@
         static copySdfBorder(fromBufferView, fromIndex, toBufferView, toIndex) {
             toBufferView.setUint8(UnitVertex.SIZE_BYTES * toIndex + this.SDF_BORDER_OFFSET_BYTES, fromBufferView.getUint8(UnitVertex.SIZE_BYTES * fromIndex + this.SDF_BORDER_OFFSET_BYTES));
         }
+        static getMatId(bufferView, index) {
+            return bufferView.getUint8(UnitVertex.SIZE_BYTES * index + this.MAT_TYPE_OFFSET_BYTES);
+        }
+        static setMatId(bufferView, index, value) {
+            bufferView.setUint8(UnitVertex.SIZE_BYTES * index + this.MAT_TYPE_OFFSET_BYTES, value);
+        }
+        static copyMatId(fromBufferView, fromIndex, toBufferView, toIndex) {
+            toBufferView.setUint8(UnitVertex.SIZE_BYTES * toIndex + this.MAT_TYPE_OFFSET_BYTES, fromBufferView.getUint8(UnitVertex.SIZE_BYTES * fromIndex + this.MAT_TYPE_OFFSET_BYTES));
+        }
+        static getMatColor(bufferView, index, value) {
+            const offset = UnitVertex.SIZE_BYTES * index + this.MAT_COLOR_OFFSET_BYTES;
+            value[0] = bufferView.getUint16(offset) / 0xFF;
+            value[1] = bufferView.getUint16(offset + 2) / 0xFF;
+            value[2] = bufferView.getUint16(offset + 4) / 0xFF;
+        }
+        static setMatColor(bufferView, index, value) {
+            const offset = UnitVertex.SIZE_BYTES * index + this.MAT_COLOR_OFFSET_BYTES;
+            bufferView.setUint16(offset, value[0] * 0xFF);
+            bufferView.setUint16(offset + 2, value[1] * 0xFF);
+            bufferView.setUint16(offset + 4, value[2] * 0xFF);
+        }
+        static copyMatColor(fromBufferView, fromIndex, toBufferView, toIndex) {
+            const fromOffset = UnitVertex.SIZE_BYTES * fromIndex + this.MAT_COLOR_OFFSET_BYTES;
+            const toOffset = UnitVertex.SIZE_BYTES * toIndex + this.MAT_COLOR_OFFSET_BYTES;
+            toBufferView.setUint16(toOffset, fromBufferView.getUint16(fromOffset));
+            toBufferView.setUint16(toOffset + 2, fromBufferView.getUint16(fromOffset + 2));
+            toBufferView.setUint16(toOffset + 4, fromBufferView.getUint16(fromOffset + 4));
+        }
+        static getMatFuzz(bufferView, index) {
+            const offset = UnitVertex.SIZE_BYTES * index + this.MAT_FUZZ_OFFSET_BYTES;
+            return bufferView.getUint8(offset) / 0xFF;
+        }
+        static setMatFuzz(bufferView, index, value) {
+            const offset = UnitVertex.SIZE_BYTES * index + this.MAT_FUZZ_OFFSET_BYTES;
+            bufferView.setUint8(offset, value * 0xFF);
+        }
+        static copyMatFuzz(fromBufferView, fromIndex, toBufferView, toIndex) {
+            toBufferView.setUint8(UnitVertex.SIZE_BYTES * toIndex + this.MAT_FUZZ_OFFSET_BYTES, fromBufferView.getUint8(UnitVertex.SIZE_BYTES * fromIndex + this.MAT_FUZZ_OFFSET_BYTES));
+        }
+        static getMatGloss(bufferView, index) {
+            const offset = UnitVertex.SIZE_BYTES * index + this.MAT_GLOSS_OFFSET_BYTES;
+            return bufferView.getUint8(offset) / 0xFF;
+        }
+        static setMatGloss(bufferView, index, value) {
+            const offset = UnitVertex.SIZE_BYTES * index + this.MAT_GLOSS_OFFSET_BYTES;
+            bufferView.setUint8(offset, value * 0xFF);
+        }
+        static copyMatGloss(fromBufferView, fromIndex, toBufferView, toIndex) {
+            toBufferView.setUint8(UnitVertex.SIZE_BYTES * toIndex + this.MAT_GLOSS_OFFSET_BYTES, fromBufferView.getUint8(UnitVertex.SIZE_BYTES * fromIndex + this.MAT_GLOSS_OFFSET_BYTES));
+        }
+        static getMatDensity(bufferView, index) {
+            return bufferView.getFloat32(UnitVertex.SIZE_BYTES * index + this.MAT_DENSITY_OFFSET_BYTES, true);
+        }
+        static setMatDensity(bufferView, index, value) {
+            bufferView.setFloat32(UnitVertex.SIZE_BYTES * index + this.MAT_DENSITY_OFFSET_BYTES, value, true);
+        }
+        static copyMatDensity(fromBufferView, fromIndex, toBufferView, toIndex) {
+            toBufferView.setFloat32(UnitVertex.SIZE_BYTES * toIndex + this.MAT_DENSITY_OFFSET_BYTES, fromBufferView.getFloat32(UnitVertex.SIZE_BYTES * fromIndex + this.MAT_DENSITY_OFFSET_BYTES, true), true);
+        }
+        static getMatRefractiveIndex(bufferView, index) {
+            return bufferView.getFloat32(UnitVertex.SIZE_BYTES * index + this.MAT_REFRACTIVE_INDEX_OFFSET_BYTES, true);
+        }
+        static setMatRefractiveIndex(bufferView, index, value) {
+            bufferView.setFloat32(UnitVertex.SIZE_BYTES * index + this.MAT_REFRACTIVE_INDEX_OFFSET_BYTES, value, true);
+        }
+        static copyMatRefractiveIndex(fromBufferView, fromIndex, toBufferView, toIndex) {
+            toBufferView.setFloat32(UnitVertex.SIZE_BYTES * toIndex + this.MAT_REFRACTIVE_INDEX_OFFSET_BYTES, fromBufferView.getFloat32(UnitVertex.SIZE_BYTES * fromIndex + this.MAT_REFRACTIVE_INDEX_OFFSET_BYTES, true), true);
+        }
+        static getSegColor(bufferView, index, value) {
+            const offset = UnitVertex.SIZE_BYTES * index + this.SEG_COLOR_OFFSET_BYTES;
+            value[0] = bufferView.getUint8(offset) / 0xFF;
+            value[1] = bufferView.getUint8(offset + 1) / 0xFF;
+            value[2] = bufferView.getUint8(offset + 2) / 0xFF;
+            value[3] = bufferView.getUint8(offset + 3) / 0xFF;
+        }
+        static setSegColor(bufferView, index, value) {
+            const offset = UnitVertex.SIZE_BYTES * index + this.SEG_COLOR_OFFSET_BYTES;
+            bufferView.setUint8(offset, value[0] * 0xFF);
+            bufferView.setUint8(offset + 1, value[1] * 0xFF);
+            bufferView.setUint8(offset + 2, value[2] * 0xFF);
+            bufferView.setUint8(offset + 3, value[3] * 0xFF);
+        }
+        static copySegColor(fromBufferView, fromIndex, toBufferView, toIndex) {
+            const fromOffset = UnitVertex.SIZE_BYTES * fromIndex + this.SEG_COLOR_OFFSET_BYTES;
+            const toOffset = UnitVertex.SIZE_BYTES * toIndex + this.SEG_COLOR_OFFSET_BYTES;
+            toBufferView.setUint8(toOffset, fromBufferView.getUint8(fromOffset));
+            toBufferView.setUint8(toOffset + 1, fromBufferView.getUint8(fromOffset + 1));
+            toBufferView.setUint8(toOffset + 2, fromBufferView.getUint8(fromOffset + 2));
+            toBufferView.setUint8(toOffset + 3, fromBufferView.getUint8(fromOffset + 3));
+        }
     }
-    UnitVertex.SIZE_BYTES = 92;
+    UnitVertex.SIZE_BYTES = 120;
     UnitVertex.ID_HOVER_OFFSET_BYTES = 0;
     UnitVertex.ID_COLOR_OFFSET_BYTES = 4;
     UnitVertex.ORDER_OFFSET_BYTES = 8;
@@ -9449,6 +9260,13 @@
     UnitVertex.SDF_BORDER_OFFSET_BYTES = 83;
     UnitVertex.PARAMETER_1_OFFSET_BYTES = 84;
     UnitVertex.PARAMETER_2_OFFSET_BYTES = 88;
+    UnitVertex.MAT_TYPE_OFFSET_BYTES = 92;
+    UnitVertex.MAT_COLOR_OFFSET_BYTES = 112;
+    UnitVertex.MAT_FUZZ_OFFSET_BYTES = 96;
+    UnitVertex.MAT_GLOSS_OFFSET_BYTES = 97;
+    UnitVertex.MAT_DENSITY_OFFSET_BYTES = 100;
+    UnitVertex.MAT_REFRACTIVE_INDEX_OFFSET_BYTES = 104;
+    UnitVertex.SEG_COLOR_OFFSET_BYTES = 108;
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -10601,7 +10419,7 @@ f 5/6/6 1/12/6 8/11/6`;
                     multiply$1(this._vec3, Cube.FACE_POSITIONS[faceId], this._size);
                     transformMat4$2(this._forward, this._vec3, this._mvMatrix);
                     transformMat3(this._normal, Cube.FACE_NORMALS[faceId], this._mat3);
-                    this._isForwardFace[faceId] = dot(this._normal, this._forward) > 0;
+                    this._isForwardFace[faceId] = dot$1(this._normal, this._forward) > 0;
                 }
                 this._forward[0] = this._mat3[2];
                 this._forward[1] = this._mat3[5];
@@ -10613,7 +10431,7 @@ f 5/6/6 1/12/6 8/11/6`;
                     const outsideEdge = forward1 != forward2;
                     this._isOutsideEdge[edgeId] = outsideEdge;
                     if (outsideEdge) {
-                        this._isForwardEdge[edgeId] = dot(Cube.EDGE_FORWARDS[edgeId], this._forward) < 0;
+                        this._isForwardEdge[edgeId] = dot$1(Cube.EDGE_FORWARDS[edgeId], this._forward) < 0;
                     }
                     this._distances[edgeId] = 0;
                 }
@@ -10678,14 +10496,14 @@ f 5/6/6 1/12/6 8/11/6`;
                             const edgeHorizontalRight = this._edgeHorizontalRight[edgeId];
                             const edgeHorizontalUp = this._edgeHorizontalUp[edgeId];
                             const edgeHorizontalForward = this._edgeHorizontalForward[edgeId];
-                            if (dot(this._edgeNormalTemp, this._up) > 0) {
+                            if (dot$1(this._edgeNormalTemp, this._up) > 0) {
                                 copy$4(edgeHorizontalUp, Cube.EDGE_NORMALS[edgeId]);
                             }
                             else {
                                 negate(edgeHorizontalUp, Cube.EDGE_NORMALS[edgeId]);
                                 negate(this._edgeNormalTemp, this._edgeNormalTemp);
                             }
-                            if (dot(this._edgePositiveTemp, this._right) > 0) {
+                            if (dot$1(this._edgePositiveTemp, this._right) > 0) {
                                 this._isLeftToRightHorizontal[edgeId] = true;
                                 copy$4(edgeHorizontalRight, Cube.EDGE_POSITIVES[edgeId]);
                             }
@@ -10695,7 +10513,7 @@ f 5/6/6 1/12/6 8/11/6`;
                                 negate(this._edgePositiveTemp, this._edgePositiveTemp);
                             }
                             cross(edgeHorizontalForward, this._edgePositiveTemp, this._edgeNormalTemp);
-                            if (dot(edgeHorizontalForward, this._forward) < 0) {
+                            if (dot$1(edgeHorizontalForward, this._forward) < 0) {
                                 this._isLeftToRightHorizontal[edgeId] = !this._isLeftToRightHorizontal[edgeId];
                                 negate(edgeHorizontalRight, edgeHorizontalRight);
                             }
@@ -10703,14 +10521,14 @@ f 5/6/6 1/12/6 8/11/6`;
                             const edgeVerticalRight = this._edgeVerticalRight[edgeId];
                             const edgeVerticalUp = this._edgeVerticalUp[edgeId];
                             const edgeVerticalForward = this._edgeVerticalForward[edgeId];
-                            if (dot(this._edgeNormal, this._right) < 0) {
+                            if (dot$1(this._edgeNormal, this._right) < 0) {
                                 copy$4(edgeVerticalUp, Cube.EDGE_NORMALS[edgeId]);
                             }
                             else {
                                 negate(edgeVerticalUp, Cube.EDGE_NORMALS[edgeId]);
                                 negate(this._edgeNormal, this._edgeNormal);
                             }
-                            if (dot(this._edgePositive, this._up) < 0) {
+                            if (dot$1(this._edgePositive, this._up) < 0) {
                                 this._isLeftToRightVertical[edgeId] = true;
                                 copy$4(edgeVerticalRight, Cube.EDGE_POSITIVES[edgeId]);
                             }
@@ -10720,7 +10538,7 @@ f 5/6/6 1/12/6 8/11/6`;
                                 negate(this._edgePositive, this._edgePositive);
                             }
                             cross(edgeVerticalForward, this._edgePositive, this._edgeNormal);
-                            if (dot(edgeVerticalForward, this._forward) < 0) {
+                            if (dot$1(edgeVerticalForward, this._forward) < 0) {
                                 this._isLeftToRightVertical[edgeId] = !this._isLeftToRightVertical[edgeId];
                                 negate(edgeVerticalRight, edgeVerticalRight);
                             }
@@ -11576,13 +11394,13 @@ f 5/6/6 1/12/6 8/11/6`;
                 for (let faceId = 0; faceId < 2; faceId++) {
                     transformMat4$2(this._forward, Constants.VECTOR3_ZERO, this._mvMatrix);
                     transformMat3(this._normal, Quad$2.FACE_NORMALS[faceId], this._mat3);
-                    this._isForwardFace[faceId] = dot(this._normal, this._forward) > 0;
+                    this._isForwardFace[faceId] = dot$1(this._normal, this._forward) > 0;
                 }
                 this._forward[0] = this._mat3[2];
                 this._forward[1] = this._mat3[5];
                 this._forward[2] = this._mat3[8];
                 for (let edgeId = 0; edgeId < 4; edgeId++) {
-                    this._isForwardEdge[edgeId] = dot(Quad$2.EDGE_FORWARDS[edgeId], this._forward) < 0;
+                    this._isForwardEdge[edgeId] = dot$1(Quad$2.EDGE_FORWARDS[edgeId], this._forward) < 0;
                     this._distances[edgeId] = 0;
                 }
                 for (let axisId = 0; axisId < 2; axisId++) {
@@ -11635,14 +11453,14 @@ f 5/6/6 1/12/6 8/11/6`;
                         const edgeHorizontalRight = this._edgeHorizontalRight[edgeId];
                         const edgeHorizontalUp = this._edgeHorizontalUp[edgeId];
                         const edgeHorizontalForward = this._edgeHorizontalForward[edgeId];
-                        if (dot(this._edgeNormalTemp, this._up) > 0) {
+                        if (dot$1(this._edgeNormalTemp, this._up) > 0) {
                             copy$4(edgeHorizontalUp, Quad$2.EDGE_NORMALS[edgeId]);
                         }
                         else {
                             negate(edgeHorizontalUp, Quad$2.EDGE_NORMALS[edgeId]);
                             negate(this._edgeNormalTemp, this._edgeNormalTemp);
                         }
-                        if (dot(this._edgePositiveTemp, this._right) > 0) {
+                        if (dot$1(this._edgePositiveTemp, this._right) > 0) {
                             this._isLeftToRightHorizontal[edgeId] = true;
                             copy$4(edgeHorizontalRight, Quad$2.EDGE_POSITIVES[edgeId]);
                         }
@@ -11652,7 +11470,7 @@ f 5/6/6 1/12/6 8/11/6`;
                             negate(this._edgePositiveTemp, this._edgePositiveTemp);
                         }
                         cross(edgeHorizontalForward, this._edgePositiveTemp, this._edgeNormalTemp);
-                        if (dot(edgeHorizontalForward, this._forward) < 0) {
+                        if (dot$1(edgeHorizontalForward, this._forward) < 0) {
                             this._isLeftToRightHorizontal[edgeId] = !this._isLeftToRightHorizontal[edgeId];
                             negate(edgeHorizontalRight, edgeHorizontalRight);
                         }
@@ -11660,14 +11478,14 @@ f 5/6/6 1/12/6 8/11/6`;
                         const edgeVerticalRight = this._edgeVerticalRight[edgeId];
                         const edgeVerticalUp = this._edgeVerticalUp[edgeId];
                         const edgeVerticalForward = this._edgeVerticalForward[edgeId];
-                        if (dot(this._edgeNormal, this._right) < 0) {
+                        if (dot$1(this._edgeNormal, this._right) < 0) {
                             copy$4(edgeVerticalUp, Quad$2.EDGE_NORMALS[edgeId]);
                         }
                         else {
                             negate(edgeVerticalUp, Quad$2.EDGE_NORMALS[edgeId]);
                             negate(this._edgeNormal, this._edgeNormal);
                         }
-                        if (dot(this._edgePositive, this._up) < 0) {
+                        if (dot$1(this._edgePositive, this._up) < 0) {
                             this._isLeftToRightVertical[edgeId] = true;
                             copy$4(edgeVerticalRight, Quad$2.EDGE_POSITIVES[edgeId]);
                         }
@@ -11677,7 +11495,7 @@ f 5/6/6 1/12/6 8/11/6`;
                             negate(this._edgePositive, this._edgePositive);
                         }
                         cross(edgeVerticalForward, this._edgePositive, this._edgeNormal);
-                        if (dot(edgeVerticalForward, this._forward) < 0) {
+                        if (dot$1(edgeVerticalForward, this._forward) < 0) {
                             this._isLeftToRightVertical[edgeId] = !this._isLeftToRightVertical[edgeId];
                             negate(edgeVerticalRight, edgeVerticalRight);
                         }
@@ -13659,7 +13477,7 @@ f 5/6/6 1/12/6 8/11/6`;
             for (let i = 0; i < 4; i++) {
                 cross(normals[i], directions[(i + 1) % 4], directions[i]);
                 normalize$3(normals[i], normals[i]);
-                d.push(-dot(normals[i], nearPositions[i]));
+                d.push(-dot$1(normals[i], nearPositions[i]));
             }
             if (pickType == PickType.data) {
                 const translation = create$3();
@@ -13677,7 +13495,7 @@ f 5/6/6 1/12/6 8/11/6`;
                                 UnitVertex.getTranslation(currentBuffer.dataView, index, translation);
                                 let isInside = true;
                                 for (let k = 0; k < 4; k++) {
-                                    let distance = dot(normals[k], translation);
+                                    let distance = dot$1(normals[k], translation);
                                     distance += d[k];
                                     if (distance < 0) {
                                         isInside = false;
@@ -13745,7 +13563,6 @@ f 5/6/6 1/12/6 8/11/6`;
     const UnitType = {
         block: "block",
         blockSdf: "blockSdf",
-        boxFrameSdf: "boxFrameSdf",
         sphere: "sphere",
         sphereSdf: "sphereSdf",
         cylinder: "cylinder",
@@ -13754,16 +13571,13 @@ f 5/6/6 1/12/6 8/11/6`;
         hexPrismSdf: "hexPrismSdf",
         sdf: "sdf",
         disk: "disk",
-        ringSdf: "ringSdf",
-    };
+        ringSdf: "ringSdf"};
     const SingleTouchAction = {
-        none: "none",
         translate: "translate",
         rotate: "rotate",
         lasso: "lasso",
     };
     const MouseWheelAction = {
-        none: "none",
         zoom: "zoom",
         rotateY: "rotateY",
     };
@@ -13778,178 +13592,11 @@ f 5/6/6 1/12/6 8/11/6`;
         topFront: 0,
         topRight: 1,
         topBack: 2,
-        topLeft: 3,
-        bottomFront: 4,
         bottomRight: 5,
-        bottomBack: 6,
-        bottomLeft: 7,
         frontRight: 8,
-        backRight: 9,
-        backLeft: 10,
-        frontLeft: 11,
-    };
+        backRight: 9};
     const RenderMode = {
-        color: "color",
-        hdr: "hdr",
-        depth: "depth",
-        normal: "normal",
-        segment: "segment",
-        edge: "edge",
-    };
-
-    /*!
-     * Copyright (c) Microsoft Corporation.
-     * Licensed under the MIT License.
-     */
-    fromValues$3(0xc7, 0x15, 0x85);
-    fromValues$3(0xff, 0x14, 0x93);
-    fromValues$3(0xdb, 0x70, 0x93);
-    fromValues$3(0xff, 0x69, 0xb4);
-    fromValues$3(0xff, 0xb6, 0xc1);
-    fromValues$3(0xff, 0xc0, 0xcb);
-    fromValues$3(0x8b, 0x00, 0x00);
-    fromValues$3(0xff, 0x00, 0x00);
-    fromValues$3(0xb2, 0x22, 0x22);
-    fromValues$3(0xdc, 0x14, 0x3c);
-    fromValues$3(0xcd, 0x5c, 0x5c);
-    fromValues$3(0xf0, 0x80, 0x80);
-    fromValues$3(0xfa, 0x80, 0x72);
-    fromValues$3(0xe9, 0x96, 0x7a);
-    fromValues$3(0xff, 0xa0, 0x7a);
-    fromValues$3(0xff, 0x45, 0x00);
-    fromValues$3(0xff, 0x63, 0x47);
-    fromValues$3(0xff, 0x8c, 0x00);
-    fromValues$3(0xff, 0x7f, 0x50);
-    fromValues$3(0xff, 0xa5, 0x00);
-    fromValues$3(0xbd, 0xb7, 0x6b);
-    fromValues$3(0xff, 0xd7, 0x00);
-    fromValues$3(0xf0, 0xe6, 0x8c);
-    fromValues$3(0xff, 0xda, 0xb9);
-    fromValues$3(0xff, 0xff, 0x00);
-    fromValues$3(0xee, 0xe8, 0xaa);
-    fromValues$3(0xff, 0xe4, 0xb5);
-    fromValues$3(0xff, 0xef, 0xd5);
-    fromValues$3(0xfa, 0xfa, 0xd2);
-    fromValues$3(0xff, 0xfa, 0xcd);
-    fromValues$3(0xff, 0xff, 0xe0);
-    fromValues$3(0x80, 0x00, 0x00);
-    fromValues$3(0xa5, 0x2a, 0x2a);
-    fromValues$3(0x8b, 0x45, 0x13);
-    fromValues$3(0xa0, 0x52, 0x2d);
-    fromValues$3(0xd2, 0x69, 0x1e);
-    fromValues$3(0xb8, 0x86, 0x0b);
-    fromValues$3(0xcd, 0x85, 0x3f);
-    fromValues$3(0xbc, 0x8f, 0x8f);
-    fromValues$3(0xda, 0xa5, 0x20);
-    fromValues$3(0xf4, 0xa4, 0x60);
-    fromValues$3(0xd2, 0xb4, 0x8c);
-    fromValues$3(0xde, 0xb8, 0x87);
-    fromValues$3(0xf5, 0xde, 0xb3);
-    fromValues$3(0xff, 0xde, 0xad);
-    fromValues$3(0xff, 0xe4, 0xc4);
-    fromValues$3(0xff, 0xeb, 0xcd);
-    fromValues$3(0xff, 0xf8, 0xdc);
-    fromValues$3(0x00, 0x64, 0x00);
-    fromValues$3(0x00, 0x80, 0x00);
-    fromValues$3(0x55, 0x6b, 0x2f);
-    fromValues$3(0x22, 0x8b, 0x22);
-    fromValues$3(0x2e, 0x8b, 0x57);
-    fromValues$3(0x80, 0x80, 0x00);
-    fromValues$3(0x6b, 0x8e, 0x23);
-    fromValues$3(0x3c, 0xb3, 0x71);
-    fromValues$3(0x32, 0xcd, 0x32);
-    fromValues$3(0x00, 0xff, 0x00);
-    fromValues$3(0x00, 0xff, 0x7f);
-    fromValues$3(0x00, 0xfa, 0x9a);
-    fromValues$3(0x8f, 0xbc, 0x8f);
-    fromValues$3(0x66, 0xcd, 0xaa);
-    fromValues$3(0x9a, 0xcd, 0x32);
-    fromValues$3(0x7c, 0xfc, 0x00);
-    fromValues$3(0x7f, 0xff, 0x00);
-    fromValues$3(0x90, 0xee, 0x90);
-    fromValues$3(0xad, 0xff, 0x2f);
-    fromValues$3(0x98, 0xfb, 0x98);
-    fromValues$3(0x00, 0x80, 0x80);
-    fromValues$3(0x00, 0x8b, 0x8b);
-    fromValues$3(0x20, 0xb2, 0xaa);
-    fromValues$3(0x5f, 0x9e, 0xa0);
-    fromValues$3(0x00, 0xce, 0xd1);
-    fromValues$3(0x48, 0xd1, 0xcc);
-    fromValues$3(0x40, 0xe0, 0xd0);
-    fromValues$3(0x00, 0xff, 0xff);
-    fromValues$3(0x00, 0xff, 0xff);
-    fromValues$3(0x7f, 0xff, 0xd4);
-    fromValues$3(0xaf, 0xee, 0xee);
-    fromValues$3(0xe0, 0xff, 0xff);
-    fromValues$3(0x00, 0x00, 0x80);
-    fromValues$3(0x00, 0x00, 0x8b);
-    fromValues$3(0x00, 0x00, 0xcd);
-    fromValues$3(0x00, 0x00, 0xff);
-    fromValues$3(0x19, 0x19, 0x70);
-    fromValues$3(0x41, 0x69, 0xe1);
-    fromValues$3(0x46, 0x82, 0xb4);
-    fromValues$3(0x1e, 0x90, 0xff);
-    fromValues$3(0x00, 0xbf, 0xff);
-    fromValues$3(0x64, 0x95, 0xed);
-    fromValues$3(0x87, 0xce, 0xeb);
-    fromValues$3(0x87, 0xce, 0xfa);
-    fromValues$3(0xb0, 0xc4, 0xde);
-    fromValues$3(0xad, 0xd8, 0xe6);
-    fromValues$3(0xb0, 0xe0, 0xe6);
-    fromValues$3(0x4b, 0x00, 0x82);
-    fromValues$3(0x80, 0x00, 0x80);
-    fromValues$3(0x8b, 0x00, 0x8b);
-    fromValues$3(0x94, 0x00, 0xd3);
-    fromValues$3(0x48, 0x3d, 0x8b);
-    fromValues$3(0x8a, 0x2b, 0xe2);
-    fromValues$3(0x99, 0x32, 0xcc);
-    fromValues$3(0xff, 0x00, 0xff);
-    fromValues$3(0xff, 0x00, 0xff);
-    fromValues$3(0x6a, 0x5a, 0xcd);
-    fromValues$3(0x7b, 0x68, 0xee);
-    fromValues$3(0xba, 0x55, 0xd3);
-    fromValues$3(0x93, 0x70, 0xdb);
-    fromValues$3(0xda, 0x70, 0xd6);
-    fromValues$3(0xee, 0x82, 0xee);
-    fromValues$3(0xdd, 0xa0, 0xdd);
-    fromValues$3(0xd8, 0xbf, 0xd8);
-    fromValues$3(0xe6, 0xe6, 0xfa);
-    fromValues$3(0xff, 0xe4, 0xe1);
-    fromValues$3(0xfa, 0xeb, 0xd7);
-    fromValues$3(0xfa, 0xf0, 0xe6);
-    fromValues$3(0xf5, 0xf5, 0xdc);
-    fromValues$3(0xf5, 0xf5, 0xf5);
-    fromValues$3(0xff, 0xf0, 0xf5);
-    fromValues$3(0xfd, 0xf5, 0xe6);
-    fromValues$3(0xf0, 0xf8, 0xff);
-    fromValues$3(0xff, 0xf5, 0xee);
-    fromValues$3(0xf8, 0xf8, 0xff);
-    fromValues$3(0xf0, 0xff, 0xf0);
-    fromValues$3(0xff, 0xfa, 0xf0);
-    fromValues$3(0xf0, 0xff, 0xff);
-    fromValues$3(0xf5, 0xff, 0xfa);
-    fromValues$3(0xff, 0xfa, 0xfa);
-    fromValues$3(0xff, 0xff, 0xf0);
-    fromValues$3(0xff, 0xff, 0xff);
-    fromValues$3(0x00, 0x00, 0x00);
-    fromValues$3(0x2f, 0x4f, 0x4f);
-    fromValues$3(0x69, 0x69, 0x69);
-    fromValues$3(0x70, 0x80, 0x90);
-    fromValues$3(0x80, 0x80, 0x80);
-    fromValues$3(0x77, 0x88, 0x99);
-    fromValues$3(0xa9, 0xa9, 0xa9);
-    fromValues$3(0xc0, 0xc0, 0xc0);
-    fromValues$3(0xd3, 0xd3, 0xd3);
-    fromValues$3(0xdc, 0xdc, 0xdc);
-    fromValues$3(0xb8, 0x73, 0x33);
-    fromValues$3(0xcd, 0x7f, 0x32);
-    fromValues$3(0xce, 0xd2, 0xd7);
-    fromValues$3(0xe5, 0xe4, 0xe2);
-    fromValues$3(0x5c, 0x5d, 0x5b);
-    fromValues$3(0x87, 0x86, 0x81);
-    fromValues$3(0xcb, 0xa3, 0xb2);
-    fromValues$3(0xd2, 0xe8, 0xdf);
-    fromValues$3(0xc7, 0xe3, 0xe1);
+        color: "color"};
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -13970,6 +13617,11 @@ f 5/6/6 1/12/6 8/11/6`;
         get indexCount() { return this._indexCount; }
         get isInitialized() { return this._isInitialized; }
         get mMatrix() { return this._mMatrix; }
+        get materialType() { return this._materialType; }
+        get materialColor() { return this._materialColor; }
+        get materialFuzz() { return this._materialFuzz; }
+        get materialGloss() { return this._materialGloss; }
+        get segmentColor() { return this._segmentColor; }
         get scale() { return this._scale; }
         set scale(value) {
             if (this._scale != value) {
@@ -14081,6 +13733,11 @@ f 5/6/6 1/12/6 8/11/6`;
             this._material = options.material;
             this.borderWidth = core.config.textBorderWidth;
             this.gamma = 0;
+            this._materialType = options.materialType || 0;
+            this._materialColor = options.materialColor || core.config.textColor;
+            this._materialFuzz = options.materialFuzz || 0;
+            this._materialGloss = options.materialGloss || 0;
+            this._segmentColor = options.segmentColor;
         }
         initialize() {
             this._vertices = new ArrayBuffer(PositionTexturePickVertex.SIZE_BYTES * this._maxGlyphs * 4);
@@ -14092,6 +13749,11 @@ f 5/6/6 1/12/6 8/11/6`;
     }
     class LabelSet extends LabelBase {
         get materials() { return this._materials; }
+        get materialTypes() { return this._materialTypes; }
+        get materialColors() { return this._materialColors; }
+        get materialFuzzes() { return this._materialFuzzes; }
+        get materialGlosses() { return this._materialGlosses; }
+        get segmentColors() { return this._segmentColors; }
         get minBoundsX() { return this._minBoundsX; }
         set minBoundsX(value) {
             if (this._minBoundsX != value) {
@@ -14264,6 +13926,9 @@ f 5/6/6 1/12/6 8/11/6`;
             super(core, options);
             this._quat = create$1();
             this._materials = options.materials;
+            this._materialType = options.materialType;
+            this._materialColor = options.materialColors ? null : options.materialColor || core.config.textColor;
+            this._materialColors = options.materialColors;
             this.minBoundsX = options.minBoundsX ? options.minBoundsX : 0;
             this.minBoundsY = options.minBoundsY ? options.minBoundsY : 0;
             this.minBoundsZ = options.minBoundsZ ? options.minBoundsZ : 0;
@@ -14420,7 +14085,7 @@ f 5/6/6 1/12/6 8/11/6`;
         }
         get position() { return this._position; }
         set position(value) {
-            if (!equals$3(this._position, value)) {
+            if (!equals$2(this._position, value)) {
                 copy$4(this._position, value);
                 this._hasChanged = true;
             }
@@ -14586,7 +14251,7 @@ f 5/6/6 1/12/6 8/11/6`;
         static cylinder(pa, pb, radius, minBounds, maxBounds) {
             const a = create$3();
             subtract(a, pb, pa);
-            const aa = dot(a, a);
+            const aa = dot$1(a, a);
             const ex = radius * Math.sqrt(1 - a[0] * a[0] / aa);
             const ey = radius * Math.sqrt(1 - a[1] * a[1] / aa);
             const ez = radius * Math.sqrt(1 - a[2] * a[2] / aa);
@@ -15004,6 +14669,13 @@ f 5/6/6 1/12/6 8/11/6`;
                 else {
                     UnitVertex.setTexCoord(dataView, index, _vec4);
                 }
+                UnitVertex.setMatId(dataView, index, options.materialType ? options.materialType : options.materialTypes ? options.materialTypes[id] : 0);
+                UnitVertex.setMatColor(dataView, index, options.materialColor ? options.materialColor : options.materialColors ? [options.materialColors[id * 3], options.materialColors[id * 3 + 1], options.materialColors[id * 3 + 2]] : [0, 0, 0]);
+                UnitVertex.setMatFuzz(dataView, index, options.materialFuzz ? options.materialFuzz : options.materialFuzzes ? options.materialFuzzes[id] : 0);
+                UnitVertex.setMatGloss(dataView, index, options.materialGloss ? options.materialGloss : options.materialGlosses ? options.materialGlosses[id] : 0);
+                UnitVertex.setMatDensity(dataView, index, options.materialDensity ? options.materialDensity : options.materialDensities ? options.materialDensities[id] : 0);
+                UnitVertex.setMatRefractiveIndex(dataView, index, options.materialRefractiveIndex ? options.materialRefractiveIndex : options.materialRefractiveIndices ? options.materialRefractiveIndices[id] : 0);
+                UnitVertex.setSegColor(dataView, index, options.segmentColor ? options.segmentColor : options.segmentColors ? [options.segmentColors[id * 4], options.segmentColors[id * 4 + 1], options.segmentColors[id * 4 + 2], options.segmentColors[id * 4 + 3]] : [buffer.idColors[id * 4], buffer.idColors[id * 4 + 1], buffer.idColors[id * 4 + 2], buffer.idColors[id * 4 + 3]]);
             }
             buffer.update();
             this._core.log.write(LogLevel.info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -15378,6 +15050,13 @@ f 5/6/6 1/12/6 8/11/6`;
                 UnitVertex.setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
                 UnitVertex.setSdfBuffer(dataView, index, options.sdfBuffer ? options.sdfBuffer : options.sdfBuffers ? options.sdfBuffers[id] : this._core.config.sdfBuffer);
                 UnitVertex.setSdfBorder(dataView, index, options.sdfBorder ? options.sdfBorder : options.sdfBorders ? options.sdfBorders[id] : this._core.config.sdfBorder);
+                UnitVertex.setMatId(dataView, index, options.materialType ? options.materialType : options.materialTypes ? options.materialTypes[id] : 0);
+                UnitVertex.setMatColor(dataView, index, options.materialColor ? options.materialColor : options.materialColors ? [options.materialColors[id * 3], options.materialColors[id * 3 + 1], options.materialColors[id * 3 + 2]] : [0, 0, 0]);
+                UnitVertex.setMatFuzz(dataView, index, options.materialFuzz ? options.materialFuzz : options.materialFuzzes ? options.materialFuzzes[id] : 0);
+                UnitVertex.setMatGloss(dataView, index, options.materialGloss ? options.materialGloss : options.materialGlosses ? options.materialGlosses[id] : 0);
+                UnitVertex.setMatDensity(dataView, index, options.materialDensity ? options.materialDensity : options.materialDensities ? options.materialDensities[id] : 0);
+                UnitVertex.setMatRefractiveIndex(dataView, index, options.materialRefractiveIndex ? options.materialRefractiveIndex : options.materialRefractiveIndices ? options.materialRefractiveIndices[id] : 0);
+                UnitVertex.setSegColor(dataView, index, options.segmentColor ? options.segmentColor : options.segmentColors ? [options.segmentColors[id * 4], options.segmentColors[id * 4 + 1], options.segmentColors[id * 4 + 2], options.segmentColors[id * 4 + 3]] : [buffer.idColors[id * 4], buffer.idColors[id * 4 + 1], buffer.idColors[id * 4 + 2], buffer.idColors[id * 4 + 3]]);
             }
             buffer.update();
             this._core.log.write(LogLevel.info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -15471,6 +15150,13 @@ f 5/6/6 1/12/6 8/11/6`;
                     UnitVertex.copySdfBorder(fromDataView, index, toDataView, i);
                     UnitVertex.copyParameter1(fromDataView, index, toDataView, i);
                     UnitVertex.copyParameter2(fromDataView, index, toDataView, i);
+                    UnitVertex.copyMatId(fromDataView, index, toDataView, i);
+                    UnitVertex.copyMatColor(fromDataView, index, toDataView, i);
+                    UnitVertex.copyMatFuzz(fromDataView, index, toDataView, i);
+                    UnitVertex.copyMatRefractiveIndex(fromDataView, index, toDataView, i);
+                    UnitVertex.copyMatGloss(fromDataView, index, toDataView, i);
+                    UnitVertex.copyMatDensity(fromDataView, index, toDataView, i);
+                    UnitVertex.copySegColor(fromDataView, index, toDataView, i);
                 }
                 else {
                     UnitVertex.setRotation(toDataView, i, Constants.QUAT_IDENTITY);
@@ -15529,11 +15215,18 @@ f 5/6/6 1/12/6 8/11/6`;
             const dataView1 = this._buffer1.dataView;
             const dataView2 = this._buffer2.dataView;
             const _vec4 = create$2();
+            this.idColors = new Float32Array(this._length * 4);
+            this._buffer1.idColors = this.idColors;
+            this._buffer2.idColors = this.idColors;
             for (let i = 0; i < this._length; i++) {
                 const id = ids[i];
                 const pickId = PickHelper.nextPickId();
                 this._pickIdLookup[pickId] = id;
                 PickHelper.encodeNumber(pickId, PickType.data, _vec4);
+                this.idColors[i * 4] = _vec4[0];
+                this.idColors[i * 4 + 1] = _vec4[1];
+                this.idColors[i * 4 + 2] = _vec4[2];
+                this.idColors[i * 4 + 3] = _vec4[3];
                 UnitVertex.setIdColor(dataView1, i, _vec4);
                 UnitVertex.setIdColor(dataView2, i, _vec4);
             }
@@ -15679,6 +15372,12 @@ f 5/6/6 1/12/6 8/11/6`;
         set backgroundColor(value) {
             if (!exactEquals(value, this._backgroundColor)) {
                 this._backgroundColor = value;
+            }
+        }
+        get ambientColor() { return this._ambientColor; }
+        set ambientColor(value) {
+            if (!exactEquals$1(value, this._ambientColor)) {
+                this._ambientColor = value;
             }
         }
         get currentAxes() { return this._isAxes1Current ? this._axes1 : this._axes2; }
@@ -22708,6 +22407,20 @@ f 5/6/6 1/12/6 8/11/6`;
      * Copyright (c) Microsoft Corporation.
      * Licensed under the MIT License.
      */
+    (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+        function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+        return new (P || (P = Promise))(function (resolve, reject) {
+            function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+            function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+            step((generator = generator.apply(thisArg, _arguments || [])).next());
+        });
+    };
+
+    /*!
+     * Copyright (c) Microsoft Corporation.
+     * Licensed under the MIT License.
+     */
     class MaterialBufferData extends Float32Array {
         constructor(count) {
             super(count * MaterialBufferData.SIZE);
@@ -22892,6 +22605,15 @@ f 5/6/6 1/12/6 8/11/6`;
             this.SDF_BORDER_OFFSET = 128 / 4;
             this.PARAMETER_1_OFFSET = 132 / 4;
             this.PARAMETER_2_OFFSET = 136 / 4;
+            this.MATERIAL_FUZZ_OFFSET = 140 / 4;
+            this.MATERIAL_GLOSS_OFFSET = 144 / 4;
+            this.MATERIAL_DENSITY_OFFSET = 148 / 4;
+            this.MATERIAL_REFRACTIVE_INDEX_OFFSET = 152 / 4;
+            this.MATERIAL_COLOR_OFFSET = 160 / 4;
+            this.MATERIAL_TYPE_ID_OFFSET = 172 / 4;
+            this.SEGMENT_COLOR_OFFSET = 176 / 4;
+            this.TEXTURE_TYPE_ID_OFFSET = 192 / 4;
+            this.TEXTURE_ID_OFFSET = 196 / 4;
         }
         getType(index) {
             return this[HittableBufferData.SIZE * index + this.TYPE_OFFSET];
@@ -22950,12 +22672,6 @@ f 5/6/6 1/12/6 8/11/6`;
             this[offset] = value[0];
             this[offset + 1] = value[1];
             this[offset + 2] = value[2];
-        }
-        getMaterialId(index) {
-            return this[HittableBufferData.SIZE * index + this.MATERIAL_ID_OFFSET];
-        }
-        setMaterialId(index, value) {
-            this[HittableBufferData.SIZE * index + this.MATERIAL_ID_OFFSET] = value;
         }
         getRotation0(index, value) {
             const offset = HittableBufferData.SIZE * index + this.ROTATION0_OFFSET;
@@ -23039,8 +22755,64 @@ f 5/6/6 1/12/6 8/11/6`;
         setSdfBorder(index, value) {
             this[HittableBufferData.SIZE * index + this.SDF_BORDER_OFFSET] = value;
         }
+        getMaterialTypeId(index) {
+            return this[HittableBufferData.SIZE * index + this.MATERIAL_TYPE_ID_OFFSET];
+        }
+        setMaterialTypeId(index, value) {
+            this[HittableBufferData.SIZE * index + this.MATERIAL_TYPE_ID_OFFSET] = value;
+        }
+        getMaterialFuzz(index) {
+            return this[HittableBufferData.SIZE * index + this.MATERIAL_FUZZ_OFFSET];
+        }
+        setMaterialFuzz(index, value) {
+            this[HittableBufferData.SIZE * index + this.MATERIAL_FUZZ_OFFSET] = value;
+        }
+        getMaterialDensity(index) {
+            return this[HittableBufferData.SIZE * index + this.MATERIAL_DENSITY_OFFSET];
+        }
+        setMaterialDensity(index, value) {
+            this[HittableBufferData.SIZE * index + this.MATERIAL_DENSITY_OFFSET] = value;
+        }
+        getMaterialGloss(index) {
+            return this[HittableBufferData.SIZE * index + this.MATERIAL_GLOSS_OFFSET];
+        }
+        setMaterialGloss(index, value) {
+            this[HittableBufferData.SIZE * index + this.MATERIAL_GLOSS_OFFSET] = value;
+        }
+        getMaterialRefractiveIndex(index) {
+            return this[HittableBufferData.SIZE * index + this.MATERIAL_REFRACTIVE_INDEX_OFFSET];
+        }
+        setMaterialRefractiveIndex(index, value) {
+            this[HittableBufferData.SIZE * index + this.MATERIAL_REFRACTIVE_INDEX_OFFSET] = value;
+        }
+        getMaterialColor(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.MATERIAL_COLOR_OFFSET;
+            value[0] = this[offset];
+            value[1] = this[offset + 1];
+            value[2] = this[offset + 2];
+        }
+        setMaterialColor(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.MATERIAL_COLOR_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+            this[offset + 2] = value[2];
+        }
+        getSegmentColor(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.SEGMENT_COLOR_OFFSET;
+            value[0] = this[offset];
+            value[1] = this[offset + 1];
+            value[2] = this[offset + 2];
+            value[3] = this[offset + 3];
+        }
+        setSegmentColor(index, value) {
+            const offset = HittableBufferData.SIZE * index + this.SEGMENT_COLOR_OFFSET;
+            this[offset] = value[0];
+            this[offset + 1] = value[1];
+            this[offset + 2] = value[2];
+            this[offset + 3] = value[3];
+        }
     }
-    HittableBufferData.SIZE = 144 / 4;
+    HittableBufferData.SIZE = 208 / 4;
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -23057,16 +22829,24 @@ f 5/6/6 1/12/6 8/11/6`;
             this.SEED_OFFSET = 44 / 4;
             this.FORWARD_OFFSET = 48 / 4;
             this.FOV_OFFSET = 60 / 4;
-            this.LOOKAT_OFFSET = 64 / 4;
-            this.APERTURE_OFFSET = 76 / 4;
-            this.BACKGROUND_COLOR_OFFSET = 80 / 4;
-            this.TIME0_OFFSET = 92 / 4;
-            this.TIME1_OFFSET = 96 / 4;
-            this.TILES_X = 100 / 4;
-            this.TILES_Y = 104 / 4;
-            this.TILE_OFFSET_X = 108 / 4;
-            this.TILE_OFFSET_Y = 112 / 4;
-            this.RAYS_PER_FRAME_OFFSET = 116 / 4;
+            this.BACKGROUND_COLOR_OFFSET = 64 / 4;
+            this.TIME0_OFFSET = 76 / 4;
+            this.AMBIENT_COLOR_OFFSET = 80 / 4;
+            this.TIME1_OFFSET = 92 / 4;
+            this.TILES_X = 96 / 4;
+            this.TILES_Y = 100 / 4;
+            this.TILE_OFFSET_X = 104 / 4;
+            this.TILE_OFFSET_Y = 108 / 4;
+            this.LOOKAT_OFFSET = 112 / 4;
+            this.APERTURE_OFFSET = 124 / 4;
+            this.FOCUS_DISTANCE_OFFSET = 128 / 4;
+            this.RAYS_PER_FRAME_OFFSET = 132 / 4;
+        }
+        getFocusDistance() {
+            return this[this.FOCUS_DISTANCE_OFFSET];
+        }
+        setFocusDistance(value) {
+            this[this.FOCUS_DISTANCE_OFFSET] = value;
         }
         getWidth() {
             return this[this.WIDTH_OFFSET];
@@ -23136,21 +22916,22 @@ f 5/6/6 1/12/6 8/11/6`;
             this[this.FORWARD_OFFSET + 1] = value[1];
             this[this.FORWARD_OFFSET + 2] = value[2];
         }
-        getLookAt(value) {
-            set$3(value, this[this.LOOKAT_OFFSET], this[this.LOOKAT_OFFSET + 1], this[this.LOOKAT_OFFSET + 2]);
-        }
-        setLookAt(value) {
-            this[this.LOOKAT_OFFSET] = value[0];
-            this[this.LOOKAT_OFFSET + 1] = value[1];
-            this[this.LOOKAT_OFFSET + 2] = value[2];
-        }
         getBackgroundColor(value) {
-            set$2(value, this[this.BACKGROUND_COLOR_OFFSET], this[this.BACKGROUND_COLOR_OFFSET + 1], this[this.BACKGROUND_COLOR_OFFSET + 2], 1);
+            set$2(value, this[this.BACKGROUND_COLOR_OFFSET], this[this.BACKGROUND_COLOR_OFFSET + 1], this[this.BACKGROUND_COLOR_OFFSET + 2], this[this.BACKGROUND_COLOR_OFFSET + 3]);
         }
         setBackgroundColor(value) {
             this[this.BACKGROUND_COLOR_OFFSET] = value[0];
             this[this.BACKGROUND_COLOR_OFFSET + 1] = value[1];
             this[this.BACKGROUND_COLOR_OFFSET + 2] = value[2];
+            this[this.BACKGROUND_COLOR_OFFSET + 3] = value[3];
+        }
+        getAmbientColor(value) {
+            set$3(value, this[this.AMBIENT_COLOR_OFFSET], this[this.AMBIENT_COLOR_OFFSET + 1], this[this.AMBIENT_COLOR_OFFSET + 2]);
+        }
+        setAmbientColor(value) {
+            this[this.AMBIENT_COLOR_OFFSET] = value[0];
+            this[this.AMBIENT_COLOR_OFFSET + 1] = value[1];
+            this[this.AMBIENT_COLOR_OFFSET + 2] = value[2];
         }
         getTime0() {
             return this[this.TIME0_OFFSET];
@@ -23188,8 +22969,16 @@ f 5/6/6 1/12/6 8/11/6`;
         setTileOffsetY(value) {
             this[this.TILE_OFFSET_Y] = value;
         }
+        getLookAt(value) {
+            set$3(value, this[this.LOOKAT_OFFSET], this[this.LOOKAT_OFFSET + 1], this[this.LOOKAT_OFFSET + 2]);
+        }
+        setLookAt(value) {
+            this[this.LOOKAT_OFFSET] = value[0];
+            this[this.LOOKAT_OFFSET + 1] = value[1];
+            this[this.LOOKAT_OFFSET + 2] = value[2];
+        }
     }
-    ComputeUniformBufferData.SIZE = 128 / 4;
+    ComputeUniformBufferData.SIZE = 144 / 4;
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -23206,6 +22995,8 @@ f 5/6/6 1/12/6 8/11/6`;
             this.MAX_DEPTH_OFFSET = 20 / 4;
             this.EDGE_NORMAL_OFFSET = 24 / 4;
             this.EDGE_DEPTH_OFFSET = 28 / 4;
+            this.EDGE_FOREGROUND_OFFSET = 32 / 4;
+            this.EDGE_BACKGROUND_OFFSET = 48 / 4;
         }
         getWidth() {
             return this[this.WIDTH_OFFSET];
@@ -23255,8 +23046,26 @@ f 5/6/6 1/12/6 8/11/6`;
         setEdgeNormal(value) {
             this[this.EDGE_NORMAL_OFFSET] = value;
         }
+        getEdgeForeground(value) {
+            set$2(value, this[this.EDGE_FOREGROUND_OFFSET], this[this.EDGE_FOREGROUND_OFFSET + 1], this[this.EDGE_FOREGROUND_OFFSET + 2], this[this.EDGE_FOREGROUND_OFFSET + 3]);
+        }
+        setEdgeForeground(value) {
+            this[this.EDGE_FOREGROUND_OFFSET] = value[0];
+            this[this.EDGE_FOREGROUND_OFFSET + 1] = value[1];
+            this[this.EDGE_FOREGROUND_OFFSET + 2] = value[2];
+            this[this.EDGE_FOREGROUND_OFFSET + 3] = value[3];
+        }
+        getEdgeBackground(value) {
+            set$2(value, this[this.EDGE_BACKGROUND_OFFSET], this[this.EDGE_BACKGROUND_OFFSET + 1], this[this.EDGE_BACKGROUND_OFFSET + 2], this[this.EDGE_BACKGROUND_OFFSET + 3]);
+        }
+        setEdgeBackground(value) {
+            this[this.EDGE_BACKGROUND_OFFSET] = value[0];
+            this[this.EDGE_BACKGROUND_OFFSET + 1] = value[1];
+            this[this.EDGE_BACKGROUND_OFFSET + 2] = value[2];
+            this[this.EDGE_BACKGROUND_OFFSET + 3] = value[3];
+        }
     }
-    FullscreenQuadUniformBufferData.SIZE = 32 / 4;
+    FullscreenQuadUniformBufferData.SIZE = 64 / 4;
 
     /*!
      * Copyright (c) Microsoft Corporation.
@@ -23414,14 +23223,14 @@ f 5/6/6 1/12/6 8/11/6`;
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
-    function concat$1(...args) {
+    function concat(...args) {
         return args.reduce((p, c) => c ? p.concat(c) : p, []);
     }
     /**
      * Returns array with items which are truthy.
      * @param args array or arrays to concat into a single array.
      */
-    function allTruthy$1(...args) {
+    function allTruthy(...args) {
         return args.reduce((p, c) => c ? p.concat(c) : p, []).filter(Boolean);
     }
     /**
@@ -23680,12 +23489,12 @@ f 5/6/6 1/12/6 8/11/6`;
         __proto__: null,
         addDiv: addDiv,
         addEl: addEl,
-        allTruthy: allTruthy$1,
+        allTruthy: allTruthy,
         clone: clone,
         colorFromString: colorFromString,
         colorIsEqual: colorIsEqual,
         colorToString: colorToString,
-        concat: concat$1,
+        concat: concat,
         createElement: createElement,
         deepMerge: deepMerge,
         desaturate: desaturate,
@@ -24781,7 +24590,7 @@ f 5/6/6 1/12/6 8/11/6`;
     */
     const key = 'line';
     const createLineLayer = (props) => {
-        const { height, ref, stage, width } = props;
+        const { height, ref, stage} = props;
         const { core } = ref;
         const lines = new Line(core);
         const { ids, fromIds, toIds, lineColors, lineSizes, bounds, positionsX, positionsY, positionsZ, lineMaxColor, palette, } = convert$1(stage, height);
@@ -25168,7 +24977,7 @@ f 5/6/6 1/12/6 8/11/6`;
         if (modelTransitioner.shouldTransition) {
             modelTransitioner.begin();
         }
-        const props = { ref, stage, height, width, config };
+        const props = { ref, stage, height, config };
         const cubeLayer = createCubeLayer(props);
         const lineLayer = createLineLayer(props);
         const textLayer = createTextLayer(props);
@@ -26707,7 +26516,7 @@ f 5/6/6 1/12/6 8/11/6`;
     * Copyright (c) Microsoft Corporation.
     * Licensed under the MIT License.
     */
-    const { allTruthy, concat, push } = util$1;
+    const { push } = util$1;
 
     /*!
     * Copyright (c) Microsoft Corporation.
@@ -28807,8 +28616,8 @@ f 5/6/6 1/12/6 8/11/6`;
     exports.Viewer = Viewer;
     exports.colorSchemes = colorSchemes;
     exports.constants = constants$1;
-    exports.searchExpression = index$3;
-    exports.specs = index$4;
+    exports.searchExpression = index$1;
+    exports.specs = index$2;
     exports.types = types$1;
     exports.use = use;
     exports.util = util;
