@@ -1,0 +1,19 @@
+{
+    "columns": {
+        "x": "Longitude",
+        "y": "Latitude",
+        "color": "Obama",
+        "z": "Education",
+        "sort": "State",
+        "size": "TotalPop"
+    },
+    "facetStyle": "wrap",
+    "scheme": "redblue",
+    "totalStyle": "sum-treemap",
+    "size": {
+        "height": 600,
+        "width": 800
+    },
+    "chart": "density",
+    "view": "2d"
+}

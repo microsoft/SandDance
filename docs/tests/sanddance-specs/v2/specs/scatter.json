@@ -1,0 +1,15 @@
+{
+    "columns": {
+        "x": "Longitude",
+        "y": "Latitude",
+        "color": "Income",
+        "z": "Income"
+    },
+    "scheme": "redyellowgreen",
+    "size": {
+        "height": 600,
+        "width": 800
+    },
+    "chart": "scatterplot",
+    "view": "2d"
+}
