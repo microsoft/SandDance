@@ -6,8 +6,8 @@
 	"files": [
 		"dist"
 	],
-	"scripts": {
-		"vegatest": "parcel serve ./test/vegaspec/vega-morphcharts.test.html --open --no-hmr --no-autoinstall --no-cache",
+  "scripts": {
+		"vegatest": "vite --config vite.dev.config.js",
 		"deploy": "node ./scripts/deploy.js",
 		"eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
 		"watch-typescript": "tsc -p . -w",

@@ -57,9 +57,6 @@ typings/
 # dotenv environment variables file
 .env
 
-# parcel-bundler caches
-.parcel-cache
-
 # built files
 **/src/**/*.js
 docs/**/*.map
