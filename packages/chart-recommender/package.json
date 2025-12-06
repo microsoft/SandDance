@@ -21,8 +21,7 @@
     "test": "mocha",
     "build-typescript": "tsc -p .",
     "watch-typescript": "tsc -p . -w",
-    "build:04": "npm run build-typescript",
-    "patch-after-vega-upgrade": "npm version patch"
+    "build:04": "npm run build-typescript"
   },
   "author": "",
   "license": "MIT"
