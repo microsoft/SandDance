@@ -3,8 +3,8 @@
 * Licensed under the MIT License.
 */
 
-export * from './color';
-export * from './inference';
-export * from './numeric';
-export * from './stats';
-export * from './summary';
+export * from './color.js';
+export * from './inference.js';
+export * from './numeric.js';
+export * from './stats.js';
+export * from './summary.js';

@@ -4,7 +4,7 @@
 */
 
 import { Column } from '@msrvida/chart-types';
-import { isGeo } from './geo';
+import { isGeo } from './geo.js';
 
 export function preferredColumnForTreemapSize(columns: Column[], strict: boolean) {
     for (let i = 0; i < columns.length; i++) {

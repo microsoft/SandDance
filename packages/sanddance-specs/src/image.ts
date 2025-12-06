@@ -3,10 +3,10 @@
 * Licensed under the MIT License.
 */
 
-import { BackgroundImage } from './types';
+import { BackgroundImage } from './types.js';
 import { ImageMark } from 'vega-typings/types';
-import { GlobalScales } from './interfaces';
-import { bandScaleLinearSuffix } from './layouts/band';
+import { GlobalScales } from './interfaces.js';
+import { bandScaleLinearSuffix } from './layouts/band.js';
 
 export function getImageMark(backgroundImage: BackgroundImage, allGlobalScales: GlobalScales[]): ImageMark {
     const xScale = allGlobalScales.filter(s => s.scales.x)[0].scales.x[0];

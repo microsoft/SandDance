@@ -4,9 +4,9 @@
 */
 
 import { NewSignal } from 'vega-typings/types';
-import { SignalNames } from './constants';
-import { debounce } from './defaults';
-import { SpecContext } from './types';
+import { SignalNames } from './constants.js';
+import { debounce } from './defaults.js';
+import { SpecContext } from './types.js';
 
 export const defaultZProportion = 0.6;
 

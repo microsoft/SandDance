@@ -10,7 +10,7 @@ import {
     Recommendation,
     Recommender,
     Rule,
-} from './recommender';
+} from './recommender.js';
 
 const maxDistinctVal = 20;
 const minDistinctVal = 2;

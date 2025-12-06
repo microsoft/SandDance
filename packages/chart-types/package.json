@@ -14,7 +14,6 @@
   ],
   "scripts": {
     "eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
-    "predocs": "rimraf ../../docs/docs/chart-types/v1",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "build:01": "npm run build-typescript",
@@ -24,6 +23,6 @@
   "author": "Dan Marshall",
   "license": "MIT",
   "dependencies": {
-    "vega-typings": "~1.5.0"
+    "vega-typings": "~2.1.0"
   }
 }

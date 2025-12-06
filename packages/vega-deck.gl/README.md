@@ -35,7 +35,7 @@ VegaDeckGl.use(vega, deck, deck, luma);
 
 ## Installation via Node.js
 
-This option is for those who are using a script bundler such as [WebPack](https://webpack.js.org) or [Parcel](https://parceljs.org).
+This option is for those who are using a script bundler.
 
 Add these to the `dependencies` section of your `package.json`, then run `npm install`:
 

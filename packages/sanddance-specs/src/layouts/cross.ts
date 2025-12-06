@@ -3,11 +3,11 @@
 * Licensed under the MIT License.
 */
 
-import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { Binnable, binnable } from '../bin';
-import { FieldNames, SignalNames } from '../constants';
-import { displayBin, serializeAsVegaExpression } from '../facetSearch';
-import { addFacetColRowTitles } from '../facetTitle';
+import { Layout, LayoutBuildProps, LayoutProps } from './layout.js';
+import { Binnable, binnable } from '../bin.js';
+import { FieldNames, SignalNames } from '../constants.js';
+import { displayBin, serializeAsVegaExpression } from '../facetSearch.js';
+import { addFacetColRowTitles } from '../facetTitle.js';
 import {
     DiscreteColumn,
     InnerScope,
@@ -15,16 +15,16 @@ import {
     SizeSignals,
     Titles,
     TitleSource,
-} from '../interfaces';
-import { createOrdinals, ordinalScale } from '../ordinal';
+} from '../interfaces.js';
+import { createOrdinals, ordinalScale } from '../ordinal.js';
 import {
     addData,
     addMarks,
     addScales,
     addSignals,
     addTransforms,
-} from '../scope';
-import { modifySignal } from '../signals';
+} from '../scope.js';
+import { modifySignal } from '../signals.js';
 import {
     Data,
     GroupMark,

@@ -3,7 +3,7 @@
 * Licensed under the MIT License.
 */
 
-import { SpecContext } from './types';
+import { SpecContext } from './types.js';
 
 export function allowNoneForSize(specContext: SpecContext) {
     switch (specContext.insight.totalStyle) {

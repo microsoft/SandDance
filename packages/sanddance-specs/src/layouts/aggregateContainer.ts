@@ -3,22 +3,22 @@
 * Licensed under the MIT License.
 */
 
-import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { FieldNames } from '../constants';
-import { safeFieldName } from '../expr';
+import { Layout, LayoutBuildProps, LayoutProps } from './layout.js';
+import { FieldNames } from '../constants.js';
+import { safeFieldName } from '../expr.js';
 import {
     AxisScale,
     FieldOp,
     InnerScope,
     LayoutOffsets,
-} from '../interfaces';
+} from '../interfaces.js';
 import {
     addOffsets,
     addSignals,
     addTransforms,
     getGroupBy,
-} from '../scope';
-import { testForCollapseSelection } from '../selection';
+} from '../scope.js';
+import { testForCollapseSelection } from '../selection.js';
 import { Column } from '@msrvida/chart-types';
 import { JoinAggregateTransform, LinearScale } from 'vega-typings';
 

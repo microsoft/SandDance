@@ -3,13 +3,13 @@
 * Licensed under the MIT License.
 */
 
-import { AxisScales } from '../interfaces';
-import { BandProps } from '../layouts/band';
-import { defaultBins, maxbins, minBarBandWidth } from '../defaults';
-import { SignalNames } from '../constants';
-import { SpecBuilderProps } from '../specBuilder';
-import { SpecContext } from '../types';
-import { StackProps } from '../layouts/stack';
+import { AxisScales } from '../interfaces.js';
+import { BandProps } from '../layouts/band.js';
+import { defaultBins, maxbins, minBarBandWidth } from '../defaults.js';
+import { SignalNames } from '../constants.js';
+import { SpecBuilderProps } from '../specBuilder.js';
+import { SpecContext } from '../types.js';
+import { StackProps } from '../layouts/stack.js';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns, specViewOptions } = specContext;

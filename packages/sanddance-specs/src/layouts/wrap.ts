@@ -3,27 +3,27 @@
 * Licensed under the MIT License.
 */
 
-import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { binnable, Binnable } from '../bin';
-import { FieldNames, SignalNames } from '../constants';
-import { safeFieldName } from '../expr';
-import { displayBin, serializeAsVegaExpression } from '../facetSearch';
-import { addFacetCellTitles } from '../facetTitle';
+import { Layout, LayoutBuildProps, LayoutProps } from './layout.js';
+import { binnable, Binnable } from '../bin.js';
+import { FieldNames, SignalNames } from '../constants.js';
+import { safeFieldName } from '../expr.js';
+import { displayBin, serializeAsVegaExpression } from '../facetSearch.js';
+import { addFacetCellTitles } from '../facetTitle.js';
 import {
     DiscreteColumn,
     InnerScope,
     LayoutOffsets,
     SizeSignals,
-} from '../interfaces';
-import { createOrdinals } from '../ordinal';
+} from '../interfaces.js';
+import { createOrdinals } from '../ordinal.js';
 import {
     addData,
     addMarks,
     addOffsets,
     addSignals,
     addTransforms,
-} from '../scope';
-import { modifySignal } from '../signals';
+} from '../scope.js';
+import { modifySignal } from '../signals.js';
 import { Data, GroupEncodeEntry, GroupMark } from 'vega-typings';
 
 export interface WrapProps extends LayoutProps {

@@ -57,9 +57,6 @@ typings/
 # dotenv environment variables file
 .env
 
-# parcel-bundler caches
-.parcel-cache
-
 # built files
 **/src/**/*.js
 docs/**/*.map
@@ -80,9 +77,3 @@ _site
 
 dist
 !docs/dist
-
-__pycache__
-python/jupyter-widget/lib
-python/jupyter-widget/docs
-python/jupyter-widget/sanddance/nbextension
-streamlit_sanddance.egg-info

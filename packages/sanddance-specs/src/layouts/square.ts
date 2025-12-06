@@ -3,18 +3,18 @@
 * Licensed under the MIT License.
 */
 
-import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { FieldNames } from '../constants';
-import { safeFieldName } from '../expr';
-import { InnerScope } from '../interfaces';
+import { Layout, LayoutBuildProps, LayoutProps } from './layout.js';
+import { FieldNames } from '../constants.js';
+import { safeFieldName } from '../expr.js';
+import { InnerScope } from '../interfaces.js';
 import {
     addMarks,
     addOffsets,
     addTransforms,
     getGroupBy,
-} from '../scope';
-import { testForCollapseSelection } from '../selection';
-import { addZScale } from '../zBase';
+} from '../scope.js';
+import { testForCollapseSelection } from '../selection.js';
+import { addZScale } from '../zBase.js';
 import { Column, View } from '@msrvida/chart-types';
 import { FormulaTransform, RectMark } from 'vega-typings';
 

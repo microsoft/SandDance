@@ -3,14 +3,14 @@
 * Licensed under the MIT License.
 */
 
-import { addData, addScales, addSignals } from './scope';
-import { binnableColorScale } from './scales';
-import { colorBinCountSignal, colorReverseSignal } from './signals';
-import { ColorScaleNone, FieldNames } from './constants';
-import { getLegends } from './legends';
+import { addData, addScales, addSignals } from './scope.js';
+import { binnableColorScale } from './scales.js';
+import { colorBinCountSignal, colorReverseSignal } from './signals.js';
+import { ColorScaleNone, FieldNames } from './constants.js';
+import { getLegends } from './legends.js';
 import { Scope } from 'vega-typings';
-import { SpecContext } from './types';
-import { topLookup } from './top';
+import { SpecContext } from './types.js';
+import { topLookup } from './top.js';
 
 export interface Props {
     scope: Scope;

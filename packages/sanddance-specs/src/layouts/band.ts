@@ -3,27 +3,27 @@
 * Licensed under the MIT License.
 */
 
-import { Layout, LayoutBuildProps, LayoutProps } from './layout';
-import { binnable, Binnable } from '../bin';
-import { safeFieldName } from '../expr';
+import { Layout, LayoutBuildProps, LayoutProps } from './layout.js';
+import { binnable, Binnable } from '../bin.js';
+import { safeFieldName } from '../expr.js';
 import {
     DiscreteColumn,
     EncodingRule,
     InnerScope,
     LayoutOffsets,
     Orientation,
-} from '../interfaces';
+} from '../interfaces.js';
 import {
     addData,
     addOffsets,
     addScales,
     addSignals,
     addTransforms,
-} from '../scope';
-import { testForCollapseSelection } from '../selection';
-import { modifySignal } from '../signals';
+} from '../scope.js';
+import { testForCollapseSelection } from '../selection.js';
+import { modifySignal } from '../signals.js';
 import { BandScale, RangeRawArray } from 'vega-typings';
-import { linearScale } from '../scales';
+import { linearScale } from '../scales.js';
 
 export const bandScaleLinearSuffix = '_linear';
 

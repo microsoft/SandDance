@@ -6,25 +6,25 @@ import { readFileSync, writeFileSync } from 'fs';
 const oldVersion = {
     vega: {
         major: '5',
-        minor: '30',
-        patch: '0',
-    },
-    typings: {
-        major: '1',
-        minor: '3',
-        patch: '1',
-    },
-};
-
-const newVersion = {
-    vega: {
-        major: '5',
         minor: '32',
         patch: '0',
     },
     typings: {
         major: '1',
         minor: '5',
+        patch: '0',
+    },
+};
+
+const newVersion = {
+    vega: {
+        major: '6',
+        minor: '2',
+        patch: '0',
+    },
+    typings: {
+        major: '2',
+        minor: '1',
         patch: '0',
     },
 };
@@ -45,19 +45,13 @@ const packages = {
             ],
         },
         {
-            glob: 'docs/tests/{data-inference,sanddance-specs}/v1/index.html',
+            glob: 'docs/tests/{data-inference,sanddance-specs}/v2/index.html',
             pattern: ({ major, minor }) => [
                 `vega@^${major}.${minor}`,
             ],
         },
         {
             glob: '{extensions,packages}/*/package.json',
-            pattern: ({ major, minor, patch }) => [
-                `"vega": "${major}.${minor}${patch.length ? '.' : ''}${patch}"`,
-            ],
-        },
-        {
-            glob: 'streamlit/streamlit_sanddance/frontend/package.json',
             pattern: ({ major, minor, patch }) => [
                 `"vega": "${major}.${minor}${patch.length ? '.' : ''}${patch}"`,
             ],

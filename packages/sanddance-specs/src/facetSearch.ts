@@ -3,7 +3,7 @@
 * Licensed under the MIT License.
 */
 
-import { Binnable } from './bin';
+import { Binnable } from './bin.js';
 
 export function displayBin(bin: Binnable) {
     const val = (index: number) => `datum[${JSON.stringify(bin.fields[index])}]`;

@@ -4,9 +4,9 @@
 */
 
 import { Column } from '@msrvida/chart-types';
-import { BarChartRecommenderSummary } from './barChart';
-import { Recommendation } from './recommender';
-import { ScatterPlotRecommenderSummary } from './scatterPlot';
+import { BarChartRecommenderSummary } from './barChart.js';
+import { Recommendation } from './recommender.js';
+import { ScatterPlotRecommenderSummary } from './scatterPlot.js';
 
 export class RecommenderSummary {
     public rec: Recommendation;

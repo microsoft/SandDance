@@ -8,8 +8,7 @@
     "eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
     "build-css": "sass ./src/css/app.scss ./dist/app.css",
     "build-ui": "tsc -p .",
-    "build:07": "npm run build-css && npm run build-ui",
-    "remove-vega": "npm un vega"
+    "build:07": "npm run build-css && npm run build-ui"
   },
   "repository": {
     "type": "git",

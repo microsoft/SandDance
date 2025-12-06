@@ -1,0 +1,6 @@
+{
+  "spec": "test/**/*.mjs",
+  "node-option": [
+    "experimental-specifier-resolution=node"
+  ]
+}

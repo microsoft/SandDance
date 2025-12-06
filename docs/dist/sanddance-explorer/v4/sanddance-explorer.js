@@ -418,276 +418,6 @@ function $6baf9f3c20fde4a8$export$8b58be045bf06082(parent, definition) {
 });
 
 
-parcelRegister("gwbX4", function(module, exports) {
-module.exports = JSON.parse("[\"a\",\"abbr\",\"address\",\"area\",\"article\",\"aside\",\"audio\",\"b\",\"base\",\"bdi\",\"bdo\",\"blockquote\",\"body\",\"br\",\"button\",\"canvas\",\"caption\",\"cite\",\"code\",\"col\",\"colgroup\",\"data\",\"datalist\",\"dd\",\"del\",\"details\",\"dfn\",\"dialog\",\"div\",\"dl\",\"dt\",\"em\",\"embed\",\"fieldset\",\"figcaption\",\"figure\",\"footer\",\"form\",\"h1\",\"h2\",\"h3\",\"h4\",\"h5\",\"h6\",\"head\",\"header\",\"hgroup\",\"hr\",\"html\",\"i\",\"iframe\",\"img\",\"input\",\"ins\",\"kbd\",\"keygen\",\"label\",\"legend\",\"li\",\"link\",\"main\",\"map\",\"mark\",\"math\",\"menu\",\"menuitem\",\"meta\",\"meter\",\"nav\",\"noscript\",\"object\",\"ol\",\"optgroup\",\"option\",\"output\",\"p\",\"param\",\"picture\",\"pre\",\"progress\",\"q\",\"rb\",\"rp\",\"rt\",\"rtc\",\"ruby\",\"s\",\"samp\",\"script\",\"section\",\"select\",\"slot\",\"small\",\"source\",\"span\",\"strong\",\"style\",\"sub\",\"summary\",\"sup\",\"svg\",\"table\",\"tbody\",\"td\",\"template\",\"textarea\",\"tfoot\",\"th\",\"thead\",\"time\",\"title\",\"tr\",\"track\",\"u\",\"ul\",\"var\",\"video\",\"wbr\"]");
-
-});
-
-parcelRegister("4T7E6", function(module, exports) {
-module.exports = JSON.parse("[\"a\",\"altGlyph\",\"altGlyphDef\",\"altGlyphItem\",\"animate\",\"animateColor\",\"animateMotion\",\"animateTransform\",\"circle\",\"clipPath\",\"color-profile\",\"cursor\",\"defs\",\"desc\",\"ellipse\",\"feBlend\",\"feColorMatrix\",\"feComponentTransfer\",\"feComposite\",\"feConvolveMatrix\",\"feDiffuseLighting\",\"feDisplacementMap\",\"feDistantLight\",\"feFlood\",\"feFuncA\",\"feFuncB\",\"feFuncG\",\"feFuncR\",\"feGaussianBlur\",\"feImage\",\"feMerge\",\"feMergeNode\",\"feMorphology\",\"feOffset\",\"fePointLight\",\"feSpecularLighting\",\"feSpotLight\",\"feTile\",\"feTurbulence\",\"filter\",\"font\",\"font-face\",\"font-face-format\",\"font-face-name\",\"font-face-src\",\"font-face-uri\",\"foreignObject\",\"g\",\"glyph\",\"glyphRef\",\"hkern\",\"image\",\"line\",\"linearGradient\",\"marker\",\"mask\",\"metadata\",\"missing-glyph\",\"mpath\",\"path\",\"pattern\",\"polygon\",\"polyline\",\"radialGradient\",\"rect\",\"script\",\"set\",\"stop\",\"style\",\"svg\",\"switch\",\"symbol\",\"text\",\"textPath\",\"title\",\"tref\",\"tspan\",\"use\",\"view\",\"vkern\"]");
-
-});
-
-parcelRegister("2FnuA", function(module, exports) {
-"use strict";
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ Object.defineProperty(module.exports, "__esModule", {
-    value: true
-});
-module.exports.BarChartRecommender = module.exports.BarChartRecommenderSummary = void 0;
-
-var $1uICa = parcelRequire("1uICa");
-var $1f11a233e6d216bf$var$maxDistinctVal = 20;
-var $1f11a233e6d216bf$var$minDistinctVal = 2;
-var $1f11a233e6d216bf$var$BarChartRecommenderSummary = /** @class */ function() {
-    function BarChartRecommenderSummary(columns, data) {
-        var score = -1;
-        for(var i = 0; i < columns.length; i++){
-            var recommendation = new $1f11a233e6d216bf$var$BarChartRecommender(columns[i], data).recommend();
-            if (recommendation.score > score) {
-                this.best = recommendation;
-                score = recommendation.score;
-            }
-            if (score === 1) break;
-        }
-        for(var k = 0; k < columns.length; k++){
-            var column = columns[k];
-            if (column.name === this.best.columns.x || column.stats.isSequential) continue;
-            if (column.quantitative || column.stats.distinctValueCount < $1uICa.maxCategoricalColors && column.stats.distinctValueCount > 1) {
-                this.best.columns.color = this.best.columns.sort = column.name;
-                this.best.scheme = (0, $1uICa.defaultColorScheme)(column);
-                if (column.quantitative) this.best.colorBin = 'quantile';
-                break;
-            }
-        }
-    }
-    BarChartRecommenderSummary.prototype.recommend = function() {
-        return this.best;
-    };
-    return BarChartRecommenderSummary;
-}();
-module.exports.BarChartRecommenderSummary = $1f11a233e6d216bf$var$BarChartRecommenderSummary;
-var $1f11a233e6d216bf$var$BarChartRecommender = /** @class */ function() {
-    function BarChartRecommender(column, data) {
-        this.score = 0;
-        this.column = column;
-        //the total score for bar chart is 1
-        this.rules = [
-            function(column) {
-                if (column.stats.isSequential) return false;
-                else if (column.quantitative) return true;
-                else if (!column.quantitative && column.stats.distinctValueCount <= $1f11a233e6d216bf$var$maxDistinctVal && column.stats.distinctValueCount >= $1f11a233e6d216bf$var$minDistinctVal) return true;
-                else return false;
-            }
-        ];
-        for(var i = 0; i < this.rules.length; i++)if (this.rules[i](column)) this.score++;
-    }
-    BarChartRecommender.prototype.recommend = function() {
-        var rec = {
-            chart: 'barchart',
-            columns: {
-                x: this.column.name
-            },
-            score: this.score,
-            scheme: undefined,
-            view: '2d'
-        };
-        return rec;
-    };
-    return BarChartRecommender;
-}();
-module.exports.BarChartRecommender = $1f11a233e6d216bf$var$BarChartRecommender;
-
-});
-parcelRegister("1uICa", function(module, exports) {
-"use strict";
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ Object.defineProperty(module.exports, "__esModule", {
-    value: true
-});
-module.exports.Recommender = module.exports.maxCategoricalColors = void 0;
-module.exports.defaultColorScheme = $116b334d4f77bc48$var$defaultColorScheme;
-module.exports.maxCategoricalColors = 20;
-var $116b334d4f77bc48$var$Recommender = /** @class */ function() {
-    function Recommender(columns, data) {}
-    return Recommender;
-}();
-module.exports.Recommender = $116b334d4f77bc48$var$Recommender;
-function $116b334d4f77bc48$var$defaultColorScheme(c) {
-    if (c.quantitative) return 'redyellowgreen';
-    else if (c.stats.distinctValueCount === 2) return 'dual_redgreen';
-    else if (c.stats.distinctValueCount <= 10) return 'category10';
-    return 'category20';
-}
-
-});
-
-
-parcelRegister("bvDTm", function(module, exports) {
-"use strict";
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ Object.defineProperty(module.exports, "__esModule", {
-    value: true
-});
-module.exports.isLongitude = $861188ad8c0733db$var$isLongitude;
-module.exports.isLatitude = $861188ad8c0733db$var$isLatitude;
-module.exports.isGeo = $861188ad8c0733db$var$isGeo;
-//TODO: languages other than english
-var $861188ad8c0733db$var$longitudeNames = [
-    'lon',
-    'long',
-    'longitude'
-];
-var $861188ad8c0733db$var$latitudeNames = [
-    'lat',
-    'latitude'
-];
-function $861188ad8c0733db$var$isSpec(names, limits, column, data) {
-    var is = false;
-    var cname = column.name.toLowerCase();
-    for(var i = 0; i < names.length; i++)if (names[i] === cname) {
-        is = true;
-        break;
-    }
-    data;
-    return is;
-}
-function $861188ad8c0733db$var$isLongitude(column, data) {
-    return $861188ad8c0733db$var$isSpec($861188ad8c0733db$var$longitudeNames, [
-        -180,
-        180
-    ], column, data);
-}
-function $861188ad8c0733db$var$isLatitude(column, data) {
-    return $861188ad8c0733db$var$isSpec($861188ad8c0733db$var$latitudeNames, [
-        -90,
-        90
-    ], column, data);
-}
-function $861188ad8c0733db$var$isGeo(column, data) {
-    return $861188ad8c0733db$var$isLatitude(column, data) || $861188ad8c0733db$var$isLongitude(column, data);
-}
-
-});
-
-parcelRegister("7Kus9", function(module, exports) {
-"use strict";
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ Object.defineProperty(module.exports, "__esModule", {
-    value: true
-});
-module.exports.ScatterPlotRecommenderSummary = void 0;
-
-var $1uICa = parcelRequire("1uICa");
-
-var $bvDTm = parcelRequire("bvDTm");
-var $5a44739e7f49bf14$var$ScatterPlotRecommenderSummary = /** @class */ function() {
-    function ScatterPlotRecommenderSummary(columns, data) {
-        var rec = {
-            chart: 'scatterplot',
-            score: undefined,
-            columns: {},
-            scheme: undefined,
-            view: '2d'
-        };
-        columns.forEach(function(column) {
-            if (!rec.columns.x) {
-                if (column.name.toLowerCase() === 'x') return rec.columns.x = column.name;
-                else if ((0, $bvDTm.isLongitude)(column)) return rec.columns.x = column.name;
-            }
-            if (!rec.columns.y) {
-                if (column.name.toLowerCase() === 'y') return rec.columns.y = column.name;
-                else if ((0, $bvDTm.isLatitude)(column)) return rec.columns.y = column.name;
-            }
-            if (!rec.columns.color && !column.stats.isSequential) {
-                if (column.quantitative || column.stats.distinctValueCount < $1uICa.maxCategoricalColors) {
-                    rec.columns.color = rec.columns.sort = column.name;
-                    rec.scheme = (0, $1uICa.defaultColorScheme)(column);
-                    if (column.quantitative) rec.colorBin = 'quantile';
-                    return;
-                }
-            }
-        });
-        if (rec.columns.x && rec.columns.y) this.best = rec;
-    }
-    ScatterPlotRecommenderSummary.prototype.recommend = function() {
-        return this.best;
-    };
-    return ScatterPlotRecommenderSummary;
-}();
-module.exports.ScatterPlotRecommenderSummary = $5a44739e7f49bf14$var$ScatterPlotRecommenderSummary;
-
-});
-
-parcelRegister("lSaje", function(module, exports) {
-"use strict";
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ Object.defineProperty(module.exports, "__esModule", {
-    value: true
-});
-module.exports.preferredColumnForTreemapSize = $fec6a34ab2606213$var$preferredColumnForTreemapSize;
-
-var $bvDTm = parcelRequire("bvDTm");
-function $fec6a34ab2606213$var$preferredColumnForTreemapSize(columns, strict) {
-    for(var i = 0; i < columns.length; i++){
-        var c = columns[i];
-        if (c.quantitative) {
-            if (strict && c.stats.hasNegative) continue;
-            if (strict && c.stats.isSequential) continue;
-            if (strict && (0, $bvDTm.isGeo)(c)) continue;
-            return c;
-        }
-    }
-}
-
-});
-
-parcelRegister("b7pOC", function(module, exports) {
-"use strict";
-/*!
-* Copyright (c) Microsoft Corporation.
-* Licensed under the MIT License.
-*/ Object.defineProperty(module.exports, "__esModule", {
-    value: true
-});
-module.exports.RecommenderSummary = void 0;
-
-var $2FnuA = parcelRequire("2FnuA");
-
-var $7Kus9 = parcelRequire("7Kus9");
-var $81845f94dbd209f8$var$RecommenderSummary = /** @class */ function() {
-    function RecommenderSummary(columns, data) {
-        var quickRec = new $7Kus9.ScatterPlotRecommenderSummary(columns, data).recommend();
-        if (quickRec) this.rec = quickRec;
-        else {
-            var barChartrec = new $2FnuA.BarChartRecommenderSummary(columns, data).recommend();
-            if (barChartrec && barChartrec.score >= 1) this.rec = barChartrec;
-            else this.rec = {
-                chart: 'grid',
-                columns: {},
-                score: 1
-            };
-        }
-    }
-    RecommenderSummary.prototype.recommend = function() {
-        return this.rec;
-    };
-    return RecommenderSummary;
-}();
-module.exports.RecommenderSummary = $81845f94dbd209f8$var$RecommenderSummary;
-
-});
-
 var $fa693121602b4446$exports = {};
 
 $parcel$export($fa693121602b4446$exports, "controls", () => $5d1e60eb15fea085$exports);
@@ -6100,6 +5830,12 @@ function $1c081eb26c39473d$export$3f8fe6489e95757d(specContext, currData) {
 
 
 
+var $7c75b80e0404a7a0$exports = {};
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ 
+
 var $ca675dc6df12c0ef$exports = {};
 /*!
 * Copyright (c) Microsoft Corporation.
@@ -6115,6 +5851,7 @@ var $46296c7ebdd844d1$exports = {};
 $parcel$exportWildcard($502a84774beeb901$exports, $1c081eb26c39473d$exports);
 $parcel$exportWildcard($502a84774beeb901$exports, $8d0624e259fe9d79$exports);
 $parcel$exportWildcard($502a84774beeb901$exports, $2b29a67d615af3f6$exports);
+$parcel$exportWildcard($502a84774beeb901$exports, $7c75b80e0404a7a0$exports);
 $parcel$exportWildcard($502a84774beeb901$exports, $ca675dc6df12c0ef$exports);
 $parcel$exportWildcard($502a84774beeb901$exports, $46296c7ebdd844d1$exports);
 
@@ -6511,19 +6248,7 @@ $parcel$export($230d9e8a9013f7fd$exports, "Table", () => $837e7efbc300fecc$expor
  */ /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
-*/ var $141b8f2471dc141e$exports = {};
-'use strict';
-
-$141b8f2471dc141e$exports = (parcelRequire("gwbX4"));
-
-
-var $d92af7c54cf4754b$exports = {};
-
-$d92af7c54cf4754b$exports = (parcelRequire("4T7E6"));
-
-
-const $fe86f88c0c9aea93$var$htmlTagArray = $141b8f2471dc141e$exports.default || $141b8f2471dc141e$exports;
-const $fe86f88c0c9aea93$var$svgTagArray = $d92af7c54cf4754b$exports.default || $d92af7c54cf4754b$exports;
+*/ const $fe86f88c0c9aea93$var$SVG_NAMESPACE = "http://www.w3.org/2000/svg";
 /**
  * Decamelizes a string with/without a custom separator (hyphen by default).
  * from: https://ourcodeworld.com/articles/read/608/how-to-camelize-and-decamelize-strings-in-javascript
@@ -6536,11 +6261,15 @@ const $fe86f88c0c9aea93$var$svgTagArray = $d92af7c54cf4754b$exports.default || $
 function $fe86f88c0c9aea93$export$c8a8987d4410bf2d(tag, attrs, ...children) {
     if (typeof tag === 'function') {
         const fn = tag;
-        const props = attrs;
-        props.children = children;
+        let props = attrs;
+        // Handle case where props is null but children are provided
+        if (props === null || props === undefined) props = {
+            children: children
+        };
+        else props.children = children;
         return fn(props);
     } else {
-        const ns = $fe86f88c0c9aea93$var$tagNamespace(tag);
+        const ns = tag === 'svg' ? $fe86f88c0c9aea93$var$SVG_NAMESPACE : null;
         const el = ns ? document.createElementNS(ns, tag) : document.createElement(tag);
         const map = attrs;
         let ref;
@@ -6570,11 +6299,57 @@ function $fe86f88c0c9aea93$var$flatten(o) {
     for(let prop in o)arr.push(`${$fe86f88c0c9aea93$var$decamelize(prop, '-')}:${o[prop]}`);
     return arr.join(';');
 }
+function $fe86f88c0c9aea93$var$isInsideForeignObject(element) {
+    let current = element;
+    while(current){
+        if (current.tagName.toLowerCase() === 'foreignobject') return true;
+        current = current.parentElement;
+    }
+    return false;
+}
+function $fe86f88c0c9aea93$var$recreateWithSvgNamespace(element) {
+    const svgElement = document.createElementNS($fe86f88c0c9aea93$var$SVG_NAMESPACE, element.tagName.toLowerCase());
+    // Copy attributes
+    for(let i = 0; i < element.attributes.length; i++){
+        const attr = element.attributes[i];
+        svgElement.setAttributeNS(null, attr.name, attr.value);
+    }
+    // Copy event handlers and other properties
+    // Common event handlers that need to be copied
+    const eventProperties = [
+        'onclick',
+        'onmousedown',
+        'onmouseup',
+        'onmouseover',
+        'onmouseout',
+        'onmousemove',
+        'onkeydown',
+        'onkeyup',
+        'onkeypress',
+        'onfocus',
+        'onblur'
+    ];
+    for (const prop of eventProperties)if (element[prop]) svgElement[prop] = element[prop];
+    // Copy children recursively
+    for(let i = 0; i < element.childNodes.length; i++){
+        const child = element.childNodes[i];
+        if (child.nodeType === Node.ELEMENT_NODE) svgElement.appendChild($fe86f88c0c9aea93$var$recreateWithSvgNamespace(child));
+        else svgElement.appendChild(child.cloneNode(true));
+    }
+    return svgElement;
+}
 function $fe86f88c0c9aea93$export$59da04d16460addd(parentElement, child) {
     if (child === null || child === undefined || typeof child === "boolean") return;
     else if (Array.isArray(child)) $fe86f88c0c9aea93$var$appendChildren(parentElement, child);
-    else if ($fe86f88c0c9aea93$var$isElement(child)) parentElement.appendChild(child);
-    else parentElement.appendChild(document.createTextNode(child.toString()));
+    else if ($fe86f88c0c9aea93$var$isElement(child)) {
+        const childEl = child;
+        // If parent is SVG and child was created with wrong namespace, recreate it
+        // Exception: don't recreate elements inside foreignObject as they should remain HTML
+        if (parentElement.namespaceURI === $fe86f88c0c9aea93$var$SVG_NAMESPACE && childEl.namespaceURI !== $fe86f88c0c9aea93$var$SVG_NAMESPACE && childEl.tagName.toLowerCase() !== 'foreignobject' && !$fe86f88c0c9aea93$var$isInsideForeignObject(parentElement)) {
+            const recreated = $fe86f88c0c9aea93$var$recreateWithSvgNamespace(childEl);
+            parentElement.appendChild(recreated);
+        } else parentElement.appendChild(childEl);
+    } else parentElement.appendChild(document.createTextNode(child.toString()));
 }
 function $fe86f88c0c9aea93$var$appendChildren(parentElement, children) {
     children.forEach((child)=>$fe86f88c0c9aea93$export$59da04d16460addd(parentElement, child));
@@ -6629,10 +6404,6 @@ function $fe86f88c0c9aea93$var$getChildPosition(element) {
     while(element = element.previousElementSibling)childPosition++;
     return childPosition;
 }
-function $fe86f88c0c9aea93$var$tagNamespace(tag) {
-    //issue: this won't disambiguate certain tags which exist in both svg and html: <a>, <title> ...
-    if (tag === 'svg' || $fe86f88c0c9aea93$var$svgTagArray.indexOf(tag) >= 0 && !($fe86f88c0c9aea93$var$htmlTagArray.indexOf(tag) >= 0)) return "http://www.w3.org/2000/svg";
-}
 
 
 const $837e7efbc300fecc$var$KeyCodes = {
@@ -6680,31 +6451,39 @@ $parcel$export($4ef7f72d8d2a203c$exports, "MorphChartsCore", () => $4a6417d29706
 $parcel$export($14f38b7dd89457d7$exports, "EPSILON", () => $14f38b7dd89457d7$export$fd293b15f47e270);
 $parcel$export($14f38b7dd89457d7$exports, "ARRAY_TYPE", () => $14f38b7dd89457d7$export$b67359430d3b1b2);
 $parcel$export($14f38b7dd89457d7$exports, "RANDOM", () => $14f38b7dd89457d7$export$5ada478c8a628231);
+$parcel$export($14f38b7dd89457d7$exports, "ANGLE_ORDER", () => $14f38b7dd89457d7$export$217057687ee20298);
+$parcel$export($14f38b7dd89457d7$exports, "round", () => $14f38b7dd89457d7$export$2077e0241d6afd3c);
 $parcel$export($14f38b7dd89457d7$exports, "setMatrixArrayType", () => $14f38b7dd89457d7$export$cb2c0eb57f5e532c);
 $parcel$export($14f38b7dd89457d7$exports, "toRadian", () => $14f38b7dd89457d7$export$408b8ee5959eefd5);
+$parcel$export($14f38b7dd89457d7$exports, "toDegree", () => $14f38b7dd89457d7$export$c796d9d3e501591f);
 $parcel$export($14f38b7dd89457d7$exports, "equals", () => $14f38b7dd89457d7$export$e9bab7fafb253603);
 /**
  * Common utilities
  * @module glMatrix
  */ // Configuration Constants
 var $14f38b7dd89457d7$export$fd293b15f47e270 = 0.000001;
-var $14f38b7dd89457d7$export$b67359430d3b1b2 = typeof Float32Array !== 'undefined' ? Float32Array : Array;
+var $14f38b7dd89457d7$export$b67359430d3b1b2 = typeof Float32Array !== "undefined" ? Float32Array : Array;
 var $14f38b7dd89457d7$export$5ada478c8a628231 = Math.random;
+var $14f38b7dd89457d7$export$217057687ee20298 = "zyx";
+function $14f38b7dd89457d7$export$2077e0241d6afd3c(a) {
+    if (a >= 0) return Math.round(a);
+    return a % 0.5 === 0 ? Math.floor(a) : Math.round(a);
+}
 function $14f38b7dd89457d7$export$cb2c0eb57f5e532c(type) {
     $14f38b7dd89457d7$export$b67359430d3b1b2 = type;
 }
 var $14f38b7dd89457d7$var$degree = Math.PI / 180;
+var $14f38b7dd89457d7$var$radian = 180 / Math.PI;
 function $14f38b7dd89457d7$export$408b8ee5959eefd5(a) {
     return a * $14f38b7dd89457d7$var$degree;
 }
-function $14f38b7dd89457d7$export$e9bab7fafb253603(a, b) {
-    return Math.abs(a - b) <= $14f38b7dd89457d7$export$fd293b15f47e270 * Math.max(1.0, Math.abs(a), Math.abs(b));
+function $14f38b7dd89457d7$export$c796d9d3e501591f(a) {
+    return a * $14f38b7dd89457d7$var$radian;
 }
-if (!Math.hypot) Math.hypot = function() {
-    var y = 0, i = arguments.length;
-    while(i--)y += arguments[i] * arguments[i];
-    return Math.sqrt(y);
-};
+function $14f38b7dd89457d7$export$e9bab7fafb253603(a, b) {
+    var tolerance = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : $14f38b7dd89457d7$export$fd293b15f47e270;
+    return Math.abs(a - b) <= tolerance * Math.max(1, Math.abs(a), Math.abs(b));
+}
 
 var $1ac1b59392edf35b$exports = {};
 
@@ -6736,6 +6515,7 @@ $parcel$export($1ac1b59392edf35b$exports, "fromQuat2", () => $1ac1b59392edf35b$e
 $parcel$export($1ac1b59392edf35b$exports, "getTranslation", () => $1ac1b59392edf35b$export$202e99f82f7f0395);
 $parcel$export($1ac1b59392edf35b$exports, "getScaling", () => $1ac1b59392edf35b$export$71dc54d92bd04b57);
 $parcel$export($1ac1b59392edf35b$exports, "getRotation", () => $1ac1b59392edf35b$export$df3937d3b537df0a);
+$parcel$export($1ac1b59392edf35b$exports, "decompose", () => $1ac1b59392edf35b$export$4e06b4a690896b27);
 $parcel$export($1ac1b59392edf35b$exports, "fromRotationTranslationScale", () => $1ac1b59392edf35b$export$ddf9c55c9f2be172);
 $parcel$export($1ac1b59392edf35b$exports, "fromRotationTranslationScaleOrigin", () => $1ac1b59392edf35b$export$1def1f860edc4b1f);
 $parcel$export($1ac1b59392edf35b$exports, "fromQuat", () => $1ac1b59392edf35b$export$2ff2bbe382249af7);
@@ -6933,7 +6713,8 @@ function $1ac1b59392edf35b$export$6897c284b6f9f4dc(out, a) {
     var b08 = a20 * a33 - a23 * a30;
     var b09 = a21 * a32 - a22 * a31;
     var b10 = a21 * a33 - a23 * a31;
-    var b11 = a22 * a33 - a23 * a32; // Calculate the determinant
+    var b11 = a22 * a33 - a23 * a32;
+    // Calculate the determinant
     var det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
     if (!det) return null;
     det = 1.0 / det;
@@ -6960,29 +6741,6 @@ function $1ac1b59392edf35b$export$33f3c024b4ae00a1(out, a) {
     var a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7];
     var a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11];
     var a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15];
-    out[0] = a11 * (a22 * a33 - a23 * a32) - a21 * (a12 * a33 - a13 * a32) + a31 * (a12 * a23 - a13 * a22);
-    out[1] = -(a01 * (a22 * a33 - a23 * a32) - a21 * (a02 * a33 - a03 * a32) + a31 * (a02 * a23 - a03 * a22));
-    out[2] = a01 * (a12 * a33 - a13 * a32) - a11 * (a02 * a33 - a03 * a32) + a31 * (a02 * a13 - a03 * a12);
-    out[3] = -(a01 * (a12 * a23 - a13 * a22) - a11 * (a02 * a23 - a03 * a22) + a21 * (a02 * a13 - a03 * a12));
-    out[4] = -(a10 * (a22 * a33 - a23 * a32) - a20 * (a12 * a33 - a13 * a32) + a30 * (a12 * a23 - a13 * a22));
-    out[5] = a00 * (a22 * a33 - a23 * a32) - a20 * (a02 * a33 - a03 * a32) + a30 * (a02 * a23 - a03 * a22);
-    out[6] = -(a00 * (a12 * a33 - a13 * a32) - a10 * (a02 * a33 - a03 * a32) + a30 * (a02 * a13 - a03 * a12));
-    out[7] = a00 * (a12 * a23 - a13 * a22) - a10 * (a02 * a23 - a03 * a22) + a20 * (a02 * a13 - a03 * a12);
-    out[8] = a10 * (a21 * a33 - a23 * a31) - a20 * (a11 * a33 - a13 * a31) + a30 * (a11 * a23 - a13 * a21);
-    out[9] = -(a00 * (a21 * a33 - a23 * a31) - a20 * (a01 * a33 - a03 * a31) + a30 * (a01 * a23 - a03 * a21));
-    out[10] = a00 * (a11 * a33 - a13 * a31) - a10 * (a01 * a33 - a03 * a31) + a30 * (a01 * a13 - a03 * a11);
-    out[11] = -(a00 * (a11 * a23 - a13 * a21) - a10 * (a01 * a23 - a03 * a21) + a20 * (a01 * a13 - a03 * a11));
-    out[12] = -(a10 * (a21 * a32 - a22 * a31) - a20 * (a11 * a32 - a12 * a31) + a30 * (a11 * a22 - a12 * a21));
-    out[13] = a00 * (a21 * a32 - a22 * a31) - a20 * (a01 * a32 - a02 * a31) + a30 * (a01 * a22 - a02 * a21);
-    out[14] = -(a00 * (a11 * a32 - a12 * a31) - a10 * (a01 * a32 - a02 * a31) + a30 * (a01 * a12 - a02 * a11));
-    out[15] = a00 * (a11 * a22 - a12 * a21) - a10 * (a01 * a22 - a02 * a21) + a20 * (a01 * a12 - a02 * a11);
-    return out;
-}
-function $1ac1b59392edf35b$export$a04698f914c55ed9(a) {
-    var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3];
-    var a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7];
-    var a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11];
-    var a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15];
     var b00 = a00 * a11 - a01 * a10;
     var b01 = a00 * a12 - a02 * a10;
     var b02 = a00 * a13 - a03 * a10;
@@ -6994,14 +6752,49 @@ function $1ac1b59392edf35b$export$a04698f914c55ed9(a) {
     var b08 = a20 * a33 - a23 * a30;
     var b09 = a21 * a32 - a22 * a31;
     var b10 = a21 * a33 - a23 * a31;
-    var b11 = a22 * a33 - a23 * a32; // Calculate the determinant
-    return b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
+    var b11 = a22 * a33 - a23 * a32;
+    out[0] = a11 * b11 - a12 * b10 + a13 * b09;
+    out[1] = a02 * b10 - a01 * b11 - a03 * b09;
+    out[2] = a31 * b05 - a32 * b04 + a33 * b03;
+    out[3] = a22 * b04 - a21 * b05 - a23 * b03;
+    out[4] = a12 * b08 - a10 * b11 - a13 * b07;
+    out[5] = a00 * b11 - a02 * b08 + a03 * b07;
+    out[6] = a32 * b02 - a30 * b05 - a33 * b01;
+    out[7] = a20 * b05 - a22 * b02 + a23 * b01;
+    out[8] = a10 * b10 - a11 * b08 + a13 * b06;
+    out[9] = a01 * b08 - a00 * b10 - a03 * b06;
+    out[10] = a30 * b04 - a31 * b02 + a33 * b00;
+    out[11] = a21 * b02 - a20 * b04 - a23 * b00;
+    out[12] = a11 * b07 - a10 * b09 - a12 * b06;
+    out[13] = a00 * b09 - a01 * b07 + a02 * b06;
+    out[14] = a31 * b01 - a30 * b03 - a32 * b00;
+    out[15] = a20 * b03 - a21 * b01 + a22 * b00;
+    return out;
+}
+function $1ac1b59392edf35b$export$a04698f914c55ed9(a) {
+    var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3];
+    var a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7];
+    var a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11];
+    var a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15];
+    var b0 = a00 * a11 - a01 * a10;
+    var b1 = a00 * a12 - a02 * a10;
+    var b2 = a01 * a12 - a02 * a11;
+    var b3 = a20 * a31 - a21 * a30;
+    var b4 = a20 * a32 - a22 * a30;
+    var b5 = a21 * a32 - a22 * a31;
+    var b6 = a00 * b5 - a01 * b4 + a02 * b3;
+    var b7 = a10 * b5 - a11 * b4 + a12 * b3;
+    var b8 = a20 * b2 - a21 * b1 + a22 * b0;
+    var b9 = a30 * b2 - a31 * b1 + a32 * b0;
+    // Calculate the determinant
+    return a13 * b6 - a03 * b7 + a33 * b8 - a23 * b9;
 }
 function $1ac1b59392edf35b$export$2060d2db72cce88f(out, a, b) {
     var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3];
     var a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7];
     var a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11];
-    var a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15]; // Cache only the current line of the second matrix
+    var a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15];
+    // Cache only the current line of the second matrix
     var b0 = b[0], b1 = b[1], b2 = b[2], b3 = b[3];
     out[0] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
     out[1] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
@@ -7097,7 +6890,7 @@ function $1ac1b59392edf35b$export$dcdf75081b88279d(out, a, v) {
 }
 function $1ac1b59392edf35b$export$bb628a54ab399bc9(out, a, rad, axis) {
     var x = axis[0], y = axis[1], z = axis[2];
-    var len = Math.hypot(x, y, z);
+    var len = Math.sqrt(x * x + y * y + z * z);
     var s, c, t;
     var a00, a01, a02, a03;
     var a10, a11, a12, a13;
@@ -7124,7 +6917,8 @@ function $1ac1b59392edf35b$export$bb628a54ab399bc9(out, a, rad, axis) {
     a20 = a[8];
     a21 = a[9];
     a22 = a[10];
-    a23 = a[11]; // Construct the elements of the rotation matrix
+    a23 = a[11];
+    // Construct the elements of the rotation matrix
     b00 = x * x * t + c;
     b01 = y * x * t + z * s;
     b02 = z * x * t - y * s;
@@ -7133,7 +6927,8 @@ function $1ac1b59392edf35b$export$bb628a54ab399bc9(out, a, rad, axis) {
     b12 = z * y * t + x * s;
     b20 = x * z * t + y * s;
     b21 = y * z * t - x * s;
-    b22 = z * z * t + c; // Perform rotation-specific matrix multiplication
+    b22 = z * z * t + c;
+    // Perform rotation-specific matrix multiplication
     out[0] = a00 * b00 + a10 * b01 + a20 * b02;
     out[1] = a01 * b00 + a11 * b01 + a21 * b02;
     out[2] = a02 * b00 + a12 * b01 + a22 * b02;
@@ -7176,7 +6971,8 @@ function $1ac1b59392edf35b$export$a59c8716592e09af(out, a, rad) {
         out[13] = a[13];
         out[14] = a[14];
         out[15] = a[15];
-    } // Perform axis-specific matrix multiplication
+    }
+    // Perform axis-specific matrix multiplication
     out[4] = a10 * c + a20 * s;
     out[5] = a11 * c + a21 * s;
     out[6] = a12 * c + a22 * s;
@@ -7208,7 +7004,8 @@ function $1ac1b59392edf35b$export$cf71e4d4ca4d1cfd(out, a, rad) {
         out[13] = a[13];
         out[14] = a[14];
         out[15] = a[15];
-    } // Perform axis-specific matrix multiplication
+    }
+    // Perform axis-specific matrix multiplication
     out[0] = a00 * c - a20 * s;
     out[1] = a01 * c - a21 * s;
     out[2] = a02 * c - a22 * s;
@@ -7240,7 +7037,8 @@ function $1ac1b59392edf35b$export$ea6eae3365de5b9c(out, a, rad) {
         out[13] = a[13];
         out[14] = a[14];
         out[15] = a[15];
-    } // Perform axis-specific matrix multiplication
+    }
+    // Perform axis-specific matrix multiplication
     out[0] = a00 * c + a10 * s;
     out[1] = a01 * c + a11 * s;
     out[2] = a02 * c + a12 * s;
@@ -7291,7 +7089,7 @@ function $1ac1b59392edf35b$export$832ca188ffb1955d(out, v) {
 }
 function $1ac1b59392edf35b$export$926fc125ff3c666c(out, rad, axis) {
     var x = axis[0], y = axis[1], z = axis[2];
-    var len = Math.hypot(x, y, z);
+    var len = Math.sqrt(x * x + y * y + z * z);
     var s, c, t;
     if (len < $14f38b7dd89457d7$export$fd293b15f47e270) return null;
     len = 1 / len;
@@ -7300,7 +7098,8 @@ function $1ac1b59392edf35b$export$926fc125ff3c666c(out, rad, axis) {
     z *= len;
     s = Math.sin(rad);
     c = Math.cos(rad);
-    t = 1 - c; // Perform rotation-specific matrix multiplication
+    t = 1 - c;
+    // Perform rotation-specific matrix multiplication
     out[0] = x * x * t + c;
     out[1] = y * x * t + z * s;
     out[2] = z * x * t - y * s;
@@ -7321,7 +7120,8 @@ function $1ac1b59392edf35b$export$926fc125ff3c666c(out, rad, axis) {
 }
 function $1ac1b59392edf35b$export$dd47cc2f828c32ef(out, rad) {
     var s = Math.sin(rad);
-    var c = Math.cos(rad); // Perform axis-specific matrix multiplication
+    var c = Math.cos(rad);
+    // Perform axis-specific matrix multiplication
     out[0] = 1;
     out[1] = 0;
     out[2] = 0;
@@ -7342,7 +7142,8 @@ function $1ac1b59392edf35b$export$dd47cc2f828c32ef(out, rad) {
 }
 function $1ac1b59392edf35b$export$7dc997d67d2b7f33(out, rad) {
     var s = Math.sin(rad);
-    var c = Math.cos(rad); // Perform axis-specific matrix multiplication
+    var c = Math.cos(rad);
+    // Perform axis-specific matrix multiplication
     out[0] = c;
     out[1] = 0;
     out[2] = -s;
@@ -7363,7 +7164,8 @@ function $1ac1b59392edf35b$export$7dc997d67d2b7f33(out, rad) {
 }
 function $1ac1b59392edf35b$export$ad5ddaedc8f405df(out, rad) {
     var s = Math.sin(rad);
-    var c = Math.cos(rad); // Perform axis-specific matrix multiplication
+    var c = Math.cos(rad);
+    // Perform axis-specific matrix multiplication
     out[0] = c;
     out[1] = s;
     out[2] = 0;
@@ -7418,7 +7220,8 @@ function $1ac1b59392edf35b$export$9545ac307f2a256b(out, q, v) {
 function $1ac1b59392edf35b$export$ff497f2be31cc6a(out, a) {
     var translation = new $14f38b7dd89457d7$export$b67359430d3b1b2(3);
     var bx = -a[0], by = -a[1], bz = -a[2], bw = a[3], ax = a[4], ay = a[5], az = a[6], aw = a[7];
-    var magnitude = bx * bx + by * by + bz * bz + bw * bw; //Only scale if it makes sense
+    var magnitude = bx * bx + by * by + bz * bz + bw * bw;
+    //Only scale if it makes sense
     if (magnitude > 0) {
         translation[0] = (ax * bw + aw * bx + ay * bz - az * by) * 2 / magnitude;
         translation[1] = (ay * bw + aw * by + az * bx - ax * bz) * 2 / magnitude;
@@ -7447,9 +7250,9 @@ function $1ac1b59392edf35b$export$71dc54d92bd04b57(out, mat) {
     var m31 = mat[8];
     var m32 = mat[9];
     var m33 = mat[10];
-    out[0] = Math.hypot(m11, m12, m13);
-    out[1] = Math.hypot(m21, m22, m23);
-    out[2] = Math.hypot(m31, m32, m33);
+    out[0] = Math.sqrt(m11 * m11 + m12 * m12 + m13 * m13);
+    out[1] = Math.sqrt(m21 * m21 + m22 * m22 + m23 * m23);
+    out[2] = Math.sqrt(m31 * m31 + m32 * m32 + m33 * m33);
     return out;
 }
 function $1ac1b59392edf35b$export$df3937d3b537df0a(out, mat) {
@@ -7495,6 +7298,63 @@ function $1ac1b59392edf35b$export$df3937d3b537df0a(out, mat) {
         out[2] = 0.25 * S;
     }
     return out;
+}
+function $1ac1b59392edf35b$export$4e06b4a690896b27(out_r, out_t, out_s, mat) {
+    out_t[0] = mat[12];
+    out_t[1] = mat[13];
+    out_t[2] = mat[14];
+    var m11 = mat[0];
+    var m12 = mat[1];
+    var m13 = mat[2];
+    var m21 = mat[4];
+    var m22 = mat[5];
+    var m23 = mat[6];
+    var m31 = mat[8];
+    var m32 = mat[9];
+    var m33 = mat[10];
+    out_s[0] = Math.sqrt(m11 * m11 + m12 * m12 + m13 * m13);
+    out_s[1] = Math.sqrt(m21 * m21 + m22 * m22 + m23 * m23);
+    out_s[2] = Math.sqrt(m31 * m31 + m32 * m32 + m33 * m33);
+    var is1 = 1 / out_s[0];
+    var is2 = 1 / out_s[1];
+    var is3 = 1 / out_s[2];
+    var sm11 = m11 * is1;
+    var sm12 = m12 * is2;
+    var sm13 = m13 * is3;
+    var sm21 = m21 * is1;
+    var sm22 = m22 * is2;
+    var sm23 = m23 * is3;
+    var sm31 = m31 * is1;
+    var sm32 = m32 * is2;
+    var sm33 = m33 * is3;
+    var trace = sm11 + sm22 + sm33;
+    var S = 0;
+    if (trace > 0) {
+        S = Math.sqrt(trace + 1.0) * 2;
+        out_r[3] = 0.25 * S;
+        out_r[0] = (sm23 - sm32) / S;
+        out_r[1] = (sm31 - sm13) / S;
+        out_r[2] = (sm12 - sm21) / S;
+    } else if (sm11 > sm22 && sm11 > sm33) {
+        S = Math.sqrt(1.0 + sm11 - sm22 - sm33) * 2;
+        out_r[3] = (sm23 - sm32) / S;
+        out_r[0] = 0.25 * S;
+        out_r[1] = (sm12 + sm21) / S;
+        out_r[2] = (sm31 + sm13) / S;
+    } else if (sm22 > sm33) {
+        S = Math.sqrt(1.0 + sm22 - sm11 - sm33) * 2;
+        out_r[3] = (sm31 - sm13) / S;
+        out_r[0] = (sm12 + sm21) / S;
+        out_r[1] = 0.25 * S;
+        out_r[2] = (sm23 + sm32) / S;
+    } else {
+        S = Math.sqrt(1.0 + sm33 - sm11 - sm22) * 2;
+        out_r[3] = (sm12 - sm21) / S;
+        out_r[0] = (sm31 + sm13) / S;
+        out_r[1] = (sm23 + sm32) / S;
+        out_r[2] = 0.25 * S;
+    }
+    return out_r;
 }
 function $1ac1b59392edf35b$export$ddf9c55c9f2be172(out, q, v, s) {
     // Quaternion math
@@ -7635,7 +7495,7 @@ function $1ac1b59392edf35b$export$89b5708c387cac6c(out, left, right, bottom, top
     return out;
 }
 function $1ac1b59392edf35b$export$4cf19729ec9a96b8(out, fovy, aspect, near, far) {
-    var f = 1.0 / Math.tan(fovy / 2), nf;
+    var f = 1.0 / Math.tan(fovy / 2);
     out[0] = f / aspect;
     out[1] = 0;
     out[2] = 0;
@@ -7651,7 +7511,7 @@ function $1ac1b59392edf35b$export$4cf19729ec9a96b8(out, fovy, aspect, near, far)
     out[13] = 0;
     out[15] = 0;
     if (far != null && far !== Infinity) {
-        nf = 1 / (near - far);
+        var nf = 1 / (near - far);
         out[10] = (far + near) * nf;
         out[14] = 2 * far * near * nf;
     } else {
@@ -7662,7 +7522,7 @@ function $1ac1b59392edf35b$export$4cf19729ec9a96b8(out, fovy, aspect, near, far)
 }
 var $1ac1b59392edf35b$export$541149539f3a4684 = $1ac1b59392edf35b$export$4cf19729ec9a96b8;
 function $1ac1b59392edf35b$export$294bba99a6af0c0c(out, fovy, aspect, near, far) {
-    var f = 1.0 / Math.tan(fovy / 2), nf;
+    var f = 1.0 / Math.tan(fovy / 2);
     out[0] = f / aspect;
     out[1] = 0;
     out[2] = 0;
@@ -7678,7 +7538,7 @@ function $1ac1b59392edf35b$export$294bba99a6af0c0c(out, fovy, aspect, near, far)
     out[13] = 0;
     out[15] = 0;
     if (far != null && far !== Infinity) {
-        nf = 1 / (near - far);
+        var nf = 1 / (near - far);
         out[10] = far * nf;
         out[14] = far * near * nf;
     } else {
@@ -7772,14 +7632,14 @@ function $1ac1b59392edf35b$export$d924e14fd6d9aa66(out, eye, center, up) {
     z0 = eyex - centerx;
     z1 = eyey - centery;
     z2 = eyez - centerz;
-    len = 1 / Math.hypot(z0, z1, z2);
+    len = 1 / Math.sqrt(z0 * z0 + z1 * z1 + z2 * z2);
     z0 *= len;
     z1 *= len;
     z2 *= len;
     x0 = upy * z2 - upz * z1;
     x1 = upz * z0 - upx * z2;
     x2 = upx * z1 - upy * z0;
-    len = Math.hypot(x0, x1, x2);
+    len = Math.sqrt(x0 * x0 + x1 * x1 + x2 * x2);
     if (!len) {
         x0 = 0;
         x1 = 0;
@@ -7793,7 +7653,7 @@ function $1ac1b59392edf35b$export$d924e14fd6d9aa66(out, eye, center, up) {
     y0 = z1 * x2 - z2 * x1;
     y1 = z2 * x0 - z0 * x2;
     y2 = z0 * x1 - z1 * x0;
-    len = Math.hypot(y0, y1, y2);
+    len = Math.sqrt(y0 * y0 + y1 * y1 + y2 * y2);
     if (!len) {
         y0 = 0;
         y1 = 0;
@@ -7862,7 +7722,7 @@ function $1ac1b59392edf35b$export$42d51816ce590c93(a) {
     return "mat4(" + a[0] + ", " + a[1] + ", " + a[2] + ", " + a[3] + ", " + a[4] + ", " + a[5] + ", " + a[6] + ", " + a[7] + ", " + a[8] + ", " + a[9] + ", " + a[10] + ", " + a[11] + ", " + a[12] + ", " + a[13] + ", " + a[14] + ", " + a[15] + ")";
 }
 function $1ac1b59392edf35b$export$326827e8268e9cdb(a) {
-    return Math.hypot(a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8], a[9], a[10], a[11], a[12], a[13], a[14], a[15]);
+    return Math.sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2] + a[3] * a[3] + a[4] * a[4] + a[5] * a[5] + a[6] * a[6] + a[7] * a[7] + a[8] * a[8] + a[9] * a[9] + a[10] * a[10] + a[11] * a[11] + a[12] * a[12] + a[13] * a[13] + a[14] * a[14] + a[15] * a[15]);
 }
 function $1ac1b59392edf35b$export$e16d8520af44a096(out, a, b) {
     out[0] = a[0] + b[0];
@@ -8152,7 +8012,8 @@ function $ba3ca37806a2b6fa$export$6897c284b6f9f4dc(out, a) {
     var a20 = a[6], a21 = a[7], a22 = a[8];
     var b01 = a22 * a11 - a12 * a21;
     var b11 = -a22 * a10 + a12 * a20;
-    var b21 = a21 * a10 - a11 * a20; // Calculate the determinant
+    var b21 = a21 * a10 - a11 * a20;
+    // Calculate the determinant
     var det = a00 * b01 + a01 * b11 + a02 * b21;
     if (!det) return null;
     det = 1.0 / det;
@@ -8335,7 +8196,8 @@ function $ba3ca37806a2b6fa$export$966b25ab6dc1b1f9(out, a) {
     var b08 = a20 * a33 - a23 * a30;
     var b09 = a21 * a32 - a22 * a31;
     var b10 = a21 * a33 - a23 * a31;
-    var b11 = a22 * a33 - a23 * a32; // Calculate the determinant
+    var b11 = a22 * a33 - a23 * a32;
+    // Calculate the determinant
     var det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
     if (!det) return null;
     det = 1.0 / det;
@@ -8366,7 +8228,7 @@ function $ba3ca37806a2b6fa$export$42d51816ce590c93(a) {
     return "mat3(" + a[0] + ", " + a[1] + ", " + a[2] + ", " + a[3] + ", " + a[4] + ", " + a[5] + ", " + a[6] + ", " + a[7] + ", " + a[8] + ")";
 }
 function $ba3ca37806a2b6fa$export$326827e8268e9cdb(a) {
-    return Math.hypot(a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8]);
+    return Math.sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2] + a[3] * a[3] + a[4] * a[4] + a[5] * a[5] + a[6] * a[6] + a[7] * a[7] + a[8] * a[8]);
 }
 function $ba3ca37806a2b6fa$export$e16d8520af44a096(out, a, b) {
     out[0] = a[0] + b[0];
@@ -8456,6 +8318,7 @@ $parcel$export($31054a6c69637582$exports, "normalize", () => $31054a6c69637582$e
 $parcel$export($31054a6c69637582$exports, "dot", () => $31054a6c69637582$export$94132a0e348806d4);
 $parcel$export($31054a6c69637582$exports, "cross", () => $31054a6c69637582$export$bb646b20bb93d339);
 $parcel$export($31054a6c69637582$exports, "lerp", () => $31054a6c69637582$export$3a89f8d6f6bf6c9f);
+$parcel$export($31054a6c69637582$exports, "slerp", () => $31054a6c69637582$export$1544d9bc2995de08);
 $parcel$export($31054a6c69637582$exports, "hermite", () => $31054a6c69637582$export$ae8865616f30561c);
 $parcel$export($31054a6c69637582$exports, "bezier", () => $31054a6c69637582$export$b9c5f84610baddaf);
 $parcel$export($31054a6c69637582$exports, "random", () => $31054a6c69637582$export$4385e60b38654f68);
@@ -8499,7 +8362,7 @@ function $31054a6c69637582$export$f24224f1c91d8156(a) {
     var x = a[0];
     var y = a[1];
     var z = a[2];
-    return Math.hypot(x, y, z);
+    return Math.sqrt(x * x + y * y + z * z);
 }
 function $31054a6c69637582$export$a82be99ed2a44a7d(x, y, z) {
     var out = new $14f38b7dd89457d7$export$b67359430d3b1b2(3);
@@ -8569,9 +8432,9 @@ function $31054a6c69637582$export$8960430cfd85939f(out, a, b) {
     return out;
 }
 function $31054a6c69637582$export$2077e0241d6afd3c(out, a) {
-    out[0] = Math.round(a[0]);
-    out[1] = Math.round(a[1]);
-    out[2] = Math.round(a[2]);
+    out[0] = $14f38b7dd89457d7$export$2077e0241d6afd3c(a[0]);
+    out[1] = $14f38b7dd89457d7$export$2077e0241d6afd3c(a[1]);
+    out[2] = $14f38b7dd89457d7$export$2077e0241d6afd3c(a[2]);
     return out;
 }
 function $31054a6c69637582$export$dcdf75081b88279d(out, a, b) {
@@ -8590,7 +8453,7 @@ function $31054a6c69637582$export$9f17032d917177de(a, b) {
     var x = b[0] - a[0];
     var y = b[1] - a[1];
     var z = b[2] - a[2];
-    return Math.hypot(x, y, z);
+    return Math.sqrt(x * x + y * y + z * z);
 }
 function $31054a6c69637582$export$88e6ebb4fe54f538(a, b) {
     var x = b[0] - a[0];
@@ -8648,6 +8511,16 @@ function $31054a6c69637582$export$3a89f8d6f6bf6c9f(out, a, b, t) {
     out[2] = az + t * (b[2] - az);
     return out;
 }
+function $31054a6c69637582$export$1544d9bc2995de08(out, a, b, t) {
+    var angle = Math.acos(Math.min(Math.max($31054a6c69637582$export$94132a0e348806d4(a, b), -1), 1));
+    var sinTotal = Math.sin(angle);
+    var ratioA = Math.sin((1 - t) * angle) / sinTotal;
+    var ratioB = Math.sin(t * angle) / sinTotal;
+    out[0] = ratioA * a[0] + ratioB * b[0];
+    out[1] = ratioA * a[1] + ratioB * b[1];
+    out[2] = ratioA * a[2] + ratioB * b[2];
+    return out;
+}
 function $31054a6c69637582$export$ae8865616f30561c(out, a, b, c, d, t) {
     var factorTimes2 = t * t;
     var factor1 = factorTimes2 * (2 * t - 3) + 1;
@@ -8673,7 +8546,7 @@ function $31054a6c69637582$export$b9c5f84610baddaf(out, a, b, c, d, t) {
     return out;
 }
 function $31054a6c69637582$export$4385e60b38654f68(out, scale) {
-    scale = scale || 1.0;
+    scale = scale === undefined ? 1.0 : scale;
     var r = $14f38b7dd89457d7$export$5ada478c8a628231() * 2.0 * Math.PI;
     var z = $14f38b7dd89457d7$export$5ada478c8a628231() * 2.0 - 1.0;
     var zScale = Math.sqrt(1.0 - z * z) * scale;
@@ -8699,65 +8572,74 @@ function $31054a6c69637582$export$f0bfa0a0024626ee(out, a, m) {
     return out;
 }
 function $31054a6c69637582$export$c32adef9e939ce85(out, a, q) {
-    // benchmarks: https://jsperf.com/quaternion-transform-vec3-implementations-fixed
+    // Fast Vector Rotation using Quaternions by Robert Eisele
+    // https://raw.org/proof/vector-rotation-using-quaternions/
     var qx = q[0], qy = q[1], qz = q[2], qw = q[3];
-    var x = a[0], y = a[1], z = a[2]; // var qvec = [qx, qy, qz];
-    // var uv = vec3.cross([], qvec, a);
-    var uvx = qy * z - qz * y, uvy = qz * x - qx * z, uvz = qx * y - qy * x; // var uuv = vec3.cross([], qvec, uv);
-    var uuvx = qy * uvz - qz * uvy, uuvy = qz * uvx - qx * uvz, uuvz = qx * uvy - qy * uvx; // vec3.scale(uv, uv, 2 * w);
-    var w2 = qw * 2;
-    uvx *= w2;
-    uvy *= w2;
-    uvz *= w2; // vec3.scale(uuv, uuv, 2);
-    uuvx *= 2;
-    uuvy *= 2;
-    uuvz *= 2; // return vec3.add(out, a, vec3.add(out, uv, uuv));
-    out[0] = x + uvx + uuvx;
-    out[1] = y + uvy + uuvy;
-    out[2] = z + uvz + uuvz;
+    var vx = a[0], vy = a[1], vz = a[2];
+    // t = q x v
+    var tx = qy * vz - qz * vy;
+    var ty = qz * vx - qx * vz;
+    var tz = qx * vy - qy * vx;
+    // t = 2t
+    tx = tx + tx;
+    ty = ty + ty;
+    tz = tz + tz;
+    // v + w t + q x t
+    out[0] = vx + qw * tx + qy * tz - qz * ty;
+    out[1] = vy + qw * ty + qz * tx - qx * tz;
+    out[2] = vz + qw * tz + qx * ty - qy * tx;
     return out;
 }
 function $31054a6c69637582$export$a59c8716592e09af(out, a, b, rad) {
-    var p = [], r = []; //Translate point to the origin
+    var p = [], r = [];
+    //Translate point to the origin
     p[0] = a[0] - b[0];
     p[1] = a[1] - b[1];
-    p[2] = a[2] - b[2]; //perform rotation
+    p[2] = a[2] - b[2];
+    //perform rotation
     r[0] = p[0];
     r[1] = p[1] * Math.cos(rad) - p[2] * Math.sin(rad);
-    r[2] = p[1] * Math.sin(rad) + p[2] * Math.cos(rad); //translate to correct position
+    r[2] = p[1] * Math.sin(rad) + p[2] * Math.cos(rad);
+    //translate to correct position
     out[0] = r[0] + b[0];
     out[1] = r[1] + b[1];
     out[2] = r[2] + b[2];
     return out;
 }
 function $31054a6c69637582$export$cf71e4d4ca4d1cfd(out, a, b, rad) {
-    var p = [], r = []; //Translate point to the origin
+    var p = [], r = [];
+    //Translate point to the origin
     p[0] = a[0] - b[0];
     p[1] = a[1] - b[1];
-    p[2] = a[2] - b[2]; //perform rotation
+    p[2] = a[2] - b[2];
+    //perform rotation
     r[0] = p[2] * Math.sin(rad) + p[0] * Math.cos(rad);
     r[1] = p[1];
-    r[2] = p[2] * Math.cos(rad) - p[0] * Math.sin(rad); //translate to correct position
+    r[2] = p[2] * Math.cos(rad) - p[0] * Math.sin(rad);
+    //translate to correct position
     out[0] = r[0] + b[0];
     out[1] = r[1] + b[1];
     out[2] = r[2] + b[2];
     return out;
 }
 function $31054a6c69637582$export$ea6eae3365de5b9c(out, a, b, rad) {
-    var p = [], r = []; //Translate point to the origin
+    var p = [], r = [];
+    //Translate point to the origin
     p[0] = a[0] - b[0];
     p[1] = a[1] - b[1];
-    p[2] = a[2] - b[2]; //perform rotation
+    p[2] = a[2] - b[2];
+    //perform rotation
     r[0] = p[0] * Math.cos(rad) - p[1] * Math.sin(rad);
     r[1] = p[0] * Math.sin(rad) + p[1] * Math.cos(rad);
-    r[2] = p[2]; //translate to correct position
+    r[2] = p[2];
+    //translate to correct position
     out[0] = r[0] + b[0];
     out[1] = r[1] + b[1];
     out[2] = r[2] + b[2];
     return out;
 }
 function $31054a6c69637582$export$944b09d2ad10b378(a, b) {
-    var ax = a[0], ay = a[1], az = a[2], bx = b[0], by = b[1], bz = b[2], mag1 = Math.sqrt(ax * ax + ay * ay + az * az), mag2 = Math.sqrt(bx * bx + by * by + bz * bz), mag = mag1 * mag2, cosine = mag && $31054a6c69637582$export$94132a0e348806d4(a, b) / mag;
+    var ax = a[0], ay = a[1], az = a[2], bx = b[0], by = b[1], bz = b[2], mag = Math.sqrt((ax * ax + ay * ay + az * az) * (bx * bx + by * by + bz * bz)), cosine = mag && $31054a6c69637582$export$94132a0e348806d4(a, b) / mag;
     return Math.acos(Math.min(Math.max(cosine, -1), 1));
 }
 function $31054a6c69637582$export$7f9972325ebfd559(out) {
@@ -8947,10 +8829,10 @@ function $4c4ac78b213a9c07$export$8960430cfd85939f(out, a, b) {
     return out;
 }
 function $4c4ac78b213a9c07$export$2077e0241d6afd3c(out, a) {
-    out[0] = Math.round(a[0]);
-    out[1] = Math.round(a[1]);
-    out[2] = Math.round(a[2]);
-    out[3] = Math.round(a[3]);
+    out[0] = $14f38b7dd89457d7$export$2077e0241d6afd3c(a[0]);
+    out[1] = $14f38b7dd89457d7$export$2077e0241d6afd3c(a[1]);
+    out[2] = $14f38b7dd89457d7$export$2077e0241d6afd3c(a[2]);
+    out[3] = $14f38b7dd89457d7$export$2077e0241d6afd3c(a[3]);
     return out;
 }
 function $4c4ac78b213a9c07$export$dcdf75081b88279d(out, a, b) {
@@ -8972,7 +8854,7 @@ function $4c4ac78b213a9c07$export$9f17032d917177de(a, b) {
     var y = b[1] - a[1];
     var z = b[2] - a[2];
     var w = b[3] - a[3];
-    return Math.hypot(x, y, z, w);
+    return Math.sqrt(x * x + y * y + z * z + w * w);
 }
 function $4c4ac78b213a9c07$export$88e6ebb4fe54f538(a, b) {
     var x = b[0] - a[0];
@@ -8986,7 +8868,7 @@ function $4c4ac78b213a9c07$export$f24224f1c91d8156(a) {
     var y = a[1];
     var z = a[2];
     var w = a[3];
-    return Math.hypot(x, y, z, w);
+    return Math.sqrt(x * x + y * y + z * z + w * w);
 }
 function $4c4ac78b213a9c07$export$ab44e1323ffc8376(a) {
     var x = a[0];
@@ -9049,21 +8931,21 @@ function $4c4ac78b213a9c07$export$3a89f8d6f6bf6c9f(out, a, b, t) {
     return out;
 }
 function $4c4ac78b213a9c07$export$4385e60b38654f68(out, scale) {
-    scale = scale || 1.0; // Marsaglia, George. Choosing a Point from the Surface of a
+    scale = scale === undefined ? 1.0 : scale;
+    // Marsaglia, George. Choosing a Point from the Surface of a
     // Sphere. Ann. Math. Statist. 43 (1972), no. 2, 645--646.
     // http://projecteuclid.org/euclid.aoms/1177692644;
     var v1, v2, v3, v4;
     var s1, s2;
-    do {
-        v1 = $14f38b7dd89457d7$export$5ada478c8a628231() * 2 - 1;
-        v2 = $14f38b7dd89457d7$export$5ada478c8a628231() * 2 - 1;
-        s1 = v1 * v1 + v2 * v2;
-    }while (s1 >= 1);
-    do {
-        v3 = $14f38b7dd89457d7$export$5ada478c8a628231() * 2 - 1;
-        v4 = $14f38b7dd89457d7$export$5ada478c8a628231() * 2 - 1;
-        s2 = v3 * v3 + v4 * v4;
-    }while (s2 >= 1);
+    var rand;
+    rand = $14f38b7dd89457d7$export$5ada478c8a628231();
+    v1 = rand * 2 - 1;
+    v2 = (4 * $14f38b7dd89457d7$export$5ada478c8a628231() - 2) * Math.sqrt(rand * -rand + rand);
+    s1 = v1 * v1 + v2 * v2;
+    rand = $14f38b7dd89457d7$export$5ada478c8a628231();
+    v3 = rand * 2 - 1;
+    v4 = (4 * $14f38b7dd89457d7$export$5ada478c8a628231() - 2) * Math.sqrt(rand * -rand + rand);
+    s2 = v3 * v3 + v4 * v4;
     var d = Math.sqrt((1 - s1) / s2);
     out[0] = scale * v1;
     out[1] = scale * v2;
@@ -9080,15 +8962,22 @@ function $4c4ac78b213a9c07$export$5ffbd13800309d59(out, a, m) {
     return out;
 }
 function $4c4ac78b213a9c07$export$c32adef9e939ce85(out, a, q) {
-    var x = a[0], y = a[1], z = a[2];
-    var qx = q[0], qy = q[1], qz = q[2], qw = q[3]; // calculate quat * vec
-    var ix = qw * x + qy * z - qz * y;
-    var iy = qw * y + qz * x - qx * z;
-    var iz = qw * z + qx * y - qy * x;
-    var iw = -qx * x - qy * y - qz * z; // calculate result * inverse quat
-    out[0] = ix * qw + iw * -qx + iy * -qz - iz * -qy;
-    out[1] = iy * qw + iw * -qy + iz * -qx - ix * -qz;
-    out[2] = iz * qw + iw * -qz + ix * -qy - iy * -qx;
+    // Fast Vector Rotation using Quaternions by Robert Eisele
+    // https://raw.org/proof/vector-rotation-using-quaternions/
+    var qx = q[0], qy = q[1], qz = q[2], qw = q[3];
+    var vx = a[0], vy = a[1], vz = a[2];
+    // t = q x v
+    var tx = qy * vz - qz * vy;
+    var ty = qz * vx - qx * vz;
+    var tz = qx * vy - qy * vx;
+    // t = 2t
+    tx = tx + tx;
+    ty = ty + ty;
+    tz = tz + tz;
+    // v + w t + q x t
+    out[0] = vx + qw * tx + qy * tz - qz * ty;
+    out[1] = vy + qw * ty + qz * tx - qx * tz;
+    out[2] = vz + qw * tz + qx * ty - qy * tx;
     out[3] = a[3];
     return out;
 }
@@ -9265,15 +9154,18 @@ function $39ece26d1239bb77$export$1544d9bc2995de08(out, a, b, t) {
     //    http://jsperf.com/quaternion-slerp-implementations
     var ax = a[0], ay = a[1], az = a[2], aw = a[3];
     var bx = b[0], by = b[1], bz = b[2], bw = b[3];
-    var omega, cosom, sinom, scale0, scale1; // calc cosine
-    cosom = ax * bx + ay * by + az * bz + aw * bw; // adjust signs (if necessary)
+    var omega, cosom, sinom, scale0, scale1;
+    // calc cosine
+    cosom = ax * bx + ay * by + az * bz + aw * bw;
+    // adjust signs (if necessary)
     if (cosom < 0.0) {
         cosom = -cosom;
         bx = -bx;
         by = -by;
         bz = -bz;
         bw = -bw;
-    } // calculate coefficients
+    }
+    // calculate coefficients
     if (1.0 - cosom > $14f38b7dd89457d7$export$fd293b15f47e270) {
         // standard case (slerp)
         omega = Math.acos(cosom);
@@ -9285,7 +9177,8 @@ function $39ece26d1239bb77$export$1544d9bc2995de08(out, a, b, t) {
         //  ... so we can do a linear interpolation
         scale0 = 1.0 - t;
         scale1 = t;
-    } // calculate final values
+    }
+    // calculate final values
     out[0] = scale0 * ax + scale1 * bx;
     out[1] = scale0 * ay + scale1 * by;
     out[2] = scale0 * az + scale1 * bz;
@@ -9309,7 +9202,8 @@ function $39ece26d1239bb77$export$4385e60b38654f68(out) {
 function $39ece26d1239bb77$export$6897c284b6f9f4dc(out, a) {
     var a0 = a[0], a1 = a[1], a2 = a[2], a3 = a[3];
     var dot = a0 * a0 + a1 * a1 + a2 * a2 + a3 * a3;
-    var invDot = dot ? 1.0 / dot : 0; // TODO: Would be faster to return [0,0,0,0] immediately if dot == 0
+    var invDot = dot ? 1.0 / dot : 0;
+    // TODO: Would be faster to return [0,0,0,0] immediately if dot == 0
     out[0] = -a0 * invDot;
     out[1] = -a1 * invDot;
     out[2] = -a2 * invDot;
@@ -9353,20 +9247,57 @@ function $39ece26d1239bb77$export$272a1eb8e5a4b55b(out, m) {
     return out;
 }
 function $39ece26d1239bb77$export$7a404a587ea85af(out, x, y, z) {
-    var halfToRad = 0.5 * Math.PI / 180.0;
+    var order = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : $14f38b7dd89457d7$export$217057687ee20298;
+    var halfToRad = Math.PI / 360;
     x *= halfToRad;
-    y *= halfToRad;
     z *= halfToRad;
+    y *= halfToRad;
     var sx = Math.sin(x);
     var cx = Math.cos(x);
     var sy = Math.sin(y);
     var cy = Math.cos(y);
     var sz = Math.sin(z);
     var cz = Math.cos(z);
-    out[0] = sx * cy * cz - cx * sy * sz;
-    out[1] = cx * sy * cz + sx * cy * sz;
-    out[2] = cx * cy * sz - sx * sy * cz;
-    out[3] = cx * cy * cz + sx * sy * sz;
+    switch(order){
+        case "xyz":
+            out[0] = sx * cy * cz + cx * sy * sz;
+            out[1] = cx * sy * cz - sx * cy * sz;
+            out[2] = cx * cy * sz + sx * sy * cz;
+            out[3] = cx * cy * cz - sx * sy * sz;
+            break;
+        case "xzy":
+            out[0] = sx * cy * cz - cx * sy * sz;
+            out[1] = cx * sy * cz - sx * cy * sz;
+            out[2] = cx * cy * sz + sx * sy * cz;
+            out[3] = cx * cy * cz + sx * sy * sz;
+            break;
+        case "yxz":
+            out[0] = sx * cy * cz + cx * sy * sz;
+            out[1] = cx * sy * cz - sx * cy * sz;
+            out[2] = cx * cy * sz - sx * sy * cz;
+            out[3] = cx * cy * cz + sx * sy * sz;
+            break;
+        case "yzx":
+            out[0] = sx * cy * cz + cx * sy * sz;
+            out[1] = cx * sy * cz + sx * cy * sz;
+            out[2] = cx * cy * sz - sx * sy * cz;
+            out[3] = cx * cy * cz - sx * sy * sz;
+            break;
+        case "zxy":
+            out[0] = sx * cy * cz - cx * sy * sz;
+            out[1] = cx * sy * cz + sx * cy * sz;
+            out[2] = cx * cy * sz + sx * sy * cz;
+            out[3] = cx * cy * cz - sx * sy * sz;
+            break;
+        case "zyx":
+            out[0] = sx * cy * cz - cx * sy * sz;
+            out[1] = cx * sy * cz + sx * cy * sz;
+            out[2] = cx * cy * sz - sx * sy * cz;
+            out[3] = cx * cy * cz + sx * sy * sz;
+            break;
+        default:
+            throw new Error('Unknown angle order ' + order);
+    }
     return out;
 }
 function $39ece26d1239bb77$export$42d51816ce590c93(a) {
@@ -9387,7 +9318,9 @@ var $39ece26d1239bb77$export$ab44e1323ffc8376 = $4c4ac78b213a9c07$export$ab44e13
 var $39ece26d1239bb77$export$99d8dd3f32a3435 = $39ece26d1239bb77$export$ab44e1323ffc8376;
 var $39ece26d1239bb77$export$a3295358bff77e = $4c4ac78b213a9c07$export$a3295358bff77e;
 var $39ece26d1239bb77$export$f2599a5cf1109d8 = $4c4ac78b213a9c07$export$f2599a5cf1109d8;
-var $39ece26d1239bb77$export$e9bab7fafb253603 = $4c4ac78b213a9c07$export$e9bab7fafb253603;
+function $39ece26d1239bb77$export$e9bab7fafb253603(a, b) {
+    return Math.abs($4c4ac78b213a9c07$export$94132a0e348806d4(a, b)) >= 1 - $14f38b7dd89457d7$export$fd293b15f47e270;
+}
 var $39ece26d1239bb77$export$72d66f5842c00904 = function() {
     var tmpvec3 = $31054a6c69637582$export$185802fd694ee1f5();
     var xUnitVec3 = $31054a6c69637582$export$a82be99ed2a44a7d(1, 0, 0);
@@ -9485,6 +9418,7 @@ $parcel$export($91b0cc4981465964$exports, "transformMat3", () => $91b0cc49814659
 $parcel$export($91b0cc4981465964$exports, "transformMat4", () => $91b0cc4981465964$export$5ffbd13800309d59);
 $parcel$export($91b0cc4981465964$exports, "rotate", () => $91b0cc4981465964$export$bb628a54ab399bc9);
 $parcel$export($91b0cc4981465964$exports, "angle", () => $91b0cc4981465964$export$944b09d2ad10b378);
+$parcel$export($91b0cc4981465964$exports, "signedAngle", () => $91b0cc4981465964$export$2c039ab0034c6824);
 $parcel$export($91b0cc4981465964$exports, "zero", () => $91b0cc4981465964$export$7f9972325ebfd559);
 $parcel$export($91b0cc4981465964$exports, "str", () => $91b0cc4981465964$export$42d51816ce590c93);
 $parcel$export($91b0cc4981465964$exports, "exactEquals", () => $91b0cc4981465964$export$f2599a5cf1109d8);
@@ -9569,8 +9503,8 @@ function $91b0cc4981465964$export$8960430cfd85939f(out, a, b) {
     return out;
 }
 function $91b0cc4981465964$export$2077e0241d6afd3c(out, a) {
-    out[0] = Math.round(a[0]);
-    out[1] = Math.round(a[1]);
+    out[0] = $14f38b7dd89457d7$export$2077e0241d6afd3c(a[0]);
+    out[1] = $14f38b7dd89457d7$export$2077e0241d6afd3c(a[1]);
     return out;
 }
 function $91b0cc4981465964$export$dcdf75081b88279d(out, a, b) {
@@ -9585,7 +9519,7 @@ function $91b0cc4981465964$export$19cedf1da84ba854(out, a, b, scale) {
 }
 function $91b0cc4981465964$export$9f17032d917177de(a, b) {
     var x = b[0] - a[0], y = b[1] - a[1];
-    return Math.hypot(x, y);
+    return Math.sqrt(x * x + y * y);
 }
 function $91b0cc4981465964$export$88e6ebb4fe54f538(a, b) {
     var x = b[0] - a[0], y = b[1] - a[1];
@@ -9593,7 +9527,7 @@ function $91b0cc4981465964$export$88e6ebb4fe54f538(a, b) {
 }
 function $91b0cc4981465964$export$f24224f1c91d8156(a) {
     var x = a[0], y = a[1];
-    return Math.hypot(x, y);
+    return Math.sqrt(x * x + y * y);
 }
 function $91b0cc4981465964$export$ab44e1323ffc8376(a) {
     var x = a[0], y = a[1];
@@ -9634,7 +9568,7 @@ function $91b0cc4981465964$export$3a89f8d6f6bf6c9f(out, a, b, t) {
     return out;
 }
 function $91b0cc4981465964$export$4385e60b38654f68(out, scale) {
-    scale = scale || 1.0;
+    scale = scale === undefined ? 1.0 : scale;
     var r = $14f38b7dd89457d7$export$5ada478c8a628231() * 2.0 * Math.PI;
     out[0] = Math.cos(r) * scale;
     out[1] = Math.sin(r) * scale;
@@ -9667,16 +9601,19 @@ function $91b0cc4981465964$export$5ffbd13800309d59(out, a, m) {
 }
 function $91b0cc4981465964$export$bb628a54ab399bc9(out, a, b, rad) {
     //Translate point to the origin
-    var p0 = a[0] - b[0], p1 = a[1] - b[1], sinC = Math.sin(rad), cosC = Math.cos(rad); //perform rotation and translate to correct position
+    var p0 = a[0] - b[0], p1 = a[1] - b[1], sinC = Math.sin(rad), cosC = Math.cos(rad);
+    //perform rotation and translate to correct position
     out[0] = p0 * cosC - p1 * sinC + b[0];
     out[1] = p0 * sinC + p1 * cosC + b[1];
     return out;
 }
 function $91b0cc4981465964$export$944b09d2ad10b378(a, b) {
-    var x1 = a[0], y1 = a[1], x2 = b[0], y2 = b[1], // mag is the product of the magnitudes of a and b
-    mag = Math.sqrt(x1 * x1 + y1 * y1) * Math.sqrt(x2 * x2 + y2 * y2), // mag &&.. short circuits if mag == 0
-    cosine = mag && (x1 * x2 + y1 * y2) / mag; // Math.min(Math.max(cosine, -1), 1) clamps the cosine between -1 and 1
-    return Math.acos(Math.min(Math.max(cosine, -1), 1));
+    var ax = a[0], ay = a[1], bx = b[0], by = b[1];
+    return Math.abs(Math.atan2(ay * bx - ax * by, ax * bx + ay * by));
+}
+function $91b0cc4981465964$export$2c039ab0034c6824(a, b) {
+    var ax = a[0], ay = a[1], bx = b[0], by = b[1];
+    return Math.atan2(ax * by - ay * bx, ax * bx + ay * by);
 }
 function $91b0cc4981465964$export$7f9972325ebfd559(out) {
     out[0] = 0.0;
@@ -10330,6 +10267,7 @@ class $3c8e74dd6c09e751$export$29cd7b75162a9425 {
         this.isTransitionPickingEnabled = false;
         this.backgroundColor = (0, $4c4ac78b213a9c07$exports).create();
         this.theme = (0, $4a6417d29706362f$export$14faa19a0f3bbeb2).light;
+        this.ambientColor = (0, $31054a6c69637582$exports).create();
         this.renderMode = (0, $4a6417d29706362f$export$2386c8c1d9db2d57).color;
         this.tilesX = 1;
         this.tilesY = 1;
@@ -10485,6 +10423,8 @@ const $548ced3eab978a8c$export$de37189af674e8e1 = {
     redyellowgreen: "redyellowgreen",
     spectral: "spectral",
     accent: "accent",
+    category10: "category10",
+    category20: "category20",
     dark2: "dark2",
     paired: "paired",
     pastel1: "pastel1",
@@ -11571,6 +11511,106 @@ class $548ced3eab978a8c$export$35624e624bb61356 {
                     102
                 ])
             },
+            "category10": {
+                type: $548ced3eab978a8c$export$8f5ef0b663dcd813.qualitative,
+                colors: new Uint8Array([
+                    31,
+                    119,
+                    180,
+                    255,
+                    127,
+                    14,
+                    44,
+                    160,
+                    44,
+                    214,
+                    39,
+                    40,
+                    148,
+                    103,
+                    189,
+                    140,
+                    86,
+                    75,
+                    227,
+                    119,
+                    194,
+                    127,
+                    127,
+                    127,
+                    188,
+                    189,
+                    34,
+                    23,
+                    190,
+                    207
+                ])
+            },
+            "category20": {
+                type: $548ced3eab978a8c$export$8f5ef0b663dcd813.qualitative,
+                colors: new Uint8Array([
+                    31,
+                    119,
+                    180,
+                    174,
+                    199,
+                    232,
+                    255,
+                    127,
+                    14,
+                    255,
+                    187,
+                    120,
+                    44,
+                    160,
+                    44,
+                    152,
+                    223,
+                    138,
+                    214,
+                    39,
+                    40,
+                    255,
+                    152,
+                    150,
+                    148,
+                    103,
+                    189,
+                    197,
+                    176,
+                    213,
+                    140,
+                    86,
+                    75,
+                    196,
+                    156,
+                    148,
+                    227,
+                    119,
+                    194,
+                    247,
+                    182,
+                    210,
+                    127,
+                    127,
+                    127,
+                    199,
+                    199,
+                    199,
+                    188,
+                    189,
+                    34,
+                    219,
+                    219,
+                    141,
+                    23,
+                    190,
+                    207,
+                    158,
+                    218,
+                    229
+                ])
+            },
             "dark2": {
                 type: $548ced3eab978a8c$export$8f5ef0b663dcd813.qualitative,
                 colors: new Uint8Array([
@@ -12292,8 +12332,98 @@ class $0a0587bd8b0d58e8$export$849e31d725692576 {
     static copySdfBorder(fromBufferView, fromIndex, toBufferView, toIndex) {
         toBufferView.setUint8($0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * toIndex + this.SDF_BORDER_OFFSET_BYTES, fromBufferView.getUint8($0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * fromIndex + this.SDF_BORDER_OFFSET_BYTES));
     }
+    static getMatId(bufferView, index) {
+        return bufferView.getUint8($0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * index + this.MAT_TYPE_OFFSET_BYTES);
+    }
+    static setMatId(bufferView, index, value) {
+        bufferView.setUint8($0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * index + this.MAT_TYPE_OFFSET_BYTES, value);
+    }
+    static copyMatId(fromBufferView, fromIndex, toBufferView, toIndex) {
+        toBufferView.setUint8($0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * toIndex + this.MAT_TYPE_OFFSET_BYTES, fromBufferView.getUint8($0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * fromIndex + this.MAT_TYPE_OFFSET_BYTES));
+    }
+    static getMatColor(bufferView, index, value) {
+        const offset = $0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * index + this.MAT_COLOR_OFFSET_BYTES;
+        value[0] = bufferView.getUint16(offset) / 0xFF;
+        value[1] = bufferView.getUint16(offset + 2) / 0xFF;
+        value[2] = bufferView.getUint16(offset + 4) / 0xFF;
+    }
+    static setMatColor(bufferView, index, value) {
+        const offset = $0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * index + this.MAT_COLOR_OFFSET_BYTES;
+        bufferView.setUint16(offset, value[0] * 0xFF);
+        bufferView.setUint16(offset + 2, value[1] * 0xFF);
+        bufferView.setUint16(offset + 4, value[2] * 0xFF);
+    }
+    static copyMatColor(fromBufferView, fromIndex, toBufferView, toIndex) {
+        const fromOffset = $0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * fromIndex + this.MAT_COLOR_OFFSET_BYTES;
+        const toOffset = $0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * toIndex + this.MAT_COLOR_OFFSET_BYTES;
+        toBufferView.setUint16(toOffset, fromBufferView.getUint16(fromOffset));
+        toBufferView.setUint16(toOffset + 2, fromBufferView.getUint16(fromOffset + 2));
+        toBufferView.setUint16(toOffset + 4, fromBufferView.getUint16(fromOffset + 4));
+    }
+    static getMatFuzz(bufferView, index) {
+        const offset = $0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * index + this.MAT_FUZZ_OFFSET_BYTES;
+        return bufferView.getUint8(offset) / 0xFF;
+    }
+    static setMatFuzz(bufferView, index, value) {
+        const offset = $0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * index + this.MAT_FUZZ_OFFSET_BYTES;
+        bufferView.setUint8(offset, value * 0xFF);
+    }
+    static copyMatFuzz(fromBufferView, fromIndex, toBufferView, toIndex) {
+        toBufferView.setUint8($0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * toIndex + this.MAT_FUZZ_OFFSET_BYTES, fromBufferView.getUint8($0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * fromIndex + this.MAT_FUZZ_OFFSET_BYTES));
+    }
+    static getMatGloss(bufferView, index) {
+        const offset = $0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * index + this.MAT_GLOSS_OFFSET_BYTES;
+        return bufferView.getUint8(offset) / 0xFF;
+    }
+    static setMatGloss(bufferView, index, value) {
+        const offset = $0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * index + this.MAT_GLOSS_OFFSET_BYTES;
+        bufferView.setUint8(offset, value * 0xFF);
+    }
+    static copyMatGloss(fromBufferView, fromIndex, toBufferView, toIndex) {
+        toBufferView.setUint8($0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * toIndex + this.MAT_GLOSS_OFFSET_BYTES, fromBufferView.getUint8($0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * fromIndex + this.MAT_GLOSS_OFFSET_BYTES));
+    }
+    static getMatDensity(bufferView, index) {
+        return bufferView.getFloat32($0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * index + this.MAT_DENSITY_OFFSET_BYTES, true);
+    }
+    static setMatDensity(bufferView, index, value) {
+        bufferView.setFloat32($0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * index + this.MAT_DENSITY_OFFSET_BYTES, value, true);
+    }
+    static copyMatDensity(fromBufferView, fromIndex, toBufferView, toIndex) {
+        toBufferView.setFloat32($0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * toIndex + this.MAT_DENSITY_OFFSET_BYTES, fromBufferView.getFloat32($0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * fromIndex + this.MAT_DENSITY_OFFSET_BYTES, true), true);
+    }
+    static getMatRefractiveIndex(bufferView, index) {
+        return bufferView.getFloat32($0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * index + this.MAT_REFRACTIVE_INDEX_OFFSET_BYTES, true);
+    }
+    static setMatRefractiveIndex(bufferView, index, value) {
+        bufferView.setFloat32($0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * index + this.MAT_REFRACTIVE_INDEX_OFFSET_BYTES, value, true);
+    }
+    static copyMatRefractiveIndex(fromBufferView, fromIndex, toBufferView, toIndex) {
+        toBufferView.setFloat32($0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * toIndex + this.MAT_REFRACTIVE_INDEX_OFFSET_BYTES, fromBufferView.getFloat32($0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * fromIndex + this.MAT_REFRACTIVE_INDEX_OFFSET_BYTES, true), true);
+    }
+    static getSegColor(bufferView, index, value) {
+        const offset = $0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * index + this.SEG_COLOR_OFFSET_BYTES;
+        value[0] = bufferView.getUint8(offset) / 0xFF;
+        value[1] = bufferView.getUint8(offset + 1) / 0xFF;
+        value[2] = bufferView.getUint8(offset + 2) / 0xFF;
+        value[3] = bufferView.getUint8(offset + 3) / 0xFF;
+    }
+    static setSegColor(bufferView, index, value) {
+        const offset = $0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * index + this.SEG_COLOR_OFFSET_BYTES;
+        bufferView.setUint8(offset, value[0] * 0xFF);
+        bufferView.setUint8(offset + 1, value[1] * 0xFF);
+        bufferView.setUint8(offset + 2, value[2] * 0xFF);
+        bufferView.setUint8(offset + 3, value[3] * 0xFF);
+    }
+    static copySegColor(fromBufferView, fromIndex, toBufferView, toIndex) {
+        const fromOffset = $0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * fromIndex + this.SEG_COLOR_OFFSET_BYTES;
+        const toOffset = $0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES * toIndex + this.SEG_COLOR_OFFSET_BYTES;
+        toBufferView.setUint8(toOffset, fromBufferView.getUint8(fromOffset));
+        toBufferView.setUint8(toOffset + 1, fromBufferView.getUint8(fromOffset + 1));
+        toBufferView.setUint8(toOffset + 2, fromBufferView.getUint8(fromOffset + 2));
+        toBufferView.setUint8(toOffset + 3, fromBufferView.getUint8(fromOffset + 3));
+    }
 }
-$0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES = 92;
+$0a0587bd8b0d58e8$export$849e31d725692576.SIZE_BYTES = 120;
 $0a0587bd8b0d58e8$export$849e31d725692576.ID_HOVER_OFFSET_BYTES = 0;
 $0a0587bd8b0d58e8$export$849e31d725692576.ID_COLOR_OFFSET_BYTES = 4;
 $0a0587bd8b0d58e8$export$849e31d725692576.ORDER_OFFSET_BYTES = 8;
@@ -12311,6 +12441,13 @@ $0a0587bd8b0d58e8$export$849e31d725692576.SDF_BUFFER_OFFSET_BYTES = 82;
 $0a0587bd8b0d58e8$export$849e31d725692576.SDF_BORDER_OFFSET_BYTES = 83;
 $0a0587bd8b0d58e8$export$849e31d725692576.PARAMETER_1_OFFSET_BYTES = 84;
 $0a0587bd8b0d58e8$export$849e31d725692576.PARAMETER_2_OFFSET_BYTES = 88;
+$0a0587bd8b0d58e8$export$849e31d725692576.MAT_TYPE_OFFSET_BYTES = 92;
+$0a0587bd8b0d58e8$export$849e31d725692576.MAT_COLOR_OFFSET_BYTES = 112;
+$0a0587bd8b0d58e8$export$849e31d725692576.MAT_FUZZ_OFFSET_BYTES = 96;
+$0a0587bd8b0d58e8$export$849e31d725692576.MAT_GLOSS_OFFSET_BYTES = 97;
+$0a0587bd8b0d58e8$export$849e31d725692576.MAT_DENSITY_OFFSET_BYTES = 100;
+$0a0587bd8b0d58e8$export$849e31d725692576.MAT_REFRACTIVE_INDEX_OFFSET_BYTES = 104;
+$0a0587bd8b0d58e8$export$849e31d725692576.SEG_COLOR_OFFSET_BYTES = 108;
 
 
 class $636d0ad960a10a23$export$fac54d16266765a9 {
@@ -17357,7 +17494,8 @@ const $4a6417d29706362f$export$80d48287646c9e3b = {
     hexPrismSdf: "hexPrismSdf",
     sdf: "sdf",
     disk: "disk",
-    ringSdf: "ringSdf"
+    ringSdf: "ringSdf",
+    tubeSdf: "tubeSdf"
 };
 const $4a6417d29706362f$export$226dc1249c607930 = {
     none: "none",
@@ -17429,158 +17567,755 @@ const $4a6417d29706362f$export$2386c8c1d9db2d57 = {
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
- */ 
-class $42b018e85c350e4a$export$c537fa0d021d010b {
+ */ class $42b018e85c350e4a$export$6e15e29aac2b1db8 {
 }
-$42b018e85c350e4a$export$c537fa0d021d010b.MediumVioletRed = (0, $31054a6c69637582$exports).fromValues(0xc7, 0x15, 0x85);
-$42b018e85c350e4a$export$c537fa0d021d010b.DeepPink = (0, $31054a6c69637582$exports).fromValues(0xff, 0x14, 0x93);
-$42b018e85c350e4a$export$c537fa0d021d010b.PaleVioletRed = (0, $31054a6c69637582$exports).fromValues(0xdb, 0x70, 0x93);
-$42b018e85c350e4a$export$c537fa0d021d010b.HotPink = (0, $31054a6c69637582$exports).fromValues(0xff, 0x69, 0xb4);
-$42b018e85c350e4a$export$c537fa0d021d010b.LightPink = (0, $31054a6c69637582$exports).fromValues(0xff, 0xb6, 0xc1);
-$42b018e85c350e4a$export$c537fa0d021d010b.Pink = (0, $31054a6c69637582$exports).fromValues(0xff, 0xc0, 0xcb);
-$42b018e85c350e4a$export$c537fa0d021d010b.DarkRed = (0, $31054a6c69637582$exports).fromValues(0x8b, 0x00, 0x00);
-$42b018e85c350e4a$export$c537fa0d021d010b.Red = (0, $31054a6c69637582$exports).fromValues(0xff, 0x00, 0x00);
-$42b018e85c350e4a$export$c537fa0d021d010b.Firebrick = (0, $31054a6c69637582$exports).fromValues(0xb2, 0x22, 0x22);
-$42b018e85c350e4a$export$c537fa0d021d010b.Crimson = (0, $31054a6c69637582$exports).fromValues(0xdc, 0x14, 0x3c);
-$42b018e85c350e4a$export$c537fa0d021d010b.IndianRed = (0, $31054a6c69637582$exports).fromValues(0xcd, 0x5c, 0x5c);
-$42b018e85c350e4a$export$c537fa0d021d010b.LightCoral = (0, $31054a6c69637582$exports).fromValues(0xf0, 0x80, 0x80);
-$42b018e85c350e4a$export$c537fa0d021d010b.Salmon = (0, $31054a6c69637582$exports).fromValues(0xfa, 0x80, 0x72);
-$42b018e85c350e4a$export$c537fa0d021d010b.DarkSalmon = (0, $31054a6c69637582$exports).fromValues(0xe9, 0x96, 0x7a);
-$42b018e85c350e4a$export$c537fa0d021d010b.LightSalmon = (0, $31054a6c69637582$exports).fromValues(0xff, 0xa0, 0x7a);
-$42b018e85c350e4a$export$c537fa0d021d010b.OrangeRed = (0, $31054a6c69637582$exports).fromValues(0xff, 0x45, 0x00);
-$42b018e85c350e4a$export$c537fa0d021d010b.Tomato = (0, $31054a6c69637582$exports).fromValues(0xff, 0x63, 0x47);
-$42b018e85c350e4a$export$c537fa0d021d010b.DarkOrange = (0, $31054a6c69637582$exports).fromValues(0xff, 0x8c, 0x00);
-$42b018e85c350e4a$export$c537fa0d021d010b.Coral = (0, $31054a6c69637582$exports).fromValues(0xff, 0x7f, 0x50);
-$42b018e85c350e4a$export$c537fa0d021d010b.Orange = (0, $31054a6c69637582$exports).fromValues(0xff, 0xa5, 0x00);
-$42b018e85c350e4a$export$c537fa0d021d010b.DarkKhaki = (0, $31054a6c69637582$exports).fromValues(0xbd, 0xb7, 0x6b);
-$42b018e85c350e4a$export$c537fa0d021d010b.Gold = (0, $31054a6c69637582$exports).fromValues(0xff, 0xd7, 0x00);
-$42b018e85c350e4a$export$c537fa0d021d010b.Khaki = (0, $31054a6c69637582$exports).fromValues(0xf0, 0xe6, 0x8c);
-$42b018e85c350e4a$export$c537fa0d021d010b.PeachPuff = (0, $31054a6c69637582$exports).fromValues(0xff, 0xda, 0xb9);
-$42b018e85c350e4a$export$c537fa0d021d010b.Yellow = (0, $31054a6c69637582$exports).fromValues(0xff, 0xff, 0x00);
-$42b018e85c350e4a$export$c537fa0d021d010b.PaleGoldenrod = (0, $31054a6c69637582$exports).fromValues(0xee, 0xe8, 0xaa);
-$42b018e85c350e4a$export$c537fa0d021d010b.Moccasin = (0, $31054a6c69637582$exports).fromValues(0xff, 0xe4, 0xb5);
-$42b018e85c350e4a$export$c537fa0d021d010b.PapayaWhip = (0, $31054a6c69637582$exports).fromValues(0xff, 0xef, 0xd5);
-$42b018e85c350e4a$export$c537fa0d021d010b.LightGoldenrodYellow = (0, $31054a6c69637582$exports).fromValues(0xfa, 0xfa, 0xd2);
-$42b018e85c350e4a$export$c537fa0d021d010b.LemonChiffon = (0, $31054a6c69637582$exports).fromValues(0xff, 0xfa, 0xcd);
-$42b018e85c350e4a$export$c537fa0d021d010b.LightYellow = (0, $31054a6c69637582$exports).fromValues(0xff, 0xff, 0xe0);
-$42b018e85c350e4a$export$c537fa0d021d010b.Maroon = (0, $31054a6c69637582$exports).fromValues(0x80, 0x00, 0x00);
-$42b018e85c350e4a$export$c537fa0d021d010b.Brown = (0, $31054a6c69637582$exports).fromValues(0xa5, 0x2a, 0x2a);
-$42b018e85c350e4a$export$c537fa0d021d010b.SaddleBrown = (0, $31054a6c69637582$exports).fromValues(0x8b, 0x45, 0x13);
-$42b018e85c350e4a$export$c537fa0d021d010b.Sienna = (0, $31054a6c69637582$exports).fromValues(0xa0, 0x52, 0x2d);
-$42b018e85c350e4a$export$c537fa0d021d010b.Chocolate = (0, $31054a6c69637582$exports).fromValues(0xd2, 0x69, 0x1e);
-$42b018e85c350e4a$export$c537fa0d021d010b.DarkGoldenrod = (0, $31054a6c69637582$exports).fromValues(0xb8, 0x86, 0x0b);
-$42b018e85c350e4a$export$c537fa0d021d010b.Peru = (0, $31054a6c69637582$exports).fromValues(0xcd, 0x85, 0x3f);
-$42b018e85c350e4a$export$c537fa0d021d010b.RosyBrown = (0, $31054a6c69637582$exports).fromValues(0xbc, 0x8f, 0x8f);
-$42b018e85c350e4a$export$c537fa0d021d010b.Goldenrod = (0, $31054a6c69637582$exports).fromValues(0xda, 0xa5, 0x20);
-$42b018e85c350e4a$export$c537fa0d021d010b.SandyBrown = (0, $31054a6c69637582$exports).fromValues(0xf4, 0xa4, 0x60);
-$42b018e85c350e4a$export$c537fa0d021d010b.Tan = (0, $31054a6c69637582$exports).fromValues(0xd2, 0xb4, 0x8c);
-$42b018e85c350e4a$export$c537fa0d021d010b.Burlywood = (0, $31054a6c69637582$exports).fromValues(0xde, 0xb8, 0x87);
-$42b018e85c350e4a$export$c537fa0d021d010b.Wheat = (0, $31054a6c69637582$exports).fromValues(0xf5, 0xde, 0xb3);
-$42b018e85c350e4a$export$c537fa0d021d010b.NavajoWhite = (0, $31054a6c69637582$exports).fromValues(0xff, 0xde, 0xad);
-$42b018e85c350e4a$export$c537fa0d021d010b.Bisque = (0, $31054a6c69637582$exports).fromValues(0xff, 0xe4, 0xc4);
-$42b018e85c350e4a$export$c537fa0d021d010b.BlanchedAlmond = (0, $31054a6c69637582$exports).fromValues(0xff, 0xeb, 0xcd);
-$42b018e85c350e4a$export$c537fa0d021d010b.Cornsilk = (0, $31054a6c69637582$exports).fromValues(0xff, 0xf8, 0xdc);
-$42b018e85c350e4a$export$c537fa0d021d010b.DarkGreen = (0, $31054a6c69637582$exports).fromValues(0x00, 0x64, 0x00);
-$42b018e85c350e4a$export$c537fa0d021d010b.Green = (0, $31054a6c69637582$exports).fromValues(0x00, 0x80, 0x00);
-$42b018e85c350e4a$export$c537fa0d021d010b.DarkOliveGreen = (0, $31054a6c69637582$exports).fromValues(0x55, 0x6b, 0x2f);
-$42b018e85c350e4a$export$c537fa0d021d010b.ForestGreen = (0, $31054a6c69637582$exports).fromValues(0x22, 0x8b, 0x22);
-$42b018e85c350e4a$export$c537fa0d021d010b.SeaGreen = (0, $31054a6c69637582$exports).fromValues(0x2e, 0x8b, 0x57);
-$42b018e85c350e4a$export$c537fa0d021d010b.Olive = (0, $31054a6c69637582$exports).fromValues(0x80, 0x80, 0x00);
-$42b018e85c350e4a$export$c537fa0d021d010b.OliveDrab = (0, $31054a6c69637582$exports).fromValues(0x6b, 0x8e, 0x23);
-$42b018e85c350e4a$export$c537fa0d021d010b.MediumSeaGreen = (0, $31054a6c69637582$exports).fromValues(0x3c, 0xb3, 0x71);
-$42b018e85c350e4a$export$c537fa0d021d010b.LimeGreen = (0, $31054a6c69637582$exports).fromValues(0x32, 0xcd, 0x32);
-$42b018e85c350e4a$export$c537fa0d021d010b.Lime = (0, $31054a6c69637582$exports).fromValues(0x00, 0xff, 0x00);
-$42b018e85c350e4a$export$c537fa0d021d010b.SpringGreen = (0, $31054a6c69637582$exports).fromValues(0x00, 0xff, 0x7f);
-$42b018e85c350e4a$export$c537fa0d021d010b.MediumSpringGreen = (0, $31054a6c69637582$exports).fromValues(0x00, 0xfa, 0x9a);
-$42b018e85c350e4a$export$c537fa0d021d010b.DarkSeaGreen = (0, $31054a6c69637582$exports).fromValues(0x8f, 0xbc, 0x8f);
-$42b018e85c350e4a$export$c537fa0d021d010b.MediumAquamarine = (0, $31054a6c69637582$exports).fromValues(0x66, 0xcd, 0xaa);
-$42b018e85c350e4a$export$c537fa0d021d010b.YellowGreen = (0, $31054a6c69637582$exports).fromValues(0x9a, 0xcd, 0x32);
-$42b018e85c350e4a$export$c537fa0d021d010b.LawnGreen = (0, $31054a6c69637582$exports).fromValues(0x7c, 0xfc, 0x00);
-$42b018e85c350e4a$export$c537fa0d021d010b.Chartreuse = (0, $31054a6c69637582$exports).fromValues(0x7f, 0xff, 0x00);
-$42b018e85c350e4a$export$c537fa0d021d010b.LightGreen = (0, $31054a6c69637582$exports).fromValues(0x90, 0xee, 0x90);
-$42b018e85c350e4a$export$c537fa0d021d010b.GreenYellow = (0, $31054a6c69637582$exports).fromValues(0xad, 0xff, 0x2f);
-$42b018e85c350e4a$export$c537fa0d021d010b.PaleGreen = (0, $31054a6c69637582$exports).fromValues(0x98, 0xfb, 0x98);
-$42b018e85c350e4a$export$c537fa0d021d010b.Teal = (0, $31054a6c69637582$exports).fromValues(0x00, 0x80, 0x80);
-$42b018e85c350e4a$export$c537fa0d021d010b.DarkCyan = (0, $31054a6c69637582$exports).fromValues(0x00, 0x8b, 0x8b);
-$42b018e85c350e4a$export$c537fa0d021d010b.LightSeaGreen = (0, $31054a6c69637582$exports).fromValues(0x20, 0xb2, 0xaa);
-$42b018e85c350e4a$export$c537fa0d021d010b.CadetBlue = (0, $31054a6c69637582$exports).fromValues(0x5f, 0x9e, 0xa0);
-$42b018e85c350e4a$export$c537fa0d021d010b.DarkTurquoise = (0, $31054a6c69637582$exports).fromValues(0x00, 0xce, 0xd1);
-$42b018e85c350e4a$export$c537fa0d021d010b.MediumTurquoise = (0, $31054a6c69637582$exports).fromValues(0x48, 0xd1, 0xcc);
-$42b018e85c350e4a$export$c537fa0d021d010b.Turquoise = (0, $31054a6c69637582$exports).fromValues(0x40, 0xe0, 0xd0);
-$42b018e85c350e4a$export$c537fa0d021d010b.Aqua = (0, $31054a6c69637582$exports).fromValues(0x00, 0xff, 0xff);
-$42b018e85c350e4a$export$c537fa0d021d010b.Cyan = (0, $31054a6c69637582$exports).fromValues(0x00, 0xff, 0xff);
-$42b018e85c350e4a$export$c537fa0d021d010b.Aquamarine = (0, $31054a6c69637582$exports).fromValues(0x7f, 0xff, 0xd4);
-$42b018e85c350e4a$export$c537fa0d021d010b.PaleTurquoise = (0, $31054a6c69637582$exports).fromValues(0xaf, 0xee, 0xee);
-$42b018e85c350e4a$export$c537fa0d021d010b.LightCyan = (0, $31054a6c69637582$exports).fromValues(0xe0, 0xff, 0xff);
-$42b018e85c350e4a$export$c537fa0d021d010b.Navy = (0, $31054a6c69637582$exports).fromValues(0x00, 0x00, 0x80);
-$42b018e85c350e4a$export$c537fa0d021d010b.DarkBlue = (0, $31054a6c69637582$exports).fromValues(0x00, 0x00, 0x8b);
-$42b018e85c350e4a$export$c537fa0d021d010b.MediumBlue = (0, $31054a6c69637582$exports).fromValues(0x00, 0x00, 0xcd);
-$42b018e85c350e4a$export$c537fa0d021d010b.Blue = (0, $31054a6c69637582$exports).fromValues(0x00, 0x00, 0xff);
-$42b018e85c350e4a$export$c537fa0d021d010b.MidnightBlue = (0, $31054a6c69637582$exports).fromValues(0x19, 0x19, 0x70);
-$42b018e85c350e4a$export$c537fa0d021d010b.RoyalBlue = (0, $31054a6c69637582$exports).fromValues(0x41, 0x69, 0xe1);
-$42b018e85c350e4a$export$c537fa0d021d010b.SteelBlue = (0, $31054a6c69637582$exports).fromValues(0x46, 0x82, 0xb4);
-$42b018e85c350e4a$export$c537fa0d021d010b.DodgerBlue = (0, $31054a6c69637582$exports).fromValues(0x1e, 0x90, 0xff);
-$42b018e85c350e4a$export$c537fa0d021d010b.DeepSkyBlue = (0, $31054a6c69637582$exports).fromValues(0x00, 0xbf, 0xff);
-$42b018e85c350e4a$export$c537fa0d021d010b.CornflowerBlue = (0, $31054a6c69637582$exports).fromValues(0x64, 0x95, 0xed);
-$42b018e85c350e4a$export$c537fa0d021d010b.SkyBlue = (0, $31054a6c69637582$exports).fromValues(0x87, 0xce, 0xeb);
-$42b018e85c350e4a$export$c537fa0d021d010b.LightSkyBlue = (0, $31054a6c69637582$exports).fromValues(0x87, 0xce, 0xfa);
-$42b018e85c350e4a$export$c537fa0d021d010b.LightSteelBlue = (0, $31054a6c69637582$exports).fromValues(0xb0, 0xc4, 0xde);
-$42b018e85c350e4a$export$c537fa0d021d010b.LightBlue = (0, $31054a6c69637582$exports).fromValues(0xad, 0xd8, 0xe6);
-$42b018e85c350e4a$export$c537fa0d021d010b.PowderBlue = (0, $31054a6c69637582$exports).fromValues(0xb0, 0xe0, 0xe6);
-$42b018e85c350e4a$export$c537fa0d021d010b.Indigo = (0, $31054a6c69637582$exports).fromValues(0x4b, 0x00, 0x82);
-$42b018e85c350e4a$export$c537fa0d021d010b.Purple = (0, $31054a6c69637582$exports).fromValues(0x80, 0x00, 0x80);
-$42b018e85c350e4a$export$c537fa0d021d010b.DarkMagenta = (0, $31054a6c69637582$exports).fromValues(0x8b, 0x00, 0x8b);
-$42b018e85c350e4a$export$c537fa0d021d010b.DarkViolet = (0, $31054a6c69637582$exports).fromValues(0x94, 0x00, 0xd3);
-$42b018e85c350e4a$export$c537fa0d021d010b.DarkSlateBlue = (0, $31054a6c69637582$exports).fromValues(0x48, 0x3d, 0x8b);
-$42b018e85c350e4a$export$c537fa0d021d010b.BlueViolet = (0, $31054a6c69637582$exports).fromValues(0x8a, 0x2b, 0xe2);
-$42b018e85c350e4a$export$c537fa0d021d010b.DarkOrchid = (0, $31054a6c69637582$exports).fromValues(0x99, 0x32, 0xcc);
-$42b018e85c350e4a$export$c537fa0d021d010b.Fuchsia = (0, $31054a6c69637582$exports).fromValues(0xff, 0x00, 0xff);
-$42b018e85c350e4a$export$c537fa0d021d010b.Magenta = (0, $31054a6c69637582$exports).fromValues(0xff, 0x00, 0xff);
-$42b018e85c350e4a$export$c537fa0d021d010b.SlateBlue = (0, $31054a6c69637582$exports).fromValues(0x6a, 0x5a, 0xcd);
-$42b018e85c350e4a$export$c537fa0d021d010b.MediumSlateBlue = (0, $31054a6c69637582$exports).fromValues(0x7b, 0x68, 0xee);
-$42b018e85c350e4a$export$c537fa0d021d010b.MediumOrchid = (0, $31054a6c69637582$exports).fromValues(0xba, 0x55, 0xd3);
-$42b018e85c350e4a$export$c537fa0d021d010b.MediumPurple = (0, $31054a6c69637582$exports).fromValues(0x93, 0x70, 0xdb);
-$42b018e85c350e4a$export$c537fa0d021d010b.Orchid = (0, $31054a6c69637582$exports).fromValues(0xda, 0x70, 0xd6);
-$42b018e85c350e4a$export$c537fa0d021d010b.Violet = (0, $31054a6c69637582$exports).fromValues(0xee, 0x82, 0xee);
-$42b018e85c350e4a$export$c537fa0d021d010b.Plum = (0, $31054a6c69637582$exports).fromValues(0xdd, 0xa0, 0xdd);
-$42b018e85c350e4a$export$c537fa0d021d010b.Thistle = (0, $31054a6c69637582$exports).fromValues(0xd8, 0xbf, 0xd8);
-$42b018e85c350e4a$export$c537fa0d021d010b.Lavender = (0, $31054a6c69637582$exports).fromValues(0xe6, 0xe6, 0xfa);
-$42b018e85c350e4a$export$c537fa0d021d010b.MistyRose = (0, $31054a6c69637582$exports).fromValues(0xff, 0xe4, 0xe1);
-$42b018e85c350e4a$export$c537fa0d021d010b.AntiqueWhite = (0, $31054a6c69637582$exports).fromValues(0xfa, 0xeb, 0xd7);
-$42b018e85c350e4a$export$c537fa0d021d010b.Linen = (0, $31054a6c69637582$exports).fromValues(0xfa, 0xf0, 0xe6);
-$42b018e85c350e4a$export$c537fa0d021d010b.Beige = (0, $31054a6c69637582$exports).fromValues(0xf5, 0xf5, 0xdc);
-$42b018e85c350e4a$export$c537fa0d021d010b.WhiteSmoke = (0, $31054a6c69637582$exports).fromValues(0xf5, 0xf5, 0xf5);
-$42b018e85c350e4a$export$c537fa0d021d010b.LavenderBlush = (0, $31054a6c69637582$exports).fromValues(0xff, 0xf0, 0xf5);
-$42b018e85c350e4a$export$c537fa0d021d010b.OldLace = (0, $31054a6c69637582$exports).fromValues(0xfd, 0xf5, 0xe6);
-$42b018e85c350e4a$export$c537fa0d021d010b.AliceBlue = (0, $31054a6c69637582$exports).fromValues(0xf0, 0xf8, 0xff);
-$42b018e85c350e4a$export$c537fa0d021d010b.Seashell = (0, $31054a6c69637582$exports).fromValues(0xff, 0xf5, 0xee);
-$42b018e85c350e4a$export$c537fa0d021d010b.GhostWhite = (0, $31054a6c69637582$exports).fromValues(0xf8, 0xf8, 0xff);
-$42b018e85c350e4a$export$c537fa0d021d010b.Honeydew = (0, $31054a6c69637582$exports).fromValues(0xf0, 0xff, 0xf0);
-$42b018e85c350e4a$export$c537fa0d021d010b.FloralWhite = (0, $31054a6c69637582$exports).fromValues(0xff, 0xfa, 0xf0);
-$42b018e85c350e4a$export$c537fa0d021d010b.Azure = (0, $31054a6c69637582$exports).fromValues(0xf0, 0xff, 0xff);
-$42b018e85c350e4a$export$c537fa0d021d010b.MintCream = (0, $31054a6c69637582$exports).fromValues(0xf5, 0xff, 0xfa);
-$42b018e85c350e4a$export$c537fa0d021d010b.Snow = (0, $31054a6c69637582$exports).fromValues(0xff, 0xfa, 0xfa);
-$42b018e85c350e4a$export$c537fa0d021d010b.Ivory = (0, $31054a6c69637582$exports).fromValues(0xff, 0xff, 0xf0);
-$42b018e85c350e4a$export$c537fa0d021d010b.White = (0, $31054a6c69637582$exports).fromValues(0xff, 0xff, 0xff);
-$42b018e85c350e4a$export$c537fa0d021d010b.Black = (0, $31054a6c69637582$exports).fromValues(0x00, 0x00, 0x00);
-$42b018e85c350e4a$export$c537fa0d021d010b.DarkSlateGray = (0, $31054a6c69637582$exports).fromValues(0x2f, 0x4f, 0x4f);
-$42b018e85c350e4a$export$c537fa0d021d010b.DimGray = (0, $31054a6c69637582$exports).fromValues(0x69, 0x69, 0x69);
-$42b018e85c350e4a$export$c537fa0d021d010b.SlateGray = (0, $31054a6c69637582$exports).fromValues(0x70, 0x80, 0x90);
-$42b018e85c350e4a$export$c537fa0d021d010b.Gray = (0, $31054a6c69637582$exports).fromValues(0x80, 0x80, 0x80);
-$42b018e85c350e4a$export$c537fa0d021d010b.LightSlateGray = (0, $31054a6c69637582$exports).fromValues(0x77, 0x88, 0x99);
-$42b018e85c350e4a$export$c537fa0d021d010b.DarkGray = (0, $31054a6c69637582$exports).fromValues(0xa9, 0xa9, 0xa9);
-$42b018e85c350e4a$export$c537fa0d021d010b.Silver = (0, $31054a6c69637582$exports).fromValues(0xc0, 0xc0, 0xc0);
-$42b018e85c350e4a$export$c537fa0d021d010b.LightGray = (0, $31054a6c69637582$exports).fromValues(0xd3, 0xd3, 0xd3);
-$42b018e85c350e4a$export$c537fa0d021d010b.Gainsboro = (0, $31054a6c69637582$exports).fromValues(0xdc, 0xdc, 0xdc);
-$42b018e85c350e4a$export$c537fa0d021d010b.Copper = (0, $31054a6c69637582$exports).fromValues(0xb8, 0x73, 0x33);
-$42b018e85c350e4a$export$c537fa0d021d010b.Bronze = (0, $31054a6c69637582$exports).fromValues(0xcd, 0x7f, 0x32);
-$42b018e85c350e4a$export$c537fa0d021d010b.Steel = (0, $31054a6c69637582$exports).fromValues(0xce, 0xd2, 0xd7);
-$42b018e85c350e4a$export$c537fa0d021d010b.Platinum = (0, $31054a6c69637582$exports).fromValues(0xe5, 0xe4, 0xe2);
-$42b018e85c350e4a$export$c537fa0d021d010b.Gunmetal = (0, $31054a6c69637582$exports).fromValues(0x5c, 0x5d, 0x5b);
-$42b018e85c350e4a$export$c537fa0d021d010b.Titanium = (0, $31054a6c69637582$exports).fromValues(0x87, 0x86, 0x81);
-$42b018e85c350e4a$export$c537fa0d021d010b.RoseGold = (0, $31054a6c69637582$exports).fromValues(0xcb, 0xa3, 0xb2);
-$42b018e85c350e4a$export$c537fa0d021d010b.AquaGlass = (0, $31054a6c69637582$exports).fromValues(0xd2, 0xe8, 0xdf);
-$42b018e85c350e4a$export$c537fa0d021d010b.BlueGlass = (0, $31054a6c69637582$exports).fromValues(0xc7, 0xe3, 0xe1);
+$42b018e85c350e4a$export$6e15e29aac2b1db8.colors = {
+    "mediumvioletred": [
+        0xc7,
+        0x15,
+        0x85
+    ],
+    "deeppink": [
+        0xff,
+        0x14,
+        0x93
+    ],
+    "palevioletred": [
+        0xdb,
+        0x70,
+        0x93
+    ],
+    "hotpink": [
+        0xff,
+        0x69,
+        0xb4
+    ],
+    "lightpink": [
+        0xff,
+        0xb6,
+        0xc1
+    ],
+    "pink": [
+        0xff,
+        0xc0,
+        0xcb
+    ],
+    "darkred": [
+        0x8b,
+        0x00,
+        0x00
+    ],
+    "red": [
+        0xff,
+        0x00,
+        0x00
+    ],
+    "firebrick": [
+        0xb2,
+        0x22,
+        0x22
+    ],
+    "crimson": [
+        0xdc,
+        0x14,
+        0x3c
+    ],
+    "indianred": [
+        0xcd,
+        0x5c,
+        0x5c
+    ],
+    "lightcoral": [
+        0xf0,
+        0x80,
+        0x80
+    ],
+    "salmon": [
+        0xfa,
+        0x80,
+        0x72
+    ],
+    "darksalmon": [
+        0xe9,
+        0x96,
+        0x7a
+    ],
+    "lightsalmon": [
+        0xff,
+        0xa0,
+        0x7a
+    ],
+    "orangered": [
+        0xff,
+        0x45,
+        0x00
+    ],
+    "tomato": [
+        0xff,
+        0x63,
+        0x47
+    ],
+    "darkorange": [
+        0xff,
+        0x8c,
+        0x00
+    ],
+    "coral": [
+        0xff,
+        0x7f,
+        0x50
+    ],
+    "orange": [
+        0xff,
+        0xa5,
+        0x00
+    ],
+    "darkkhaki": [
+        0xbd,
+        0xb7,
+        0x6b
+    ],
+    "gold": [
+        0xff,
+        0xd7,
+        0x00
+    ],
+    "khaki": [
+        0xf0,
+        0xe6,
+        0x8c
+    ],
+    "peachpuff": [
+        0xff,
+        0xda,
+        0xb9
+    ],
+    "yellow": [
+        0xff,
+        0xff,
+        0x00
+    ],
+    "palegoldenrod": [
+        0xee,
+        0xe8,
+        0xaa
+    ],
+    "moccasin": [
+        0xff,
+        0xe4,
+        0xb5
+    ],
+    "papayawhip": [
+        0xff,
+        0xef,
+        0xd5
+    ],
+    "lightgoldenrodyellow": [
+        0xfa,
+        0xfa,
+        0xd2
+    ],
+    "lemonchiffon": [
+        0xff,
+        0xfa,
+        0xcd
+    ],
+    "lightyellow": [
+        0xff,
+        0xff,
+        0xe0
+    ],
+    "maroon": [
+        0x80,
+        0x00,
+        0x00
+    ],
+    "brown": [
+        0xa5,
+        0x2a,
+        0x2a
+    ],
+    "saddlebrown": [
+        0x8b,
+        0x45,
+        0x13
+    ],
+    "sienna": [
+        0xa0,
+        0x52,
+        0x2d
+    ],
+    "chocolate": [
+        0xd2,
+        0x69,
+        0x1e
+    ],
+    "darkgoldenrod": [
+        0xb8,
+        0x86,
+        0x0b
+    ],
+    "peru": [
+        0xcd,
+        0x85,
+        0x3f
+    ],
+    "rosybrown": [
+        0xbc,
+        0x8f,
+        0x8f
+    ],
+    "goldenrod": [
+        0xda,
+        0xa5,
+        0x20
+    ],
+    "sandybrown": [
+        0xf4,
+        0xa4,
+        0x60
+    ],
+    "tan": [
+        0xd2,
+        0xb4,
+        0x8c
+    ],
+    "burlywood": [
+        0xde,
+        0xb8,
+        0x87
+    ],
+    "wheat": [
+        0xf5,
+        0xde,
+        0xb3
+    ],
+    "navajowhite": [
+        0xff,
+        0xde,
+        0xad
+    ],
+    "bisque": [
+        0xff,
+        0xe4,
+        0xc4
+    ],
+    "blanchedalmond": [
+        0xff,
+        0xeb,
+        0xcd
+    ],
+    "cornsilk": [
+        0xff,
+        0xf8,
+        0xdc
+    ],
+    "darkgreen": [
+        0x00,
+        0x64,
+        0x00
+    ],
+    "green": [
+        0x00,
+        0x80,
+        0x00
+    ],
+    "darkolivegreen": [
+        0x55,
+        0x6b,
+        0x2f
+    ],
+    "forestgreen": [
+        0x22,
+        0x8b,
+        0x22
+    ],
+    "seagreen": [
+        0x2e,
+        0x8b,
+        0x57
+    ],
+    "olive": [
+        0x80,
+        0x80,
+        0x00
+    ],
+    "olivedrab": [
+        0x6b,
+        0x8e,
+        0x23
+    ],
+    "mediumseagreen": [
+        0x3c,
+        0xb3,
+        0x71
+    ],
+    "limegreen": [
+        0x32,
+        0xcd,
+        0x32
+    ],
+    "lime": [
+        0x00,
+        0xff,
+        0x00
+    ],
+    "springgreen": [
+        0x00,
+        0xff,
+        0x7f
+    ],
+    "mediumspringgreen": [
+        0x00,
+        0xfa,
+        0x9a
+    ],
+    "darkseagreen": [
+        0x8f,
+        0xbc,
+        0x8f
+    ],
+    "mediumaquamarine": [
+        0x66,
+        0xcd,
+        0xaa
+    ],
+    "yellowgreen": [
+        0x9a,
+        0xcd,
+        0x32
+    ],
+    "lawngreen": [
+        0x7c,
+        0xfc,
+        0x00
+    ],
+    "chartreuse": [
+        0x7f,
+        0xff,
+        0x00
+    ],
+    "lightgreen": [
+        0x90,
+        0xee,
+        0x90
+    ],
+    "greenyellow": [
+        0xad,
+        0xff,
+        0x2f
+    ],
+    "palegreen": [
+        0x98,
+        0xfb,
+        0x98
+    ],
+    "teal": [
+        0x00,
+        0x80,
+        0x80
+    ],
+    "darkcyan": [
+        0x00,
+        0x8b,
+        0x8b
+    ],
+    "lightseagreen": [
+        0x20,
+        0xb2,
+        0xaa
+    ],
+    "cadetblue": [
+        0x5f,
+        0x9e,
+        0xa0
+    ],
+    "darkturquoise": [
+        0x00,
+        0xce,
+        0xd1
+    ],
+    "mediumturquoise": [
+        0x48,
+        0xd1,
+        0xcc
+    ],
+    "turquoise": [
+        0x40,
+        0xe0,
+        0xd0
+    ],
+    "aqua": [
+        0x00,
+        0xff,
+        0xff
+    ],
+    "cyan": [
+        0x00,
+        0xff,
+        0xff
+    ],
+    "aquamarine": [
+        0x7f,
+        0xff,
+        0xd4
+    ],
+    "paleturquoise": [
+        0xaf,
+        0xee,
+        0xee
+    ],
+    "lightcyan": [
+        0xe0,
+        0xff,
+        0xff
+    ],
+    "navy": [
+        0x00,
+        0x00,
+        0x80
+    ],
+    "darkblue": [
+        0x00,
+        0x00,
+        0x8b
+    ],
+    "mediumblue": [
+        0x00,
+        0x00,
+        0xcd
+    ],
+    "blue": [
+        0x00,
+        0x00,
+        0xff
+    ],
+    "midnightblue": [
+        0x19,
+        0x19,
+        0x70
+    ],
+    "royalblue": [
+        0x41,
+        0x69,
+        0xe1
+    ],
+    "steelblue": [
+        0x46,
+        0x82,
+        0xb4
+    ],
+    "dodgerblue": [
+        0x1e,
+        0x90,
+        0xff
+    ],
+    "deepskyblue": [
+        0x00,
+        0xbf,
+        0xff
+    ],
+    "cornflowerblue": [
+        0x64,
+        0x95,
+        0xed
+    ],
+    "skyblue": [
+        0x87,
+        0xce,
+        0xeb
+    ],
+    "lightskyblue": [
+        0x87,
+        0xce,
+        0xfa
+    ],
+    "lightsteelblue": [
+        0xb0,
+        0xc4,
+        0xde
+    ],
+    "lightblue": [
+        0xad,
+        0xd8,
+        0xe6
+    ],
+    "powderblue": [
+        0xb0,
+        0xe0,
+        0xe6
+    ],
+    "indigo": [
+        0x4b,
+        0x00,
+        0x82
+    ],
+    "purple": [
+        0x80,
+        0x00,
+        0x80
+    ],
+    "darkmagenta": [
+        0x8b,
+        0x00,
+        0x8b
+    ],
+    "darkviolet": [
+        0x94,
+        0x00,
+        0xd3
+    ],
+    "darkslateblue": [
+        0x48,
+        0x3d,
+        0x8b
+    ],
+    "blueviolet": [
+        0x8a,
+        0x2b,
+        0xe2
+    ],
+    "darkorchid": [
+        0x99,
+        0x32,
+        0xcc
+    ],
+    "fuchsia": [
+        0xff,
+        0x00,
+        0xff
+    ],
+    "magenta": [
+        0xff,
+        0x00,
+        0xff
+    ],
+    "slateblue": [
+        0x6a,
+        0x5a,
+        0xcd
+    ],
+    "mediumslateblue": [
+        0x7b,
+        0x68,
+        0xee
+    ],
+    "mediumorchid": [
+        0xba,
+        0x55,
+        0xd3
+    ],
+    "mediumpurple": [
+        0x93,
+        0x70,
+        0xdb
+    ],
+    "orchid": [
+        0xda,
+        0x70,
+        0xd6
+    ],
+    "violet": [
+        0xee,
+        0x82,
+        0xee
+    ],
+    "plum": [
+        0xdd,
+        0xa0,
+        0xdd
+    ],
+    "thistle": [
+        0xd8,
+        0xbf,
+        0xd8
+    ],
+    "lavender": [
+        0xe6,
+        0xe6,
+        0xfa
+    ],
+    "mistyrose": [
+        0xff,
+        0xe4,
+        0xe1
+    ],
+    "antiquewhite": [
+        0xfa,
+        0xeb,
+        0xd7
+    ],
+    "linen": [
+        0xfa,
+        0xf0,
+        0xe6
+    ],
+    "beige": [
+        0xf5,
+        0xf5,
+        0xdc
+    ],
+    "whitesmoke": [
+        0xf5,
+        0xf5,
+        0xf5
+    ],
+    "lavenderblush": [
+        0xff,
+        0xf0,
+        0xf5
+    ],
+    "oldlace": [
+        0xfd,
+        0xf5,
+        0xe6
+    ],
+    "aliceblue": [
+        0xf0,
+        0xf8,
+        0xff
+    ],
+    "seashell": [
+        0xff,
+        0xf5,
+        0xee
+    ],
+    "ghostwhite": [
+        0xf8,
+        0xf8,
+        0xff
+    ],
+    "honeydew": [
+        0xf0,
+        0xff,
+        0xf0
+    ],
+    "floralwhite": [
+        0xff,
+        0xfa,
+        0xf0
+    ],
+    "azure": [
+        0xf0,
+        0xff,
+        0xff
+    ],
+    "mintcream": [
+        0xf5,
+        0xff,
+        0xfa
+    ],
+    "snow": [
+        0xff,
+        0xfa,
+        0xfa
+    ],
+    "ivory": [
+        0xff,
+        0xff,
+        0xf0
+    ],
+    "white": [
+        0xff,
+        0xff,
+        0xff
+    ],
+    "black": [
+        0x00,
+        0x00,
+        0x00
+    ],
+    "darkslategray": [
+        0x2f,
+        0x4f,
+        0x4f
+    ],
+    "dimgray": [
+        0x69,
+        0x69,
+        0x69
+    ],
+    "slategray": [
+        0x70,
+        0x80,
+        0x90
+    ],
+    "gray": [
+        0x80,
+        0x80,
+        0x80
+    ],
+    "lightslategray": [
+        0x77,
+        0x88,
+        0x99
+    ],
+    "darkgray": [
+        0xa9,
+        0xa9,
+        0xa9
+    ],
+    "silver": [
+        0xc0,
+        0xc0,
+        0xc0
+    ],
+    "lightgray": [
+        0xd3,
+        0xd3,
+        0xd3
+    ],
+    "gainsboro": [
+        0xdc,
+        0xdc,
+        0xdc
+    ],
+    "copper": [
+        0xb8,
+        0x73,
+        0x33
+    ],
+    "bronze": [
+        0xcd,
+        0x7f,
+        0x32
+    ],
+    "steel": [
+        0xce,
+        0xd2,
+        0xd7
+    ],
+    "platinum": [
+        0xe5,
+        0xe4,
+        0xe2
+    ],
+    "gunmetal": [
+        0x5c,
+        0x5d,
+        0x5b
+    ],
+    "titanium": [
+        0x87,
+        0x86,
+        0x81
+    ],
+    "rosegold": [
+        0xcb,
+        0xa3,
+        0xb2
+    ],
+    "aquaglass": [
+        0xd2,
+        0xe8,
+        0xdf
+    ],
+    "blueglass": [
+        0xc7,
+        0xe3,
+        0xe1
+    ]
+};
 
 
 
@@ -18583,6 +19318,21 @@ class $715a174735ed4fbb$export$31008ffe97c96a49 {
     get mMatrix() {
         return this._mMatrix;
     }
+    get materialType() {
+        return this._materialType;
+    }
+    get materialColor() {
+        return this._materialColor;
+    }
+    get materialFuzz() {
+        return this._materialFuzz;
+    }
+    get materialGloss() {
+        return this._materialGloss;
+    }
+    get segmentColor() {
+        return this._segmentColor;
+    }
     get scale() {
         return this._scale;
     }
@@ -18718,6 +19468,11 @@ class $715a174735ed4fbb$export$31008ffe97c96a49 {
         this._material = options.material;
         this.borderWidth = core.config.textBorderWidth;
         this.gamma = 0;
+        this._materialType = options.materialType || 0;
+        this._materialColor = options.materialColor || core.config.textColor;
+        this._materialFuzz = options.materialFuzz || 0;
+        this._materialGloss = options.materialGloss || 0;
+        this._segmentColor = options.segmentColor;
     }
     initialize() {
         this._vertices = new ArrayBuffer((0, $0a0587bd8b0d58e8$export$74c3c25430a16442).SIZE_BYTES * this._maxGlyphs * 4);
@@ -18839,6 +19594,21 @@ class $715a174735ed4fbb$export$b04be29aa201d4f5 extends $715a174735ed4fbb$export
 class $715a174735ed4fbb$export$f51a22c5863d0d80 extends $715a174735ed4fbb$export$31008ffe97c96a49 {
     get materials() {
         return this._materials;
+    }
+    get materialTypes() {
+        return this._materialTypes;
+    }
+    get materialColors() {
+        return this._materialColors;
+    }
+    get materialFuzzes() {
+        return this._materialFuzzes;
+    }
+    get materialGlosses() {
+        return this._materialGlosses;
+    }
+    get segmentColors() {
+        return this._segmentColors;
     }
     get minBoundsX() {
         return this._minBoundsX;
@@ -19060,6 +19830,9 @@ class $715a174735ed4fbb$export$f51a22c5863d0d80 extends $715a174735ed4fbb$export
         super(core, options);
         this._quat = (0, $39ece26d1239bb77$exports).create();
         this._materials = options.materials;
+        this._materialType = options.materialType;
+        this._materialColor = options.materialColors ? null : options.materialColor || core.config.textColor;
+        this._materialColors = options.materialColors;
         this.minBoundsX = options.minBoundsX ? options.minBoundsX : 0;
         this.minBoundsY = options.minBoundsY ? options.minBoundsY : 0;
         this.minBoundsZ = options.minBoundsZ ? options.minBoundsZ : 0;
@@ -20116,6 +20889,31 @@ class $5c05d7e02492b136$export$1c460fb4285edadc extends (0, $9f62a2679ad52b29$ex
                 _vec4[3] = options.texCoords[id * 4 + 3];
                 (0, $0a0587bd8b0d58e8$export$849e31d725692576).setTexCoord(dataView, index, _vec4);
             } else (0, $0a0587bd8b0d58e8$export$849e31d725692576).setTexCoord(dataView, index, _vec4);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatId(dataView, index, options.materialType ? options.materialType : options.materialTypes ? options.materialTypes[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatColor(dataView, index, options.materialColor ? options.materialColor : options.materialColors ? [
+                options.materialColors[id * 3],
+                options.materialColors[id * 3 + 1],
+                options.materialColors[id * 3 + 2]
+            ] : [
+                0,
+                0,
+                0
+            ]);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatFuzz(dataView, index, options.materialFuzz ? options.materialFuzz : options.materialFuzzes ? options.materialFuzzes[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatGloss(dataView, index, options.materialGloss ? options.materialGloss : options.materialGlosses ? options.materialGlosses[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatDensity(dataView, index, options.materialDensity ? options.materialDensity : options.materialDensities ? options.materialDensities[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatRefractiveIndex(dataView, index, options.materialRefractiveIndex ? options.materialRefractiveIndex : options.materialRefractiveIndices ? options.materialRefractiveIndices[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setSegColor(dataView, index, options.segmentColor ? options.segmentColor : options.segmentColors ? [
+                options.segmentColors[id * 4],
+                options.segmentColors[id * 4 + 1],
+                options.segmentColors[id * 4 + 2],
+                options.segmentColors[id * 4 + 3]
+            ] : [
+                buffer.idColors[id * 4],
+                buffer.idColors[id * 4 + 1],
+                buffer.idColors[id * 4 + 2],
+                buffer.idColors[id * 4 + 3]
+            ]);
         }
         buffer.update();
         this._core.log.write((0, $4a6417d29706362f$export$243e62d78d3b544d).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -20620,6 +21418,7 @@ $parcel$export($92f02b8a0655b486$exports, "TableHelper", () => $38a1943f255fbbec
 $parcel$export($92f02b8a0655b486$exports, "TextHelper", () => $ee14aeb68f9f83d5$export$f080f423ca93034f);
 $parcel$export($92f02b8a0655b486$exports, "TextureHelper", () => $a25f5529f6cda489$export$c41e4fcbf45db179);
 $parcel$export($92f02b8a0655b486$exports, "TreeHelper", () => $f90460e72834bcbf$export$7b64922b0b192bef);
+$parcel$export($92f02b8a0655b486$exports, "TreeMapHelper", () => $ce6a2b7bc7be40ee$export$ece3d818ad8f3b75);
 $parcel$export($92f02b8a0655b486$exports, "SetHelper", () => $33e5ac524dde1fe2$export$a30f602ccece8e25);
 $parcel$export($92f02b8a0655b486$exports, "SdfHelper", () => $22ccc45c3c88d82f$export$98599ead9515fc06);
 $parcel$export($92f02b8a0655b486$exports, "VectorHelper", () => $8c233993336ed54a$export$1c9ca61bb2a30bed);
@@ -20771,7 +21570,7 @@ class $c37f3938111fba7e$export$a33ddd5b3ba7b208 {
         const r2 = `0${Math.round(r * 255).toString(16)}`;
         const g2 = `0${Math.round(g * 255).toString(16)}`;
         const b2 = `0${Math.round(b * 255).toString(16)}`;
-        return `#${r2.substr(r2.length - 2, 2)}${g2.substr(g2.length - 2, 2)}${b2.substr(b2.length - 2, 2)}`;
+        return `#${r2.substring(r2.length - 2)}${g2.substring(g2.length - 2)}${b2.substring(b2.length - 2)}`;
     }
     static rgbToHsv(r, g, b, hsv) {
         let h, s, v, delta;
@@ -21533,6 +22332,7 @@ class $18a78f0c92aa12a4$export$917b5ee4d724090b {
         const maxBins = (binsX - minQ) * binsY;
         const binCounts = new Float64Array(maxBins);
         const binLookup = new Uint32Array(maxBins);
+        const binIds = new Uint32Array(options.valuesX.length);
         const point = (0, $91b0cc4981465964$exports).create();
         const hex = (0, $91b0cc4981465964$exports).create();
         let nonEmptyBins = 0;
@@ -21551,7 +22351,7 @@ class $18a78f0c92aa12a4$export$917b5ee4d724090b {
                 nonEmptyBins++;
             }
             binCounts[binId]++;
-            options.binIds[id] = binId;
+            binIds[id] = binId;
             minCount = Math.min(minCount, binCounts[binId]);
             maxCount = Math.max(maxCount, binCounts[binId]);
         }
@@ -21575,7 +22375,7 @@ class $18a78f0c92aa12a4$export$917b5ee4d724090b {
             }
         }
         const result = {
-            binIds: options.binIds,
+            binIds: binIds,
             positionsX: positionsX,
             positionsY: positionsY,
             counts: counts,
@@ -22159,11 +22959,11 @@ class $a25f5529f6cda489$export$c41e4fcbf45db179 {
             degrees: degrees
         };
     }
-    static tree(rootId, indices, children, positions, widths, descendents) {
+    static tree(rootId, indices, children, positions, widths, descendents, depths) {
         let nextId = 0;
         const idsArray = [];
         let maxDescendents = 0;
-        const buildTree = (parentId)=>{
+        const buildTree = (parentId, depth)=>{
             const index = indices[parentId];
             idsArray.push(index);
             const childIds = children[parentId];
@@ -22171,8 +22971,11 @@ class $a25f5529f6cda489$export$c41e4fcbf45db179 {
                 const start = nextId;
                 let total = 0;
                 for(let i = 0; i < childIds.length; i++){
-                    buildTree(childIds[i]);
-                    total += descendents[indices[childIds[i]]] + 1;
+                    const id = childIds[i];
+                    buildTree(id, depth + 1);
+                    const index = indices[id];
+                    total += descendents[index] + 1;
+                    depths[index] = depth + 1;
                 }
                 const end = nextId - 1;
                 positions[index] = (start + end) / 2;
@@ -22182,15 +22985,224 @@ class $a25f5529f6cda489$export$c41e4fcbf45db179 {
             } else {
                 widths[index] = 1;
                 positions[index] = nextId++;
+                depths[index] = depth;
             }
         };
-        buildTree(rootId);
+        buildTree(rootId, 0);
         const maxPosition = nextId - 1;
         return {
             ids: new Uint32Array(idsArray),
             maxDescendents: maxDescendents,
             maxPosition: maxPosition
         };
+    }
+}
+
+
+/*!
+ * Copyright (c) Microsoft Corporation.
+ * Licensed under the MIT License.
+ */ class $ce6a2b7bc7be40ee$export$ece3d818ad8f3b75 {
+    static squarifiedLayout(options) {
+        if (options.from > options.to) return;
+        if (options.to - options.from < 2) {
+            $ce6a2b7bc7be40ee$export$ece3d818ad8f3b75._sliceLayout({
+                ids: options.ids,
+                sizes: options.sizes,
+                positionsX: options.positionsX,
+                positionsY: options.positionsY,
+                sizesX: options.sizesX,
+                sizesY: options.sizesY,
+                from: options.from,
+                to: options.to,
+                x: options.x,
+                y: options.y,
+                width: options.width,
+                height: options.height,
+                lookup: options.lookup
+            });
+            return;
+        }
+        const totalSize = options.sizes ? $ce6a2b7bc7be40ee$export$ece3d818ad8f3b75.totalSize(options.ids, options.sizes, options.from, options.to) : options.to - options.from + 1;
+        const a = options.sizes ? options.sizes[options.ids[options.to]] / totalSize : 1 / totalSize;
+        let b = a;
+        let mid = options.to;
+        if (options.width < options.height) {
+            while(mid > options.from){
+                const aspect = $ce6a2b7bc7be40ee$export$ece3d818ad8f3b75.aspect(options.height, options.width, a, b);
+                const q = options.sizes ? options.sizes[options.ids[mid - 1]] / totalSize : 1 / totalSize;
+                if ($ce6a2b7bc7be40ee$export$ece3d818ad8f3b75.aspect(options.height, options.width, a, b + q) > aspect) break;
+                mid--;
+                b += q;
+            }
+            $ce6a2b7bc7be40ee$export$ece3d818ad8f3b75._sliceLayout({
+                ids: options.ids,
+                sizes: options.sizes,
+                positionsX: options.positionsX,
+                positionsY: options.positionsY,
+                sizesX: options.sizesX,
+                sizesY: options.sizesY,
+                from: mid,
+                to: options.to,
+                x: options.x,
+                y: options.y,
+                width: options.width,
+                height: options.height * b,
+                lookup: options.lookup
+            });
+            $ce6a2b7bc7be40ee$export$ece3d818ad8f3b75.squarifiedLayout({
+                ids: options.ids,
+                sizes: options.sizes,
+                positionsX: options.positionsX,
+                positionsY: options.positionsY,
+                sizesX: options.sizesX,
+                sizesY: options.sizesY,
+                from: options.from,
+                to: mid - 1,
+                x: options.x,
+                y: options.y + options.height * b,
+                width: options.width,
+                height: options.height * (1 - b),
+                lookup: options.lookup
+            });
+        } else {
+            while(mid > options.from){
+                const aspect = $ce6a2b7bc7be40ee$export$ece3d818ad8f3b75.aspect(options.width, options.height, a, b);
+                const q = options.sizes ? options.sizes[options.ids[mid - 1]] / totalSize : 1 / totalSize;
+                if ($ce6a2b7bc7be40ee$export$ece3d818ad8f3b75.aspect(options.width, options.height, a, b + q) > aspect) break;
+                mid--;
+                b += q;
+            }
+            $ce6a2b7bc7be40ee$export$ece3d818ad8f3b75._sliceLayout({
+                ids: options.ids,
+                sizes: options.sizes,
+                positionsX: options.positionsX,
+                positionsY: options.positionsY,
+                sizesX: options.sizesX,
+                sizesY: options.sizesY,
+                from: mid,
+                to: options.to,
+                x: options.x,
+                y: options.y,
+                width: options.width * b,
+                height: options.height,
+                lookup: options.lookup
+            });
+            $ce6a2b7bc7be40ee$export$ece3d818ad8f3b75.squarifiedLayout({
+                ids: options.ids,
+                sizes: options.sizes,
+                positionsX: options.positionsX,
+                positionsY: options.positionsY,
+                sizesX: options.sizesX,
+                sizesY: options.sizesY,
+                from: options.from,
+                to: mid - 1,
+                x: options.x + options.width * b,
+                y: options.y,
+                width: options.width * (1 - b),
+                height: options.height,
+                lookup: options.lookup
+            });
+        }
+    }
+    static totalSize(ids, sizes, from, to) {
+        let size = 0;
+        for(let i = from; i <= to; i++)size += sizes[ids[i]];
+        return size;
+    }
+    static _sliceLayout(options) {
+        const totalSize = options.sizes ? $ce6a2b7bc7be40ee$export$ece3d818ad8f3b75.totalSize(options.ids, options.sizes, options.from, options.to) : options.to - options.from + 1;
+        let a = 0;
+        for(let i = options.to; i >= options.from; i--){
+            const id = options.ids[i];
+            const index = options.lookup[id];
+            const b = options.sizes ? options.sizes[id] / totalSize : 1 / totalSize;
+            if (options.width > options.height) {
+                options.sizesY[index] = options.height;
+                options.sizesX[index] = options.width * b;
+                options.positionsY[index] = options.y + options.height / 2;
+                options.positionsX[index] = options.x + options.width * a + options.width * b / 2;
+            } else {
+                options.sizesX[index] = options.width;
+                options.sizesY[index] = options.height * b;
+                options.positionsX[index] = options.x + options.width / 2;
+                options.positionsY[index] = options.y + options.height * a + options.height * b / 2;
+            }
+            a += b;
+        }
+    }
+    static aspect(big, small, a, b) {
+        const x = big * b / (small * a / b);
+        if (x < 1) return 1 / x;
+        return x;
+    }
+    static cubifiedLayout(options) {
+        if (options.from > options.to) return;
+        let sliceHeight = 0;
+        let sliceTotal = 0;
+        let previousAspect = 0;
+        let mid = options.to;
+        while(mid >= options.from){
+            const itemSize = options.sizes ? options.sizes[options.ids[mid]] : 1;
+            sliceTotal += itemSize;
+            sliceHeight = options.height * sliceTotal / options.total;
+            const remainingHeight = options.height - sliceHeight;
+            if (remainingHeight < options.minHeight) {
+                mid = options.from;
+                const totalSize = options.sizes ? this.totalSize(options.ids, options.sizes, mid, options.to) : options.to - options.from + 1;
+                sliceHeight = options.height * totalSize / options.total;
+                break;
+            }
+            const itemSide = Math.sqrt(itemSize / sliceTotal) * options.side;
+            const aspect = itemSide > sliceHeight ? sliceHeight / itemSide : itemSide / sliceHeight;
+            if (aspect < previousAspect || mid == options.from) break;
+            previousAspect = aspect;
+            mid--;
+        }
+        $ce6a2b7bc7be40ee$export$ece3d818ad8f3b75.squarifiedLayout({
+            ids: options.ids,
+            sizes: options.sizes,
+            positionsX: options.positionsX,
+            positionsY: options.positionsZ,
+            sizesX: options.sizesX,
+            sizesY: options.sizesZ,
+            from: mid,
+            to: options.to,
+            x: options.x,
+            y: options.z,
+            width: options.width,
+            height: options.depth,
+            lookup: options.lookup
+        });
+        for(let j = mid; j <= options.to; j++){
+            const id = options.ids[j];
+            const index = options.lookup[id];
+            options.sizesY[index] = Math.max(sliceHeight, 0.01);
+            options.positionsY[index] = options.isTopToBottom ? options.positionsY[index] = options.y + sliceHeight / 2 : options.y + options.height - sliceHeight / 2;
+        }
+        $ce6a2b7bc7be40ee$export$ece3d818ad8f3b75.cubifiedLayout({
+            ids: options.ids,
+            sizes: options.sizes,
+            positionsX: options.positionsX,
+            positionsY: options.positionsY,
+            positionsZ: options.positionsZ,
+            sizesX: options.sizesX,
+            sizesY: options.sizesY,
+            sizesZ: options.sizesZ,
+            from: options.from,
+            to: mid - 1,
+            x: options.x,
+            y: options.isTopToBottom ? options.y + sliceHeight : options.y,
+            z: options.z,
+            width: options.width,
+            height: options.height - sliceHeight,
+            depth: options.depth,
+            side: options.side,
+            total: options.total - sliceTotal,
+            minHeight: options.minHeight,
+            isTopToBottom: options.isTopToBottom,
+            lookup: options.lookup
+        });
     }
 }
 
@@ -22557,6 +23569,31 @@ class $e6a9bd14c029e5f0$export$a15f0a83a652dd40 extends (0, $9f62a2679ad52b29$ex
             (0, $0a0587bd8b0d58e8$export$849e31d725692576).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
             (0, $0a0587bd8b0d58e8$export$849e31d725692576).setSdfBuffer(dataView, index, options.sdfBuffer ? options.sdfBuffer : options.sdfBuffers ? options.sdfBuffers[id] : this._core.config.sdfBuffer);
             (0, $0a0587bd8b0d58e8$export$849e31d725692576).setSdfBorder(dataView, index, options.sdfBorder ? options.sdfBorder : options.sdfBorders ? options.sdfBorders[id] : this._core.config.sdfBorder);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatId(dataView, index, options.materialType ? options.materialType : options.materialTypes ? options.materialTypes[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatColor(dataView, index, options.materialColor ? options.materialColor : options.materialColors ? [
+                options.materialColors[id * 3],
+                options.materialColors[id * 3 + 1],
+                options.materialColors[id * 3 + 2]
+            ] : [
+                0,
+                0,
+                0
+            ]);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatFuzz(dataView, index, options.materialFuzz ? options.materialFuzz : options.materialFuzzes ? options.materialFuzzes[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatGloss(dataView, index, options.materialGloss ? options.materialGloss : options.materialGlosses ? options.materialGlosses[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatDensity(dataView, index, options.materialDensity ? options.materialDensity : options.materialDensities ? options.materialDensities[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatRefractiveIndex(dataView, index, options.materialRefractiveIndex ? options.materialRefractiveIndex : options.materialRefractiveIndices ? options.materialRefractiveIndices[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setSegColor(dataView, index, options.segmentColor ? options.segmentColor : options.segmentColors ? [
+                options.segmentColors[id * 4],
+                options.segmentColors[id * 4 + 1],
+                options.segmentColors[id * 4 + 2],
+                options.segmentColors[id * 4 + 3]
+            ] : [
+                buffer.idColors[id * 4],
+                buffer.idColors[id * 4 + 1],
+                buffer.idColors[id * 4 + 2],
+                buffer.idColors[id * 4 + 3]
+            ]);
         }
         buffer.update();
         this._core.log.write((0, $4a6417d29706362f$export$243e62d78d3b544d).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)} ms`);
@@ -22777,6 +23814,31 @@ class $ba0727adc7665af3$export$17d680238e50603e extends (0, $9f62a2679ad52b29$ex
             (0, $0a0587bd8b0d58e8$export$849e31d725692576).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
             (0, $0a0587bd8b0d58e8$export$849e31d725692576).setSdfBuffer(dataView, index, options.sdfBuffer ? options.sdfBuffer : options.sdfBuffers ? options.sdfBuffers[id] : this._core.config.sdfBuffer);
             (0, $0a0587bd8b0d58e8$export$849e31d725692576).setSdfBorder(dataView, index, options.sdfBorder ? options.sdfBorder : options.sdfBorders ? options.sdfBorders[id] : this._core.config.sdfBorder);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatId(dataView, index, options.materialType ? options.materialType : options.materialTypes ? options.materialTypes[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatColor(dataView, index, options.materialColor ? options.materialColor : options.materialColors ? [
+                options.materialColors[id * 3],
+                options.materialColors[id * 3 + 1],
+                options.materialColors[id * 3 + 2]
+            ] : [
+                0,
+                0,
+                0
+            ]);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatFuzz(dataView, index, options.materialFuzz ? options.materialFuzz : options.materialFuzzes ? options.materialFuzzes[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatGloss(dataView, index, options.materialGloss ? options.materialGloss : options.materialGlosses ? options.materialGlosses[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatDensity(dataView, index, options.materialDensity ? options.materialDensity : options.materialDensities ? options.materialDensities[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatRefractiveIndex(dataView, index, options.materialRefractiveIndex ? options.materialRefractiveIndex : options.materialRefractiveIndices ? options.materialRefractiveIndices[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setSegColor(dataView, index, options.segmentColor ? options.segmentColor : options.segmentColors ? [
+                options.segmentColors[id * 4],
+                options.segmentColors[id * 4 + 1],
+                options.segmentColors[id * 4 + 2],
+                options.segmentColors[id * 4 + 3]
+            ] : [
+                buffer.idColors[id * 4],
+                buffer.idColors[id * 4 + 1],
+                buffer.idColors[id * 4 + 2],
+                buffer.idColors[id * 4 + 3]
+            ]);
         }
         buffer.update();
         this._core.log.write((0, $4a6417d29706362f$export$243e62d78d3b544d).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -23223,6 +24285,31 @@ class $82ef55b00856d713$export$7fbedc92909ed28e extends (0, $9f62a2679ad52b29$ex
             (0, $0a0587bd8b0d58e8$export$849e31d725692576).setRounding(dataView, index, options.rounding ? options.rounding * this._boundsScaling : options.roundings ? options.roundings[id] * this._boundsScaling : 0);
             (0, $0a0587bd8b0d58e8$export$849e31d725692576).setSdfBuffer(dataView, index, options.sdfBuffer ? options.sdfBuffer : options.sdfBuffers ? options.sdfBuffers[id] : this._core.config.sdfBuffer);
             (0, $0a0587bd8b0d58e8$export$849e31d725692576).setSdfBorder(dataView, index, options.sdfBorder ? options.sdfBorder : options.sdfBorders ? options.sdfBorders[id] : this._core.config.sdfBorder);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatId(dataView, index, options.materialType ? options.materialType : options.materialTypes ? options.materialTypes[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatColor(dataView, index, options.materialColor ? options.materialColor : options.materialColors ? [
+                options.materialColors[id * 3],
+                options.materialColors[id * 3 + 1],
+                options.materialColors[id * 3 + 2]
+            ] : [
+                0,
+                0,
+                0
+            ]);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatFuzz(dataView, index, options.materialFuzz ? options.materialFuzz : options.materialFuzzes ? options.materialFuzzes[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatGloss(dataView, index, options.materialGloss ? options.materialGloss : options.materialGlosses ? options.materialGlosses[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatDensity(dataView, index, options.materialDensity ? options.materialDensity : options.materialDensities ? options.materialDensities[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatRefractiveIndex(dataView, index, options.materialRefractiveIndex ? options.materialRefractiveIndex : options.materialRefractiveIndices ? options.materialRefractiveIndices[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setSegColor(dataView, index, options.segmentColor ? options.segmentColor : options.segmentColors ? [
+                options.segmentColors[id * 4],
+                options.segmentColors[id * 4 + 1],
+                options.segmentColors[id * 4 + 2],
+                options.segmentColors[id * 4 + 3]
+            ] : [
+                buffer.idColors[id * 4],
+                buffer.idColors[id * 4 + 1],
+                buffer.idColors[id * 4 + 2],
+                buffer.idColors[id * 4 + 3]
+            ]);
         }
         buffer.update();
         this._core.log.write((0, $4a6417d29706362f$export$243e62d78d3b544d).info, `${this.constructor.name.toLowerCase()} update ${ids.length} vertices ${Math.round(window.performance.now() - start)}ms`);
@@ -23460,6 +24547,7 @@ class $8be06baf1546635b$export$a9bf29f8d87ebbee extends (0, $9f62a2679ad52b29$ex
 
 
 
+
 class $05bc96b85bb3a34e$export$ce1cde616fb0ca7e extends (0, $9f62a2679ad52b29$export$f4f11265faddf354) {
     get positionsX() {
         return this._positionsX;
@@ -23500,7 +24588,21 @@ class $05bc96b85bb3a34e$export$ce1cde616fb0ca7e extends (0, $9f62a2679ad52b29$ex
             this._sizesX = new Float32Array(buffer.length);
             this._sizesY = new Float32Array(buffer.length);
         }
-        $05bc96b85bb3a34e$export$ece3d818ad8f3b75.squarifiedLayout(ids, options.sizes, this._positionsX, this._positionsY, this._sizesX, this._sizesY, offset, offset + count - 1, this.minLayoutBoundsX, this.minLayoutBoundsY, sizeX, sizeY, buffer.lookup);
+        (0, $ce6a2b7bc7be40ee$export$ece3d818ad8f3b75).squarifiedLayout({
+            ids: ids,
+            sizes: options.sizes,
+            positionsX: this._positionsX,
+            positionsY: this._positionsY,
+            sizesX: this._sizesX,
+            sizesY: this._sizesY,
+            from: offset,
+            to: offset + count - 1,
+            x: this.minLayoutBoundsX,
+            y: this.minLayoutBoundsY,
+            width: sizeX,
+            height: sizeY,
+            lookup: buffer.lookup
+        });
         this._updateCumulativeLayoutBounds();
         this._core.log.write((0, $4a6417d29706362f$export$243e62d78d3b544d).info, `${this.constructor.name.toLowerCase()} layout ${count} ${Math.round(window.performance.now() - start)}ms`);
     }
@@ -23622,7 +24724,7 @@ class $05bc96b85bb3a34e$export$3ca73d0a8bf0e96e extends (0, $9f62a2679ad52b29$ex
         const sizeZ = this.maxLayoutBoundsZ - this.minLayoutBoundsZ;
         const minHeight = this._core.config.minCubifiedTreeMapSlice / sizeY;
         const side = Math.sqrt(sizeX * sizeZ);
-        const total = options.sizes ? $05bc96b85bb3a34e$export$ece3d818ad8f3b75.totalSize(ids, options.sizes, offset, offset + count - 1) : count;
+        const total = options.sizes ? (0, $ce6a2b7bc7be40ee$export$ece3d818ad8f3b75).totalSize(ids, options.sizes, offset, offset + count - 1) : count;
         if (!this._positionsX || this._positionsX.length < buffer.length) {
             this._positionsX = new Float32Array(buffer.length);
             this._positionsY = new Float32Array(buffer.length);
@@ -23631,7 +24733,29 @@ class $05bc96b85bb3a34e$export$3ca73d0a8bf0e96e extends (0, $9f62a2679ad52b29$ex
             this._sizesY = new Float32Array(buffer.length);
             this._sizesZ = new Float32Array(buffer.length);
         }
-        $05bc96b85bb3a34e$export$ece3d818ad8f3b75.cubifiedLayout(ids, options.sizes, this._positionsX, this._positionsY, this._positionsZ, this._sizesX, this._sizesY, this._sizesZ, offset, offset + count - 1, this.minLayoutBoundsX, this.minLayoutBoundsY, this.minLayoutBoundsZ, sizeX, sizeY, sizeZ, side, total, minHeight, isTopToBottom, buffer.lookup);
+        (0, $ce6a2b7bc7be40ee$export$ece3d818ad8f3b75).cubifiedLayout({
+            ids: ids,
+            sizes: options.sizes,
+            positionsX: this._positionsX,
+            positionsY: this._positionsY,
+            positionsZ: this._positionsZ,
+            sizesX: this._sizesX,
+            sizesY: this._sizesY,
+            sizesZ: this._sizesZ,
+            from: offset,
+            to: offset + count - 1,
+            x: this.minLayoutBoundsX,
+            y: this.minLayoutBoundsY,
+            z: this.minLayoutBoundsZ,
+            width: sizeX,
+            height: sizeY,
+            depth: sizeZ,
+            side: side,
+            total: total,
+            minHeight: minHeight,
+            isTopToBottom: isTopToBottom,
+            lookup: buffer.lookup
+        });
         this._core.log.write((0, $4a6417d29706362f$export$243e62d78d3b544d).info, `${this.constructor.name.toLowerCase()} layout ${count} ${Math.round(window.performance.now() - start)}ms`);
     }
     update(buffer, ids, options) {
@@ -23711,103 +24835,6 @@ class $05bc96b85bb3a34e$export$3ca73d0a8bf0e96e extends (0, $9f62a2679ad52b29$ex
         }
         buffer.update();
         this._core.log.write((0, $4a6417d29706362f$export$243e62d78d3b544d).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
-    }
-}
-class $05bc96b85bb3a34e$export$ece3d818ad8f3b75 {
-    static squarifiedLayout(ids, sizes, positionsX, positionsY, sizesX, sizesY, from, to, x, y, width, height, lookup) {
-        if (from > to) return;
-        if (to - from < 2) {
-            $05bc96b85bb3a34e$export$ece3d818ad8f3b75._sliceLayout(ids, sizes, positionsX, positionsY, sizesX, sizesY, from, to, x, y, width, height, lookup);
-            return;
-        }
-        const totalSize = sizes ? $05bc96b85bb3a34e$export$ece3d818ad8f3b75.totalSize(ids, sizes, from, to) : to - from + 1;
-        const a = sizes ? sizes[ids[to]] / totalSize : 1 / totalSize;
-        let b = a;
-        let mid = to;
-        if (width < height) {
-            while(mid > from){
-                const aspect = $05bc96b85bb3a34e$export$ece3d818ad8f3b75._aspect(height, width, a, b);
-                const q = sizes ? sizes[ids[mid - 1]] / totalSize : 1 / totalSize;
-                if ($05bc96b85bb3a34e$export$ece3d818ad8f3b75._aspect(height, width, a, b + q) > aspect) break;
-                mid--;
-                b += q;
-            }
-            $05bc96b85bb3a34e$export$ece3d818ad8f3b75._sliceLayout(ids, sizes, positionsX, positionsY, sizesX, sizesY, mid, to, x, y, width, height * b, lookup);
-            $05bc96b85bb3a34e$export$ece3d818ad8f3b75.squarifiedLayout(ids, sizes, positionsX, positionsY, sizesX, sizesY, from, mid - 1, x, y + height * b, width, height * (1 - b), lookup);
-        } else {
-            while(mid > from){
-                const aspect = $05bc96b85bb3a34e$export$ece3d818ad8f3b75._aspect(width, height, a, b);
-                const q = sizes ? sizes[ids[mid - 1]] / totalSize : 1 / totalSize;
-                if ($05bc96b85bb3a34e$export$ece3d818ad8f3b75._aspect(width, height, a, b + q) > aspect) break;
-                mid--;
-                b += q;
-            }
-            $05bc96b85bb3a34e$export$ece3d818ad8f3b75._sliceLayout(ids, sizes, positionsX, positionsY, sizesX, sizesY, mid, to, x, y, width * b, height, lookup);
-            $05bc96b85bb3a34e$export$ece3d818ad8f3b75.squarifiedLayout(ids, sizes, positionsX, positionsY, sizesX, sizesY, from, mid - 1, x + width * b, y, width * (1 - b), height, lookup);
-        }
-    }
-    static totalSize(ids, sizes, from, to) {
-        let size = 0;
-        for(let i = from; i <= to; i++)size += sizes[ids[i]];
-        return size;
-    }
-    static _sliceLayout(ids, sizes, positionsX, positionsY, sizesX, sizesY, from, to, x, y, width, height, lookup) {
-        const totalSize = sizes ? $05bc96b85bb3a34e$export$ece3d818ad8f3b75.totalSize(ids, sizes, from, to) : to - from + 1;
-        let a = 0;
-        for(let i = to; i >= from; i--){
-            const id = ids[i];
-            const index = lookup[id];
-            const b = sizes ? sizes[id] / totalSize : 1 / totalSize;
-            if (width > height) {
-                sizesY[index] = height;
-                sizesX[index] = width * b;
-                positionsY[index] = y + height / 2;
-                positionsX[index] = x + width * a + width * b / 2;
-            } else {
-                sizesX[index] = width;
-                sizesY[index] = height * b;
-                positionsX[index] = x + width / 2;
-                positionsY[index] = y + height * a + height * b / 2;
-            }
-            a += b;
-        }
-    }
-    static _aspect(big, small, a, b) {
-        const x = big * b / (small * a / b);
-        if (x < 1) return 1 / x;
-        return x;
-    }
-    static cubifiedLayout(ids, sizes, positionsX, positionsY, positionsZ, sizesX, sizesY, sizesZ, from, to, x, y, z, width, height, depth, side, total, minHeight, isTopToBottom, lookup) {
-        if (from > to) return;
-        let sliceHeight = 0;
-        let sliceTotal = 0;
-        let previousAspect = 0;
-        let mid = to;
-        while(mid >= from){
-            const itemSize = sizes ? sizes[ids[mid]] : 1;
-            sliceTotal += itemSize;
-            sliceHeight = height * sliceTotal / total;
-            const remainingHeight = height - sliceHeight;
-            if (remainingHeight < minHeight) {
-                mid = from;
-                const totalSize = sizes ? this.totalSize(ids, sizes, mid, to) : to - from + 1;
-                sliceHeight = height * totalSize / total;
-                break;
-            }
-            const itemSide = Math.sqrt(itemSize / sliceTotal) * side;
-            const aspect = itemSide > sliceHeight ? sliceHeight / itemSide : itemSide / sliceHeight;
-            if (aspect < previousAspect || mid == from) break;
-            previousAspect = aspect;
-            mid--;
-        }
-        $05bc96b85bb3a34e$export$ece3d818ad8f3b75.squarifiedLayout(ids, sizes, positionsX, positionsZ, sizesX, sizesZ, mid, to, x, z, width, depth, lookup);
-        for(let j = mid; j <= to; j++){
-            const id = ids[j];
-            const index = lookup[id];
-            sizesY[index] = Math.max(sliceHeight, 0.01);
-            positionsY[index] = isTopToBottom ? positionsY[index] = y + sliceHeight / 2 : y + height - sliceHeight / 2;
-        }
-        $05bc96b85bb3a34e$export$ece3d818ad8f3b75.cubifiedLayout(ids, sizes, positionsX, positionsY, positionsZ, sizesX, sizesY, sizesZ, from, mid - 1, x, isTopToBottom ? y + sliceHeight : y, z, width, height - sliceHeight, depth, side, total - sliceTotal, minHeight, isTopToBottom, lookup);
     }
 }
 
@@ -23992,6 +25019,31 @@ class $385fd844fe700a1a$export$694e0d28c7ffc90c extends $385fd844fe700a1a$export
                 _vec4[3] = options.texCoords[id * 4 + 3];
                 (0, $0a0587bd8b0d58e8$export$849e31d725692576).setTexCoord(dataView, index, _vec4);
             } else (0, $0a0587bd8b0d58e8$export$849e31d725692576).setTexCoord(dataView, index, _vec4);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatId(dataView, index, options.materialType ? options.materialType : options.materialTypes ? options.materialTypes[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatColor(dataView, index, options.materialColor ? options.materialColor : options.materialColors ? [
+                options.materialColors[id * 3],
+                options.materialColors[id * 3 + 1],
+                options.materialColors[id * 3 + 2]
+            ] : [
+                0,
+                0,
+                0
+            ]);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatFuzz(dataView, index, options.materialFuzz ? options.materialFuzz : options.materialFuzzes ? options.materialFuzzes[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatGloss(dataView, index, options.materialGloss ? options.materialGloss : options.materialGlosses ? options.materialGlosses[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatDensity(dataView, index, options.materialDensity ? options.materialDensity : options.materialDensities ? options.materialDensities[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setMatRefractiveIndex(dataView, index, options.materialRefractiveIndex ? options.materialRefractiveIndex : options.materialRefractiveIndices ? options.materialRefractiveIndices[id] : 0);
+            (0, $0a0587bd8b0d58e8$export$849e31d725692576).setSegColor(dataView, index, options.segmentColor ? options.segmentColor : options.segmentColors ? [
+                options.segmentColors[id * 4],
+                options.segmentColors[id * 4 + 1],
+                options.segmentColors[id * 4 + 2],
+                options.segmentColors[id * 4 + 3]
+            ] : [
+                buffer.idColors[id * 4],
+                buffer.idColors[id * 4 + 1],
+                buffer.idColors[id * 4 + 2],
+                buffer.idColors[id * 4 + 3]
+            ]);
         }
         buffer.update();
         this._core.log.write((0, $4a6417d29706362f$export$243e62d78d3b544d).info, `${this.constructor.name.toLowerCase()} update ${count} ${Math.round(window.performance.now() - start)}ms`);
@@ -24138,7 +25190,21 @@ class $385fd844fe700a1a$export$75310880a535fd3b extends $385fd844fe700a1a$export
                 const groupHeight = height * groupValue / binValue;
                 if (sizeZ == 1) {
                     const positionX = spacingX / 2 + binIdX * (sizeX + spacingX);
-                    (0, $05bc96b85bb3a34e$export$ece3d818ad8f3b75).squarifiedLayout(this._orderedIds, options.sizes, this._positionsX, this._positionsY, this._sizesX, this._sizesY, from, mid, positionX, positionY, sizeX, groupHeight, lookup);
+                    (0, $ce6a2b7bc7be40ee$export$ece3d818ad8f3b75).squarifiedLayout({
+                        ids: this._orderedIds,
+                        sizes: options.sizes,
+                        positionsX: this._positionsX,
+                        positionsY: this._positionsY,
+                        sizesX: this._sizesX,
+                        sizesY: this._sizesY,
+                        from: from,
+                        to: mid,
+                        x: positionX,
+                        y: positionY,
+                        width: sizeX,
+                        height: groupHeight,
+                        lookup: lookup
+                    });
                     const isRightToLeft = true;
                     for(let i = from; i <= mid; i++){
                         const id = this._orderedIds[i];
@@ -24148,7 +25214,29 @@ class $385fd844fe700a1a$export$75310880a535fd3b extends $385fd844fe700a1a$export
                         if (isRightToLeft) this._positionsX[index] = positionX + sizeX - this._positionsX[index] + positionX;
                         if (!isTopToBottom) this._positionsY[index] = positionY + groupHeight - this._positionsY[index] + positionY;
                     }
-                } else (0, $05bc96b85bb3a34e$export$ece3d818ad8f3b75).cubifiedLayout(this._orderedIds, options.sizes, this._positionsX, this._positionsY, this._positionsZ, this._sizesX, this._sizesY, this._sizesZ, from, mid, spacingX / 2 + binIdX * (sizeX + spacingX), positionY, spacingZ / 2 + binIdZ * (sizeZ + spacingZ), sizeX, groupHeight, sizeZ, side, groupValue, minSliceHeight, isTopToBottom, lookup);
+                } else (0, $ce6a2b7bc7be40ee$export$ece3d818ad8f3b75).cubifiedLayout({
+                    ids: this._orderedIds,
+                    sizes: options.sizes,
+                    positionsX: this._positionsX,
+                    positionsY: this._positionsY,
+                    positionsZ: this._positionsZ,
+                    sizesX: this._sizesX,
+                    sizesY: this._sizesY,
+                    sizesZ: this._sizesZ,
+                    from: from,
+                    to: mid,
+                    x: spacingX / 2 + binIdX * (sizeX + spacingX),
+                    y: positionY,
+                    z: spacingZ / 2 + binIdZ * (sizeZ + spacingZ),
+                    width: sizeX,
+                    height: groupHeight,
+                    depth: sizeZ,
+                    side: side,
+                    total: groupValue,
+                    minHeight: minSliceHeight,
+                    isTopToBottom: isTopToBottom,
+                    lookup: lookup
+                });
                 if (isLastInGroup) {
                     isLastInGroup = false;
                     positionY += groupHeight;
@@ -24387,6 +25475,7 @@ var $2d9c5cad0d6d7650$exports = {};
 $parcel$export($2d9c5cad0d6d7650$exports, "RendererBase", () => $a123db7d2af0bebc$export$30686c90897c890d);
 $parcel$export($2d9c5cad0d6d7650$exports, "Basic", () => $124829f55b512dce$exports);
 $parcel$export($2d9c5cad0d6d7650$exports, "Advanced", () => $04aa67b4630f0de9$exports);
+$parcel$export($2d9c5cad0d6d7650$exports, "BasicWebGPU", () => $14a55defd301d57e$exports);
 $parcel$export($2d9c5cad0d6d7650$exports, "RayTraceWebGPU", () => $9824374ee38ba7ca$exports);
 /*!
  * Copyright (c) Microsoft Corporation.
@@ -24502,6 +25591,13 @@ class $96371271bb28b98d$export$c1cecec923d96e5c {
                 (0, $0a0587bd8b0d58e8$export$849e31d725692576).copySdfBorder(fromDataView, index, toDataView, i);
                 (0, $0a0587bd8b0d58e8$export$849e31d725692576).copyParameter1(fromDataView, index, toDataView, i);
                 (0, $0a0587bd8b0d58e8$export$849e31d725692576).copyParameter2(fromDataView, index, toDataView, i);
+                (0, $0a0587bd8b0d58e8$export$849e31d725692576).copyMatId(fromDataView, index, toDataView, i);
+                (0, $0a0587bd8b0d58e8$export$849e31d725692576).copyMatColor(fromDataView, index, toDataView, i);
+                (0, $0a0587bd8b0d58e8$export$849e31d725692576).copyMatFuzz(fromDataView, index, toDataView, i);
+                (0, $0a0587bd8b0d58e8$export$849e31d725692576).copyMatRefractiveIndex(fromDataView, index, toDataView, i);
+                (0, $0a0587bd8b0d58e8$export$849e31d725692576).copyMatGloss(fromDataView, index, toDataView, i);
+                (0, $0a0587bd8b0d58e8$export$849e31d725692576).copyMatDensity(fromDataView, index, toDataView, i);
+                (0, $0a0587bd8b0d58e8$export$849e31d725692576).copySegColor(fromDataView, index, toDataView, i);
             } else (0, $0a0587bd8b0d58e8$export$849e31d725692576).setRotation(toDataView, i, (0, $d4d7bd6cc65a5081$export$a002182e51710d39).QUAT_IDENTITY);
         }
         this.unitType = buffer.unitType;
@@ -24575,11 +25671,18 @@ class $96371271bb28b98d$export$e17d4fc1dafc1240 {
         const dataView1 = this._buffer1.dataView;
         const dataView2 = this._buffer2.dataView;
         const _vec4 = (0, $4c4ac78b213a9c07$exports).create();
+        this.idColors = new Float32Array(this._length * 4);
+        this._buffer1.idColors = this.idColors;
+        this._buffer2.idColors = this.idColors;
         for(let i = 0; i < this._length; i++){
             const id = ids[i];
             const pickId = (0, $a60d0d861ccf87e8$export$aadd933e49c67c12).nextPickId();
             this._pickIdLookup[pickId] = id;
             (0, $a60d0d861ccf87e8$export$aadd933e49c67c12).encodeNumber(pickId, (0, $4a6417d29706362f$export$6fc3f4da94ff0be0).data, _vec4);
+            this.idColors[i * 4] = _vec4[0];
+            this.idColors[i * 4 + 1] = _vec4[1];
+            this.idColors[i * 4 + 2] = _vec4[2];
+            this.idColors[i * 4 + 3] = _vec4[3];
             (0, $0a0587bd8b0d58e8$export$849e31d725692576).setIdColor(dataView1, i, _vec4);
             (0, $0a0587bd8b0d58e8$export$849e31d725692576).setIdColor(dataView2, i, _vec4);
         }
@@ -24778,6 +25881,12 @@ class $a123db7d2af0bebc$export$30686c90897c890d {
     }
     set backgroundColor(value) {
         if (!(0, $4c4ac78b213a9c07$exports).exactEquals(value, this._backgroundColor)) this._backgroundColor = value;
+    }
+    get ambientColor() {
+        return this._ambientColor;
+    }
+    set ambientColor(value) {
+        if (!(0, $31054a6c69637582$exports).exactEquals(value, this._ambientColor)) this._ambientColor = value;
     }
     get currentAxes() {
         return this._isAxes1Current ? this._axes1 : this._axes2;
@@ -31938,9 +33047,502 @@ class $8e6261810f478ee0$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
 
 
 
+var $14a55defd301d57e$exports = {};
+
+$parcel$export($14a55defd301d57e$exports, "Main", () => $1d3eb987c5042c2f$export$861edd1ccea2f746);
+/*!
+ * Copyright (c) Microsoft Corporation.
+ * Licensed under the MIT License.
+ */ /*!
+ * Copyright (c) Microsoft Corporation.
+ * Licensed under the MIT License.
+ */ 
+
+
+/*!
+ * Copyright (c) Microsoft Corporation.
+ * Licensed under the MIT License.
+ */ 
+class $7aa9321c6c2cf59f$export$29cd7b75162a9425 extends (0, $a123db7d2af0bebc$export$ecd9923dfd29c8e1) {
+    constructor(){
+        super();
+        this.reset();
+    }
+}
+
+
+
+var $1d3eb987c5042c2f$var$__awaiter = undefined && undefined.__awaiter || function(thisArg, _arguments, P, generator) {
+    function adopt(value) {
+        return value instanceof P ? value : new P(function(resolve) {
+            resolve(value);
+        });
+    }
+    return new (P || (P = Promise))(function(resolve, reject) {
+        function fulfilled(value) {
+            try {
+                step(generator.next(value));
+            } catch (e) {
+                reject(e);
+            }
+        }
+        function rejected(value) {
+            try {
+                step(generator["throw"](value));
+            } catch (e) {
+                reject(e);
+            }
+        }
+        function step(result) {
+            result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+        }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+class $1d3eb987c5042c2f$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$export$30686c90897c890d) {
+    constructor(options){
+        super(options);
+        this._positions = new Float32Array([
+            -0.5,
+            0.5,
+            0.5,
+            0.5,
+            0.5,
+            0.5,
+            0.5,
+            -0.5,
+            0.5,
+            -0.5,
+            -0.5,
+            0.5,
+            -0.5,
+            0.5,
+            -0.5,
+            0.5,
+            0.5,
+            -0.5,
+            0.5,
+            -0.5,
+            -0.5,
+            -0.5,
+            -0.5,
+            -0.5
+        ]);
+        this._colors = new Float32Array([
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            1.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]);
+        this._indices = new Uint16Array([
+            5,
+            4,
+            1,
+            0,
+            3,
+            4,
+            7,
+            5,
+            6,
+            1,
+            2,
+            3,
+            6,
+            7
+        ]);
+        this._vertShaderCode = `
+// Quaternion
+let EPSILON: f32 = 0.000001;
+
+fn slerp(a: vec4<f32>, b: vec4<f32>, t: f32) -> vec4<f32> {
+    var c = b;
+    var cosom: f32 = dot(a, b);
+    if (cosom < 0.0) {
+        cosom = -cosom;
+        c = -c;
+    }
+    var scale0: f32;
+    var scale1: f32;
+    if (1.0 - cosom > EPSILON) {
+        // Standard case (slerp)
+        let omega: f32 = acos(cosom);
+        let sinom: f32 = sin(omega);
+        scale0 = sin((1.0 - t) * omega) / sinom;
+        scale1 = sin(t * omega) / sinom;
+    }
+    else {
+        // "From" and "to" quaternions are very close so we can do a linear interpolation
+        scale0 = 1.0 - t;
+        scale1 = t;
+    }
+    return vec4<f32>(scale0 * a + scale1 * c);
+}
+
+fn rotate(p: vec3<f32>, q: vec4<f32>) -> vec3<f32> {
+	return p + 2.0 * cross(q.xyz, cross(q.xyz, p) + q.w * p);
+}
+
+struct VSOut {
+    @builtin(position) Position: vec4<f32>,
+    @location(0) color: vec3<f32>,
+}
+
+struct Uniforms {
+    modelViewProj: mat4x4<f32>,
+}
+
+struct Instance {
+    position : vec3<f32>,
+    size : vec3<f32>,
+    color : vec3<f32>,
+    rotation : vec4<f32>,
+}
+
+@group(0) @binding(0) var<uniform> uniforms : Uniforms;
+
+@group(0) @binding(1) var<storage, read> instances : array<Instance>;
+
+@stage(vertex)
+fn main(
+    @builtin(instance_index) instanceIdx: u32,
+    @location(0)             inPos:       vec3<f32>,
+    @location(1)             inColor:     vec3<f32>) -> VSOut {
+    var vsOut: VSOut;
+    
+    let instance = instances[instanceIdx];
+
+    // Size
+    var position = inPos * instance.size;
+
+    // Slerp, rotate
+    if (instance.rotation.w != 1.0) {
+        position = rotate(position, instance.rotation);
+    }
+
+    // Position
+    position = position + instance.position;
+
+    vsOut.Position = uniforms.modelViewProj * vec4<f32>(position, 1.0);
+
+    vsOut.color = inColor;
+    return vsOut;
+}`;
+        this._fragShaderCode = `
+@stage(fragment)
+fn main(
+    @location(0) inColor: vec3<f32>) -> @location(0) vec4<f32> {
+        return vec4<f32>(inColor, 1.0);
+}`;
+        (0, $14f38b7dd89457d7$exports).setMatrixArrayType(Float32Array);
+        this._config = new (0, $7aa9321c6c2cf59f$export$29cd7b75162a9425)();
+        this._mvpMatrix = (0, $1ac1b59392edf35b$exports).create();
+    }
+    initialize(core) {
+        super.initialize(core);
+        this._initializeAPI().then(()=>{
+            this._initializeResources().then(()=>{
+                this._resizeBackings();
+                this._isInitialized = true;
+            });
+        });
+    }
+    get isSupported() {
+        return navigator.gpu !== undefined;
+    }
+    _initializeAPI() {
+        return $1d3eb987c5042c2f$var$__awaiter(this, void 0, void 0, function*() {
+            try {
+                const gpu = navigator.gpu;
+                this._adapter = yield gpu.requestAdapter();
+                this._device = yield this._adapter.requestDevice();
+                this._queue = this._device.queue;
+                this._context = this._canvas.getContext("webgpu");
+            } catch (e) {
+                this._core.log.write((0, $4a6417d29706362f$export$243e62d78d3b544d).error, e);
+                return false;
+            }
+            return true;
+        });
+    }
+    _initializeResources() {
+        return $1d3eb987c5042c2f$var$__awaiter(this, void 0, void 0, function*() {
+            const canvasConfig = {
+                device: this._device,
+                format: "bgra8unorm",
+                alphaMode: "opaque"
+            };
+            this._context.configure(canvasConfig);
+            let bufferDescriptor;
+            bufferDescriptor = {
+                size: this._positions.byteLength,
+                usage: GPUBufferUsage.VERTEX,
+                mappedAtCreation: true
+            };
+            this._positionBuffer = this._device.createBuffer(bufferDescriptor);
+            new Float32Array(this._positionBuffer.getMappedRange()).set(this._positions);
+            this._positionBuffer.unmap();
+            bufferDescriptor = {
+                size: this._colors.byteLength,
+                usage: GPUBufferUsage.VERTEX,
+                mappedAtCreation: true
+            };
+            this._colorBuffer = this._device.createBuffer(bufferDescriptor);
+            new Float32Array(this._colorBuffer.getMappedRange()).set(this._colors);
+            this._colorBuffer.unmap();
+            bufferDescriptor = {
+                size: this._indices.byteLength + 3 & -4,
+                usage: GPUBufferUsage.INDEX,
+                mappedAtCreation: true
+            };
+            this._indexBuffer = this._device.createBuffer(bufferDescriptor);
+            new Uint16Array(this._indexBuffer.getMappedRange()).set(this._indices);
+            this._indexBuffer.unmap();
+            const vertexShaderDescriptor = {
+                code: this._vertShaderCode
+            };
+            this._vertModule = this._device.createShaderModule(vertexShaderDescriptor);
+            const fragmentShaderDescriptor = {
+                code: this._fragShaderCode
+            };
+            this._fragModule = this._device.createShaderModule(fragmentShaderDescriptor);
+            const positionAttribDesc = {
+                shaderLocation: 0,
+                offset: 0,
+                format: "float32x3"
+            };
+            const colorAttribDesc = {
+                shaderLocation: 1,
+                offset: 0,
+                format: "float32x3"
+            };
+            const positionBufferDesc = {
+                attributes: [
+                    positionAttribDesc
+                ],
+                arrayStride: 12,
+                stepMode: "vertex"
+            };
+            const colorBufferDesc = {
+                attributes: [
+                    colorAttribDesc
+                ],
+                arrayStride: 12,
+                stepMode: "vertex"
+            };
+            const depthStencil = {
+                depthWriteEnabled: true,
+                depthCompare: "less",
+                format: "depth24plus-stencil8"
+            };
+            const vertex = {
+                module: this._vertModule,
+                entryPoint: "main",
+                buffers: [
+                    positionBufferDesc,
+                    colorBufferDesc
+                ]
+            };
+            const colorState = {
+                format: "bgra8unorm"
+            };
+            const fragment = {
+                module: this._fragModule,
+                entryPoint: "main",
+                targets: [
+                    colorState
+                ]
+            };
+            const primitive = {
+                frontFace: "cw",
+                cullMode: "none",
+                topology: "triangle-strip",
+                stripIndexFormat: "uint16"
+            };
+            const renderPipelineDescriptor = {
+                vertex: vertex,
+                fragment: fragment,
+                primitive: primitive,
+                depthStencil: depthStencil,
+                layout: "auto"
+            };
+            this._renderPipeline = this._device.createRenderPipeline(renderPipelineDescriptor);
+            const uniformBufferSize1 = 64;
+            this._uniformBuffer = this._device.createBuffer({
+                size: uniformBufferSize1,
+                usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
+            });
+            const stride = 16;
+            let instanceData;
+            if (this.transitionBuffers && this.transitionBuffers.length > 0) {
+                const buffer = this.transitionBuffers[0].currentBuffer;
+                this._instanceCount = buffer.length;
+                instanceData = new Float32Array(this._instanceCount * stride);
+                const position = (0, $31054a6c69637582$exports).create();
+                const size = (0, $31054a6c69637582$exports).create();
+                const color = (0, $91b0cc4981465964$exports).create();
+                const rotation = (0, $39ece26d1239bb77$exports).create();
+                const positionOffset = 0;
+                const sizeOffset = 4;
+                const colorOffset = 8;
+                const rotationOffset = 12;
+                for(let i = 0; i < buffer.length; i++){
+                    const offset = stride * i;
+                    (0, $0a0587bd8b0d58e8$export$849e31d725692576).getTranslation(buffer.dataView, i, position);
+                    instanceData.set(position, offset + positionOffset);
+                    (0, $0a0587bd8b0d58e8$export$849e31d725692576).getScale(buffer.dataView, i, size);
+                    instanceData.set(size, offset + sizeOffset);
+                    (0, $0a0587bd8b0d58e8$export$849e31d725692576).getColor(buffer.dataView, i, color);
+                    instanceData.set(color, offset + colorOffset);
+                    (0, $0a0587bd8b0d58e8$export$849e31d725692576).getRotation(buffer.dataView, i, rotation);
+                    instanceData.set(rotation, offset + rotationOffset);
+                }
+            } else {
+                const side = 10;
+                this._instanceCount = side * side * side;
+                instanceData = new Float32Array(this._instanceCount * stride);
+                for(let i = 0; i < this._instanceCount; ++i){
+                    const offset = stride * i;
+                    instanceData[offset] = (i % side - side / 2) / side;
+                    instanceData[offset + 1] = (Math.floor(i / side) % side - side / 2) / side;
+                    instanceData[offset + 2] = (Math.floor(i / side / side) - side / 2) / side;
+                    instanceData[offset + 4] = 0.75 / side;
+                    instanceData[offset + 5] = 0.75 / side;
+                    instanceData[offset + 6] = 0.75 / side;
+                }
+            }
+            const instanceBuffer = this._device.createBuffer({
+                size: instanceData.byteLength,
+                usage: GPUBufferUsage.VERTEX | GPUBufferUsage.STORAGE,
+                mappedAtCreation: true
+            });
+            new Float32Array(instanceBuffer.getMappedRange()).set(instanceData);
+            instanceBuffer.unmap();
+            this._uniformBindGroup = this._device.createBindGroup({
+                layout: this._renderPipeline.getBindGroupLayout(0),
+                entries: [
+                    {
+                        binding: 0,
+                        resource: {
+                            buffer: this._uniformBuffer
+                        }
+                    },
+                    {
+                        binding: 1,
+                        resource: {
+                            buffer: instanceBuffer,
+                            offset: 0,
+                            size: instanceData.byteLength
+                        }
+                    }
+                ]
+            });
+            this._colorAttachment = {
+                view: undefined,
+                clearValue: {
+                    r: 0,
+                    g: 0,
+                    b: 0,
+                    a: 1
+                },
+                loadOp: "clear",
+                storeOp: "store"
+            };
+            this._depthAttachment = {
+                view: undefined,
+                depthClearValue: 1,
+                depthLoadOp: "clear",
+                depthStoreOp: "store",
+                stencilLoadOp: "clear",
+                stencilStoreOp: "store"
+            };
+            this._renderPassDescriptor = {
+                colorAttachments: [
+                    this._colorAttachment
+                ],
+                depthStencilAttachment: this._depthAttachment
+            };
+        });
+    }
+    _resizeBackings() {
+        const size = [
+            this.width,
+            this.height,
+            1
+        ];
+        const depthTextureDesc = {
+            size: size,
+            dimension: "2d",
+            format: "depth24plus-stencil8",
+            usage: GPUTextureUsage.RENDER_ATTACHMENT
+        };
+        this._depthTexture = this._device.createTexture(depthTextureDesc);
+        this._depthTextureView = this._depthTexture.createView();
+        this._renderPassDescriptor.depthStencilAttachment.view = this._depthTextureView;
+    }
+    _encodeCommands() {
+        this._renderPassDescriptor.colorAttachments[0].view = this._context.getCurrentTexture().createView();
+        const commandEncoder = this._device.createCommandEncoder();
+        const passEncoder = commandEncoder.beginRenderPass(this._renderPassDescriptor);
+        passEncoder.setPipeline(this._renderPipeline);
+        passEncoder.setViewport(0, 0, this._canvas.width, this._canvas.height, 0, 1);
+        passEncoder.setScissorRect(0, 0, this._canvas.width, this._canvas.height);
+        passEncoder.setVertexBuffer(0, this._positionBuffer);
+        passEncoder.setVertexBuffer(1, this._colorBuffer);
+        passEncoder.setIndexBuffer(this._indexBuffer, "uint16");
+        passEncoder.setBindGroup(0, this._uniformBindGroup);
+        passEncoder.drawIndexed(this._indices.length, this._instanceCount);
+        passEncoder.end();
+        const commands = commandEncoder.finish();
+        this._queue.submit([
+            commands
+        ]);
+    }
+    update(elapsedTime) {
+        (0, $1ac1b59392edf35b$exports).multiply(this._mvpMatrix, this.pMatrices[0], this.mvMatrices[0]);
+    }
+    render(elapsedTime) {
+        return $1d3eb987c5042c2f$var$__awaiter(this, void 0, void 0, function*() {
+            const mvpMatrix = this._mvpMatrix;
+            this._device.queue.writeBuffer(this._uniformBuffer, 0, mvpMatrix.buffer, mvpMatrix.byteOffset, mvpMatrix.byteLength);
+            this._encodeCommands();
+        });
+    }
+    _resize(width, height) {
+        super._resize(width, height);
+        if (this._isInitialized) {
+            this._resizeBackings();
+            this._core.log.write((0, $4a6417d29706362f$export$243e62d78d3b544d).info, `buffers resized ${width},${height}`);
+        }
+    }
+}
+
+
+
+
 var $9824374ee38ba7ca$exports = {};
 
 $parcel$export($9824374ee38ba7ca$exports, "Main", () => $d5ed11dd11fe7749$export$861edd1ccea2f746);
+$parcel$export($9824374ee38ba7ca$exports, "MaterialType", () => $62116d012d21b949$export$bd062416169c6728);
 $parcel$export($9824374ee38ba7ca$exports, "Material", () => $62116d012d21b949$export$a2d8b23205c25948);
 $parcel$export($9824374ee38ba7ca$exports, "MetalMaterial", () => $62116d012d21b949$export$bd17d4a4be11a968);
 $parcel$export($9824374ee38ba7ca$exports, "GlossyMaterial", () => $62116d012d21b949$export$5e39c2cd3ef82349);
@@ -32065,7 +33667,7 @@ class $62116d012d21b949$export$a2d8b23205c25948 {
         return this._idColor;
     }
     constructor(options){
-        this._idColor = options.idColor || (0, $4c4ac78b213a9c07$exports).fromValues(0, 0, 0, 0);
+        this._idColor = (options === null || options === void 0 ? void 0 : options.idColor) || (0, $4c4ac78b213a9c07$exports).fromValues(0, 0, 0, 0);
     }
     toBuffer(buffer, index, textureId) {}
 }
@@ -32342,38 +33944,31 @@ class $cdd30208cd147f64$export$29cd7b75162a9425 extends (0, $a123db7d2af0bebc$ex
         const altitude = options && options.altitude ? options.altitude : this.lightingAltitude;
         const size = options && options.size ? options.size : this.lightingSize;
         const distance = options && options.distance ? options.distance : this.lightingDistance;
-        return [
-            {
-                azimuth: -45 + azimuthOffset,
-                altitude: altitude,
-                distance: distance,
-                size: (0, $91b0cc4981465964$exports).fromValues(size, size),
-                yaw: -45 + azimuthOffset,
-                pitch: altitude,
-                color: (0, $31054a6c69637582$exports).fromValues(10, 10, 10)
-            },
-            {
-                azimuth: 45 + azimuthOffset,
-                altitude: altitude,
-                distance: distance,
-                size: (0, $91b0cc4981465964$exports).fromValues(size, size),
-                yaw: 45 + azimuthOffset,
-                pitch: altitude,
-                color: (0, $31054a6c69637582$exports).fromValues(1, 1, 1)
-            },
-            {
-                azimuth: -135 + azimuthOffset,
-                altitude: altitude,
-                distance: distance,
-                size: (0, $91b0cc4981465964$exports).fromValues(size, size),
-                yaw: -135 + azimuthOffset,
-                pitch: altitude,
-                color: (0, $31054a6c69637582$exports).fromValues(1, 1, 1)
-            }
+        const azimuths = [
+            -45,
+            45,
+            -135
         ];
+        const brightnesses = [
+            10,
+            1,
+            1
+        ];
+        const lights = [];
+        for(let i = 0; i < azimuths.length; i++)lights.push({
+            azimuth: azimuths[i] + azimuthOffset,
+            altitude: altitude,
+            distance: distance,
+            size: (0, $91b0cc4981465964$exports).fromValues(size, size),
+            yaw: azimuths[i] + azimuthOffset,
+            pitch: altitude,
+            color: (0, $31054a6c69637582$exports).fromValues(brightnesses[i], brightnesses[i], brightnesses[i])
+        });
+        return lights;
     }
     reset() {
         this.aperture = 0;
+        this.focusDistance = 0;
         this.exposure = 1;
         this.maxSamplesPerPixel = 10000;
         this.shutterSpeed = 0;
@@ -32390,16 +33985,25 @@ class $cdd30208cd147f64$export$29cd7b75162a9425 extends (0, $a123db7d2af0bebc$ex
             })
         });
         this.groundSize = (0, $91b0cc4981465964$exports).fromValues(10, 10);
-        this.backgroundColor = (0, $4c4ac78b213a9c07$exports).fromValues(0, 0, 0, 1);
-        this.lightingAzimuthOffset = 0;
+        this.maxLights = 12;
+        this.backgroundColor = (0, $4c4ac78b213a9c07$exports).fromValues(1, 1, 1, 1);
+        this.ambientColor = (0, $31054a6c69637582$exports).fromValues(1, 1, 1);
         this.lightingAltitude = 30;
         this.lightingSize = 0.5;
         this.lightingDistance = 1.5;
+        this.lightingAzimuthOffset = 0;
+        this.lightingAltitudeOffset = 0;
+        this.lightingSizeOffset = 0;
+        this.lightingDistanceOffset = 0;
+        this.isDepthMultisampled = false;
+        this.isNormalMultisampled = false;
         this.autoDepth = true;
         this.minDepth = 1;
         this.maxDepth = 10;
         this.edgeDepth = 0.01;
         this.edgeNormal = 0.025;
+        this.edgeForeground = (0, $4c4ac78b213a9c07$exports).fromValues(1, 1, 1, 1);
+        this.edgeBackground = (0, $4c4ac78b213a9c07$exports).fromValues(0, 0, 0, 1);
     }
 }
 
@@ -32519,7 +34123,9 @@ const $66964bfc3ddbcb4c$export$8daabe80e4a041 = {
     xYDisk: 18,
     rotatedXyDisk: 19,
     ringSdf: 20,
-    rotatedRingSdf: 21
+    rotatedRingSdf: 21,
+    sphereSdf: 22,
+    tubeSdf: 23
 };
 class $66964bfc3ddbcb4c$export$1337e9dd34ffc243 extends Float32Array {
     constructor(count){
@@ -32543,6 +34149,15 @@ class $66964bfc3ddbcb4c$export$1337e9dd34ffc243 extends Float32Array {
         this.SDF_BORDER_OFFSET = 32;
         this.PARAMETER_1_OFFSET = 33;
         this.PARAMETER_2_OFFSET = 34;
+        this.MATERIAL_FUZZ_OFFSET = 35;
+        this.MATERIAL_GLOSS_OFFSET = 36;
+        this.MATERIAL_DENSITY_OFFSET = 37;
+        this.MATERIAL_REFRACTIVE_INDEX_OFFSET = 38;
+        this.MATERIAL_COLOR_OFFSET = 40;
+        this.MATERIAL_TYPE_ID_OFFSET = 43;
+        this.SEGMENT_COLOR_OFFSET = 44;
+        this.TEXTURE_TYPE_ID_OFFSET = 48;
+        this.TEXTURE_ID_OFFSET = 49;
     }
     getType(index) {
         return this[$66964bfc3ddbcb4c$export$1337e9dd34ffc243.SIZE * index + this.TYPE_OFFSET];
@@ -32601,12 +34216,6 @@ class $66964bfc3ddbcb4c$export$1337e9dd34ffc243 extends Float32Array {
         this[offset] = value[0];
         this[offset + 1] = value[1];
         this[offset + 2] = value[2];
-    }
-    getMaterialId(index) {
-        return this[$66964bfc3ddbcb4c$export$1337e9dd34ffc243.SIZE * index + this.MATERIAL_ID_OFFSET];
-    }
-    setMaterialId(index, value) {
-        this[$66964bfc3ddbcb4c$export$1337e9dd34ffc243.SIZE * index + this.MATERIAL_ID_OFFSET] = value;
     }
     getRotation0(index, value) {
         const offset = $66964bfc3ddbcb4c$export$1337e9dd34ffc243.SIZE * index + this.ROTATION0_OFFSET;
@@ -32690,8 +34299,64 @@ class $66964bfc3ddbcb4c$export$1337e9dd34ffc243 extends Float32Array {
     setSdfBorder(index, value) {
         this[$66964bfc3ddbcb4c$export$1337e9dd34ffc243.SIZE * index + this.SDF_BORDER_OFFSET] = value;
     }
+    getMaterialTypeId(index) {
+        return this[$66964bfc3ddbcb4c$export$1337e9dd34ffc243.SIZE * index + this.MATERIAL_TYPE_ID_OFFSET];
+    }
+    setMaterialTypeId(index, value) {
+        this[$66964bfc3ddbcb4c$export$1337e9dd34ffc243.SIZE * index + this.MATERIAL_TYPE_ID_OFFSET] = value;
+    }
+    getMaterialFuzz(index) {
+        return this[$66964bfc3ddbcb4c$export$1337e9dd34ffc243.SIZE * index + this.MATERIAL_FUZZ_OFFSET];
+    }
+    setMaterialFuzz(index, value) {
+        this[$66964bfc3ddbcb4c$export$1337e9dd34ffc243.SIZE * index + this.MATERIAL_FUZZ_OFFSET] = value;
+    }
+    getMaterialDensity(index) {
+        return this[$66964bfc3ddbcb4c$export$1337e9dd34ffc243.SIZE * index + this.MATERIAL_DENSITY_OFFSET];
+    }
+    setMaterialDensity(index, value) {
+        this[$66964bfc3ddbcb4c$export$1337e9dd34ffc243.SIZE * index + this.MATERIAL_DENSITY_OFFSET] = value;
+    }
+    getMaterialGloss(index) {
+        return this[$66964bfc3ddbcb4c$export$1337e9dd34ffc243.SIZE * index + this.MATERIAL_GLOSS_OFFSET];
+    }
+    setMaterialGloss(index, value) {
+        this[$66964bfc3ddbcb4c$export$1337e9dd34ffc243.SIZE * index + this.MATERIAL_GLOSS_OFFSET] = value;
+    }
+    getMaterialRefractiveIndex(index) {
+        return this[$66964bfc3ddbcb4c$export$1337e9dd34ffc243.SIZE * index + this.MATERIAL_REFRACTIVE_INDEX_OFFSET];
+    }
+    setMaterialRefractiveIndex(index, value) {
+        this[$66964bfc3ddbcb4c$export$1337e9dd34ffc243.SIZE * index + this.MATERIAL_REFRACTIVE_INDEX_OFFSET] = value;
+    }
+    getMaterialColor(index, value) {
+        const offset = $66964bfc3ddbcb4c$export$1337e9dd34ffc243.SIZE * index + this.MATERIAL_COLOR_OFFSET;
+        value[0] = this[offset];
+        value[1] = this[offset + 1];
+        value[2] = this[offset + 2];
+    }
+    setMaterialColor(index, value) {
+        const offset = $66964bfc3ddbcb4c$export$1337e9dd34ffc243.SIZE * index + this.MATERIAL_COLOR_OFFSET;
+        this[offset] = value[0];
+        this[offset + 1] = value[1];
+        this[offset + 2] = value[2];
+    }
+    getSegmentColor(index, value) {
+        const offset = $66964bfc3ddbcb4c$export$1337e9dd34ffc243.SIZE * index + this.SEGMENT_COLOR_OFFSET;
+        value[0] = this[offset];
+        value[1] = this[offset + 1];
+        value[2] = this[offset + 2];
+        value[3] = this[offset + 3];
+    }
+    setSegmentColor(index, value) {
+        const offset = $66964bfc3ddbcb4c$export$1337e9dd34ffc243.SIZE * index + this.SEGMENT_COLOR_OFFSET;
+        this[offset] = value[0];
+        this[offset + 1] = value[1];
+        this[offset + 2] = value[2];
+        this[offset + 3] = value[3];
+    }
 }
-$66964bfc3ddbcb4c$export$1337e9dd34ffc243.SIZE = 36;
+$66964bfc3ddbcb4c$export$1337e9dd34ffc243.SIZE = 52;
 class $66964bfc3ddbcb4c$export$cb7224ab7735b16e {
     get center0() {
         return this._center0;
@@ -32704,12 +34369,6 @@ class $66964bfc3ddbcb4c$export$cb7224ab7735b16e {
     }
     get time1() {
         return this._time1;
-    }
-    get material() {
-        return this._material;
-    }
-    set material(material) {
-        this._material = material;
     }
     get bounds() {
         return this._bounds;
@@ -32725,17 +34384,29 @@ class $66964bfc3ddbcb4c$export$cb7224ab7735b16e {
         this._center1 = options.center1;
         this._time0 = options.time0;
         this._time1 = options.time1;
-        this._material = options.material;
         this._bounds = new (0, $f858a5fa67a435f5$export$8ec70f2db73b49aa)();
         this._offset0 = (0, $31054a6c69637582$exports).create();
         this._offset1 = (0, $31054a6c69637582$exports).create();
+        this.materialFuzz = options.materialFuzz;
+        this.materialType = options.materialType;
+        this.materialGloss = options.materialGloss;
+        this.materialDensity = options.materialDensity;
+        this.materialRefractiveIndex = options.materialRefractiveIndex;
+        this.materialColor = options.materialColor;
+        this.segmentColor = options.segmentColor;
     }
-    toBuffer(buffer, index, materialId) {
+    toBuffer(buffer, index) {
         buffer.setCenter0(index, this._center0);
         buffer.setCenter1(index, this._center1);
         buffer.setTime0(index, this._time0);
         buffer.setTime1(index, this._time1);
-        buffer.setMaterialId(index, materialId);
+        buffer.setMaterialTypeId(index, this.materialType);
+        buffer.setMaterialFuzz(index, this.materialFuzz);
+        buffer.setMaterialGloss(index, this.materialGloss);
+        buffer.setMaterialDensity(index, this.materialDensity);
+        buffer.setMaterialRefractiveIndex(index, this.materialRefractiveIndex);
+        buffer.setMaterialColor(index, this.materialColor);
+        buffer.setSegmentColor(index, this.segmentColor);
     }
 }
 class $66964bfc3ddbcb4c$export$f44a85073ff35bb extends $66964bfc3ddbcb4c$export$cb7224ab7735b16e {
@@ -32754,8 +34425,8 @@ class $66964bfc3ddbcb4c$export$f44a85073ff35bb extends $66964bfc3ddbcb4c$export$
         min[2] = Math.min(this._center0[2] - this._radius, this._center1[2] - this._radius);
         max[2] = Math.max(this._center0[2] + this._radius, this._center1[2] + this._radius);
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.sphere);
         buffer.setSize0(index, (0, $31054a6c69637582$exports).fromValues(this._radius, this._radius, this._radius));
     }
@@ -32783,8 +34454,8 @@ class $66964bfc3ddbcb4c$export$3f7e8ab42d22375 extends $66964bfc3ddbcb4c$export$
         min[2] = Math.min(this._center0[2] - this._thickness, this._center1[2] - this._thickness);
         max[2] = Math.max(this._center0[2] + this._thickness, this._center1[2] + this._thickness);
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.xYDisk);
         buffer.setSize0(index, (0, $31054a6c69637582$exports).fromValues(this._radius0, this._radius0, this._thickness));
         buffer.setSize1(index, (0, $31054a6c69637582$exports).fromValues(this._radius1, this._radius1, this._thickness));
@@ -32813,8 +34484,8 @@ class $66964bfc3ddbcb4c$export$1d27985e95946d19 extends $66964bfc3ddbcb4c$export
         max0[2] = Math.max(max0[2], max1[2]);
         this._bounds = rotatedBounds0;
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.rotatedXyDisk);
         buffer.setRotation0(index, this._rotation0);
         buffer.setRotation1(index, this._rotation1);
@@ -32854,8 +34525,8 @@ class $66964bfc3ddbcb4c$export$d84131593262075b extends $66964bfc3ddbcb4c$export
         this.offset1[1] = (min[1] + max[1]) / 2 - this._center1[1];
         this.offset1[2] = (min[2] + max[2]) / 2 - this._center1[2];
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.ringSdf);
         buffer.setSize0(index, this._size0);
         buffer.setSize1(index, this._size1);
@@ -32885,11 +34556,34 @@ class $66964bfc3ddbcb4c$export$2d4dbfe5a7e22bdf extends $66964bfc3ddbcb4c$export
         max0[2] = Math.max(max0[2], max1[2]);
         this._bounds = rotatedBounds0;
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.rotatedRingSdf);
         buffer.setRotation0(index, this._rotation0);
         buffer.setRotation1(index, this._rotation1);
+    }
+}
+class $66964bfc3ddbcb4c$export$8c6d7438a2b5cc70 extends $66964bfc3ddbcb4c$export$cb7224ab7735b16e {
+    constructor(options){
+        super(options);
+        this._innerRadius = options.innerRadius;
+        this._outerRadius = options.outerRadius;
+        this._height = options.height;
+        this._rounding = options.rounding;
+        const min = this._bounds.min;
+        const max = this._bounds.max;
+        min[0] = this._center1[0] - this._outerRadius;
+        max[0] = this._center1[0] + this._outerRadius;
+        min[1] = this._center1[1] - this._height;
+        max[1] = this._center1[1] + this._height;
+        min[2] = this._center1[2] - this._outerRadius;
+        max[2] = this._center1[2] + this._outerRadius;
+    }
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
+        buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.tubeSdf);
+        buffer.setSize0(index, (0, $31054a6c69637582$exports).fromValues(this._innerRadius, this._height, this._outerRadius));
+        buffer.setRounding(index, this._rounding);
     }
 }
 class $66964bfc3ddbcb4c$export$28497cc10fec95c2 extends $66964bfc3ddbcb4c$export$cb7224ab7735b16e {
@@ -32906,11 +34600,17 @@ class $66964bfc3ddbcb4c$export$28497cc10fec95c2 extends $66964bfc3ddbcb4c$export
         min[2] = Math.min(this._center0[2] - this._size0[2], this._center1[2] - this._size1[2]);
         max[2] = Math.max(this._center0[2] + this._size0[2], this._center1[2] + this._size1[2]);
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.box);
         buffer.setSize0(index, this._size0);
         buffer.setSize1(index, this._size1);
+    }
+}
+class $66964bfc3ddbcb4c$export$86630ee69b6c2fb extends $66964bfc3ddbcb4c$export$f44a85073ff35bb {
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
+        buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.sphereSdf);
     }
 }
 class $66964bfc3ddbcb4c$export$dfaec831a2de7e90 extends $66964bfc3ddbcb4c$export$28497cc10fec95c2 {
@@ -32918,8 +34618,8 @@ class $66964bfc3ddbcb4c$export$dfaec831a2de7e90 extends $66964bfc3ddbcb4c$export
         super(options);
         this._rounding = options.rounding;
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.boxSdf);
         buffer.setRounding(index, this._rounding);
     }
@@ -32945,8 +34645,8 @@ class $66964bfc3ddbcb4c$export$e349e1996fd043a1 extends $66964bfc3ddbcb4c$export
         max0[2] = Math.max(max0[2], max1[2]);
         this._bounds = rotatedBounds0;
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.rotatedBoxSdf);
         buffer.setRotation0(index, this._rotation0);
         buffer.setRotation1(index, this._rotation1);
@@ -32973,8 +34673,8 @@ class $66964bfc3ddbcb4c$export$acdc70fb29a0312b extends $66964bfc3ddbcb4c$export
         max0[2] = Math.max(max0[2], max1[2]);
         this._bounds = rotatedBounds0;
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.rotatedBox);
         buffer.setRotation0(index, this._rotation0);
         buffer.setRotation1(index, this._rotation1);
@@ -33030,8 +34730,8 @@ class $66964bfc3ddbcb4c$export$cd2cb390b9add281 extends $66964bfc3ddbcb4c$export
             max0[2] = Math.max(max0[2], max1[2]);
         }
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.cylinder);
         buffer.setSize0(index, (0, $31054a6c69637582$exports).fromValues(this._radius, this._height, this._radius));
         buffer.setSize1(index, (0, $31054a6c69637582$exports).fromValues(this._radius, this._height, this._radius));
@@ -33044,8 +34744,8 @@ class $66964bfc3ddbcb4c$export$563880b935f7aee2 extends $66964bfc3ddbcb4c$export
         super(options);
         this._rounding = options.rounding;
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.cylinderSdf);
         buffer.setRounding(index, this._rounding);
     }
@@ -33070,8 +34770,8 @@ class $66964bfc3ddbcb4c$export$2104cbf9d09a457a extends $66964bfc3ddbcb4c$export
         min[2] = this._center0[2] - this._radius;
         max[2] = this._center0[2] + this._radius;
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.hexPrism);
         buffer.setSize0(index, (0, $31054a6c69637582$exports).fromValues(this._radius * (0, $d4d7bd6cc65a5081$export$a002182e51710d39).ROOT_THREE_OVER_TWO, this._height, this._radius));
     }
@@ -33081,8 +34781,8 @@ class $66964bfc3ddbcb4c$export$df234dab64f8469a extends $66964bfc3ddbcb4c$export
         super(options);
         this._rounding = options.rounding;
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.hexPrismSdf);
         buffer.setRounding(index, this._rounding);
     }
@@ -33103,8 +34803,8 @@ class $66964bfc3ddbcb4c$export$3d594d9378ccaeb1 extends $66964bfc3ddbcb4c$export
         this._texCoord1 = options.texCoord1;
         this._setBounds();
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setTexCoord0(index, this._texCoord0);
         buffer.setTexCoord1(index, this._texCoord1);
     }
@@ -33120,8 +34820,8 @@ class $66964bfc3ddbcb4c$export$379f0673f20ddbc9 extends $66964bfc3ddbcb4c$export
         min[2] = Math.min(this._center0[2] - this._thickness, this._center1[2] - this._thickness);
         max[2] = Math.max(this._center0[2] + this._thickness, this._center1[2] + this._thickness);
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.xyRect);
         buffer.setSize0(index, (0, $31054a6c69637582$exports).fromValues(this._size0[0], this._size0[1], this._thickness));
         buffer.setSize1(index, (0, $31054a6c69637582$exports).fromValues(this._size1[0], this._size1[1], this._thickness));
@@ -33138,8 +34838,8 @@ class $66964bfc3ddbcb4c$export$57071e021ef37bbb extends $66964bfc3ddbcb4c$export
         min[2] = Math.min(this._center0[2] - this._size0[1], this._center1[2] - this._size1[1]);
         max[2] = Math.max(this._center0[2] + this._size0[1], this._center1[2] + this._size1[1]);
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.xzRect);
         buffer.setSize0(index, (0, $31054a6c69637582$exports).fromValues(this._size0[0], this._thickness, this._size0[1]));
         buffer.setSize1(index, (0, $31054a6c69637582$exports).fromValues(this._size1[0], this._thickness, this._size1[1]));
@@ -33156,8 +34856,8 @@ class $66964bfc3ddbcb4c$export$c9a72925228aaa16 extends $66964bfc3ddbcb4c$export
         min[2] = Math.min(this._center0[2] - this._size0[1], this._center1[2] - this._size1[1]);
         max[2] = Math.max(this._center0[2] + this._size0[1], this._center1[2] + this._size1[1]);
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.yzRect);
         buffer.setSize0(index, (0, $31054a6c69637582$exports).fromValues(this._thickness, this._size0[0], this._size0[1]));
         buffer.setSize1(index, (0, $31054a6c69637582$exports).fromValues(this._thickness, this._size1[0], this._size1[1]));
@@ -33168,8 +34868,8 @@ class $66964bfc3ddbcb4c$export$da0b2fe0ae5e85dd extends $66964bfc3ddbcb4c$export
         super(options);
         this._sdfBuffer = options.sdfBuffer;
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setSdfBuffer(index, this._sdfBuffer);
         buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.fontXyRect);
     }
@@ -33181,8 +34881,8 @@ class $66964bfc3ddbcb4c$export$6d714417e0aa3f19 extends $66964bfc3ddbcb4c$export
         this._sdfBuffer = options.sdfBuffer;
         this._sdfBorder = options.sdfBorder;
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setTexId(index, this._texId);
         buffer.setSdfBuffer(index, this._sdfBuffer);
         buffer.setSdfBorder(index, this._sdfBorder);
@@ -33210,8 +34910,8 @@ class $66964bfc3ddbcb4c$export$71089e9c0fdb5c5 extends $66964bfc3ddbcb4c$export$
         max0[2] = Math.max(max0[2], max1[2]);
         this._bounds = rotatedBounds0;
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.rotatedXyRect);
         buffer.setRotation0(index, this._rotation0);
         buffer.setRotation1(index, this._rotation1);
@@ -33222,8 +34922,8 @@ class $66964bfc3ddbcb4c$export$402b844452575dc9 extends $66964bfc3ddbcb4c$export
         super(options);
         this._sdfBuffer = options.sdfBuffer;
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setSdfBuffer(index, this._sdfBuffer);
         buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.rotatedFontXyRect);
     }
@@ -33235,8 +34935,8 @@ class $66964bfc3ddbcb4c$export$c2e43d40ab2c967e extends $66964bfc3ddbcb4c$export
         this._sdfBuffer = options.sdfBuffer;
         this._sdfBorder = options.sdfBorder;
     }
-    toBuffer(buffer, index, materialId) {
-        super.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        super.toBuffer(buffer, index);
         buffer.setTexId(index, this._texId);
         buffer.setSdfBuffer(index, this._sdfBuffer);
         buffer.setSdfBorder(index, this._sdfBorder);
@@ -33252,13 +34952,12 @@ class $66964bfc3ddbcb4c$export$412c0ed39e393270 extends $66964bfc3ddbcb4c$export
         this._boundary = options.boundary;
         this._bounds = this._boundary.bounds;
     }
-    toBuffer(buffer, index, materialId) {
-        this._boundary.toBuffer(buffer, index, materialId);
+    toBuffer(buffer, index) {
+        this._boundary.toBuffer(buffer, index);
         buffer.setBoundaryType(index, buffer.getType(index));
         buffer.setType(index, $66964bfc3ddbcb4c$export$8daabe80e4a041.constantMedium);
     }
 }
-
 
 
 /*!
@@ -33269,6 +34968,7 @@ const $e1b604d7f27d3d8e$export$7173403786dbea8d = `
 const PI = 3.1415926535897932385f;
 const TWO_PI = 6.2831853071795864769f;
 const ROOT_THREE_OVER_TWO = 0.86602540378443864676f;
+const ONE_OVER_LOG10 = 1f / log(10f);
 
 struct ColorBuffer {
     values: array<f32>,
@@ -33295,7 +34995,7 @@ struct HitRecord {
     normal: vec3<f32>,
     t: f32,
     frontFace: bool,
-    materialId: u32,
+    // materialId: u32,
     uv: vec2<f32>,
     id: u32,
     previousId: u32,
@@ -33313,7 +35013,6 @@ struct Camera {
     lowerLeftCorner: vec3<f32>,
     horizontal: vec3<f32>,
     vertical: vec3<f32>,
-    lookAt: vec3<f32>,
     u: vec3<f32>,
     v: vec3<f32>,
     w: vec3<f32>,
@@ -33322,6 +35021,7 @@ struct Camera {
     viewportHeight: f32,
     fov: f32,
     aperture: f32,
+    focusDistance: f32,
     time0: f32,
     time1: f32,
 }
@@ -33336,19 +35036,21 @@ struct Uniforms {               // ------------------------------
     seed: f32,                  //             44       4       4
     forward: vec3<f32>,         //             48      16      12
     fov: f32,                   //             60       4       4
-    lookAt: vec3<f32>,          //             64      16      12
-    aperture: f32,              //             76       4       4
-    backgroundColor: vec3<f32>, //             80      16      12
-    time0: f32,                 //             92       4       4
-    time1: f32,                 //             96       4       4
-    tilesX : f32,               //            100       4       4
-    tilesY : f32,               //            104       4       4
-    tileOffsetX : f32,          //            108       4       4
-    tileOffsetY : f32,          //            112       4       4
-    raysPerFrame : f32,         //            116       4       4
-                                // padding    120       4       8
+    backgroundColor: vec3<f32>, //             64      16      12
+    time0: f32,                 //             76       4       4
+    ambientColor: vec3<f32>,    //             80      16      12
+    time1: f32,                 //             92       4       4
+    tilesX : f32,               //             96       4       4
+    tilesY : f32,               //            100       4       4
+    tileOffsetX : f32,          //            104       4       4
+    tileOffsetY : f32,          //            108       4       4    
+    lookAt: vec3<f32>,          //            112      16      12
+    aperture: f32,              //            124       4       4
+    focusDistance: f32,         //            128       4       4
+    raysPerFrame : f32,         //            132       4       4
+                                // padding    136       4       4
                                 // ------------------------------
-                                //                     16     128
+                                //                     16     144
 }
 
 // id   type
@@ -33359,18 +35061,20 @@ struct Uniforms {               // ------------------------------
 // 3    sdfText
 // 4    checker
 // 5    grid
-                       //         offest   align    size   stride
-struct Texture {       // ---------------------------------------
+                       //         offest   align    size
+struct Texture {       // ------------------------------
     color0: vec3<f32>, //              0      16      12
     typeId: f32,       //             12       4       4
     color1: vec3<f32>, //             16      12      12
-                       // padding     28      12      12
+                       // padding     28       4      12
     size0: vec4<f32>,  //             32      16      16
     size1: vec4<f32>,  //             48      16      16
     clip:  vec4<f32>,  //             64      16      16
     offset: vec2<f32>, //             80       8       8
-}                      // ---------------------------------------
-                       //                     16      88       96
+}                      // padding     88       4       8
+                       // ------------------------------
+                       //                     16      96
+
 
 // id   type
 // ---------------
@@ -33381,8 +35085,8 @@ struct Texture {       // ---------------------------------------
 // 4    glossy
 // 5    isotropic
 // 6    varnitsh
-                          //         offest   align    size   stride
-struct Material {         // ---------------------------------------
+                          //         offest   align    size
+struct Material {         // ------------------------------
     typeId: f32,          //              0       4       4
     fuzz: f32,            //              4       4       4
     refractiveIndex: f32, //              8       4       4
@@ -33391,8 +35095,9 @@ struct Material {         // ---------------------------------------
     glossiness: f32,      //             28       4       4
     idColor: vec4<f32>,   //             32      16      16
     density: f32,         //             48       4       4
-                          // ---------------------------------------
-}                         //                     16      52       64
+                          // padding     52       4      12
+                          // ------------------------------
+}                         //                     16      64
 
 // id   type
 // ----------------
@@ -33402,16 +35107,17 @@ struct Material {         // ---------------------------------------
 // 3    disk
 // 4    cylinder
 // 5    dome
-                         //         offest   align    size   stride
-struct Light {           // ---------------------------------------
+                         //         offest   align    size
+struct Light {           // ------------------------------
     rotation: vec4<f32>, //              0      16      16
     center: vec3<f32>,   //             16      16      12
     typeId: f32,         //             28       4       4
     size: vec3<f32>,     //             32      16      12
                          // padding     44       4       4
     color: vec3<f32>,    //             48      16      12
-}                        // ---------------------------------------
-                         //                     16      60       64
+                         // padding     60       4       4
+}                        // ------------------------------
+                         //                     16      64
 
 // id   type
 // ----------------
@@ -33437,49 +35143,62 @@ struct Light {           // ---------------------------------------
 // 19   rotatedXyDisk
 // 20   ringSdf
 // 21   rotatedRingSdf
-                          //         offest   align    size   stride
-struct Hittable {         // ---------------------------------------
-    center0: vec3<f32>,   //              0      16      12
-    typeId: f32,          //             12       4       4
-    size0: vec3<f32>,     //             16      16      12
-    materialId: f32,      //             28       4       4
-    rotation0: vec4<f32>, //             32      16      16
-    rotation1: vec4<f32>, //             48      16      16
-    texCoord0: vec2<f32>, //             64       8       8
-    texCoord1: vec2<f32>, //             72       8       8
-    center1: vec3<f32>,   //             80      16      12 
-    rounding: f32,        //             92       4       4 
-    size1: vec3<f32>,     //             96      16      12
-    boundaryTypeId: f32,  //            108       4       4
-    time0: f32,           //            112       4       4
-    time1: f32,           //            116       4       4
-    texId: f32,           //            120       4       4
-    sdfBuffer: f32,       //            124       4       4
-    sdfBorder: f32,       //            128       4       4
-    parameter1: f32,      //            132       4       4
-    parameter2: f32,      //            136       4       4
-                          // padding    140       4       4
-}                         // ---------------------------------------
-                          //                     16     144      144
+// 22   sphereSdf
+// 23   tubeSdf
+                                  //         offest   align    size
+struct Hittable {                 // ------------------------------
+    center0: vec3<f32>,           //              0      16      12
+    typeId: f32,                  //             12       4       4
+    size0: vec3<f32>,             //             16      16      12
+    materialId: f32,              //             28       4       4
+    rotation0: vec4<f32>,         //             32      16      16
+    rotation1: vec4<f32>,         //             48      16      16
+    texCoord0: vec2<f32>,         //             64       8       8
+    texCoord1: vec2<f32>,         //             72       8       8
+    center1: vec3<f32>,           //             80      16      12
+    rounding: f32,                //             92       4       4
+    size1: vec3<f32>,             //             96      16      12
+    boundaryTypeId: f32,          //            108       4       4
+    time0: f32,                   //            112       4       4
+    time1: f32,                   //            116       4       4
+    texId: f32,                   //            120       4       4
+    sdfBuffer: f32,               //            124       4       4
+    sdfBorder: f32,               //            128       4       4
+    parameter1: f32,              //            132       4       4
+    parameter2: f32,              //            136       4       4
+    materialFuzz: f32,            //            140       4       4
+    materialGloss: f32,           //            144       4       4
+    materialDensity: f32,         //            148       4       4
+    materialRefractiveIndex: f32, //            152       4       4
+                                  // padding    156       4       4
+    materialColor: vec3<f32>,     //            160      16      12
+    materialTypeId: f32,          //            172       4       4
+    segmentColor: vec4<f32>,      //            176      16      16
+    textureTypeId: f32,           //            192       4       4
+    textureId: f32,               //            196       4       4
+                                  // padding    200       4       8
+}                                 // ------------------------------
+                                  //                     16     208
 
-                            //         offest   align    size   stride
-struct LinearBVHNode {      // ---------------------------------------
+                            //         offest   align    size
+struct LinearBVHNode {      // ------------------------------
     center: vec3<f32>,      //              0      16      12
     primitivesOffset: f32,  //             12       4       4
     size: vec3<f32>,        //             16      16      12
     secondChildOffset: f32, //             28       4       4
     nPrimitives: f32,       //             32       4       4
     axis: f32,              //             36       4       4
-}                           // ---------------------------------------
-                            //                     16      40       48
+}                           // padding     40       4       8
+                            // ------------------------------
+                            //                     16      48
 
 struct HittableBuffer {
     hittables: array<Hittable>,
 }
 
-struct MaterialBuffer {
-    materials: array<Material>,
-}
+// struct MaterialBuffer {
+//     materials: array<Material>,
+// }
 
 struct TextureBuffer {
     textures: array<Texture>,
@@ -33515,11 +35234,10 @@ fn getCamera(uniforms: Uniforms) -> Camera {
     camera.viewportHeight = 2f * tan(camera.fov / 2f);
     camera.viewportWidth = camera.aspectRatio * camera.viewportHeight;
     camera.origin = uniforms.position;
-    camera.lookAt = uniforms.lookAt;
     camera.u = uniforms.right;
     camera.v = uniforms.up;
     camera.w = uniforms.forward;
-    let focusDistance = dot(camera.w, camera.origin - camera.lookAt);
+    let focusDistance = dot(camera.w, camera.origin - uniforms.lookAt) + uniforms.focusDistance;
     camera.horizontal = camera.u * camera.viewportWidth * focusDistance;
     camera.vertical = camera.v * camera.viewportHeight * focusDistance;
     camera.lowerLeftCorner = camera.origin - camera.horizontal / 2f + camera.vertical / 2f - camera.w * focusDistance;
@@ -33631,7 +35349,7 @@ fn hitBVH(ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, HitRecord>, s
                     if (hit(id, ray, invDir, tMin, closestSoFar, &tempHitRecord, seed)) {
                         hitAnything = true;
                         closestSoFar = tempHitRecord.t;
-                        tempHitRecord.materialId = u32(hittableBuffer.hittables[id].materialId);
+                        // tempHitRecord.materialId = u32(hittableBuffer.hittables[id].materialId);
                         tempHitRecord.id = id;
                     }
                 }
@@ -33739,6 +35457,12 @@ fn hit(id: u32, ray: Ray, invDir: vec3<f32>, tMin: f32, tMax: f32, hitRecord: pt
         case 21u: {
             return hitRotatedRingSdf(id, ray, tMin, tMax, hitRecord);
         }
+        case 22u: {
+            return hitSphereSdf(id, ray, tMin, tMax, hitRecord);
+        }
+        case 23u: {
+            return hitTubeSdf(id, ray, tMin, tMax, hitRecord);
+        }
     }
 }
 
@@ -33770,7 +35494,8 @@ fn hitConstantMedium(id: u32, ray: Ray, invDir: vec3<f32>, tMin: f32, tMax: f32,
     }
     tempHitRecord1.t = max(tempHitRecord1.t, 0f);
     let distanceInsideBoundary = tempHitRecord2.t - tempHitRecord1.t;
-    let negativeInverseDensity = -1f / materialBuffer.materials[u32((*constantMedium).materialId)].density;
+    // let negativeInverseDensity = -1f / materialBuffer.materials[u32((*constantMedium).materialId)].density;
+    let negativeInverseDensity = -1f / constantMedium.materialDensity;
     let hitDistance = negativeInverseDensity * log(random(seed));
     if (hitDistance > distanceInsideBoundary) { return false; }
     let t = tempHitRecord1.t + hitDistance;
@@ -33817,14 +35542,19 @@ fn hitConstantMediumBoundary(id: u32, boundaryTypeId: u32, ray: Ray, invDir: vec
         case 21u: {
             return hitRotatedRingSdf(id, ray, tMin, tMax, hitRecord);
         }
+        case 22u: {
+            return hitSphereSdf(id, ray, tMin, tMax, hitRecord);
+        }
+        case 23u: {
+            return hitTubeSdf(id, ray, tMin, tMax, hitRecord);
+        }
     }
 }
 
 fn hitSphere(id: u32, ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, HitRecord>) -> bool {
     let sphere = &hittableBuffer.hittables[id];
     let radius = (*sphere).size0.x;
-    let time =  min(max((ray.time - (*sphere).time0) / ((*sphere).time1 - (*sphere).time0), 0f), 1f); // Normalize time to [0,1]
-    let center = (*sphere).center0 + time * ((*sphere).center1 - (*sphere).center0);
+    let center = (*sphere).center0;
     let oc = ray.origin - center;
     let b = dot(oc, ray.direction);
     let c = dot(oc, oc) - radius * radius;
@@ -33838,18 +35568,18 @@ fn hitSphere(id: u32, ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, H
         root = -b + h;
         if (root < tMin || root > tMax) { return false; }
     }
-   
+
     // (*hitRecord).t = root;
     // (*hitRecord).position = rayAt(ray, root);
     // let outwardNormal = ((*hitRecord).position - center) / radius;
     // setFaceNormal(ray, outwardNormal, hitRecord);
-   
+
     // Reduce precision error in t by ensuring hit position is on sphere surface
-    let outwardNormal = normalize(ray.origin + ray.direction * root - center);  
+    let outwardNormal = normalize(ray.origin + ray.direction * root - center);
     setFaceNormal(ray, outwardNormal, hitRecord);
     (*hitRecord).position = center + outwardNormal * radius; // Use outward normal with internal reflection
     (*hitRecord).t = root; // I should also re-calculate t, but this would involve another normalization. t is only used to check closest hit, so only important with overlapping geometry
-   
+
     // UV
     let phi = atan2(outwardNormal.x, outwardNormal.z); // [-pi,pi]
     let theta = asin(outwardNormal.y); // [-pi/2, pi/2]
@@ -33871,7 +35601,7 @@ fn hitBox(id: u32, ray: Ray, invDir: vec3<f32>, tMin: f32, tMax: f32, hitRecord:
     let tFar = min(min(t2.x, t2.y), t2.z);
     // if (tFar <= tNear) { return false; }
     if (tNear > tFar || tFar < 0f) { return false; }
-   
+
     // Find nearest root in range
     var outwardNormal: vec3<f32>;
     var root = tNear;
@@ -33883,7 +35613,7 @@ fn hitBox(id: u32, ray: Ray, invDir: vec3<f32>, tMin: f32, tMax: f32, hitRecord:
     else {
         outwardNormal = -sign(ray.direction) * step(t1.yzx, t1.xyz) * step(t1.zxy, t1.xyz);
     }
-   
+
     (*hitRecord).t = root;
     (*hitRecord).position = rayAt(ray, root);
     setFaceNormal(ray, outwardNormal, hitRecord);
@@ -33926,7 +35656,7 @@ fn hitXyDisk(id: u32, ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, H
     // Bounds
     let radius = (*xyDisk).size0.x;
     if (dot(p, p) > radius * radius) { return false; } // dot(p, p) is squared distance from disk center to intersection point
-    
+
     // Texture coords
     var uv = vec2<f32>(0.5 * p.xy / radius + vec2<f32>(0.5f, 0.5f));
     let texCoord0 = (*xyDisk).texCoord0;
@@ -34073,7 +35803,7 @@ fn hitXzRect(id: u32, ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, H
 // TODO: Share hit function with XyRect
 fn hitFontXyRect(id: u32, ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, HitRecord>) -> bool {
     let xyRect = &hittableBuffer.hittables[id];
-    
+
     // let oc = ray.origin - (*xyRect).center0;
     let time =  min(max((ray.time - (*xyRect).time0) / ((*xyRect).time1 - (*xyRect).time0), 0f), 1f); // Normalize time to [0,1]
     let center = (*xyRect).center0 + time * ((*xyRect).center1 - (*xyRect).center0);
@@ -34179,7 +35909,7 @@ fn hitSdfXyRect(id: u32, ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function
     // sdfBorder
     let border = xyRect.sdfBorder / 0xff;
     (*hitRecord).sdfBorder = r - buffer < border;
-    
+
     (*hitRecord).uv = uv;
     (*hitRecord).t = t;
     (*hitRecord).position = rayAt(ray, t);
@@ -34274,7 +36004,7 @@ fn hitCylinder(id: u32, ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function,
     let cr1 = (sy1 * ch - caoc) / card;
     let ct0 = select(10000000f, cr0, abs(b + a * cr0) < h);
     let ct1 = select(-10000000f, cr1, abs(b + a * cr1) < h);
-   
+
     // Find the nearest root in range
     let tN = min(bt0, ct0);
     let tF = max(bt1, ct1);
@@ -34299,13 +36029,13 @@ fn hitCylinder(id: u32, ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function,
     else {
         let sy = select(sy1, sy0, root == ct0);
         outwardNormal = ca * sy;
-       
+
         // TODO: Reduce precision error
         setFaceNormal(ray, outwardNormal, hitRecord);
         (*hitRecord).position = rayAt(ray, root);
         (*hitRecord).t = root;
     }
-   
+
     // setFaceNormal(ray, outwardNormal, hitRecord);
     // (*hitRecord).position = rayAt(ray, root);
     // (*hitRecord).t = root;
@@ -34416,6 +36146,40 @@ fn hitBoxSdf(id: u32, ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, H
                 k.yyx * mapBoxSdf(oc + k.yyx * h, size, r) +
                 k.yxy * mapBoxSdf(oc + k.yxy * h, size, r) +
                 k.xxx * mapBoxSdf(oc + k.xxx * h, size, r));
+            setFaceNormal(ray, outwardNormal, hitRecord);
+            return true;
+        }
+    }
+    return false;
+}
+
+fn mapSphereSdf(p: vec3<f32>, r: f32) -> f32 {
+    return length(p) - r;
+}
+
+fn hitSphereSdf(id: u32, ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, HitRecord>) -> bool {
+    let sphereSdf = &hittableBuffer.hittables[id];
+    var t = tMin;
+    let center = (*sphereSdf).center0;
+    let r = (*sphereSdf).size0.x;
+    for (var i: u32 = 0u; i < 256u; i = i + 1u) {
+        let position = rayAt(ray, t);
+        let oc = position - center;
+        let distance = abs(mapSphereSdf(oc, r));
+        t = t + distance;
+        if (t > tMax) { return false; }
+        if (distance < 0.000001f) {
+            (*hitRecord).t = t;
+            (*hitRecord).position = rayAt(ray, t);
+
+            // Normal
+            let h = 0.000001f; // replace by an appropriate value
+            let k = vec2<f32>(1f, -1f);
+            let outwardNormal =  normalize(
+                k.xyy * mapSphereSdf(oc + k.xyy * h, r) +
+                k.yyx * mapSphereSdf(oc + k.yyx * h, r) +
+                k.yxy * mapSphereSdf(oc + k.yxy * h, r) +
+                k.xxx * mapSphereSdf(oc + k.xxx * h, r));
             setFaceNormal(ray, outwardNormal, hitRecord);
             return true;
         }
@@ -34608,10 +36372,60 @@ fn hitRotatedRingSdf(id: u32, ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<fun
     return false;
 }
 
+fn mapTubeSdf(p: vec3<f32>, r: f32, th: f32, h: f32, rounding: f32) -> f32 {
+    // Circle
+    // return length(p) - r;
+    // Annular
+    // abs(sdShape(p)) - r
+    // Annular circle
+    let d = abs(length(p.xz) - r) - th / 2f;
+    
+    // Extrude
+    let w = vec2<f32>(d, abs(p.y) - h);
+  	return min(max(w.x, w.y), 0f) + length(max(w, vec2<f32>(0f, 0f))) - rounding;
+}
+
+fn hitTubeSdf(id: u32, ray: Ray, tMin: f32, tMax: f32, hitRecord: ptr<function, HitRecord>) -> bool {
+    let tubeSdf = &hittableBuffer.hittables[id];
+    var t = tMin;
+    let size = (*tubeSdf).size0;
+    let center = (*tubeSdf).center0;
+    let rounding = (*tubeSdf).rounding;
+    let outerr = size.z;
+    let innerr = size.x;
+    let e = size.y - rounding;
+    let r = (outerr + innerr) * 0.5f;
+    let th = (outerr - innerr) - rounding;
+    for (var i: u32 = 0u; i < 256u; i = i + 1u) {
+        let position = rayAt(ray, t);
+        let oc = position - center;
+        let distance = abs(mapTubeSdf(oc, r, th, e, rounding));
+        t = t + distance;
+        if (t > tMax) { return false; }
+        if (distance < 0.000001f) {
+            (*hitRecord).t = t;
+            (*hitRecord).position = rayAt(ray, t);
+
+            // Normal
+            let h = 0.00001f; // replace by an appropriate value
+            let k = vec2<f32>(1f, -1f);
+            let outwardNormal =  normalize(
+                k.xyy * mapTubeSdf(oc + k.xyy * h, r, th, e, rounding) +
+                k.yyx * mapTubeSdf(oc + k.yyx * h, r, th, e, rounding) +
+                k.yxy * mapTubeSdf(oc + k.yxy * h, r, th, e, rounding) +
+                k.xxx * mapTubeSdf(oc + k.xxx * h, r, th, e, rounding));
+            setFaceNormal(ray, outwardNormal, hitRecord);
+            return true;
+        }
+    }
+    return false;
+}
+
 fn hitLights(ray: Ray) -> vec3<f32> {
     var hit: bool;
     for (var i: u32 = 0u; i < arrayLength(&lightBuffer.lights); i = i + 1u) {
         // let light = lightBuffer.lights[i];
+        // TODO: Directional lights
         switch u32(lightBuffer.lights[i].typeId) {
             default: {
                 hit = hitSphereLight(i, ray);
@@ -34624,11 +36438,14 @@ fn hitLights(ray: Ray) -> vec3<f32> {
             return lightBuffer.lights[i].color;
         }
     }
-   
+
     // Background color
     // return vec3<f32>(0f, 0f, 0f);
     // return vec3<f32>(1f, 1f, 1f);
-    return uniforms.backgroundColor;
+    // return uniforms.backgroundColor;
+
+    // Ambient light (not background color)
+    return uniforms.ambientColor;
 
     // TODO: Dome light
     // let t = 0.5f * (ray.direction.y + 1f);
@@ -34670,17 +36487,20 @@ fn nearZero(v: vec3<f32>) -> bool {
 
 fn scatterLambertian(ray: ptr<function, Ray>, hitRecord: HitRecord, attenuation: ptr<function, vec3<f32>>, seed: ptr<function, u32>) -> bool {
     let scatterDirection = hitRecord.normal + randomUnitVector(seed);
-   
+
     // Catch degenerate scatter direction
     (*ray).direction = select(normalize(scatterDirection), hitRecord.normal, nearZero(scatterDirection));
-   
+
     (*ray).origin = hitRecord.position;
     (*attenuation) = textureValue(hitRecord);
     return true;
 }
 
 fn scatterMetal(ray: ptr<function, Ray>, hitRecord: HitRecord, attenuation: ptr<function, vec3<f32>>, seed: ptr<function, u32>) -> bool {
-    (*ray).direction = normalize(reflect((*ray).direction, hitRecord.normal) + materialBuffer.materials[hitRecord.materialId].fuzz * randomInUnitSphere(seed));
+    // let fuzz = materialBuffer.materials[hitRecord.materialId].fuzz;
+    let fuzz = hittableBuffer.hittables[hitRecord.id].materialFuzz;
+    (*ray).direction = normalize(reflect((*ray).direction, hitRecord.normal) + fuzz * randomInUnitSphere(seed));
+
     (*ray).origin = hitRecord.position;
     (*attenuation) = textureValue(hitRecord);
 
@@ -34690,12 +36510,18 @@ fn scatterMetal(ray: ptr<function, Ray>, hitRecord: HitRecord, attenuation: ptr<
 
 fn scatterGlossy(ray: ptr<function, Ray>, hitRecord: HitRecord, attenuation: ptr<function, vec3<f32>>, seed: ptr<function, u32>) -> bool {
     // Specular
-    let material = &materialBuffer.materials[hitRecord.materialId];
-    let refractiveIndex = (*material).refractiveIndex;
+    // let material = &materialBuffer.materials[hitRecord.materialId];
+    // let fuzz = (*material).fuzz;
+    // let refractiveIndex = (*material).refractiveIndex;
+    // let glossiness = (*material).glossiness;
+    let hittable = hittableBuffer.hittables[hitRecord.id];
+    let fuzz = hittable.materialFuzz;
+    let refractiveIndex = hittable.materialRefractiveIndex;
+    let glossiness = hittable.materialGloss;
     let refractionRatio = select(refractiveIndex, 1f / refractiveIndex, hitRecord.frontFace);
     let cosTheta = min(dot(-(*ray).direction, hitRecord.normal), 1f);
-    if (reflectance(cosTheta, refractionRatio) * (*material).glossiness > random(seed)) {
-        (*ray).direction = normalize(reflect((*ray).direction, hitRecord.normal) + (*material).fuzz * randomInUnitSphere(seed));
+    if (reflectance(cosTheta, refractionRatio) * glossiness > random(seed)) {
+        (*ray).direction = normalize(reflect((*ray).direction, hitRecord.normal) + fuzz * randomInUnitSphere(seed));
         (*ray).origin = hitRecord.position;
         (*attenuation) = vec3<f32>(1f, 1f, 1f);
 
@@ -34709,29 +36535,35 @@ fn scatterGlossy(ray: ptr<function, Ray>, hitRecord: HitRecord, attenuation: ptr
 }
 
 fn scatterDielectric(ray: ptr<function, Ray>, hitRecord: ptr<function, HitRecord>, attenuation: ptr<function, vec3<f32>>, seed: ptr<function, u32>) -> bool {
-    let material = &materialBuffer.materials[(*hitRecord).materialId];
-    let refractiveIndex = (*material).refractiveIndex;
+    // let material = &materialBuffer.materials[(*hitRecord).materialId];
+    // let refractiveIndex = (*material).refractiveIndex;
+    let hittable = hittableBuffer.hittables[hitRecord.id];
+    let refractiveIndex = hittable.materialRefractiveIndex;
     // TODO: If still inside another material, use its refractive index
     let refractionRatio = select(refractiveIndex, 1f / refractiveIndex, (*hitRecord).frontFace);
     let cosTheta = min(dot(-(*ray).direction, (*hitRecord).normal), 1f);
     let sinTheta = sqrt(1f - cosTheta * cosTheta);
     let cannotRefract = refractionRatio * sinTheta > 1f;
     // if (cannotRefract || reflectance(cosTheta, refractionRatio) > random(seed)) {
-    if (cannotRefract || reflectance(cosTheta, refractionRatio) * (*material).glossiness > random(seed)) {
+    // if (cannotRefract || reflectance(cosTheta, refractionRatio) * (*material).glossiness > random(seed)) {
+    if (cannotRefract || reflectance(cosTheta, refractionRatio) * hittable.materialGloss > random(seed)) {
         (*ray).direction = reflect((*ray).direction, (*hitRecord).normal);
     }
     else {
         (*ray).direction = refraction((*ray).direction, (*hitRecord).normal, refractionRatio);
     }
     (*ray).origin = (*hitRecord).position;
-    (*ray).direction = normalize((*ray).direction + (*material).fuzz * randomInUnitSphere(seed));
-    
+    // (*ray).direction = normalize((*ray).direction + (*material).fuzz * randomInUnitSphere(seed));
+    (*ray).direction = normalize((*ray).direction + hittable.materialFuzz * randomInUnitSphere(seed));
+
     // Did the ray enter/stay inside?
     (*attenuation) = vec3<f32>(1f, 1f, 1f);
     // if (dot((*ray).direction, (*hitRecord).normal) < 0f) {
         if (dot((*ray).direction, select(-(*hitRecord).normal, (*hitRecord).normal, (*hitRecord).frontFace)) < 0f) {
         (*hitRecord).isAbsorbing = true;
-        (*hitRecord).absorption = (*material).color;
+        // (*hitRecord).absorption = (*material).color;
+        // (*hitRecord).absorption = hittable.materialColor;
+        (*hitRecord).absorption = hittable.materialColor * hittable.materialDensity;
 
         // If already inside another absorbing dielectric, add to absorption
         if ((*hitRecord).previousIsAbsorbing && (*hitRecord).id != (*hitRecord).previousId) {
@@ -34744,15 +36576,19 @@ fn scatterDielectric(ray: ptr<function, Ray>, hitRecord: ptr<function, HitRecord
 fn scatterIsotropic(ray: ptr<function, Ray>, hitRecord: HitRecord, attenuation: ptr<function, vec3<f32>>, seed: ptr<function, u32>) -> bool {
     (*ray).direction = randomUnitVector(seed);
     (*ray).origin = hitRecord.position;
-    (*attenuation) = materialBuffer.materials[hitRecord.materialId].color;
+    let hittable = hittableBuffer.hittables[hitRecord.id];
+    (*attenuation) = hittable.materialColor;
     return true;
 }
 
 fn scatterVarnish(ray: ptr<function, Ray>, hitRecord: HitRecord, attenuation: ptr<function, vec3<f32>>, seed: ptr<function, u32>) -> bool {
     // Front-face only (no internal reflection or refraction)
-    let material = &materialBuffer.materials[hitRecord.materialId];
-    if (hitRecord.frontFace && (*material).glossiness > random(seed)) {
-        let refractiveIndex = (*material).refractiveIndex;
+    // let material = &materialBuffer.materials[hitRecord.materialId];
+    let hittable = hittableBuffer.hittables[hitRecord.id];
+    // if (hitRecord.frontFace && (*material).glossiness > random(seed)) {
+    if (hitRecord.frontFace && hittable.materialGloss > random(seed)) {
+        // let refractiveIndex = (*material).refractiveIndex;
+        let refractiveIndex = hittable.materialRefractiveIndex;
         let refractionRatio = select(refractiveIndex, 1f / refractiveIndex, hitRecord.frontFace);
         let cosTheta = min(dot(-(*ray).direction, hitRecord.normal), 1f);
         let sinTheta = sqrt(1f - cosTheta * cosTheta);
@@ -34764,7 +36600,8 @@ fn scatterVarnish(ray: ptr<function, Ray>, hitRecord: HitRecord, attenuation: pt
             // Refraction improves definition at edges and deepens color on faces
             (*ray).direction = refraction((*ray).direction, hitRecord.normal, refractionRatio);
         }
-        (*ray).direction = normalize((*ray).direction + (*material).fuzz * randomInUnitSphere(seed));
+        // (*ray).direction = normalize((*ray).direction + (*material).fuzz * randomInUnitSphere(seed));
+        (*ray).direction = normalize((*ray).direction + hittable.materialFuzz * randomInUnitSphere(seed));
     }
     // Pass-through
     (*ray).origin = hitRecord.position;
@@ -34773,8 +36610,10 @@ fn scatterVarnish(ray: ptr<function, Ray>, hitRecord: HitRecord, attenuation: pt
 }
 
 fn textureValue(hitRecord: HitRecord) -> vec3<f32> {
-    let textureId = materialBuffer.materials[hitRecord.materialId].textureId;
-    let texture = &textureBuffer.textures[u32(textureId)];
+    // let textureId = materialBuffer.materials[hitRecord.materialId].textureId;
+    let hittable = hittableBuffer.hittables[hitRecord.id];
+    // let texture = &textureBuffer.textures[u32(textureId)];
+    let texture = &textureBuffer.textures[u32(hittable.textureId)];
     switch u32((*texture).typeId) {
         // No texture
         default: {
@@ -34786,7 +36625,8 @@ fn textureValue(hitRecord: HitRecord) -> vec3<f32> {
                 return (*texture).color1;
             }
             else {
-                return (*texture).color0;
+                // return (*texture).color0;
+                return hittableBuffer.hittables[hitRecord.id].materialColor;
             }
 
             // Debug uv
@@ -34846,7 +36686,7 @@ fn rayColor(ray: ptr<function, Ray>, seed: ptr<function, u32>) -> vec3<f32> {
             // First hit
             // if (depth == 0u) {
             //     result.normal = hitRecord.normal * 0.5f + vec3<f32>(0.5f, 0.5f, 0.5f);
-            //     // result.normal = hitRecord.normal * 0.5f + vec3<f32>(0.5f, 0.5f, 0.5f) 
+            //     // result.normal = hitRecord.normal * 0.5f + vec3<f32>(0.5f, 0.5f, 0.5f)
             //     // result.depth = 1f / hitRecord.t;
             //     result.depth = -1f / dot(hitRecord.position - (*ray).origin, uniforms.forward);
             // }
@@ -34860,7 +36700,7 @@ fn rayColor(ray: ptr<function, Ray>, seed: ptr<function, u32>) -> vec3<f32> {
                 // return result;
                 return vec3<f32>(0f, 0f, 0f);
             }
-           
+
             // Bounce
             // If last hit was travelling INTO a dielectric, use last hit position to calculate distance
             // and apply Beer's law to attenuate the light. Modify the dielectric scattering function to
@@ -34874,32 +36714,42 @@ fn rayColor(ray: ptr<function, Ray>, seed: ptr<function, u32>) -> vec3<f32> {
             // Reset absorption
             hitRecord.isAbsorbing = false;
             hitRecord.absorption = vec3<f32>(0f, 0f, 0f);
-            switch u32(materialBuffer.materials[hitRecord.materialId].typeId) {
-                default: {
-                    scatter = false;
-                }
+
+            // switch u32(materialBuffer.materials[hitRecord.materialId].typeId) {
+            switch u32(hittableBuffer.hittables[hitRecord.id].materialTypeId) {
                 case 0u: {
                     scatter = scatterLambertian(ray, hitRecord, &attenuation, seed);
+                    break;
                 }
                 case 1u: {
                     scatter = scatterMetal(ray, hitRecord, &attenuation, seed);
+                    break;
                 }
                 case 2u: {
                     scatter = scatterDielectric(ray, &hitRecord, &attenuation, seed);
+                    break;
                 }
                 case 3u: {
                     scatter = scatterGlossy(ray, hitRecord, &attenuation, seed);
+                    break;
                 }
                 case 4u: {
                     // Diffuse light
                     scatter = false;
-                    emitted = materialBuffer.materials[hitRecord.materialId].color;
+                    // emitted = materialBuffer.materials[hitRecord.materialId].color;
+                    emitted = hittableBuffer.hittables[hitRecord.id].materialColor;
+                    break;
                 }
                 case 5u: {
                     scatter = scatterIsotropic(ray, hitRecord, &attenuation, seed);
+                    break;
                 }
                 case 6u: {
                     scatter = scatterVarnish(ray, hitRecord, &attenuation, seed);
+                    break;
+                }
+                default: {
+                    scatter = false;
                 }
             }
 
@@ -34943,16 +36793,16 @@ fn rayColor(ray: ptr<function, Ray>, seed: ptr<function, u32>) -> vec3<f32> {
 @group(0) @binding(0) var<storage, read_write> outputColorBuffer: ColorBuffer;
 @group(0) @binding(1) var<uniform> uniforms: Uniforms;
 @group(0) @binding(2) var<storage, read> hittableBuffer: HittableBuffer;
-@group(0) @binding(3) var<storage, read> materialBuffer: MaterialBuffer;
-@group(0) @binding(4) var<storage, read> textureBuffer: TextureBuffer;
-@group(0) @binding(5) var<storage, read> lightBuffer: LightBuffer;
-@group(0) @binding(6) var<storage, read> linearBVHNodeBuffer: LinearBVHNodeBuffer;
-@group(0) @binding(7) var linearSampler: sampler;
-@group(0) @binding(8) var fontTexture: texture_2d<f32>;
-@group(0) @binding(9) var backgroundTexture: texture_2d<f32>;
-@group(0) @binding(10) var atlasTexture: texture_2d<f32>;
-@group(0) @binding(11) var<storage, read_write> outputNormalDepthBuffer: NormalDepthBuffer;
-@group(0) @binding(12) var<storage, read_write> depthMinMaxBuffer: DepthMinMaxBuffer;
+// @group(0) @binding(3) var<storage, read> materialBuffer: MaterialBuffer;
+@group(0) @binding(3) var<storage, read> textureBuffer: TextureBuffer;
+@group(0) @binding(4) var<storage, read> lightBuffer: LightBuffer;
+@group(0) @binding(5) var<storage, read> linearBVHNodeBuffer: LinearBVHNodeBuffer;
+@group(0) @binding(6) var linearSampler: sampler;
+@group(0) @binding(7) var fontTexture: texture_2d<f32>;
+@group(0) @binding(8) var backgroundTexture: texture_2d<f32>;
+@group(0) @binding(9) var atlasTexture: texture_2d<f32>;
+@group(0) @binding(10) var<storage, read_write> outputNormalDepthBuffer: NormalDepthBuffer;
+@group(0) @binding(11) var<storage, read_write> depthMinMaxBuffer: DepthMinMaxBuffer;
 
 // TODO: Move lighting to seperate bind group so I can update it independently
 
@@ -34975,7 +36825,7 @@ fn clear(@builtin(global_invocation_id) globalId : vec3<u32>) {
 fn depthNormal(@builtin(global_invocation_id) globalId : vec3<u32>) {
     let imageSize = vec2<f32>(uniforms.width * uniforms.tilesX, uniforms.height * uniforms.tilesY);
     let tileSize = vec2<f32>(uniforms.width, uniforms.height);
-   
+
     // Tex coords [0,1]
     // let id = f32(globalId.x);
     // let v = floor(id / imageSize.x);
@@ -34989,13 +36839,13 @@ fn depthNormal(@builtin(global_invocation_id) globalId : vec3<u32>) {
     let tilePixelX = id - tilePixelY * tileSize.x;
     let imagePixelX = tilePixelX + uniforms.tileOffsetX * tileSize.x;
     let imagePixelY = tilePixelY + uniforms.tileOffsetY * tileSize.y;
-    
+
     // Tex coords ([0,1], [0,1])
     let texCoord = vec2<f32>(imagePixelX / imageSize.x, imagePixelY / imageSize.y);
-   
+
     // Camera
     var camera = getCamera(uniforms);
-    
+
     // Sample position (sub-pixel sampling has same seed, but only sampled once per frame)
     let samplePos = vec2<f32>(texCoord);
 
@@ -35013,7 +36863,7 @@ fn depthNormal(@builtin(global_invocation_id) globalId : vec3<u32>) {
     }
 
     let index = globalId.x * 4u;
-    // let index = u32(pixelY * imageSize.x + pixelX) * 4u;
+    // let index = u32(tilePixelY * tileSize.x + tilePixelX) * 4u;
     outputNormalDepthBuffer.values[index] = normal.x;
     outputNormalDepthBuffer.values[index + 1u] = normal.y;
     outputNormalDepthBuffer.values[index + 2u] = normal.z;
@@ -35028,10 +36878,10 @@ fn depthNormal(@builtin(global_invocation_id) globalId : vec3<u32>) {
 }
 
 @compute @workgroup_size(256, 1, 1)
-fn segment(@builtin(global_invocation_id) globalId : vec3<u32>) {
+fn depthNormalMultisampled(@builtin(global_invocation_id) globalId : vec3<u32>) {
     let imageSize = vec2<f32>(uniforms.width * uniforms.tilesX, uniforms.height * uniforms.tilesY);
     let tileSize = vec2<f32>(uniforms.width, uniforms.height);
-   
+
     // Tex coords [0,1]
     // let id = f32(globalId.x);
     // let v = floor(id / imageSize.x);
@@ -35045,13 +36895,72 @@ fn segment(@builtin(global_invocation_id) globalId : vec3<u32>) {
     let tilePixelX = id - tilePixelY * tileSize.x;
     let imagePixelX = tilePixelX + uniforms.tileOffsetX * tileSize.x;
     let imagePixelY = tilePixelY + uniforms.tileOffsetY * tileSize.y;
-    
+
     // Tex coords ([0,1], [0,1])
     let texCoord = vec2<f32>(imagePixelX / imageSize.x, imagePixelY / imageSize.y);
-   
+
     // Camera
     var camera = getCamera(uniforms);
-    
+
+    // Sample position (sub-pixel sampling has same seed, but only sampled once per frame)
+    var frameSeed = u32(uniforms.seed);
+    var seed = u32(tilePixelY * tileSize.x + tilePixelX) + frameSeed * u32(tileSize.x * tileSize.y);
+    let samplePos = vec2<f32>(texCoord) + vec2<f32>(random(&seed), random(&seed)) / imageSize;
+
+    // Ray
+    var ray = getCameraRay(camera, &seed, samplePos);
+
+    // Result
+    var normal = vec3<f32>(0f, 0f, 0f);
+    var depth = 0f;
+    var hitRecord: HitRecord;
+    if (hitBVH(ray, 0.00001f, 100f, &hitRecord, &seed)) {
+        normal = hitRecord.normal * 0.5f + vec3<f32>(0.5f, 0.5f, 0.5f);
+        depth = -1f / dot(hitRecord.position - ray.origin, uniforms.forward);
+    }
+
+    let index = globalId.x * 4u;
+    // let index = u32(tilePixelY * tileSize.x + tilePixelX) * 4u;
+    outputNormalDepthBuffer.values[index] += normal.x;
+    outputNormalDepthBuffer.values[index + 1u] += normal.y;
+    outputNormalDepthBuffer.values[index + 2u] += normal.z;
+    outputNormalDepthBuffer.values[index + 3u] += depth;
+
+    // Min, max depth
+    // When depth is 0, it means no hit, so ignore
+    if (depth > 0f) {
+        atomicMin(&depthMinMaxBuffer.values[0], u32(depth * 1000f));
+    }
+    atomicMax(&depthMinMaxBuffer.values[1], u32(depth * 1000f));
+}
+
+@compute @workgroup_size(256, 1, 1)
+fn segment(@builtin(global_invocation_id) globalId : vec3<u32>) {
+    let imageSize = vec2<f32>(uniforms.width * uniforms.tilesX, uniforms.height * uniforms.tilesY);
+    let tileSize = vec2<f32>(uniforms.width, uniforms.height);
+
+    // Tex coords [0,1]
+    // let id = f32(globalId.x);
+    // let v = floor(id / imageSize.x);
+    // let u = (id - v * imageSize.x);
+    // let uv = vec2<f32>(u, v);
+    // let texCoord = uv / imageSize;
+
+    // Pixel coords ([0,width-1], [0,height-1])
+    let id = f32(globalId.x);
+    // let tilePixelY = floor(id / tileSize.x);
+    // let tilePixelX = id - tilePixelY * tileSize.x;
+    let tilePixelY = floor(id / (tileSize.x + 1)); // Overdispatched by 1
+    let tilePixelX = id - tilePixelY * (tileSize.x + 1); // Overdispatched by 1
+    let imagePixelX = tilePixelX + uniforms.tileOffsetX * tileSize.x;
+    let imagePixelY = tilePixelY + uniforms.tileOffsetY * tileSize.y;
+
+    // Tex coords ([0,1], [0,1]), can be > 1 with overdispatching
+    let texCoord = vec2<f32>(imagePixelX / imageSize.x, imagePixelY / imageSize.y);
+
+    // Camera
+    var camera = getCamera(uniforms);
+
     // Sample position (sub-pixel sampling has same seed, but only sampled once per frame)
     let samplePos = vec2<f32>(texCoord);
 
@@ -35064,22 +36973,29 @@ fn segment(@builtin(global_invocation_id) globalId : vec3<u32>) {
     var hitRecord: HitRecord;
     if (hitBVH(ray, 0.00001f, 100f, &hitRecord, &seed)) {
         // color = materialBuffer.materials[hitRecord.materialId].idColor;
-        let id = f32(hitRecord.id & 255u) / 255f;
-        color.x = id;
-        color.y = id;
-        color.z = id;
+
+        // TODO: Generate unique id color in main if not supplied
+        // let id = f32(hitRecord.id & 255u) / 255f;
+        // color.x = id;
+        // color.y = id;
+        // color.z = id;
+
+        color = hittableBuffer.hittables[hitRecord.id].segmentColor;
+
         // let color3 = textureValue(hitRecord);
         // color.x = color3.x;
         // color.y = color3.y;
         // color.z = color3.z;
     }
-    
+
     let index = globalId.x * 4u;
-    // let index = u32(pixelY * imageSize.x + pixelX) * 4u;
+    // let index = u32(tilePixelY * (tileSize.x + 1) + tilePixelX) * 4u; // Overdispatched by 1
     outputNormalDepthBuffer.values[index] = color.x;
     outputNormalDepthBuffer.values[index + 1u] = color.y;
     outputNormalDepthBuffer.values[index + 2u] = color.z;
-    outputNormalDepthBuffer.values[index + 3u] = 1f;
+    outputNormalDepthBuffer.values[index + 3u] = color.w;
+
+    // TODO: Expand outputNormalDepthBuffer to store additional color channel for filling edges, or use separate buffer
 }
 
 // @builtin(local_invocation_id) localId : vec3<u32>,
@@ -35094,7 +37010,7 @@ fn main(@builtin(global_invocation_id) globalId : vec3<u32>) {
     let imageSize = vec2<f32>(uniforms.width * uniforms.tilesX, uniforms.height * uniforms.tilesY);
     let tileSize = vec2<f32>(uniforms.width, uniforms.height);
 
-    // TODO: Is additional noise when tiling due to sdf iterations (try non-sdf), texel offsets, (size - 1) issues, overdispatching?
+    // TODO: Pixels at x=0 have noise when object overlaps right-side of screen at widths of 75, 150, 300, 600, 1200, 2400
 
     // Tex coords [0,1]
     // let id = f32(globalId.x);
@@ -35110,13 +37026,13 @@ fn main(@builtin(global_invocation_id) globalId : vec3<u32>) {
     let tilePixelX = id - tilePixelY * tileSize.x;
     let imagePixelX = tilePixelX + uniforms.tileOffsetX * tileSize.x;
     let imagePixelY = tilePixelY + uniforms.tileOffsetY * tileSize.y;
-    
+
     // Tex coords ([0,1], [0,1])
     let texCoord = vec2<f32>(imagePixelX / imageSize.x, imagePixelY / imageSize.y);
-   
+
     // Camera
     var camera = getCamera(uniforms);
-    
+
     // Frame seed
     var frameSeed = u32(uniforms.seed);
     let raysPerFrame = u32(uniforms.raysPerFrame);
@@ -35124,7 +37040,7 @@ fn main(@builtin(global_invocation_id) globalId : vec3<u32>) {
     var depth = 0f;
     var normal = vec3<f32>(0f, 0f, 0f);
     var seed: u32;
-    
+
     for (var i = 0u; i < raysPerFrame; i = i + 1u) {
         // Random number generator
         // See https://nelari.us/post/weekend_raytracing_with_wgpu_1/#implement-a-random-number-generator
@@ -35133,7 +37049,7 @@ fn main(@builtin(global_invocation_id) globalId : vec3<u32>) {
         //     let seed = dot(pixel, vec2<u32>(1u, resolution.x)) ^ jenkinsHash(frame);
         //     return jenkinsHash(seed);
         // }
-        // 
+        //
         // fn jenkinsHash(input: u32) -> u32 {
         //     var x = input;
         //     x += x << 10u;
@@ -35157,7 +37073,7 @@ fn main(@builtin(global_invocation_id) globalId : vec3<u32>) {
         // let color = clamp(result.color, vec3<f32>(0f, 0f, 0f), vec3<f32>(1f, 1f, 1f));
         // let color = clamp(result.color, vec3<f32>(0f, 0f, 0f), vec3<f32>(10f, 10f, 10f)); // Max light
         color += clamp(rayColor(&ray, &seed), vec3<f32>(0f, 0f, 0f), vec3<f32>(10f, 10f, 10f)); // Max light
-        
+
         // Depth
         // let depth = 1f / rayColor(&ray, &seed).depth;
         // color = vec3<f32>(depth, depth, depth);
@@ -35165,7 +37081,7 @@ fn main(@builtin(global_invocation_id) globalId : vec3<u32>) {
 
         // Normal
         // normal += result.normal;
-        
+
         // Next frame
         frameSeed = frameSeed + 1u;
     }
@@ -35189,16 +37105,24 @@ class $e1b604d7f27d3d8e$export$893bf7cc4a794b30 extends Float32Array {
         this.SEED_OFFSET = 11;
         this.FORWARD_OFFSET = 12;
         this.FOV_OFFSET = 15;
-        this.LOOKAT_OFFSET = 16;
-        this.APERTURE_OFFSET = 19;
-        this.BACKGROUND_COLOR_OFFSET = 20;
-        this.TIME0_OFFSET = 23;
-        this.TIME1_OFFSET = 24;
-        this.TILES_X = 25;
-        this.TILES_Y = 26;
-        this.TILE_OFFSET_X = 27;
-        this.TILE_OFFSET_Y = 28;
-        this.RAYS_PER_FRAME_OFFSET = 29;
+        this.BACKGROUND_COLOR_OFFSET = 16;
+        this.TIME0_OFFSET = 19;
+        this.AMBIENT_COLOR_OFFSET = 20;
+        this.TIME1_OFFSET = 23;
+        this.TILES_X = 24;
+        this.TILES_Y = 25;
+        this.TILE_OFFSET_X = 26;
+        this.TILE_OFFSET_Y = 27;
+        this.LOOKAT_OFFSET = 28;
+        this.APERTURE_OFFSET = 31;
+        this.FOCUS_DISTANCE_OFFSET = 32;
+        this.RAYS_PER_FRAME_OFFSET = 33;
+    }
+    getFocusDistance() {
+        return this[this.FOCUS_DISTANCE_OFFSET];
+    }
+    setFocusDistance(value) {
+        this[this.FOCUS_DISTANCE_OFFSET] = value;
     }
     getWidth() {
         return this[this.WIDTH_OFFSET];
@@ -35268,21 +37192,22 @@ class $e1b604d7f27d3d8e$export$893bf7cc4a794b30 extends Float32Array {
         this[this.FORWARD_OFFSET + 1] = value[1];
         this[this.FORWARD_OFFSET + 2] = value[2];
     }
-    getLookAt(value) {
-        (0, $31054a6c69637582$exports).set(value, this[this.LOOKAT_OFFSET], this[this.LOOKAT_OFFSET + 1], this[this.LOOKAT_OFFSET + 2]);
-    }
-    setLookAt(value) {
-        this[this.LOOKAT_OFFSET] = value[0];
-        this[this.LOOKAT_OFFSET + 1] = value[1];
-        this[this.LOOKAT_OFFSET + 2] = value[2];
-    }
     getBackgroundColor(value) {
-        (0, $4c4ac78b213a9c07$exports).set(value, this[this.BACKGROUND_COLOR_OFFSET], this[this.BACKGROUND_COLOR_OFFSET + 1], this[this.BACKGROUND_COLOR_OFFSET + 2], 1);
+        (0, $4c4ac78b213a9c07$exports).set(value, this[this.BACKGROUND_COLOR_OFFSET], this[this.BACKGROUND_COLOR_OFFSET + 1], this[this.BACKGROUND_COLOR_OFFSET + 2], this[this.BACKGROUND_COLOR_OFFSET + 3]);
     }
     setBackgroundColor(value) {
         this[this.BACKGROUND_COLOR_OFFSET] = value[0];
         this[this.BACKGROUND_COLOR_OFFSET + 1] = value[1];
         this[this.BACKGROUND_COLOR_OFFSET + 2] = value[2];
+        this[this.BACKGROUND_COLOR_OFFSET + 3] = value[3];
+    }
+    getAmbientColor(value) {
+        (0, $31054a6c69637582$exports).set(value, this[this.AMBIENT_COLOR_OFFSET], this[this.AMBIENT_COLOR_OFFSET + 1], this[this.AMBIENT_COLOR_OFFSET + 2]);
+    }
+    setAmbientColor(value) {
+        this[this.AMBIENT_COLOR_OFFSET] = value[0];
+        this[this.AMBIENT_COLOR_OFFSET + 1] = value[1];
+        this[this.AMBIENT_COLOR_OFFSET + 2] = value[2];
     }
     getTime0() {
         return this[this.TIME0_OFFSET];
@@ -35320,14 +37245,23 @@ class $e1b604d7f27d3d8e$export$893bf7cc4a794b30 extends Float32Array {
     setTileOffsetY(value) {
         this[this.TILE_OFFSET_Y] = value;
     }
+    getLookAt(value) {
+        (0, $31054a6c69637582$exports).set(value, this[this.LOOKAT_OFFSET], this[this.LOOKAT_OFFSET + 1], this[this.LOOKAT_OFFSET + 2]);
+    }
+    setLookAt(value) {
+        this[this.LOOKAT_OFFSET] = value[0];
+        this[this.LOOKAT_OFFSET + 1] = value[1];
+        this[this.LOOKAT_OFFSET + 2] = value[2];
+    }
 }
-$e1b604d7f27d3d8e$export$893bf7cc4a794b30.SIZE = 32;
+$e1b604d7f27d3d8e$export$893bf7cc4a794b30.SIZE = 36;
 
 
 /*!
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
- */ const $e354276e6b56108d$export$739cc3561e95931b = `
+ */ 
+const $e354276e6b56108d$export$739cc3561e95931b = `
 const GAMMA = vec3<f32>(0.45454545f); // 1 / 2.2
 
 struct ColorData {
@@ -35338,18 +37272,20 @@ struct NormalDepthData {
     data : array<f32>,
 }
 
-                            //         offest   align    size
-struct Uniforms {           // ------------------------------
-    width: f32,             //              0       4       4
-    height: f32,            //              4       4       4
-    samplesPerPixel: f32,   //              8       4       4
-    exposure: f32,          //             12       4       4
-    minDepth: f32,          //             16       4       4
-    maxDepth: f32,          //             20       4       4
-    normalEdge: f32,        //             24       4       4
-    depthEdge: f32,         //             28       4       4
-}                           // ------------------------------
-                            //                      4      32
+                               //         offest   align    size
+struct Uniforms {              // ------------------------------
+    width: f32,                //              0       4       4
+    height: f32,               //              4       4       4
+    samplesPerPixel: f32,      //              8       4       4
+    exposure: f32,             //             12       4       4
+    minDepth: f32,             //             16       4       4
+    maxDepth: f32,             //             20       4       4
+    normalEdge: f32,           //             24       4       4
+    depthEdge: f32,            //             28       4       4
+    edgeForeground: vec4<f32>, //             32      16      16
+    edgeBackground: vec4<f32>, //             48      16      16
+}                              // ------------------------------
+                               //                     16      64
 
 @group(0) @binding(0) var<uniform> uniforms : Uniforms;
 @group(0) @binding(1) var<storage, read> colorBuffer : ColorData;
@@ -35404,11 +37340,38 @@ fn frag_depth(@builtin(position) coord: vec4<f32>) -> @location(0) vec4<f32> {
 }
 
 @fragment
+fn frag_depthMultisampled(@builtin(position) coord: vec4<f32>) -> @location(0) vec4<f32> {
+    let x = floor(coord.x);
+    let y = floor(coord.y);
+    let index = u32(x + y * uniforms.width) * 4u;
+    let depth = normalDepthBuffer.data[index + 3u] / uniforms.samplesPerPixel;
+    let minDepth = uniforms.minDepth;
+    let maxDepth = uniforms.maxDepth;
+    if (minDepth == maxDepth) {
+        // Raw, unnormalized depth
+        return vec4<f32>(vec3<f32>(depth, depth, depth), 1f);
+    }
+    else {
+        // Normalize depth
+        var normalizedDepth = (depth - minDepth) / (maxDepth - minDepth);
+        return vec4<f32>(normalizedDepth, normalizedDepth, normalizedDepth, 1f);
+    }
+}
+
+@fragment
 fn frag_normal(@builtin(position) coord: vec4<f32>) -> @location(0) vec4<f32> {
     let x = floor(coord.x);
     let y = floor(coord.y);
     let index = u32(x + y * uniforms.width) * 4u;
     return vec4<f32>(normalDepthBuffer.data[index + 0u], normalDepthBuffer.data[index + 1u], normalDepthBuffer.data[index + 2u], 1f);
+}
+
+@fragment
+fn frag_normalMultisampled(@builtin(position) coord: vec4<f32>) -> @location(0) vec4<f32> {
+    let x = floor(coord.x);
+    let y = floor(coord.y);
+    let index = u32(x + y * uniforms.width) * 4u;
+    return vec4<f32>(normalDepthBuffer.data[index + 0u] / uniforms.samplesPerPixel, normalDepthBuffer.data[index + 1u] / uniforms.samplesPerPixel, normalDepthBuffer.data[index + 2u] / uniforms.samplesPerPixel, 1f);
 }
 
 // @fragment
@@ -35462,27 +37425,35 @@ fn frag_normal(@builtin(position) coord: vec4<f32>) -> @location(0) vec4<f32> {
 fn frag_edge(@builtin(position) coord: vec4<f32>) -> @location(0) vec4<f32> {
     let x = floor(coord.x);
     let y = floor(coord.y);
-    let index = u32(x + y * uniforms.width) * 4u;
-
+    // let index = u32(x + y * uniforms.width) * 4u;
+    let index = u32(x + y * (uniforms.width + 1)) * 4u; // Overdispatched by 1
+    let background = uniforms.edgeBackground;
+    let foreground = uniforms.edgeForeground;
+    
     // Prevent edge detection at screen edges
-    if (x == 0 || x == uniforms.width - 1 || y == 0 || y == uniforms.height - 1) {
-        return vec4<f32>(0f, 0f, 0f, 1f);
-    }
+    // Over-dispatched, so this is not needed
+    // if (x == uniforms.width - 1 || y == uniforms.height - 1) { return background; }
 
     // Segment derivatives
+    // let yOffset = index + u32(uniforms.width) * 4u;
+    let yOffset = index + u32(uniforms.width + 1) * 4u; // Overdispatched by 1
     let p = vec4<f32>(normalDepthBuffer.data[index + 0u], normalDepthBuffer.data[index + 1u], normalDepthBuffer.data[index + 2u], normalDepthBuffer.data[index + 3u]);
     let px = vec4<f32>(normalDepthBuffer.data[index + 4u], normalDepthBuffer.data[index + 5u], normalDepthBuffer.data[index + 6u], normalDepthBuffer.data[index + 7u]);
-    let py = vec4<f32>(normalDepthBuffer.data[index + u32(uniforms.width) * 4u + 0u], normalDepthBuffer.data[index + u32(uniforms.width) * 4u + 1u], normalDepthBuffer.data[index + u32(uniforms.width) * 4u + 2u], normalDepthBuffer.data[index + u32(uniforms.width) * 4u + 3u]);
+    let py = vec4<f32>(normalDepthBuffer.data[yOffset + 0u], normalDepthBuffer.data[yOffset + 1u], normalDepthBuffer.data[yOffset + 2u], normalDepthBuffer.data[yOffset + 3u]);
     let dpdx = px - p;
     let dpdy = py - p;
     let fwidth = abs(dpdx) + abs(dpdy);
 
     // Output white when magnitude of dpdx over a threshold
     if (dot(fwidth, fwidth) > 0f) {
-        return vec4<f32>(1f, 1f, 1f, 1f);
+        return foreground;
     } else {
-        return vec4<f32>(0f, 0f, 0f, 1f);
+        return background;
+
+        // TODO: Add another mode for edgeFill, or a flag for edgeFill (0 = background, 1 = color)
+        // Use idColor
         // return p;
+        // return vec4<f32>(p.x, p.y, p.z, 1f);
     }
 }
 
@@ -35490,7 +37461,9 @@ fn frag_edge(@builtin(position) coord: vec4<f32>) -> @location(0) vec4<f32> {
 fn frag_segment(@builtin(position) coord: vec4<f32>) -> @location(0) vec4<f32> {
     let x = floor(coord.x);
     let y = floor(coord.y);
-    let index = u32(x + y * uniforms.width) * 4u;
+
+    // let index = u32(x + y * uniforms.width) * 4u;
+    let index = u32(x + y * (uniforms.width + 1)) * 4u; // Overdispatched by 1
     return vec4<f32>(normalDepthBuffer.data[index + 0u], normalDepthBuffer.data[index + 1u], normalDepthBuffer.data[index + 2u], 1f);
 }
 
@@ -35517,8 +37490,33 @@ fn frag_main_hdr(@builtin(position) coord: vec4<f32>) -> @location(0) vec4<f32> 
     let e = 0.14f;
     color = (color * (a * color + b)) / (color * (c * color + d) + e);
 
+    // TODO: Can I get the avg luminance in the same way as the min/max depth?
+
+    // sRGB?
+    // https://sotrh.github.io/learn-wgpu/intermediate/tutorial13-hdr/#output-too-dark-on-webgpu
+
+// // Maps HDR values to linear values
+// // Based on http://www.oscars.org/science-technology/sci-tech-projects/aces
+// fn aces_tone_map(hdr: vec3<f32>) -> vec3<f32> {
+//     let m1 = mat3x3(
+//         0.59719, 0.07600, 0.02840,
+//         0.35458, 0.90834, 0.13383,
+//         0.04823, 0.01566, 0.83777,
+//     );
+//     let m2 = mat3x3(
+//         1.60475, -0.10208, -0.00327,
+//         -0.53108,  1.10813, -0.07276,
+//         -0.07367, -0.00605,  1.07602,
+//     );
+//     let v = m1 * hdr;
+//     let a = v * (v + 0.0245786) - 0.000090537;
+//     let b = v * (0.983729 * v + 0.4329510) + 0.238081;
+//     return clamp(m2 * (a / b), vec3(0.0), vec3(1.0));
+// }
+
     // See https://bruop.github.io/tonemapping/
     // See https://www.shadertoy.com/view/WdjSW3
+    // See https://sibras.github.io/OpenGL4-Tutorials/docs/Tutorials/10-Tutorial10/
 
     // Gamma-correct
     return vec4<f32>(pow(color, GAMMA), 1f);
@@ -35534,6 +37532,8 @@ class $e354276e6b56108d$export$186ae5dce927ebd1 extends Float32Array {
         this.MAX_DEPTH_OFFSET = 5;
         this.EDGE_NORMAL_OFFSET = 6;
         this.EDGE_DEPTH_OFFSET = 7;
+        this.EDGE_FOREGROUND_OFFSET = 8;
+        this.EDGE_BACKGROUND_OFFSET = 12;
     }
     getWidth() {
         return this[this.WIDTH_OFFSET];
@@ -35583,8 +37583,26 @@ class $e354276e6b56108d$export$186ae5dce927ebd1 extends Float32Array {
     setEdgeNormal(value) {
         this[this.EDGE_NORMAL_OFFSET] = value;
     }
+    getEdgeForeground(value) {
+        (0, $4c4ac78b213a9c07$exports).set(value, this[this.EDGE_FOREGROUND_OFFSET], this[this.EDGE_FOREGROUND_OFFSET + 1], this[this.EDGE_FOREGROUND_OFFSET + 2], this[this.EDGE_FOREGROUND_OFFSET + 3]);
+    }
+    setEdgeForeground(value) {
+        this[this.EDGE_FOREGROUND_OFFSET] = value[0];
+        this[this.EDGE_FOREGROUND_OFFSET + 1] = value[1];
+        this[this.EDGE_FOREGROUND_OFFSET + 2] = value[2];
+        this[this.EDGE_FOREGROUND_OFFSET + 3] = value[3];
+    }
+    getEdgeBackground(value) {
+        (0, $4c4ac78b213a9c07$exports).set(value, this[this.EDGE_BACKGROUND_OFFSET], this[this.EDGE_BACKGROUND_OFFSET + 1], this[this.EDGE_BACKGROUND_OFFSET + 2], this[this.EDGE_BACKGROUND_OFFSET + 3]);
+    }
+    setEdgeBackground(value) {
+        this[this.EDGE_BACKGROUND_OFFSET] = value[0];
+        this[this.EDGE_BACKGROUND_OFFSET + 1] = value[1];
+        this[this.EDGE_BACKGROUND_OFFSET + 2] = value[2];
+        this[this.EDGE_BACKGROUND_OFFSET + 3] = value[3];
+    }
 }
-$e354276e6b56108d$export$186ae5dce927ebd1.SIZE = 8;
+$e354276e6b56108d$export$186ae5dce927ebd1.SIZE = 16;
 
 
 /*!
@@ -36099,7 +38117,6 @@ class $18e0078d8611e105$export$6f251cd327b2ff1 {
     update() {
         if (this._hasChanged && this._isInitialized) {
             this._hasChanged = false;
-            const material = this._image.material == -1 ? this._main.config.defaultMaterial : this._main.materials[this._image.material];
             const modelPosition = (0, $31054a6c69637582$exports).create();
             const modelScale = this._core.getModelScale();
             const modelRotation = (0, $39ece26d1239bb77$exports).create();
@@ -36125,7 +38142,6 @@ class $18e0078d8611e105$export$6f251cd327b2ff1 {
                     time1: 1,
                     size0: (0, $91b0cc4981465964$exports).fromValues(imageQuad.width * boundsScaling * modelScale / 2, imageQuad.height * boundsScaling * modelScale / 2),
                     size1: (0, $91b0cc4981465964$exports).fromValues(imageQuad.width * boundsScaling * modelScale / 2, imageQuad.height * boundsScaling * modelScale / 2),
-                    material: material,
                     texCoord0: imageQuad.texCoord0,
                     texCoord1: imageQuad.texCoord1,
                     rotation0: imageQuad.rotation,
@@ -36145,8 +38161,7 @@ class $18e0078d8611e105$export$6f251cd327b2ff1 {
                     center1: position,
                     time0: 1,
                     time1: 1,
-                    radius: imageSphere.radius * boundsScaling,
-                    material: material
+                    radius: imageSphere.radius * boundsScaling
                 };
                 this.hittable = new (0, $66964bfc3ddbcb4c$export$f44a85073ff35bb)(hittableSphereOptions);
             }
@@ -36199,7 +38214,28 @@ class $b084cfc4223cd4fe$export$97e93e7019ef67b9 {
             const labelCount = this._labelSet.text.length;
             let glyphIndex = 0;
             for(let i = 0; i < labelCount; i++){
-                const material = this._labelSet.material !== undefined ? this._main.materials[this._labelSet.material] : this._labelSet.materials ? this._main.materials[this._labelSet.materials[i]] : this._main.config.defaultTextMaterial;
+                const materialType = this._labelSet.materialType !== undefined ? this._labelSet.materialType : this._labelSet.materialTypes ? this._labelSet.materialTypes[i] : 0;
+                const materialColor = this._labelSet.materialColor ? this._labelSet.materialColor : this._labelSet.materialColors ? [
+                    this._labelSet.materialColors[i * 3],
+                    this._labelSet.materialColors[i * 3 + 1],
+                    this._labelSet.materialColors[i * 3 + 2]
+                ] : this._core.config.textColor;
+                const materialFuzz = this._labelSet.materialFuzz !== undefined ? this._labelSet.materialFuzz : this._labelSet.materialFuzzes ? this._labelSet.materialFuzzes[i] : 0;
+                const materialGloss = this._labelSet.materialGloss !== undefined ? this._labelSet.materialGloss : this._labelSet.materialGlosses ? this._labelSet.materialGlosses[i] : 0;
+                const segmentColor = this._labelSet.segmentColor ? this._labelSet.segmentColor : this._labelSet.segmentColors ? [
+                    this._labelSet.segmentColors[i * 4],
+                    this._labelSet.segmentColors[i * 4 + 1],
+                    this._labelSet.segmentColors[i * 4 + 2],
+                    this._labelSet.segmentColors[i * 4 + 3]
+                ] : [
+                    0,
+                    0,
+                    0,
+                    0
+                ];
+                materialColor[0] = Math.pow(materialColor[0], 2.2);
+                materialColor[1] = Math.pow(materialColor[1], 2.2);
+                materialColor[2] = Math.pow(materialColor[2], 2.2);
                 const glyphCount = this._labelSet.text[i].length;
                 for(let j = 0; j < glyphCount; j++){
                     (0, $0a0587bd8b0d58e8$export$74c3c25430a16442).getPosition(dataView, glyphIndex * 4 + 2, position0);
@@ -36236,12 +38272,16 @@ class $b084cfc4223cd4fe$export$97e93e7019ef67b9 {
                         time1: 1,
                         size0: (0, $91b0cc4981465964$exports).fromValues((position1[0] - position0[0]) / 2, (position1[1] - position0[1]) / 2),
                         size1: (0, $91b0cc4981465964$exports).fromValues((position1[0] - position0[0]) / 2, (position1[1] - position0[1]) / 2),
-                        material: material,
                         texCoord0: texCoord0,
                         texCoord1: texCoord1,
                         rotation0: rotation,
                         rotation1: rotation,
-                        sdfBuffer: this._core.config.sdfBuffer
+                        sdfBuffer: this._core.config.sdfBuffer,
+                        materialType: materialType,
+                        materialColor: materialColor,
+                        materialFuzz: materialFuzz,
+                        materialGloss: materialGloss,
+                        segmentColor: segmentColor
                     };
                     const hittable = new (0, $66964bfc3ddbcb4c$export$402b844452575dc9)(hittableFontOptions);
                     this.hittables.push(hittable);
@@ -36349,6 +38389,17 @@ class $93345e9ee93b28fb$export$76de936b3c1c4170 extends (0, $96371271bb28b98d$ex
             const previousUnitRotation = (0, $39ece26d1239bb77$exports).create();
             const unitOrder = (0, $91b0cc4981465964$exports).create();
             const transitionDuration = this._duration / (this._duration + this._stagger);
+            const rgb = [
+                0,
+                0,
+                0
+            ];
+            const rgba = [
+                0,
+                0,
+                0,
+                0
+            ];
             for(let j = 0; j < currentBuffer.ids.length; j++){
                 (0, $0a0587bd8b0d58e8$export$849e31d725692576).getOrder(currentBuffer.dataView, j, unitOrder);
                 const startTime = unitOrder[1] * (1 - transitionDuration);
@@ -36391,20 +38442,25 @@ class $93345e9ee93b28fb$export$76de936b3c1c4170 extends (0, $96371271bb28b98d$ex
                 const endTime = startTime + transitionDuration;
                 const time0 = Math.min(Math.max((startTime - this._time0) / (this._time1 - this.time0), 0), 1);
                 const time1 = Math.min(Math.max((endTime - this._time0) / (this._time1 - this.time0), 0), 1);
-                const materialId = (0, $0a0587bd8b0d58e8$export$849e31d725692576).getMaterial(currentBuffer.dataView, j);
-                const material = this._main.materials && this._main.materials.length > materialId ? this._main.materials[materialId] : this._main.config.defaultMaterial;
                 let hittable;
                 let unitTexCoord;
                 switch(currentBuffer.unitType){
                     case (0, $4a6417d29706362f$export$80d48287646c9e3b).sphere:
-                    case (0, $4a6417d29706362f$export$80d48287646c9e3b).sphereSdf:
                         hittable = new (0, $66964bfc3ddbcb4c$export$f44a85073ff35bb)({
                             center0: unitTranslation0,
                             center1: unitTranslation1,
                             time0: time0,
                             time1: time1,
-                            radius: unitScale0[0],
-                            material: material
+                            radius: unitScale0[0]
+                        });
+                        break;
+                    case (0, $4a6417d29706362f$export$80d48287646c9e3b).sphereSdf:
+                        hittable = new (0, $66964bfc3ddbcb4c$export$86630ee69b6c2fb)({
+                            center0: unitTranslation0,
+                            center1: unitTranslation1,
+                            time0: time0,
+                            time1: time1,
+                            radius: unitScale0[0]
                         });
                         break;
                     case (0, $4a6417d29706362f$export$80d48287646c9e3b).disk:
@@ -36417,7 +38473,6 @@ class $93345e9ee93b28fb$export$76de936b3c1c4170 extends (0, $96371271bb28b98d$ex
                             time1: time1,
                             radius0: unitScale0[0],
                             radius1: unitScale1[0],
-                            material: material,
                             texCoord0: (0, $91b0cc4981465964$exports).fromValues(unitTexCoord[0], unitTexCoord[3]),
                             texCoord1: (0, $91b0cc4981465964$exports).fromValues(unitTexCoord[2], unitTexCoord[1])
                         });
@@ -36430,7 +38485,6 @@ class $93345e9ee93b28fb$export$76de936b3c1c4170 extends (0, $96371271bb28b98d$ex
                             radius1: unitScale1[0],
                             rotation0: unitRotation0,
                             rotation1: unitRotation1,
-                            material: material,
                             texCoord0: (0, $91b0cc4981465964$exports).fromValues(unitTexCoord[0], unitTexCoord[3]),
                             texCoord1: (0, $91b0cc4981465964$exports).fromValues(unitTexCoord[2], unitTexCoord[1])
                         });
@@ -36442,8 +38496,7 @@ class $93345e9ee93b28fb$export$76de936b3c1c4170 extends (0, $96371271bb28b98d$ex
                             time0: time0,
                             time1: time1,
                             size0: unitScale0,
-                            size1: unitScale1,
-                            material: material
+                            size1: unitScale1
                         });
                         else hittable = new (0, $66964bfc3ddbcb4c$export$acdc70fb29a0312b)({
                             center0: unitTranslation0,
@@ -36453,8 +38506,7 @@ class $93345e9ee93b28fb$export$76de936b3c1c4170 extends (0, $96371271bb28b98d$ex
                             size0: unitScale0,
                             size1: unitScale1,
                             rotation0: unitRotation0,
-                            rotation1: unitRotation1,
-                            material: material
+                            rotation1: unitRotation1
                         });
                         break;
                     case (0, $4a6417d29706362f$export$80d48287646c9e3b).sdf:
@@ -36474,7 +38526,6 @@ class $93345e9ee93b28fb$export$76de936b3c1c4170 extends (0, $96371271bb28b98d$ex
                             texCoord1: (0, $91b0cc4981465964$exports).fromValues(unitTexCoord[2], unitTexCoord[1]),
                             rotation0: unitRotation0,
                             rotation1: unitRotation1,
-                            material: material,
                             texId: texId,
                             sdfBuffer: sdfBuffer,
                             sdfBorder: sdfBorder
@@ -36489,8 +38540,7 @@ class $93345e9ee93b28fb$export$76de936b3c1c4170 extends (0, $96371271bb28b98d$ex
                             time1: time1,
                             size0: unitScale0,
                             size1: unitScale1,
-                            rounding: Math.min(Math.min(Math.min((0, $0a0587bd8b0d58e8$export$849e31d725692576).getRounding(currentBuffer.dataView, j) * modelScale, unitScale0[0]), unitScale0[1]), unitScale0[2]),
-                            material: material
+                            rounding: Math.min(Math.min(Math.min((0, $0a0587bd8b0d58e8$export$849e31d725692576).getRounding(currentBuffer.dataView, j) * modelScale, unitScale0[0]), unitScale0[1]), unitScale0[2])
                         });
                         else hittable = new (0, $66964bfc3ddbcb4c$export$e349e1996fd043a1)({
                             center0: unitTranslation0,
@@ -36500,7 +38550,6 @@ class $93345e9ee93b28fb$export$76de936b3c1c4170 extends (0, $96371271bb28b98d$ex
                             size0: unitScale0,
                             size1: unitScale1,
                             rounding: Math.min(Math.min(Math.min((0, $0a0587bd8b0d58e8$export$849e31d725692576).getRounding(currentBuffer.dataView, j) * modelScale, unitScale0[0]), unitScale0[1]), unitScale0[2]),
-                            material: material,
                             rotation0: unitRotation0,
                             rotation1: unitRotation1
                         });
@@ -36515,8 +38564,7 @@ class $93345e9ee93b28fb$export$76de936b3c1c4170 extends (0, $96371271bb28b98d$ex
                             size1: unitScale1,
                             angle0: (0, $0a0587bd8b0d58e8$export$849e31d725692576).getParameter1(currentBuffer.dataView, j),
                             innerRadius0: (0, $0a0587bd8b0d58e8$export$849e31d725692576).getParameter2(currentBuffer.dataView, j),
-                            rounding: Math.min(Math.min(Math.min((0, $0a0587bd8b0d58e8$export$849e31d725692576).getRounding(currentBuffer.dataView, j) * modelScale, unitScale0[0]), unitScale0[1]), unitScale0[2]),
-                            material: material
+                            rounding: Math.min(Math.min(Math.min((0, $0a0587bd8b0d58e8$export$849e31d725692576).getRounding(currentBuffer.dataView, j) * modelScale, unitScale0[0]), unitScale0[1]), unitScale0[2])
                         });
                         else hittable = new (0, $66964bfc3ddbcb4c$export$2d4dbfe5a7e22bdf)({
                             center0: unitTranslation0,
@@ -36528,9 +38576,20 @@ class $93345e9ee93b28fb$export$76de936b3c1c4170 extends (0, $96371271bb28b98d$ex
                             angle0: (0, $0a0587bd8b0d58e8$export$849e31d725692576).getParameter1(currentBuffer.dataView, j),
                             innerRadius0: (0, $0a0587bd8b0d58e8$export$849e31d725692576).getParameter2(currentBuffer.dataView, j),
                             rounding: Math.min(Math.min(Math.min((0, $0a0587bd8b0d58e8$export$849e31d725692576).getRounding(currentBuffer.dataView, j) * modelScale, unitScale0[0]), unitScale0[1]), unitScale0[2]),
-                            material: material,
                             rotation0: unitRotation0,
                             rotation1: unitRotation1
+                        });
+                        break;
+                    case (0, $4a6417d29706362f$export$80d48287646c9e3b).tubeSdf:
+                        hittable = new (0, $66964bfc3ddbcb4c$export$8c6d7438a2b5cc70)({
+                            center0: unitTranslation0,
+                            center1: unitTranslation1,
+                            time0: time0,
+                            time1: time1,
+                            innerRadius: unitScale0[0],
+                            outerRadius: unitScale0[2],
+                            height: unitScale0[1],
+                            rounding: Math.min(Math.min(Math.min((0, $0a0587bd8b0d58e8$export$849e31d725692576).getRounding(currentBuffer.dataView, j) * modelScale, unitScale0[0]), unitScale0[1]), unitScale0[2])
                         });
                         break;
                     case (0, $4a6417d29706362f$export$80d48287646c9e3b).cylinder:
@@ -36542,8 +38601,7 @@ class $93345e9ee93b28fb$export$76de936b3c1c4170 extends (0, $96371271bb28b98d$ex
                             radius: unitScale0[0],
                             height: unitScale0[1],
                             rotation0: unitRotation0,
-                            rotation1: unitRotation1,
-                            material: material
+                            rotation1: unitRotation1
                         });
                         break;
                     case (0, $4a6417d29706362f$export$80d48287646c9e3b).cylinderSdf:
@@ -36555,7 +38613,6 @@ class $93345e9ee93b28fb$export$76de936b3c1c4170 extends (0, $96371271bb28b98d$ex
                             radius: unitScale0[0],
                             height: unitScale0[1],
                             rounding: Math.min(Math.min((0, $0a0587bd8b0d58e8$export$849e31d725692576).getRounding(currentBuffer.dataView, j) * modelScale, unitScale0[0]), unitScale0[1]),
-                            material: material,
                             rotation0: unitRotation0,
                             rotation1: unitRotation1
                         });
@@ -36567,8 +38624,7 @@ class $93345e9ee93b28fb$export$76de936b3c1c4170 extends (0, $96371271bb28b98d$ex
                             time0: time0,
                             time1: time1,
                             radius: unitScale0[0],
-                            height: unitScale0[1],
-                            material: material
+                            height: unitScale0[1]
                         });
                         break;
                     case (0, $4a6417d29706362f$export$80d48287646c9e3b).hexPrismSdf:
@@ -36579,18 +38635,39 @@ class $93345e9ee93b28fb$export$76de936b3c1c4170 extends (0, $96371271bb28b98d$ex
                             time1: time1,
                             radius: unitScale0[0],
                             height: unitScale0[1],
-                            rounding: Math.min(Math.min((0, $0a0587bd8b0d58e8$export$849e31d725692576).getRounding(currentBuffer.dataView, j) * modelScale, unitScale0[0]), unitScale0[1]),
-                            material: material
+                            rounding: Math.min(Math.min((0, $0a0587bd8b0d58e8$export$849e31d725692576).getRounding(currentBuffer.dataView, j) * modelScale, unitScale0[0]), unitScale0[1])
                         });
                         break;
                 }
-                if (hittable.material instanceof (0, $62116d012d21b949$export$87cc275e72e16d48)) this.hittables.push(new (0, $66964bfc3ddbcb4c$export$412c0ed39e393270)({
+                hittable.materialType = (0, $0a0587bd8b0d58e8$export$849e31d725692576).getMatId(currentBuffer.dataView, j);
+                hittable.materialFuzz = (0, $0a0587bd8b0d58e8$export$849e31d725692576).getMatFuzz(currentBuffer.dataView, j);
+                hittable.materialRefractiveIndex = (0, $0a0587bd8b0d58e8$export$849e31d725692576).getMatRefractiveIndex(currentBuffer.dataView, j);
+                hittable.materialDensity = (0, $0a0587bd8b0d58e8$export$849e31d725692576).getMatDensity(currentBuffer.dataView, j);
+                hittable.materialGloss = (0, $0a0587bd8b0d58e8$export$849e31d725692576).getMatGloss(currentBuffer.dataView, j);
+                (0, $0a0587bd8b0d58e8$export$849e31d725692576).getMatColor(currentBuffer.dataView, j, rgb);
+                rgb[0] = Math.pow(rgb[0], 2.2);
+                rgb[1] = Math.pow(rgb[1], 2.2);
+                rgb[2] = Math.pow(rgb[2], 2.2);
+                hittable.materialColor = [
+                    rgb[0],
+                    rgb[1],
+                    rgb[2]
+                ];
+                (0, $0a0587bd8b0d58e8$export$849e31d725692576).getSegColor(currentBuffer.dataView, j, rgba);
+                hittable.segmentColor = [
+                    rgba[0],
+                    rgba[1],
+                    rgba[2],
+                    rgba[3]
+                ];
+                if (hittable.materialType == (0, $62116d012d21b949$export$bd062416169c6728).isotropic) this.hittables.push(new (0, $66964bfc3ddbcb4c$export$412c0ed39e393270)({
                     boundary: hittable,
                     center0: unitTranslation0,
                     center1: unitTranslation1,
                     time0: time0,
                     time1: time1,
-                    material: hittable.material
+                    materialDensity: hittable.materialDensity,
+                    materialColor: hittable.materialColor
                 }));
                 else this.hittables.push(hittable);
                 this.minY = Math.min(hittable.bounds.min[1], this.minY);
@@ -36608,6 +38685,7 @@ class $93345e9ee93b28fb$export$76de936b3c1c4170 extends (0, $96371271bb28b98d$ex
  */ class $ca7af8634961ee25$export$a002182e51710d39 {
 }
 $ca7af8634961ee25$export$a002182e51710d39.SHADOW_OFFSET = 0.001;
+
 
 
 var $d5ed11dd11fe7749$var$__awaiter = undefined && undefined.__awaiter || function(thisArg, _arguments, P, generator) {
@@ -36672,8 +38750,8 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
         this._up = (0, $31054a6c69637582$exports).create();
         this._forward = (0, $31054a6c69637582$exports).create();
         this._modelPosition = (0, $31054a6c69637582$exports).create();
-        this._manipulationOrigin = (0, $31054a6c69637582$exports).create();
-        this._backgroundColor = (0, $4c4ac78b213a9c07$exports).fromValues(0, 0, 0, 1);
+        this._backgroundColor = (0, $4c4ac78b213a9c07$exports).create();
+        this._ambientColor = (0, $31054a6c69637582$exports).create();
     }
     initialize(core) {
         super.initialize(core);
@@ -36698,8 +38776,24 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
                     }
                 };
                 this._device = yield this._adapter.requestDevice(gpuDeviceDescriptor);
+                this._maxComputeWorkgroupsPerDimension = this._device.limits.maxComputeWorkgroupsPerDimension;
                 this._queue = this._device.queue;
                 this._context = this._canvas.getContext("webgpu");
+                this._device.lost.then(()=>{
+                    this._core.log.write((0, $4a6417d29706362f$export$243e62d78d3b544d).error, "GPU lost");
+                    this._core.stop();
+                    this._queue = null;
+                    this._device = null;
+                    this._adapter = null;
+                    this._context = null;
+                    this._initializeAPI().then(()=>{
+                        this._initializeResources();
+                        this._hasWorldChanged = true;
+                        this._lightBuffer = null;
+                        this._haveLightsChanged = true;
+                        this._core.start();
+                    });
+                });
                 this._core.log.write((0, $4a6417d29706362f$export$243e62d78d3b544d).info, `WebGPU API initialized ${Math.round(window.performance.now() - start)}ms`);
             } catch (e) {
                 this._core.log.write((0, $4a6417d29706362f$export$243e62d78d3b544d).error, e);
@@ -36816,79 +38910,10 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
                     }
                 }
             }
-            const materials = [];
-            const materialIds = [];
-            for(let i = 0; i < hittables.length; i++){
-                const hittable = hittables[i];
-                const material = hittable.material;
-                let materialId;
-                let found;
-                for(let j = 0; j < materials.length; j++)if (materials[j] === material) {
-                    found = true;
-                    materialId = j;
-                    break;
-                }
-                if (!found) {
-                    materialId = materials.length;
-                    materials.push(material);
-                }
-                materialIds.push(materialId);
-            }
             const textures = [];
-            const textureIds = [];
-            for(let i = 0; i < materials.length; i++){
-                const material = materials[i];
-                const texture = material.texture;
-                if (texture) {
-                    let textureId;
-                    let found;
-                    for(let j = 0; j < textures.length; j++)if (textures[j] === texture) {
-                        found = true;
-                        textureId = j;
-                        break;
-                    }
-                    if (!found) {
-                        textureId = textures.length;
-                        textures.push(texture);
-                        if (texture instanceof (0, $6060da1e598714a9$export$3ad126b3fdb68b5e)) {
-                            const imageData = texture.image;
-                            if (imageData) {
-                                let start = performance.now();
-                                const imageDataLinear = new ImageData(imageData.width, imageData.height);
-                                for(let i = 0; i < imageData.data.length; i++)imageDataLinear.data[i] = Math.pow(imageData.data[i] / 0xff, 2.2) * 0xff;
-                                this._core.log.write((0, $4a6417d29706362f$export$243e62d78d3b544d).info, `image inverse gamma ${Math.round(window.performance.now() - start)}ms`);
-                                start = window.performance.now();
-                                const textureSize = {
-                                    width: imageData.width,
-                                    height: imageData.height
-                                };
-                                createImageBitmap(imageDataLinear).then((imageBitmap)=>{
-                                    const textureDescriptor = {
-                                        size: textureSize,
-                                        format: 'rgba8unorm',
-                                        usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST | GPUTextureUsage.RENDER_ATTACHMENT
-                                    };
-                                    this._backgroundTexture = this._device.createTexture(textureDescriptor);
-                                    const imageCopyExternalImage = {
-                                        source: imageBitmap,
-                                        flipY: true
-                                    };
-                                    const imageCopyTextureTagged = {
-                                        texture: this._backgroundTexture
-                                    };
-                                    const copySize = {
-                                        width: imageData.width,
-                                        height: imageData.height
-                                    };
-                                    this._device.queue.copyExternalImageToTexture(imageCopyExternalImage, imageCopyTextureTagged, copySize);
-                                    this._core.log.write((0, $4a6417d29706362f$export$243e62d78d3b544d).info, `background image updated ${Math.round(window.performance.now() - start)}ms`);
-                                });
-                            }
-                        }
-                    }
-                    textureIds.push(textureId);
-                } else textureIds.push(0);
-            }
+            if (textures.length == 0) textures.push(new (0, $6060da1e598714a9$export$b696913510b740d6)({
+                color: (0, $31054a6c69637582$exports).fromValues(1, 1, 1)
+            }));
             const textureBufferSizeBytes = textures.length * (0, $6060da1e598714a9$export$6aa93a36bc90f68e).SIZE * 4;
             const textureBufferDescriptor = {
                 label: "Texture buffer",
@@ -36898,15 +38923,6 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
             this._textureBuffer = this._device.createBuffer(textureBufferDescriptor);
             this._textureBufferData = new (0, $6060da1e598714a9$export$6aa93a36bc90f68e)(textures.length);
             for(let i = 0; i < textures.length; i++)textures[i].toBuffer(this._textureBufferData, i);
-            const materialBufferSizeBytes = materials.length * (0, $62116d012d21b949$export$673ddcc6bf213111).SIZE * 4;
-            const materialBufferDescriptor = {
-                label: "Material buffer",
-                size: materialBufferSizeBytes,
-                usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
-            };
-            this._materialBuffer = this._device.createBuffer(materialBufferDescriptor);
-            this._materialBufferData = new (0, $62116d012d21b949$export$673ddcc6bf213111)(materials.length);
-            for(let i = 0; i < materials.length; i++)materials[i].toBuffer(this._materialBufferData, i, textureIds[i]);
             const hittableBufferSizeBytes = hittables.length * (0, $66964bfc3ddbcb4c$export$1337e9dd34ffc243).SIZE * 4;
             const hittableBufferDescriptor = {
                 label: "Hittable buffer",
@@ -36917,7 +38933,7 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
             this._hittableBufferData = new (0, $66964bfc3ddbcb4c$export$1337e9dd34ffc243)(hittables.length);
             for(let i = 0; i < hittables.length; i++){
                 const hittable = hittables[i];
-                hittable.toBuffer(this._hittableBufferData, i, materialIds[i]);
+                hittable.toBuffer(this._hittableBufferData, i);
             }
             const linearBVHNodes = bvhAccel.nodes;
             const linearBVHNodeBufferSizeBytes = linearBVHNodes.length * (0, $ee56e2b41e5e87b5$export$9e920ed4165673f5).SIZE * 4;
@@ -36930,25 +38946,34 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
             this._linearBVHNodeBufferData = new (0, $ee56e2b41e5e87b5$export$9e920ed4165673f5)(linearBVHNodes.length);
             for(let i = 0; i < linearBVHNodes.length; i++)linearBVHNodes[i].toBuffer(this._linearBVHNodeBufferData, i);
             this._device.queue.writeBuffer(this._hittableBuffer, 0, this._hittableBufferData.buffer, this._hittableBufferData.byteOffset, this._hittableBufferData.byteLength);
-            this._device.queue.writeBuffer(this._materialBuffer, 0, this._materialBufferData.buffer, this._materialBufferData.byteOffset, this._materialBufferData.byteLength);
             this._device.queue.writeBuffer(this._textureBuffer, 0, this._textureBufferData.buffer, this._textureBufferData.byteOffset, this._textureBufferData.byteLength);
             this._device.queue.writeBuffer(this._linearBVHNodeBuffer, 0, this._linearBVHNodeBufferData.buffer, this._linearBVHNodeBufferData.byteOffset, this._linearBVHNodeBufferData.byteLength);
             this._core.log.write((0, $4a6417d29706362f$export$243e62d78d3b544d).info, `create world ${Math.round(window.performance.now() - start)}ms`);
         });
     }
     _createLights() {
-        if (!this._lights || this._lights.length == 0) return;
+        if (!this._lights || this._lights.length == 0) {
+            const options = {
+                center: (0, $31054a6c69637582$exports).fromValues(0, 0, 0),
+                size: (0, $91b0cc4981465964$exports).fromValues(0, 0),
+                color: (0, $31054a6c69637582$exports).fromValues(0, 0, 0),
+                rotation: (0, $39ece26d1239bb77$exports).create()
+            };
+            this._lights = [
+                new (0, $1596feb7c9451159$export$1f9284d52f5c21ca)(options)
+            ];
+        }
         const modelScale = this._core.getModelScale();
         (0, $31054a6c69637582$exports).set(this._modelPosition, this.mMatrix[12], this.mMatrix[13], this.mMatrix[14]);
         if (!this._lightBuffer) {
-            const lightBufferSizeBytes = this._lights.length * (0, $1596feb7c9451159$export$82650fd3490ceb3f).SIZE * 4;
+            const lightBufferSizeBytes = this._config.maxLights * (0, $1596feb7c9451159$export$82650fd3490ceb3f).SIZE * 4;
             const lightBufferDescriptor = {
                 label: "Light buffer",
                 size: lightBufferSizeBytes,
                 usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
             };
             this._lightBuffer = this._device.createBuffer(lightBufferDescriptor);
-            this._lightBufferData = new (0, $1596feb7c9451159$export$82650fd3490ceb3f)(this._lights.length);
+            this._lightBufferData = new (0, $1596feb7c9451159$export$82650fd3490ceb3f)(this._config.maxLights);
         }
         for(let i = 0; i < this._lights.length; i++){
             const light = this._lights[i];
@@ -37029,6 +39054,11 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
             (0, $91b0cc4981465964$exports).scale(groundSize, this.ground.size || this._config.groundSize, modelScale);
             if (this.ground.position) (0, $31054a6c69637582$exports).scale(groundPosition, this.ground.position, modelScale);
             else (0, $31054a6c69637582$exports).set(groundPosition, 0, minY - (0, $ca7af8634961ee25$export$a002182e51710d39).SHADOW_OFFSET, 0);
+            const color = this.ground.color || [
+                0.5,
+                0.5,
+                0.5
+            ];
             const options = {
                 size0: groundSize,
                 size1: groundSize,
@@ -37038,7 +39068,18 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
                 time1: 1,
                 texCoord0: (0, $91b0cc4981465964$exports).fromValues(0, 0),
                 texCoord1: (0, $91b0cc4981465964$exports).fromValues(1, 1),
-                material: this.ground.material || this.config.defaultMaterial
+                materialType: (0, $62116d012d21b949$export$bd062416169c6728).lambertian,
+                materialColor: [
+                    Math.pow(color[0], 2.2),
+                    Math.pow(color[1], 2.2),
+                    Math.pow(color[2], 2.2)
+                ],
+                segmentColor: [
+                    0,
+                    0,
+                    0,
+                    0
+                ]
             };
             (0, $31054a6c69637582$exports).add(options.center0, options.center0, modelPosition);
             hittables.push(new (0, $66964bfc3ddbcb4c$export$57071e021ef37bbb)(options));
@@ -37086,7 +39127,7 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
             usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC
         };
         const outputColorBuffer = this._device.createBuffer(outputColorBufferDescriptor);
-        const outputNormalDepthBufferSizeBytes = Uint32Array.BYTES_PER_ELEMENT * width * height * 4;
+        const outputNormalDepthBufferSizeBytes = Uint32Array.BYTES_PER_ELEMENT * (width + 1) * (height + 1) * 4;
         const outputDepthBufferDescriptor = {
             label: "Output normal depth buffer",
             size: outputNormalDepthBufferSizeBytes,
@@ -37144,15 +39185,17 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
                 {
                     binding: 6,
                     visibility: GPUShaderStage.COMPUTE,
-                    buffer: {
-                        type: "read-only-storage"
+                    sampler: {
+                        type: "filtering"
                     }
                 },
                 {
                     binding: 7,
                     visibility: GPUShaderStage.COMPUTE,
-                    sampler: {
-                        type: "filtering"
+                    texture: {
+                        multisampled: false,
+                        sampleType: "float",
+                        viewDimension: "2d"
                     }
                 },
                 {
@@ -37176,21 +39219,12 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
                 {
                     binding: 10,
                     visibility: GPUShaderStage.COMPUTE,
-                    texture: {
-                        multisampled: false,
-                        sampleType: "float",
-                        viewDimension: "2d"
-                    }
-                },
-                {
-                    binding: 11,
-                    visibility: GPUShaderStage.COMPUTE,
                     buffer: {
                         type: "storage"
                     }
                 },
                 {
-                    binding: 12,
+                    binding: 11,
                     visibility: GPUShaderStage.COMPUTE,
                     buffer: {
                         type: "storage"
@@ -37224,51 +39258,45 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
                 {
                     binding: 3,
                     resource: {
-                        buffer: this._materialBuffer
+                        buffer: this._textureBuffer
                     }
                 },
                 {
                     binding: 4,
                     resource: {
-                        buffer: this._textureBuffer
+                        buffer: this._lightBuffer
                     }
                 },
                 {
                     binding: 5,
                     resource: {
-                        buffer: this._lightBuffer
-                    }
-                },
-                {
-                    binding: 6,
-                    resource: {
                         buffer: this._linearBVHNodeBuffer
                     }
                 },
                 {
-                    binding: 7,
+                    binding: 6,
                     resource: this._sampler
                 },
                 {
-                    binding: 8,
+                    binding: 7,
                     resource: (this.fonts[this._core.font.name].texture || this._texture).createView()
                 },
                 {
-                    binding: 9,
+                    binding: 8,
                     resource: (this._backgroundTexture || this._texture).createView()
                 },
                 {
-                    binding: 10,
+                    binding: 9,
                     resource: (this._atlasTexture || this._texture).createView()
                 },
                 {
-                    binding: 11,
+                    binding: 10,
                     resource: {
                         buffer: outputNormalDepthBuffer
                     }
                 },
                 {
-                    binding: 12,
+                    binding: 11,
                     resource: {
                         buffer: this._depthMinMaxBuffer
                     }
@@ -37303,6 +39331,16 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
             compute: computeDepthNormal
         };
         this._computeDepthNormalPipeline = this._device.createComputePipeline(computeDepthNormalPipelineDescriptor);
+        const computeDepthNormalMultisampled = {
+            module: computeModule,
+            entryPoint: "depthNormalMultisampled"
+        };
+        const computeDepthNormalMultisampledPipelineDescriptor = {
+            label: "Depth normal multisampled pipeline descriptor",
+            layout: computePipelineLayout,
+            compute: computeDepthNormalMultisampled
+        };
+        this._computeDepthNormalMultisampledPipeline = this._device.createComputePipeline(computeDepthNormalMultisampledPipelineDescriptor);
         const computeSegment = {
             module: computeModule,
             entryPoint: "segment"
@@ -37324,14 +39362,14 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
                     }
                 },
                 {
-                    binding: 11,
+                    binding: 10,
                     visibility: GPUShaderStage.COMPUTE,
                     buffer: {
                         type: "storage"
                     }
                 },
                 {
-                    binding: 12,
+                    binding: 11,
                     visibility: GPUShaderStage.COMPUTE,
                     buffer: {
                         type: "storage"
@@ -37351,13 +39389,13 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
                     }
                 },
                 {
-                    binding: 11,
+                    binding: 10,
                     resource: {
                         buffer: outputNormalDepthBuffer
                     }
                 },
                 {
-                    binding: 12,
+                    binding: 11,
                     resource: {
                         buffer: this._depthMinMaxBuffer
                     }
@@ -37501,6 +39539,21 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
             primitive: primitive
         };
         this._fullscreenQuadDepthPipeline = this._device.createRenderPipeline(fullscreenQuadDepthPiplelineDescriptor);
+        const fragmentDepthMultisampled = {
+            module: fullscreenQuadModule,
+            entryPoint: "frag_depthMultisampled",
+            targets: [
+                colorState
+            ]
+        };
+        const fullscreenQuadDepthMultisampledPiplelineDescriptor = {
+            label: "Fullscreen quad depth multisampled pipeline descriptor",
+            layout: fullscreenQuadPipelineLayout,
+            vertex: vertex,
+            fragment: fragmentDepthMultisampled,
+            primitive: primitive
+        };
+        this._fullscreenQuadDepthMultisampledPipeline = this._device.createRenderPipeline(fullscreenQuadDepthMultisampledPiplelineDescriptor);
         const fragmentNormal = {
             module: fullscreenQuadModule,
             entryPoint: "frag_normal",
@@ -37516,6 +39569,21 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
             primitive: primitive
         };
         this._fullscreenQuadNormalPipeline = this._device.createRenderPipeline(fullscreenQuadNormalPiplelineDescriptor);
+        const fragmentNormalMultisampled = {
+            module: fullscreenQuadModule,
+            entryPoint: "frag_normalMultisampled",
+            targets: [
+                colorState
+            ]
+        };
+        const fullscreenQuadNormalMultisampledPiplelineDescriptor = {
+            label: "Fullscreen quad normal multisampled pipeline descriptor",
+            layout: fullscreenQuadPipelineLayout,
+            vertex: vertex,
+            fragment: fragmentNormalMultisampled,
+            primitive: primitive
+        };
+        this._fullscreenQuadNormalMultisampledPipeline = this._device.createRenderPipeline(fullscreenQuadNormalMultisampledPiplelineDescriptor);
         const fragmentEdge = {
             module: fullscreenQuadModule,
             entryPoint: "frag_edge",
@@ -37552,12 +39620,17 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
         this._fullscreenQuadUniformBufferData.setHeight(height);
         this._computeUniformBufferData.setTime0(0);
         this._computeUniformBufferData.setTime1(1);
-        this._computeDispatchCount = Math.min(Math.ceil(width * height / 256), this._device.limits.maxComputeWorkgroupsPerDimension);
         this._frameCount = 0;
         this._core.log.write((0, $4a6417d29706362f$export$243e62d78d3b544d).info, "backings resized");
     }
     update(elapsedTime) {
         super.update(elapsedTime);
+        if (this._core.config.renderMode != this._previousRenderMode) {
+            const isPreviousDepthNormal = this._previousRenderMode == (0, $4a6417d29706362f$export$2386c8c1d9db2d57).depth || this._previousRenderMode == (0, $4a6417d29706362f$export$2386c8c1d9db2d57).normal;
+            const isCurrentDepthNormal = this._core.config.renderMode == (0, $4a6417d29706362f$export$2386c8c1d9db2d57).depth || this._core.config.renderMode == (0, $4a6417d29706362f$export$2386c8c1d9db2d57).normal;
+            if (isPreviousDepthNormal != isCurrentDepthNormal) this.clear();
+            this._previousRenderMode = this._core.config.renderMode;
+        }
         for(let i = 0; i < this.transitionBuffers.length; i++){
             const transitionBuffer = this.transitionBuffers[i];
             if (transitionBuffer.isVisible) {
@@ -37597,6 +39670,10 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
                 this._frameCount = 0;
                 this._computeUniformBufferData.setAperture(this._config.aperture);
             }
+            if (Math.abs(this._computeUniformBufferData.getFocusDistance() - this._config.focusDistance) > epsilon) {
+                this._frameCount = 0;
+                this._computeUniformBufferData.setFocusDistance(this._config.focusDistance);
+            }
             const m = this.inverseVMatrices[0];
             this._computeUniformBufferData.getPosition(this._position);
             this._computeUniformBufferData.getRight(this._right);
@@ -37613,14 +39690,17 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
                 this._computeUniformBufferData.setUp(this._up);
                 this._computeUniformBufferData.setForward(this._forward);
                 this._core.getModelPosition(this._modelPosition);
-                this._core.getModelManipulationOrigin(this._manipulationOrigin);
-                (0, $31054a6c69637582$exports).add(this._modelPosition, this._modelPosition, this._manipulationOrigin);
                 this._computeUniformBufferData.setLookAt(this._modelPosition);
             }
             this._computeUniformBufferData.getBackgroundColor(this._backgroundColor);
+            this._computeUniformBufferData.getAmbientColor(this._ambientColor);
             if (!(0, $4c4ac78b213a9c07$exports).equals(this._backgroundColor, this._config.backgroundColor)) {
                 this._frameCount = 0;
                 this._computeUniformBufferData.setBackgroundColor(this._config.backgroundColor);
+            }
+            if (!(0, $31054a6c69637582$exports).equals(this._ambientColor, this._config.ambientColor)) {
+                this._frameCount = 0;
+                this._computeUniformBufferData.setAmbientColor(this._config.ambientColor);
             }
             this._tilesX = this._computeUniformBufferData.getTilesX();
             this._tilesY = this._computeUniformBufferData.getTilesY();
@@ -37649,10 +39729,10 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
             this._frameCount += raysPerFrame;
             this._fullscreenQuadUniformBufferData.setSamplesPerPixel(this._frameCount);
             this._fullscreenQuadUniformBufferData.setExposure(this._config.exposure);
+            this._fullscreenQuadUniformBufferData.setEdgeForeground(this._config.edgeForeground);
+            this._fullscreenQuadUniformBufferData.setEdgeBackground(this._config.edgeBackground);
             this._fullscreenQuadUniformBufferData.setMinDepth(this._config.minDepth);
             this._fullscreenQuadUniformBufferData.setMaxDepth(this._config.maxDepth);
-            this._fullscreenQuadUniformBufferData.setEdgeDepth(this._config.edgeDepth);
-            this._fullscreenQuadUniformBufferData.setEdgeNormal(this._config.edgeNormal);
             this._device.queue.writeBuffer(this._fullscreenQuadUniformBuffer, 0, this._fullscreenQuadUniformBufferData.buffer, this._fullscreenQuadUniformBufferData.byteOffset, this._fullscreenQuadUniformBufferData.byteLength);
             yield this._encodeCommands(clear);
             this._duration = performance.now() - this._startTime;
@@ -37665,24 +39745,33 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
         return $d5ed11dd11fe7749$var$__awaiter(this, void 0, void 0, function*() {
             const commandEncoder = this._device.createCommandEncoder();
             const computePassEncoder = commandEncoder.beginComputePass();
+            let computeDispatchCount;
+            switch(this._core.config.renderMode){
+                case (0, $4a6417d29706362f$export$2386c8c1d9db2d57).segment:
+                case (0, $4a6417d29706362f$export$2386c8c1d9db2d57).edge:
+                    computeDispatchCount = Math.min(Math.ceil((this.width + 1) * (this.height + 1) / 256), this._maxComputeWorkgroupsPerDimension);
+                    break;
+                default:
+                    computeDispatchCount = Math.min(Math.ceil(this.width * this.height / 256), this._maxComputeWorkgroupsPerDimension);
+            }
             if (clear) {
                 computePassEncoder.setPipeline(this._clearPipeline);
                 computePassEncoder.setBindGroup(0, this._clearBindGroup);
-                computePassEncoder.dispatchWorkgroups(this._computeDispatchCount, 1, 1);
+                computePassEncoder.dispatchWorkgroups(computeDispatchCount, 1, 1);
             }
             switch(this._core.config.renderMode){
                 case (0, $4a6417d29706362f$export$2386c8c1d9db2d57).color:
                 case (0, $4a6417d29706362f$export$2386c8c1d9db2d57).hdr:
                     computePassEncoder.setPipeline(this._computePipeline);
                     computePassEncoder.setBindGroup(0, this._computeBindGroup);
-                    computePassEncoder.dispatchWorkgroups(this._computeDispatchCount, 1, 1);
+                    computePassEncoder.dispatchWorkgroups(computeDispatchCount, 1, 1);
                     computePassEncoder.end();
                     break;
                 case (0, $4a6417d29706362f$export$2386c8c1d9db2d57).depth:
                 case (0, $4a6417d29706362f$export$2386c8c1d9db2d57).normal:
-                    computePassEncoder.setPipeline(this._computeDepthNormalPipeline);
+                    computePassEncoder.setPipeline(this.config.isDepthMultisampled || this.config.isNormalMultisampled ? this._computeDepthNormalMultisampledPipeline : this._computeDepthNormalPipeline);
                     computePassEncoder.setBindGroup(0, this._computeBindGroup);
-                    computePassEncoder.dispatchWorkgroups(this._computeDispatchCount, 1, 1);
+                    computePassEncoder.dispatchWorkgroups(computeDispatchCount, 1, 1);
                     computePassEncoder.end();
                     commandEncoder.copyBufferToBuffer(this._depthMinMaxBuffer, 0, this._depthMinMaxResultBuffer, 0, this._depthMinMaxResultBuffer.size);
                     if (this._config.autoDepth) {
@@ -37690,7 +39779,6 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
                         const depthMinMax = new Uint32Array(this._depthMinMaxResultBuffer.getMappedRange());
                         const depthMin = depthMinMax[0] / 1000;
                         const depthMax = depthMinMax[1] / 1000;
-                        if (this._config.minDepth != depthMin || this._config.maxDepth != depthMax) console.log('depthMinMax', depthMin, depthMax);
                         this._config.minDepth = depthMin;
                         this._config.maxDepth = depthMax;
                         this._depthMinMaxResultBuffer.unmap();
@@ -37700,7 +39788,7 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
                 case (0, $4a6417d29706362f$export$2386c8c1d9db2d57).segment:
                     computePassEncoder.setPipeline(this._computeSegmentPipeline);
                     computePassEncoder.setBindGroup(0, this._computeBindGroup);
-                    computePassEncoder.dispatchWorkgroups(this._computeDispatchCount, 1, 1);
+                    computePassEncoder.dispatchWorkgroups(computeDispatchCount, 1, 1);
                     computePassEncoder.end();
                     break;
             }
@@ -37729,10 +39817,10 @@ class $d5ed11dd11fe7749$export$861edd1ccea2f746 extends (0, $a123db7d2af0bebc$ex
                     renderPassEncoder.setPipeline(this._fullscreenQuadHdrPipeline);
                     break;
                 case (0, $4a6417d29706362f$export$2386c8c1d9db2d57).depth:
-                    renderPassEncoder.setPipeline(this._fullscreenQuadDepthPipeline);
+                    renderPassEncoder.setPipeline(this.config.isDepthMultisampled ? this._fullscreenQuadDepthMultisampledPipeline : this._fullscreenQuadDepthPipeline);
                     break;
                 case (0, $4a6417d29706362f$export$2386c8c1d9db2d57).normal:
-                    renderPassEncoder.setPipeline(this._fullscreenQuadNormalPipeline);
+                    renderPassEncoder.setPipeline(this.config.isNormalMultisampled ? this._fullscreenQuadNormalMultisampledPipeline : this._fullscreenQuadNormalPipeline);
                     break;
                 case (0, $4a6417d29706362f$export$2386c8c1d9db2d57).edge:
                     renderPassEncoder.setPipeline(this._fullscreenQuadEdgePipeline);
@@ -37767,7 +39855,7 @@ class $6fc486c90d5a34f3$export$c6957adcf93c393f {
         if (options) {
             this.position = options.position;
             this.size = options.size;
-            this.material = options.material;
+            this.color = options.color;
         }
     }
 }
@@ -43622,41 +45710,207 @@ function $baf9c68afdd76912$export$c25acd513dcc8062(props) {
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
-*/ var $c0a1d2df3eff3893$exports = {};
-"use strict";
+*/ /*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ /*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ /*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ const $1bd1c9b4aadcc080$export$d4a30c86ebfe9b93 = 20;
+class $1bd1c9b4aadcc080$export$a4585e6c8aa63810 {
+    constructor(columns, data){}
+}
+function $1bd1c9b4aadcc080$export$1ce96159c3ba4e5a(c) {
+    if (c.quantitative) return 'redyellowgreen';
+    else if (c.stats.distinctValueCount === 2) return 'dual_redgreen';
+    else if (c.stats.distinctValueCount <= 10) return 'category10';
+    return 'category20';
+}
+
+
+const $1b33c7f022f96886$var$maxDistinctVal = 20;
+const $1b33c7f022f96886$var$minDistinctVal = 2;
+class $1b33c7f022f96886$export$3f3e73d6f76170d5 {
+    constructor(columns, data){
+        let score = -1;
+        for(let i = 0; i < columns.length; i++){
+            const recommendation = new $1b33c7f022f96886$export$63cf70b2e8d83b38(columns[i], data).recommend();
+            if (recommendation.score > score) {
+                this.best = recommendation;
+                score = recommendation.score;
+            }
+            if (score === 1) break;
+        }
+        for(let k = 0; k < columns.length; k++){
+            const column = columns[k];
+            if (column.name === this.best.columns.x || column.stats.isSequential) continue;
+            if (column.quantitative || column.stats.distinctValueCount < (0, $1bd1c9b4aadcc080$export$d4a30c86ebfe9b93) && column.stats.distinctValueCount > 1) {
+                this.best.columns.color = this.best.columns.sort = column.name;
+                this.best.scheme = (0, $1bd1c9b4aadcc080$export$1ce96159c3ba4e5a)(column);
+                if (column.quantitative) this.best.colorBin = 'quantile';
+                break;
+            }
+        }
+    }
+    recommend() {
+        return this.best;
+    }
+}
+class $1b33c7f022f96886$export$63cf70b2e8d83b38 {
+    constructor(column, data){
+        this.score = 0;
+        this.column = column;
+        //the total score for bar chart is 1
+        this.rules = [
+            (column)=>{
+                if (column.stats.isSequential) return false;
+                else if (column.quantitative) return true;
+                else if (!column.quantitative && column.stats.distinctValueCount <= $1b33c7f022f96886$var$maxDistinctVal && column.stats.distinctValueCount >= $1b33c7f022f96886$var$minDistinctVal) return true;
+                else return false;
+            }
+        ];
+        for(let i = 0; i < this.rules.length; i++)if (this.rules[i](column)) this.score++;
+    }
+    recommend() {
+        const rec = {
+            chart: 'barchart',
+            columns: {
+                x: this.column.name
+            },
+            score: this.score,
+            scheme: undefined,
+            view: '2d'
+        };
+        return rec;
+    }
+}
+
+
 /*!
 * Copyright (c) Microsoft Corporation.
 * Licensed under the MIT License.
-*/ var $c0a1d2df3eff3893$var$__createBinding = $c0a1d2df3eff3893$exports && $c0a1d2df3eff3893$exports.__createBinding || (Object.create ? function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) desc = {
-        enumerable: true,
-        get: function() {
-            return m[k];
+*/ //TODO: languages other than english
+const $c0be89b17d0e5664$var$longitudeNames = [
+    'lon',
+    'long',
+    'longitude'
+];
+const $c0be89b17d0e5664$var$latitudeNames = [
+    'lat',
+    'latitude'
+];
+function $c0be89b17d0e5664$var$isSpec(names, limits, column, data) {
+    let is = false;
+    const cname = column.name.toLowerCase();
+    for(let i = 0; i < names.length; i++)if (names[i] === cname) {
+        is = true;
+        break;
+    }
+    data;
+    return is;
+}
+function $c0be89b17d0e5664$export$b0e111396640b96e(column, data) {
+    return $c0be89b17d0e5664$var$isSpec($c0be89b17d0e5664$var$longitudeNames, [
+        -180,
+        180
+    ], column, data);
+}
+function $c0be89b17d0e5664$export$bf99c8928a43a542(column, data) {
+    return $c0be89b17d0e5664$var$isSpec($c0be89b17d0e5664$var$latitudeNames, [
+        -90,
+        90
+    ], column, data);
+}
+function $c0be89b17d0e5664$export$e66a5fd74bbd95cc(column, data) {
+    return $c0be89b17d0e5664$export$bf99c8928a43a542(column, data) || $c0be89b17d0e5664$export$b0e111396640b96e(column, data);
+}
+
+
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ 
+
+class $73347858f569d476$export$15d95472a5608ce4 {
+    constructor(columns, data){
+        const rec = {
+            chart: 'scatterplot',
+            score: undefined,
+            columns: {},
+            scheme: undefined,
+            view: '2d'
+        };
+        columns.forEach((column)=>{
+            if (!rec.columns.x) {
+                if (column.name.toLowerCase() === 'x') return rec.columns.x = column.name;
+                else if ((0, $c0be89b17d0e5664$export$b0e111396640b96e)(column)) return rec.columns.x = column.name;
+            }
+            if (!rec.columns.y) {
+                if (column.name.toLowerCase() === 'y') return rec.columns.y = column.name;
+                else if ((0, $c0be89b17d0e5664$export$bf99c8928a43a542)(column)) return rec.columns.y = column.name;
+            }
+            if (!rec.columns.color && !column.stats.isSequential) {
+                if (column.quantitative || column.stats.distinctValueCount < (0, $1bd1c9b4aadcc080$export$d4a30c86ebfe9b93)) {
+                    rec.columns.color = rec.columns.sort = column.name;
+                    rec.scheme = (0, $1bd1c9b4aadcc080$export$1ce96159c3ba4e5a)(column);
+                    if (column.quantitative) rec.colorBin = 'quantile';
+                    return;
+                }
+            }
+        });
+        if (rec.columns.x && rec.columns.y) this.best = rec;
+    }
+    recommend() {
+        return this.best;
+    }
+}
+
+
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ 
+function $2231af94bc7593e4$export$29f7204f5c690e43(columns, strict) {
+    for(let i = 0; i < columns.length; i++){
+        const c = columns[i];
+        if (c.quantitative) {
+            if (strict && c.stats.hasNegative) continue;
+            if (strict && c.stats.isSequential) continue;
+            if (strict && (0, $c0be89b17d0e5664$export$e66a5fd74bbd95cc)(c)) continue;
+            return c;
         }
-    };
-    Object.defineProperty(o, k2, desc);
-} : function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-});
-var $c0a1d2df3eff3893$var$__exportStar = $c0a1d2df3eff3893$exports && $c0a1d2df3eff3893$exports.__exportStar || function(m, exports1) {
-    for(var p in m)if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports1, p)) $c0a1d2df3eff3893$var$__createBinding(exports1, m, p);
-};
-Object.defineProperty($c0a1d2df3eff3893$exports, "__esModule", {
-    value: true
-});
+    }
+}
 
-$c0a1d2df3eff3893$var$__exportStar((parcelRequire("2FnuA")), $c0a1d2df3eff3893$exports);
 
-$c0a1d2df3eff3893$var$__exportStar((parcelRequire("bvDTm")), $c0a1d2df3eff3893$exports);
+/*!
+* Copyright (c) Microsoft Corporation.
+* Licensed under the MIT License.
+*/ 
 
-$c0a1d2df3eff3893$var$__exportStar((parcelRequire("7Kus9")), $c0a1d2df3eff3893$exports);
+class $431d9b72caa01089$export$28206cc98a74452 {
+    constructor(columns, data){
+        const quickRec = new (0, $73347858f569d476$export$15d95472a5608ce4)(columns, data).recommend();
+        if (quickRec) this.rec = quickRec;
+        else {
+            const barChartrec = new (0, $1b33c7f022f96886$export$3f3e73d6f76170d5)(columns, data).recommend();
+            if (barChartrec && barChartrec.score >= 1) this.rec = barChartrec;
+            else this.rec = {
+                chart: 'grid',
+                columns: {},
+                score: 1
+            };
+        }
+    }
+    recommend() {
+        return this.rec;
+    }
+}
 
-$c0a1d2df3eff3893$var$__exportStar((parcelRequire("lSaje")), $c0a1d2df3eff3893$exports);
 
-$c0a1d2df3eff3893$var$__exportStar((parcelRequire("b7pOC")), $c0a1d2df3eff3893$exports);
 
 
 
@@ -43729,8 +45983,8 @@ function $cdd6162a40e9c08a$export$c2563952d877899(chart, totalStyle, insightColu
     }
 }
 function $cdd6162a40e9c08a$export$7e0d3b5c6570ae8b(columns) {
-    let column = (0, $c0a1d2df3eff3893$exports.preferredColumnForTreemapSize)(columns, true);
-    if (!column) column = (0, $c0a1d2df3eff3893$exports.preferredColumnForTreemapSize)(columns, false);
+    let column = (0, $2231af94bc7593e4$export$29f7204f5c690e43)(columns, true);
+    if (!column) column = (0, $2231af94bc7593e4$export$29f7204f5c690e43)(columns, false);
     return column;
 }
 function $cdd6162a40e9c08a$export$3351a8d90bcc13aa(insight, columns) {
@@ -44544,7 +46798,7 @@ const $0edfbb46d4822ac6$export$12df67f310f5f846 = $0edfbb46d4822ac6$var$_ColumnT
 <body>
     <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/vega@5.32/build/vega.min.js"></script>
+    <script src="https://unpkg.com/vega@6.2/build/vega.min.js"></script>
     <script src="https://unpkg.com/@fluentui/react@8/dist/fluentui-react.js"></script>
     <script src="https://unpkg.com/@msrvida/fluentui-icons@1/dist/umd/fluentui-icons.js"></script>
     <script src="https://unpkg.com/@msrvida/sanddance-explorer@4/dist/umd/sanddance-explorer.js"></script>
@@ -45525,15 +47779,20 @@ function $7c89aab16f679c36$var$_Search(_props) {
             const groups = [
                 ...this.state.groups
             ];
-            const group = groups[groupIndex];
-            const maxKey = group.expressions.reduce((max, p)=>p.key > max ? p.key : max, group.expressions[0].key);
+            const group = Object.assign({}, groups[groupIndex]);
+            const expressions = [
+                ...group.expressions
+            ];
+            const maxKey = expressions.reduce((max, p)=>p.key > max ? p.key : max, expressions[0].key);
             const newEx = this.newExpression(maxKey + 1, '&&');
-            group.expressions.push(newEx);
-            if (group.expressions.length === 2) newEx.unlocked = true;
+            expressions.push(newEx);
+            if (expressions.length === 2) newEx.unlocked = true;
             else {
-                group.expressions.forEach((ex)=>ex.unlocked = false);
-                newEx.clause = group.expressions[1].clause;
+                expressions.forEach((ex)=>ex.unlocked = false);
+                newEx.clause = expressions[1].clause;
             }
+            group.expressions = expressions;
+            groups[groupIndex] = group;
             this.setState({
                 groups: groups
             });
@@ -45542,24 +47801,29 @@ function $7c89aab16f679c36$var$_Search(_props) {
             const groups = [
                 ...this.state.groups
             ];
-            const group = groups[groupIndex];
-            const ex = (0, $1342cf7df79546f0$exports).VegaMorphCharts.util.clone(group.expressions[index]);
-            if (ex.name !== partialEx.name) {
+            const group = Object.assign({}, groups[groupIndex]);
+            const expressions = [
+                ...group.expressions
+            ];
+            const currentEx = expressions[index];
+            if (currentEx.name !== partialEx.name) {
                 //choose an appropriate operator when switching data type
-                const oldColumn = $7c89aab16f679c36$var$getColumnWithName(ex.name, this.state.sortedColumns);
+                const oldColumn = $7c89aab16f679c36$var$getColumnWithName(currentEx.name, this.state.sortedColumns);
                 const newColumn = $7c89aab16f679c36$var$getColumnWithName(partialEx.name, this.state.sortedColumns);
                 const oldType = oldColumn && oldColumn.type;
                 const newType = newColumn && newColumn.type;
                 if (oldType !== newType) {
                     const newOperators = (0, $420fc835a380b3a6$export$c2b32f315f251228)(newColumn).map((validOperator)=>validOperator[0]);
                     //see if old operator is compatible
-                    if (newOperators.indexOf(ex.operator) < 0) //not compatible, so choose "equal"
+                    if (newOperators.indexOf(currentEx.operator) < 0) //not compatible, so choose "equal"
                     partialEx.operator = '==';
                 }
             }
-            Object.assign(ex, partialEx);
+            const ex = Object.assign(Object.assign({}, currentEx), partialEx);
             $7c89aab16f679c36$var$clearExpressionValidation(ex);
-            group.expressions[index] = ex;
+            expressions[index] = ex;
+            group.expressions = expressions;
+            groups[groupIndex] = group;
             this.setState({
                 groups: groups
             });
@@ -45568,13 +47832,14 @@ function $7c89aab16f679c36$var$_Search(_props) {
             const groups = [
                 ...this.state.groups
             ];
-            const group = groups[groupIndex];
+            const group = Object.assign({}, groups[groupIndex]);
             const expressions = [
                 ...group.expressions
             ];
             expressions.splice(index, 1);
             if (expressions.length === 2) expressions[1].unlocked = true;
             group.expressions = expressions;
+            groups[groupIndex] = group;
             this.setState({
                 groups: groups
             });
@@ -52515,7 +54780,7 @@ function $688b2ed8e5aa6452$var$_Explorer(_props) {
                     }
                     if (!partialInsight) {
                         //load recommendation
-                        const r = new (0, $c0a1d2df3eff3893$exports.RecommenderSummary)(dataContent.columns, dataContent.data);
+                        const r = new (0, $431d9b72caa01089$export$28206cc98a74452)(dataContent.columns, dataContent.data);
                         partialInsight = r.recommend();
                     }
                     partialInsight = Object.assign({

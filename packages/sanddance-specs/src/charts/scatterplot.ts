@@ -3,11 +3,11 @@
 * Licensed under the MIT License.
 */
 
-import { AxisScales } from '../interfaces';
-import { ScatterProps } from '../layouts/scatter';
-import { SignalNames } from '../constants';
-import { SpecBuilderProps } from '../specBuilder';
-import { SpecContext } from '../types';
+import { AxisScales } from '../interfaces.js';
+import { ScatterProps } from '../layouts/scatter.js';
+import { SignalNames } from '../constants.js';
+import { SpecBuilderProps } from '../specBuilder.js';
+import { SpecContext } from '../types.js';
 
 export default function (specContext: SpecContext): SpecBuilderProps {
     const { insight, specColumns, specViewOptions } = specContext;

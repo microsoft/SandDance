@@ -18,12 +18,10 @@
     "watch-typescript": "tsc -p . -w",
     "build-css": "sass ./src/css/sanddance-explorer.scss ./dist/css/sanddance-explorer.css",
     "watch-css": "sass ./src/css/sanddance-explorer.scss ./dist/css/sanddance-explorer.css --watch",
-    "bundle": "parcel build ./bundle/umd.js --no-autoinstall --no-cache",
+    "bundle": "vite build",
     "deploy": "node ./scripts/deploy.js",
     "prebuild:06": "node ./scripts/prebuild.js",
-    "build:06": "npm run build-typescript && node ../../scripts/version.js && npm run bundle && npm run build-css",
-    "remove-vega": "npm un vega-typings",
-    "patch-after-vega-upgrade": "npm version patch"
+    "build:06": "npm run build-typescript && node ../../scripts/version.js && npm run bundle && npm run build-css"
   },
   "targets": {
     "main": false,
@@ -40,7 +38,7 @@
   },
   "umd": "./dist/umd/sanddance-explorer.js",
   "dependencies": {
-    "@msrvida/chart-recommender": "^3",
+    "@msrvida/chart-recommender": "^4",
     "@msrvida/fluentui-react-cdn-typings": "^2",
     "@msrvida/sanddance-react": "^4",
     "d3-format": "^1.3.2"

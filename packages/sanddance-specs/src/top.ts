@@ -3,8 +3,8 @@
 * Licensed under the MIT License.
 */
 
-import { Other } from './constants';
-import { safeFieldName } from './expr';
+import { Other } from './constants.js';
+import { safeFieldName } from './expr.js';
 import { Column } from '@msrvida/chart-types';
 import { Data } from 'vega-typings';
 

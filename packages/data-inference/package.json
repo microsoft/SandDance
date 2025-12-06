@@ -1,6 +1,7 @@
 {
   "name": "@msrvida/data-inference",
-  "version": "1.2.0",
+  "type": "module",
+  "version": "2.0.0",
   "description": "Infer column types in tabular data.",
   "main": "dist/es6/index.js",
   "repository": {
@@ -14,13 +15,12 @@
   ],
   "scripts": {
     "eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
-    "predocs": "rimraf ../../docs/docs/data-inference/v1",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "build:02": "npm run build-typescript && npm run bundle",
     "bundle": "rollup -c",
     "deploy": "node ./scripts/deploy.js",
-    "remove-vega": "npm un vega vega-typings",
+    "remove-vega": "npm un vega-typings",
     "patch-after-vega-upgrade": "npm version patch"
   },
   "author": "Dan Marshall",
@@ -28,6 +28,6 @@
   "dependencies": {
     "@msrvida/chart-types": "^1",
     "d3-color": "^3.1.0",
-    "vega-typings": "~1.5.0"
+    "vega-typings": "~2.1.0"
   }
 }

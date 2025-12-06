@@ -3,20 +3,20 @@
 * Licensed under the MIT License.
 */
 
-import barchartH from './barchartH';
-import barchartV from './barchartV';
-import density from './density';
-import grid from './grid';
-import scatterplot from './scatterplot';
-import stacks from './stacks';
-import strips from './strips';
-import treemap from './treemap';
-import { SpecBuilderProps } from '../specBuilder';
-import { SpecContext } from '../types';
-import { getFacetLayout } from '../facetLayout';
-import { DiscreteColumn } from '../interfaces';
-import { SignalNames } from '../constants';
-import { defaultBins, maxbins } from '../defaults';
+import barchartH from './barchartH.js';
+import barchartV from './barchartV.js';
+import density from './density.js';
+import grid from './grid.js';
+import scatterplot from './scatterplot.js';
+import stacks from './stacks.js';
+import strips from './strips.js';
+import treemap from './treemap.js';
+import { SpecBuilderProps } from '../specBuilder.js';
+import { SpecContext } from '../types.js';
+import { getFacetLayout } from '../facetLayout.js';
+import { DiscreteColumn } from '../interfaces.js';
+import { SignalNames } from '../constants.js';
+import { defaultBins, maxbins } from '../defaults.js';
 
 const map: { [chart: string]: (specContext: SpecContext) => SpecBuilderProps } = {
     barchart: barchartV,

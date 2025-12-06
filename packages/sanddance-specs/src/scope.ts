@@ -3,7 +3,7 @@
 * Licensed under the MIT License.
 */
 
-import { Grouping } from './interfaces';
+import { Grouping } from './interfaces.js';
 import {
     Axis,
     Data,

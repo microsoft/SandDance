@@ -3,11 +3,11 @@
 * Licensed under the MIT License.
 */
 
-import { SignalNames } from './constants';
-import { linearScale, pointScale } from './scales';
+import { SignalNames } from './constants.js';
+import { linearScale, pointScale } from './scales.js';
 import { Column } from '@msrvida/chart-types';
 import { RangeScheme } from 'vega-typings';
-import { safeFieldName } from './expr';
+import { safeFieldName } from './expr.js';
 
 export function addZScale(z: Column, zSize: string, dataName: string, zScaleName: string) {
     if (z) {

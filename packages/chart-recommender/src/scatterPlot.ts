@@ -4,8 +4,8 @@
 */
 
 import { Column } from '@msrvida/chart-types';
-import { defaultColorScheme, maxCategoricalColors, Recommendation } from './recommender';
-import { isLatitude, isLongitude } from './geo';
+import { defaultColorScheme, maxCategoricalColors, Recommendation } from './recommender.js';
+import { isLatitude, isLongitude } from './geo.js';
 
 export class ScatterPlotRecommenderSummary {
     public best: Recommendation;

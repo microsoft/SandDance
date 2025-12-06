@@ -3,14 +3,14 @@
 * Licensed under the MIT License.
 */
 
-import { LayoutType } from './index';
-import { GlobalScope } from '../globalScope';
+import { LayoutType } from './index.js';
+import { GlobalScope } from '../globalScope.js';
 import {
     AxisScales,
     FieldOp,
     Grouping,
     InnerScope,
-} from '../interfaces';
+} from '../interfaces.js';
 
 export interface LayoutProps {
 }

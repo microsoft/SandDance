@@ -9,8 +9,8 @@
     "watch-typescript": "tsc -p . -w",
     "build-css": "sass ./src/css/sanddance-app.scss ./dist/css/sanddance-app.css",
     "build:07": "npm run build-typescript && npm run bundle && npm run build-css",
-    "bundle": "parcel build ./dist/es6/index.js --no-autoinstall --no-cache",
-    "remove-vega": "npm un vega vega-typings"
+    "bundle": "vite build",
+    "dev": "vite --config vite.dev.config.js"
   },
   "targets": {
     "main": false,

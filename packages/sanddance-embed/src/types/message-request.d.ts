@@ -10,28 +10,16 @@ interface MessageRequest_Init extends MessageRequestBase {
     action: 'init';
 }
 
-/**
- * See https://microsoft.github.io/SandDance/docs/sanddance-explorer/v4/interfaces/DataFile.html
- */
 type DataToLoad = object[] | SandDanceExplorer.DataFile;
 
 interface MessageRequest_Load extends MessageRequestBase {
     action: 'load';
     data: DataToLoad;
 
-    /**
-     * See https://microsoft.github.io/SandDance/docs/sanddance-specs/v1/interfaces/Insight.html
-     */
     insight?: Partial<SandDance.types.Insight>;
 
-    /**
-     * See https://microsoft.github.io/SandDance/docs/sanddance-explorer/v4/interfaces/Props.html
-     */
     props?: SandDanceExplorer.Props;
 
-    /**
-     * See https://microsoft.github.io/SandDance/docs/sanddance-explorer/v4/interfaces/Options.html
-     */
     options?: SandDanceExplorer.Options;
 }
 

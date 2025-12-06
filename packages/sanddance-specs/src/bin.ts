@@ -3,17 +3,17 @@
 * Licensed under the MIT License.
 */
 
-import { FieldNames } from './constants';
-import { exprSafeFieldName, safeFieldName } from './expr';
-import { DiscreteColumn } from './interfaces';
+import { FieldNames } from './constants.js';
+import { exprSafeFieldName, safeFieldName } from './expr.js';
+import { DiscreteColumn } from './interfaces.js';
 import {
     BinTransform,
     Data,
     Signal,
     Transforms,
 } from 'vega-typings';
-import { debounce } from './defaults';
-import { dataExtent } from './transforms';
+import { debounce } from './defaults.js';
+import { dataExtent } from './transforms.js';
 import { Column } from '@msrvida/chart-types';
 
 export interface BaseBinnable {

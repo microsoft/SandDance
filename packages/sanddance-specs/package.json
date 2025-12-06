@@ -1,6 +1,7 @@
 {
   "name": "@msrvida/sanddance-specs",
-  "version": "1.8.1",
+  "type": "module",
+  "version": "2.0.0",
   "description": "SandDance Vega specification generator.",
   "main": "dist/es6/index.js",
   "repository": {
@@ -14,25 +15,23 @@
   ],
   "scripts": {
     "eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
-    "predocs": "rimraf ../../docs/docs/sanddance-specs/v1",
     "watch-typescript": "tsc -p . -w",
     "build-typescript": "tsc -p .",
     "build:03": "npm run build-typescript && npm run bundle",
     "bundle": "rollup -c",
-    "bundle-watch": "rollup -c -w -o ../../docs/tests/sanddance-specs/v1/js/sanddance-specs.js",
     "deploy": "tsc -p ./uitest/ && node ./scripts/deploy.js",
     "uitest-watch": "tsc -p ./uitest/ -w",
     "deploy-watch": "npm-run-all --parallel bundle-watch uitest-watch",
     "test2": "node -r esm ./test/perf.js",
-    "remove-vega": "npm un vega vega-typings",
+    "remove-vega": "npm un vega-typings",
     "patch-after-vega-upgrade": "npm version patch"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "@msrvida/chart-types": "^1",
-    "@msrvida/data-inference": "^1",
+    "@msrvida/data-inference": "^2",
     "@msrvida/search-expression": "^1",
-    "vega-typings": "~1.5.0"
+    "vega-typings": "~2.1.0"
   }
 }
