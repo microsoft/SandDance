@@ -5,4 +5,5 @@
 
 export * from './column';
 export * from './dimensions';
+export * from './stats';
 export * from './view';
