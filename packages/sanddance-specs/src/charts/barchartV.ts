@@ -62,7 +62,6 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         });
     } else {
         const aggProps: AggregateContainerProps = {
-            niceScale: true,
             dock: 'bottom',
             globalAggregateMaxExtentSignal: 'aggMaxExtent',
             globalAggregateMaxExtentScaledSignal: 'aggMaxExtentScaled',
@@ -152,6 +151,7 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         specCapabilities: {
             countsAndSums: true,
             percentage: true,
+            signals: totalStyle !== 'sum-strip-percent' ? [SignalNames.ScaleNice] : undefined,
             roles: [
                 {
                     role: 'x',
