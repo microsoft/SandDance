@@ -1,7 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-@use "../../../../packages/sanddance-explorer/dist/css/sanddance-explorer";
-
 html,
 body {
     height: 100%;
@@ -24,3 +22,5 @@ input {
     right: 0;
     bottom: 0;
 }
+
+@import "../../../../packages/sanddance-explorer/dist/css/sanddance-explorer";

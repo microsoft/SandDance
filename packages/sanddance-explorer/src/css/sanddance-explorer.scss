@@ -1,21 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 @use 'sass:math';
-@use "../../../sanddance-react/dist/css/sanddance-react";
-@use "color" as *;
-@use "columnMap" as *;
-@use "dataItem" as *;
-@use "dataIndex" as *;
-@use "dataScope" as *;
-@use "group" as *;
-@use "note" as *;
-@use "palette" as *;
-@use "search" as *;
-@use "scrollable" as *;
-@use "sidebar" as *;
-@use "snapshots" as *;
-@use "history" as *;
-@use "topbar" as *;
+@import "../../../sanddance-react/dist/css/sanddance-react";
+@import "color";
+@import "columnMap";
+@import "dataItem";
+@import "dataIndex";
+@import "dataScope";
+@import "group";
+@import "note";
+@import "palette";
+@import "search";
+@import "scrollable";
+@import "sidebar";
+@import "snapshots";
+@import "history";
+@import "topbar";
 
 //settings
 $sidetab-width: 50px;
