@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+@use "../../../sanddance-explorer/dist/css/sanddance-explorer";
+
 .sanddance-app-static-content {
     display: none;
 }
@@ -21,8 +23,6 @@
     width: 100%;
     //margin-bottom: 12px;
 }
-
-@import "../../../sanddance-explorer/dist/css/sanddance-explorer";
 
 .sanddance-sidebar {
     .sanddance-datascope {
