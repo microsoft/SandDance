@@ -11,7 +11,7 @@ export function downloadData(data: any, fileName: string) {
     const blob = dataURIToBlob(data);
     a.href = URL.createObjectURL(blob);
     // we must revoke the object URL, 
-    // since we can't know when the download occured, we have to attach it on the click handler..
+    // since we can't know when the download occurred, we have to attach it on the click handler..
     a.onclick = () => {
         // ..and to wait a frame
         requestAnimationFrame(() => URL.revokeObjectURL(a.href));
