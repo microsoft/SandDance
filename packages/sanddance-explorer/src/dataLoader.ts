@@ -27,7 +27,7 @@ export const loadDataFile = (dataFile: DataFile, columnTypes?: SandDance.types.C
 
     function handleRawText(text: string) {
         let data: object[];
-        const type = guessDelimiterType(text, dataFile.type);
+        const type = dataFile.noTypeGuess ? dataFile.type : guessDelimiterType(text, dataFile.type);
         try {
             data = vega.read(text, { type, parse: {} });
         }
@@ -36,6 +36,7 @@ export const loadDataFile = (dataFile: DataFile, columnTypes?: SandDance.types.C
         }
         if (data) {
             loadDataArray(data, type, columnTypes).then(dc => {
+                dc.type = type; // communicate the actual parsed type back to the caller
                 if (dataFile.snapshotsUrl) {
                     fetch(dataFile.snapshotsUrl)
                         .then(response => response.json())
