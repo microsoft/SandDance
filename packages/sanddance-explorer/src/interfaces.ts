@@ -19,12 +19,14 @@ export interface DataFile {
   rawText?: string;
   snapshots?: Snapshot[];
   type: DataFileType;
+  noTypeGuess?: boolean;
 }
 
 export interface DataContent {
   data: object[];
   columns: SandDance.types.Column[];
   snapshots?: Snapshot[];
+  type?: DataFileType;
 }
 
 export type DataExportType = DataFileType | 'html';

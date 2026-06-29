@@ -4,7 +4,7 @@
 */
 
 import { base } from '../base';
-import { DataExportHandler } from '../interfaces';
+import { DataExportHandler, DataFile, DataFileType } from '../interfaces';
 import { DataExportPicker, removeExtensions } from '../controls/dataExporter';
 import { DataItem } from '../controls/dataItem';
 import { DataScopeId } from '../controls/dataScope';
@@ -49,6 +49,8 @@ export interface Props {
     displayName: string;
     explorer: Explorer_Class;
     onUpdateColumnTypes: (columnTypes: SandDance.types.ColumnTypeMap) => void;
+    dataFile?: DataFile;
+    onReloadFileType?: (type: DataFileType) => void;
 }
 
 export function DataBrowser(props: Props) {
@@ -87,6 +89,27 @@ export function DataBrowser(props: Props) {
                     props.onDataScopeClick(o.key as DataScopeId);
                 }}
             />
+            {props.dataFile && (props.dataFile.type === 'csv' || props.dataFile.type === 'tsv') && props.onReloadFileType && (
+                <Dropdown
+                    label={strings.labelDelimiter}
+                    collapseLabel={true}
+                    options={[
+                        {
+                            key: 'csv',
+                            text: strings.labelDelimiterComma,
+                            isSelected: props.dataFile.type === 'csv',
+                        },
+                        {
+                            key: 'tsv',
+                            text: strings.labelDelimiterTab,
+                            isSelected: props.dataFile.type === 'tsv',
+                        },
+                    ]}
+                    onChange={(e, o) => {
+                        props.onReloadFileType(o.key as DataFileType);
+                    }}
+                />
+            )}
             {!props.data && <div dangerouslySetInnerHTML={{ __html: props.nullMessage }}></div>}
             {props.data && !props.data.length && <div>{props.zeroMessage}</div>}
             {!!length && <div>
