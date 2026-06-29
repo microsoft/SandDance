@@ -159,6 +159,11 @@ export interface SpecLanguage {
     treeMapMethod: string;
 
     /**
+     * Label for nice scale toggle.
+     */
+    scaleNice: string;
+
+    /**
      * Label for scatterPlot point scale slider.
      */
     scatterPointScale: string;
