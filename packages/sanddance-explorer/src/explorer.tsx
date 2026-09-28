@@ -495,7 +495,7 @@ function _Explorer(_props: Props) {
                     const newState: Partial<State> = {
                         camera: undefined,
                         columns: {},
-                        dataFile,
+                        dataFile: dataContent.type ? { ...dataFile, type: dataContent.type } : dataFile,
                         dataContent,
                         snapshots: dataContent.snapshots || this.state.snapshots,
                         autoCompleteDistinctValues: {},
@@ -1283,6 +1283,11 @@ function _Explorer(_props: Props) {
                                                 bingSearchDisabled={this.props.bingSearchDisabled}
                                                 onUpdateColumnTypes={columnTypes => {
                                                     this.load(this.state.dataFile, null, { prefs: this.prefs, columnTypes });
+                                                }}
+                                                dataFile={this.state.dataFile}
+                                                onReloadFileType={type => {
+                                                    const dataFile = { ...this.state.dataFile, type, noTypeGuess: true };
+                                                    this.load(dataFile, null, { prefs: this.prefs });
                                                 }}
                                             />
                                         );

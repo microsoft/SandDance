@@ -11,20 +11,32 @@ import {
 } from './interfaces';
 import { SandDance } from '@msrvida/sanddance-react';
 
+export function guessDelimiterType(text: string, type: DataFileType): DataFileType {
+    if (type !== 'csv') return type;
+    const firstLine = text.split(/\r?\n/)[0];
+    // Strip quoted strings to avoid counting delimiters inside quotes
+    const unquoted = firstLine.replace(/"[^"]*"/g, '""');
+    const tabCount = (unquoted.match(/\t/g) || []).length;
+    const commaCount = (unquoted.match(/,/g) || []).length;
+    return tabCount > commaCount ? 'tsv' : 'csv';
+}
+
 export const loadDataFile = (dataFile: DataFile, columnTypes?: SandDance.types.ColumnTypeMap) => new Promise<DataContent>((resolve, reject) => {
     const vega = SandDance.VegaMorphCharts.base.vega;
     const loader = vega.loader();
 
     function handleRawText(text: string) {
         let data: object[];
+        const type = dataFile.noTypeGuess ? dataFile.type : guessDelimiterType(text, dataFile.type);
         try {
-            data = vega.read(text, { type: dataFile.type, parse: {} });
+            data = vega.read(text, { type, parse: {} });
         }
         catch (e) {
             reject(e);
         }
         if (data) {
-            loadDataArray(data, dataFile.type, columnTypes).then(dc => {
+            loadDataArray(data, type, columnTypes).then(dc => {
+                dc.type = type; // communicate the actual parsed type back to the caller
                 if (dataFile.snapshotsUrl) {
                     fetch(dataFile.snapshotsUrl)
                         .then(response => response.json())
