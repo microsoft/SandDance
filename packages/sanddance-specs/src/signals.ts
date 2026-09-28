@@ -85,6 +85,15 @@ export function textSignals(context: SpecContext, heightSignal: string) {
                 step: 0.05,
             },
         },
+        {
+            name: SignalNames.ScaleNice,
+            value: true,
+            bind: {
+                name: specViewOptions.language.scaleNice,
+                debounce,
+                input: 'checkbox',
+            },
+        },
     ];
     return signals;
 }
