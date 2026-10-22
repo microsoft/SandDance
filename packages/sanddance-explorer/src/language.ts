@@ -3,6 +3,14 @@
 * Licensed under the MIT License.
 */
 
+function escapeHtml(value: string) {
+    return value.replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 export const strings = {
     appName: 'SandDance',
     bingsearch: 'Bing',
@@ -120,9 +128,9 @@ export const strings = {
     labelColorOptions: 'Color options',
     labelColorBinExplanation: 'For numeric columns',
     labelColorFieldInfo: (colorColumnName, colorColumnType, categoricalNumeric, distinctValueCount) =>
-        `Field <span className="fieldname">${colorColumnName}</span> is of type <span className="fieldtype">${colorColumnType}</span>${categoricalNumeric ? ` and has ${distinctValueCount} distinct values` : ''}.`,
+        `Field <span className="fieldname">${escapeHtml(colorColumnName)}</span> is of type <span className="fieldtype">${escapeHtml(colorColumnType)}</span>${categoricalNumeric ? ` and has ${distinctValueCount} distinct values` : ''}.`,
     labelColorFieldIsColorData: (colorColumnName) =>
-        `Field <span className="fieldname">${colorColumnName}</span> contains direct color data.`,
+        `Field <span className="fieldname">${escapeHtml(colorColumnName)}</span> contains direct color data.`,
     labelColorBinNone: 'None (continuous)',
     labelColorBinQuantize: 'Quantize',
     labelColorBinQuantile: 'Quantile',

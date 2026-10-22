@@ -13,6 +13,7 @@
     "dist"
   ],
   "scripts": {
+    "test": "mocha --extension cjs",
     "eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
     "build-typescript": "tsc -p .",
     "watch-typescript": "tsc -p . -w",
