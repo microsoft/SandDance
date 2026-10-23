@@ -28,6 +28,11 @@ sufficient. If install scripts were skipped, run
 `cd packages/powerbi` followed by `npm install --prefix=. --workspaces=false`
 before building.
 
+Installing or updating a named dependency at the repository root can prune these
+local dependencies without running the root install hook. The Power BI
+`build:08`, `start`, and `pbiviz` scripts check for the local API first and restore
+the visual's dependencies if it is missing. This recovery requires registry access.
+
 Use the npm version bundled with your Node.js installation. With Node.js 24,
 npm 8.15 can fail during this standalone install with
 `Cannot set properties of null (setting 'dev')`; npm 11 completes it successfully.
