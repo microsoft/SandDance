@@ -7,7 +7,7 @@
         "vegatest": "npm run vegatest --workspaces --if-present",
         "eslint": "npm run eslint --workspaces --if-present",
         "build-az": "npm run build --workspace azdata-sanddance",
-        "postinstall": "node ./scripts/copy_inuitcss.js && cd packages/powerbi && npm install --prefix . && cd ../..",
+        "postinstall": "node ./scripts/copy_inuitcss.js && cd packages/powerbi && npm install --prefix=. --workspaces=false && cd ../..",
         "build:01": "npm run build:01 --workspaces --if-present",
         "build:02": "npm run build:02 --workspaces --if-present",
         "build:03": "npm run build:03 --workspaces --if-present",

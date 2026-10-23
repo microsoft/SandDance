@@ -21,6 +21,17 @@ The SandDance repo is a monorepo made up of several packages, managed by npm wor
 1. `npm install`
 1. [Install Jekyll](https://jekyllrb.com/) to run the website locally.
 
+The root install hook also installs the Power BI visual's dependencies locally with
+`--workspaces=false`. Power BI's packaging tools require `powerbi-visuals-api` in
+the visual's own `node_modules` directory; a hoisted workspace installation is not
+sufficient. If install scripts were skipped, run
+`cd packages/powerbi` followed by `npm install --prefix=. --workspaces=false`
+before building.
+
+Use the npm version bundled with your Node.js installation. With Node.js 24,
+npm 8.15 can fail during this standalone install with
+`Cannot set properties of null (setting 'dev')`; npm 11 completes it successfully.
+
 ## Build
 1. `npm run build`
 
