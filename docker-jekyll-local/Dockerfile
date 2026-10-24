@@ -2,8 +2,10 @@ FROM jekyll/jekyll:4.2.2
 
 WORKDIR /srv/jekyll
 
+ENV BUNDLE_FROZEN=true
+
 # Copy the docs directory
-COPY docs/ ./
+COPY --chown=jekyll:jekyll docs/ ./
 
 # Install dependencies
 RUN bundle install

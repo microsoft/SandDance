@@ -4,11 +4,14 @@
   "scripts": {
     "eslint": "eslint -c ../../eslint.config.mjs --fix ./src/**/*.ts*",
     "lint": "npm run eslint",
+    "ensure-api": "node ./scripts/ensure-api.js",
+    "prepbiviz": "npm run ensure-api",
     "pbiviz": "pbiviz",
+    "prestart": "npm run ensure-api",
     "start": "pbiviz start",
     "build:08": "pbiviz package",
     "version": "node ./scripts/version.js",
-    "prebuild:08": "npm run version",
+    "prebuild:08": "npm run ensure-api && npm run version",
     "deploy": "node ./scripts/deploy.js",
     "build:07": "tsc -p .",
     "remove-vega": "npm un vega"
