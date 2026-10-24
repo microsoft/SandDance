@@ -7,7 +7,7 @@
         "vegatest": "npm run vegatest --workspaces --if-present",
         "eslint": "npm run eslint --workspaces --if-present",
         "build-az": "npm run build --workspace azdata-sanddance",
-        "postinstall": "node ./scripts/copy_inuitcss.js && cd packages/powerbi && npm install --prefix . && cd ../..",
+        "postinstall": "node ./scripts/copy_inuitcss.js && cd packages/powerbi && npm install --prefix=. --workspaces=false && cd ../..",
         "build:01": "npm run build:01 --workspaces --if-present",
         "build:02": "npm run build:02 --workspaces --if-present",
         "build:03": "npm run build:03 --workspaces --if-present",
@@ -66,7 +66,7 @@
         "@typescript-eslint/eslint-plugin": "^8.33.1",
         "@typescript-eslint/parser": "^8.33.1",
         "@uifabric/styling": "^7.25.1",
-        "@vscode/vsce": "^3.6.0",
+        "@vscode/vsce": "^4.0.0",
         "core-js": "3.2.1",
         "d3-color": "^3.1.0",
         "d3-ease": "^1.0.5",
@@ -114,5 +114,8 @@
             "packages/powerbi/**",
             "packages/powerbi/**/**"
         ]
+    },
+    "allowScripts": {
+        "@vscode/vsce-sign@2.1.0": true
     }
 }
