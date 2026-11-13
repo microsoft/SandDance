@@ -72,6 +72,7 @@ export class SpecBuilder {
             plotOffsetRight: { name: SignalNames.PlotOffsetRight, update: '0' },
             plotHeightOut: { name: SignalNames.PlotHeightOut, update: SignalNames.PlotHeightIn },
             plotWidthOut: { name: SignalNames.PlotWidthOut, update: SignalNames.PlotWidthIn },
+            scaleNice: { name: SignalNames.ScaleNice },
         };
     }
 
