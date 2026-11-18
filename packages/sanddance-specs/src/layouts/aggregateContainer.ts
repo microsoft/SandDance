@@ -27,7 +27,6 @@ export interface AggregateContainerProps extends LayoutProps {
     sumBy: Column;
     globalAggregateMaxExtentSignal: string;
     globalAggregateMaxExtentScaledSignal: string;
-    niceScale: boolean;
     showAxes: boolean;
 }
 
@@ -69,7 +68,7 @@ export class AggregateContainer extends Layout {
 
     public build(): InnerScope {
         const { aggregation, names, props } = this;
-        const { dock, globalScope, groupings, niceScale, parentScope, showAxes } = props;
+        const { dock, globalScope, groupings, parentScope, showAxes } = props;
 
         addTransforms(globalScope.data,
             {
@@ -137,7 +136,7 @@ export class AggregateContainer extends Layout {
                     },
                     0,
                 ],
-            nice: niceScale,
+            nice: { signal: globalScope.signals.scaleNice.name },
             zero: true,
             reverse: dock === 'top',
         };

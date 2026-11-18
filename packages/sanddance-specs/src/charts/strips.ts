@@ -36,7 +36,6 @@ export default function (specContext: SpecContext): SpecBuilderProps {
         const globalAggregateMaxExtentSignal = 'globalAggregateMaxExtentSignal';
         const props: AggregateContainerProps = {
             dock: 'top',
-            niceScale: false,
             globalAggregateMaxExtentScaledSignal,
             globalAggregateMaxExtentSignal,
             sumBy: specColumns.size,

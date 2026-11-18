@@ -25,6 +25,7 @@ export interface GlobalSignals {
     plotOffsetRight: NewSignal;
     plotHeightOut: NewSignal;
     plotWidthOut: NewSignal;
+    scaleNice: NewSignal;
 }
 
 export interface GlobalScopeProps {
